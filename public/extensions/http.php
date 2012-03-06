@@ -252,8 +252,12 @@
 			self::sendHeader('Expires', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 		}
 
-		public static function sendRedirect($uLocation) {
+		public static function sendRedirect($uLocation, $uTerminate = true) {
 			self::sendHeader('Location', $uLocation, true);
+
+			if($uTerminate) {
+				exit();
+			}
 		}
 
 		public static function sendHeaderETag($uHash) {

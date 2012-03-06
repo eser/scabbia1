@@ -9,14 +9,21 @@
 <body>
 	<div class="content">
 		<h1>@$title</h1>
-		<div class="data">
-		@$table
-		</div>
-		<br />
-		@$pagination
-		<br />
-		<br />
-		@$link_back
+		<form method="POST" action="@$_SERVER['PHP_SELF']?home/login">
+			<table>
+				<tr>
+					<th>Username:</th>
+					<td><input type="text" name="name" /></td>
+				</tr>
+				<tr>
+					<th>Password:</th>
+					<td><input type="password" name="password" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="Login" /></td>
+				</tr>
+			</table>
+		</form>
 		<br />
 		generated in @number_format(microtime(true) - QTIME_INIT, 5) msec.
 	</div>

@@ -203,9 +203,15 @@
 		public function query($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
+			$tResult = $tQuery->execute($uParameters);
 			// $tQuery->closeCursor();
 			$this->affectedRows = $tQuery->rowCount();
+			
+			if($tResult) {
+				return $this->affectedRows;
+			}
+
+			return false;
 		}
 
 		public function &querySet($uQuery, $uParameters = array()) {
@@ -272,6 +278,12 @@
 			$this->transaction = isset($uConfig['@transaction']);
 		}
 
+		public function query() {
+			$uProps = func_get_args();
+
+			return $this->queryDirectInternal($uProps);
+		}
+
 		public function querySet() {
 			$uProps = func_get_args();
 			$tData = $this->queryInternal($uProps);
@@ -290,24 +302,84 @@
 			$uProps = func_get_args();
 			$tData = $this->queryInternal($uProps);
 
-			return current($tData['data'][0]);
+			if(count($tData['data']) > 0) {
+				return current($tData['data'][0]);
+			}
+
+			return null;
 		}
 
-		private function &queryInternal($uProps) {
-			if(count($uProps) == 1 && is_array($uProps[0])) {
-				$tPropMaps = array();
+		private function queryDirectInternal($uProps) {
+//			if(count($uProps) == 1 && is_array($uProps[0])) {
+//				$tPropMaps = array();
+//
+//				foreach($this->parameters as $tKey => &$tParam) {
+//					if(isset($uProps[0][$tParam])) {
+//						$tPropMaps[] = $uProps[0][$tParam];
+//						continue;
+//					}
+//
+//					$tPropMaps[] = null;
+//				}
+//
+//				$uProps = &$tPropMaps;
+//			}
 
-				foreach($this->parameters as $tKey => &$tParam) {
-					if(isset($uProps[0][$tParam])) {
-						$tPropMaps[] = $uProps[0][$tParam];
-						continue;
-					}
+			if($this->transaction) {
+				$this->database->beginTransaction();
+			}
 
-					$tPropMaps[] = null;
+			try {
+				$tCount = 0;
+				$tArray = array();
+
+				foreach($this->parameters as &$tParam) {
+					$tArray[$tParam] = $uProps[$tCount++];
 				}
 
-				$uProps = &$tPropMaps;
+				$tQueryExecute = string::format($this->queryString, $tArray);
+
+				if(DEBUG) {
+					echo 'query: ', $tQueryExecute, "\n";
+				}
+
+				$tResult = $this->database->query($tQueryExecute);
+
+				if($this->database->inTransaction) {
+					$this->database->commit();
+				}
+			} catch(PDOException $ex) {
+				if($this->database->inTransaction) {
+					$this->database->rollBack();
+				}
+
+				throw new PDOException($ex->getMessage());
 			}
+
+			$this->database->stats['query']++;
+
+			if($tResult) {
+				return $this->database->affectedRows();
+			}
+			
+			return false;
+		}
+		
+		private function &queryInternal($uProps) {
+//			if(count($uProps) == 1 && is_array($uProps[0])) {
+//				$tPropMaps = array();
+//
+//				foreach($this->parameters as $tKey => &$tParam) {
+//					if(isset($uProps[0][$tParam])) {
+//						$tPropMaps[] = $uProps[0][$tParam];
+//						continue;
+//					}
+//
+//					$tPropMaps[] = null;
+//				}
+//
+//				$uProps = &$tPropMaps;
+//			}
 
 			$uPropsSerialized = $this->id;
 			foreach($uProps as &$tProp) {
@@ -325,7 +397,7 @@
 				$tData['data']->iterator->rewind(); // rewind ArrayIterator
 				$tLoadedFromCache = true;
 			}
-			else if(isset($this->cacheLife) && is_readable($tFilePath)) {
+			else if($this->cacheLife > 0 && is_readable($tFilePath)) {
 				$tData = io::readSerialize($tFilePath);
 				$tLoadedFromCache = true;
 
@@ -360,7 +432,7 @@
 						$this->database->commit();
 					}
 
-					if(isset($this->cacheLife)) {
+					if($this->cacheLife > 0) {
 						$this->database->cache[$uPropsSerialized] = &$tData;
 						io::writeSerialize($tFilePath, $tData);
 					}

@@ -3,7 +3,37 @@
 	class home extends Controller {
 		private $limit = 200;
 
+		public function __construct() {
+			session_start();
+		}
+
+		public function login() {
+			// to logout
+			unset($_SESSION['logged']);
+
+			$tViewbag = array(
+				'title' => 'Login'
+			);
+
+			$this->loadview('home_login.cshtml', $tViewbag);
+		}
+
+		public function login_post() {
+			$this->loadmodel('accountsModel', 'accounts');
+
+			if(!$this->accounts->checkLogin($_POST['name'], $_POST['password'])) {
+				return $this->error('username/password error');
+			}
+
+			$_SESSION['logged'] = true;
+			http::sendRedirect($_SERVER['PHP_SELF'] . '?home/index');
+		}
+
 		public function index() {
+			if(!isset($_SESSION['logged'])) {
+				return $this->login();
+			}
+
 			$this->loadmodel('usersModel', 'users');
 
 			$tCurrentPage = $this->httpGet(2, 1, 'int');
@@ -16,8 +46,7 @@
 
 			$tViewbag = array(
 				'title' => 'List of Accounts',
-				'link_back' => string::format('{num:0} records listed in {num:1} pages', $tTotal, ceil($tTotal / $this->limit)),
-				'msec' => number_format(microtime(true) - QTIME_INIT, 5)
+				'link_back' => string::format('{num:0} records listed in {num:1} pages', $tTotal, ceil($tTotal / $this->limit))
 			);
 
 			// generate pagination
@@ -50,8 +79,17 @@
 			$this->loadview('home_index.cshtml', $tViewbag);
 		}
 		
+		public function error($uMsg) {
+			$tViewbag = array(
+				'title' => 'Error',
+				'message' => $uMsg
+			);
+
+			$this->loadview('shared_error.cshtml', $tViewbag);
+		}
+		
 		public function notfound() {
-			echo '404 not found!';
+			return $this->error('404 not found!');
 		}
 
 		public static function tableRow($uRow) {

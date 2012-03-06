@@ -17,6 +17,10 @@
 			$tCount = database::get('dbconn', 'getUserCount')->queryScalar();
 			return (int)$tCount;
 		}
+
+		function unsubscribe($uEmail) {
+			return database::get('dbconn', 'setUserUnsubscribed')->query($uEmail);
+		}
 	}
 
 ?>

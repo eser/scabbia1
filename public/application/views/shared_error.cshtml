@@ -9,14 +9,10 @@
 <body>
 	<div class="content">
 		<h1>@$title</h1>
-		<div class="data">
-		@$table
-		</div>
-		<br />
-		@$pagination
+		<div>@$message</div>
 		<br />
 		<br />
-		@$link_back
+		<div><a href="@$_SERVER['PHP_SELF']">&lt;&lt; Back</a></div>
 		<br />
 		generated in @number_format(microtime(true) - QTIME_INIT, 5) msec.
 	</div>

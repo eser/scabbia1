@@ -2,8 +2,10 @@
 
 	class mvc {
 		private static $controller = null;
+		private static $controllerActual = null;
 		private static $controllerClass = null;
 		private static $action = null;
+		private static $actionActual = null;
 
 		public static function extension_info() {
 			return array(
@@ -47,18 +49,29 @@
 				self::$action = $tDefaultAction;
 			}
 
-			Events::invoke('routing', array(
-				'controller' => &self::$controller,
-				'action' => &self::$action
-			));
-
-			if(!method_exists(self::$controller, self::$action)) { // !class_exist(self::$controller) || 
-				self::$controller = $tNotfoundController;
-				self::$action = $tNotfoundAction;
+			self::$controllerActual = self::$controller;
+			
+			if(count($_POST) > 0 && method_exists(self::$controller, self::$action . '_post')) {
+				self::$actionActual = self::$action . '_post';
+			}
+			else {
+				self::$actionActual = self::$action;
 			}
 
-			self::$controllerClass = new self::$controller ();
-			self::$controllerClass->{self::$action}();
+			Events::invoke('routing', array(
+				'controller' => &self::$controller,
+				'action' => &self::$action,
+				'controllerActual' => &self::$controllerActual,
+				'actionActual' => &self::$actionActual
+			));
+
+			if(!method_exists(self::$controllerActual, self::$actionActual)) { // !class_exist(self::$controller) || 
+				self::$controllerActual = $tNotfoundController;
+				self::$actionActual = $tNotfoundAction;
+			}
+
+			self::$controllerClass = new self::$controllerActual ();
+			self::$controllerClass->{self::$actionActual}();
 		}
 
 		public static function getController() {
