@@ -219,12 +219,13 @@
 			}
 		}
 
-		public static function sendFile($uFilePath, $uFindMimeType = true) {
+		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
 			if($uFindMimeType) {
 				$tType = io::getMimeType($tExtension);
-			} else {
+			}
+			else {
 				$tType = 'application/octet-stream';
 			}
 
@@ -232,7 +233,9 @@
 			self::sendHeaderNoCache();
 			// self::sendHeader('Accept-Ranges', 'bytes', true);
 			self::sendHeader('Content-Type', $tType, true);
-			self::sendHeader('Content-Disposition', 'attachment; filename=' . basename($uFilePath) . ';', true);
+			if($uAttachment) {
+				self::sendHeader('Content-Disposition', 'attachment; filename=' . basename($uFilePath) . ';', true);
+			}
 			self::sendHeader('Content-Transfer-Encoding', 'binary', true);
 			self::sendHeader('Content-Length', filesize($uFilePath), true);
 			self::sendHeaderETag(md5_file($uFilePath));

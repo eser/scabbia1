@@ -1,0 +1,73 @@
+body {
+	background: #E0E0E0 url('images/bgimage.gif') repeat-x top left;
+	padding: 20px;
+	text-align: center;
+}
+a {
+	color: #9D80C1;
+}
+#skeletal {
+	background: #FFFFFF;
+	border: 1px solid #B9B9B9;
+	margin: auto;
+	text-align: left;
+	width: 100%;
+}
+#skeletal #menu {
+	float: left;
+	padding: 20px 0px 0px 0px;
+	text-align: right;
+	width: 180px;
+}
+#skeletal #content {
+	color: #808080;
+	font: italic 11pt 'Segoe UI', 'Helvetica';
+	margin: 32px 25px 0px 195px;
+}
+#skeletal #content #text {
+	background: #FFFFFF url('images/gradiantback.gif') repeat-x top left;
+	padding: 24px 24px 24px 24px;
+}
+#skeletal #icons {
+	clear: both;
+	height: 22px;
+	padding: 0px 5px 0px 8px;
+}
+#skeletal #icons img {
+	height: 15px;
+}
+#skeletal #icons span {
+	background: #FFFFFF;
+	float: right;
+	font: 10pt 'Segoe UI', 'Helvetica';
+}
+.logo {
+	height: 60px;
+	margin: 0px 0px 0px 0px;
+	width: 144px;
+}
+a.link {
+	background-image: url('images/button_gray.gif');
+	background-position: right top;
+	background-repeat: no-repeat;
+	color: #000000;
+	cursor: pointer;
+	display: block;
+	font: italic 11pt 'Segoe UI', 'Helvetica';
+	margin: 15px 0px 5px 0px;
+	padding: 3px 5px 3px 0px;
+	text-align: right;
+	text-decoration: none;
+}
+a.link:hover {
+	background-image: url('images/button.gif');
+}
+a.sublink {
+	display: block;
+	font: italic 9pt 'Segoe UI', 'Helvetica';
+	text-decoration: none;
+}
+a.sublink:hover {
+	color: #900000;
+	text-decoration: underline;
+}

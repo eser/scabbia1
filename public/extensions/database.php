@@ -168,7 +168,8 @@
 
 			try {
 				$this->connection = new PDO($this->pdoString, $this->username, $this->password, $tParms);
-			} catch(PDOException $ex) {
+			}
+			catch(PDOException $ex) {
 				throw new PDOException('PDO Exception: ' . $ex->getMessage());
 			}
 
@@ -295,7 +296,11 @@
 			$uProps = func_get_args();
 			$tData = $this->queryInternal($uProps);
 
-			return $tData['data'][0];
+			if(count($tData['data']) > 0) {
+				return $tData['data'][0];
+			}
+
+			return null;
 		}
 
 		public function queryScalar() {
@@ -348,7 +353,8 @@
 				if($this->database->inTransaction) {
 					$this->database->commit();
 				}
-			} catch(PDOException $ex) {
+			}
+			catch(PDOException $ex) {
 				if($this->database->inTransaction) {
 					$this->database->rollBack();
 				}
@@ -436,7 +442,8 @@
 						$this->database->cache[$uPropsSerialized] = &$tData;
 						io::writeSerialize($tFilePath, $tData);
 					}
-				} catch(PDOException $ex) {
+				}
+				catch(PDOException $ex) {
 					if($this->database->inTransaction) {
 						$this->database->rollBack();
 					}

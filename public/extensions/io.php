@@ -96,6 +96,8 @@
 			default:
 				$tType = $uDefault;
 			}
+
+			return $tType;
 		}
 
 		public static function read($uPath) {
