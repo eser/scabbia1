@@ -59,7 +59,12 @@
 		}
 
 		public static function &loadFiles($uFiles) {
-			$tSocket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+			if(isset($_SERVER['SERVER_NAME'])) {
+				$tSocket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+			}
+			else {
+				$tSocket = 'localhost:80';
+			}
 			$tXmlSource = '';
 
 			foreach(glob($uFiles, GLOB_MARK|GLOB_NOSORT) as $tFilename) {

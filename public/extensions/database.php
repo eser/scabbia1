@@ -231,20 +231,13 @@
 			return false;
 		}
 
-		public function &fetchStart($uQuery, $uParameters = array()) {
+		public function &queryFetch($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
-			
-			return $tQuery;
-		}
 
-		public function fetchNext($uQueryObj) {
-			return $uQueryObj->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
-		}
-
-		public function fetchStop($uQueryObj) {
-			$uQueryObj->closeCursor();
+			$tIterator = new DataRowsIterator($tQuery);
+			return $tIterator;
 		}
 
 		public function &querySet($uQuery, $uParameters = array()) {
@@ -307,26 +300,32 @@
 			$this->id = $uConfig['@id'];
 			$this->queryString = $uConfig['.'];
 			$this->parameters = strlen($uConfig['@parameters']) > 0 ? explode(',', $uConfig['@parameters']) : array();
-			$this->cacheLife = (int)$uConfig['@cacheLife'];
+			$this->cacheLife = isset($uConfig['@cacheLife']) ? (int)$uConfig['@cacheLife'] : 0;
 			$this->transaction = isset($uConfig['@transaction']);
 		}
 
 		public function query() {
 			$uProps = func_get_args();
 
-			return $this->queryDirectInternal($uProps);
+			return $this->queryInternal($uProps);
+		}
+
+		public function &queryFetch($uQuery, $uParameters = array()) {
+			$uProps = func_get_args();
+
+			return $this->queryFetchInternal($uProps);
 		}
 
 		public function querySet() {
 			$uProps = func_get_args();
-			$tData = $this->queryInternal($uProps);
+			$tData = $this->querySetInternal($uProps);
 
 			return $tData['data'];
 		}
 
 		public function queryRow() {
 			$uProps = func_get_args();
-			$tData = $this->queryInternal($uProps);
+			$tData = $this->querySetInternal($uProps);
 
 			if(count($tData['data']) > 0) {
 				return $tData['data'][0];
@@ -337,7 +336,7 @@
 
 		public function queryScalar() {
 			$uProps = func_get_args();
-			$tData = $this->queryInternal($uProps);
+			$tData = $this->querySetInternal($uProps);
 
 			if(count($tData['data']) > 0) {
 				return current($tData['data'][0]);
@@ -346,7 +345,7 @@
 			return null;
 		}
 
-		private function queryDirectInternal($uProps) {
+		private function queryInternal($uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
 //
@@ -396,14 +395,71 @@
 
 			$this->database->stats['query']++;
 
-			if($tResult) {
+			if(isset($tResult)) {
 				return $this->database->affectedRows();
 			}
-			
+
 			return false;
 		}
 
-		private function &queryInternal($uProps) {
+		private function &queryFetchInternal($uProps) {
+//			if(count($uProps) == 1 && is_array($uProps[0])) {
+//				$tPropMaps = array();
+//
+//				foreach($this->parameters as $tKey => &$tParam) {
+//					if(isset($uProps[0][$tParam])) {
+//						$tPropMaps[] = $uProps[0][$tParam];
+//						continue;
+//					}
+//
+//					$tPropMaps[] = null;
+//				}
+//
+//				$uProps = &$tPropMaps;
+//			}
+
+			if($this->transaction) {
+				$this->database->beginTransaction();
+			}
+
+			try {
+				$tCount = 0;
+				$tArray = array();
+
+				foreach($this->parameters as &$tParam) {
+					$tArray[$tParam] = $uProps[$tCount++];
+				}
+
+				$tQueryExecute = string::format($this->queryString, $tArray);
+
+				if(DEBUG) {
+					echo 'query: ', $tQueryExecute, "\n";
+				}
+
+				$tResult = $this->database->queryFetch($tQueryExecute);
+
+				if($this->database->inTransaction) {
+					$this->database->commit();
+				}
+			}
+			catch(PDOException $ex) {
+				if($this->database->inTransaction) {
+					$this->database->rollBack();
+				}
+
+				throw new PDOException($ex->getMessage());
+			}
+
+			$this->database->stats['query']++;
+
+			if(isset($tResult)) {
+				return $tResult;
+			}
+
+			return false;
+		}
+
+		private function &querySetInternal($uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
 //
@@ -762,6 +818,50 @@
 			$tReturn = $this->database->queryScalar(database::sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null), array());
 
 			return $tReturn;
+		}
+	}
+
+	class DataRowsIterator extends NoRewindIterator implements Countable {
+		private $connection;
+		private $current;
+		private $count;
+		private $cursor = 0;
+
+		public function __construct($uConnection) {
+			$this->connection = &$uConnection;
+			$this->count = $this->connection->rowCount();
+
+			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+		}
+
+		public function __destruct() {
+			$this->connection->closeCursor();
+		}
+
+		public function count() {
+			return $this->count;
+		}
+
+		public function current() {
+			return $this->current;
+		}
+
+		public function key() {
+			return null;
+		}
+
+		public function next() {
+			$this->cursor++;
+			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+			return $this->current;
+		}
+
+		public function valid() {
+			if($this->cursor < $this->count) {
+				return true;
+			}
+
+			return false;
 		}
 	}
 

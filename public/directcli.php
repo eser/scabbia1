@@ -1,16 +1,24 @@
 <?php
 
 	include('framework.php');
-
-	$tHandle = fopen('output.csv', 'w');
 	
-	$tDatabase = database::get();
-	$tPointer = $tDatabase->fetchStart('SELECT uuid, LongName, EMail FROM users LIMIT 0, 5');
-	while($tRow = $tDatabase->fetchNext($tPointer)) {
-		fputcsv($tHandle, $tRow);
+	$tHandle = fopen('output.csv', 'w');
+	fputcsv($tHandle, array('uuid', 'mail', 'name'));
+
+	// $tQuery = database::get()->queryFetch('SELECT uuid, LongName, EMail FROM users LIMIT 0, 15'); // 4000
+	$tQuery = database::get('dbconn', 'getCsvOutput')->queryFetch(0, 15); // 4000
+	foreach($tQuery as $tRow) { // 4000
+		$tArray = array(
+			'uuid' => $tRow['uuid'],
+			'mail' => $tRow['EMail'],
+			'mail' => $tRow['LongName']
+		);
+		
+		fputcsv($tHandle, $tArray);
 	}
-	$tDatabase->fetchStop($tPointer);
 	
 	fclose($tHandle);
+	
+	echo 'done.';
 
 ?>

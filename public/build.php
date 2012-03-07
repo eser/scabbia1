@@ -13,4 +13,6 @@
 	Framework::build('index.php');
 	Framework::purgeCompiledTemplates();
 
+	echo 'done.';
+
 ?>
