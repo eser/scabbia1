@@ -1,3 +1,16 @@
+Commit 4
+* [viewrenderer_markdown] viewrenderer_markdown extension is added.
+* [database extension] DatabaseConnection::fetchStart, DatabaseConnection::fetchNext, DatabaseConnection::fetchStop functions are added.
+* [database extension] added default database pick.
+* [mvc extension] Model::loaddatabase function is added.
+
+
+Commit 3
+* [database extension] DatabaseDataset::queryRow now returns NULL if query result is empty.
+* [http extension] http::sendFile now takes an optional $uAttachment parameter which enables sending file to the client with download dialog.
+* [io extension] io::getMimeType bug is fixed.
+
+
 Commit 2
 * [database extension] DatabaseConnection::query now returns affected rows on successful operations.
 * [database extension] DatabaseDataset::query is added.
@@ -5,6 +18,7 @@ Commit 2
 * [database extension] Dataset caching can be disabled by setting DatabaseDataset::cacheLife to 0.
 * [http extension] http::sendRedirect now terminates the execution of php script when it called.
 * [mvc extension] controller now tries to pick 'function actionname_post()' as the action when a form is submitted to related action, then picks 'function actionname()' if first one is not defined.
+
 
 Commit 1
 * initial release
