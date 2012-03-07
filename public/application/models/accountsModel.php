@@ -1,11 +1,11 @@
 <?php
 
 	class accountsModel extends Model {
-		public function __construct($uController) {
-			parent::__construct($uController);
-
-			$this->db->setDatabaseName('dbconn');
-		}
+//		public function __construct($uController) {
+//			parent::__construct($uController);
+//
+//			$this->db->setDatabaseName('dbconn');
+//		}
 
 		function checkLogin($uName, $uPassword) {
 			$tPassword = database::get('dbconn', 'getLoginPassword')->queryScalar($uName);

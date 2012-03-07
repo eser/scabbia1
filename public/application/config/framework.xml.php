@@ -17,6 +17,7 @@
 			<extension name="output" />
 			<extension name="contracts" />
 			<extension name="viewrenderer_razor" />
+			<extension name="viewrenderer_markdown" />
 			<extension name="database" />
 			<extension name="stopwatch" />
 			<extension name="mvc" />

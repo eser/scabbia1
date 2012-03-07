@@ -25,6 +25,10 @@
 		<templates extension="twig" templatePath="views" compiledPath="views/compiled" />
 	</twig>
 
+	<markdown>
+		<templates extension="md" templatePath="views" compiledPath="views/compiled" />
+	</markdown>
+
 	<php>
 		<templates extension="php" templatePath="views" />
 	</php>

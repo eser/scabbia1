@@ -78,18 +78,33 @@
 			return self::$controller;
 		}
 
+		public static function getControllerActual() {
+			return self::$controllerActual;
+		}
+
 		public static function getAction() {
 			return self::$action;
+		}
+
+		public static function getActionActual() {
+			return self::$actionActual;
 		}
 	}
 	
 	abstract class Model {
 		protected $controller;
-		protected $db;
+
+		public function loaddatabase($uDatabaseName, $uMemberName = null) {
+			if(is_null($uMemberName)) {
+				$uMemberName = $uDatabaseName;
+			}
+
+			$this->{$uMemberName} = new DatabaseQuery(database::get($uDatabaseName));
+		}
 
 		public function __construct(&$uController) {
 			$this->controller = &$uController;
-			$this->db = new DatabaseQuery();
+			$this->loaddatabase(null, 'db'); // default database to member 'db'
 		}
 	}
 

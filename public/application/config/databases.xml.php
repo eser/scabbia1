@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<databaseList>
-		<database id="dbconn">
+		<database id="dbconn" default="default">
 			<cachePath>cache/</cachePath>
 			<persistent />
 			<overrideCase>natural</overrideCase>
@@ -22,11 +22,17 @@
 				<dataset id="getUsers" cacheLife="15" parameters="offset,limit">
 					SELECT facebookid, EMail, LongName, ImgPath, Gender, Locale, UNIX_TIMESTAMP(RecDate) AS RecDate FROM users LIMIT {offset}, {limit}
 				</dataset>
+				<dataset id="getSingleUser" cacheLife="15" parameters="uuid">
+					SELECT facebookid, EMail, LongName, ImgPath, Gender, Locale, UNIX_TIMESTAMP(RecDate) AS RecDate FROM users WHERE uuid='{squote:uuid}' LIMIT 0, 1
+				</dataset>
 				<dataset id="setUserUnsubscribed" cacheLife="0" parameters="email">
 					UPDATE users SET unsubscribed='1' WHERE EMail='{squote:email}' LIMIT 1
 				</dataset>
 				<dataset id="getLoginPassword" cacheLife="15" parameters="name">
 					SELECT password FROM accounts WHERE name='{squote:name}' LIMIT 0, 1
+				</dataset>
+				<dataset id="logCampaignView" cacheLife="0" parameters="userid,campaign,operation">
+					INSERT INTO userrefs (userid, campaign, operation, insertdate) VALUES ('{squote:userid}', '{squote:campaign}', '{int:operation}', CURRENT_TIMESTAMP())
 				</dataset>
 			</datasetList>
 		</database>

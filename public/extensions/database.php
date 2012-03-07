@@ -2,6 +2,7 @@
 
 	class database {
 		protected static $databases = array();
+		protected static $default = null;
 
 		public static function extension_info() {
 			return array(
@@ -19,15 +20,28 @@
 			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
 				$tDatabase = new DatabaseConnection($tDatabaseConfig);
 				self::$databases[$tDatabase->id] = &$tDatabase;
+				if(is_null(self::$default) || $tDatabase->default) {
+					self::$default = &$tDatabase;
+				}
 			}
 		}
 
-		public static function &get($uDatabase, $uDataset = null) {
-			if(!is_null($uDataset)) {
-				return self::$databases[$uDatabase]->datasets[$uDataset];
+		public static function &get() {
+			$uArgs = func_get_args();
+
+			switch(count($uArgs)) {
+			case 0:
+				return self::$default;
+				break;
+			case 1:
+				return self::$databases[$uArgs[0]];
+				break;
+			case 2:
+				return self::$databases[$uArgs[0]]->datasets[$uArgs[1]];
+				break;
 			}
 
-			return self::$databases[$uDatabase];
+			return null;
 		}
 		
 		public static function sqlInsert($uTable, $uObject) {
@@ -101,6 +115,7 @@
 
 	class DatabaseConnection {
 		public $id;
+		public $default;
 		protected $connection = null;
 		public $driver = null;
 		public $datasets = array();
@@ -119,6 +134,7 @@
 
 		public function __construct($uConfig) {
 			$this->id = $uConfig['@id'];
+			$this->default = isset($uConfig['@default']);
 			$this->pdoString = $uConfig['pdoString']['.'];
 			$this->username = $uConfig['username']['.'];
 			$this->password = $uConfig['password']['.'];
@@ -213,6 +229,22 @@
 			}
 
 			return false;
+		}
+
+		public function &fetchStart($uQuery, $uParameters = array()) {
+			$this->open();
+			$tQuery = $this->connection->prepare($uQuery);
+			$tQuery->execute($uParameters);
+			
+			return $tQuery;
+		}
+
+		public function fetchNext($uQueryObj) {
+			return $uQueryObj->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+		}
+
+		public function fetchStop($uQueryObj) {
+			$uQueryObj->closeCursor();
 		}
 
 		public function &querySet($uQuery, $uParameters = array()) {
@@ -370,7 +402,7 @@
 			
 			return false;
 		}
-		
+
 		private function &queryInternal($uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
@@ -473,13 +505,17 @@
 		private $offset;
 
 		public function __construct(&$uDatabase = null) {
-			if(!is_null($uDatabase)) {
-				$this->setDatabase($uDatabase);
-			}
+			$this->setDatabase($uDatabase);
 		}
 
-		public function setDatabase(&$uDatabase) {
-			$this->database = &$uDatabase;
+		public function setDatabase(&$uDatabase = null) {
+			if(!is_null($uDatabase)) {
+				$this->database = &$uDatabase;
+			}
+			else {
+				$this->database = database::get(); // default
+			}
+
 			$this->clear();
 		}
 
