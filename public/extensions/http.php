@@ -234,7 +234,7 @@
 			// self::sendHeader('Accept-Ranges', 'bytes', true);
 			self::sendHeader('Content-Type', $tType, true);
 			if($uAttachment) {
-				self::sendHeader('Content-Disposition', 'attachment; filename=' . basename($uFilePath) . ';', true);
+				self::sendHeader('Content-Disposition', 'attachment; filename=' . pathinfo($uFilePath, PATHINFO_BASENAME) . ';', true);
 			}
 			self::sendHeader('Content-Transfer-Encoding', 'binary', true);
 			self::sendHeader('Content-Length', filesize($uFilePath), true);

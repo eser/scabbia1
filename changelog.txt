@@ -1,3 +1,12 @@
+Commit 6
+* [main config] some options such as development, debug, gzip are added to options section of config file.
+* [main files] downloads folder and download system are added to framework.
+* [main events] event-chain execution can be interrupted by returning false on member functions.
+* [repository extension] repository extension is added.
+* [main framework] PHP_SAPI_CLI constant is added.
+* [main framework] build system made a part of framework class.
+
+
 Commit 5
 * [database extension] DatabaseConnection::fetchStart, DatabaseConnection::fetchNext, DatabaseConnection::fetchStop functions are replaced by DatabaseConnection::queryFetch method which returns an iterator.
 * [database extension] DatabaseDataset::queryFetch is added.

@@ -14,6 +14,8 @@ riffus: test suite & default fancyfication! :) test suite icin test db hazirlanm
 
 riffus: documentation'da example'lar, performans verileri (acik olsa teoride %.5 performans hit yasarsin, ac bence faydasi cok) gibi belki color coded perfomans guide.
 
+kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil seciminine gore otomatik google translate'e sokan ve bunlari ayrica google search results'da yayinlayan bildigin saglam bir CMS var mi?
+
 + Model-View-Controller Based System
 + Extremely Light Weight
 + Full Featured database classes with support for several platforms.

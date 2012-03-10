@@ -4,37 +4,40 @@ Scabbia Framework Version 1.0
 Önbilgi
 -------
 
-Scabbia Framework, PHP tabanlı uygulamalar için hazırlanmış bir framework'dür. Yeni başladığınız projelerde sık tekrarlanan, daha önce yazmış olduğunuz kodları tekrar tekrar yazılmasını engelleyecek bir mimari ile kendi extension kütüphanesini
-birleştirerek, uygulama oluşturmakta karşılaşacağınız görevleri hızlıca aşmanızda yardımcı olur. Bu işlemler sırasında yazılımcı olarak kontrolü halen sizde bırakırken, PHP'nin olanaklarınca en hızlı metodlarla çözümleri karşınıza getirir.
+Scabbia Framework, PHP tabanlı uygulamalar için hazırlanmış bir framework'dür. Yeni başladığınız projelerde sık tekrarlanan, daha önce yazmış olduğunuz kodları tekrar tekrar yazılmasını engelleyecek
+bir mimari ile kendi extension kütüphanesini birleştirerek, uygulama oluşturmakta karşılaşacağınız görevleri hızlıca aşmanızda yardımcı olur. Bu işlemler sırasında yazılımcı olarak kontrolü halen
+sizde bırakırken, PHP'nin olanaklarınca en hızlı metodlarla çözümleri karşınıza getirir.
 
 
 Sağladıkları
 ------------
 
-- You want a framework with a small footprint.
-- You need exceptional performance.
-- You need broad compatibility with standard hosting accounts that run a variety of PHP versions and configurations.
-- You want a framework that requires nearly zero configuration.
-- You want a framework that does not require you to use the command line.
-- You want a framework that does not require you to adhere to restrictive coding rules.
-- You do not want to be forced to learn a templating language (although a template parser is optionally available if you desire one).
-- You eschew complexity, favoring simple solutions.
-- You need clear, thorough documentation.
+- Extensionlar sayesinde genişleyebilir bir kod tabanı.
+- Tümüyle derlenip, tek bir php dosyası haline gelen bir framework.
+- PHP sınırlarında mümkün olan en duru yaklaşımlarla kazanılmış performans.
+- PHP'nin çalıştığı her platformda ve konfigurasyonda aynı şartlarla çalışma.
+- Genişleyebilir, birden fazla dosyaya yayılmış XML tabanlı basit konfigurasyon.
+- Komut satırı ve 3. parti uygulamalar olmaksızın programlama.
+- Birden fazla kodlama tabanı (prosedürel, MVC, v.b...) ve template dilleri desteği.
+- Dökümantasyon ve Topluluk desteği.
+- BSD lisansı sayesinde kurumsal projelerde özgürce kullanım.
 
 
 Gereksinimleri
 --------------
 
-deneme
+- PHP 5.2.0 ve üstü
+- Projede kullanılacak gerekli PDO extension'larının yüklenmesi
+- Çeşitli klasörlere yazma hakkı
 
 
 Lisans ve Kullanım Hakları
 --------------------------
 
-deneme
+nt.
 
 
 Hakkında
 --------
 
-deneme
+nt.

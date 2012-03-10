@@ -31,7 +31,9 @@
 
 				$tKey = $tCallname[0] . '::' . $tCallname[1];
 				array_push(self::$eventDepth, $tKey . '()');
-				call_user_func($tCallback, $uEventArgs);
+				if(call_user_func($tCallback, $uEventArgs) === false) {
+					break;
+				}
 				array_pop(self::$eventDepth);
 			}
 		}

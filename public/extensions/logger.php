@@ -58,7 +58,7 @@
 				for(;ob_get_level() > 0;ob_end_flush());
 				$tString = '';
 				$tString .= '<div>'; // for content-type: text/xml
-				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . basename($uException->getFile(), QEXT_PHP) . '@' . $uException->getLine() . '</div>';
+				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . pathinfo($uException->getFile(), PATHINFO_FILENAME) . '@' . $uException->getLine() . '</div>';
 				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uException->getMessage() . '</div>';
 				if(count($tEventDepth) > 0) {
 					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b><ul>' . implode('<br />', $tEventDepth) . '</ul></div>';

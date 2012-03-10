@@ -72,6 +72,9 @@
 
 			self::$controllerClass = new self::$controllerActual ();
 			self::$controllerClass->{self::$actionActual}();
+
+			// to interrupt event-chain execution
+			return false;
 		}
 
 		public static function getController() {

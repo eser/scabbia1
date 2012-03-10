@@ -2,8 +2,21 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<scope binding="*:80">
+		<options>
+			<development value="1" />
+			<debug value="0" />
+			<gzip value="1" />
+			<repository value="1" />
+		</options>
+
+		<downloadList>
+<!--
+			<download filename="stopwatch2.php" url="http://localhost/blackmorep/res/stopwatch2.txt" />
+-->
+		</downloadList>
 		<includeList>
 			<include path="{core}extensions/*.php" />
+			<include path="{app}downloaded/*.php" />
 			<include path="{app}controllers/*.php" />
 			<include path="{app}models/*.php" />
 		</includeList>
@@ -20,6 +33,7 @@
 			<extension name="viewrenderer_markdown" />
 			<extension name="database" />
 			<extension name="stopwatch" />
+			<extension name="repository" />
 			<extension name="mvc" />
 			<extension name="html" />
 <!--

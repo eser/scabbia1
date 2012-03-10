@@ -375,7 +375,7 @@
 
 				$tQueryExecute = string::format($this->queryString, $tArray);
 
-				if(DEBUG) {
+				if(Framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
@@ -432,7 +432,7 @@
 
 				$tQueryExecute = string::format($this->queryString, $tArray);
 
-				if(DEBUG) {
+				if(Framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
@@ -513,7 +513,7 @@
 
 					$tQueryExecute = string::format($this->queryString, $tArray);
 
-					if(DEBUG) {
+					if(Framework::$debug) {
 						echo 'query: ', $tQueryExecute, "\n";
 					}
 
