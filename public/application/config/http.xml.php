@@ -53,4 +53,8 @@
 			</crawlerList>
 		</userAgents>
 	</http>
+
+	<session>
+		<cookie name="sessid" life="0" ipCheck="0" uaCheck="1" keyphase="test" />
+	</session>
 </scabbia>

@@ -6,13 +6,11 @@
 			<development value="1" />
 			<debug value="0" />
 			<gzip value="1" />
-			<repository value="1" />
+			<!-- <siteroot value="/scabbia/" /> -->
 		</options>
 
 		<downloadList>
-<!--
-			<download filename="stopwatch2.php" url="http://localhost/blackmorep/res/stopwatch2.txt" />
--->
+			<!-- <download filename="stopwatch2.php" url="http://localhost/blackmorep/res/stopwatch2.txt" /> -->
 		</downloadList>
 		<includeList>
 			<include path="{core}extensions/*.php" />
@@ -27,15 +25,17 @@
 			<extension name="http" />
 			<extension name="time" />
 			<extension name="collections" />
-			<extension name="output" />
 			<extension name="contracts" />
-			<extension name="viewrenderer_razor" />
-			<extension name="viewrenderer_markdown" />
+			<extension name="unittest" />
 			<extension name="database" />
-			<extension name="stopwatch" />
+			<extension name="session" />
+			<extension name="output" />
 			<extension name="repository" />
 			<extension name="mvc" />
+			<extension name="logger" />
 			<extension name="html" />
+			<extension name="viewrenderer_razor" />
+			<extension name="viewrenderer_markdown" />
 <!--
 			<extension name="viewrenderer_php" />
 			<extension name="viewrenderer_phptal" />
@@ -43,11 +43,14 @@
 			<extension name="viewrenderer_raintpl" />
 			<extension name="viewrenderer_twig" />
 -->
+			<extension name="stopwatch" />
 		</extensionList>
 
 		<languageList>
 			<language id="tr">Turkish</language>
 			<language id="en">English</language>
 		</languageList>
+
+		<logger filename="d-m-Y" />
 	</scope>
 </scabbia>

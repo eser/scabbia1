@@ -1,3 +1,15 @@
+Commit 7
+* [output extension] output::end now iterates array of callback functions instead of using event-chain.
+* [logger extension] a small bug is fixed. works and creates log files again.
+* [io extension] php and phps extensions are added to mimetype list.
+* [session extension] session extension is added.
+* [http extension] REMOTE_ADDR bug is fixed.
+* [database extension] data encryption is added.
+* [io extension] data encryption is added.
+* [main extensions] redundant extension_info entries are removed, php extension dependency check has been added.
+* [unittest extension] unittest extension is added.
+
+
 Commit 6
 * [main config] some options such as development, debug, gzip are added to options section of config file.
 * [main files] downloads folder and download system are added to framework.

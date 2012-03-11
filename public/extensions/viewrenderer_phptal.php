@@ -11,10 +11,9 @@
 				'name' => 'viewrenderer: phptal',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array()
+				'fwdepends' => array()
 			);
 		}
 
@@ -52,6 +51,10 @@
 			}
 			else {
 				self::$renderer->set('model', $uObject['model']);
+			}
+
+			foreach($uObject['extra'] as $tKey => &$tValue) {
+				self::$renderer->set($tKey, $tValue);
 			}
 
 			self::$renderer->setForceReparse(false);

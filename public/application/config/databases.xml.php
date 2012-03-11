@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<databaseList>
-		<database id="dbconn" default="default">
+		<database id="dbconn" default="default" keyphase="test">
 			<cachePath>cache/</cachePath>
 			<persistent />
 			<overrideCase>natural</overrideCase>

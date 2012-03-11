@@ -6,10 +6,9 @@
 				'name' => 'string',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array()
+				'fwdepends' => array()
 			);
 		}
 
@@ -156,6 +155,7 @@
 		}
 
 		public static function generateUuid() {
+			// return md5(uniqid(mt_rand(), true));
 			return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 				// 32 bits for "time_low"
 				mt_rand(0, 0xffff),
@@ -189,6 +189,30 @@
 			}
 
 			return $tOutput;
+		}
+
+		public static function encrypt($uString, $uKey) {
+			$tResult = '';
+
+			for($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
+				$tChar = substr($uString, $i - 1, 1);
+				$tKeyChar = substr($uKey, ($i % strlen($uKey)) - 1, 1);
+				$tResult .= chr(ord($tChar) + ord($tKeyChar));
+			}
+
+			return $tResult;
+		}
+
+		public static function decrypt($uString, $uKey) {
+			$tResult = '';
+
+			for($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
+				$tChar = substr($uString, $i - 1, 1);
+				$tKeyChar = substr($uKey, ($i % strlen($uKey)) - 1, 1);
+				$tResult .= chr(ord($tChar) - ord($tKeyChar));
+			}
+
+			return $tResult;
 		}
 
 		public static function strip($uString, $uValids) {

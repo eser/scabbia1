@@ -5,7 +5,7 @@
 		public static $downloadUrls = array();
 		public static $development;
 		public static $debug;
-		public static $repository;
+		public static $siteroot;
 		
 		public static function translatePath($uPath) {
 			if(substr($uPath, 0, 6) == '{core}') {
@@ -20,9 +20,19 @@
 		}
 	
 		public static function load() {
-			self::$development = Config::get('/options/development/@value', '0');
-			self::$debug = Config::get('/options/debug/@value', '0');
-			self::$repository = Config::get('/options/repository/@value', '0');
+			self::$development = (bool)Config::get('/options/development/@value', '0');
+			self::$debug = (bool)Config::get('/options/debug/@value', '0');
+			self::$siteroot = Config::get('/options/siteroot/@value', null);
+
+			if(!isset(self::$siteroot)) {
+				$tLen = strlen($_SERVER['DOCUMENT_ROOT']);
+				if(substr(QPATH_CORE, 0, $tLen) == $_SERVER['DOCUMENT_ROOT']) {
+					self::$siteroot = rtrim(strtr(substr(QPATH_CORE, $tLen), DIRECTORY_SEPARATOR, '/'), '/');
+				}
+				else {
+					self::$siteroot = '';
+				}
+			}
 
 			if(!COMPILED) {
 				// downloads
@@ -45,18 +55,31 @@
 			}
 		}
 
-		public static function run() {
-			if(OUTPUT_GZIP && !PHP_SAPI_CLI && Config::get('/options/gzip/@value', '1') != '0') {
-				ob_start('ob_gzhandler');
-			}
+		public static function output($uValue, $uSecond) {
+			$tParms = array(
+				'content' => &$uValue
+			);
+
+			Events::invoke('output', $tParms);
 
 			if(OUTPUT_MULTIBYTE) {
-				ob_start('mb_output_handler');
+				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
+
+			if(OUTPUT_GZIP && !PHP_SAPI_CLI && Config::get('/options/gzip/@value', '1') != '0') {
+				$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+			}
+
+			return $tParms['content'];
+		}
+
+		public static function run() {
+			ob_start('Framework::output');
+			ob_implicit_flush(false);
 
 			if(!COMPILED) {
 				foreach(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $tValue) {
-					if($tValue['type'] == 'include') {
+					if(isset($tValue['type']) && $tValue['type'] == 'include') {
 						$tIncluded = true;
 					}
 				}
@@ -72,20 +95,14 @@
 					if(self::$development) {
 						if($tParameters == 'build') {
 							self::build('index.php');
-							self::purgeTemp();
-							self::purgeCompiledTemplates();
+							self::purgeFolder(QPATH_APP . 'temp');
+							self::purgeFolder(QPATH_APP . 'sessions');
+							// self::purgeFolder(QPATH_APP . 'cache');
+							// self::purgeFolder(QPATH_APP . 'downloaded');
+							// self::purgeFolder(QPATH_APP . 'views/compiled'));
+							// self::purgeFolder(QPATH_APP . 'logs');
 
 							echo 'build done.';
-
-							return;
-						}
-					}
-
-					if(self::$repository) {
-						if(substr($tParameters, 0, 4) == 'rep:') {
-							// $tFile = QPATH_CORE . 'extensions/' . substr($tParameters, 4);
-							$tFile = QPATH_CORE . substr($tParameters, 4);
-							echo php_strip_whitespace($tFile);
 
 							return;
 						}
@@ -146,6 +163,7 @@
 
 		public static function build($uFilename) {
 			ob_start();
+			ob_implicit_flush(false);
 
 			/* BEGIN */
 			echo '<', '?php
@@ -190,34 +208,8 @@
 			fclose($tOutput);
 		}
 
-		public static function purgeCompiledTemplates() {
-			$tViewCompiledPath = QPATH_APP . Config::get('/mvc/views/@compiledPath', 'views/compiled');
-
-			foreach(glob($tViewCompiledPath . '/*', GLOB_MARK|GLOB_NOSORT) as $tFilename) {
-				if(substr($tFilename, -1) == '/') {
-					continue;
-				}
-
-				unlink($tFilename);
-			}
-		}
-
-		public static function purgeDownloads() {
-			$tTempPath = QPATH_APP . 'downloaded';
-
-			foreach(glob($tTempPath . '/*', GLOB_MARK|GLOB_NOSORT) as $tFilename) {
-				if(substr($tFilename, -1) == '/') {
-					continue;
-				}
-
-				unlink($tFilename);
-			}
-		}
-
-		public static function purgeTemp() {
-			$tTempPath = QPATH_APP . 'temp';
-
-			foreach(glob($tTempPath . '/*', GLOB_MARK|GLOB_NOSORT) as $tFilename) {
+		public static function purgeFolder($uFolder) {
+			foreach(glob($uFolder . '/*', GLOB_MARK|GLOB_NOSORT) as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

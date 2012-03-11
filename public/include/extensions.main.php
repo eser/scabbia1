@@ -27,19 +27,23 @@
 					return false;
 				}
 
+				if(isset($tClassInfo['phpdepends'])) {
+					foreach($tClassInfo['phpdepends'] as &$tExtension) {
+						if(!extension_loaded($tExtension)) {
+							throw new Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
+						}
+					}
+				}
+
 				if(isset($tClassInfo['fwversion']) && version_compare(SCABBIA_VERSION, $tClassInfo['fwversion'], '<')) {
 					return false;
 				}
 
-				if(isset($tClassInfo['enabled']) && !$tClassInfo['enabled']) {
-					return false;
-				}
-
-				if(isset($tClassInfo['depends'])) {
-					foreach($tClassInfo['depends'] as &$tExtension) {
+				if(isset($tClassInfo['fwdepends'])) {
+					foreach($tClassInfo['fwdepends'] as &$tExtension) {
 						// if(!self::add($tExtension)) {
 						if(!in_array($tExtension, self::$loaded)) {
-							throw new Exception('extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
+							throw new Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
 					}
 				}

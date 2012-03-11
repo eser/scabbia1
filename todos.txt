@@ -27,6 +27,8 @@ kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil
 + Flexible URI Routing
 + Support for Hooks and Class Extensions
 + Large library of "helper" functions
++ Session Management
++ Data Encryption
 
 - Unit Testing Class (unit testing - combine with control extension)
 - XML-RPC Library
@@ -35,8 +37,6 @@ kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil
 - Error Logging
 - Localization
 - Form and Data Validation (html extension form, formvalidation, innernotify (olumlu) gibi ozelliklerle gelistirilecek.)
-- Session Management
-- Data Encryption
 - Trackback Class
 
 * documentation
@@ -47,16 +47,13 @@ kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil
 webpanel (database ve model otomatik olusturma)
 
 * html javascript/css manager (collection) to create <head> tag and details
-* facebook sdk v.s.
-* oauth helper, sparks (autodownload extension)
-* gravatar helper
+* facebook, oauth, gravatar helper
 
 * bir databinding turu
 * templateengine'lari config'de daha bir item gibi register ettirip, view'larda extension'larin yanisira keylerle cagirabilmeliyiz.
   bunun nedeni partial olarak baska templateenginelar kullanilabilir markdown gibi.
   hatta bir tek bir function ile cagirabilirsek template'i razor icinden @mvc::renderTemplate('documentation.m', 'markdown')
   diyerek markdown template'ini razor'un icinde cagirabiliriz.
-* markdown icin template engine
 * yazilacak javascript extension'unda direkt array'den knockoutjs icin formatlara export olmali.
 * MVC extension'unda controller eger model olarak isaretlenmis bir parametre aliyorsa GET veya belirtilen baska bir array'den Model sinifi yorumlanmali ASP.NET'de oldugu gibi.
 * MVC uzerinde $this->error gibisinden bir metod bulunacak, bu da config'de tanimli error page'i cagiracak. 404 gibi hatalar da bu error'a gelecek.

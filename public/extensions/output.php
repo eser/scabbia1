@@ -8,20 +8,18 @@
 				'name' => 'output',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array()
+				'fwdepends' => array()
 			);
 		}
 
 		public static function extension_load() {
-			// for(;ob_get_level() > 0;ob_end_clean());
 		}
 
 		public static function begin() {
-			ob_start(array('output', 'flushOutput'));
-			ob_implicit_flush(0);
+			ob_start('output::flushOutput');
+			ob_implicit_flush(false);
 
 			$tArgs = func_get_args();
 			array_push(self::$effectList, $tArgs);
@@ -31,10 +29,9 @@
 			$tContent = ob_get_contents();
 			ob_end_flush();
 
-			Events::invoke('output', array(
-				'content' => &$tContent,
-				'effects' => array_pop(self::$effectList)
-			));
+			foreach(array_pop(self::$effectList) as $tEffect) {
+				$tContent = call_user_func($tEffect, $tContent);
+			}
 
 			if($uFlush) {
 				echo $tContent;

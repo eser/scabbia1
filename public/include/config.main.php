@@ -22,7 +22,7 @@
 				$uArray['@' . $tKey] = (string)$tValue;
 			}
 
-			$tNodeValue = chop((string)$uNode);
+			$tNodeValue = rtrim((string)$uNode);
 			if(strlen($tNodeValue) > 0) {
 				$uArray['.'] = $tNodeValue;
 			}
@@ -52,7 +52,7 @@
 				$uArray[$uPrefix . '/@' . $tKey] = (string)$tValue;
 			}
 
-			$tNodeValue = chop((string)$uNode);
+			$tNodeValue = rtrim((string)$uNode);
 			if(strlen($tNodeValue) > 0) {
 				$uArray[$uPrefix . '/.'] = $tNodeValue;
 			}

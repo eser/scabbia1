@@ -33,7 +33,7 @@
 	define('SCABBIA_VERSION', '1.0.' . ceil(QTIME_INIT / 86400));
 	define('INCLUDED', 'Scabbia ' . SCABBIA_VERSION);
 	define('COMPILED', false);
-	
+
 	define('OUTPUT_NOHANDLER', (ini_get('output_handler') == ''));
 	define('OUTPUT_GZIP', (OUTPUT_NOHANDLER && !ini_get('zlib.output_compression')));
 	define('OUTPUT_MULTIBYTE', OUTPUT_NOHANDLER);
@@ -44,7 +44,7 @@
 	require(QPATH_CORE . 'include/events.main' . QEXT_PHP);
 	require(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
 	require(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
-	
+
 	Config::load();
 	Framework::load();
 	Extensions::load();

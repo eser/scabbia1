@@ -12,10 +12,9 @@
 				'name' => 'viewrenderer: twig',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array()
+				'fwdepends' => array()
 			);
 		}
 
@@ -43,7 +42,7 @@
 				));
 			}
 			
-			echo self::$renderer->render($uObject['viewFile'] . '.' . $uObject['viewExtension'], $uObject['model']);
+			echo self::$renderer->render($uObject['viewFile'] . '.' . $uObject['viewExtension'], array_combine($uObject['model'], $uObject['extra']));
 		}
 	}
 

@@ -12,10 +12,9 @@
 				'name' => 'mvc',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array('string', 'http', 'database')
+				'fwdepends' => array('string', 'http', 'database')
 			);
 		}
 		
@@ -135,10 +134,15 @@
 				$tViewFile .= '.' . $this->language;
 			}
 
+			$tExtra = array(
+				'root' => Framework::$siteroot
+			);
+
 			Events::invoke('renderview', array(
 				'viewFile' => &$tViewFile,
 				'viewExtension' => &$tViewExtension,
-				'model' => &$uModel
+				'model' => &$uModel,
+				'extra' => &$tExtra
 			));
 		}
 

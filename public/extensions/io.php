@@ -6,10 +6,9 @@
 				'name' => 'io',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array('string')
+				'fwdepends' => array('string')
 			);
 		}
 
@@ -89,6 +88,10 @@
 			case 'shtm':
 			case 'shtml':
 				$tType = 'text/html'; break;
+			case 'php':
+				$tType = 'application/x-httpd-php'; break;
+			case 'phps':
+				$tType = 'application/x-httpd-php-source'; break;
 			case 'css':
 				$tType = 'text/css'; break;
 			case 'js':
@@ -108,12 +111,24 @@
 			return file_put_contents($uPath, $uContent, LOCK_EX);
 		}
 
-		public static function readSerialize($uPath) {
-			return unserialize(self::read($uPath));
+		public static function readSerialize($uPath, $uEncryptKey = null) {
+			$tContent = self::read($uPath);
+
+			if(!is_null($uEncryptKey)) {
+				$tContent = string::decrypt($tContent, $uEncryptKey);
+			}
+
+			return unserialize($tContent);
 		}
 
-		public static function writeSerialize($uPath, $uContent) {
-			return self::write($uPath, serialize($uContent));
+		public static function writeSerialize($uPath, $uContent, $uEncryptKey = null) {
+			$tContent = serialize($uContent);
+
+			if(!is_null($uEncryptKey)) {
+				$tContent = string::encrypt($tContent, $uEncryptKey);
+			}
+
+			return self::write($uPath, $tContent);
 		}
 
 		public static function touch($uPath) {

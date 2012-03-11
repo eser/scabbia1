@@ -14,10 +14,9 @@
 				'name' => 'http',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array('string', 'io')
+				'fwdepends' => array('string', 'io')
 			);
 		}
 		
@@ -57,7 +56,7 @@
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
 			else {
-				$_SERVER['REMOTE_ADDR'] = getenv($tEnv) or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
+				$_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
 			}
 
 			// phpself and query string

@@ -9,10 +9,9 @@
 				'name' => 'viewrenderer: php',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array()
+				'fwdepends' => array()
 			);
 		}
 
@@ -35,6 +34,8 @@
 			if(is_array($model)) {
 				extract($model, EXTR_SKIP|EXTR_REFS);
 			}
+
+			extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
 
 			require($tInputFile);
 		}

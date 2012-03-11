@@ -1,18 +1,17 @@
 <?php
 
 	class database {
-		protected static $databases = array();
-		protected static $default = null;
+		private static $databases = array();
+		private static $default = null;
 
 		public static function extension_info() {
 			return array(
 				'name' => 'database',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
+				'phpdepends' => array('pdo'),
 				'fwversion' => '1.0',
-				'enabled' => true,
-				'autoevents' => false,
-				'depends' => array('string', 'io')
+				'fwdepends' => array('string', 'io')
 			);
 		}
 
@@ -20,6 +19,7 @@
 			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
 				$tDatabase = new DatabaseConnection($tDatabaseConfig);
 				self::$databases[$tDatabase->id] = &$tDatabase;
+
 				if(is_null(self::$default) || $tDatabase->default) {
 					self::$default = &$tDatabase;
 				}
@@ -129,6 +129,7 @@
 		protected $initCommand;
 		protected $overrideCase;
 		protected $persistent;
+		public $keyphase = null;
 		public $cachePath;
 		private $affectedRows;
 
@@ -145,6 +146,10 @@
 
 			if(isset($uConfig['overrideCase'])) {
 				$this->overrideCase = $uConfig['overrideCase']['.'];
+			}
+			
+			if(isset($uConfig['@keyphase'])) {
+				$this->keyphase = $uConfig['@keyphase'];
 			}
 
 			$this->persistent = isset($uConfig['persistent']);
@@ -492,7 +497,7 @@
 				$tLoadedFromCache = true;
 			}
 			else if($this->cacheLife > 0 && is_readable($tFilePath)) {
-				$tData = io::readSerialize($tFilePath);
+				$tData = io::readSerialize($tFilePath, $this->database->keyphase);
 				$tLoadedFromCache = true;
 
 				$this->database->cache[$uPropsSerialized] = &$tData;
@@ -528,7 +533,7 @@
 
 					if($this->cacheLife > 0) {
 						$this->database->cache[$uPropsSerialized] = &$tData;
-						io::writeSerialize($tFilePath, $tData);
+						io::writeSerialize($tFilePath, $tData, $this->database->keyphase);
 					}
 				}
 				catch(PDOException $ex) {
