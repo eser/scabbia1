@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('mvc')) {
 	class mvc {
 		private static $controller = null;
 		private static $controllerActual = null;
@@ -160,7 +161,7 @@
 			}
 
 			if(!is_null($uFilter)) {
-				return string::filter($_GET[$uKey], $uFilter);
+				return call_user_func($uFilter, $_GET[$uKey]);
 			}
 
 			return $_GET[$uKey];
@@ -182,5 +183,6 @@
 			return $_COOKIE[$uKey];
 		}
 	}
+}
 
 ?>

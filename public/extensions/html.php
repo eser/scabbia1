@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('html')) {
 	class html {
 		public static function extension_info() {
 			return array(
@@ -191,5 +192,6 @@
 			return $tResult;
 		}
 	}
+}
 
 ?>

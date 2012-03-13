@@ -33,6 +33,7 @@
 			<extension name="repository" />
 			<extension name="mvc" />
 			<extension name="logger" />
+			<extension name="i8n" />
 			<extension name="html" />
 			<extension name="viewrenderer_razor" />
 			<extension name="viewrenderer_markdown" />
@@ -46,11 +47,19 @@
 			<extension name="stopwatch" />
 		</extensionList>
 
+		<i8n>
+			<routing
+				languageUrlKey="0" />
+
 		<languageList>
 			<language id="tr">Turkish</language>
 			<language id="en">English</language>
 		</languageList>
+		</i8n>
 
-		<logger filename="d-m-Y" />
+		<logger
+			filename="{date|'d-m-Y'} {@category}.txt"
+			line="[{date|'d-m-Y H:i:s'}] {strtoupper|@category}| {@message}"
+			/>
 	</scope>
 </scabbia>

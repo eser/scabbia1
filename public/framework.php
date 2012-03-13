@@ -26,7 +26,7 @@
 	define('PHP_OS_WINDOWS', (DIRECTORY_SEPARATOR == '\\'));
 	define('PHP_SAPI_CLI', (PHP_SAPI == 'cli'));
 	define('QPATH_CORE', pathinfo(__FILE__, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR);
-	define('QPATH_APP', QPATH_CORE . 'application/');
+	define('QPATH_APP', QPATH_CORE . 'application' . DIRECTORY_SEPARATOR);
 	define('QTIME_INIT', microtime(true));
 	define('QEXT_PHP', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
 

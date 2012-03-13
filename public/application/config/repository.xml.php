@@ -3,8 +3,8 @@
 <scabbia>
 	<repository>
 		<routing
-			repositoryCheckKey="0" repositoryCheckValue="repository"
-			repositoryPackageKey="1" />
+			repositoryCheckUrlKey="0" repositoryCheckUrlValue="repository"
+			repositoryPackageUrlKey="1" />
 
 		<packageList>
 <!--

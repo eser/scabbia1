@@ -1,12 +1,20 @@
 <?php
 
 	class Extensions {
+		private static $selected = array();
 		private static $loaded = array();
-	
-		public static function load() {
+
+		public static function init() {
 			$tExtensions = Config::get('/extensionList', array());
+
 			foreach($tExtensions as &$tExtension) {
-				self::add($tExtension['@name']);
+				self::$selected[] = $tExtension['@name'];
+			}
+		}
+
+		public static function load() {
+			foreach(self::$selected as &$tExtensionName) {
+				self::add($tExtensionName);
 			}
 		}
 		
@@ -54,6 +62,10 @@
 			}
 
 			return true;
+		}
+
+		public static function isSelected($uExtensionName) {
+			return in_array($uExtensionName, self::$selected);
 		}
 		
 		public static function dump() {

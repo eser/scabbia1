@@ -1,3 +1,10 @@
+Commit 8
+* [i8n extension] i8n extension is added.
+* [string extension] string.format is improved.
+* [logger extension] logger extension now has 'write' method, also filenames and output can be changed on config file.
+* [main extensions] extension framework is updated. now allow users to pick one of drivers between loaded extensions.
+
+
 Commit 7
 * [output extension] output::end now iterates array of callback functions instead of using event-chain.
 * [logger extension] a small bug is fixed. works and creates log files again.

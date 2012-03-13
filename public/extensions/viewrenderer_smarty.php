@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('viewrenderer_smarty')) {
 	class viewrenderer_smarty {
 		private static $renderer = null;
 		private static $extension;
@@ -59,5 +60,6 @@
 			self::$renderer->display($uObject['viewFile'] . '.' . $uObject['viewExtension']);
 		}
 	}
+}
 
 ?>

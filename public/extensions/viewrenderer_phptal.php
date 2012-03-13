@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('viewrenderer_phptal')) {
 	class viewrenderer_phptal {
 		private static $renderer = null;
 		private static $extension;
@@ -66,5 +67,6 @@
 			self::$renderer->echoExecute();
 		}
 	}
+}
 
 ?>

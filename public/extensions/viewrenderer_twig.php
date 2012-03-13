@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('viewrenderer_twig')) {
 	class viewrenderer_twig {
 		private static $loader = null;
 		private static $renderer = null;
@@ -45,5 +46,6 @@
 			echo self::$renderer->render($uObject['viewFile'] . '.' . $uObject['viewExtension'], array_combine($uObject['model'], $uObject['extra']));
 		}
 	}
+}
 
 ?>

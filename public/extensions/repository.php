@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('repository')) {
 	class repository {
 		private static $packageKey = null;
 		private static $packages = array();
@@ -30,16 +31,16 @@
 		}
 
 		public static function run() {
-			$tCheckKey = Config::get('/repository/routing/@repositoryCheckKey', 'rep');
-			$tCheckValue = Config::get('/repository/routing/@repositoryCheckValue', '');
-			$tPackageKey = Config::get('/repository/routing/@repositoryPackageKey', $tCheckKey);
+			$tCheckUrlKey = Config::get('/repository/routing/@repositoryCheckUrlKey', 'rep');
+			$tCheckUrlValue = Config::get('/repository/routing/@repositoryCheckUrlValue', '');
+			$tPackageUrlKey = Config::get('/repository/routing/@repositoryPackageUrlKey', $tCheckUrlKey);
 
-			if(array_key_exists($tCheckKey, $_GET)) {
-				if(strlen($tCheckValue) == 0) {
-					self::$packageKey = $_GET[$tPackageKey];
+			if(array_key_exists($tCheckUrlKey, $_GET)) {
+				if(strlen($tCheckUrlValue) == 0) {
+					self::$packageKey = $_GET[$tPackageUrlKey];
 				}
-				else if($_GET[$tCheckKey] == $tCheckValue) {
-					self::$packageKey = $_GET[$tPackageKey];
+				else if($_GET[$tCheckUrlKey] == $tCheckUrlValue) {
+					self::$packageKey = $_GET[$tPackageUrlKey];
 				}
 			}
 
@@ -64,5 +65,6 @@
 			return self::$packageKey;
 		}
 	}
+}
 
 ?>

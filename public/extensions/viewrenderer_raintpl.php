@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('viewrenderer_raintpl')) {
 	class viewrenderer_raintpl {
 		private static $renderer = null;
 		private static $extension;
@@ -61,5 +62,6 @@
 			self::$renderer->draw($uObject['viewFile']); //  . '.' . $uObject['viewExtension']
 		}
 	}
+}
 
 ?>

@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('stopwatch')) {
 	class stopwatch {
 		private static $markers = array();
 
@@ -37,5 +38,6 @@
 			return self::$markers;
 		}
 	}
+}
 
 ?>

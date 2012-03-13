@@ -44,6 +44,9 @@
 
 				self::downloadFiles();
 
+				// extensions
+				Extensions::init();
+
 				// includes
 				$tIncludes = Config::get('/includeList', array());
 

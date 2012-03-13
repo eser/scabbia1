@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('collections')) {
 	class collections {
 		public static function extension_info() {
 			return array(
@@ -510,5 +511,6 @@
 			return $tTemp;
 		}
 	}
+}
 
 ?>

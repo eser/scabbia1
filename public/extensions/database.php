@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('database')) {
 	class database {
 		private static $databases = array();
 		private static $default = null;
@@ -869,5 +870,6 @@
 			return false;
 		}
 	}
+}
 
 ?>

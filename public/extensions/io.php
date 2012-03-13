@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('io')) {
 	class io {
 		public static function extension_info() {
 			return array(
@@ -141,5 +142,6 @@
 			return strtr($uFilename, $aReplaceChars);
 		}
 	}
+}
 
 ?>

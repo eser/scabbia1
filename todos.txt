@@ -58,3 +58,5 @@ webpanel (database ve model otomatik olusturma)
 * MVC extension'unda controller eger model olarak isaretlenmis bir parametre aliyorsa GET veya belirtilen baska bir array'den Model sinifi yorumlanmali ASP.NET'de oldugu gibi.
 * MVC uzerinde $this->error gibisinden bir metod bulunacak, bu da config'de tanimli error page'i cagiracak. 404 gibi hatalar da bu error'a gelecek.
 * driver extension mantigini bir dusunmek lazim, ayni interfaceleri kullanan bir extension olup yalnizca hangi driver oldugu degisebilir mi diye.
+
+* controller'da private olan metodlara disaridan erisim olmayacak ci'deki '_' gibi.

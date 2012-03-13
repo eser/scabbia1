@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('contracts')) {
 	class contracts {
 		public static function extension_info() {
 			return array(
@@ -18,5 +19,6 @@
 			}
 		}
 	}
+}
 
 ?>

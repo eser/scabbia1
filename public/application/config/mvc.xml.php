@@ -5,6 +5,9 @@
 		<routing
 			defaultController="home" defaultAction="index"
 			notfoundController="home" notfoundAction="notfound"
-			controllerUrlKey="0" actionUrlKey="1" />
+			controllerUrlKey="1" actionUrlKey="2" />
+
+		<view filenames="{name}{device}{language}"
+			/>
 	</mvc>
 </scabbia>

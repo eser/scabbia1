@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('time')) {
 	class time {
 		public static function extension_info() {
 			return array(
@@ -50,5 +51,6 @@
 			return mktime($tDate[3], $tDate[4], $tDate[5], $tDate[1], $tDate[2], $tDate[0]);
 		}
 	}
+}
 
 ?>

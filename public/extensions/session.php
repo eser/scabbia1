@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('session')) {
 	class session {
 		private static $id = null;
 		private static $data = null;
@@ -191,5 +192,6 @@
 			return array_key_exists($uKey, self::$flashdata_loaded);
 		}
 	}
+}
 
 ?>

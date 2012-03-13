@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('output')) {
 	class output {
 		private static $effectList = array();
 
@@ -44,5 +45,6 @@
 			return '';
 		}
 	}
+}
 
 ?>

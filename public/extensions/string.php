@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('string')) {
 	class string {
 		public static function extension_info() {
 			return array(
@@ -12,78 +13,111 @@
 			);
 		}
 
-		public static function filter($uVariable, $uFilter) {
-			switch($uFilter) {
-			case 'int':
-			case 'integer':
-				return intval($uVariable);
-				break;
-			case 'squote':
-				return self::squote($uVariable);
-				break;
-			case 'dquote':
-				return self::dquote($uVariable);
-				break;
-			case 'upper':
-				return self::toUpper($uVariable);
-				break;
-			case 'lower':
-				return self::toLower($uVariable);
-				break;
-			case 'num':
-			case 'number':
-				return number_format($uVariable);
-				break;
-			case 'html':
-				return htmlspecialchars($uVariable);
-				break;
-			}
-			
-			return $uVariable;
-		}
-		
 		public static function format($uString) {
 			$tParms = func_get_args();
 			array_shift($tParms);
 
-			if(is_array($tParms[0])) {
+			if(count($tParms) > 0 && is_array($tParms[0])) {
 				$tParms = $tParms[0];
 			}
 
-			$tBrackets = array('');
+			$tBrackets = array(array(null, ''));
+			$tQuoteChar = false;
 			$tLastItem = 0;
+			$tArrayItem = 1;
 
 			for($tPos = 0, $tLen = strlen($uString);$tPos < $tLen;$tPos++) {
 				if($uString[$tPos] == '\\') {
-					$tBrackets[$tLastItem] .= $uString[++$tPos];
+					$tBrackets[$tLastItem][$tArrayItem] .= $uString[++$tPos];
+					continue;
+				}
+
+				if($tQuoteChar === false && $uString[$tPos] == '{') {
+					$tBrackets[$tLastItem + 1] = array(null, null);
+					$tArrayItem = 1;
 					continue;
 				}
 
 				$tLastItem = count($tBrackets) - 1;
 
-				if($uString[$tPos] == '{') {
-					$tBrackets[$tLastItem + 1] = '';
-					continue;
-				}
-
-				if($uString[$tPos] == '}' && $tLastItem > 0) {
-					$tExploded = explode(':', $tBrackets[$tLastItem]);
-					unset($tBrackets[$tLastItem]);
-
-					$tString = $tParms[$tExploded[count($tExploded) - 1]];
-
-					for($i = 0, $tCount = count($tExploded) - 1;$i < $tCount;$i++) {
-						$tString = self::filter($tString, $tExploded[$i]);
+				if($tLastItem > 0) {
+					if(is_null($tBrackets[$tLastItem][$tArrayItem])) {
+						if($uString[$tPos] == '\'' || $uString[$tPos] == '"') {
+							$tQuoteChar = $uString[$tPos];
+							$tBrackets[$tLastItem][$tArrayItem] = '"';	// quote
+							$tPos++;
+						}
+						else if($uString[$tPos] == '@') {
+							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
+							$tPos++;
+						}
+						else {
+							$tBrackets[$tLastItem][$tArrayItem] = '!';	// dyntext
+						}
 					}
 
-					$tBrackets[$tLastItem - 1] .= $tString;
-					continue;
+					if($tBrackets[$tLastItem][$tArrayItem][0] == '"') {
+						if($tQuoteChar == $uString[$tPos]) {
+							$tQuoteChar = false;
+							continue;
+						}
+
+						if($tQuoteChar !== false) {
+							$tBrackets[$tLastItem][$tArrayItem] .= $uString[$tPos];
+							continue;
+						}
+
+						if($uString[$tPos] != ',' && $uString[$tPos] != '}') {
+							continue;
+						}
+					}
+
+					if($tArrayItem == 1 && $uString[$tPos] == '|' && is_null($tBrackets[$tLastItem][0])) {
+						$tBrackets[$tLastItem][0] = $tBrackets[$tLastItem][1];
+						$tBrackets[$tLastItem][1] = null;
+						continue;
+					}
+
+					if($uString[$tPos] == ',') {
+						$tBrackets[$tLastItem][++$tArrayItem] = null;
+						continue;
+					}
+
+					if($uString[$tPos] == '}') {
+						$tFunc = array_shift($tBrackets[$tLastItem]);
+						foreach($tBrackets[$tLastItem] as &$tItem) {
+							switch($tItem[0]) {
+							case '"':
+								$tItem = substr($tItem, 1);
+								break;
+							case '@':
+								$tItem = $tParms[substr($tItem, 1)];
+								break;
+							case '!':
+								$tItem = constant(substr($tItem, 1));
+								break;
+							}
+						}
+
+						if(!is_null($tFunc)) {
+							$tString = call_user_func_array(substr($tFunc, 1), $tBrackets[$tLastItem]);
+						}
+						else {
+							$tString = implode(', ', $tBrackets[$tLastItem]);
+						}
+
+						$tArrayItem = count($tBrackets[$tLastItem - 1]) - 1;
+						$tBrackets[$tLastItem - 1][$tArrayItem] .= $tString;
+						unset($tBrackets[$tLastItem]);
+
+						continue;
+					}
 				}
 
-				$tBrackets[$tLastItem] .= $uString[$tPos];
+				$tBrackets[$tLastItem][$tArrayItem] .= $uString[$tPos];
 			}
 
-			return $tBrackets[0];
+			return $tBrackets[0][1];
 		}
 
 		public static function vardump($uVariable) {
@@ -382,5 +416,6 @@
 			return $tParsed;
 		}
 	}
+}
 
 ?>

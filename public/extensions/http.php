@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('http')) {
 	class http {
 		private static $platform = null;
 		private static $crawler = null;
@@ -285,8 +286,13 @@
 //				$_GET = array();
 //				return;
 //			}
-			
-			$_GET = explode($uSeperator, $_SERVER['QUERY_STRING']);
+
+			$_GET = array();
+			foreach(explode($uSeperator, $_SERVER['QUERY_STRING']) as $tValue) {
+				if(strlen($tValue) > 0) {
+					$_GET[] = $tValue;
+				}
+			}
 		}
 		
 		public static function parseHeaderString($uString) {
@@ -305,9 +311,11 @@
 		private static function magic_quotes_deslash(&$uItem) {
 			switch(gettype($uItem)) {
 			case 'array':
-				array_walk($uItem, 'magic_quotes_deslash'); break;
+				array_walk($uItem, 'magic_quotes_deslash');
+				break;
 			case 'string':
-				$uItem = stripslashes($uItem); break;
+				$uItem = stripslashes($uItem);
+				break;
 			}
 		}
 		
@@ -338,16 +346,7 @@
 		public static function getLanguages() {
 			return self::$languages;
 		}
-
-//		public static function extension_generateOutput() {
-//			foreach($_COOKIE as $tCookie => &$tValue) {
-//				if($tValue == '') {
-//					setrawcookie($tCookie, urlencode($tValue), time() - 60*60);
-//				} else {
-//					setrawcookie($tCookie, urlencode($tValue), time() + 60*60);
-//				}
-//			}
-//		}
 	}
+}
 
 ?>

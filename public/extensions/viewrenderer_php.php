@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('viewrenderer_php')) {
 	class viewrenderer_php {
 		private static $extension;
 		private static $templatePath;
@@ -40,5 +41,6 @@
 			require($tInputFile);
 		}
 	}
+}
 
 ?>

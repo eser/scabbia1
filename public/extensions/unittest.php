@@ -1,5 +1,6 @@
 <?php
 
+if(Extensions::isSelected('unittest')) {
 	class unittest {
 		private static $stack = array();
 		private static $report = array();
@@ -87,5 +88,6 @@
 			return string::vardump(self::$report);
 		}
 	}
+}
 
 ?>
