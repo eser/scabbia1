@@ -2,8 +2,8 @@
 
 if(Extensions::isSelected('database')) {
 	class database {
-		private static $databases = array();
-		private static $default = null;
+		public static $databases = array();
+		public static $default = null;
 
 		public static function extension_info() {
 			return array(
@@ -19,10 +19,10 @@ if(Extensions::isSelected('database')) {
 		public static function extension_load() {
 			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
 				$tDatabase = new DatabaseConnection($tDatabaseConfig);
-				self::$databases[$tDatabase->id] = &$tDatabase;
+				self::$databases[$tDatabase->id] = $tDatabase;
 
 				if(is_null(self::$default) || $tDatabase->default) {
-					self::$default = &$tDatabase;
+					self::$default = $tDatabase;
 				}
 			}
 		}
@@ -713,6 +713,10 @@ if(Extensions::isSelected('database')) {
 			$this->offset = $uOffset;
 
 			return $this;
+		}
+
+		public function dataset($uDataset) {
+			return $this->database->datasets[$uDataset];
 		}
 
 		public function insert() {

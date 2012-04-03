@@ -89,15 +89,15 @@ if(Extensions::isSelected('html')) {
 			if($tPages > 1) {
 				if($tCurrent <= 1) {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => '1', 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;'));
 				}
 				else {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['link'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
 				}
 
 				if($tStart > 1) {
@@ -110,10 +110,10 @@ if(Extensions::isSelected('html')) {
 
 			for($i = $tStart;$i <= $tEnd;$i++) {
 				if($tCurrent == $i) {
-					$tResult .= string::format($uOptions['activelink'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['activelink'], array('baseurl' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
 				}
 
 				if($i != $tEnd) {
@@ -130,15 +130,15 @@ if(Extensions::isSelected('html')) {
 				}
 
 				if($tCurrent >= $tPages) {
-					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $tPages, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('baseurl' => $_SERVER['PHP_SELF'], 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 			}

@@ -2,8 +2,8 @@
 
 if(Extensions::isSelected('repository')) {
 	class repository {
-		private static $packageKey = null;
-		private static $packages = array();
+		public static $packageKey = null;
+		public static $packages = array();
 
 		public static function extension_info() {
 			return array(
@@ -17,9 +17,7 @@ if(Extensions::isSelected('repository')) {
 		}
 		
 		public static function extension_load() {
-			if(COMPILED) {
-				Events::register('run', Events::Callback('repository::run'));
-			}
+			Events::register('run', Events::Callback('repository::run'));
 
 			foreach(Config::get('/repository/packageList', array()) as $tPackage) {
 				self::$packages[$tPackage['@name']] = array();
@@ -59,10 +57,6 @@ if(Extensions::isSelected('repository')) {
 					throw new Exception('package not found.');
 				}
 			}
-		}
-
-		public static function getPackageKey() {
-			return self::$packageKey;
 		}
 	}
 }

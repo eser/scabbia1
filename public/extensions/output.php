@@ -2,7 +2,7 @@
 
 if(Extensions::isSelected('output')) {
 	class output {
-		private static $effectList = array();
+		public static $effectList = array();
 
 		public static function extension_info() {
 			return array(

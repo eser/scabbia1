@@ -7,7 +7,8 @@
 			notfoundController="home" notfoundAction="notfound"
 			controllerUrlKey="1" actionUrlKey="2" />
 
-		<view filenames="{name}{device}{language}"
+		<view	namePattern="{@controller}_{@action}_{@device}_{@language}{@extension}"
+				defaultExtension=".cshtml"
 			/>
 	</mvc>
 </scabbia>

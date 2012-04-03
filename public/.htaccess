@@ -1,22 +1,35 @@
 DirectoryIndex index.php
 
+AddType video/ogg .ogv
+AddType video/mp4 .mp4
+AddType video/webm .webm
+
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
 
-    #Checks to see if the user is attempting to access a valid file,
-    #such as an image or css document, if this isn't true it sends the
-    #request to index.php
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-	# RewriteCond %{REQUEST_URI} !/favicon\.ico$
-    RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
-</IfModule>
+	Options +FollowSymLinks -Indexes
+	RewriteEngine on
 
-<IfModule !mod_rewrite.c>
-    # If we don't have mod_rewrite installed, all 404's
-    # can be sent to index.php, and everything works as normal.
-    # Submitted by: ElliotHaughin
+	#AllowOverride All
+	#RewriteBase /Scabbia/Framework/path
+	RewriteBase /beta
 
-    ErrorDocument 404 /index.php
+	# Restrict your site to only one domain
+	#RewriteCond %{HTTP_HOST} !^example\.com$
+	#RewriteRule ^(.*)$ http://example.com/$1 [L]
+
+	# Keep people out of framework directory and Git/Mercurial data
+	RedirectMatch 403 ^/(application|extensions|include|\.git|\.hg).*$
+
+	# Send request via index.php (again, not if its a real file or folder)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+	<IfModule mod_php5.c>
+		RewriteRule ^(.*)$ index.php?/$1 [L]
+	</IfModule>
+
+	<IfModule !mod_php5.c>
+		RewriteRule ^(.*)$ index.php?/$1 [L]
+	</IfModule>
+
 </IfModule>

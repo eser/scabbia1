@@ -6,6 +6,7 @@
 		public static $development;
 		public static $debug;
 		public static $siteroot;
+		public static $directCall;
 		
 		public static function translatePath($uPath) {
 			if(substr($uPath, 0, 6) == '{core}') {
@@ -18,21 +19,23 @@
 
 			return $uPath;
 		}
-	
+
 		public static function load() {
 			self::$development = (bool)Config::get('/options/development/@value', '0');
 			self::$debug = (bool)Config::get('/options/debug/@value', '0');
-			self::$siteroot = Config::get('/options/siteroot/@value', null);
+			self::$siteroot = Config::get('/options/siteroot/@value', '');
+			self::$directCall = !COMPILED;
 
-			if(!isset(self::$siteroot)) {
+			if(strlen(self::$siteroot) <= 1) {
 				$tLen = strlen($_SERVER['DOCUMENT_ROOT']);
 				if(substr(QPATH_CORE, 0, $tLen) == $_SERVER['DOCUMENT_ROOT']) {
-					self::$siteroot = rtrim(strtr(substr(QPATH_CORE, $tLen), DIRECTORY_SEPARATOR, '/'), '/');
-				}
-				else {
-					self::$siteroot = '';
+					self::$siteroot = strtr(substr(QPATH_CORE, $tLen), DIRECTORY_SEPARATOR, '/');
 				}
 			}
+			self::$siteroot = rtrim(self::$siteroot, '/');
+
+			// extensions
+			Extensions::init();
 
 			if(!COMPILED) {
 				// downloads
@@ -43,9 +46,6 @@
 				}
 
 				self::downloadFiles();
-
-				// extensions
-				Extensions::init();
 
 				// includes
 				$tIncludes = Config::get('/includeList', array());
@@ -81,23 +81,30 @@
 			ob_implicit_flush(false);
 
 			if(!COMPILED) {
-				foreach(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $tValue) {
-					if(isset($tValue['type']) && $tValue['type'] == 'include') {
-						$tIncluded = true;
+				if(version_compare(PHP_VERSION, '5.3.6', '>=')) {
+					$tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+				}
+				else {
+					$tBacktrace = debug_backtrace(false);
+				}
+
+				foreach($tBacktrace as &$tValue) {
+					if(isset($tValue['function']) && ($tValue['function'] == 'include' || $tValue['function'] == 'require')) {
+						self::$directCall = false;
 					}
 				}
 
 				if(PHP_SAPI_CLI) {
-					$tParameters = implode(' ', array_slice($GLOBALS['argv'], 1));
+					$tParameters = array_slice($_SERVER['argv'], 1);
 				}
 				else {
-					$tParameters = $_SERVER['QUERY_STRING'];
+					$tParameters = $_GET;
 				}
 
-				if(!isset($tIncluded)) {
-					if(self::$development) {
-						if($tParameters == 'build') {
-							self::build('index.php');
+				if(self::$directCall) {
+					if(self::$development && count($tParameters) > 0) {
+						if($tParameters[0] == 'build') {
+							self::build('index.php', !(count($tParameters) >= 2 && $tParameters[1] == 'pseudo'));
 							self::purgeFolder(QPATH_APP . 'temp');
 							self::purgeFolder(QPATH_APP . 'sessions');
 							// self::purgeFolder(QPATH_APP . 'cache');
@@ -106,14 +113,13 @@
 							// self::purgeFolder(QPATH_APP . 'logs');
 
 							echo 'build done.';
-
 							return;
 						}
 					}
+					
+					exit('why?');
 				}
 			}
-
-			Events::invoke('run', array());
 		}
 
 		public static function downloadFiles() {
@@ -138,7 +144,7 @@
 
 		private static function includeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				foreach(glob($tPath, GLOB_MARK|GLOB_NOSORT) as $tFilename) {
+				foreach(glob2($tPath) as $tFilename) {
 					if(substr($tFilename, -1) == '/') {
 						continue;
 					}
@@ -150,7 +156,7 @@
 		
 		private static function printIncludeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				self::printFiles(glob($tPath, GLOB_MARK|GLOB_NOSORT));
+				self::printFiles(glob2($tPath));
 			}
 		}
 
@@ -160,48 +166,73 @@
 					continue;
 				}
 
-				echo php_strip_whitespace($tFilename);
+				$tContent = php_strip_whitespace($tFilename);
+
+				$tOpenTags = 0;
+				foreach(token_get_all($tContent) as $tToken) {
+					if($tToken[0] == T_OPEN_TAG || $tToken[0] == T_OPEN_TAG_WITH_ECHO) {
+						$tOpenTags++;
+					}
+					else if($tToken[0] == T_CLOSE_TAG) {
+						$tOpenTags--;
+					}
+				}
+
+				echo $tContent;
+				for(;$tOpenTags > 0;$tOpenTags--) {
+					echo ' ?', '>';
+				}
 			}
 		}
 
-		public static function build($uFilename) {
+		public static function build($uFilename, $uForce = true) {
 			ob_start();
 			ob_implicit_flush(false);
 
-			/* BEGIN */
-			echo '<', '?php
-				ignore_user_abort();
-				date_default_timezone_set(\'UTC\');
-				setlocale(LC_ALL, \'en_US.UTF-8\');
-				mb_internal_encoding(\'UTF-8\');
-				mb_http_output(\'UTF-8\');
+			if(self::$development && !$uForce) {
+				echo '<', '?php
+	require(\'', QPATH_CORE, 'framework', QEXT_PHP, '\');
+	Extensions::run();
+?', '>';
+			}
+			else {
+				/* BEGIN */
+				echo '<', '?php
+	ignore_user_abort();
+	date_default_timezone_set(\'UTC\');
+	setlocale(LC_ALL, \'en_US.UTF-8\');
+	mb_internal_encoding(\'UTF-8\');
+	mb_http_output(\'UTF-8\');
 
-				define(\'PHP_OS_WINDOWS\', ', var_export(PHP_OS_WINDOWS), ');
-				define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
-				define(\'QPATH_CORE\', ', var_export(QPATH_CORE), ');
-				define(\'QPATH_APP\', ', var_export(QPATH_APP), ');
-				define(\'QTIME_INIT\', microtime(true));
-				define(\'QEXT_PHP\', ', var_export(QEXT_PHP), ');
+	define(\'PHP_OS_WINDOWS\', ', var_export(PHP_OS_WINDOWS), ');
+	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
+	define(\'QPATH_CORE\', ', var_export(QPATH_CORE), ');
+	define(\'QPATH_APP\', ', var_export(QPATH_APP), ');
+	define(\'QTIME_INIT\', microtime(true));
+	define(\'QEXT_PHP\', ', var_export(QEXT_PHP), ');
 
-				define(\'SCABBIA_VERSION\', ', var_export(SCABBIA_VERSION), ');
-				define(\'INCLUDED\', ', var_export(INCLUDED), ');
-				define(\'COMPILED\', true);
+	define(\'SCABBIA_VERSION\', ', var_export(SCABBIA_VERSION), ');
+	define(\'INCLUDED\', ', var_export(INCLUDED), ');
+	define(\'COMPILED\', true);
 
-				define(\'OUTPUT_NOHANDLER\', ', var_export(OUTPUT_NOHANDLER), ');
-				define(\'OUTPUT_GZIP\', ', var_export(OUTPUT_GZIP), ');
-				define(\'OUTPUT_MULTIBYTE\', ', var_export(OUTPUT_MULTIBYTE), ');
-			?', '>';
+	define(\'OUTPUT_NOHANDLER\', ', var_export(OUTPUT_NOHANDLER), ');
+	define(\'OUTPUT_GZIP\', ', var_export(OUTPUT_GZIP), ');
+	define(\'OUTPUT_MULTIBYTE\', ', var_export(OUTPUT_MULTIBYTE), ');
+?', '>';
 
-			echo php_strip_whitespace(QPATH_CORE . 'include/patches.main' . QEXT_PHP);
-			echo php_strip_whitespace(QPATH_CORE . 'include/config.main' . QEXT_PHP);
-			echo php_strip_whitespace(QPATH_CORE . 'include/events.main' . QEXT_PHP);
-			echo php_strip_whitespace(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
-			echo php_strip_whitespace(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'include/patches.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'include/config.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'include/events.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
 
-			self::printIncludeFilesFromConfig();
+				echo '<', '?php Config::set(', Config::export(), '); Framework::load(); ?', '>';
 
-			echo '<', '?php Config::set(', Config::export(), '); Framework::load(); Extensions::load(); Framework::run(); ?', '>';
-			/* END   */
+				self::printIncludeFilesFromConfig();
+
+				echo '<', '?php Extensions::load(); Framework::run(); Extensions::run(); ?', '>';
+				/* END   */
+			}
 
 			$tContents = ob_get_contents();
 			ob_end_clean();
@@ -212,7 +243,7 @@
 		}
 
 		public static function purgeFolder($uFolder) {
-			foreach(glob($uFolder . '/*', GLOB_MARK|GLOB_NOSORT) as $tFilename) {
+			foreach(glob2($uFolder . '/*') as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

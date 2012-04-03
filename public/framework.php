@@ -48,6 +48,8 @@
 	Config::load();
 	Framework::load();
 	Extensions::load();
+
 	Framework::run();
+	// Extensions::run();
 
 ?>

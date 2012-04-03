@@ -2,10 +2,10 @@
 
 if(Extensions::isSelected('viewrenderer_phptal')) {
 	class viewrenderer_phptal {
-		private static $renderer = null;
-		private static $extension;
-		private static $templatePath;
-		private static $compiledPath;
+		public static $renderer = null;
+		public static $extension;
+		public static $templatePath;
+		public static $compiledPath;
 
 		public static function extension_info() {
 			return array(
@@ -21,7 +21,7 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_phptal::renderview'));
 
-			self::$extension = Config::get('/phptal/templates/@extension', 'zpt');
+			self::$extension = Config::get('/phptal/templates/@extension', '.zpt');
 			self::$templatePath = QPATH_APP . Config::get('/phptal/templates/@templatePath', 'views');
 			self::$compiledPath = QPATH_APP . Config::get('/phptal/templates/@compiledPath', 'views/compiled');
 		}
@@ -63,7 +63,7 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			self::$renderer->setPhpCodeDestination(self::$compiledPath . '/');
 			self::$renderer->setOutputMode(PHPTAL::HTML5);
 			self::$renderer->setEncoding('UTF-8');
-			self::$renderer->setTemplate($uObject['viewFile'] . '.' . $uObject['viewExtension']);
+			self::$renderer->setTemplate($uObject['viewFile']);
 			self::$renderer->echoExecute();
 		}
 	}

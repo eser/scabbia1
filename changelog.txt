@@ -1,3 +1,10 @@
+Commit 9
+* [access extension] access extension is added.
+* [validation extension] validation extension is added.
+* [fb extension] fb extension is added.
+* major bug fix release.
+
+
 Commit 8
 * [i8n extension] i8n extension is added.
 * [string extension] string.format is improved.

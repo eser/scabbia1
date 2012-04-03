@@ -2,7 +2,7 @@
 
 if(Extensions::isSelected('stopwatch')) {
 	class stopwatch {
-		private static $markers = array();
+		public static $markers = array();
 
 		public static function extension_info() {
 			return array(
@@ -32,10 +32,6 @@ if(Extensions::isSelected('stopwatch')) {
 
 		public static function set($uName, $uTime) {
 			self::$markers[$uName] = $uTime;
-		}
-
-		public static function getlist() {
-			return self::$markers;
 		}
 	}
 }

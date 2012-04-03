@@ -13,6 +13,7 @@
 			<!-- <download filename="stopwatch2.php" url="http://localhost/blackmorep/res/stopwatch2.txt" /> -->
 		</downloadList>
 		<includeList>
+			<include path="{core}include/3rdparty/facebook-php-sdk-3.1.1/src/base_facebook.php" />
 			<include path="{core}extensions/*.php" />
 			<include path="{app}downloaded/*.php" />
 			<include path="{app}controllers/*.php" />
@@ -23,17 +24,19 @@
 			<extension name="string" />
 			<extension name="io" />
 			<extension name="http" />
+			<extension name="access" />
 			<extension name="time" />
 			<extension name="collections" />
 			<extension name="contracts" />
+			<extension name="validation" />
 			<extension name="unittest" />
 			<extension name="database" />
 			<extension name="session" />
 			<extension name="output" />
 			<extension name="repository" />
+			<extension name="i8n" />
 			<extension name="mvc" />
 			<extension name="logger" />
-			<extension name="i8n" />
 			<extension name="html" />
 			<extension name="viewrenderer_razor" />
 			<extension name="viewrenderer_markdown" />
@@ -45,6 +48,7 @@
 			<extension name="viewrenderer_twig" />
 -->
 			<extension name="stopwatch" />
+			<extension name="fb" />
 		</extensionList>
 
 		<i8n>
@@ -59,7 +63,7 @@
 
 		<logger
 			filename="{date|'d-m-Y'} {@category}.txt"
-			line="[{date|'d-m-Y H:i:s'}] {strtoupper|@category}| {@message}"
+			line="[{date|'d-m-Y H:i:s'}] {strtoupper|@category} | {@ip} | {@message}"
 			/>
 	</scope>
 </scabbia>

@@ -2,13 +2,14 @@
 
 if(Extensions::isSelected('http')) {
 	class http {
-		private static $platform = null;
-		private static $crawler = null;
-		private static $isAjax = false;
-		private static $isBrowser = false;
-		private static $isRobot = false;
-		private static $isMobile = false;
-		private static $languages = array();
+		public static $platform = null;
+		public static $crawler = null;
+		public static $crawlerType = null;
+		public static $isAjax = false;
+		public static $isBrowser = false;
+		public static $isRobot = false;
+		public static $isMobile = false;
+		public static $languages = array();
 
 		public static function extension_info() {
 			return array(
@@ -64,18 +65,20 @@ if(Extensions::isSelected('http')) {
 			$_SERVER['PHP_SELF'] = str_replace(array('<', '>'), array('%3C', '%3E'), $_SERVER['PHP_SELF']);
 			$_SERVER['QUERY_STRING'] = self::xss($_SERVER['QUERY_STRING']);
 
-			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				$tReturn = preg_replace('|^' . $tRewriteList['@match'] . '$|', $tRewriteList['@forward'], $_SERVER['QUERY_STRING'], -1, $tCount);
-				if($tCount > 0) {
-					$_SERVER['QUERY_STRING'] = $tReturn;
-					break;
-				}
+			$tPos = strpos($_SERVER['REQUEST_URI'], '?');
+			if($tPos === false) {
+				$_SERVER['REQUEST_PATH'] = $_SERVER['REQUEST_URI'];
+			}
+			else {
+				$_SERVER['REQUEST_PATH'] = substr($_SERVER['REQUEST_URI'], 0, $tPos);
 			}
 
-			$_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'];
-
-			if(strlen($_SERVER['QUERY_STRING']) > 0) {
-				$_SERVER['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
+			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
+				$tReturn = preg_replace('|^' . $tRewriteList['@match'] . '$|', $tRewriteList['@forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
+				if($tCount > 0) {
+					$_SERVER['REQUEST_URI'] = $tReturn;
+					break;
+				}
 			}
 
 			if(strlen($_SERVER['HTTP_HOST']) == 0) {
@@ -100,6 +103,7 @@ if(Extensions::isSelected('http')) {
 			foreach(config::get('/http/userAgents/crawlerList', array()) as $tCrawlerList) {
 				if(preg_match('/' . $tCrawlerList['@match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 					self::$crawler = $tCrawlerList['@name'];
+					self::$crawlerType = $tCrawlerList['@type'];
 					
 					switch($tCrawlerList['@type']) {
 					case 'bot':
@@ -132,10 +136,13 @@ if(Extensions::isSelected('http')) {
 				}
 			}
 			else if($tParsingType == '2') {
-				self::parseGetType2();
+				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
+				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
+
+				self::parseGetType2($tDefaultParameter, $tDefaultKey);
 				$tGetProcessed = true;
 			}
-
+			
 			if(get_magic_quotes_gpc()) {
 				if(!isset($tGetProcessed)) {
 					array_walk($_GET, array('http', 'magic_quotes_deslash'));
@@ -277,24 +284,18 @@ if(Extensions::isSelected('http')) {
 			setrawcookie($uCookie, self::encode($uValue), $uExpire);
 		}
 		
-		public static function parseGetType1($uParameters = '&', $uKeys = '=') {
-			$_GET = string::parseQueryString($_SERVER['QUERY_STRING'], $uParameters, $uKeys);
+		public static function parseGetType1($uParameters = '?&', $uKeys = '=') {
+			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(Framework::$siteroot));
+			$tUri = $_SERVER['QUERY_STRING'];
+			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys);
 		}
 
-		public static function parseGetType2($uSeperator = '/') {
-//			if(strlen($_SERVER['QUERY_STRING']) == 0) {
-//				$_GET = array();
-//				return;
-//			}
-
-			$_GET = array();
-			foreach(explode($uSeperator, $_SERVER['QUERY_STRING']) as $tValue) {
-				if(strlen($tValue) > 0) {
-					$_GET[] = $tValue;
-				}
-			}
+		public static function parseGetType2($uParameters = '?&', $uKeys = '=', $uSeperator = '/') {
+			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(Framework::$siteroot));
+			$tUri = $_SERVER['QUERY_STRING'];
+			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys, $uSeperator);
 		}
-		
+
 		public static function parseHeaderString($uString) {
 			$tResult = array();
 
@@ -317,34 +318,6 @@ if(Extensions::isSelected('http')) {
 				$uItem = stripslashes($uItem);
 				break;
 			}
-		}
-		
-		public static function getPlatform() {
-			return self::$platform;
-		}
-
-		public static function getCrawler() {
-			return self::$crawler;
-		}
-
-		public static function getIsAjax() {
-			return self::$isAjax;
-		}
-
-		public static function getIsBrowser() {
-			return self::$isBrowser;
-		}
-
-		public static function getIsRobot() {
-			return self::$isRobot;
-		}
-
-		public static function getIsMobile() {
-			return self::$isMobile;
-		}
-
-		public static function getLanguages() {
-			return self::$languages;
 		}
 	}
 }

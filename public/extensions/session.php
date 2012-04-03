@@ -2,14 +2,14 @@
 
 if(Extensions::isSelected('session')) {
 	class session {
-		private static $id = null;
-		private static $data = null;
-		private static $flashdata_loaded = null;
-		private static $flashdata_next = array();
-		private static $sessionName;
-		private static $sessionLife;
-		private static $isModified = false;
-		private static $keyphase = null;
+		public static $id = null;
+		public static $data = null;
+		public static $flashdata_loaded = null;
+		public static $flashdata_next = array();
+		public static $sessionName;
+		public static $sessionLife;
+		public static $isModified = false;
+		public static $keyphase = null;
 
 		public static function extension_info() {
 			return array(
@@ -143,6 +143,15 @@ if(Extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		public static function remove($uKey) {
+			if(is_null(self::$data)) {
+				self::open();
+			}
+
+			unset(self::$data[$uKey]);
+			self::$isModified = true;
+		}
+
 		public static function exists($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -166,6 +175,11 @@ if(Extensions::isSelected('session')) {
 
 		public static function setFlash($uKey, $uValue) {
 			self::$flashdata_next[$uKey] = $uValue;
+			self::$isModified = true;
+		}
+
+		public static function removeFlash($uKey, $uValue) {
+			unset(self::$flashdata_next[$uKey]);
 			self::$isModified = true;
 		}
 

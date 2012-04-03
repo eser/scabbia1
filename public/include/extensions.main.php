@@ -17,7 +17,11 @@
 				self::add($tExtensionName);
 			}
 		}
-		
+
+		public static function run() {
+			Events::invoke('run', array());
+		}
+
 		public static function add($uExtensionName) {
 			if(in_array($uExtensionName, self::$loaded)) {
 				return true;

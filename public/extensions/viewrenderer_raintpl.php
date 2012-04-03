@@ -2,10 +2,10 @@
 
 if(Extensions::isSelected('viewrenderer_raintpl')) {
 	class viewrenderer_raintpl {
-		private static $renderer = null;
-		private static $extension;
-		private static $templatePath;
-		private static $compiledPath;
+		public static $renderer = null;
+		public static $extension;
+		public static $templatePath;
+		public static $compiledPath;
 
 		public static function extension_info() {
 			return array(
@@ -21,7 +21,7 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_raintpl::renderview'));
 
-			self::$extension = Config::get('/raintpl/templates/@extension', 'rain');
+			self::$extension = Config::get('/raintpl/templates/@extension', '.rain');
 			self::$templatePath = QPATH_APP . Config::get('/raintpl/templates/@templatePath', 'views');
 			self::$compiledPath = QPATH_APP . Config::get('/raintpl/templates/@compiledPath', 'views/compiled');
 		}
@@ -59,7 +59,7 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 				self::$renderer->assign($tKey, $tValue);
 			}
 
-			self::$renderer->draw($uObject['viewFile']); //  . '.' . $uObject['viewExtension']
+			self::$renderer->draw($uObject['viewFile']);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 	class docs extends Controller {
 		public function index() {
-			$this->loadview('docs_index.md');
+			$this->loadview(null, 'docs_index.md');
 		}
 	}
 

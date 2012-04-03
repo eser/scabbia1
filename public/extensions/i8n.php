@@ -2,7 +2,7 @@
 
 if(Extensions::isSelected('i8n')) {
 	class i8n {
-		private static $languages = array();
+		public static $languages = array();
 		public static $language = null;
 
 		public static function extension_info() {
@@ -19,26 +19,31 @@ if(Extensions::isSelected('i8n')) {
 		public static function extension_load() {
 			foreach(Config::get('/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['@id']] = array(
+					'key' => $tLanguage['@id'],
 					'name' => $tLanguage['.']
 				);
 			}
 
-			$tLanguageKey = Config::get('/i8n/routing/@languageUrlKey', 'lang');
+			$tLanguageKey = Config::get('/i8n/routing/@languageUrlKey', null);
 
-			if(array_key_exists($tLanguageKey, $_GET)) {
-				if(self::setLanguage($_GET[$tLanguageKey], true)) {
-					return;
+			if(!is_null($tLanguageKey)) {
+				if(array_key_exists($tLanguageKey, $_GET)) {
+					if(self::setLanguage($_GET[$tLanguageKey], true)) {
+						return;
+					}
 				}
 			}
 
-			foreach(http::getLanguages() as $tLanguage) {
+			if(!PHP_SAPI_CLI) {
+				foreach(http::$languages as $tLanguage) {
+					if(self::setLanguage($tLanguage, false)) {
+						return;
+					}
+				}
+			}
+
+			foreach(array_keys(self::$languages) as $tLanguage) {
 				if(self::setLanguage($tLanguage, false)) {
-					return;
-				}
-			}
-
-			if(count(self::$languages) > 0) {
-				if(self::setLanguage(self::$languages[0], false)) {
 					return;
 				}
 			}

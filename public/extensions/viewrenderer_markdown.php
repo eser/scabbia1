@@ -2,10 +2,10 @@
 
 if(Extensions::isSelected('viewrenderer_markdown')) {
 	class viewrenderer_markdown {
-		private static $renderer = null;
-		private static $extension;
-		private static $templatePath;
-		private static $compiledPath;
+		public static $renderer = null;
+		public static $extension;
+		public static $templatePath;
+		public static $compiledPath;
 
 		public static function extension_info() {
 			return array(
@@ -21,7 +21,7 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_markdown::renderview'));
 
-			self::$extension = Config::get('/markdown/templates/@extension', 'md');
+			self::$extension = Config::get('/markdown/templates/@extension', '.md');
 			self::$templatePath = QPATH_APP . Config::get('/markdown/templates/@templatePath', 'views');
 			self::$compiledPath = QPATH_APP . Config::get('/markdown/templates/@compiledPath', 'views/compiled');
 		}
@@ -31,7 +31,7 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 				return;
 			}
 
-			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'] . '.' . $uObject['viewExtension'];
+			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 			$tOutputFile = self::$compiledPath . '/md_' . $uObject['viewFile']; // . QEXT_PHP
 
 			if(!file_exists($tOutputFile)) {

@@ -112,3 +112,12 @@ input.text {
 .pagerlink_active {
 	font-weight: bold;
 }
+
+div.nav {
+	margin: 0px 0px 40px 0px;
+}
+
+div.nav a {
+	text-decoration: none;
+	color: maroon;
+}

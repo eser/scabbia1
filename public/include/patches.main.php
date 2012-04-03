@@ -4,10 +4,7 @@
 		for($tBrackets = 0, $tPregPattern = '', $tCount = 0, $tLen = strlen($uPattern); $tCount < $tLen; $tCount++) {
 			$tChar = $uPattern[$tCount];
 
-			if(strpbrk($tChar, '\\')) {
-				$tPregPattern .= '\\' . @$uPattern[++$tCount];
-			}
-			else if(strpbrk($tChar, '-+^$=!.|(){}<>')) {
+			if(strpbrk($tChar, '\\/-+^$=!.|(){}<>')) {
 				$tPregPattern .= '\\' . $tChar;
 			}
 			else if(strpbrk($tChar, '?*')) {
@@ -33,6 +30,29 @@
 		}
 
 		return preg_match('/' . $tPregPattern . '/i', $uString);
+	} }
+
+	if(!function_exists('glob2')) { function glob2($uPattern) {
+		$tPath = pathinfo($uPattern, PATHINFO_DIRNAME);
+
+		if(($tDir = opendir($tPath)) !== false) {
+			$tGlob = array();
+			while(($tFile = readdir($tDir)) !== false) {
+				if($tFile == '.' || $tFile == '..') {
+					continue;
+				}
+				$tFile2 = $tPath . '/' . $tFile;
+
+				if(fnmatch($uPattern, $tFile2)) {
+					$tGlob[] = $tFile2;
+				}
+			}
+			closedir($tDir);
+
+			return $tGlob;
+		}
+
+		return false;
 	} }
 
 ?>

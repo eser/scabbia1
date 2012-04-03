@@ -2,25 +2,17 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<http>
-		<request parsingType="2" getParameters="," getKeys=":" />
+		<request parsingType="2" getParameters="?&amp;" getKeys="=" /> <!-- getParameters="," getKeys=":" -->
 		
 		<rewriteList>
 			<rewrite match="(\w+)/contacts" forward="home/mvc/$1/why" />
 		</rewriteList>
 
-		<ipFilterList>
-			<ipFilter type="deny" pattern="127.0.0.?" />
-			<ipFilter type="allow" pattern="*.*.*.*" />
-		</ipFilterList>
-
 		<userAgents>
 			<platformList>
 				<platform match="windows|winnt|win95|win98" name="Windows" />
 				<platform match="os x|ppc mac|ppc" name="MacOS" />
-				<platform match="freebsd" name="FreeBSD" />
-				<platform match="linux|debian|gnu" name="Linux" />
-				<platform match="sunos" name="Solaris" />
-				<platform match="irix|netbsd|openbsd|bsdi|unix" name="Unix" />
+				<platform match="irix|netbsd|freebsd|openbsd|bsdi|unix|sunos|linux|debian|gnu" name="Unix" />
 			</platformList>
 
 			<crawlerList>
@@ -57,4 +49,14 @@
 	<session>
 		<cookie name="sessid" life="0" ipCheck="0" uaCheck="1" keyphase="test" />
 	</session>
+
+	<access>
+		<maintenance mode="0" page="{app}static/maintenance.htm" />
+		<ipFilter page="{app}static/ipban.htm" />
+
+		<ipFilterList>
+			<ipFilter type="deny" pattern="127.0.0.?" />
+			<ipFilter type="allow" pattern="*.*.*.*" />
+		</ipFilterList>
+	</access>
 </scabbia>

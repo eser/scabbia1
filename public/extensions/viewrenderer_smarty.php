@@ -2,10 +2,10 @@
 
 if(Extensions::isSelected('viewrenderer_smarty')) {
 	class viewrenderer_smarty {
-		private static $renderer = null;
-		private static $extension;
-		private static $templatePath;
-		private static $compiledPath;
+		public static $renderer = null;
+		public static $extension;
+		public static $templatePath;
+		public static $compiledPath;
 
 		public static function extension_info() {
 			return array(
@@ -21,7 +21,7 @@ if(Extensions::isSelected('viewrenderer_smarty')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_smarty::renderview'));
 
-			self::$extension = Config::get('/smarty/templates/@extension', 'tpl');
+			self::$extension = Config::get('/smarty/templates/@extension', '.tpl');
 			self::$templatePath = QPATH_APP . Config::get('/smarty/templates/@templatePath', 'views');
 			self::$compiledPath = QPATH_APP . Config::get('/smarty/templates/@compiledPath', 'views/compiled');
 		}
@@ -57,7 +57,7 @@ if(Extensions::isSelected('viewrenderer_smarty')) {
 				self::$renderer->assignByRef($tKey, $tValue);
 			}
 
-			self::$renderer->display($uObject['viewFile'] . '.' . $uObject['viewExtension']);
+			self::$renderer->display($uObject['viewFile']);
 		}
 	}
 }

@@ -2,8 +2,8 @@
 
 if(Extensions::isSelected('viewrenderer_php')) {
 	class viewrenderer_php {
-		private static $extension;
-		private static $templatePath;
+		public static $extension;
+		public static $templatePath;
 
 		public static function extension_info() {
 			return array(
@@ -19,7 +19,7 @@ if(Extensions::isSelected('viewrenderer_php')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_php::renderview'));
 
-			self::$extension = Config::get('/php/templates/@extension', 'php');
+			self::$extension = Config::get('/php/templates/@extension', '.php');
 			self::$templatePath = QPATH_APP . Config::get('/php/templates/@templatePath', 'views');
 		}
 
@@ -28,7 +28,7 @@ if(Extensions::isSelected('viewrenderer_php')) {
 				return;
 			}
 
-			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'] . '.' . $uObject['viewExtension'];
+			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 
 			// variable extraction
 			$model = &$uObject['model'];

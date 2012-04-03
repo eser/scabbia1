@@ -12,13 +12,21 @@ if(Extensions::isSelected('string')) {
 				'fwdepends' => array()
 			);
 		}
+		
+		public static function coalesce() {
+			foreach(func_get_args() as $tValue) {
+				if(!is_null($tValue)) {
+					return $tValue;
+				}
+			}
+		}
 
 		public static function format($uString) {
-			$tParms = func_get_args();
-			array_shift($tParms);
+			$uArgs = func_get_args();
+			array_shift($uArgs);
 
-			if(count($tParms) > 0 && is_array($tParms[0])) {
-				$tParms = $tParms[0];
+			if(count($uArgs) > 0 && is_array($uArgs[0])) {
+				$uArgs = $uArgs[0];
 			}
 
 			$tBrackets = array(array(null, ''));
@@ -33,18 +41,21 @@ if(Extensions::isSelected('string')) {
 				}
 
 				if($tQuoteChar === false && $uString[$tPos] == '{') {
-					$tBrackets[$tLastItem + 1] = array(null, null);
+					$tLastItem++;
+					$tBrackets[$tLastItem] = array(null, null);
 					$tArrayItem = 1;
 					continue;
 				}
-
-				$tLastItem = count($tBrackets) - 1;
 
 				if($tLastItem > 0) {
 					if(is_null($tBrackets[$tLastItem][$tArrayItem])) {
 						if($uString[$tPos] == '\'' || $uString[$tPos] == '"') {
 							$tQuoteChar = $uString[$tPos];
-							$tBrackets[$tLastItem][$tArrayItem] = '"';	// quote
+							$tBrackets[$tLastItem][$tArrayItem] = '"';	// static text
+							$tPos++;
+						}
+						else if($uString[$tPos] == '!') {
+							$tBrackets[$tLastItem][$tArrayItem] = '!';	// dynamic text
 							$tPos++;
 						}
 						else if($uString[$tPos] == '@') {
@@ -52,7 +63,7 @@ if(Extensions::isSelected('string')) {
 							$tPos++;
 						}
 						else {
-							$tBrackets[$tLastItem][$tArrayItem] = '!';	// dyntext
+							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
 						}
 					}
 
@@ -91,7 +102,7 @@ if(Extensions::isSelected('string')) {
 								$tItem = substr($tItem, 1);
 								break;
 							case '@':
-								$tItem = $tParms[substr($tItem, 1)];
+								$tItem = $uArgs[substr($tItem, 1)];
 								break;
 							case '!':
 								$tItem = constant(substr($tItem, 1));
@@ -109,6 +120,7 @@ if(Extensions::isSelected('string')) {
 						$tArrayItem = count($tBrackets[$tLastItem - 1]) - 1;
 						$tBrackets[$tLastItem - 1][$tArrayItem] .= $tString;
 						unset($tBrackets[$tLastItem]);
+						$tLastItem--;
 
 						continue;
 					}
@@ -401,20 +413,71 @@ if(Extensions::isSelected('string')) {
 			return $tOutput;
 		}
 
-		public static function parseQueryString($uString, $uParameters = '&', $uKeys = '=') {
-			$tParsed = array();
+			public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
+				$tParsed = array();
+				$tStrings = array('', '');
+				$tStrIndex = 0;
 
-			foreach(explode($uParameters, $uString) as $tParameter) {
-				$tParameters = explode($uKeys, trim($tParameter), 2);
-				if($tParameters[0] == '') {
-					continue;
+				$tPos = 0;
+				$tLen = strlen($uString);
+
+				if(!is_null($uSeperator)) {
+					for(;$tPos < $tLen;$tPos++) {
+						if(strpos($uSeperator, $uString[$tPos]) !== false) {
+							if(strlen($tStrings[1]) > 0) {
+								$tParsed[] = $tStrings[1];
+							}
+
+							$tStrings = array('', '');
+							continue;
+						}
+
+						if(strpos($uParameters, $uString[$tPos]) !== false) {
+							break;
+						}
+
+						$tStrings[1] .= $uString[$tPos];
+					}
 				}
 
-				$tParsed[$tParameters[0]] = (isset($tParameters[1])) ? $tParameters[1] : '';
-			}
+				if(strlen($tStrings[1]) > 0) {
+					if(strlen($tStrings[1]) > 0) {
+						$tParsed[] = $tStrings[1];
+					}
 
-			return $tParsed;
-		}
+					$tStrings = array('', '');
+				}
+
+				for(;$tPos < $tLen;$tPos++) {
+					if(strpos($uParameters, $uString[$tPos]) !== false) {
+						if(strlen($tStrings[0]) > 0) {
+							$tParsed[$tStrings[0]] = $tStrings[1];
+							$tStrIndex = 0;
+						}
+
+						$tStrings = array('', '');
+						continue;
+					}
+
+					if(strpos($uKeys, $uString[$tPos]) !== false && $tStrIndex < 1) {
+						$tStrIndex++;
+						continue;
+					}
+
+					$tStrings[$tStrIndex] .= $uString[$tPos];
+				}
+
+				if(strlen($tStrings[0]) > 0) {
+					if(strlen($tStrings[0]) > 0) {
+						$tParsed[$tStrings[0]] = $tStrings[1];
+						$tStrIndex = 0;
+					}
+
+					$tStrings = array('', '');
+				}
+
+				return $tParsed;
+			}
 	}
 }
 

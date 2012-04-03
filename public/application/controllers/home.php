@@ -15,7 +15,7 @@
 				'title' => 'Login'
 			);
 
-			$this->loadview('home_login.cshtml', $tViewbag);
+			$this->loadview($tViewbag, 'home_login.cshtml');
 		}
 
 		public function login_post() {
@@ -76,7 +76,7 @@
 				'rowFunc' => Events::Callback('home::tableRow')
 			));
 
-			$this->loadview('home_index.cshtml', $tViewbag);
+			$this->loadview($tViewbag, 'home_index.cshtml');
 		}
 		
 		public function error($uMsg) {
@@ -85,11 +85,11 @@
 				'message' => $uMsg
 			);
 
-			$this->loadview('shared_error.cshtml', $tViewbag);
+			$this->loadview($tViewbag, 'shared_error.cshtml');
 		}
 		
 		public function notfound() {
-			return $this->error('404 not found!');
+			return $this->error(string::format('404 not found! {@0}/{@1}', mvc::$controller, mvc::$action));
 		}
 
 		public static function tableRow($uRow) {

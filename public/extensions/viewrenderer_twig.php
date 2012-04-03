@@ -2,11 +2,11 @@
 
 if(Extensions::isSelected('viewrenderer_twig')) {
 	class viewrenderer_twig {
-		private static $loader = null;
-		private static $renderer = null;
-		private static $extension;
-		private static $templatePath;
-		private static $compiledPath;
+		public static $loader = null;
+		public static $renderer = null;
+		public static $extension;
+		public static $templatePath;
+		public static $compiledPath;
 
 		public static function extension_info() {
 			return array(
@@ -22,7 +22,7 @@ if(Extensions::isSelected('viewrenderer_twig')) {
 		public static function extension_load() {
 			Events::register('renderview', Events::Callback('viewrenderer_twig::renderview'));
 
-			self::$extension = Config::get('/twig/templates/@extension', 'twig');
+			self::$extension = Config::get('/twig/templates/@extension', '.twig');
 			self::$templatePath = QPATH_APP . Config::get('/twig/templates/@templatePath', 'views');
 			self::$compiledPath = QPATH_APP . Config::get('/twig/templates/@compiledPath', 'views/compiled');
 		}
@@ -43,7 +43,7 @@ if(Extensions::isSelected('viewrenderer_twig')) {
 				));
 			}
 			
-			echo self::$renderer->render($uObject['viewFile'] . '.' . $uObject['viewExtension'], array_combine($uObject['model'], $uObject['extra']));
+			echo self::$renderer->render($uObject['viewFile'], array_combine($uObject['model'], $uObject['extra']));
 		}
 	}
 }

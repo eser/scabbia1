@@ -2,11 +2,11 @@
 
 if(Extensions::isSelected('mvc')) {
 	class mvc {
-		private static $controller = null;
-		private static $controllerActual = null;
-		private static $controllerClass = null;
-		private static $action = null;
-		private static $actionActual = null;
+		public static $controller = null;
+		public static $controllerActual = null;
+		public static $controllerClass = null;
+		public static $action = null;
+		public static $actionActual = null;
 
 		public static function extension_info() {
 			return array(
@@ -15,14 +15,12 @@ if(Extensions::isSelected('mvc')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'http', 'database')
+				'fwdepends' => array('string', 'http', 'i8n', 'database')
 			);
 		}
 		
 		public static function extension_load() {
-			if(COMPILED) {
-				Events::register('run', Events::Callback('mvc::run'));
-			}
+			Events::register('run', Events::Callback('mvc::run'));
 		}
 
 		public static function run() {
@@ -65,7 +63,15 @@ if(Extensions::isSelected('mvc')) {
 				'actionActual' => &self::$actionActual
 			));
 
-			if(!method_exists(self::$controllerActual, self::$actionActual)) { // !class_exist(self::$controller) || 
+			try {
+				$tReflectionMethod = new ReflectionMethod(self::$controllerActual, self::$actionActual);
+
+				if(!$tReflectionMethod->isPublic()) {
+					self::$controllerActual = $tNotfoundController;
+					self::$actionActual = $tNotfoundAction;
+				}
+			}
+			catch(ReflectionException $ex) {
 				self::$controllerActual = $tNotfoundController;
 				self::$actionActual = $tNotfoundAction;
 			}
@@ -75,22 +81,6 @@ if(Extensions::isSelected('mvc')) {
 
 			// to interrupt event-chain execution
 			return false;
-		}
-
-		public static function getController() {
-			return self::$controller;
-		}
-
-		public static function getControllerActual() {
-			return self::$controllerActual;
-		}
-
-		public static function getAction() {
-			return self::$action;
-		}
-
-		public static function getActionActual() {
-			return self::$actionActual;
 		}
 	}
 	
@@ -112,9 +102,6 @@ if(Extensions::isSelected('mvc')) {
 	}
 
 	abstract class Controller {
-		protected $device = '';
-		protected $language = '';
-
 		public function loadmodel($uModelClass, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uModelClass;
@@ -123,16 +110,28 @@ if(Extensions::isSelected('mvc')) {
 			$this->{$uMemberName} = new $uModelClass ($this);
 		}
 
-		public function loadview($uViewFile, $uModel = null) {
-			$tViewFile = pathinfo($uViewFile, PATHINFO_FILENAME);
-			$tViewExtension = pathinfo($uViewFile, PATHINFO_EXTENSION);
+		public function loadview() {
+			$tViewNamePattern = Config::get('/mvc/view/@namePattern', '{@name}_{@device}_{@language}{@extension}');
+			$tViewDefaultExtension = Config::get('/mvc/view/@defaultExtension', QEXT_PHP);
+		
+			$uArgs = func_get_args();
+			$uModel = isset($uArgs[0]) ? $uArgs[0] : null;
 
-			if(strlen($this->device) > 0) {
-				$tViewFile .= '.' . $this->device;
+			if(count($uArgs) == 2) {
+				$tViewFile = $uArgs[1];
+				$tViewExtension = '.' . pathinfo($tViewFile, PATHINFO_EXTENSION);
 			}
+			else {
+				$tViewParameters = array(
+					'controller' => isset($uArgs[1]) ? $uArgs[1] : mvc::$controller,
+					'action' => isset($uArgs[2]) ? $uArgs[2] : mvc::$action,
+					'device' => isset($uArgs[3]) ? $uArgs[3] : http::$crawlerType,
+					'language' => isset($uArgs[4]) ? $uArgs[4] : (!is_null(i8n::$language) ? i8n::$language['key'] : null),
+					'extension' => isset($uArgs[5]) ? $uArgs[5] : $tViewDefaultExtension
+				);
 
-			if(strlen($this->language) > 0) {
-				$tViewFile .= '.' . $this->language;
+				$tViewFile = string::format('{@controller}_{@action}_{@device}_{@language}{@extension}', $tViewParameters);
+				$tViewExtension = $tViewParameters['extension'];
 			}
 
 			$tExtra = array(

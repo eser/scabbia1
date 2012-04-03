@@ -2,8 +2,8 @@
 
 if(Extensions::isSelected('unittest')) {
 	class unittest {
-		private static $stack = array();
-		private static $report = array();
+		public static $stack = array();
+		public static $report = array();
 
 		public static function extension_info() {
 			return array(
@@ -78,10 +78,6 @@ if(Extensions::isSelected('unittest')) {
 			}
 
 			self::addReport('assertNotNull', false);
-		}
-
-		public static function getlist() {
-			return self::$report;
 		}
 
 		public static function export() {

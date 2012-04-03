@@ -2,9 +2,9 @@
 
 if(Extensions::isSelected('logger')) {
 	class logger {
-		private static $filename;
-		private static $line;
-		private static $eof = "\r\n";
+		public static $filename;
+		public static $line;
+		public static $eof = "\r\n";
 
 		public static function extension_info() {
 			return array(
@@ -13,13 +13,13 @@ if(Extensions::isSelected('logger')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('http')
+				'fwdepends' => array('string', 'http')
 			);
 		}
 
 		public static function extension_load() {
 			self::$filename = Config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
-			self::$line = Config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {@exception}');
+			self::$line = Config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 
 			set_exception_handler('logger::exceptionCallback');
 			set_error_handler('logger::errorCallback', E_ALL);
@@ -111,6 +111,7 @@ if(Extensions::isSelected('logger')) {
 
 		public static function write($uCategory, $uParams) {
 			$uParams['category'] = &$uCategory;
+			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
 			$tFilename = QPATH_APP . 'logs/' . string::format(self::$filename, $uParams);
 			$tContent = string::format(self::$line . self::$eof . self::$eof, $uParams);
