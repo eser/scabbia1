@@ -9,17 +9,47 @@ if(Extensions::isSelected('html')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string')
+				'fwdepends' => array('string', 'i8n')
 			);
 		}
 
-		public static function selectBox($uArray = array(), $uDefault = null) {
+		public static function selectOptions($uArray = array(), $uDefault = null) {
 			$tOutput = '';
 
 			foreach($uArray as $tKey => &$tVal) {
-				$tOutput .= '<option value="' . string::escapeDQuotes($tKey) . '"';
-				if($uDefault == $tKey) { $tOutput .= ' selected="selected"'; }
+				$tOutput .= '<option value="' . string::dquote($tKey) . '"';
+
+				if($uDefault == $tKey) {
+					$tOutput .= ' selected="selected"';
+				}
+
 				$tOutput .= '>' . $tVal . '</option>';
+			}
+
+			return $tOutput;
+		}
+
+		public static function textBox($uName, $uValue) {
+			$tOutput = '<input type="text" name="' . string::dquote($uValue) . '" value="' . string::dquote($uValue) . '" />';
+
+			return $tOutput;
+		}
+
+		public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uId = null) {
+			if(is_null($uId)) {
+				$uId = $uName;
+			}
+
+			$tOutput = '<input type="checkbox" id="' . string::dquote($uId) . '" name="' . string::dquote($uName) . '" value="' . string::dquote($uValue) . '"';
+
+			if($uCurrentValue == $uValue) {
+				$tOutput .= ' checked="checked"';
+			}
+
+			$tOutput .= ' />';
+
+			if(!is_null($uText)) {
+				$tOutput .= '<label for="' . string::dquote($uId) . '">' . $uText . '</label>';
 			}
 
 			return $tOutput;
@@ -37,7 +67,7 @@ if(Extensions::isSelected('html')) {
 			}
 
 			// if(!isset($uOptions['link'])) {
-			// 	$uOptions['link'] = '<a href="{baseurl}?home/index/{page}" class="pagerlink">{pagetext}</a>';
+			// 	$uOptions['link'] = '<a href="{root}?home/index/{page}" class="pagerlink">{pagetext}</a>';
 			// }
 
 			if(!isset($uOptions['passivelink'])) {
@@ -89,15 +119,15 @@ if(Extensions::isSelected('html')) {
 			if($tPages > 1) {
 				if($tCurrent <= 1) {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;'));
 				}
 				else {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
 				}
 
 				if($tStart > 1) {
@@ -110,10 +140,10 @@ if(Extensions::isSelected('html')) {
 
 			for($i = $tStart;$i <= $tEnd;$i++) {
 				if($tCurrent == $i) {
-					$tResult .= string::format($uOptions['activelink'], array('baseurl' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['activelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
 				}
 
 				if($i != $tEnd) {
@@ -130,15 +160,15 @@ if(Extensions::isSelected('html')) {
 				}
 
 				if($tCurrent >= $tPages) {
-					$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('baseurl' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 			}
@@ -169,9 +199,10 @@ if(Extensions::isSelected('html')) {
 				$tResult .= '</tr>';
 			}
 
+			$tCount = 0;
 			foreach($uOptions['data'] as &$tRow) {
 				if(isset($uOptions['rowFunc'])) {
-					$tResult .= call_user_func($uOptions['rowFunc'], $tRow);
+					$tResult .= call_user_func($uOptions['rowFunc'], $tRow, $tCount++);
 				}
 				else if(isset($uOptions['row'])) {
 					$tResult .= string::format($uOptions['row'], $tRow);

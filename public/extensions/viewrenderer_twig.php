@@ -23,8 +23,8 @@ if(Extensions::isSelected('viewrenderer_twig')) {
 			Events::register('renderview', Events::Callback('viewrenderer_twig::renderview'));
 
 			self::$extension = Config::get('/twig/templates/@extension', '.twig');
-			self::$templatePath = QPATH_APP . Config::get('/twig/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/twig/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/twig/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/twig/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -33,7 +33,7 @@ if(Extensions::isSelected('viewrenderer_twig')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Config::get('/twig/installation/@path', 'include/3rdparty/twig/lib/Twig');
+				$tPath = Framework::translatePath(Config::get('/twig/installation/@path', '{core}include/3rdparty/twig/lib/Twig'));
 				require($tPath . '/Autoloader.php');
 
 				Twig_Autoloader::register();

@@ -1,8 +1,8 @@
 <?php
 
 	class Extensions {
-		private static $selected = array();
-		private static $loaded = array();
+		public static $selected = array();
+		public static $loaded = array();
 
 		public static function init() {
 			$tExtensions = Config::get('/extensionList', array());

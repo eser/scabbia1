@@ -22,8 +22,8 @@ if(Extensions::isSelected('viewrenderer_razor')) {
 			Events::register('renderview', Events::Callback('viewrenderer_razor::renderview'));
 
 			self::$extension = Config::get('/razor/templates/@extension', '.cshtml');
-			self::$templatePath = QPATH_APP . Config::get('/razor/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/razor/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/razor/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/razor/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {

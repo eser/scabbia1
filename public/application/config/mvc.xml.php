@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<mvc>
+	<mvc autorun="1">
 		<routing
 			defaultController="home" defaultAction="index"
 			notfoundController="home" notfoundAction="notfound"
-			controllerUrlKey="1" actionUrlKey="2" />
+			controllerUrlKey="0" actionUrlKey="1" />
 
 		<view	namePattern="{@controller}_{@action}_{@device}_{@language}{@extension}"
 				defaultExtension=".cshtml"

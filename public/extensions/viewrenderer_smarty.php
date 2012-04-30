@@ -22,8 +22,8 @@ if(Extensions::isSelected('viewrenderer_smarty')) {
 			Events::register('renderview', Events::Callback('viewrenderer_smarty::renderview'));
 
 			self::$extension = Config::get('/smarty/templates/@extension', '.tpl');
-			self::$templatePath = QPATH_APP . Config::get('/smarty/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/smarty/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/smarty/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/smarty/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,7 +32,7 @@ if(Extensions::isSelected('viewrenderer_smarty')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Config::get('/smarty/installation/@path', 'include/3rdparty/smarty/libs');
+				$tPath = Framework::translatePath(Config::get('/smarty/installation/@path', '{core}include/3rdparty/smarty/libs'));
 				require($tPath . '/Smarty.class.php');
 
 				self::$renderer = new Smarty();

@@ -1,9 +1,9 @@
 <?php
 
 	class Events {
-		private static $callbacks = array();
-		private static $eventDepth = array();
-		private static $disabled = false;
+		public static $callbacks = array();
+		public static $eventDepth = array();
+		public static $disabled = false;
 	
 		public static function register($uEventName, $uCallback) {
 			if(!array_key_exists($uEventName, self::$callbacks)) {

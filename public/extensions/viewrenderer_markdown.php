@@ -22,8 +22,8 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 			Events::register('renderview', Events::Callback('viewrenderer_markdown::renderview'));
 
 			self::$extension = Config::get('/markdown/templates/@extension', '.md');
-			self::$templatePath = QPATH_APP . Config::get('/markdown/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/markdown/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/markdown/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/markdown/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {

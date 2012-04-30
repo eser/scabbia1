@@ -21,7 +21,7 @@
 		}
 
 		public static function load() {
-			self::$development = (bool)Config::get('/options/development/@value', '0');
+			self::$development = Config::$development;
 			self::$debug = (bool)Config::get('/options/debug/@value', '0');
 			self::$siteroot = Config::get('/options/siteroot/@value', '');
 			self::$directCall = !COMPILED;
@@ -105,12 +105,12 @@
 					if(self::$development && count($tParameters) > 0) {
 						if($tParameters[0] == 'build') {
 							self::build('index.php', !(count($tParameters) >= 2 && $tParameters[1] == 'pseudo'));
-							self::purgeFolder(QPATH_APP . 'temp');
-							self::purgeFolder(QPATH_APP . 'sessions');
-							// self::purgeFolder(QPATH_APP . 'cache');
-							// self::purgeFolder(QPATH_APP . 'downloaded');
-							// self::purgeFolder(QPATH_APP . 'views/compiled'));
-							// self::purgeFolder(QPATH_APP . 'logs');
+							self::purgeFolder(QPATH_APP . 'writable/sessions');
+							// self::purgeFolder(QPATH_APP . 'writable/datasetCache');
+							// self::purgeFolder(QPATH_APP . 'writable/mediaCache');
+							// self::purgeFolder(QPATH_APP . 'writable/downloaded');
+							// self::purgeFolder(QPATH_APP . 'writable/compiledViews'));
+							// self::purgeFolder(QPATH_APP . 'writable/logs');
 
 							echo 'build done.';
 							return;
@@ -129,7 +129,7 @@
 		}
 
 		public static function downloadFile($uFile, $uUrl) {
-			$tFilePath = QPATH_APP . 'downloaded/' . $uFile;
+			$tFilePath = QPATH_APP . 'writable/downloaded/' . $uFile;
 			if(file_exists($tFilePath)) {
 				return false;
 			}

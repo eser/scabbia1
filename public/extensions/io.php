@@ -60,7 +60,7 @@ if(Extensions::isSelected('io')) {
 			case 'jpeg':
 			case 'jpe':
 			case 'jpg':
-				$tType = 'image/jpg'; break;
+				$tType = 'image/jpeg'; break;
 			case 'tif':
 			case 'tiff':
 				$tType = 'image/tiff'; break;

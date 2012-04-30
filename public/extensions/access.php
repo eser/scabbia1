@@ -2,7 +2,8 @@
 
 if(Extensions::isSelected('access')) {
 	class access {
-		public static $mode = 0;
+		public static $maintenance = 0;
+		public static $maintenanceExcludeIps = array();
 		public static $ipFilters = array();
 
 		public static function extension_info() {
@@ -19,7 +20,10 @@ if(Extensions::isSelected('access')) {
 		public static function extension_load() {
 			Events::register('run', Events::Callback('access::run'));
 
-			self::$mode = intval(Config::get('/access/maintenance/@mode', '0'));
+			self::$maintenance = intval(Config::get('/access/maintenance/@mode', '0')) > 0;
+			foreach(Config::get('/access/maintenanceExcludeList', array()) as $tMaintenanceExcludeIp) {
+				self::$maintenanceExcludeIps[] = $tMaintenanceExcludeIp['@ip'];
+			}
 
 			foreach(Config::get('/access/ipFilterList', array()) as $tIpFilterList) {
 				if(preg_match('/^' . str_replace(array('.', '*', '?'), array('\\.', '[0-9]{1,3}', '[0-9]{1}'), $tIpFilterList['@pattern']) . '$/i', $_SERVER['REMOTE_ADDR'])) {
@@ -34,7 +38,7 @@ if(Extensions::isSelected('access')) {
 		}
 
 		public static function run() {
-			if(self::$mode) {
+			if(self::$maintenance && !in_array($_SERVER['REMOTE_ADDR'], self::$maintenanceExcludeIps)) {
 				$tFile = Framework::translatePath(Config::get('/access/maintenance/@page'));
 				include($tFile);
 

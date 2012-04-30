@@ -5,6 +5,7 @@ if(Extensions::isSelected('logger')) {
 		public static $filename;
 		public static $line;
 		public static $eof = "\r\n";
+		public static $directory;
 
 		public static function extension_info() {
 			return array(
@@ -20,6 +21,8 @@ if(Extensions::isSelected('logger')) {
 		public static function extension_load() {
 			self::$filename = Config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = Config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
+			
+			self::$directory = QPATH_APP . 'writable/logs/';
 
 			set_exception_handler('logger::exceptionCallback');
 			set_error_handler('logger::errorCallback', E_ALL);
@@ -113,7 +116,7 @@ if(Extensions::isSelected('logger')) {
 			$uParams['category'] = &$uCategory;
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
-			$tFilename = QPATH_APP . 'logs/' . string::format(self::$filename, $uParams);
+			$tFilename = self::$directory . string::format(self::$filename, $uParams);
 			$tContent = string::format(self::$line . self::$eof . self::$eof, $uParams);
 
 			file_put_contents($tFilename, $tContent, FILE_APPEND);

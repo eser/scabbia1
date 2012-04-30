@@ -10,6 +10,7 @@ if(Extensions::isSelected('session')) {
 		public static $sessionLife;
 		public static $isModified = false;
 		public static $keyphase = null;
+		public static $directory;
 
 		public static function extension_info() {
 			return array(
@@ -32,6 +33,8 @@ if(Extensions::isSelected('session')) {
 			}
 
 			Events::register('output', Events::Callback('session::output'));
+			
+			self::$directory = QPATH_APP . 'writable/sessions/';
 		}
 
 		public static function output() {
@@ -45,7 +48,7 @@ if(Extensions::isSelected('session')) {
 				$tIpCheck = (bool)Config::get('/session/cookie/@ipCheck', '0');
 				$tUACheck = (bool)Config::get('/session/cookie/@uaCheck', '1');
 
-				$tFilename = QPATH_APP . 'sessions/' . self::$id;
+				$tFilename = self::$directory . self::$id;
 
 				if(file_exists($tFilename)) {
 					$tData = io::readSerialize($tFilename, self::$keyphase);
@@ -74,7 +77,7 @@ if(Extensions::isSelected('session')) {
 				self::$id = io::sanitize(string::generateUuid());
 			}
 
-			$tFilename = QPATH_APP . 'sessions/' . self::$id;
+			$tFilename = self::$directory . self::$id;
 
 			if(self::$sessionLife > 0) {
 				$tCookieLife = time() + self::$sessionLife;
@@ -107,7 +110,7 @@ if(Extensions::isSelected('session')) {
 				return;
 			}
 
-			$tFilename = QPATH_APP . 'sessions/' . self::$id;
+			$tFilename = self::$directory . self::$id;
 
 			setcookie(self::$sessionName, '', time() - 3600, '/');
 

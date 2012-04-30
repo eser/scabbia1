@@ -20,7 +20,7 @@ if(Extensions::isSelected('viewrenderer_php')) {
 			Events::register('renderview', Events::Callback('viewrenderer_php::renderview'));
 
 			self::$extension = Config::get('/php/templates/@extension', '.php');
-			self::$templatePath = QPATH_APP . Config::get('/php/templates/@templatePath', 'views');
+			self::$templatePath = Framework::translatePath(Config::get('/php/templates/@templatePath', '{app}views'));
 		}
 
 		public static function renderview($uObject) {

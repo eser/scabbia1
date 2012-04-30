@@ -154,7 +154,12 @@ if(Extensions::isSelected('database')) {
 			}
 
 			$this->persistent = isset($uConfig['persistent']);
-			$this->cachePath = $uConfig['cachePath']['.'];
+			if(isset($uConfig['cachePath'])) {
+				$this->cachePath = Framework::translatePath($uConfig['cachePath']['.']);
+			}
+			else {
+				$this->cachePath = QPATH_APP . 'writable/datasetCache/';
+			}
 
 			foreach($uConfig['datasetList'] as &$tDatasetConfig) {
 				$tDataset = new DatabaseDataset($this, $tDatasetConfig);
@@ -487,7 +492,7 @@ if(Extensions::isSelected('database')) {
 			}
 
 			$tFileName = $this->database->id . '_' . $uPropsSerialized;
-			$tFilePath = QPATH_APP . $this->database->cachePath . $tFileName;
+			$tFilePath = $this->database->cachePath . $tFileName;
 
 			$tData = null;
 			$tLoadedFromCache = false;

@@ -8,7 +8,7 @@
 			<rewrite match="(\w+)/contacts" forward="home/mvc/$1/why" />
 		</rewriteList>
 
-		<userAgents>
+		<userAgents autoCheck="1">
 			<platformList>
 				<platform match="windows|winnt|win95|win98" name="Windows" />
 				<platform match="os x|ppc mac|ppc" name="MacOS" />
@@ -51,9 +51,13 @@
 	</session>
 
 	<access>
-		<maintenance mode="0" page="{app}static/maintenance.htm" />
-		<ipFilter page="{app}static/ipban.htm" />
+		<maintenance mode="1" page="{app}views/static_maintenance.php" />
+		<maintenanceExcludeList>
+			<maintenanceExclude ip="83.66.165.43" />
+			<maintenanceExclude ip="127.0.0.1" />
+		</maintenanceExcludeList>
 
+		<ipFilter page="{app}views/static_ipban.php" />
 		<ipFilterList>
 			<ipFilter type="deny" pattern="127.0.0.?" />
 			<ipFilter type="allow" pattern="*.*.*.*" />

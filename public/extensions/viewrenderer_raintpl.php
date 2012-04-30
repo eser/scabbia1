@@ -22,8 +22,8 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 			Events::register('renderview', Events::Callback('viewrenderer_raintpl::renderview'));
 
 			self::$extension = Config::get('/raintpl/templates/@extension', '.rain');
-			self::$templatePath = QPATH_APP . Config::get('/raintpl/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/raintpl/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/raintpl/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/raintpl/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,7 +32,7 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Config::get('/raintpl/installation/@path', 'include/3rdparty/raintpl/inc');
+				$tPath = Framework::translatePath(Config::get('/raintpl/installation/@path', '{core}include/3rdparty/raintpl/inc'));
 				require($tPath . '/rain.tpl.class.php');
 
 				raintpl::configure('base_url', null);

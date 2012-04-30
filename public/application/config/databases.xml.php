@@ -3,17 +3,21 @@
 <scabbia>
 	<databaseList>
 		<database id="dbconn" default="default" keyphase="test">
-			<cachePath>cache/</cachePath>
+			<cachePath>{app}writable/datasetCache/</cachePath>
 			<persistent />
 			<overrideCase>natural</overrideCase>
-			<pdoString>mysql:host=localhost;dbname=test</pdoString>
-			<!--
-			<pdoString>pgsql:host=localhost;port=5432;dbname=test</pdoString>
-			-->
-			<username>postgres</username>
-			<password>passwd</password>
+			<scope mode="development">
+				<pdoString>mysql:host=localhost;dbname=test</pdoString>
+				<username>root</username>
+				<password>passwd</password>
+			</scope>
+			<scope mode="production">
+				<pdoString>pgsql:host=localhost;port=5432;dbname=test</pdoString>
+				<username>postgres</username>
+				<password>passwd</password>
+			</scope>
 			<initCommand>
-				SET NAMES utf8
+				SET NAMES 'utf8'
 			</initCommand>
 			<datasetList>
 				<dataset id="getUserCount" cacheLife="15" parameters="">

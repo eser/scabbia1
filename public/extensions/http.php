@@ -92,7 +92,48 @@ if(Extensions::isSelected('http')) {
 			if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 				self::$isAjax = true;
 			}
+
+			$tAutoCheckUserAgents = intval(Config::get('/http/userAgents/@autoCheck', '1'));
+
+			if($tAutoCheckUserAgents) {
+				self::checkUserAgent();
+			}
+
+			// self::$browser = get_browser(null, true);
+			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 			
+			$tParsingType = Config::get('/http/request/@parsingType', '0');
+			if($tParsingType == '1') {
+				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
+				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
+
+				if($tDefaultParameter != '&' || $tDefaultKey != '=') {
+					self::parseGetType1($tDefaultParameter, $tDefaultKey);
+					$tGetProcessed = true;
+				}
+			}
+			else if($tParsingType == '2') {
+				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
+				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
+
+				self::parseGetType2($tDefaultParameter, $tDefaultKey);
+				$tGetProcessed = true;
+			}
+			
+			if(get_magic_quotes_gpc()) {
+				if(!isset($tGetProcessed)) {
+					array_walk($_GET, 'http::magic_quotes_deslash');
+				}
+
+				array_walk($_POST, 'http::magic_quotes_deslash');
+				array_walk($_COOKIE, 'http::magic_quotes_deslash');
+//				array_walk($_REQUEST, 'http::magic_quotes_deslash');
+			}
+
+			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
+		}
+
+		public static function checkUserAgent() {
 			foreach(config::get('/http/userAgents/platformList', array()) as $tPlatformList) {
 				if(preg_match('/' . $tPlatformList['@match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 					self::$platform = $tPlatformList['@name'];
@@ -121,39 +162,6 @@ if(Extensions::isSelected('http')) {
 					break;
 				}
 			}
-
-			// self::$browser = get_browser(null, true);
-			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-			
-			$tParsingType = Config::get('/http/request/@parsingType', '0');
-			if($tParsingType == '1') {
-				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
-				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
-
-				if($tDefaultParameter != '&' || $tDefaultKey != '=') {
-					self::parseGetType1($tDefaultParameter, $tDefaultKey);
-					$tGetProcessed = true;
-				}
-			}
-			else if($tParsingType == '2') {
-				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
-				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
-
-				self::parseGetType2($tDefaultParameter, $tDefaultKey);
-				$tGetProcessed = true;
-			}
-			
-			if(get_magic_quotes_gpc()) {
-				if(!isset($tGetProcessed)) {
-					array_walk($_GET, array('http', 'magic_quotes_deslash'));
-				}
-
-				array_walk($_POST, array('http', 'magic_quotes_deslash'));
-				array_walk($_COOKIE, array('http', 'magic_quotes_deslash'));
-//				array_walk($_REQUEST, array('http', 'magic_quotes_deslash'));
-			}
-
-			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
 		}
 
 		public static function xss($uString) {
@@ -309,10 +317,38 @@ if(Extensions::isSelected('http')) {
 			return $tResult;
 		}
 
-		private static function magic_quotes_deslash(&$uItem) {
+		public static function get($uKey, $uDefault = '', $uFilter = null) {
+			if(!array_key_exists($uKey, $_GET)) {
+				return $uDefault;
+			}
+
+			if(!is_null($uFilter)) {
+				return call_user_func($uFilter, $_GET[$uKey]);
+			}
+
+			return $_GET[$uKey];
+		}
+
+		public static function post($uKey, $uDefault = null) {
+			if(!array_key_exists($uKey, $_POST)) {
+				return $uDefault;
+			}
+
+			return $_POST[$uKey];
+		}
+
+		public static function cookie($uKey, $uDefault = null) {
+			if(!array_key_exists($uKey, $_COOKIE)) {
+				return $uDefault;
+			}
+
+			return $_COOKIE[$uKey];
+		}
+
+		public static function magic_quotes_deslash(&$uItem) {
 			switch(gettype($uItem)) {
 			case 'array':
-				array_walk($uItem, 'magic_quotes_deslash');
+				array_walk($uItem, 'http::magic_quotes_deslash');
 				break;
 			case 'string':
 				$uItem = stripslashes($uItem);

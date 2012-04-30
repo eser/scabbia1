@@ -22,8 +22,8 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			Events::register('renderview', Events::Callback('viewrenderer_phptal::renderview'));
 
 			self::$extension = Config::get('/phptal/templates/@extension', '.zpt');
-			self::$templatePath = QPATH_APP . Config::get('/phptal/templates/@templatePath', 'views');
-			self::$compiledPath = QPATH_APP . Config::get('/phptal/templates/@compiledPath', 'views/compiled');
+			self::$templatePath = Framework::translatePath(Config::get('/phptal/templates/@templatePath', '{app}views'));
+			self::$compiledPath = Framework::translatePath(Config::get('/phptal/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,7 +32,7 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Config::get('/phptal/installation/@path', 'include/3rdparty/PHPTAL');
+				$tPath = Framework::translatePath(Config::get('/phptal/installation/@path', '{core}include/3rdparty/PHPTAL'));
 				require($tPath . '/PHPTAL.php');
 
 				self::$renderer = new PHPTAL();

@@ -4,6 +4,7 @@ if(Extensions::isSelected('i8n')) {
 	class i8n {
 		public static $languages = array();
 		public static $language = null;
+		public static $languageKey;
 
 		public static function extension_info() {
 			return array(
@@ -52,6 +53,7 @@ if(Extensions::isSelected('i8n')) {
 		private static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(array_key_exists($uLanguage, self::$languages)) {
 				self::$language = self::$languages[$uLanguage];
+				self::$languageKey = $uLanguage;
 				return true;
 			}
 
@@ -60,6 +62,7 @@ if(Extensions::isSelected('i8n')) {
 
 				if(array_key_exists($tExploded[0], self::$languages)) {
 					self::$language = self::$languages[$tExploded[0]];
+					self::$languageKey = $tExploded[0];
 					return true;
 				}
 			}

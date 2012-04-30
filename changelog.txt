@@ -1,3 +1,8 @@
+Commit 10
+* [media extension] media extension is added.
+* minog bug fix release.
+
+
 Commit 9
 * [access extension] access extension is added.
 * [validation extension] validation extension is added.

@@ -1,104 +1,135 @@
 <?php
 	
 	class Config {
-		private static $default = null;
+		public static $default = null;
+		public static $development;
+		public static $socket;
 
-		public static function processChildrenAsArray_r(&$uArray, $uNode, $tListElement = null) {
+		public static function passScope(&$uNode) {
+			if(isset($uNode['binding']) && !fnmatch((string)$uNode['binding'], self::$socket)) {
+				return false;
+			}
+
+			if(isset($uNode['mode'])) {
+				if((string)$uNode['mode'] == 'development') {
+					if(!self::$development) {
+						return false;
+					}
+				}
+				else if(self::$development) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public static function processChildrenAsArray($uNode, $uListElement) {
+			$tNodeName = $uNode->getName();
+			$tContents = array();
+
 			foreach($uNode->children() as $tKey => $tNode) {
-				if(!is_null($tListElement) && $tListElement == $tKey) {
-					self::processChildrenAsArray_r($uArray[], $tNode, null);
+				if($tKey == 'scope') {
+					if(!self::passScope($tNode)) {
+						continue; // skip
+					}
+
+					$tScopeContent = self::processChildrenAsArray($tNode, null);
+					$tContents = array_merge($tContents, $tScopeContent);
+					continue;
+				}
+
+				if(!is_null($uListElement) && $uListElement == $tKey) {
+					$tContents[] = self::processChildrenAsArray($tNode, null);
 				}
 				else {
 					if(substr($tKey, -4) == 'List') {
-						self::processChildrenAsArray_r($uArray[$tKey], $tNode, substr($tKey, 0, -4));
+						$tContents[$tKey] = self::processChildrenAsArray($tNode, substr($tKey, 0, -4));
 					}
 					else {
-						self::processChildrenAsArray_r($uArray[$tKey], $tNode, null);
+						$tContents[$tKey] = self::processChildrenAsArray($tNode, null);
 					}
 				}
 			}
 
 			foreach($uNode->attributes() as $tKey => $tValue) {
-				$uArray['@' . $tKey] = (string)$tValue;
+				$tContents['@' . $tKey] = (string)$tValue;
 			}
 
 			$tNodeValue = rtrim((string)$uNode);
 			if(strlen($tNodeValue) > 0) {
-				$uArray['.'] = $tNodeValue;
-			}
-			else if($tListElement == null) {
-				$uArray['.'] = null;
+				$tContents['.'] = $tNodeValue;
 			}
 			
-//			if(count($uArray) == 1) {
-//				$uArray = current($uArray);
-//			}
+			return $tContents;
 		}
 
-		public static function processChildren_r(&$uArray, $uPrefix, $uNode) {
-			foreach($uNode->children() as $tKey => $tNode) {
-				$tArrayKey = $uPrefix . '/' . $tKey;
-				if(substr($tKey, -4) == 'List') {
-					if(!isset($uArray[$tArrayKey]) || !is_array($uArray[$tArrayKey])) {
-						$uArray[$tArrayKey] = array();
-					}
-					self::processChildrenAsArray_r($uArray[$tArrayKey], $tNode, substr($tKey, 0, -4));
-					continue;
+		public static function processChildren_r(&$uArray, &$uNodes, $uNode) {
+			$tNodeName = $uNode->getName();
+
+			if($tNodeName == 'scope') {
+				$tScope = true;
+
+				if(!self::passScope($uNode)) {
+					return; // skip
 				}
-				self::processChildren_r($uArray, $tArrayKey, $tNode);
 			}
 
-			foreach($uNode->attributes() as $tKey => $tValue) {
-				$uArray[$uPrefix . '/@' . $tKey] = (string)$tValue;
+			if(!isset($tScope)) {
+				array_push($uNodes, $tNodeName);
+				$tNodePath = '/' . implode('/', array_slice($uNodes, 1));
+
+				if(substr($tNodeName, -4) == 'List') {
+					$tListName = substr($tNodeName, 0, -4);
+				}
 			}
 
-			$tNodeValue = rtrim((string)$uNode);
-			if(strlen($tNodeValue) > 0) {
-				$uArray[$uPrefix . '/.'] = $tNodeValue;
+			if(isset($tListName)) {
+				$uArray[$tNodePath] = self::processChildrenAsArray($uNode, $tListName);
+			}
+			else {
+				foreach($uNode->children() as $tKey => $tNode) {
+					self::processChildren_r($uArray, $uNodes, $tNode);
+				}
+
+				if(!isset($tScope)) {
+					foreach($uNode->attributes() as $tKey => $tValue) {
+						$uArray[$tNodePath . '/@' . $tKey] = (string)$tValue;
+					}
+
+					$tNodeValue = rtrim((string)$uNode);
+					if(strlen($tNodeValue) > 0) {
+						$uArray[$tNodePath . '/.'] = $tNodeValue;
+					}
+				}
+			}
+
+			if(!isset($tScope)) {
+				array_pop($uNodes);
 			}
 		}
 
 		public static function &loadFiles($uFiles) {
+			self::$development = file_exists(QPATH_APP . '/development');
+
 			if(isset($_SERVER['SERVER_NAME'])) {
-				$tSocket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+				self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
 			}
 			else {
-				$tSocket = 'localhost:80';
+				self::$socket = 'localhost:80';
 			}
-			$tXmlSource = '';
+
+			$tConfig = array();
+			$tConfigNodes = array();
 
 			foreach(glob($uFiles, GLOB_MARK|GLOB_NOSORT) as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}
 
-				$tXml = simplexml_load_file($tFilename) or exit('Unable to read from config file - ' . $tFilename);
-
-				// if(!is_null(self::$default)) {
-				//	foreach(self::$default->children() as $tNode) {
-				//		$tXmlSource .= $tNode->asXML();
-				//	}
-				// }
-
-				if(isset($tXml->scope)) {
-					foreach($tXml->scope as $tScope) {
-						if(fnmatch((string)$tScope['binding'], $tSocket)) {
-							foreach($tScope->children() as $tNode) {
-								$tXmlSource .= $tNode->asXML();
-							}
-						}
-					}
-				} else {
-					foreach($tXml->children() as $tNode) {
-						$tXmlSource .= $tNode->asXML();
-					}
-				}
+				$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);
+				self::processChildren_r($tConfig, $tConfigNodes, $tXmlDom);
 			}
-
-			$tConfigDom = simplexml_load_string('<scabbia>' . $tXmlSource . '</scabbia>', null, LIBXML_NOBLANKS|LIBXML_NOCDATA);
-
-			$tConfig = array();
-			self::processChildren_r($tConfig, '', $tConfigDom);
 
 			return $tConfig;
 		}
