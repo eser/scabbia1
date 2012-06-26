@@ -103,20 +103,18 @@ if(Extensions::isSelected('http')) {
 			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 			
 			$tParsingType = Config::get('/http/request/@parsingType', '0');
-			if($tParsingType == '1') {
-				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
-				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
+			$tDefaultParameter = Config::get('/http/request/@getParameters', '?&');
+			$tDefaultKey = Config::get('/http/request/@getKeys', '=');
+			$tDefaultSeperator = Config::get('/http/request/@getSeperator', '/');
 
-				if($tDefaultParameter != '&' || $tDefaultKey != '=') {
+			if($tParsingType == '1') {
+				// if($tDefaultParameter != '?&' || $tDefaultKey != '=') {
 					self::parseGetType1($tDefaultParameter, $tDefaultKey);
 					$tGetProcessed = true;
-				}
+				// }
 			}
 			else if($tParsingType == '2') {
-				$tDefaultParameter = Config::get('/http/request/@getParameters', '&');
-				$tDefaultKey = Config::get('/http/request/@getKeys', '=');
-
-				self::parseGetType2($tDefaultParameter, $tDefaultKey);
+				self::parseGetType2($tDefaultParameter, $tDefaultKey, $tDefaultSeperator);
 				$tGetProcessed = true;
 			}
 			

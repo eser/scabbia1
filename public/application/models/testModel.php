@@ -1,20 +1,14 @@
 <?php
 
 	class testModel extends Model {
-		public function __construct($uController) {
-			parent::__construct($uController);
-
-			$this->db->setDatabaseName('dbconn');
-		}
-
 		function insert() {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->addField('name', 'test3')
 								->insert();
 		}
 		
 		function update() {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->setFields(array('isim' => 'eser', 'soyisim' => 'ozvataf'))
 								->addField('yas', '27')
 								->setWhere('id=1')
@@ -24,7 +18,7 @@
 		}
 
 		function delete() {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->setWhere('name=:name')
 								->addParameter(':name', 'test3')
 								->setLimit(1)
@@ -32,27 +26,33 @@
 		}
 
 		function get($uLimit, $uOffset) {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->setLimit($uLimit)
 								->setOffset($uOffset)
 								->get();
 		}
 
 		function count() {
-			return $this->db->calculate('testtable', 'COUNT');
+			return $this->db->calculate('users', 'COUNT');
 		}
 
 		function getRow() {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->setWhere('name=\'test\'')
 								->getRow();
 		}
 
 		function getScalar() {
-			return $this->db	->setTable('testtable')
+			return $this->db	->setTable('users')
 								->setFieldsDirect(array('name'))
 								->setWhere('name=\'test\'')
 								->getScalar();
+		}
+		
+		function getDataset($uLimit, $uOffset) {
+			$tUsers = $this->db->datasetSet('getUsers', $uOffset, $uLimit);
+
+			return $tUsers;
 		}
 	}
 

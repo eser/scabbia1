@@ -24,9 +24,8 @@
 			return true;
 		}
 
-		public static function processChildrenAsArray($uNode, $uListElement) {
+		public static function processChildrenAsArray($uNode, $uListElement, &$uContents) {
 			$tNodeName = $uNode->getName();
-			$tContents = array();
 
 			foreach($uNode->children() as $tKey => $tNode) {
 				if($tKey == 'scope') {
@@ -34,34 +33,35 @@
 						continue; // skip
 					}
 
-					$tScopeContent = self::processChildrenAsArray($tNode, null);
-					$tContents = array_merge($tContents, $tScopeContent);
+					self::processChildrenAsArray($tNode, null, $uContents);
 					continue;
 				}
 
 				if(!is_null($uListElement) && $uListElement == $tKey) {
-					$tContents[] = self::processChildrenAsArray($tNode, null);
+					self::processChildrenAsArray($tNode, null, $uContents[]);
 				}
 				else {
+					if(!isset($uContents[$tKey])) {
+						$uContents[$tKey] = array();
+					}
+
 					if(substr($tKey, -4) == 'List') {
-						$tContents[$tKey] = self::processChildrenAsArray($tNode, substr($tKey, 0, -4));
+						self::processChildrenAsArray($tNode, substr($tKey, 0, -4), $uContents[$tKey]);
 					}
 					else {
-						$tContents[$tKey] = self::processChildrenAsArray($tNode, null);
+						self::processChildrenAsArray($tNode, null, $uContents[$tKey]);
 					}
 				}
 			}
 
 			foreach($uNode->attributes() as $tKey => $tValue) {
-				$tContents['@' . $tKey] = (string)$tValue;
+				$uContents['@' . $tKey] = (string)$tValue;
 			}
 
 			$tNodeValue = rtrim((string)$uNode);
 			if(strlen($tNodeValue) > 0) {
-				$tContents['.'] = $tNodeValue;
+				$uContents['.'] = $tNodeValue;
 			}
-			
-			return $tContents;
 		}
 
 		public static function processChildren_r(&$uArray, &$uNodes, $uNode) {
@@ -85,7 +85,11 @@
 			}
 
 			if(isset($tListName)) {
-				$uArray[$tNodePath] = self::processChildrenAsArray($uNode, $tListName);
+				if(!isset($uArray[$tNodePath])) {
+					$uArray[$tNodePath] = array();
+				}
+
+				self::processChildrenAsArray($uNode, $tListName, $uArray[$tNodePath]);
 			}
 			else {
 				foreach($uNode->children() as $tKey => $tNode) {
@@ -122,11 +126,7 @@
 			$tConfig = array();
 			$tConfigNodes = array();
 
-			foreach(glob($uFiles, GLOB_MARK|GLOB_NOSORT) as $tFilename) {
-				if(substr($tFilename, -1) == '/') {
-					continue;
-				}
-
+			foreach(glob3($uFiles, false, true) as $tFilename) {
 				$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);
 				self::processChildren_r($tConfig, $tConfigNodes, $tXmlDom);
 			}

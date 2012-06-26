@@ -7,7 +7,8 @@
 			notfoundController="home" notfoundAction="notfound"
 			controllerUrlKey="0" actionUrlKey="1" />
 
-		<view	namePattern="{@controller}_{@action}_{@device}_{@language}{@extension}"
+		<!-- _{@device}_{@language} -->
+		<view	namePattern="{@controller}_{@action}{@extension}"
 				defaultExtension=".cshtml"
 			/>
 	</mvc>

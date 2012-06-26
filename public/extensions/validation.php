@@ -7,14 +7,15 @@ if(Extensions::isSelected('validation')) {
 
 		const IsNumeric = 1;
 		const IsEqual = 2;
-		const IsLower = 3;
-		const IsLowerEq = 4;
-		const IsGreater = 5;
-		const IsGreaterEq = 6;
+		const IsMinimum = 3;
+		const IsMinimumOrEqual = 4;
+		const IsMaximum = 5;
+		const IsMaximumOrEqual = 6;
 		const Length = 7;
-		const TrimmedLength = 8;
-		const RegExp = 9;
-		const Custom = 10;
+		const LengthMinimum = 8;
+		const LengthMaximum = 9;
+		const RegExp = 10;
+		const Custom = 0;
 
 		public static function extension_info() {
 			return array(
@@ -46,7 +47,7 @@ if(Extensions::isSelected('validation')) {
 			self::$rules = array();
 			self::$summary = null;
 		}
-		
+
 		public static function validate($uArray) {
 			self::$summary = array();
 
@@ -71,44 +72,50 @@ if(Extensions::isSelected('validation')) {
 								break;
 							}
 						}
-						
+
 						if(!isset($tPasses)) {
 							self::$summary[] = $tRule;
 						}
 
 						break;
-					case self::IsLower:
+					case self::IsMinimum:
 						if($tValue >= $tRule[1]) { // inverse of <
 							self::$summary[] = $tRule;
 						}
 
 						break;
-					case self::IsLowerEq:
+					case self::IsMinimumOrEqual:
 						if($tValue > $tRule[1]) { // inverse of <=
 							self::$summary[] = $tRule;
 						}
 
 						break;
-					case self::IsGreater:
+					case self::IsMaximum:
 						if($tValue <= $tRule[1]) { // inverse of >
 							self::$summary[] = $tRule;
 						}
 
 						break;
-					case self::IsGreaterEq:
+					case self::IsMaximumOrEqual:
 						if($tValue < $tRule[1]) { // inverse of >=
 							self::$summary[] = $tRule;
 						}
 
 						break;
 					case self::Length:
-						if(strlen($tValue) < $tRule[1]) {
+						if(strlen($tValue) != $tRule[1]) {
 							self::$summary[] = $tRule;
 						}
 
 						break;
-					case self::TrimmedLength:
-						if(strlen(trim($tValue)) < $tRule[1]) {
+					case self::LengthMinimum:
+						if(strlen($tValue) > $tRule[1]) {
+							self::$summary[] = $tRule;
+						}
+
+						break;
+					case self::LengthMaximum:
+						if(strlen($tValue) < $tRule[1]) {
 							self::$summary[] = $tRule;
 						}
 

@@ -50,6 +50,10 @@ if(Extensions::isSelected('time')) {
 
 			return mktime($tDate[3], $tDate[4], $tDate[5], $tDate[1], $tDate[2], $tDate[0]);
 		}
+
+		public static function today() {
+			return mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		}
 	}
 }
 

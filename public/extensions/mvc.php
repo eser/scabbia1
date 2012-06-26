@@ -92,7 +92,7 @@ if(Extensions::isSelected('mvc')) {
 		}
 
 		public static function loadview() {
-			$tViewNamePattern = Config::get('/mvc/view/@namePattern', '{@name}_{@device}_{@language}{@extension}');
+			$tViewNamePattern = Config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
 			$tViewDefaultExtension = Config::get('/mvc/view/@defaultExtension', QEXT_PHP);
 
 			$uArgs = func_get_args();
@@ -111,7 +111,7 @@ if(Extensions::isSelected('mvc')) {
 					'extension' => isset($uArgs[5]) ? $uArgs[5] : $tViewDefaultExtension
 				);
 
-				$tViewFile = string::format('{@controller}_{@action}_{@device}_{@language}{@extension}', $tViewParameters);
+				$tViewFile = string::format($tViewNamePattern, $tViewParameters);
 				$tViewExtension = $tViewParameters['extension'];
 			}
 
@@ -147,6 +147,8 @@ if(Extensions::isSelected('mvc')) {
 	}
 
 	abstract class Controller {
+		public $defaultView;
+
 		public function loadmodel($uModelClass, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uModelClass;
@@ -157,7 +159,32 @@ if(Extensions::isSelected('mvc')) {
 
 		public function loadview() {
 			$uArgs = func_get_args();
+
+			switch(count($uArgs)) {
+			case 0:
+				$uArgs[] = null;
+				$uArgs[] = $this->defaultView;
+				break;
+			case 1:
+				$uArgs[] = $this->defaultView;
+				break;
+			}
+
 			call_user_func_array('mvc::loadview', $uArgs);
+		}
+
+		public function error($uMessage) {
+			$tViewbag = array(
+				'title' => 'Error',
+				'message' => $uMessage
+			);
+
+			call_user_func('mvc::loadview', $tViewbag, 'shared_error.cshtml');
+			exit(1);
+		}
+
+		public function end() {
+			exit(0);
 		}
 	}
 }

@@ -60,3 +60,5 @@ webpanel (database ve model otomatik olusturma)
 * driver extension mantigini bir dusunmek lazim, ayni interfaceleri kullanan bir extension olup yalnizca hangi driver oldugu degisebilir mi diye.
 
 * controller'da private olan metodlara disaridan erisim olmayacak ci'deki '_' gibi.
+
+* build'in ftp secenegi de olacak. config'e girilen optionlar ve ftp bilgileri ile build isleminin ardindan secilen path'e framework'un derlenmis halini atacak.

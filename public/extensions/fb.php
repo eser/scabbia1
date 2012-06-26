@@ -44,12 +44,12 @@ if(Extensions::isSelected('fb')) {
 		public static function getUserId() {
 			if(is_null(self::$userId)) {
 				self::$userId = self::$api->getUser();
+
+				if(!self::$userId) {
+					self::$userId = null;
+				}
 			}
  
-			if(!self::$userId) {
-				self::$userId = null;
-			}
-
 			return self::$userId;
 		}
 
@@ -125,6 +125,17 @@ if(Extensions::isSelected('fb')) {
 			}
 
 			return self::$user;
+		}
+		
+		public static function getUserLikes() {
+			try {
+				$tReturn = self::$api->api('/me/likes');
+			}
+			catch(FacebookApiException $tException) {
+				$tReturn = null;
+			}
+			
+			return $tReturn;
 		}
 
 //		public static function getAccessToken($uCode) {

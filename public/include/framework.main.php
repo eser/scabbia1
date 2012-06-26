@@ -98,7 +98,7 @@
 					$tParameters = array_slice($_SERVER['argv'], 1);
 				}
 				else {
-					$tParameters = $_GET;
+					$tParameters = array_keys($_GET);
 				}
 
 				if(self::$directCall) {
@@ -144,7 +144,7 @@
 
 		private static function includeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				foreach(glob2($tPath) as $tFilename) {
+				foreach(glob3($tPath, false) as $tFilename) {
 					if(substr($tFilename, -1) == '/') {
 						continue;
 					}
@@ -156,7 +156,7 @@
 		
 		private static function printIncludeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				self::printFiles(glob2($tPath));
+				self::printFiles(glob3($tPath, false));
 			}
 		}
 
@@ -185,13 +185,14 @@
 			}
 		}
 
-		public static function build($uFilename, $uForce = true) {
+		public static function build($uFilename, $uPseudo = true) {
 			ob_start();
 			ob_implicit_flush(false);
 
-			if(self::$development && !$uForce) {
+			if(self::$development && !$uPseudo) {
+				$tPath = QPATH_CORE . 'framework' . QEXT_PHP;
 				echo '<', '?php
-	require(\'', QPATH_CORE, 'framework', QEXT_PHP, '\');
+	require(', var_export($tPath), ');
 	Extensions::run();
 ?', '>';
 			}
@@ -243,7 +244,7 @@
 		}
 
 		public static function purgeFolder($uFolder) {
-			foreach(glob2($uFolder . '/*') as $tFilename) {
+			foreach(glob3($uFolder . '/*', true) as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

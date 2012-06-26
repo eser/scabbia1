@@ -3,6 +3,7 @@
 if(Extensions::isSelected('database')) {
 	class database {
 		public static $databases = array();
+		public static $datasets = array();
 		public static $default = null;
 
 		public static function extension_info() {
@@ -25,6 +26,11 @@ if(Extensions::isSelected('database')) {
 					self::$default = $tDatabase;
 				}
 			}
+
+			foreach(config::get('/datasetList', array()) as $tDatasetConfig) {
+				$tDataset = new DatabaseDataset($tDatasetConfig);
+				self::$datasets[$tDataset->id] = $tDataset;
+			}
 		}
 
 		public static function &get() {
@@ -36,9 +42,6 @@ if(Extensions::isSelected('database')) {
 				break;
 			case 1:
 				return self::$databases[$uArgs[0]];
-				break;
-			case 2:
-				return self::$databases[$uArgs[0]]->datasets[$uArgs[1]];
 				break;
 			}
 
@@ -119,7 +122,6 @@ if(Extensions::isSelected('database')) {
 		public $default;
 		protected $connection = null;
 		public $driver = null;
-		public $datasets = array();
 		public $cache = array();
 		public $stats = array('cache' => 0, 'query' => 0);
 		public $active = false;
@@ -141,7 +143,7 @@ if(Extensions::isSelected('database')) {
 			$this->username = $uConfig['username']['.'];
 			$this->password = $uConfig['password']['.'];
 
-			if(isset($uConfig['initCommand'])) {
+			if(isset($uConfig['initCommand']) && array_key_exists('.', $uConfig['initCommand'])) {
 				$this->initCommand = $uConfig['initCommand']['.'];
 			}
 
@@ -159,11 +161,6 @@ if(Extensions::isSelected('database')) {
 			}
 			else {
 				$this->cachePath = QPATH_APP . 'writable/datasetCache/';
-			}
-
-			foreach($uConfig['datasetList'] as &$tDatasetConfig) {
-				$tDataset = new DatabaseDataset($this, $tDatasetConfig);
-				$this->datasets[$tDataset->id] = $tDataset;
 			}
 		}
 		
@@ -295,48 +292,33 @@ if(Extensions::isSelected('database')) {
 		public function serverInfo() {
 			return $this->connection->getAttribute(PDO::ATTR_SERVER_INFO);
 		}
-	}
 
-	class DatabaseDataset {
-		protected $database;
-		public $id;
-		public $queryString;
-		public $parameters;
-		public $cacheLife;
-		public $transaction;
+		public function dataset() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
 
-		public function __construct(&$uDatabase, $uConfig) {
-			$this->database = &$uDatabase;
-
-			$this->id = $uConfig['@id'];
-			$this->queryString = $uConfig['.'];
-			$this->parameters = strlen($uConfig['@parameters']) > 0 ? explode(',', $uConfig['@parameters']) : array();
-			$this->cacheLife = isset($uConfig['@cacheLife']) ? (int)$uConfig['@cacheLife'] : 0;
-			$this->transaction = isset($uConfig['@transaction']);
+			return $this->datasetInternal(database::$datasets[$uDataset], $uProps);
 		}
 
-		public function query() {
+		public function &datasetFetch() {
 			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
 
-			return $this->queryInternal($uProps);
+			return $this->datasetFetchInternal(database::$datasets[$uDataset], $uProps);
 		}
 
-		public function &queryFetch($uQuery, $uParameters = array()) {
+		public function datasetSet() {
 			$uProps = func_get_args();
-
-			return $this->queryFetchInternal($uProps);
-		}
-
-		public function querySet() {
-			$uProps = func_get_args();
-			$tData = $this->querySetInternal($uProps);
+			$uDataset = array_shift($uProps);
+			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
 
 			return $tData['data'];
 		}
 
-		public function queryRow() {
+		public function datasetRow() {
 			$uProps = func_get_args();
-			$tData = $this->querySetInternal($uProps);
+			$uDataset = array_shift($uProps);
+			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
 
 			if(count($tData['data']) > 0) {
 				return $tData['data'][0];
@@ -345,9 +327,11 @@ if(Extensions::isSelected('database')) {
 			return null;
 		}
 
-		public function queryScalar() {
+		public function datasetScalar() {
 			$uProps = func_get_args();
-			$tData = $this->querySetInternal($uProps);
+			$uDataset = array_shift($uProps);
+
+			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
 
 			if(count($tData['data']) > 0) {
 				return current($tData['data'][0]);
@@ -356,11 +340,11 @@ if(Extensions::isSelected('database')) {
 			return null;
 		}
 
-		private function queryInternal($uProps) {
+		public function datasetInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
 //
-//				foreach($this->parameters as $tKey => &$tParam) {
+//				foreach($uDataset->parameters as $tKey => &$tParam) {
 //					if(isset($uProps[0][$tParam])) {
 //						$tPropMaps[] = $uProps[0][$tParam];
 //						continue;
@@ -372,48 +356,48 @@ if(Extensions::isSelected('database')) {
 //				$uProps = &$tPropMaps;
 //			}
 
-			if($this->transaction) {
-				$this->database->beginTransaction();
+			if($uDataset->transaction) {
+				$this->beginTransaction();
 			}
 
 			try {
 				$tCount = 0;
 				$tArray = array();
 
-				foreach($this->parameters as &$tParam) {
+				foreach($uDataset->parameters as &$tParam) {
 					$tArray[$tParam] = $uProps[$tCount++];
 				}
 
-				$tQueryExecute = string::format($this->queryString, $tArray);
+				$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
 				if(Framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
-				$tResult = $this->database->query($tQueryExecute);
+				$tResult = $this->query($tQueryExecute);
 
-				if($this->database->inTransaction) {
-					$this->database->commit();
+				if($this->inTransaction) {
+					$this->commit();
 				}
 			}
 			catch(PDOException $ex) {
-				if($this->database->inTransaction) {
-					$this->database->rollBack();
+				if($this->inTransaction) {
+					$this->rollBack();
 				}
 
 				throw new PDOException($ex->getMessage());
 			}
 
-			$this->database->stats['query']++;
+			$this->stats['query']++;
 
 			if(isset($tResult)) {
-				return $this->database->affectedRows();
+				return $this->affectedRows();
 			}
 
 			return false;
 		}
 
-		private function &queryFetchInternal($uProps) {
+		public function &datasetFetchInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
 //
@@ -429,39 +413,39 @@ if(Extensions::isSelected('database')) {
 //				$uProps = &$tPropMaps;
 //			}
 
-			if($this->transaction) {
-				$this->database->beginTransaction();
+			if($uDataset->transaction) {
+				$this->beginTransaction();
 			}
 
 			try {
 				$tCount = 0;
 				$tArray = array();
 
-				foreach($this->parameters as &$tParam) {
+				foreach($uDataset->parameters as &$tParam) {
 					$tArray[$tParam] = $uProps[$tCount++];
 				}
 
-				$tQueryExecute = string::format($this->queryString, $tArray);
+				$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
 				if(Framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
-				$tResult = $this->database->queryFetch($tQueryExecute);
+				$tResult = $this->queryFetch($tQueryExecute);
 
-				if($this->database->inTransaction) {
-					$this->database->commit();
+				if($this->inTransaction) {
+					$this->commit();
 				}
 			}
 			catch(PDOException $ex) {
-				if($this->database->inTransaction) {
-					$this->database->rollBack();
+				if($this->inTransaction) {
+					$this->rollBack();
 				}
 
 				throw new PDOException($ex->getMessage());
 			}
 
-			$this->database->stats['query']++;
+			$this->stats['query']++;
 
 			if(isset($tResult)) {
 				return $tResult;
@@ -470,7 +454,7 @@ if(Extensions::isSelected('database')) {
 			return false;
 		}
 
-		private function &querySetInternal($uProps) {
+		public function &datasetSetInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
 //
@@ -486,76 +470,92 @@ if(Extensions::isSelected('database')) {
 //				$uProps = &$tPropMaps;
 //			}
 
-			$uPropsSerialized = $this->id;
+			$uPropsSerialized = $uDataset->id;
 			foreach($uProps as &$tProp) {
 				$uPropsSerialized .= '_' . io::sanitize($tProp);
 			}
 
-			$tFileName = $this->database->id . '_' . $uPropsSerialized;
-			$tFilePath = $this->database->cachePath . $tFileName;
+			$tFileName = $this->id . '_' . $uPropsSerialized;
+			$tFilePath = $this->cachePath . $tFileName;
 
 			$tData = null;
 			$tLoadedFromCache = false;
 
-			if(isset($this->database->cache[$uPropsSerialized])) {
-				$tData = &$this->database->cache[$uPropsSerialized];
+			if(isset($this->cache[$uPropsSerialized])) {
+				$tData = &$this->cache[$uPropsSerialized];
 				$tData['data']->iterator->rewind(); // rewind ArrayIterator
 				$tLoadedFromCache = true;
 			}
-			else if($this->cacheLife > 0 && is_readable($tFilePath)) {
-				$tData = io::readSerialize($tFilePath, $this->database->keyphase);
+			else if($uDataset->cacheLife > 0 && is_readable($tFilePath)) {
+				$tData = io::readSerialize($tFilePath, $this->keyphase);
 				$tLoadedFromCache = true;
 
-				$this->database->cache[$uPropsSerialized] = &$tData;
+				$this->cache[$uPropsSerialized] = &$tData;
 			}
 
-			if(is_null($tData) || ($tData['lastmod'] + $this->cacheLife < time())) {
-				if($this->transaction) {
-					$this->database->beginTransaction();
+			if(is_null($tData) || ($tData['lastmod'] + $uDataset->cacheLife < time())) {
+				if($uDataset->transaction) {
+					$this->beginTransaction();
 				}
 
 				try {
 					$tCount = 0;
 					$tArray = array();
 
-					foreach($this->parameters as &$tParam) {
+					foreach($uDataset->parameters as &$tParam) {
 						$tArray[$tParam] = $uProps[$tCount++];
 					}
 
-					$tQueryExecute = string::format($this->queryString, $tArray);
+					$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
 					if(Framework::$debug) {
 						echo 'query: ', $tQueryExecute, "\n";
 					}
 
 					$tData = array(
-						'data' => $this->database->querySet($tQueryExecute),
+						'data' => $this->querySet($tQueryExecute),
 						'lastmod' => time()
 					);
 
-					if($this->database->inTransaction) {
-						$this->database->commit();
+					if($this->inTransaction) {
+						$this->commit();
 					}
 
-					if($this->cacheLife > 0) {
-						$this->database->cache[$uPropsSerialized] = &$tData;
-						io::writeSerialize($tFilePath, $tData, $this->database->keyphase);
+					if($uDataset->cacheLife > 0) {
+						$this->cache[$uPropsSerialized] = &$tData;
+						io::writeSerialize($tFilePath, $tData, $this->keyphase);
 					}
 				}
 				catch(PDOException $ex) {
-					if($this->database->inTransaction) {
-						$this->database->rollBack();
+					if($this->inTransaction) {
+						$this->rollBack();
 					}
 
 					throw new PDOException($ex->getMessage());
 				}
 
-				$this->database->stats['query']++;
+				$this->stats['query']++;
 			} else {
-				$this->database->stats['cache']++;
+				$this->stats['cache']++;
 			}
 
 			return $tData;
+		}
+	}
+
+	class DatabaseDataset {
+		public $id;
+		public $queryString;
+		public $parameters;
+		public $cacheLife;
+		public $transaction;
+
+		public function __construct($uConfig) {
+			$this->id = $uConfig['@id'];
+			$this->queryString = $uConfig['.'];
+			$this->parameters = strlen($uConfig['@parameters']) > 0 ? explode(',', $uConfig['@parameters']) : array();
+			$this->cacheLife = isset($uConfig['@cacheLife']) ? (int)$uConfig['@cacheLife'] : 0;
+			$this->transaction = isset($uConfig['@transaction']);
 		}
 	}
 	
@@ -720,10 +720,6 @@ if(Extensions::isSelected('database')) {
 			return $this;
 		}
 
-		public function dataset($uDataset) {
-			return $this->database->datasets[$uDataset];
-		}
-
 		public function insert() {
 			$this->database->query(database::sqlInsert($this->table, $this->fields), $this->parameters);
 
@@ -834,6 +830,55 @@ if(Extensions::isSelected('database')) {
 
 			return $tReturn;
 		}
+
+		// Eser -- COPIED FROM DatabaseConnection - BEGIN
+		public function dataset() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
+
+			return $this->database->datasetInternal(database::$datasets[$uDataset], $uProps);
+		}
+
+		public function &datasetFetch() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
+
+			return $this->database->datasetFetchInternal(database::$datasets[$uDataset], $uProps);
+		}
+
+		public function datasetSet() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
+			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
+
+			return $tData['data'];
+		}
+
+		public function datasetRow() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
+			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
+
+			if(count($tData['data']) > 0) {
+				return $tData['data'][0];
+			}
+
+			return null;
+		}
+
+		public function datasetScalar() {
+			$uProps = func_get_args();
+			$uDataset = array_shift($uProps);
+
+			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
+
+			if(count($tData['data']) > 0) {
+				return current($tData['data'][0]);
+			}
+
+			return null;
+		}
+		// Eser -- COPIED FROM DatabaseConnection - END
 	}
 
 	class DataRowsIterator extends NoRewindIterator implements Countable {

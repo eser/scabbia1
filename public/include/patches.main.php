@@ -1,6 +1,6 @@
 <?php
 
-	if(!function_exists('fnmatch')) { function fnmatch($uPattern, $uString) {
+	if(!function_exists('fnmatch3')) { function fnmatch3($uPattern, $uString) {
 		for($tBrackets = 0, $tPregPattern = '', $tCount = 0, $tLen = strlen($uPattern); $tCount < $tLen; $tCount++) {
 			$tChar = $uPattern[$tCount];
 
@@ -32,24 +32,47 @@
 		return preg_match('/' . $tPregPattern . '/i', $uString);
 	} }
 
-	if(!function_exists('glob2')) { function glob2($uPattern) {
+	if(!function_exists('glob3')) { function &glob3($uPattern, $uDirectories = true, $uRecursive = false, &$uArray = null) {
 		$tPath = pathinfo($uPattern, PATHINFO_DIRNAME);
 
-		if(($tDir = opendir($tPath)) !== false) {
-			$tGlob = array();
-			while(($tFile = readdir($tDir)) !== false) {
-				if($tFile == '.' || $tFile == '..') {
+		if(is_null($uArray)) {
+			$uArray = array();
+		}
+
+		try {
+			$tDir = new DirectoryIterator($tPath);
+
+			foreach($tDir as $tFile) {
+				if($tFile->isDot()) {
 					continue;
 				}
-				$tFile2 = $tPath . '/' . $tFile;
 
-				if(fnmatch($uPattern, $tFile2)) {
-					$tGlob[] = $tFile2;
+				$tFile2 = $tPath . '/' . $tFile->getFilename();
+
+				if($tFile->isDir()) {
+					$tFile2 .= '/';
+
+					if($uRecursive) {
+						$tBasename = pathinfo($uPattern, PATHINFO_BASENAME);
+						$tPattern2 = $tFile2 . $tBasename;
+
+						// $uArray = array_merge($tGlob, glob3($tPattern2, $uDirectories, true));
+						glob3($tPattern2, $uDirectories, true, $uArray);
+					}
+				}
+
+				if(!$uDirectories && !$tFile->isFile()) {
+					continue;
+				}
+
+				if(fnmatch3($uPattern, $tFile2)) {
+					$uArray[] = $tFile2;
 				}
 			}
-			closedir($tDir);
 
-			return $tGlob;
+			return $uArray;
+		}
+		catch(Exception $tException) { 
 		}
 
 		return false;

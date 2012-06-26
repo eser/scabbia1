@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<http>
-		<request parsingType="2" getParameters="?&amp;" getKeys="=" /> <!-- getParameters="," getKeys=":" -->
+		<request parsingType="2" getParameters="?&amp;," getKeys="=:" getSeperator="/" /> <!-- getParameters="," getKeys=":" -->
 		
 		<rewriteList>
 			<rewrite match="(\w+)/contacts" forward="home/mvc/$1/why" />
@@ -51,15 +51,14 @@
 	</session>
 
 	<access>
-		<maintenance mode="1" page="{app}views/static_maintenance.php" />
+		<maintenance mode="0" page="{app}views/static_maintenance.php" />
 		<maintenanceExcludeList>
-			<maintenanceExclude ip="83.66.165.43" />
 			<maintenanceExclude ip="127.0.0.1" />
 		</maintenanceExcludeList>
 
 		<ipFilter page="{app}views/static_ipban.php" />
 		<ipFilterList>
-			<ipFilter type="deny" pattern="127.0.0.?" />
+			<!-- <ipFilter type="deny" pattern="127.0.0.?" /> -->
 			<ipFilter type="allow" pattern="*.*.*.*" />
 		</ipFilterList>
 	</access>
