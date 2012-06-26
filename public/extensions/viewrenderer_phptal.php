@@ -64,6 +64,10 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			self::$renderer->setOutputMode(PHPTAL::HTML5);
 			self::$renderer->setEncoding('UTF-8');
 			self::$renderer->setTemplate($uObject['viewFile']);
+			if(Framework::$development) {
+				self::$renderer->prepare();
+			}
+
 			self::$renderer->echoExecute();
 		}
 	}

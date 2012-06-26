@@ -39,6 +39,10 @@ if(Extensions::isSelected('viewrenderer_smarty')) {
 
 				self::$renderer->setTemplateDir(self::$templatePath . '/');
 				self::$renderer->setCompileDir(self::$compiledPath . '/');
+
+				if(Framework::$development) {
+					self::$renderer->force_compile = true;
+				}
 			}
 			else {
 				self::$renderer->clearAllAssign();

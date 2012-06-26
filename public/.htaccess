@@ -5,7 +5,7 @@ DirectoryIndex index.php
 	Options +FollowSymLinks -Indexes
 	RewriteEngine on
 
-	AllowOverride All
+	#AllowOverride All
 	#RewriteBase /Scabbia/Framework/path
 
 	# Keep people out of framework directory and Git/Mercurial data
@@ -14,6 +14,7 @@ DirectoryIndex index.php
 	# Send request via index.php (again, not if its a real file or folder)
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{URL} ^/favicon.ico$
 
 	<IfModule mod_php5.c>
 		RewriteRule ^(.*)$ index.php?/$1 [QSA,L]

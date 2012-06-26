@@ -38,9 +38,16 @@ if(Extensions::isSelected('viewrenderer_twig')) {
 
 				Twig_Autoloader::register();
 				self::$loader = new Twig_Loader_Filesystem(self::$templatePath);
-				self::$renderer = new Twig_Environment(self::$loader, array(
+
+				$tOptions = array(
 					'cache' => self::$compiledPath
-				));
+				);
+
+				if(Framework::$development) {
+					$tOptions['auto_reload'] = true;
+				}
+
+				self::$renderer = new Twig_Environment(self::$loader, $tOptions);
 			}
 			
 			echo self::$renderer->render($uObject['viewFile'], array_combine($uObject['model'], $uObject['extra']));

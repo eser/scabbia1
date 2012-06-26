@@ -34,7 +34,7 @@ if(Extensions::isSelected('viewrenderer_razor')) {
 			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 			$tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
 
-			if(!file_exists($tOutputFile)) {
+			if(Framework::$development || !file_exists($tOutputFile)) {
 				if(is_null(self::$renderer)) {
 					self::$renderer = new RazorViewRenderer();
 				}

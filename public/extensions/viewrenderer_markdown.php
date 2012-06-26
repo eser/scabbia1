@@ -34,7 +34,7 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 			$tOutputFile = self::$compiledPath . '/md_' . $uObject['viewFile']; // . QEXT_PHP
 
-			if(!file_exists($tOutputFile)) {
+			if(Framework::$development || !file_exists($tOutputFile)) {
 				if(is_null(self::$renderer)) {
 					self::$renderer = new Markdown_Parser();
 				}

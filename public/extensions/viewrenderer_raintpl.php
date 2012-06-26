@@ -40,6 +40,10 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 				raintpl::configure('tpl_ext', self::$extension);
 				raintpl::configure('cache_dir', self::$compiledPath . '/');
 
+				if(Framework::$development) {
+					raintpl::configure('check_template_update', true);
+				}
+
 				self::$renderer = new RainTPL();
 			}
 			else {
