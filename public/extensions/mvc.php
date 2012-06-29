@@ -1,12 +1,14 @@
 <?php
 
-if(Extensions::isSelected('mvc')) {
+if(extensions::isSelected('mvc')) {
 	class mvc {
 		public static $controller = null;
 		public static $controllerActual = null;
 		public static $controllerClass = null;
 		public static $action = null;
 		public static $actionActual = null;
+		public static $defaultController = null;
+		public static $defaultAction = null;
 
 		public static function extension_info() {
 			return array(
@@ -20,35 +22,35 @@ if(Extensions::isSelected('mvc')) {
 		}
 		
 		public static function extension_load() {
-			$tAutoRun = intval(Config::get('/mvc/@autorun', '1'));
+			self::$defaultController = config::get('/mvc/routing/@defaultController', 'home');
+			self::$defaultAction = config::get('/mvc/routing/@defaultAction', 'index');
+
+			$tAutoRun = intval(config::get('/mvc/@autorun', '1'));
 
 			if($tAutoRun) {
-				Events::register('run', Events::Callback('mvc::run'));
+				events::register('run', events::Callback('mvc::run'));
 			}
 		}
 
 		public static function run() {
-			$tDefaultController = Config::get('/mvc/routing/@defaultController', 'home');
-			$tDefaultAction = Config::get('/mvc/routing/@defaultAction', 'index');
+			$tNotfoundController = config::get('/mvc/routing/@notfoundController', 'home');
+			$tNotfoundAction = config::get('/mvc/routing/@notfoundAction', 'notfound');
 
-			$tNotfoundController = Config::get('/mvc/routing/@notfoundController', 'home');
-			$tNotfoundAction = Config::get('/mvc/routing/@notfoundAction', 'notfound');
-
-			$tControllerUrlKey = Config::get('/mvc/routing/@controllerUrlKey', '0');
-			$tActionUrlKey = Config::get('/mvc/routing/@actionUrlKey', '1');
+			$tControllerUrlKey = config::get('/mvc/routing/@controllerUrlKey', '0');
+			$tActionUrlKey = config::get('/mvc/routing/@actionUrlKey', '1');
 
 			if(array_key_exists($tControllerUrlKey, $_GET) && strlen($_GET[$tControllerUrlKey]) > 0) {
 				self::$controller = $_GET[$tControllerUrlKey];
 			}
 			else {
-				self::$controller = $tDefaultController;
+				self::$controller = self::$defaultController;
 			}
 			
 			if(array_key_exists($tActionUrlKey, $_GET) && strlen($_GET[$tActionUrlKey]) > 0) {
 				self::$action = $_GET[$tActionUrlKey];
 			}
 			else {
-				self::$action = $tDefaultAction;
+				self::$action = self::$defaultAction;
 			}
 
 			self::$controllerActual = self::$controller;
@@ -60,7 +62,7 @@ if(Extensions::isSelected('mvc')) {
 				self::$actionActual = self::$action;
 			}
 
-			Events::invoke('routing', array(
+			events::invoke('routing', array(
 				'controller' => &self::$controller,
 				'action' => &self::$action,
 				'controllerActual' => &self::$controllerActual,
@@ -91,9 +93,9 @@ if(Extensions::isSelected('mvc')) {
 			return new $uModelClass (null);
 		}
 
-		public static function loadview() {
-			$tViewNamePattern = Config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
-			$tViewDefaultExtension = Config::get('/mvc/view/@defaultExtension', QEXT_PHP);
+		public static function view() {
+			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
+			$tViewDefaultExtension = config::get('/mvc/view/@defaultExtension', QEXT_PHP);
 
 			$uArgs = func_get_args();
 			$uModel = isset($uArgs[0]) ? $uArgs[0] : null;
@@ -104,8 +106,8 @@ if(Extensions::isSelected('mvc')) {
 			}
 			else {
 				$tViewParameters = array(
-					'controller' => isset($uArgs[1]) ? $uArgs[1] : mvc::$controller,
-					'action' => isset($uArgs[2]) ? $uArgs[2] : mvc::$action,
+					'controller' => isset($uArgs[1]) ? $uArgs[1] : self::$controller,
+					'action' => isset($uArgs[2]) ? $uArgs[2] : self::$action,
 					'device' => isset($uArgs[3]) ? $uArgs[3] : http::$crawlerType,
 					'language' => isset($uArgs[4]) ? $uArgs[4] : i8n::$languageKey,
 					'extension' => isset($uArgs[5]) ? $uArgs[5] : $tViewDefaultExtension
@@ -116,25 +118,67 @@ if(Extensions::isSelected('mvc')) {
 			}
 
 			$tExtra = array(
-				'root' => Framework::$siteroot,
+				'root' => framework::$siteroot,
 				'lang' => i8n::$languageKey
 			);
 
-			Events::invoke('renderview', array(
+			events::invoke('renderview', array(
 				'viewFile' => &$tViewFile,
 				'viewExtension' => &$tViewExtension,
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			));
 		}
+
+		public static function json($uObject, $uOptions = 0) {
+			echo json_encode($uObject, $uOptions);
+		}
+
+		private static function url_internal($uArgs) {
+			$tQueryStringPattern = config::get('/mvc/routing/@queryStringPattern', '{@siteroot}/{@controller}/{@action}{@queryString}');
+
+			if(count($uArgs) == 1) {
+				if(!is_array($uArgs[0])) {
+					return $uArgs[0];
+				}
+
+				$tQueryParameters = array();
+				$tQueryParameters['siteroot'] = string::coalesce(array($uArgs[0], 'siteroot'), framework::$siteroot);
+				$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$controller, self::$defaultController);
+				$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
+				$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
+				$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$languageKey);
+				$tQueryParameters['queryString'] = string::coalesce(array($uArgs[0], 'queryString'), '');
+			}
+			else {
+				$tQueryParameters = array();
+				$tQueryParameters['siteroot'] = string::coalesce(framework::$siteroot);
+				$tQueryParameters['controller'] = string::coalesce(array($uArgs, 0), self::$controller, self::$defaultController);
+				$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
+				$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
+				$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$languageKey);
+				$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
+			}
+
+			return string::format($tQueryStringPattern, $tQueryParameters);
+		}
+
+		public static function url() {
+			return self::url_internal(func_get_args());
+		}
+		
+		public static function redirect() {
+			$tQuery = self::url_internal(func_get_args());
+			http::sendRedirect($tQuery, true);
+		}
 	}
 	
-	abstract class Model {
+	abstract class model {
 		public $controller;
 
 		public function __construct($uController = null) {
 			$this->controller = &$uController;
-			$this->db = new DatabaseQuery(database::get()); // default database to member 'db'
+			$this->db = new databaseQuery(database::get()); // default database to member 'db'
 		}
 
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
@@ -142,11 +186,11 @@ if(Extensions::isSelected('mvc')) {
 				$uMemberName = $uDatabaseName;
 			}
 
-			$this->{$uMemberName} = new DatabaseQuery(database::get($uDatabaseName));
+			$this->{$uMemberName} = new databaseQuery(database::get($uDatabaseName));
 		}
 	}
 
-	abstract class Controller {
+	abstract class controller {
 		public $defaultView;
 
 		public function loadmodel($uModelClass, $uMemberName = null) {
@@ -157,7 +201,7 @@ if(Extensions::isSelected('mvc')) {
 			$this->{$uMemberName} = new $uModelClass ($this);
 		}
 
-		public function loadview() {
+		public function view() {
 			$uArgs = func_get_args();
 
 			switch(count($uArgs)) {
@@ -170,7 +214,17 @@ if(Extensions::isSelected('mvc')) {
 				break;
 			}
 
-			call_user_func_array('mvc::loadview', $uArgs);
+			call_user_func_array('mvc::view', $uArgs);
+		}
+
+		public function json() {
+			$uArgs = func_get_args();
+			call_user_func_array('mvc::json', $uArgs);
+		}
+
+		public function redirect() {
+			$uArgs = func_get_args();
+			call_user_func_array('mvc::redirect', $uArgs);
 		}
 
 		public function error($uMessage) {
@@ -179,7 +233,7 @@ if(Extensions::isSelected('mvc')) {
 				'message' => $uMessage
 			);
 
-			call_user_func('mvc::loadview', $tViewbag, 'shared_error.cshtml');
+			call_user_func('mvc::view', $tViewbag, 'shared_error.cshtml');
 			exit(1);
 		}
 

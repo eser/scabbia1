@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('viewrenderer_php')) {
+if(extensions::isSelected('viewrenderer_php')) {
 	class viewrenderer_php {
 		public static $extension;
 		public static $templatePath;
@@ -17,10 +17,10 @@ if(Extensions::isSelected('viewrenderer_php')) {
 		}
 
 		public static function extension_load() {
-			Events::register('renderview', Events::Callback('viewrenderer_php::renderview'));
+			events::register('renderview', events::Callback('viewrenderer_php::renderview'));
 
-			self::$extension = Config::get('/php/templates/@extension', '.php');
-			self::$templatePath = Framework::translatePath(Config::get('/php/templates/@templatePath', '{app}views'));
+			self::$extension = config::get('/php/templates/@extension', '.php');
+			self::$templatePath = framework::translatePath(config::get('/php/templates/@templatePath', '{app}views'));
 		}
 
 		public static function renderview($uObject) {

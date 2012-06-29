@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('viewrenderer_razor')) {
+if(extensions::isSelected('viewrenderer_razor')) {
 	class viewrenderer_razor {
 		public static $renderer = null;
 		public static $extension;
@@ -19,11 +19,11 @@ if(Extensions::isSelected('viewrenderer_razor')) {
 		}
 
 		public static function extension_load() {
-			Events::register('renderview', Events::Callback('viewrenderer_razor::renderview'));
+			events::register('renderview', events::Callback('viewrenderer_razor::renderview'));
 
-			self::$extension = Config::get('/razor/templates/@extension', '.cshtml');
-			self::$templatePath = Framework::translatePath(Config::get('/razor/templates/@templatePath', '{app}views'));
-			self::$compiledPath = Framework::translatePath(Config::get('/razor/templates/@compiledPath', '{app}writable/compiledViews'));
+			self::$extension = config::get('/razor/templates/@extension', '.cshtml');
+			self::$templatePath = framework::translatePath(config::get('/razor/templates/@templatePath', '{app}views'));
+			self::$compiledPath = framework::translatePath(config::get('/razor/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -34,7 +34,9 @@ if(Extensions::isSelected('viewrenderer_razor')) {
 			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 			$tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
 
-			if(Framework::$development || !file_exists($tOutputFile)) {
+			// cengiz: Render if file not exist
+			// or debug mode on
+			if(framework::$development || !file_exists($tOutputFile)) {
 				if(is_null(self::$renderer)) {
 					self::$renderer = new RazorViewRenderer();
 				}

@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('repository')) {
+if(extensions::isSelected('repository')) {
 	class repository {
 		public static $packageKey = null;
 		public static $packages = array();
@@ -17,21 +17,21 @@ if(Extensions::isSelected('repository')) {
 		}
 		
 		public static function extension_load() {
-			Events::register('run', Events::Callback('repository::run'));
+			events::register('run', events::Callback('repository::run'));
 
-			foreach(Config::get('/repository/packageList', array()) as $tPackage) {
+			foreach(config::get('/repository/packageList', array()) as $tPackage) {
 				self::$packages[$tPackage['@name']] = array();
 
 				foreach($tPackage['fileList'] as &$tFile) {
-					self::$packages[$tPackage['@name']][] = Framework::translatePath($tFile['@path']);
+					self::$packages[$tPackage['@name']][] = framework::translatePath($tFile['@path']);
 				}
 			}
 		}
 
 		public static function run() {
-			$tCheckUrlKey = Config::get('/repository/routing/@repositoryCheckUrlKey', 'rep');
-			$tCheckUrlValue = Config::get('/repository/routing/@repositoryCheckUrlValue', '');
-			$tPackageUrlKey = Config::get('/repository/routing/@repositoryPackageUrlKey', $tCheckUrlKey);
+			$tCheckUrlKey = config::get('/repository/routing/@repositoryCheckUrlKey', 'rep');
+			$tCheckUrlValue = config::get('/repository/routing/@repositoryCheckUrlValue', '');
+			$tPackageUrlKey = config::get('/repository/routing/@repositoryPackageUrlKey', $tCheckUrlKey);
 
 			if(array_key_exists($tCheckUrlKey, $_GET)) {
 				if(strlen($tCheckUrlValue) == 0) {
@@ -47,7 +47,7 @@ if(Extensions::isSelected('repository')) {
 					$tMimetype = io::getMimeType('phps');
 
 					header('Content-Type: ' . $tMimetype, true);
-					Framework::printFiles(self::$packages[self::$packageKey]);
+					framework::printFiles(self::$packages[self::$packageKey]);
 
 					// to interrupt event-chain execution
 					return false;

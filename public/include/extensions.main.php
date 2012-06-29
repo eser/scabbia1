@@ -1,11 +1,11 @@
 <?php
 
-	class Extensions {
+	class extensions {
 		public static $selected = array();
 		public static $loaded = array();
 
 		public static function init() {
-			$tExtensions = Config::get('/extensionList', array());
+			$tExtensions = config::get('/extensionList', array());
 
 			foreach($tExtensions as &$tExtension) {
 				self::$selected[] = $tExtension['@name'];

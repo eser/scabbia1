@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('session')) {
+if(extensions::isSelected('session')) {
 	class session {
 		public static $id = null;
 		public static $data = null;
@@ -24,15 +24,15 @@ if(Extensions::isSelected('session')) {
 		}
 		
 		public static function extension_load() {
-			self::$sessionName = Config::get('/session/cookie/@name', 'sessid');
-			self::$sessionLife = intval(Config::get('/session/cookie/@life', '0'));
-			self::$keyphase = Config::get('/session/cookie/@keyphase', null);
+			self::$sessionName = config::get('/session/cookie/@name', 'sessid');
+			self::$sessionLife = intval(config::get('/session/cookie/@life', '0'));
+			self::$keyphase = config::get('/session/cookie/@keyphase', null);
 
 			if(array_key_exists(self::$sessionName, $_COOKIE)) {
 				self::$id = $_COOKIE[self::$sessionName];
 			}
 
-			Events::register('output', Events::Callback('session::output'));
+			events::register('output', events::Callback('session::output'));
 			
 			self::$directory = QPATH_APP . 'writable/sessions/';
 		}
@@ -45,8 +45,8 @@ if(Extensions::isSelected('session')) {
 
 		private static function open() {
 			if(!is_null(self::$id)) {
-				$tIpCheck = (bool)Config::get('/session/cookie/@ipCheck', '0');
-				$tUACheck = (bool)Config::get('/session/cookie/@uaCheck', '1');
+				$tIpCheck = (bool)config::get('/session/cookie/@ipCheck', '0');
+				$tUACheck = (bool)config::get('/session/cookie/@uaCheck', '1');
 
 				$tFilename = self::$directory . self::$id;
 
@@ -71,7 +71,7 @@ if(Extensions::isSelected('session')) {
 		}
 
 		public static function save() {
-			$tKeyphase = Config::get('/session/cookie/@keyphase', null);
+			$tKeyphase = config::get('/session/cookie/@keyphase', null);
 
 			if(is_null(self::$id)) {
 				self::$id = io::sanitize(string::generateUuid());

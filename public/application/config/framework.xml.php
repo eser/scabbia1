@@ -17,6 +17,7 @@
 	<downloadList>
 		<!-- <download filename="stopwatch2.php" url="http://localhost/blackmorep/res/stopwatch2.txt" /> -->
 	</downloadList>
+
 	<includeList>
 		<include path="{core}include/3rdparty/facebook-php-sdk-3.1.1/src/base_facebook.php" />
 		<include path="{core}extensions/*.php" />

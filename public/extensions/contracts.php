@@ -1,18 +1,23 @@
 <?php
 
-if(Extensions::isSelected('contracts')) {
+if(extensions::isSelected('contracts')) {
 	class contracts {
-		const IsNumeric = 1;
-		const IsEqual = 2;
-		const IsMinimum = 3;
-		const IsMinimumOrEqual = 4;
-		const IsMaximum = 5;
-		const IsMaximumOrEqual = 6;
-		const Length = 7;
-		const LengthMinimum = 8;
-		const LengthMaximum = 9;
-		const RegExp = 10;
-		const Custom = 0;
+		const isExist = 0;
+		const isRequired = 1;
+		const isNumeric = 2;
+		const isEqual = 3;
+		const isMinimum = 4;
+		const isMinimumOrEqual = 5;
+		const isMaximum = 6;
+		const isMaximumOrEqual = 7;
+		const length = 8;
+		const lengthMinimum = 9;
+		const lengthMaximum = 10;
+		const regExp = 11;
+		const custom = 12;
+		const isEmail = 13;
+
+		const pregEmail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
 
 		public static function extension_info() {
 			return array(
@@ -25,168 +30,142 @@ if(Extensions::isSelected('contracts')) {
 			);
 		}
 
-		public static function check() {
-			$uRule = func_get_args();
-			$uController = array_shift($uRule);
-			$uValue = array_shift($uRule);
-
-			if(count($uRule) == 0) {
-				if(!$uValue) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
-					return false;
-				}
-
-				return true;
-			}
-
-			switch($uRule[0]) {
-			case self::IsNumeric:
-				if(!is_numeric($uRule[1])) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+		public static function test($uType, $uValue, $uArgs) {
+			switch($uType) {
+			case self::isRequired:
+				if(strlen(chop($uValue)) == 0) {
 					return false;
 				}
 
 				break;
-			case self::IsEqual:
-				for($tCount = count($uRule) - 1;$tCount > 0;$tCount--) {
-					if($uValue == $uRule[$tCount]) {
+			case self::isNumeric:
+				if(!is_numeric($uValue)) {
+					return false;
+				}
+
+				break;
+			case self::isEqual:
+				for($tCount = count($uArgs);$tCount > 0;$tCount--) {
+					if($uValue == $uArgs[$tCount]) {
 						$tPasses = true;
 						break;
 					}
 				}
-				
+
 				if(!isset($tPasses)) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
 					return false;
 				}
 
 				break;
-			case self::IsMinimum:
-				if($uValue >= $uRule[1]) { // inverse of <
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::isMinimum:
+				if($uValue >= $uArgs[0]) { // inverse of <
 					return false;
 				}
 
 				break;
-			case self::IsMinimumOrEqual:
-				if($uValue > $uRule[1]) { // inverse of <=
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::isMinimumOrEqual:
+				if($uValue > $uArgs[0]) { // inverse of <=
 					return false;
 				}
 
 				break;
-			case self::IsMaximum:
-				if($uValue <= $uRule[1]) { // inverse of >
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::isMaximum:
+				if($uValue <= $uArgs[0]) { // inverse of >
 					return false;
 				}
 
 				break;
-			case self::IsMaximumOrEqual:
-				if($uValue < $uRule[1]) { // inverse of >=
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::isMaximumOrEqual:
+				if($uValue < $uArgs[0]) { // inverse of >=
 					return false;
 				}
 
 				break;
-			case self::Length:
-				if(strlen($uValue) != $uRule[1]) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::length:
+				if(strlen($uValue) != $uArgs[0]) {
 					return false;
 				}
 
 				break;
-			case self::LengthMinimum:
-				if(strlen($uValue) < $uRule[1]) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::lengthMinimum:
+				if(strlen($uValue) < $uArgs[0]) { // inverse of >=
 					return false;
 				}
 
 				break;
-			case self::LengthMaximum:
-				if(strlen($uValue) > $uRule[1]) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::lengthMaximum:
+				if(strlen($uValue) > $uArgs[0]) {  // inverse of <=
 					return false;
 				}
 
 				break;
-			case self::RegExp:
-				if(!preg_match($uRule[1], $uValue)) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
-
-					$uController->error('Condition fail');
+			case self::regExp:
+				if(!preg_match($uArgs[0], $uValue)) {
 					return false;
 				}
 
 				break;
-			case self::Custom:
-				if(!call_user_func($uRule[1], $uValue)) {
-					if(is_null($uController)) {
-						// throw new Exception('Condition fail');
-						return false;
-					}
+			case self::custom:
+				if(!call_user_func($uArgs[0], $uValue)) {
+					return false;
+				}
 
-					$uController->error('Condition fail');
+				break;
+			case self::isEmail:
+				if(!preg_match(self::pregEmail, $uValue)) {
 					return false;
 				}
 
 				break;
 			}
-
+			
 			return true;
+		}
+
+		public static function __callStatic($uName, $uArgs) {
+			$tContractObject = new contractObject(
+				array_shift($uArgs),
+				constant('contracts::' . $uName),
+				$uArgs
+			);
+
+			return $tContractObject;
+		}
+	}
+
+	class contractObject {
+		public $value;
+		public $type;
+		public $args;
+
+		public function __construct($uValue, $uType, $uArgs) {
+			$this->value = $uValue;
+			$this->type = $uType;
+			$this->args = $uArgs;
+		}
+
+		public function error(&$uController, $uErrorMessage) {
+			if(contracts::test($this->type, $this->value, $this->args)) {
+				return;
+			}
+
+			$uController->error($uErrorMessage);
+		}
+
+		public function exception($uErrorMessage) {
+			if(contracts::test($this->type, $this->value, $this->args)) {
+				return;
+			}
+
+			throw new Exception($uErrorMessage);
+		}
+
+		public function check() {
+			if(contracts::test($this->type, $this->value, $this->args)) {
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

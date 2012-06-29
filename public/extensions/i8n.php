@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('i8n')) {
+if(extensions::isSelected('i8n')) {
 	class i8n {
 		public static $languages = array();
 		public static $language = null;
@@ -18,14 +18,14 @@ if(Extensions::isSelected('i8n')) {
 		}
 
 		public static function extension_load() {
-			foreach(Config::get('/i8n/languageList', array()) as $tLanguage) {
+			foreach(config::get('/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['@id']] = array(
 					'key' => $tLanguage['@id'],
 					'name' => $tLanguage['.']
 				);
 			}
 
-			$tLanguageKey = Config::get('/i8n/routing/@languageUrlKey', null);
+			$tLanguageKey = config::get('/i8n/routing/@languageUrlKey', null);
 
 			if(!is_null($tLanguageKey)) {
 				if(array_key_exists($tLanguageKey, $_GET)) {

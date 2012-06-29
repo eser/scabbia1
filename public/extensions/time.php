@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('time')) {
+if(extensions::isSelected('time')) {
 	class time {
 		public static function extension_info() {
 			return array(

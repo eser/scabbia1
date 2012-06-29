@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('logger')) {
+if(extensions::isSelected('logger')) {
 	class logger {
 		public static $filename;
 		public static $line;
@@ -19,8 +19,8 @@ if(Extensions::isSelected('logger')) {
 		}
 
 		public static function extension_load() {
-			self::$filename = Config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
-			self::$line = Config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
+			self::$filename = config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
+			self::$line = config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 			
 			self::$directory = QPATH_APP . 'writable/logs/';
 
@@ -64,7 +64,7 @@ if(Extensions::isSelected('logger')) {
 			}
 
 			$tIgnoreError = false;
-			Events::invoke('reportError', array(
+			events::invoke('reportError', array(
 				'type' => &$tType,
 				'message' => $uException->getMessage(),
 				'file' => $uException->getFile(),
@@ -76,12 +76,12 @@ if(Extensions::isSelected('logger')) {
 				http::sendStatus(500);
 				http::sendHeader('Content-Type', 'text/html', true);
 
-				Events::setDisabled(true);
-				$tEventDepth = Events::getEventDepth();
+				events::setDisabled(true);
+				$tEventDepth = events::getEventDepth();
 
 				for($tCount = ob_get_level(); --$tCount > 1;ob_end_flush());
 
-				if(Framework::$development) {
+				if(framework::$development) {
 					$tDeveloperLocation = pathinfo($uException->getFile(), PATHINFO_FILENAME) . ' @' . $uException->getLine();
 				}
 				else {
@@ -93,7 +93,7 @@ if(Extensions::isSelected('logger')) {
 				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . self::$eof;
 				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uException->getMessage() . '</div>' . self::$eof;
 
-				if(Framework::$development) {
+				if(framework::$development) {
 					if(count($tEventDepth) > 0) {
 						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b>' . implode('<br />' . self::$eof, $tEventDepth) . '</div>' . self::$eof;
 					}

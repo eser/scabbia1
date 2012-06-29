@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('viewrenderer_markdown')) {
+if(extensions::isSelected('viewrenderer_markdown')) {
 	class viewrenderer_markdown {
 		public static $renderer = null;
 		public static $extension;
@@ -19,11 +19,11 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 		}
 
 		public static function extension_load() {
-			Events::register('renderview', Events::Callback('viewrenderer_markdown::renderview'));
+			events::register('renderview', events::Callback('viewrenderer_markdown::renderview'));
 
-			self::$extension = Config::get('/markdown/templates/@extension', '.md');
-			self::$templatePath = Framework::translatePath(Config::get('/markdown/templates/@templatePath', '{app}views'));
-			self::$compiledPath = Framework::translatePath(Config::get('/markdown/templates/@compiledPath', '{app}writable/compiledViews'));
+			self::$extension = config::get('/markdown/templates/@extension', '.md');
+			self::$templatePath = framework::translatePath(config::get('/markdown/templates/@templatePath', '{app}views'));
+			self::$compiledPath = framework::translatePath(config::get('/markdown/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -34,7 +34,7 @@ if(Extensions::isSelected('viewrenderer_markdown')) {
 			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
 			$tOutputFile = self::$compiledPath . '/md_' . $uObject['viewFile']; // . QEXT_PHP
 
-			if(Framework::$development || !file_exists($tOutputFile)) {
+			if(framework::$development || !file_exists($tOutputFile)) {
 				if(is_null(self::$renderer)) {
 					self::$renderer = new Markdown_Parser();
 				}

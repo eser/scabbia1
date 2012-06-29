@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('database')) {
+if(extensions::isSelected('database')) {
 	class database {
 		public static $databases = array();
 		public static $datasets = array();
@@ -19,7 +19,7 @@ if(Extensions::isSelected('database')) {
 
 		public static function extension_load() {
 			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
-				$tDatabase = new DatabaseConnection($tDatabaseConfig);
+				$tDatabase = new databaseConnection($tDatabaseConfig);
 				self::$databases[$tDatabase->id] = $tDatabase;
 
 				if(is_null(self::$default) || $tDatabase->default) {
@@ -28,7 +28,7 @@ if(Extensions::isSelected('database')) {
 			}
 
 			foreach(config::get('/datasetList', array()) as $tDatasetConfig) {
-				$tDataset = new DatabaseDataset($tDatasetConfig);
+				$tDataset = new databaseDataset($tDatasetConfig);
 				self::$datasets[$tDataset->id] = $tDataset;
 			}
 		}
@@ -117,7 +117,7 @@ if(Extensions::isSelected('database')) {
 		}
 	}
 
-	class DatabaseConnection {
+	class databaseConnection {
 		public $id;
 		public $default;
 		protected $connection = null;
@@ -157,7 +157,7 @@ if(Extensions::isSelected('database')) {
 
 			$this->persistent = isset($uConfig['persistent']);
 			if(isset($uConfig['cachePath'])) {
-				$this->cachePath = Framework::translatePath($uConfig['cachePath']['.']);
+				$this->cachePath = framework::translatePath($uConfig['cachePath']['.']);
 			}
 			else {
 				$this->cachePath = QPATH_APP . 'writable/datasetCache/';
@@ -244,7 +244,7 @@ if(Extensions::isSelected('database')) {
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
 
-			$tIterator = new DataRowsIterator($tQuery);
+			$tIterator = new dataRowsIterator($tQuery);
 			return $tIterator;
 		}
 
@@ -370,7 +370,7 @@ if(Extensions::isSelected('database')) {
 
 				$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
-				if(Framework::$debug) {
+				if(framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
@@ -427,7 +427,7 @@ if(Extensions::isSelected('database')) {
 
 				$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
-				if(Framework::$debug) {
+				if(framework::$debug) {
 					echo 'query: ', $tQueryExecute, "\n";
 				}
 
@@ -508,7 +508,7 @@ if(Extensions::isSelected('database')) {
 
 					$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
-					if(Framework::$debug) {
+					if(framework::$debug) {
 						echo 'query: ', $tQueryExecute, "\n";
 					}
 
@@ -543,7 +543,7 @@ if(Extensions::isSelected('database')) {
 		}
 	}
 
-	class DatabaseDataset {
+	class databaseDataset {
 		public $id;
 		public $queryString;
 		public $parameters;
@@ -559,7 +559,7 @@ if(Extensions::isSelected('database')) {
 		}
 	}
 	
-	class DatabaseQuery {
+	class databaseQuery {
 		protected $database = null;
 
 		private $table;
@@ -570,6 +570,7 @@ if(Extensions::isSelected('database')) {
 		private $orderby;
 		private $limit;
 		private $offset;
+		private $sequence;
 
 		public function __construct(&$uDatabase = null) {
 			$this->setDatabase($uDatabase);
@@ -600,6 +601,7 @@ if(Extensions::isSelected('database')) {
 			$this->orderby = '';
 			$this->limit = -1;
 			$this->offset = -1;
+			$this->sequence = '';
 		}
 
 		public function setTable($uTableName) {
@@ -723,8 +725,8 @@ if(Extensions::isSelected('database')) {
 		public function insert() {
 			$this->database->query(database::sqlInsert($this->table, $this->fields), $this->parameters);
 
-			if($this->database->driver == 'pgsql') {
-				$tInsertId = $this->database->lastInsertId($this->table . '_id_seq');
+			if(!is_null($this->sequence) && strlen($this->sequence) > 0) {
+				$tInsertId = $this->database->lastInsertId($this->sequence);
 			}
 			else {
 				$tInsertId = $this->database->lastInsertId();
@@ -831,7 +833,7 @@ if(Extensions::isSelected('database')) {
 			return $tReturn;
 		}
 
-		// Eser -- COPIED FROM DatabaseConnection - BEGIN
+		// Eser -- COPIED FROM databaseConnection - BEGIN
 		public function dataset() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -878,10 +880,10 @@ if(Extensions::isSelected('database')) {
 
 			return null;
 		}
-		// Eser -- COPIED FROM DatabaseConnection - END
+		// Eser -- COPIED FROM databaseConnection - END
 	}
 
-	class DataRowsIterator extends NoRewindIterator implements Countable {
+	class dataRowsIterator extends NoRewindIterator implements Countable {
 		private $connection;
 		private $current;
 		private $count;

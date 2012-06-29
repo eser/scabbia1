@@ -1,6 +1,6 @@
 <?php
 	
-	class Config {
+	class config {
 		public static $default = null;
 		public static $development;
 		public static $socket;

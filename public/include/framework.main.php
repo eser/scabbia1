@@ -1,6 +1,6 @@
 <?php
 
-	class Framework {
+	class framework {
 		public static $includePaths = array();
 		public static $downloadUrls = array();
 		public static $development;
@@ -21,9 +21,9 @@
 		}
 
 		public static function load() {
-			self::$development = Config::$development;
-			self::$debug = (bool)Config::get('/options/debug/@value', '0');
-			self::$siteroot = Config::get('/options/siteroot/@value', '');
+			self::$development = config::$development;
+			self::$debug = (bool)config::get('/options/debug/@value', '0');
+			self::$siteroot = config::get('/options/siteroot/@value', '');
 			self::$directCall = !COMPILED;
 
 			if(strlen(self::$siteroot) <= 1) {
@@ -35,11 +35,11 @@
 			self::$siteroot = rtrim(self::$siteroot, '/');
 
 			// extensions
-			Extensions::init();
+			extensions::init();
 
 			if(!COMPILED) {
 				// downloads
-				$tDownloads = Config::get('/downloadList', array());
+				$tDownloads = config::get('/downloadList', array());
 
 				foreach($tDownloads as &$tDownload) {
 					self::$downloadUrls[$tDownload['@filename']] = $tDownload['@url'];
@@ -48,7 +48,7 @@
 				self::downloadFiles();
 
 				// includes
-				$tIncludes = Config::get('/includeList', array());
+				$tIncludes = config::get('/includeList', array());
 
 				foreach($tIncludes as &$tInclude) {
 					self::$includePaths[] = self::translatePath($tInclude['@path']);
@@ -69,7 +69,7 @@
 				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 
-			if(OUTPUT_GZIP && !PHP_SAPI_CLI && Config::get('/options/gzip/@value', '1') != '0') {
+			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get('/options/gzip/@value', '1') != '0') {
 				$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 
@@ -77,7 +77,7 @@
 		}
 
 		public static function run() {
-			ob_start('Framework::output');
+			ob_start('framework::output');
 			ob_implicit_flush(false);
 
 			if(!COMPILED) {
@@ -193,7 +193,7 @@
 				$tPath = QPATH_CORE . 'framework' . QEXT_PHP;
 				echo '<', '?php
 	require(', var_export($tPath), ');
-	Extensions::run();
+	extensions::run();
 ?', '>';
 			}
 			else {
@@ -227,11 +227,11 @@
 				echo php_strip_whitespace(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
 				echo php_strip_whitespace(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
 
-				echo '<', '?php Config::set(', Config::export(), '); Framework::load(); ?', '>';
+				echo '<', '?php config::set(', config::export(), '); framework::load(); ?', '>';
 
 				self::printIncludeFilesFromConfig();
 
-				echo '<', '?php Extensions::load(); Framework::run(); Extensions::run(); ?', '>';
+				echo '<', '?php extensions::load(); framework::run(); extensions::run(); ?', '>';
 				/* END   */
 			}
 

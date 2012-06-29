@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('string')) {
+if(extensions::isSelected('string')) {
 	class string {
 		public static function extension_info() {
 			return array(
@@ -16,6 +16,14 @@ if(Extensions::isSelected('string')) {
 		public static function coalesce() {
 			foreach(func_get_args() as $tValue) {
 				if(!is_null($tValue)) {
+					if(is_array($tValue)) {
+						if(isset($tValue[0][$tValue[1]]) && !is_null($tValue[0][$tValue[1]])) {
+							return $tValue[0][$tValue[1]];
+						}
+						
+						continue;
+					}
+
 					return $tValue;
 				}
 			}

@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('viewrenderer_phptal')) {
+if(extensions::isSelected('viewrenderer_phptal')) {
 	class viewrenderer_phptal {
 		public static $renderer = null;
 		public static $extension;
@@ -19,11 +19,11 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 		}
 
 		public static function extension_load() {
-			Events::register('renderview', Events::Callback('viewrenderer_phptal::renderview'));
+			events::register('renderview', events::Callback('viewrenderer_phptal::renderview'));
 
-			self::$extension = Config::get('/phptal/templates/@extension', '.zpt');
-			self::$templatePath = Framework::translatePath(Config::get('/phptal/templates/@templatePath', '{app}views'));
-			self::$compiledPath = Framework::translatePath(Config::get('/phptal/templates/@compiledPath', '{app}writable/compiledViews'));
+			self::$extension = config::get('/phptal/templates/@extension', '.zpt');
+			self::$templatePath = framework::translatePath(config::get('/phptal/templates/@templatePath', '{app}views'));
+			self::$compiledPath = framework::translatePath(config::get('/phptal/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,7 +32,7 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Framework::translatePath(Config::get('/phptal/installation/@path', '{core}include/3rdparty/PHPTAL'));
+				$tPath = framework::translatePath(config::get('/phptal/installation/@path', '{core}include/3rdparty/PHPTAL'));
 				require($tPath . '/PHPTAL.php');
 
 				self::$renderer = new PHPTAL();
@@ -64,7 +64,7 @@ if(Extensions::isSelected('viewrenderer_phptal')) {
 			self::$renderer->setOutputMode(PHPTAL::HTML5);
 			self::$renderer->setEncoding('UTF-8');
 			self::$renderer->setTemplate($uObject['viewFile']);
-			if(Framework::$development) {
+			if(framework::$development) {
 				self::$renderer->prepare();
 			}
 

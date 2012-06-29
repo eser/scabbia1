@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('stopwatch')) {
+if(extensions::isSelected('stopwatch')) {
 	class stopwatch {
 		public static $markers = array();
 

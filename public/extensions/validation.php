@@ -1,21 +1,9 @@
 <?php
 
-if(Extensions::isSelected('validation')) {
+if(extensions::isSelected('validation')) {
 	class validation {
 		public static $rules = array();
 		public static $summary = null;
-
-		const IsNumeric = 1;
-		const IsEqual = 2;
-		const IsMinimum = 3;
-		const IsMinimumOrEqual = 4;
-		const IsMaximum = 5;
-		const IsMaximumOrEqual = 6;
-		const Length = 7;
-		const LengthMinimum = 8;
-		const LengthMaximum = 9;
-		const RegExp = 10;
-		const Custom = 0;
 
 		public static function extension_info() {
 			return array(
@@ -24,23 +12,15 @@ if(Extensions::isSelected('validation')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string')
+				'fwdepends' => array('string', 'contracts')
 			);
 		}
 
-		public static function addRule() {
-			$uArgs = func_get_args();
-			$uKey = array_shift($uArgs);
+		public static function addRule($uKey) {
+			$tRule = new validationRule($uKey);
+			self::$rules[] = $tRule;
 
-			if(!array_key_exists($uKey, self::$rules)) {
-				self::$rules[$uKey] = array(
-					$uArgs
-				);
-
-				return;
-			}
-
-			self::$rules[$uKey][] = $uArgs;
+			return $tRule;
 		}
 
 		public static function clear() {
@@ -48,99 +28,101 @@ if(Extensions::isSelected('validation')) {
 			self::$summary = null;
 		}
 
-		public static function validate($uArray) {
-			self::$summary = array();
+		private static function addSummary($uRule) {
+			if(is_null(self::$summary)) {
+				self::$summary = array();
+			}
+			
+			if(!isset(self::$summary[$uRule->field])) {
+				self::$summary[$uRule->field] = array();
+			}
 
-			foreach($uArray as $tKey => &$tValue) {
-				if(!array_key_exists($tKey, self::$rules)) {
-					self::$summary[] = $tRule;
+			self::$summary[$uRule->field][] = $uRule;
+		}
+
+		public static function validate($uArray) {
+			foreach(self::$rules as &$tRule) {
+				if(!array_key_exists($tRule->field, $uArray)) {
+					if($tRule->type == contracts::isExist) {
+						self::addSummary($tRule);
+					}
+
 					continue;
 				}
 
-				foreach(self::$rules[$tKey] as &$tRule) {
-					switch($tRule[0]) {
-					case self::IsNumeric:
-						if(!is_numeric($tRule[1])) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::IsEqual:
-						for($tCount = count($tRule) - 1;$tCount > 0;$tCount--) {
-							if($tValue == $tRule[$tCount]) {
-								$tPasses = true;
-								break;
-							}
-						}
-
-						if(!isset($tPasses)) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::IsMinimum:
-						if($tValue >= $tRule[1]) { // inverse of <
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::IsMinimumOrEqual:
-						if($tValue > $tRule[1]) { // inverse of <=
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::IsMaximum:
-						if($tValue <= $tRule[1]) { // inverse of >
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::IsMaximumOrEqual:
-						if($tValue < $tRule[1]) { // inverse of >=
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::Length:
-						if(strlen($tValue) != $tRule[1]) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::LengthMinimum:
-						if(strlen($tValue) > $tRule[1]) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::LengthMaximum:
-						if(strlen($tValue) < $tRule[1]) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::RegExp:
-						if(!preg_match($tRule[1], $tValue)) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					case self::Custom:
-						if(!call_user_func($tRule[1], $tValue)) {
-							self::$summary[] = $tRule;
-						}
-
-						break;
-					}
+				if(!contracts::test($tRule->type, $uArray[$tRule->field], $tRule->args)) {
+					self::addSummary($tRule);
 				}
 			}
 
 			return (count(self::$summary) == 0);
 		}
 
+		public static function hasErrors() {
+			$uArgs = func_get_args();
+
+			if(count($uArgs) > 0) {
+				return array_key_exists($uArgs[0], self::$summary);
+			}
+
+			return (count(self::$summary) > 0);
+		}
+
+		public static function getErrors($uKey) {
+			if(!array_key_exists($uKey, self::$summary)) {
+				return false;
+			}
+
+			return self::$summary($uKey);
+		}
+
+		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
+			$tMessages = array();
+
+			foreach(self::$summary as $tKey => &$tField) {
+				if($uFilter !== false && $uFilter != $tKey) {
+					continue;
+				}
+
+				foreach($tField as &$tRule) {
+					if(is_null($tRule->errorMessage)) {
+						continue;
+					}
+
+					$tMessages[] = $tRule->errorMessage;
+					if($uFirsts) {
+						break;
+					}
+				}
+			}
+
+			return $tMessages;
+		}
+
 		public static function export() {
 			return string::vardump(self::$summary);
+		}
+	}
+
+	class validationRule {
+		public $field;
+		public $type;
+		public $args;
+		public $errorMessage;
+
+		public function __construct($uField) {
+			$this->field = $uField;
+		}
+
+		public function __call($uName, $uArgs) {
+			$this->type = constant('contracts::' . $uName);
+			$this->args = $uArgs;
+
+			return $this;
+		}
+
+		public function errorMessage($uErrorMessage) {
+			$this->errorMessage = $uErrorMessage;
 		}
 	}
 }

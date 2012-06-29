@@ -5,7 +5,9 @@
 		<routing
 			defaultController="home" defaultAction="index"
 			notfoundController="home" notfoundAction="notfound"
-			controllerUrlKey="0" actionUrlKey="1" />
+			controllerUrlKey="0" actionUrlKey="1"
+			queryStringPattern="{@siteroot}/{@controller}/{@action}{@queryString}"
+			/>
 
 		<!-- _{@device}_{@language} -->
 		<view	namePattern="{@controller}_{@action}{@extension}"

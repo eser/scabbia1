@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('http')) {
+if(extensions::isSelected('http')) {
 	class http {
 		public static $platform = null;
 		public static $crawler = null;
@@ -93,7 +93,7 @@ if(Extensions::isSelected('http')) {
 				self::$isAjax = true;
 			}
 
-			$tAutoCheckUserAgents = intval(Config::get('/http/userAgents/@autoCheck', '1'));
+			$tAutoCheckUserAgents = intval(config::get('/http/userAgents/@autoCheck', '1'));
 
 			if($tAutoCheckUserAgents) {
 				self::checkUserAgent();
@@ -102,10 +102,10 @@ if(Extensions::isSelected('http')) {
 			// self::$browser = get_browser(null, true);
 			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 			
-			$tParsingType = Config::get('/http/request/@parsingType', '0');
-			$tDefaultParameter = Config::get('/http/request/@getParameters', '?&');
-			$tDefaultKey = Config::get('/http/request/@getKeys', '=');
-			$tDefaultSeperator = Config::get('/http/request/@getSeperator', '/');
+			$tParsingType = config::get('/http/request/@parsingType', '0');
+			$tDefaultParameter = config::get('/http/request/@getParameters', '?&');
+			$tDefaultKey = config::get('/http/request/@getKeys', '=');
+			$tDefaultSeperator = config::get('/http/request/@getSeperator', '/');
 
 			if($tParsingType == '1') {
 				// if($tDefaultParameter != '?&' || $tDefaultKey != '=') {
@@ -291,13 +291,13 @@ if(Extensions::isSelected('http')) {
 		}
 		
 		public static function parseGetType1($uParameters = '?&', $uKeys = '=') {
-			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(Framework::$siteroot));
+			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot));
 			$tUri = $_SERVER['QUERY_STRING'];
 			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys);
 		}
 
 		public static function parseGetType2($uParameters = '?&', $uKeys = '=', $uSeperator = '/') {
-			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(Framework::$siteroot));
+			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot));
 			$tUri = $_SERVER['QUERY_STRING'];
 			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys, $uSeperator);
 		}
@@ -327,17 +327,25 @@ if(Extensions::isSelected('http')) {
 			return $_GET[$uKey];
 		}
 
-		public static function post($uKey, $uDefault = null) {
+		public static function post($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_POST)) {
 				return $uDefault;
+			}
+
+			if(!is_null($uFilter)) {
+				return call_user_func($uFilter, $_POST[$uKey]);
 			}
 
 			return $_POST[$uKey];
 		}
 
-		public static function cookie($uKey, $uDefault = null) {
+		public static function cookie($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_COOKIE)) {
 				return $uDefault;
+			}
+
+			if(!is_null($uFilter)) {
+				return call_user_func($uFilter, $_COOKIE[$uKey]);
 			}
 
 			return $_COOKIE[$uKey];

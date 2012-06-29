@@ -89,7 +89,7 @@
 		}
 		
 		public function notfound() {
-			return $this->error(string::format('404 not found! {@0}/{@1}', mvc::$controller, mvc::$action));
+			$this->error(string::format('404 not found! {@0}/{@1}', mvc::$controller, mvc::$action));
 		}
 
 		public static function tableRow($uRow) {

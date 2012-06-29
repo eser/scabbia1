@@ -1,6 +1,6 @@
 <?php
 
-	class Events {
+	class events {
 		public static $callbacks = array();
 		public static $eventDepth = array();
 		public static $disabled = false;
@@ -46,9 +46,9 @@
 			return self::$eventDepth;
 		}
 		
-		// usage1: Events::Callback('method', $this));
-		// usage2: Events::Callback('static::method'));
-		public static function Callback($uCallbackMethod, &$uCallbackObject = null) {
+		// usage1: events::callback('method', $this));
+		// usage2: events::callback('static::method'));
+		public static function callback($uCallbackMethod, &$uCallbackObject = null) {
 			if(func_num_args() >= 2) {
 				return array(&$uCallbackObject, $uCallbackMethod);
 			}

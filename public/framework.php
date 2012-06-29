@@ -45,11 +45,11 @@
 	require(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
 	require(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
 
-	Config::load();
-	Framework::load();
-	Extensions::load();
+	config::load();
+	framework::load();
+	extensions::load();
 
-	Framework::run();
-	// Extensions::run();
+	framework::run();
+	// extensions::run();
 
 ?>

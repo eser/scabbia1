@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('viewrenderer_raintpl')) {
+if(extensions::isSelected('viewrenderer_raintpl')) {
 	class viewrenderer_raintpl {
 		public static $renderer = null;
 		public static $extension;
@@ -19,11 +19,11 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 		}
 
 		public static function extension_load() {
-			Events::register('renderview', Events::Callback('viewrenderer_raintpl::renderview'));
+			events::register('renderview', events::Callback('viewrenderer_raintpl::renderview'));
 
-			self::$extension = Config::get('/raintpl/templates/@extension', '.rain');
-			self::$templatePath = Framework::translatePath(Config::get('/raintpl/templates/@templatePath', '{app}views'));
-			self::$compiledPath = Framework::translatePath(Config::get('/raintpl/templates/@compiledPath', '{app}writable/compiledViews'));
+			self::$extension = config::get('/raintpl/templates/@extension', '.rain');
+			self::$templatePath = framework::translatePath(config::get('/raintpl/templates/@templatePath', '{app}views'));
+			self::$compiledPath = framework::translatePath(config::get('/raintpl/templates/@compiledPath', '{app}writable/compiledViews'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,7 +32,7 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 			}
 
 			if(is_null(self::$renderer)) {
-				$tPath = Framework::translatePath(Config::get('/raintpl/installation/@path', '{core}include/3rdparty/raintpl/inc'));
+				$tPath = framework::translatePath(config::get('/raintpl/installation/@path', '{core}include/3rdparty/raintpl/inc'));
 				require($tPath . '/rain.tpl.class.php');
 
 				raintpl::configure('base_url', null);
@@ -40,7 +40,7 @@ if(Extensions::isSelected('viewrenderer_raintpl')) {
 				raintpl::configure('tpl_ext', self::$extension);
 				raintpl::configure('cache_dir', self::$compiledPath . '/');
 
-				if(Framework::$development) {
+				if(framework::$development) {
 					raintpl::configure('check_template_update', true);
 				}
 

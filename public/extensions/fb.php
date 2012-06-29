@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('fb')) {
+if(extensions::isSelected('fb')) {
 	class fb {
 		public static $appId;
 		public static $appSecret;
@@ -24,11 +24,11 @@ if(Extensions::isSelected('fb')) {
 		}
 
 		public static function extension_load() {
-			self::$appId = Config::get('/facebook/APP_ID/.');
-			self::$appSecret = Config::get('/facebook/APP_SECRET/.');
-			self::$appUrl = Config::get('/facebook/APP_URL/.');
-			self::$appPageId = Config::get('/facebook/APP_PAGE_ID/.');
-			self::$appRedirectUri = Config::get('/facebook/APP_REDIRECT_URI/.');
+			self::$appId = config::get('/facebook/APP_ID/.');
+			self::$appSecret = config::get('/facebook/APP_SECRET/.');
+			self::$appUrl = config::get('/facebook/APP_URL/.');
+			self::$appPageId = config::get('/facebook/APP_PAGE_ID/.');
+			self::$appRedirectUri = config::get('/facebook/APP_REDIRECT_URI/.');
 		}
 
 		public static function loadApi() {

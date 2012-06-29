@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('output')) {
+if(extensions::isSelected('output')) {
 	class output {
 		public static $effectList = array();
 

@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('io')) {
+if(extensions::isSelected('io')) {
 	class io {
 		public static function extension_info() {
 			return array(

@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('html')) {
+if(extensions::isSelected('html')) {
 	class html {
 		public static function extension_info() {
 			return array(
@@ -119,15 +119,15 @@ if(Extensions::isSelected('html')) {
 			if($tPages > 1) {
 				if($tCurrent <= 1) {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;'));
 				}
 				else {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
 				}
 
 				if($tStart > 1) {
@@ -140,10 +140,10 @@ if(Extensions::isSelected('html')) {
 
 			for($i = $tStart;$i <= $tEnd;$i++) {
 				if($tCurrent == $i) {
-					$tResult .= string::format($uOptions['activelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['activelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
 				}
 
 				if($i != $tEnd) {
@@ -160,15 +160,15 @@ if(Extensions::isSelected('html')) {
 				}
 
 				if($tCurrent >= $tPages) {
-					$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('root' => Framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 			}

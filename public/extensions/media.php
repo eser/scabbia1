@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('media')) {
+if(extensions::isSelected('media')) {
 	class media {
 		public static $cachePath;
 
@@ -16,7 +16,7 @@ if(Extensions::isSelected('media')) {
 		}
 
 		public static function extension_load() {
-			self::$cachePath = Framework::translatePath(Config::get('/media/@cachePath', '{app}cache/media'));
+			self::$cachePath = framework::translatePath(config::get('/media/@cachePath', '{app}cache/media'));
 		}
 
 		public static function file($uVars) {

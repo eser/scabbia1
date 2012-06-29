@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('unittest')) {
+if(extensions::isSelected('unittest')) {
 	class unittest {
 		public static $stack = array();
 		public static $report = array();

@@ -1,6 +1,6 @@
 <?php
 
-if(Extensions::isSelected('collections')) {
+if(extensions::isSelected('collections')) {
 	class collections {
 		public static function extension_info() {
 			return array(
@@ -14,7 +14,7 @@ if(Extensions::isSelected('collections')) {
 		}
 	}
 
-	class Collection implements ArrayAccess, IteratorAggregate {
+	class collection implements ArrayAccess, IteratorAggregate {
 		public $id;
 		public $tag;
 
@@ -157,7 +157,7 @@ if(Extensions::isSelected('collections')) {
 		}
 
 		public function combineKeys($uArray) {
-			if(is_subclass_of($uArray, 'Collection')) {
+			if(is_subclass_of($uArray, 'collection')) {
 				$uArray = $uArray->toArrayRef();
 			}
 
@@ -167,7 +167,7 @@ if(Extensions::isSelected('collections')) {
 		}
 
 		public function combineValues($uArray) {
-			if(is_subclass_of($uArray, 'Collection')) {
+			if(is_subclass_of($uArray, 'collection')) {
 				$uArray = $uArray->toArrayRef();
 			}
 
@@ -185,7 +185,7 @@ if(Extensions::isSelected('collections')) {
 		public function diff() {
 			$uParms = array(&$this->tag['items']);
 			foreach(func_get_args() as $tItem) {
-				if(is_subclass_of($tItem, 'Collection')) {
+				if(is_subclass_of($tItem, 'collection')) {
 					$uParms[] = $tItem->toArrayRef();
 				}
 				else {
@@ -214,7 +214,7 @@ if(Extensions::isSelected('collections')) {
 			$uParms = array(&$this->tag['items']);
 
 			foreach(func_get_args() as $tItem) {
-				if(is_subclass_of($tItem, 'Collection')) {
+				if(is_subclass_of($tItem, 'collection')) {
 					$uParms[] = $tItem->toArrayRef();
 				}
 				else {
@@ -243,7 +243,7 @@ if(Extensions::isSelected('collections')) {
 			$uParms = array(&$this->tag['items']);
 
 			foreach(func_get_args() as $tItem) {
-				if(is_subclass_of($tItem, 'Collection')) {
+				if(is_subclass_of($tItem, 'collection')) {
 					$uParms[] = $tItem->toArrayRef();
 				}
 				else {
@@ -259,7 +259,7 @@ if(Extensions::isSelected('collections')) {
 		public function merge() {
 			$uParms = array(&$this->tag['items']);
 			foreach(func_get_args() as $tItem) {
-				if(is_subclass_of($tItem, 'Collection')) {
+				if(is_subclass_of($tItem, 'collection')) {
 					$uParms[] = $tItem->toArrayRef();
 				}
 				else {
@@ -351,7 +351,7 @@ if(Extensions::isSelected('collections')) {
 		}
 
 		public function toCollection() {
-			return new Collection($this->tag['items']);
+			return new collection($this->tag['items']);
 		}
 
 		public function toArray() {
@@ -367,16 +367,16 @@ if(Extensions::isSelected('collections')) {
 		}
 	}
 	
-	class XmlCollection extends Collection {
+	class xmlCollection extends collection {
 		public static function fromString($uString) {
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_load_string($uString));
 
 			return $tTemp;
 		}
 
 		public static function fromFile($uFile) {
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_load_file($uFile));
 
 			return $tTemp;
@@ -388,7 +388,7 @@ if(Extensions::isSelected('collections')) {
 				$uFiles = $uFiles[0];
 			}
 
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			foreach($uFiles as &$tFile) {
 				$tTemp->add(simplexml_load_file($tFile));
 			}
@@ -414,7 +414,7 @@ if(Extensions::isSelected('collections')) {
 				$tPattern = '';
 			}
 
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			$tHandle = new DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
@@ -435,23 +435,23 @@ if(Extensions::isSelected('collections')) {
 		}
 
 		public static function fromSimplexml($uObject) {
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			$tTemp->add($uObject);
 
 			return $tTemp;
 		}
 
 		public static function fromDom($uDom) {
-			$tTemp = new XmlCollection();
+			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_import_dom($uDom));
 
 			return $tTemp;
 		}
 	}
 
-	class FileCollection extends Collection {
+	class fileCollection extends collection {
 		public static function fromFile($uFile) {
-			$tTemp = new FileCollection();
+			$tTemp = new fileCollection();
 			$tTemp->add($uFile);
 
 			return $tTemp;
@@ -463,7 +463,7 @@ if(Extensions::isSelected('collections')) {
 				$uFiles = $uFiles[0];
 			}
 
-			$tTemp = new FileCollection();
+			$tTemp = new fileCollection();
 
 			foreach($uFiles as &$tFile) {
 				$tTemp->add($tFile);
@@ -490,7 +490,7 @@ if(Extensions::isSelected('collections')) {
 				$tPattern = '';
 			}
 
-			$tTemp = new FileCollection();
+			$tTemp = new fileCollection();
 			$tHandle = new DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
