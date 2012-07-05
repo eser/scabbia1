@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('session')) {
+	/**
+	* Session Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo integrate with cache extension
+	*/
 	class session {
 		public static $id = null;
 		public static $data = null;
@@ -34,7 +42,7 @@ if(extensions::isSelected('session')) {
 
 			events::register('output', events::Callback('session::output'));
 			
-			self::$directory = QPATH_APP . 'writable/sessions/';
+			self::$directory = framework::$applicationPath . 'writable/sessions/';
 		}
 
 		public static function output() {

@@ -1,11 +1,17 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_razor')) {
+	/**
+	* ViewRenderer: Razor Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_razor {
 		public static $renderer = null;
 		public static $extension;
 		public static $templatePath;
-		public static $compiledPath;
+		public static $compiledAge;
 
 		public static function extension_info() {
 			return array(
@@ -23,7 +29,7 @@ if(extensions::isSelected('viewrenderer_razor')) {
 
 			self::$extension = config::get('/razor/templates/@extension', '.cshtml');
 			self::$templatePath = framework::translatePath(config::get('/razor/templates/@templatePath', '{app}views'));
-			self::$compiledPath = framework::translatePath(config::get('/razor/templates/@compiledPath', '{app}writable/compiledViews'));
+			self::$compiledAge = intval(config::get('/razor/templates/@compiledAge', '120'));
 		}
 
 		public static function renderview($uObject) {
@@ -32,16 +38,28 @@ if(extensions::isSelected('viewrenderer_razor')) {
 			}
 
 			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
-			$tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
+			// $tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
+			// if(
+			//	framework::$development ||
+			//	!file_exists($tOutputFile) ||
+			//	time() - filemtime($tOutputFile) >= self::$compiledAge
+			// ) {
+			//	if(is_null(self::$renderer)) {
+			//		self::$renderer = new RazorViewRenderer();
+			//	}
+			//
+			//	self::$renderer->generateViewFile($tInputFile, $tOutputFile);
+			// }
 
 			// cengiz: Render if file not exist
 			// or debug mode on
-			if(framework::$development || !file_exists($tOutputFile)) {
+			$tOutputFile = cache::getPath('razor', $uObject['viewFile'], self::$compiledAge);
+			if(!$tOutputFile[0]) {
 				if(is_null(self::$renderer)) {
 					self::$renderer = new RazorViewRenderer();
 				}
 
-				self::$renderer->generateViewFile($tInputFile, $tOutputFile);
+				self::$renderer->generateViewFile($tInputFile, $tOutputFile[1]);
 			}
 
 			// variable extraction
@@ -52,7 +70,7 @@ if(extensions::isSelected('viewrenderer_razor')) {
 
 			extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
 
-			require($tOutputFile);
+			require($tOutputFile[1]);
 		}
 	}
 

@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('string')) {
+	/**
+	* String Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo pluralize, singularize
+	*/
 	class string {
 		public static function extension_info() {
 			return array(
@@ -27,6 +35,25 @@ if(extensions::isSelected('string')) {
 					return $tValue;
 				}
 			}
+		}
+
+		public static function filter() {
+			$uArgs = func_get_args();
+			$uValue = array_shift($uArgs);
+
+			if(is_array($uArgs[0])) {
+				$uArgs = &$uArgs[0];
+			}
+
+			if(is_callable($uArgs[0], true)) {
+				$tFunction = $uArgs[0];
+				$uArgs[0] = $uValue;
+
+				return call_user_func_array($tFunction, $uArgs);
+			}
+
+			array_unshift($uArgs, $uValue);
+			return call_user_func_array('filter_var', $uArgs);
 		}
 
 		public static function format($uString) {
@@ -200,7 +227,7 @@ if(extensions::isSelected('string')) {
 
 			$tConsLen = count($aCons) - 1;
 			$tVowelsLen = count($aVowels) - 1;
-			for($tOutput = '', $tLen = strlen($tOutput);$tLen < $uLength;) {
+			for($tOutput = '';strlen($tOutput) < $uLength;) {
 				$tOutput .= $aCons[rand(0, $tConsLen)] . $aVowels[rand(0, $tVowelsLen)];
 			}
 
@@ -283,22 +310,6 @@ if(extensions::isSelected('string')) {
 			return $tOutput;
 		}
 
-		public static function normalize($uString) {
-			static $sTable = array(
-				 'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A',
-				 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I',
-				 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O',
-				 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a',
-				 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
-				 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o',
-				 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y',
-				 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f', 'Ş'=>'S', 'ş'=>'s', 'İ'=>'I', 'ı'=>'i', 'Ğ'=>'G',
-				 'ğ'=>'g', 'ü'=>'u'
-			);
-
-			return strtr($uString, $sTable);
-		}
-
 		public static function squote($uString) {
 			return strtr($uString, array('\\' => '\\\\', '\'' => '\\\''));
 		}
@@ -328,11 +339,15 @@ if(extensions::isSelected('string')) {
 		}
 
 		public static function toLower($uString) {
-			return strtolower($uString);
+			return mb_strtolower($uString, 'utf-8');
 		}
 
 		public static function toUpper($uString) {
-			return strtoupper($uString);
+			return mb_strtoupper($uString, 'utf-8');
+		}
+
+		public static function length($uString) {
+			return mb_strlen($uString, 'utf-8');
 		}
 
 		public static function sizeCalc($uSize, $uPrecision = 0) {
@@ -342,24 +357,19 @@ if(extensions::isSelected('string')) {
 			return round($uSize, $uPrecision) . ' ' . $tSize[$tCount] . 'B';
 		}
 
-		public static function htmlHighlight($uString, $uKeyword) {
-			if($uKeyword == '') {
-				return $uString;
-			}
+		public static function quantityCalc($uSize, $uPrecision = 0) {
+			static $tSize = ' KMGT';
+			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
 
-			$tPosition = strpos(self::toLower($uString), self::toLower($uKeyword));
+			return round($uSize, $uPrecision) . $tSize[$tCount];
+		}
 
-			if($tPosition === false) {
-				return $uString;
-			}
+		public static function htmlEscape($uString) {
+			return htmlspecialchars($uString, ENT_COMPAT, 'UTF-8'); //  | ENT_HTML5
+		}
 
-			return
-				substr($uString, 0, $tPosition) .
-				'<span style="background-color: yellow;">' .
-				substr($uString, $tPosition, strlen($uKeyword)) .
-				'</span>' .
-				substr($uString, $tPosition + strlen($uKeyword))
-			;
+		public static function htmlUnescape($uString) {
+			return htmlspecialchars_decode($uString, ENT_COMPAT); //  | ENT_HTML5
 		}
 
 		private static function readset_gquote($uString, &$uPosition) {
@@ -455,6 +465,8 @@ if(extensions::isSelected('string')) {
 
 				$tStrings = array('', '');
 			}
+			
+			$tSegmentCount = count($tParsed);
 
 			for(;$tPos < $tLen;$tPos++) {
 				if(strpos($uParameters, $uString[$tPos]) !== false) {
@@ -484,14 +496,32 @@ if(extensions::isSelected('string')) {
 				$tStrings = array('', '');
 			}
 
-			return $tParsed;
+			return array(
+				'segmentCount' => &$tSegmentCount,
+				'parsed' => $tParsed
+			);
 		}
 
 		public static function removeAccent($uString) {
-			$tAccented = array('À','Á','Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','Ø','Ù','Ú','Û','Ü','Ý','ß','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ø','ù','ú','û','ü','ý','ÿ','Ā','ā','Ă','ă','Ą','ą','Ć','ć','Ĉ','ĉ','Ċ','ċ','Č','č','Ď','ď','Đ','đ','Ē','ē','Ĕ','ĕ','Ė','ė','Ę','ę','Ě','ě','Ĝ','ĝ','Ğ','ğ','Ġ','ġ','Ģ','ģ','Ĥ','ĥ','Ħ','ħ','Ĩ','ĩ','Ī','ī','Ĭ','ĭ','Į','į','İ','ı','Ĳ','ĳ','Ĵ','ĵ','Ķ','ķ','Ĺ','ĺ','Ļ','ļ','Ľ','ľ','Ŀ','ŀ','Ł','ł','Ń','ń','Ņ','ņ','Ň','ň','ŉ','Ō','ō','Ŏ','ŏ','Ő','ő','Œ','œ','Ŕ','ŕ','Ŗ','ŗ','Ř','ř','Ś','ś','Ŝ','ŝ','Ş','ş','Š','š','Ţ','ţ','Ť','ť','Ŧ','ŧ','Ũ','ũ','Ū','ū','Ŭ','ŭ','Ů','ů','Ű','ű','Ų','ų','Ŵ','ŵ','Ŷ','ŷ','Ÿ','Ź','ź','Ż','ż','Ž','ž','ſ','ƒ','Ơ','ơ','Ư','ư','Ǎ','ǎ','Ǐ','ǐ','Ǒ','ǒ','Ǔ','ǔ','Ǖ','ǖ','Ǘ','ǘ','Ǚ','ǚ','Ǜ','ǜ','Ǻ','ǻ','Ǽ','ǽ','Ǿ','ǿ');
-			$tStraight = array('A','A','A','A','A','A','AE','C','E','E','E','E','I','I','I','I','D','N','O','O','O','O','O','O','U','U','U','U','Y','s','a','a','a','a','a','a','ae','c','e','e','e','e','i','i','i','i','n','o','o','o','o','o','o','u','u','u','u','y','y','A','a','A','a','A','a','C','c','C','c','C','c','C','c','D','d','D','d','E','e','E','e','E','e','E','e','E','e','G','g','G','g','G','g','G','g','H','h','H','h','I','i','I','i','I','i','I','i','I','i','IJ','ij','J','j','K','k','L','l','L','l','L','l','L','l','l','l','N','n','N','n','N','n','n','O','o','O','o','O','o','OE','oe','R','r','R','r','R','r','S','s','S','s','S','s','S','s','T','t','T','t','T','t','U','u','U','u','U','u','U','u','U','u','U','u','W','w','Y','y','Y','Z','z','Z','z','Z','z','s','f','O','o','U','u','A','a','I','i','O','o','U','u','U','u','U','u','U','u','U','u','A','a','AE','ae','O','o');
+			$tAccented = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ', 'þ', 'Þ', 'ð');
+			$tStraight = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o', 'b', 'B', 'o');
 
 			return str_replace($tAccented, $tStraight, $uString);
+		}
+
+		public static function removeInvisibles($uString) {
+			$tInvisibles = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 127);
+			$tOutput = '';
+
+			for($tCount = 0, $tLen = strlen($uString);$tCount < $tLen;$tCount++) {
+				if(in_array(ord($uString[$tCount]), $tInvisibles)) {
+					continue;
+				}
+
+				$tOutput .= $uString[$tCount];
+			}
+
+			return $tOutput;
 		}
 
 		public static function slug($uString) {
@@ -501,6 +531,31 @@ if(extensions::isSelected('string')) {
 
 			return $uString;
 		}
+
+        public static function ordinalize($uNumber) {
+            if(in_array(($uNumber % 100), range(11, 13))) {
+                return $uNumber . 'th';
+            }
+
+			switch ($uNumber % 10) {
+				case 1:
+					return $uNumber . 'st';
+					break;
+				case 2:
+					return $uNumber . 'nd';
+					break;
+				case 3:
+					return $uNumber . 'rd';
+					break;
+				default:
+					return $uNumber . 'th';
+					break;
+			}
+        }
+
+	    public static function cut($uString, $uLength, $uSuffix = '...') {
+            return mb_substr($uString, 0, $uLength, 'utf-8') . $uSuffix;
+	    }
 	}
 }
 

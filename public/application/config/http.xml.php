@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<http>
-		<request parsingType="2" getParameters="?&amp;," getKeys="=:" getSeperator="/" /> <!-- getParameters="," getKeys=":" -->
+		<request parsingType="2" parameterSegmentsStart="3" getParameters="?&amp;," getKeys="=:" getSeperator="/" /> <!-- getParameters="," getKeys=":" -->
 		
 		<rewriteList>
 			<rewrite match="(\w+)/contacts" forward="home/mvc/$1/why" />

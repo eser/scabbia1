@@ -1,16 +1,23 @@
 <?php
 
 if(extensions::isSelected('fb')) {
+	/**
+	* FB Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo direct api query like /me/home
+	*/
 	class fb {
 		public static $appId;
 		public static $appSecret;
+		public static $appFileUpload;
 		public static $appUrl;
 		public static $appPageId;
 		public static $appRedirectUri;
 		public static $api = null;
 		public static $userId = null;
-		public static $userPermissions = null;
-		public static $user = null;
 
 		public static function extension_info() {
 			return array(
@@ -26,6 +33,7 @@ if(extensions::isSelected('fb')) {
 		public static function extension_load() {
 			self::$appId = config::get('/facebook/APP_ID/.');
 			self::$appSecret = config::get('/facebook/APP_SECRET/.');
+			self::$appFileUpload = config::get('/facebook/APP_FILEUPLOAD/.');
 			self::$appUrl = config::get('/facebook/APP_URL/.');
 			self::$appPageId = config::get('/facebook/APP_PAGE_ID/.');
 			self::$appRedirectUri = config::get('/facebook/APP_REDIRECT_URI/.');
@@ -36,58 +44,88 @@ if(extensions::isSelected('fb')) {
 				self::$api = new Facebook(array(
 					'appId'			=> self::$appId,
 					'secret'		=> self::$appSecret,
-					'cookie'		=> true
+					'cookie'		=> true,
+					'fileUpload'	=> (self::$appFileUpload == '1')
 				));
+			}
+
+			self::$userId = self::$api->getUser();
+
+			$tUserId = session::get('fbUserId', null);
+			if(is_null($tUserId) || self::$userId != intval($tUserId)) {
+				self::resetSession();
 			}
 		}
 
-		public static function getUserId() {
-			if(is_null(self::$userId)) {
-				self::$userId = self::$api->getUser();
+		public static function resetSession() {
+			session::remove('fbUser');
+			session::remove('fbUserAccessToken');
+			session::remove('fbUserPermissions');
+			session::remove('fbUserLikes');
 
-				if(!self::$userId) {
-					self::$userId = null;
-				}
-			}
- 
+			session::set('fbUserId', self::$userId);
+		}
+		
+		public static function getUserId() {
 			return self::$userId;
 		}
 
-		public static function checkLogin($uPermissions, $uRequiredPermissions = null) {
-			if(is_null($uRequiredPermissions)) {
-				$uRequiredPermissions = $uPermissions;
-			}
-
-			if(!self::checkUserPermission($uRequiredPermissions)) {
-				$tLoginUrl = self::$api->getLoginUrl(array(
-					'scope' => $uPermissions,
-					'redirect_uri' => self::$appRedirectUri
-				));
-
-				http::sendRedirect($tLoginUrl);
+		public static function getUserAccessToken() {
+			if(self::$userId == 0) {
 				return false;
 			}
 
-			return true;
+			$tUserAccessToken = session::get('fbUserAccessToken', null);
+			if(is_null($tUserAccessToken)) {
+				$tUserAccessToken = self::$api->getAccessToken();
+
+				if($tUserAccessToken === false) {
+					$tUserAccessToken = null;
+				}
+
+				session::set('fbUserAccessToken', $tUserAccessToken);
+			}
+ 
+			return $tUserAccessToken;
+		}
+
+		public static function getLoginUrl($uPermissions, $uRedirectUri = null) {
+			$tLoginUrl = self::$api->getLoginUrl(array(
+				'scope' => $uPermissions,
+				'redirect_uri' => string::coalesce($uRedirectUri, self::$appRedirectUri)
+			));
+			
+			return $tLoginUrl;
+		}
+
+		public static function checkLogin($uPermissions, $uRequiredPermissions = null, $uRedirectUri = null) {
+			if(
+				self::$userId == 0 ||
+				(!is_null($uRequiredPermissions) && strlen($uRequiredPermissions) > 0 && !self::checkUserPermission($uRequiredPermissions))
+			) {
+				$tLoginUrl = self::getLoginUrl($uPermissions, $uRedirectUri);
+				http::sendRedirect($tLoginUrl, true);
+			}
 		}
 
 		public static function checkUserPermission($uPermissions) {
-			if(is_null(self::getUserId())) {
-				self::$user = null;
+			if(self::$userId == 0) {
 				return false;
 			}
-			else if(is_null(self::$userPermissions)) {
+
+			$tUserPermissions = session::get('fbUserPermissions', null);
+			if(is_null($tUserPermissions)) {
 				try {
-					self::$userPermissions = self::$api->api('/me/permissions');
+					$tUserPermissions = self::$api->api('/me/permissions');
+					session::set('fbUserPermissions', $tUserPermissions);
 				}
 				catch(FacebookApiException $tException) {
-					self::$userPermissions = null;
 					return false;
 				}
 			}
 
 			foreach(explode(',', $uPermissions) as $tPermission) {
-				if(!array_key_exists($tPermission, self::$userPermissions['data'][0])) {
+				if(!array_key_exists($tPermission, $tUserPermissions['data'][0])) {
 					return false;
 				}
 			}
@@ -96,46 +134,53 @@ if(extensions::isSelected('fb')) {
 		}
 
 		public static function checkLike($uId) {
-			if(is_null(self::getUserId())) {
-				self::$user = null;
+			if(self::$userId == 0) {
 				return false;
 			}
-			else {
-				$tLikeResponse = self::$api->api('/me/likes/' . $uId);
 
-				if(!empty($tLikeResponse['data'])) {
-					return true;
-				}
+			$tLikeResponse = self::$api->api('/me/likes/' . $uId);
+
+			if(!empty($tLikeResponse['data'])) {
+				return true;
 			}
 
 			return false;
 		}
 
 		public static function getUser() {
-			if(is_null(self::getUserId())) {
-				self::$user = null;
+			if(self::$userId == 0) {
+				return false;
 			}
-			else if(is_null(self::$user)) {
+
+			$tUser = session::get('fbUser', null);
+			if(is_null($tUser)) {
 				try {
-					self::$user = self::$api->api('/me');
+					$tUser = self::$api->api('/me');
+					session::set('fbUser', $tUser);
 				}
 				catch(FacebookApiException $tException) {
-					self::$user = null;
+					return false;
 				}
 			}
 
-			return self::$user;
+			return $tUser;
 		}
 		
 		public static function getUserLikes() {
+			if(self::$userId == 0) {
+				return false;
+			}
+
+			$tUserLikes = session::get('fbUserLikes', null);
 			try {
-				$tReturn = self::$api->api('/me/likes');
+				$tUserLikes = self::$api->api('/me/likes');
+				session::set('fbUserLikes', $tUserLikes);
 			}
 			catch(FacebookApiException $tException) {
-				$tReturn = null;
+				return false;
 			}
-			
-			return $tReturn;
+
+			return $tUserLikes;
 		}
 
 //		public static function getAccessToken($uCode) {
@@ -154,6 +199,8 @@ if(extensions::isSelected('fb')) {
 	/**
 	 * Extends the BaseFacebook class with the intent of using
 	 * PHP sessions to store user ids and access tokens.
+	 *
+	 * @ignore -- Scabbia
 	 */
 	class Facebook extends BaseFacebook {
 		/**

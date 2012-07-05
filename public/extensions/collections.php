@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('collections')) {
+	/**
+	* Collections Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo revisions
+	*/
 	class collections {
 		public static function extension_info() {
 			return array(
@@ -14,6 +22,12 @@ if(extensions::isSelected('collections')) {
 		}
 	}
 
+	/**
+	* Collection Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class collection implements ArrayAccess, IteratorAggregate {
 		public $id;
 		public $tag;
@@ -367,6 +381,12 @@ if(extensions::isSelected('collections')) {
 		}
 	}
 	
+	/**
+	* XmlCollection Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class xmlCollection extends collection {
 		public static function fromString($uString) {
 			$tTemp = new xmlCollection();
@@ -449,6 +469,12 @@ if(extensions::isSelected('collections')) {
 		}
 	}
 
+	/**
+	* FileCollection Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class fileCollection extends collection {
 		public static function fromFile($uFile) {
 			$tTemp = new fileCollection();

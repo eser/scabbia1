@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_twig')) {
+	/**
+	* ViewRenderer: Twig Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_twig {
 		public static $loader = null;
 		public static $renderer = null;

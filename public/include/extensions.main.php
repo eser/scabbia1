@@ -1,9 +1,24 @@
 <?php
 
+	/**
+	* Extensions manager which extends the framework capabilities with extra routines
+	*
+	* @package Scabbia
+	* @subpackage Core
+	*/
 	class extensions {
+		/**
+		* @ignore
+		*/
 		public static $selected = array();
+		/**
+		* @ignore
+		*/
 		public static $loaded = array();
 
+		/**
+		* Initializes the extension manager.
+		*/
 		public static function init() {
 			$tExtensions = config::get('/extensionList', array());
 
@@ -12,17 +27,23 @@
 			}
 		}
 
+		/**
+		* Loads the selected extensions.
+		*
+		* @uses loadExtension()
+		*/
 		public static function load() {
 			foreach(self::$selected as &$tExtensionName) {
-				self::add($tExtensionName);
+				self::loadExtension($tExtensionName);
 			}
 		}
 
-		public static function run() {
-			Events::invoke('run', array());
-		}
-
-		public static function add($uExtensionName) {
+		/**
+		* Adds an extension.
+		*
+		* @param string $uExtensionName the extension
+		*/
+		public static function loadExtension($uExtensionName) {
 			if(in_array($uExtensionName, self::$loaded)) {
 				return true;
 			}
@@ -35,7 +56,7 @@
 			$tClassInfo = call_user_func(array($uExtensionName, 'extension_info'));
 
 			if(!COMPILED) {
-				if(isset($tClassInfo['phpversion']) && version_compare(PHP_VERSION, $tClassInfo['phpversion'], '<')) {
+				if(isset($tClassInfo['phpversion']) && !framework::phpVersion($tClassInfo['phpversion'])) {
 					return false;
 				}
 
@@ -47,7 +68,7 @@
 					}
 				}
 
-				if(isset($tClassInfo['fwversion']) && version_compare(SCABBIA_VERSION, $tClassInfo['fwversion'], '<')) {
+				if(isset($tClassInfo['fwversion']) && !framework::version($tClassInfo['fwversion'])) {
 					return false;
 				}
 
@@ -68,14 +89,34 @@
 			return true;
 		}
 
+		/**
+		* Sends the boot signal to all extensions.
+		*
+		* @uses events::invoke()
+		*/
+		public static function run() {
+			events::invoke('run', array());
+		}
+
+		/**
+		* Checks weather an extension is selected or not.
+		*
+		* @return bool selection status.
+		*/
 		public static function isSelected($uExtensionName) {
 			return in_array($uExtensionName, self::$selected);
 		}
-		
+
+		/**
+		* Outputs the loaded extensions.
+		*/
 		public static function dump() {
 			var_dump(self::$loaded);
 		}
-		
+
+		/**
+		* Returns the loaded extensions as an array.
+		*/
 		public static function getAll() {
 			return self::$loaded;
 		}

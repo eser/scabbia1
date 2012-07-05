@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('database')) {
+	/**
+	* Database Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo integrate with cache extension
+	*/
 	class database {
 		public static $databases = array();
 		public static $datasets = array();
@@ -93,7 +101,7 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 
-		public static function sqlSelect($uTable, $uFields, $uWhere, $uExtra = '') {
+		public static function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uExtra = '') {
 			$tSql = 'SELECT ';
 			
 			if(count($uFields) > 0) {
@@ -109,6 +117,10 @@ if(extensions::isSelected('database')) {
 				$tSql .= ' WHERE ' . $uWhere;
 			}
 
+			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+				$tSql .= ' ORDER BY ' . $uOrderBy;
+			}
+
 			if(strlen($uExtra) > 0) {
 				$tSql .= ' ' . $uExtra;
 			}
@@ -117,6 +129,12 @@ if(extensions::isSelected('database')) {
 		}
 	}
 
+	/**
+	* Database Connection Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class databaseConnection {
 		public $id;
 		public $default;
@@ -160,7 +178,7 @@ if(extensions::isSelected('database')) {
 				$this->cachePath = framework::translatePath($uConfig['cachePath']['.']);
 			}
 			else {
-				$this->cachePath = QPATH_APP . 'writable/datasetCache/';
+				$this->cachePath = framework::$applicationPath . 'writable/datasetCache/';
 			}
 		}
 		
@@ -543,6 +561,12 @@ if(extensions::isSelected('database')) {
 		}
 	}
 
+	/**
+	* Database Dataset Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class databaseDataset {
 		public $id;
 		public $queryString;
@@ -559,6 +583,12 @@ if(extensions::isSelected('database')) {
 		}
 	}
 	
+	/**
+	* Database Query Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class databaseQuery {
 		protected $database = null;
 
@@ -780,7 +810,7 @@ if(extensions::isSelected('database')) {
 				$tExtra = '';
 			}
 
-			$tReturn = $this->database->querySet(database::sqlSelect($this->table, $this->fields, $this->where, $tExtra), $this->parameters);
+			$tReturn = $this->database->querySet(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
 
 			$this->clear();
 
@@ -800,7 +830,7 @@ if(extensions::isSelected('database')) {
 				$tExtra = '';
 			}
 
-			$tReturn = $this->database->queryRow(database::sqlSelect($this->table, $this->fields, $this->where, $tExtra), $this->parameters);
+			$tReturn = $this->database->queryRow(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
 
 			$this->clear();
 
@@ -820,7 +850,7 @@ if(extensions::isSelected('database')) {
 				$tExtra = '';
 			}
 
-			$tReturn = $this->database->queryScalar(database::sqlSelect($this->table, $this->fields, $this->where, $tExtra), $this->parameters);
+			$tReturn = $this->database->queryScalar(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
 
 			$this->clear();
 
@@ -828,7 +858,7 @@ if(extensions::isSelected('database')) {
 		}
 
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
-			$tReturn = $this->database->queryScalar(database::sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null), array());
+			$tReturn = $this->database->queryScalar(database::sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null), array());
 
 			return $tReturn;
 		}
@@ -883,6 +913,12 @@ if(extensions::isSelected('database')) {
 		// Eser -- COPIED FROM databaseConnection - END
 	}
 
+	/**
+	* DataRows Iterator Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class dataRowsIterator extends NoRewindIterator implements Countable {
 		private $connection;
 		private $current;

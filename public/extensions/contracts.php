@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('contracts')) {
+	/**
+	* Contracts Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo add more validators such as phone, date, digit, isUnique, etc.
+	*/
 	class contracts {
 		const isExist = 0;
 		const isRequired = 1;
@@ -13,11 +21,16 @@ if(extensions::isSelected('contracts')) {
 		const length = 8;
 		const lengthMinimum = 9;
 		const lengthMaximum = 10;
-		const regExp = 11;
-		const custom = 12;
-		const isEmail = 13;
+		const inArray = 11;
+		const regExp = 12;
+		const custom = 13;
+		const isEmail = 14;
+		const isUrl = 15;
+		const isIpAddress = 16;
 
 		const pregEmail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+		const pregUrl = '/^(https?|ftp):\/\/((?:[a-z0-9@:.-]|%[0-9A-F]{2}){3,})(?::(\d+))?((?:\/(?:[a-z0-9-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*)(?:\?((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?/i';
+		const pregIpAddress = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
 
 		public static function extension_info() {
 			return array(
@@ -99,6 +112,12 @@ if(extensions::isSelected('contracts')) {
 				}
 
 				break;
+			case self::inArray:
+				if(!in_array($uArgs, $uValue)) {
+					return false;
+				}
+
+				break;
 			case self::regExp:
 				if(!preg_match($uArgs[0], $uValue)) {
 					return false;
@@ -112,7 +131,20 @@ if(extensions::isSelected('contracts')) {
 
 				break;
 			case self::isEmail:
-				if(!preg_match(self::pregEmail, $uValue)) {
+				// if(!preg_match(self::pregEmail, $uValue)) {
+				if(filter_var($uValue, FILTER_VALIDATE_EMAIL) === false) {
+					return false;
+				}
+
+				break;
+			case self::isUrl:
+				if(filter_var($uValue, FILTER_VALIDATE_URL) === false) {
+					return false;
+				}
+
+				break;
+			case self::isIpAddress:
+				if(filter_var($uValue, FILTER_VALIDATE_IP) === false) {
 					return false;
 				}
 
@@ -133,6 +165,12 @@ if(extensions::isSelected('contracts')) {
 		}
 	}
 
+	/**
+	* Contract Object Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class contractObject {
 		public $value;
 		public $type;

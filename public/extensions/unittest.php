@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('unittest')) {
+	/**
+	* UnitTest Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class unittest {
 		public static $stack = array();
 		public static $report = array();

@@ -1,7 +1,26 @@
 <?php
 
 if(extensions::isSelected('html')) {
+	/**
+	* Html Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo form open
+	* @todo form fields
+	* @todo add callJavascriptFromRepository
+	* @todo add callStylesheetFromRepository
+	*/
 	class html {
+		public static $attributeOrder = array(
+			'action', 'method', 'type', 'id', 'name', 'value',
+			'href', 'src', 'width', 'height', 'cols', 'rows',
+			'size', 'maxlength', 'rel', 'media', 'accept-charset',
+			'accept', 'tabindex', 'accesskey', 'alt', 'title', 'class',
+			'style', 'selected', 'checked', 'readonly', 'disabled'
+		);
+
 		public static function extension_info() {
 			return array(
 				'name' => 'html',
@@ -9,8 +28,34 @@ if(extensions::isSelected('html')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'i8n')
+				'fwdepends' => array('string', 'i8n', 'arrays')
 			);
+		}
+
+		public static function tag($uName, $uAttributes) {
+			$tReturn = '<' . $uName;
+			if(is_array($uAttributes)) {
+				$tReturn .= ' ' . self::attributes($uAttributes);
+			}
+			$tReturn .= ' />';
+
+			return $tReturn;
+		}
+
+		public static function attributes($uAttributes) {
+			$tAttributes = arrays::sortByPriority($uAttributes, self::$attributeOrder);
+
+			$tReturn = array();
+			foreach($tAttributes as $tKey => $tValue) {
+				if(is_null($tValue)) {
+					$tReturn[] = $tKey . '="' . $tKey . '"';
+					continue;
+				}
+
+				$tReturn[] = $tKey . '="' . string::htmlEscape($tValue) . '"';
+			}
+
+			return implode(' ', $tReturn);
 		}
 
 		public static function selectOptions($uArray = array(), $uDefault = null) {
@@ -175,6 +220,41 @@ if(extensions::isSelected('html')) {
 
 			return $tResult;
 		}
+
+	    public static function doctype($type = 'html5') {
+			switch($uType) {
+			case 'html5':
+			case 'xhtml5':
+				return '<!DOCTYPE html>';
+				break;
+			case 'xhtml11':
+			case 'xhtml1.1':
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+				break;
+			case 'xhtml1':
+			case 'xhtml1-strict':
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+				break;
+			case 'xhtml1-trans':
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+				break;
+			case 'xhtml1-frame':
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+				break;
+			case 'html4-strict':
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+				break;
+			case 'html4':
+			case 'html4-trans':
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+				break;
+			case 'html4-frame':
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">';
+				break;
+			}
+
+			return false;
+	    }
 
 		public static function table($uOptions) {
 			if(!isset($uOptions['table'])) {

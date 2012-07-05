@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('logger')) {
+	/**
+	* Logger Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class logger {
 		public static $filename;
 		public static $line;
@@ -22,7 +28,7 @@ if(extensions::isSelected('logger')) {
 			self::$filename = config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 			
-			self::$directory = QPATH_APP . 'writable/logs/';
+			self::$directory = framework::$applicationPath . 'writable/logs/';
 
 			set_exception_handler('logger::exceptionCallback');
 			set_error_handler('logger::errorCallback', E_ALL);
@@ -98,7 +104,7 @@ if(extensions::isSelected('logger')) {
 						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b>' . implode('<br />' . self::$eof, $tEventDepth) . '</div>' . self::$eof;
 					}
 					
-					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b>' . $uException->getTraceAsString() . '</div>' . self::$eof;
+					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b>' . nl2br($uException->getTraceAsString()) . '</div>' . self::$eof;
 				}
 
 				$tString .= '</div>';

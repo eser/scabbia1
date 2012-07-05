@@ -1,9 +1,24 @@
 <?php
 
 if(extensions::isSelected('access')) {
+	/**
+	* Access Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class access {
+		/**
+		* @ignore
+		*/
 		public static $maintenance = 0;
+		/**
+		* @ignore
+		*/
 		public static $maintenanceExcludeIps = array();
+		/**
+		* @ignore
+		*/
 		public static $ipFilters = array();
 
 		public static function extension_info() {

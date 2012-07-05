@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_raintpl')) {
+	/**
+	* ViewRenderer: RainTpl Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_raintpl {
 		public static $renderer = null;
 		public static $extension;

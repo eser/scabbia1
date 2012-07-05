@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_smarty')) {
+	/**
+	* ViewRenderer: Smarty Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_smarty {
 		public static $renderer = null;
 		public static $extension;

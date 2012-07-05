@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_phptal')) {
+	/**
+	* ViewRenderer: PHPTAL Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_phptal {
 		public static $renderer = null;
 		public static $extension;

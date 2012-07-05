@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_php')) {
+	/**
+	* ViewRenderer: PHP Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_php {
 		public static $extension;
 		public static $templatePath;

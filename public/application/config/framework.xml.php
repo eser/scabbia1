@@ -29,7 +29,9 @@
 	<extensionList>
 		<extension name="string" />
 		<extension name="io" />
+		<extension name="cache" />
 		<extension name="http" />
+		<extension name="arrays" />
 		<extension name="access" />
 		<extension name="time" />
 		<extension name="collections" />
@@ -45,6 +47,7 @@
 		<extension name="logger" />
 		<extension name="html" />
 		<extension name="media" />
+		<extension name="captcha" />
 		<extension name="viewrenderer_razor" />
 		<extension name="viewrenderer_markdown" />
 <!--

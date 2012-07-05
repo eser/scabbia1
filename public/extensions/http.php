@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('http')) {
+	/**
+	* Http Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class http {
 		public static $platform = null;
 		public static $crawler = null;
@@ -10,6 +16,7 @@ if(extensions::isSelected('http')) {
 		public static $isRobot = false;
 		public static $isMobile = false;
 		public static $languages = array();
+		public static $segmentCount = null;
 
 		public static function extension_info() {
 			return array(
@@ -174,6 +181,16 @@ if(extensions::isSelected('http')) {
 			return urldecode($uString);
 		}
 
+		public static function encodeArray($uArray) {
+			$tReturn = array();
+
+			foreach($uArray as $tKey => $tValue) {
+				$tReturn[] = $tKey . '=' . urlencode($tValue);
+			}
+
+			return implode('&', $tReturn);
+		}
+
 		public static function sendStatus($uStatusCode) {
 			switch((int)$uStatusCode) {
 			case 100: $tStatus = 'HTTP/1.1 100 Continue'; break;
@@ -221,6 +238,10 @@ if(extensions::isSelected('http')) {
 			}
 
 			self::sendHeader($tStatus);
+		}
+
+		public static function sendStatus404() {
+			self::sendStatus(404);
 		}
 
 		public static function sendHeader($uHeader, $uValue = null, $uReplace = false) {
@@ -276,6 +297,15 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		public static function sendRedirectPermanent($uLocation, $uTerminate = true) {
+			self::sendStatus(301);
+			self::sendHeader('Location', $uLocation, true);
+
+			if($uTerminate) {
+				exit();
+			}
+		}
+
 		public static function sendHeaderETag($uHash) {
 			self::sendHeader('ETag', '"' . $uHash . '"', true);
 		}
@@ -289,17 +319,24 @@ if(extensions::isSelected('http')) {
 		public static function sendCookie($uCookie, $uValue, $uExpire = 0) {
 			setrawcookie($uCookie, self::encode($uValue), $uExpire);
 		}
-		
+
+		public static function removeCookie() {
+			setrawcookie($uCookie, '', time() - 3600);
+		}
+
 		public static function parseGetType1($uParameters = '?&', $uKeys = '=') {
 			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot));
 			$tUri = $_SERVER['QUERY_STRING'];
-			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys);
+			$tParsed = string::parseQueryString($tUri, $uParameters, $uKeys);
+			$_GET = $tParsed['parsed'];
 		}
 
 		public static function parseGetType2($uParameters = '?&', $uKeys = '=', $uSeperator = '/') {
 			// $tUri = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot));
 			$tUri = $_SERVER['QUERY_STRING'];
-			$_GET = string::parseQueryString($tUri, $uParameters, $uKeys, $uSeperator);
+			$tParsed = string::parseQueryString($tUri, $uParameters, $uKeys, $uSeperator);
+			$_GET = $tParsed['parsed'];
+			self::$segmentCount = $tParsed['segmentCount'];
 		}
 
 		public static function parseHeaderString($uString) {
@@ -315,37 +352,62 @@ if(extensions::isSelected('http')) {
 			return $tResult;
 		}
 
-		public static function get($uKey, $uDefault = '', $uFilter = null) {
+		public static function getParameterSegments() {
+			$tParameterSegmentsStart = intval(config::get('/http/request/@parameterSegmentsStart', '3'));
+			$tParms = array();
+
+			if(!is_null(self::$segmentCount)) {
+				for($i = $tParameterSegmentsStart; $i <= self::$segmentCount; $i++) {
+					$tParms[] = $_GET[$i - 1];
+				}
+			}
+
+			return $tParms;
+		}
+
+		public static function get() {
+			$uArgs = func_get_args();
+			$uKey = array_shift($uArgs);
+			$uDefault = (count($uArgs) >= 2) ? array_shift($uArgs) : null;
+
 			if(!array_key_exists($uKey, $_GET)) {
 				return $uDefault;
 			}
 
-			if(!is_null($uFilter)) {
-				return call_user_func($uFilter, $_GET[$uKey]);
+			if(count($uArgs) > 0) {
+				return string::filter($_GET[$uKey], $uArgs);
 			}
 
 			return $_GET[$uKey];
 		}
 
-		public static function post($uKey, $uDefault = null, $uFilter = null) {
+		public static function post() {
+			$uArgs = func_get_args();
+			$uKey = array_shift($uArgs);
+			$uDefault = (count($uArgs) >= 2) ? array_shift($uArgs) : null;
+
 			if(!array_key_exists($uKey, $_POST)) {
 				return $uDefault;
 			}
 
-			if(!is_null($uFilter)) {
-				return call_user_func($uFilter, $_POST[$uKey]);
+			if(count($uArgs) > 0) {
+				return string::filter($_POST[$uKey], $uArgs);
 			}
 
 			return $_POST[$uKey];
 		}
 
 		public static function cookie($uKey, $uDefault = null, $uFilter = null) {
+			$uArgs = func_get_args();
+			$uKey = array_shift($uArgs);
+			$uDefault = (count($uArgs) >= 2) ? array_shift($uArgs) : null;
+
 			if(!array_key_exists($uKey, $_COOKIE)) {
 				return $uDefault;
 			}
 
-			if(!is_null($uFilter)) {
-				return call_user_func($uFilter, $_COOKIE[$uKey]);
+			if(count($uArgs) > 0) {
+				return string::filter($_COOKIE[$uKey], $uArgs);
 			}
 
 			return $_COOKIE[$uKey];

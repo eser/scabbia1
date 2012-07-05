@@ -1,6 +1,14 @@
 <?php
 
 if(extensions::isSelected('i8n')) {
+	/**
+	* I8N Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo translitIt
+	*/
 	class i8n {
 		public static $languages = array();
 		public static $language = null;

@@ -7,14 +7,22 @@
 			repositoryPackageUrlKey="1" />
 
 		<packageList>
-<!--
-			<package name="stopwatch2">
+			<package name="viewhome" type="txt">
 				<fileList>
-					<file path="{app}stopwatch2.txt" />
-					<file path="{app}stopwatch3.txt" />
+					<file path="{app}views/home.cshtml" />
 				</fileList>
 			</package>
--->
+			<package name="extensions" type="phps">
+				<fileList>
+					<file path="{core}extensions/access.php" />
+					<file path="{core}extensions/fb.php" />
+				</fileList>
+			</package>
+			<package name="javascripts" type="js">
+				<fileList>
+					<file path="{core}res/js/calendar.js" />
+				</fileList>
+			</package>
 		</packageList>
 	</repository>
 </scabbia>

@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('output')) {
+	/**
+	* Output Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class output {
 		public static $effectList = array();
 

@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('validation')) {
+	/**
+	* Validation Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class validation {
 		public static $rules = array();
 		public static $summary = null;
@@ -104,6 +110,12 @@ if(extensions::isSelected('validation')) {
 		}
 	}
 
+	/**
+	* Validation Rule Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class validationRule {
 		public $field;
 		public $type;

@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('stopwatch')) {
+	/**
+	* StopWatch Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class stopwatch {
 		public static $markers = array();
 

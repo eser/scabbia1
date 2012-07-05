@@ -1,27 +1,110 @@
 <?php
 
+	/**
+	* Framework manager
+	*
+	* @package Scabbia
+	* @subpackage Core
+	*
+	* @todo download garbage collector, caching w/ aging
+	* @todo global event-based garbage collector
+	*/
 	class framework {
+		/**
+		* @ignore
+		*/
 		public static $includePaths = array();
+		/**
+		* @ignore
+		*/
 		public static $downloadUrls = array();
+		/**
+		* @ignore
+		*/
 		public static $development;
+		/**
+		* @ignore
+		*/
 		public static $debug;
+		/**
+		* @ignore
+		*/
 		public static $siteroot;
+		/**
+		* @ignore
+		*/
+		public static $applicationPath;
+		/**
+		* @ignore
+		*/
+		public static $socket;
+		/**
+		* @ignore
+		*/
 		public static $directCall;
-		
+
+		/**
+		* Initializes the framework manager.
+		*/
+		public static function init() {
+			$tApplicationDir = isset($GLOBALS['applicationDir']) ? $GLOBALS['applicationDir'] : 'application';
+
+			self::$applicationPath = QPATH_CORE . $tApplicationDir . DIRECTORY_SEPARATOR;
+			self::$development = (isset($GLOBALS['development']) && $GLOBALS['development'] !== false);
+
+			if(isset($_SERVER['SERVER_NAME'])) {
+				self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+			}
+			else {
+				self::$socket = 'localhost:80';
+			}
+		}
+
+		/**
+		* Translates the given path to real path.
+		*
+		* Example:
+		* <code>
+		* echo framework::translatePath('{core}bootconfig.php');
+		* echo framework::translatePath('{app}config/framework.xml.php');
+		* </code>
+		*
+		* @param string $uPath path
+		*/
 		public static function translatePath($uPath) {
 			if(substr($uPath, 0, 6) == '{core}') {
 				return QPATH_CORE . substr($uPath, 6);
 			}
 
 			if(substr($uPath, 0, 5) == '{app}') {
-				return QPATH_APP . substr($uPath, 5);
+				return self::$applicationPath . substr($uPath, 5);
 			}
 
 			return $uPath;
 		}
 
+		/**
+		* Compares if current php version is newer than the specified version.
+		*
+		* @param string $uVersion version
+		*/
+		public static function phpVersion($uVersion) {
+			return version_compare(PHP_VERSION, $uVersion, '>=');
+		}
+
+		/**
+		* Compares if current framework version is newer than the specified version.
+		*
+		* @param string $uVersion version
+		*/
+		public static function version($uVersion) {
+			return version_compare(SCABBIA_VERSION, $uVersion, '>=');
+		}
+
+		/**
+		* Loads the framework.
+		*/
 		public static function load() {
-			self::$development = config::$development;
 			self::$debug = (bool)config::get('/options/debug/@value', '0');
 			self::$siteroot = config::get('/options/siteroot/@value', '');
 			self::$directCall = !COMPILED;
@@ -58,6 +141,9 @@
 			}
 		}
 
+		/**
+		* Global output handler of framework.
+		*/
 		public static function output($uValue, $uSecond) {
 			$tParms = array(
 				'content' => &$uValue
@@ -76,12 +162,15 @@
 			return $tParms['content'];
 		}
 
+		/**
+		* Boots the framework.
+		*/
 		public static function run() {
 			ob_start('framework::output');
 			ob_implicit_flush(false);
 
 			if(!COMPILED) {
-				if(version_compare(PHP_VERSION, '5.3.6', '>=')) {
+				if(self::phpVersion('5.3.6')) {
 					$tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 				}
 				else {
@@ -105,7 +194,7 @@
 					if(self::$development && count($tParameters) > 0) {
 						if($tParameters[0] == 'build') {
 							self::build('index.php', !(count($tParameters) >= 2 && $tParameters[1] == 'pseudo'));
-							self::purgeFolder(QPATH_APP . 'writable/sessions');
+							self::purgeFolder(self::$applicationPath . 'writable/sessions');
 							// self::purgeFolder(QPATH_APP . 'writable/datasetCache');
 							// self::purgeFolder(QPATH_APP . 'writable/mediaCache');
 							// self::purgeFolder(QPATH_APP . 'writable/downloaded');
@@ -122,14 +211,25 @@
 			}
 		}
 
+		/**
+		* Downloads the files from external sources.
+		*
+		* @uses downloadFile()
+		*/
 		public static function downloadFiles() {
 			foreach(self::$downloadUrls as $tFilename => &$tUrl) {
 				self::downloadFile($tFilename, $tUrl);
 			}
 		}
 
+		/**
+		* Download a file from external source.
+		*
+		* @param string $uFile filename
+		* @param string $uUrl download source
+		*/
 		public static function downloadFile($uFile, $uUrl) {
-			$tFilePath = QPATH_APP . 'writable/downloaded/' . $uFile;
+			$tFilePath = self::$applicationPath . 'writable/downloaded/' . $uFile;
 			if(file_exists($tFilePath)) {
 				return false;
 			}
@@ -142,6 +242,10 @@
 			return true;
 		}
 
+		/**
+		* Includes the files from local sources.
+		* @ignore
+		*/
 		private static function includeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
 				foreach(glob3($tPath, false) as $tFilename) {
@@ -154,37 +258,64 @@
 			}
 		}
 		
+		/**
+		* Prints the included files from local sources.
+		*
+		* @uses printFiles()
+		* @ignore
+		*/
 		private static function printIncludeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
 				self::printFiles(glob3($tPath, false));
 			}
 		}
 
+		/**
+		* Prints the specified files.
+		*
+		* @param array $uArray array of files
+		* @uses printFile()
+		*/
 		public static function printFiles($uArray) {
 			foreach($uArray as &$tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}
 
-				$tContent = php_strip_whitespace($tFilename);
-
-				$tOpenTags = 0;
-				foreach(token_get_all($tContent) as $tToken) {
-					if($tToken[0] == T_OPEN_TAG || $tToken[0] == T_OPEN_TAG_WITH_ECHO) {
-						$tOpenTags++;
-					}
-					else if($tToken[0] == T_CLOSE_TAG) {
-						$tOpenTags--;
-					}
-				}
-
-				echo $tContent;
-				for(;$tOpenTags > 0;$tOpenTags--) {
-					echo ' ?', '>';
-				}
+				self::printFile($tFilename);
 			}
 		}
 
+		/**
+		* Prints the specified file.
+		*
+		* @param string $uFile file
+		*/
+		public static function printFile($uFile) {
+			$tContent = php_strip_whitespace($uFile);
+
+			$tOpenTags = 0;
+			foreach(token_get_all($tContent) as $tToken) {
+				if($tToken[0] == T_OPEN_TAG || $tToken[0] == T_OPEN_TAG_WITH_ECHO) {
+					$tOpenTags++;
+				}
+				else if($tToken[0] == T_CLOSE_TAG) {
+					$tOpenTags--;
+				}
+			}
+
+			echo $tContent;
+			for(;$tOpenTags > 0;$tOpenTags--) {
+				echo ' ?', '>';
+			}
+		}
+
+		/**
+		* Builds the framework in order to create a single compiled file.
+		*
+		* @param string $uFilename target file
+		* @param bool $uPseudo pseudo status
+		*/
 		public static function build($uFilename, $uPseudo = true) {
 			ob_start();
 			ob_implicit_flush(false);
@@ -208,7 +339,6 @@
 	define(\'PHP_OS_WINDOWS\', ', var_export(PHP_OS_WINDOWS), ');
 	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
 	define(\'QPATH_CORE\', ', var_export(QPATH_CORE), ');
-	define(\'QPATH_APP\', ', var_export(QPATH_APP), ');
 	define(\'QTIME_INIT\', microtime(true));
 	define(\'QEXT_PHP\', ', var_export(QEXT_PHP), ');
 
@@ -222,12 +352,13 @@
 ?', '>';
 
 				echo php_strip_whitespace(QPATH_CORE . 'include/patches.main' . QEXT_PHP);
+				echo php_strip_whitespace(QPATH_CORE . 'bootconfig' . QEXT_PHP);
 				echo php_strip_whitespace(QPATH_CORE . 'include/config.main' . QEXT_PHP);
 				echo php_strip_whitespace(QPATH_CORE . 'include/events.main' . QEXT_PHP);
 				echo php_strip_whitespace(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
 				echo php_strip_whitespace(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
 
-				echo '<', '?php config::set(', config::export(), '); framework::load(); ?', '>';
+				echo '<', '?php framework::init(); config::set(', config::export(), '); framework::load(); ?', '>';
 
 				self::printIncludeFilesFromConfig();
 
@@ -243,8 +374,13 @@
 			fclose($tOutput);
 		}
 
-		public static function purgeFolder($uFolder) {
-			foreach(glob3($uFolder . '/*', true) as $tFilename) {
+		/**
+		* Purges specified path.
+		*
+		* @param string $uPath path
+		*/
+		public static function purgeFolder($uPath) {
+			foreach(glob3($uPath . '/*', true) as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

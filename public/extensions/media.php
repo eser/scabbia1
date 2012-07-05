@@ -1,8 +1,19 @@
 <?php
 
 if(extensions::isSelected('media')) {
+	/**
+	* Media Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*
+	* @todo add watermark
+	* @todo write text w/ truetype fonts
+	* @todo integrate with cache extension
+	*/
 	class media {
 		public static $cachePath;
+		public static $cacheAge;
 
 		public static function extension_info() {
 			return array(
@@ -16,239 +27,273 @@ if(extensions::isSelected('media')) {
 		}
 
 		public static function extension_load() {
-			self::$cachePath = framework::translatePath(config::get('/media/@cachePath', '{app}cache/media'));
+			self::$cachePath = framework::translatePath(config::get('/media/@cachePath', '{app}writable/mediaCache'));
+			self::$cacheAge = intval(config::get('/media/@cacheAge', '120'));
 		}
 
-		public static function file($uVars) {
-			if(!array_key_exists('cache', $uVars)) {
-				$uVars['cache'] = self::$cachePath;
-			}
+		public static function open($uSource) {
+			return new mediaFile($uSource);
+		}
 
-			$tImageResize = new MediaResize($uVars);
-			$tImageResize->output();
+		public static function calculateHash() {
+			$uArgs = func_get_args();
+			return implode('_', $uArgs);
+		}
+
+		public static function garbageCollect() {
+			$tDirectory = new DirectoryIterator(self::$cachePath);
+
+			clearstatcache();
+			foreach($tDirectory as $tFile) {
+				if(!$tFile->isFile()) {
+					continue;
+				}
+
+				if(time() - $tFile->getMTime() < self::$cacheAge) {
+					continue;
+				}
+
+				unlink($tFile->getPathname());
+			}
 		}
 	}
 
-	// Eser - Grabbed from http://adamhopkinson.co.uk/classes/resize/
+	/**
+	* MediaFile Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
+	class mediaFile {
+		public $source;
+		public $filename;
+		public $extension;
+		public $mime;
+		public $hash;
+		public $sw, $sh, $sa;
+		public $size;
+		public $image = null;
+		public $background;
 
-	class MediaResize {
-		var $source;						// the uri of the source image
-		var $sx, $sy, $sw, $sh, $sa;		// values for the position and size of the source image
-		var $tx, $ty, $tw, $th, $ta;		// values for the position and size of the target image
-		var $quality;						// the output quality
-		var $mode;							// the mode - fit, stretch or crop
-		var $errors;						// an array to store error messages
-		var $gc_threshold;					// the chance of running garbage collection (from 0 to 1)
-		var $caching;						// whether to use caching
+		public function __construct($uSource = null) {
+			$this->source = $uSource;
+			$this->background = array(255, 255, 255, 0);
 
-		function MediaResize($uVars) {
-			define('BASE_PATH', dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
-			define('BASE_URI', dirname($_SERVER['REQUEST_URI']));
-
-			$this->gc_threshold = 0.1;
-			$this->source = (array_key_exists('source', $uVars)) ? $uVars['source'] : null;
-			$this->sx = 0;		
-			$this->sy = 0;		
-			$this->tx = 0;		
-			$this->ty = 0;		
-			$this->tw = (array_key_exists('width', $uVars)) ? $uVars['width'] : null;
-			$this->th = (array_key_exists('height', $uVars)) ? $uVars['height'] : null;
-			$this->quality = (array_key_exists('quality', $uVars)) ? $uVars['quality'] : 80;
-			$this->mode = (array_key_exists('mode', $uVars)) ? $uVars['mode'] : 'fit';
-			$this->cache_folder = (array_key_exists('cache', $uVars)) ? $uVars['cache'] : 'cache';
-			$this->cache_age = (array_key_exists('age', $uVars)) ? intval($uVars['age']) : 120;
-			
-			// check that the source file exists
-			if(!is_file($this->source)) {
-				$this->errors[] = 'File not found: ' . $this->source;
-				$this->fail(404, 'The requested image could not be found: ' . $this->source);
-				return false;
+			if(is_null($this->source)) {
+				$this->sa = 1;
 			}
-			
-			// check that the cache folder is writable
-			if(!is_writeable($this->cache_folder)) {
-				$this->errors[] = 'Caching disabled - the cache folder could not be written. Try chmodding it to 766';
-				$this->fail(500, 'The cache folder could not be written');
-				return false;
-				$this->caching = false;
-			} else {
-				$this->caching = true;
-			}
-			
-			// get the source file extension
-			$this->extension = pathinfo($this->source, PATHINFO_EXTENSION);
+			else {
+				$tData = getimagesize($this->source);
+				$this->sw = $tData[0];
+				$this->sh = $tData[1];
+				$this->sa = $this->sw / $this->sh;
 
-			// calculate a hash - used for cache files, etc
-			$this->getHash();
-			
-			// set the cache filename using the hash
-			$this->cache_fn = $this->cache_folder . '/' . $this->hash . '.' . $this->extension;
-			
-			// if the file exists in the cache and is less than cache_age seconds old,
-			// don't bother regenerating it
-			if(!$this->checkCache()) {
-				$this->getFile();
-				$this->getDimensions();
-				$this->create();
-			}
-			
-			if($this->gc_threshold > rand(0,1)) {
-				$this->garbageCollection();
-			}
-			
-		}
+				// get the source file extension
+				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
+				$this->extension = pathinfo($this->source, PATHINFO_EXTENSION);
+				$this->mime = io::getMimeType($this->extension);
+				$this->size = filesize($this->source);
 
-		function getHash() {
-			$this->hash = md5(serialize($this));
-		}
+				// calculate a hash - used for cache files, etc
+				$this->hash = media::calculateHash($this->filename, $this->sw, $this->sh) . '.' . $this->extension;
 
-		function checkCache() {
-			if(file_exists($this->cache_fn)) {
-				$age = time() - filectime($this->cache_fn);
-				if($age < $this->cache_age) {
-					$this->errors[] = 'Using file from cache: age is ' . $age;
-					
-					$this->mime = io::getMimeType($this->extension);
-					$this->filesize = filesize($this->cache_fn);
-
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-
-		function getFile() {
-			$data = getimagesize($this->source);
-			$this->sw = $data[0];
-			$this->sh = $data[1];
-			$this->sa = $this->sw / $this->sh;
-			$this->mime = io::getMimeType($this->extension); // $data['mime'];
-		}
-
-		function getDimensions() {
-			switch($this->mode) {
-				case 'fit':
-					if($this->tw == null && $this->th == null) {
-						$this->errors[] = 'Please specify either width or height (or both) when mode is fit';
-						return false;
-					} elseif ($this->tw == null && $this->th != null) {
-						$this->tw = ceil($this->th * $this->sa);
-					} elseif ($this->tw != null && $this->th == null) {
-						$this->th = ceil($this->tw / $this->sa);
-					} elseif ($this->tw != null && $this->th != null) {
-						$this->ta = $this->tw / $this->th;
-						if($this->sa == $this->ta) {
-							// don't do anything - the source and target aspect ratios are the same
-						} elseif ($this->sa > $this->ta) {
-							$this->th = $this->tw / $this->sa;
-						} elseif ($this->sa < $this->ta) {
-							$this->tw = $this->th * $this->sa;
-						}
-					}
-				break;
-				case 'crop':
-					if($this->tw == null && $this->th == null) {
-						$this->errors[] = 'Please specify either width or height (or both) when mode is fit';
-						return false;
-					}
-					$this->ta = $this->tw / $this->th;
-					if($this->ta >= 1) {
-						// fit to width, crop top & bottom
-						if($this->sw >= $this->sh) {
-							$w = $this->sh * $this->ta;
-							$d = $this->sw - $w;
-							$this->sx = $d / 2;
-							$this->sw = $w;
-	//						$this->errors[] = 'w is ' . $w;						
-						} else {
-							$h = $this->sw / $this->ta;
-							$d = $this->sh - $h;
-							$this->sy = $d / 2;
-							$this->sh = $h;
-						}
-					} else {
-						// fit to height, crop sides
-						$this->tw = $this->th * $this->sa;
-					}
-				break;
-				case 'stretch':
-					if($this->tw == null && $this->th == null) {
-						$this->errors[] = 'Please specify either width or height (or both) when mode is fit';
-						return false;
-					}
-					$this->ta = $this->tw / $this->th;
-				break;
-			}
-		}
-
-		function create() {
-			$canvas = imagecreatetruecolor($this->tw, $this->th);
-			switch($this->mime) {
+				switch($this->mime) {
 				case 'image/jpeg':
 				case 'image/jpg':
-					$image = imagecreatefromjpeg($this->source);
-					imagecopyresampled($canvas, $image, $this->tx, $this->ty, $this->sx, $this->sy, $this->tw, $this->th, $this->sw, $this->sh);
-					imagejpeg($canvas, $this->cache_fn, $this->quality);
-				break;
+					$this->image = imagecreatefromjpeg($this->source);
+					break;
 				case 'image/gif':
-					$image = imagecreatefromgif($this->source);
-					imagecopyresampled($canvas, $image, $this->tx, $this->ty, $this->sx, $this->sy, $this->tw, $this->th, $this->sw, $this->sh);
-					imagegif($canvas, $this->cache_fn, $this->quality);
-				break;
+					$this->image = imagecreatefromgif($this->source);
+					break;
 				case 'image/png':
-					$this->quality = floor($this->quality / 10);
-					$image = imagecreatefrompng($this->source);
-					imagealphablending($canvas, FALSE);
-					imagesavealpha($canvas, TRUE);
-					imagecopyresampled($canvas, $image, $this->tx, $this->ty, $this->sx, $this->sy, $this->tw, $this->th, $this->sw, $this->sh);
-					imagepng($canvas, $this->cache_fn, $this->quality);
-				break;
+					$this->image = imagecreatefrompng($this->source);
+					imagealphablending($this->image, true);
+					imagesavealpha($this->image, true);
+					break;
+				}
 			}
-			imagedestroy($canvas);
-			imagedestroy($image);
-			$this->filesize = filesize($this->cache_fn);
+		}
+		
+		public function __destruct() {
+			if(!is_null($this->image)) {
+				imagedestroy($this->image);
+			}
 		}
 
-		function output() {
+		public function background() {
+			$this->background = func_get_args();
+
+			return $this;
+		}
+
+		public function write($uX, $uY, $uSize, $uColor, $uText) {
+			return $this;
+		}
+
+		public function rotate($uDegree, $uBackground = 0) {
+			$this->image = imagerotate($this->image, $uDegree, $uBackground);
+			$this->sw = imagesx($this->image);
+			$this->sh = imagesy($this->image);
+			$this->sa = $this->sw / $this->sh;
+
+			return $this;
+		}
+
+		public function getCache($uTag) {
+			$tCachePath = media::$cachePath . '/' . $uTag;
+
+			if(file_exists($tCachePath)) {
+				$tAge = time() - filemtime($tCachePath);
+
+				if($tAge < media::$cacheAge) {
+					return new mediaFile($tCachePath);
+				}
+			}
+		}
+
+		public function resize($uWidth, $uHeight, $uMode = 'fit') {
+			$tAspectRatio = $uWidth / $uHeight;
+
+			switch($uMode) {
+			case 'fit':
+				$tSourceX = 0;
+				$tSourceY = 0;
+				$tSourceW = $this->sw;
+				$tSourceH = $this->sh;
+
+				if ($uWidth == null && $uHeight != null) {
+					$uWidth = ceil($uHeight * $this->sa);
+				}
+				else if ($uWidth != null && $uHeight == null) {
+					$uHeight = ceil($uWidth / $this->sa);
+				}
+				else {
+					if ($this->sa > $tAspectRatio) {
+						$uHeight = $uWidth / $this->sa;
+					}
+					else if ($this->sa < $tAspectRatio) {
+						$uWidth = $uHeight * $this->sa;
+					}
+				}
+
+				$tTargetX = 0;
+				$tTargetY = 0;
+				$tTargetW = $uWidth;
+				$tTargetH = $uHeight;
+				break;
+			case 'crop':
+				$tSourceX = ($this->sw - $uWidth) / 2;
+				if($tSourceX < 0) {
+					$tSourceX = 0;
+				}
+
+				$tSourceY = ($this->sh - $uHeight) / 2;
+				if($tSourceY < 0) {
+					$tSourceY = 0;
+				}
+
+				$tSourceW = $this->sw;
+				$tSourceH = $this->sh;
+
+				$tTargetX = 0;
+				$tTargetY = 0;
+				$tTargetW = $this->sw;
+				$tTargetH = $this->sh;
+				break;
+			case 'stretch':
+				$tSourceX = 0;
+				$tSourceY = 0;
+				$tSourceW = $this->sw;
+				$tSourceH = $this->sh;
+
+				$tTargetX = 0;
+				$tTargetY = 0;
+				$tTargetW = $uWidth;
+				$tTargetH = $uHeight;
+				break;
+			}
+
+			switch($this->mime) {
+			case 'image/jpeg':
+			case 'image/jpg':
+				$tImage = imagecreatetruecolor($uWidth, $uHeight);
+				$tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+				imagefill($tImage, 0, 0, $tBackground);
+
+				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+				break;
+			case 'image/gif':
+				$tImage = imagecreate($uWidth, $uHeight);
+				$tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+				imagefill($tImage, 0, 0, $tBackground);
+
+				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+				break;
+			case 'image/png':
+				$tImage = imagecreatetruecolor($uWidth, $uHeight);
+				$tBackground = imagecolorallocatealpha($tImage, $this->background[0], $this->background[1], $this->background[2], $this->background[3]);
+				imagefill($tImage, 0, 0, $tBackground);
+
+				imagealphablending($tImage, true);
+				imagesavealpha($tImage, true);
+				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+				break;
+			}
+
+			imagedestroy($this->image);
+			$this->image = &$tImage;
+			// $this->size = filesize($this->source);
+
+			$this->sw = $uWidth;
+			$this->sh = $uHeight;
+			$this->sa = $tAspectRatio;
+
+			return $this;
+		}
+
+		public function save($uPath = null) {
+			if(!is_null($uPath)) {
+				$this->source = $uPath;
+			}
+
+			switch($this->mime) {
+			case 'image/jpeg':
+			case 'image/jpg':
+				imagejpeg($this->image, $this->source);
+				break;
+			case 'image/gif':
+				imagegif($this->image, $this->source);
+				break;
+			case 'image/png':
+				imagepng($this->image, $this->source);
+				break;
+			}
+
+			return $this;
+		}
+
+		public function output() {
 			http::sendHeaderExpires(0);
 			http::sendHeaderNoCache();
 			http::sendHeader('Content-Type', $this->mime, true);
-			http::sendHeader('Content-Length', $this->filesize, true);
-			http::sendHeader('Content-Disposition', 'inline;filename=' . pathinfo($this->source, PATHINFO_BASENAME), true);
-			@readfile($this->cache_fn);
-		}
+			http::sendHeader('Content-Length', $this->size, true);
+			http::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
+			// @readfile($this->source);
 
-		function debug() {
-			echo '<pre>';
-			print_r($this);
-			echo '</pre>';
-			echo '<a href="' . $this->cache_fn . '">Open</a>';
-		}
-
-		function fail($err, $message) {
-			header('HTTP/1.1 ' . $err);
-			echo($message);
-			die();
-		}
-
-		function garbageCollection() {
-			$d = dir($this->cache_folder);
-			$counter = 0;
-			clearstatcache();
-			while (false !== ($entry = $d->read())) {
-				if(is_file($entry)) {
-					$age = time() - filectime($entry);
-					if($age > $this->cache_age) {
-						unlink($entry);
-						$counter++;
-					}
-				}
+			switch($this->mime) {
+			case 'image/jpeg':
+			case 'image/jpg':
+				imagejpeg($this->image);
+				break;
+			case 'image/gif':
+				imagegif($this->image);
+				break;
+			case 'image/png':
+				imagepng($this->image);
+				break;
 			}
-			$this->errors[] = 'Removed ' . $counter . ' files from cache';
-			$d->close();
+
+			return $this;
 		}
 	}
 }

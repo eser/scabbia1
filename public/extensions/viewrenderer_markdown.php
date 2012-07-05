@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('viewrenderer_markdown')) {
+	/**
+	* ViewRenderer: MarkDown Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class viewrenderer_markdown {
 		public static $renderer = null;
 		public static $extension;

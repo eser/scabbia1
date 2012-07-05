@@ -1,22 +1,32 @@
 <?php
 	
+	/**
+	* Configuration class which handles all configuration-based operations
+	*
+	* @package Scabbia
+	* @subpackage Core
+	*/
 	class config {
+		/**
+		* Default configuration
+		*/
 		public static $default = null;
-		public static $development;
-		public static $socket;
 
-		public static function passScope(&$uNode) {
-			if(isset($uNode['binding']) && !fnmatch((string)$uNode['binding'], self::$socket)) {
+		/**
+		* @ignore
+		*/
+		private static function passScope(&$uNode) {
+			if(isset($uNode['binding']) && !fnmatch((string)$uNode['binding'], framework::$socket)) {
 				return false;
 			}
 
 			if(isset($uNode['mode'])) {
 				if((string)$uNode['mode'] == 'development') {
-					if(!self::$development) {
+					if(!framework::$development) {
 						return false;
 					}
 				}
-				else if(self::$development) {
+				else if(framework::$development) {
 					return false;
 				}
 			}
@@ -24,7 +34,10 @@
 			return true;
 		}
 
-		public static function processChildrenAsArray($uNode, $uListElement, &$uContents) {
+		/**
+		* @ignore
+		*/
+		private static function processChildrenAsArray($uNode, $uListElement, &$uContents) {
 			$tNodeName = $uNode->getName();
 
 			foreach($uNode->children() as $tKey => $tNode) {
@@ -64,7 +77,10 @@
 			}
 		}
 
-		public static function processChildren_r(&$uArray, &$uNodes, $uNode) {
+		/**
+		* @ignore
+		*/
+		private static function processChildren_r(&$uArray, &$uNodes, $uNode) {
 			$tNodeName = $uNode->getName();
 
 			if($tNodeName == 'scope') {
@@ -113,16 +129,13 @@
 			}
 		}
 
+		/**
+		* Returns a configuration array which is a compilation of multiple configuration files.
+		*
+		* @param string $uFiles path of configuration files
+		* @return array configuration
+		*/
 		public static function &loadFiles($uFiles) {
-			self::$development = file_exists(QPATH_APP . '/development');
-
-			if(isset($_SERVER['SERVER_NAME'])) {
-				self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-			}
-			else {
-				self::$socket = 'localhost:80';
-			}
-
 			$tConfig = array();
 			$tConfigNodes = array();
 
@@ -133,11 +146,22 @@
 
 			return $tConfig;
 		}
-		
+
+		/**
+		* Loads the default configuration for the current application.
+		*
+		* @uses loadFiles()
+		*/
 		public static function load() {
-			self::$default = self::loadFiles(QPATH_APP . 'config/*');
+			self::$default = self::loadFiles(framework::$applicationPath . 'config/*');
 		}
-		
+
+		/**
+		* Gets a value from default configuration.
+		*
+		* @param string $uKey path of the value
+		* @param mixed $uDefault default value
+		*/
 		public static function &get($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, self::$default)) {
 				return $uDefault;
@@ -145,15 +169,26 @@
 
 			return self::$default[$uKey];
 		}
-		
+
+		/**
+		* Sets the default configuration for the current application.
+		*
+		* @param string $uVariable instance
+		*/
 		public static function set($uVariable) {
 			self::$default = $uVariable;
 		}
-		
+
+		/**
+		* Outputs the default configuration.
+		*/
 		public static function dump() {
 			var_dump(self::$default);
 		}
 		
+		/**
+		* Returns the default configuration as an array.
+		*/
 		public static function export() {
 			return var_export(self::$default, true);
 		}

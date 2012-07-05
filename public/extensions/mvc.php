@@ -1,6 +1,12 @@
 <?php
 
 if(extensions::isSelected('mvc')) {
+	/**
+	* MVC Extension
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	class mvc {
 		public static $controller = null;
 		public static $controllerActual = null;
@@ -82,9 +88,11 @@ if(extensions::isSelected('mvc')) {
 				self::$actionActual = $tNotfoundAction;
 			}
 
-			self::$controllerClass = new self::$controllerActual ();
-			self::$controllerClass->{self::$actionActual}();
+			$tParms = http::getParameterSegments();
 
+			self::$controllerClass = new self::$controllerActual ();
+			call_user_func_array(array(&self::$controllerClass, self::$actionActual), $tParms);
+			
 			// to interrupt event-chain execution
 			return false;
 		}
@@ -173,6 +181,12 @@ if(extensions::isSelected('mvc')) {
 		}
 	}
 	
+	/**
+	* Model Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	abstract class model {
 		public $controller;
 
@@ -190,6 +204,12 @@ if(extensions::isSelected('mvc')) {
 		}
 	}
 
+	/**
+	* Controller Class
+	*
+	* @package Scabbia
+	* @subpackage Extensions
+	*/
 	abstract class controller {
 		public $defaultView;
 
