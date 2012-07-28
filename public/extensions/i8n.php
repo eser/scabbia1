@@ -5,7 +5,7 @@ if(extensions::isSelected('i8n')) {
 	* I8N Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*
 	* @todo translitIt
 	*/

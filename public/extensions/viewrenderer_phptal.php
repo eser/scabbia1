@@ -51,17 +51,17 @@ if(extensions::isSelected('viewrenderer_phptal')) {
 				self::$renderer = new PHPTAL();
 			}
 
+			self::$renderer->set('model', $uObject['model']);
 			if(is_array($uObject['model'])) {
 				foreach($uObject['model'] as $tKey => &$tValue) {
 					self::$renderer->set($tKey, $tValue);
 				}
 			}
-			else {
-				self::$renderer->set('model', $uObject['model']);
-			}
 
-			foreach($uObject['extra'] as $tKey => &$tValue) {
-				self::$renderer->set($tKey, $tValue);
+			if(isset($uObject['extra'])) {
+				foreach($uObject['extra'] as $tKey => &$tValue) {
+					self::$renderer->set($tKey, $tValue);
+				}
 			}
 
 			self::$renderer->setForceReparse(false);

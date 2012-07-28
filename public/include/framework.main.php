@@ -1,13 +1,14 @@
 <?php
 
+	// TODO: download garbage collector
+	// TODO: global event-based garbage collector
+	// TODO: download caching w/ aging
+
 	/**
-	* Framework manager
+	* Base framework functions
 	*
 	* @package Scabbia
 	* @subpackage Core
-	*
-	* @todo download garbage collector, caching w/ aging
-	* @todo global event-based garbage collector
 	*/
 	class framework {
 		/**
@@ -19,23 +20,23 @@
 		*/
 		public static $downloadUrls = array();
 		/**
-		* @ignore
+		* Indicates framework is running in development mode.
 		*/
 		public static $development;
 		/**
-		* @ignore
+		* Indicates framework is running in debug mode.
 		*/
 		public static $debug;
 		/**
-		* @ignore
+		* Stores relative path of framework root.
 		*/
 		public static $siteroot;
 		/**
-		* @ignore
+		* Stores relative path of running application.
 		*/
 		public static $applicationPath;
 		/**
-		* @ignore
+		* Stores active socket information.
 		*/
 		public static $socket;
 		/**
@@ -44,7 +45,7 @@
 		public static $directCall;
 
 		/**
-		* Initializes the framework manager.
+		* @ignore
 		*/
 		public static function init() {
 			$tApplicationDir = isset($GLOBALS['applicationDir']) ? $GLOBALS['applicationDir'] : 'application';
@@ -61,15 +62,10 @@
 		}
 
 		/**
-		* Translates the given path to real path.
+		* Translates given framework-relative path to physical path.
 		*
-		* Example:
-		* <code>
-		* echo framework::translatePath('{core}bootconfig.php');
-		* echo framework::translatePath('{app}config/framework.xml.php');
-		* </code>
-		*
-		* @param string $uPath path
+		* @param string $uPath the framework-relative path
+		* @return string translated physical path
 		*/
 		public static function translatePath($uPath) {
 			if(substr($uPath, 0, 6) == '{core}') {
@@ -84,25 +80,27 @@
 		}
 
 		/**
-		* Compares if current php version is newer than the specified version.
+		* Checks the given php version is greater than running one.
 		*
-		* @param string $uVersion version
+		* @param string $uVersion php version
+		* @return bool running php version is greater than parameter.
 		*/
 		public static function phpVersion($uVersion) {
 			return version_compare(PHP_VERSION, $uVersion, '>=');
 		}
 
 		/**
-		* Compares if current framework version is newer than the specified version.
+		* Checks the given framework version is greater than running one.
 		*
-		* @param string $uVersion version
+		* @param string $uVersion framework version
+		* @return bool running framework version is greater than parameter.
 		*/
 		public static function version($uVersion) {
 			return version_compare(SCABBIA_VERSION, $uVersion, '>=');
 		}
 
 		/**
-		* Loads the framework.
+		* @ignore
 		*/
 		public static function load() {
 			self::$debug = (bool)config::get('/options/debug/@value', '0');
@@ -142,7 +140,7 @@
 		}
 
 		/**
-		* Global output handler of framework.
+		* @ignore
 		*/
 		public static function output($uValue, $uSecond) {
 			$tParms = array(
@@ -163,7 +161,7 @@
 		}
 
 		/**
-		* Boots the framework.
+		* @ignore
 		*/
 		public static function run() {
 			ob_start('framework::output');
@@ -212,9 +210,43 @@
 		}
 
 		/**
-		* Downloads the files from external sources.
+		* An utility function which helps functions to get parameters in array.
 		*
-		* @uses downloadFile()
+		* @return array array of parameters
+		*/
+		public static function getArgs() {
+			$uArgs = func_get_args();
+
+			if(self::phpVersion('5.3.6')) {
+				$tBacktrace = debug_backtrace();
+			}
+			else {
+				$tBacktrace = debug_backtrace(false);
+			}
+
+			if(count($tBacktrace) < 2) {
+				return null;
+			}
+
+			$tTargetArgs = $tBacktrace[1]['args'];
+
+			if(count($tTargetArgs) == 1 && is_array($tTargetArgs[0])) {
+				$tTargetArgs = $tTargetArgs[0];
+			}
+			else {
+				$tNewArray = array();
+				for($i = 0, $tMax = count($tTargetArgs), $tArgsMax = count($uArgs); $i < $tMax && $i < $tArgsMax; $i++) {
+					$tNewArray[$uArgs[$i]] = array_shift($tTargetArgs);
+				}
+				
+				$tTargetArgs = array_merge($tNewArray, $tTargetArgs);
+			}
+
+			return $tTargetArgs;
+		}
+
+		/**
+		* @ignore
 		*/
 		public static function downloadFiles() {
 			foreach(self::$downloadUrls as $tFilename => &$tUrl) {
@@ -223,10 +255,10 @@
 		}
 
 		/**
-		* Download a file from external source.
+		* Downloads given file into framework's download directory.
 		*
-		* @param string $uFile filename
-		* @param string $uUrl download source
+		* @param $uFile string filename in destination
+		* @param $uUrl string url of source
 		*/
 		public static function downloadFile($uFile, $uUrl) {
 			$tFilePath = self::$applicationPath . 'writable/downloaded/' . $uFile;
@@ -243,7 +275,6 @@
 		}
 
 		/**
-		* Includes the files from local sources.
 		* @ignore
 		*/
 		private static function includeFilesFromConfig() {
@@ -259,9 +290,6 @@
 		}
 		
 		/**
-		* Prints the included files from local sources.
-		*
-		* @uses printFiles()
 		* @ignore
 		*/
 		private static function printIncludeFilesFromConfig() {
@@ -271,10 +299,7 @@
 		}
 
 		/**
-		* Prints the specified files.
-		*
-		* @param array $uArray array of files
-		* @uses printFile()
+		* @ignore
 		*/
 		public static function printFiles($uArray) {
 			foreach($uArray as &$tFilename) {
@@ -287,9 +312,9 @@
 		}
 
 		/**
-		* Prints the specified file.
+		* Outputs a php file source to view.
 		*
-		* @param string $uFile file
+		* @param $uFile string path of source file
 		*/
 		public static function printFile($uFile) {
 			$tContent = php_strip_whitespace($uFile);
@@ -311,10 +336,10 @@
 		}
 
 		/**
-		* Builds the framework in order to create a single compiled file.
+		* Builds a framework compilation.
 		*
-		* @param string $uFilename target file
-		* @param bool $uPseudo pseudo status
+		* @param $uFilename string output file
+		* @param $uPseudo bool wheater file is an pseudo compilation or not
 		*/
 		public static function build($uFilename, $uPseudo = true) {
 			ob_start();
@@ -375,12 +400,12 @@
 		}
 
 		/**
-		* Purges specified path.
+		* Purges the files in given directory.
 		*
-		* @param string $uPath path
+		* @param $uFolder string destination directory
 		*/
-		public static function purgeFolder($uPath) {
-			foreach(glob3($uPath . '/*', true) as $tFilename) {
+		public static function purgeFolder($uFolder) {
+			foreach(glob3($uFolder . '/*', true) as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

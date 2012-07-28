@@ -5,7 +5,7 @@ if(extensions::isSelected('logger')) {
 	* Logger Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class logger {
 		public static $filename;

@@ -56,17 +56,17 @@ if(extensions::isSelected('viewrenderer_raintpl')) {
 				self::$renderer = new RainTPL();
 			}
 
+			self::$renderer->assign('model', $uObject['model']);
 			if(is_array($uObject['model'])) {
 				foreach($uObject['model'] as $tKey => &$tValue) {
 					self::$renderer->assign($tKey, $tValue);
 				}
 			}
-			else {
-				self::$renderer->assign('model', $uObject['model']);
-			}
 
-			foreach($uObject['extra'] as $tKey => &$tValue) {
-				self::$renderer->assign($tKey, $tValue);
+			if(isset($uObject['extra'])) {
+				foreach($uObject['extra'] as $tKey => &$tValue) {
+					self::$renderer->assign($tKey, $tValue);
+				}
 			}
 
 			self::$renderer->draw($uObject['viewFile']);

@@ -5,7 +5,7 @@ if(extensions::isSelected('string')) {
 	* String Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*
 	* @todo pluralize, singularize
 	*/
@@ -39,20 +39,15 @@ if(extensions::isSelected('string')) {
 
 		public static function filter() {
 			$uArgs = func_get_args();
-			$uValue = array_shift($uArgs);
 
-			if(is_array($uArgs[0])) {
-				$uArgs = &$uArgs[0];
-			}
-
-			if(is_callable($uArgs[0], true)) {
+			if(is_callable($uArgs[1], true)) {
+				$tValue = array_shift($uArgs);
 				$tFunction = $uArgs[0];
-				$uArgs[0] = $uValue;
+				$uArgs[0] = $tValue;
 
 				return call_user_func_array($tFunction, $uArgs);
 			}
 
-			array_unshift($uArgs, $uValue);
 			return call_user_func_array('filter_var', $uArgs);
 		}
 
@@ -167,7 +162,7 @@ if(extensions::isSelected('string')) {
 			return $tBrackets[0][1];
 		}
 
-		public static function vardump($uVariable) {
+		public static function vardump($uVariable, $tOutput = true) {
 			$tVariable = $uVariable;
 			$tType = gettype($tVariable);
 			$tOut = '';
@@ -196,7 +191,7 @@ if(extensions::isSelected('string')) {
 
 					foreach($tVariable as $tKey => &$tVal) {
 						$tOut .= '[' . $tKey . '] ';
-						$tOut .= self::vardump($tVal);
+						$tOut .= self::vardump($tVal, false);
 					}
 
 					$tOut .= '</div>}';
@@ -216,7 +211,16 @@ if(extensions::isSelected('string')) {
 				break;
 			}
 
+			if($tOutput) {
+				echo $tOut;
+				return;
+			}
+
 			return $tOut;
+		}
+
+		public static function hash($uHash) {
+			return hexdec(hash('crc32', $uHash) . hash('crc32b', $uHash));
 		}
 
 		public static function generatePassword($uLength) {
@@ -339,15 +343,15 @@ if(extensions::isSelected('string')) {
 		}
 
 		public static function toLower($uString) {
-			return mb_strtolower($uString, 'utf-8');
+			return mb_strtolower($uString);
 		}
 
 		public static function toUpper($uString) {
-			return mb_strtoupper($uString, 'utf-8');
+			return mb_strtoupper($uString);
 		}
 
 		public static function length($uString) {
-			return mb_strlen($uString, 'utf-8');
+			return mb_strlen($uString);
 		}
 
 		public static function sizeCalc($uSize, $uPrecision = 0) {
@@ -432,7 +436,9 @@ if(extensions::isSelected('string')) {
 		}
 
 		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
-			$tParsed = array();
+			$tParsed = array(
+				'segments' => array()
+			);
 			$tStrings = array('', '');
 			$tStrIndex = 0;
 
@@ -443,10 +449,10 @@ if(extensions::isSelected('string')) {
 				for(;$tPos < $tLen;$tPos++) {
 					if(strpos($uSeperator, $uString[$tPos]) !== false) {
 						if(strlen($tStrings[1]) > 0) {
-							$tParsed[] = $tStrings[1];
+							$tParsed['segments'][] = $tStrings[1];
 						}
 
-						$tStrings = array('', '');
+						$tStrings = array('', null);
 						continue;
 					}
 
@@ -460,27 +466,26 @@ if(extensions::isSelected('string')) {
 
 			if(strlen($tStrings[1]) > 0) {
 				if(strlen($tStrings[1]) > 0) {
-					$tParsed[] = $tStrings[1];
+					$tParsed['segments'][] = $tStrings[1];
 				}
 
-				$tStrings = array('', '');
+				$tStrings = array('', null);
 			}
 			
-			$tSegmentCount = count($tParsed);
-
 			for(;$tPos < $tLen;$tPos++) {
 				if(strpos($uParameters, $uString[$tPos]) !== false) {
-					if(strlen($tStrings[0]) > 0) {
+					if(strlen($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
 						$tParsed[$tStrings[0]] = $tStrings[1];
 						$tStrIndex = 0;
 					}
 
-					$tStrings = array('', '');
+					$tStrings = array('', null);
 					continue;
 				}
 
 				if(strpos($uKeys, $uString[$tPos]) !== false && $tStrIndex < 1) {
 					$tStrIndex++;
+					$tStrings[$tStrIndex] = '';
 					continue;
 				}
 
@@ -488,18 +493,15 @@ if(extensions::isSelected('string')) {
 			}
 
 			if(strlen($tStrings[0]) > 0) {
-				if(strlen($tStrings[0]) > 0) {
+				if(strlen($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
 					$tParsed[$tStrings[0]] = $tStrings[1];
 					$tStrIndex = 0;
 				}
 
-				$tStrings = array('', '');
+				$tStrings = array('', null);
 			}
 
-			return array(
-				'segmentCount' => &$tSegmentCount,
-				'parsed' => $tParsed
-			);
+			return $tParsed;
 		}
 
 		public static function removeAccent($uString) {
@@ -525,6 +527,8 @@ if(extensions::isSelected('string')) {
 		}
 
 		public static function slug($uString) {
+			$uString = self::removeInvisibles($uString);
+			$uString = self::removeAccent($uString);
 			$uString = strtolower(trim($uString));
 			$uString = preg_replace('/[^a-z0-9-]/', '_', $uString);
 			$uString = preg_replace('/-+/', '_', $uString);
@@ -554,8 +558,33 @@ if(extensions::isSelected('string')) {
         }
 
 	    public static function cut($uString, $uLength, $uSuffix = '...') {
-            return mb_substr($uString, 0, $uLength, 'utf-8') . $uSuffix;
+            return mb_substr($uString, 0, $uLength) . $uSuffix;
 	    }
+
+		public static function capitalize($uString, $uDelimiter = ' ', $uReplaceDelimiter = null) {
+			$tOutput = '';
+			$tCapital = true;
+
+			for($tPos = 0, $tLen = mb_strlen($uString);$tPos < $tLen;$tPos++) {
+				$tChar = mb_substr($uString, $tPos, 1);
+
+				if($tChar == $uDelimiter) {
+					$tCapital = true;
+					$tOutput .= (!is_null($uReplaceDelimiter)) ? $uReplaceDelimiter : $tChar;
+					continue;
+				}
+
+				if($tCapital) {
+					$tOutput .= mb_strtoupper($tChar);
+					$tCapital = false;
+					continue;
+				}
+
+				$tOutput .= $tChar;
+			}
+
+			return $tOutput;
+		}
 	}
 }
 

@@ -5,7 +5,7 @@ if(extensions::isSelected('session')) {
 	* Session Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*
 	* @todo integrate with cache extension
 	*/
@@ -46,9 +46,7 @@ if(extensions::isSelected('session')) {
 		}
 
 		public static function output() {
-			if(self::$isModified) {
-				self::save();
-			}
+			self::save();
 		}
 
 		private static function open() {
@@ -80,6 +78,10 @@ if(extensions::isSelected('session')) {
 
 		public static function save() {
 			$tKeyphase = config::get('/session/cookie/@keyphase', null);
+
+			if(!self::$isModified) {
+				return;
+			}
 
 			if(is_null(self::$id)) {
 				self::$id = io::sanitize(string::generateUuid());
@@ -171,6 +173,13 @@ if(extensions::isSelected('session')) {
 			return array_key_exists($uKey, self::$data);
 		}
 
+		public static function getKeys() {
+			if(is_null(self::$data)) {
+				self::open();
+			}
+
+			return array_keys(self::$data);
+		}
 
 		public static function getFlash($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
@@ -181,15 +190,24 @@ if(extensions::isSelected('session')) {
 				return $uDefault;
 			}
 
+			self::$isModified = true;
 			return self::$flashdata_loaded[$uKey];
 		}
 
 		public static function setFlash($uKey, $uValue) {
+			if(is_null(self::$data)) {
+				self::open();
+			}
+
 			self::$flashdata_next[$uKey] = $uValue;
 			self::$isModified = true;
 		}
 
 		public static function removeFlash($uKey, $uValue) {
+			if(is_null(self::$data)) {
+				self::open();
+			}
+
 			unset(self::$flashdata_next[$uKey]);
 			self::$isModified = true;
 		}
@@ -215,6 +233,14 @@ if(extensions::isSelected('session')) {
 			}
 
 			return array_key_exists($uKey, self::$flashdata_loaded);
+		}
+
+		public static function getKeysFlash() {
+			if(is_null(self::$data)) {
+				self::open();
+			}
+
+			return array_keys(self::$flashdata_loaded);
 		}
 	}
 }

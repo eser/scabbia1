@@ -5,7 +5,7 @@ if(extensions::isSelected('unittest')) {
 	* UnitTest Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class unittest {
 		public static $stack = array();

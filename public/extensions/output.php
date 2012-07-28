@@ -5,7 +5,7 @@ if(extensions::isSelected('output')) {
 	* Output Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class output {
 		public static $effectList = array();

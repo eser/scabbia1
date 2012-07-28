@@ -55,8 +55,18 @@ if(extensions::isSelected('viewrenderer_twig')) {
 
 				self::$renderer = new Twig_Environment(self::$loader, $tOptions);
 			}
-			
-			echo self::$renderer->render($uObject['viewFile'], array_combine($uObject['model'], $uObject['extra']));
+
+			$model = array('model' => &$uObject['model']);
+
+			if(is_array($uObject['model'])) {
+				$model = array_merge($model, $uObject['model']);
+			}
+
+			if(isset($uObject['extra'])) {
+				$model = array_merge($model, $uObject['extra']);
+			}
+
+			echo self::$renderer->render($uObject['viewFile'], $model);
 		}
 	}
 }

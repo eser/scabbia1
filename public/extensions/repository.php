@@ -5,7 +5,7 @@ if(extensions::isSelected('repository')) {
 	* Repository Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*
 	* @todo integrate with cache extension
 	*/

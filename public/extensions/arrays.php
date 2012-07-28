@@ -5,9 +5,12 @@ if(extensions::isSelected('arrays')) {
 	* Arrays Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class arrays {
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'arrays',
@@ -18,7 +21,7 @@ if(extensions::isSelected('arrays')) {
 				'fwdepends' => array()
 			);
 		}
-		
+
 		public static function get($uArray, $uElement, $uDefault = null) {
 			if(!isset($uArray[$uElement])) {
 				return $uDefault;
@@ -72,6 +75,36 @@ if(extensions::isSelected('arrays')) {
 			}
 
 			return $tReturn;
+		}
+
+		public static function categorize($uArray, $uKey) {
+			$tReturn = array();
+
+			foreach($uArray as $tRow) {
+				$tKey = $tRow[$uKey];
+				if(!isset($tReturn[$tKey])) {
+					$tReturn[$tKey] = array();
+				}
+
+				$tReturn[$tKey][] = $tRow;
+			}
+			
+			return $tReturn;
+		}
+
+		public static function combine($uArray1, $uArray2) {
+			$tArray = array();
+
+			for($i = 0, $tLen = count($uArray1); $i < $tLen; $i++) {
+				if(!isset($uArray2[$i])) {
+					$tArray[$uArray1[$i]] = null;
+					continue;
+				}
+
+				$tArray[$uArray1[$i]] = $uArray2[$i];
+			}
+
+			return $tArray;
 		}
 
 		public static function sortByPriority($uArray, $uPriorities) {

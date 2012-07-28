@@ -5,7 +5,7 @@ if(extensions::isSelected('media')) {
 	* Media Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*
 	* @todo add watermark
 	* @todo write text w/ truetype fonts
@@ -59,10 +59,10 @@ if(extensions::isSelected('media')) {
 	}
 
 	/**
-	* MediaFile Class
+	* Media File Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class mediaFile {
 		public $source;

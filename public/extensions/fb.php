@@ -2,10 +2,10 @@
 
 if(extensions::isSelected('fb')) {
 	/**
-	* FB Extension
+	* Facebook (FB) Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*
 	* @todo direct api query like /me/home
 	*/
@@ -52,7 +52,7 @@ if(extensions::isSelected('fb')) {
 			self::$userId = self::$api->getUser();
 
 			$tUserId = session::get('fbUserId', null);
-			if(is_null($tUserId) || self::$userId != intval($tUserId)) {
+			if(is_null($tUserId)) { // || self::$userId != intval($tUserId)
 				self::resetSession();
 			}
 		}
@@ -60,8 +60,14 @@ if(extensions::isSelected('fb')) {
 		public static function resetSession() {
 			session::remove('fbUser');
 			session::remove('fbUserAccessToken');
-			session::remove('fbUserPermissions');
-			session::remove('fbUserLikes');
+
+			foreach(session::getKeys() as $tKey) {
+				if(substr($tKey, 0, 3) != 'fb_') {
+					continue;
+				}
+
+				session::remove($tKey);
+			}
 
 			session::set('fbUserId', self::$userId);
 		}
@@ -70,7 +76,7 @@ if(extensions::isSelected('fb')) {
 			return self::$userId;
 		}
 
-		public static function getUserAccessToken() {
+		public static function getUserAccessToken($uExtended = false) {
 			if(self::$userId == 0) {
 				return false;
 			}
@@ -85,6 +91,36 @@ if(extensions::isSelected('fb')) {
 
 				session::set('fbUserAccessToken', $tUserAccessToken);
 			}
+			
+			if($uExtended && !is_null($tUserAccessToken)) {
+				$tExtendedUserAccessToken = session::get('fbUserAccessTokenEx', null);
+				if(is_null($tExtendedUserAccessToken)) {
+					$tExtendedUserAccessTokenResponse = self::$api->unboxOauthRequest(
+						self::$api->unboxGetUrl('graph', '/oauth/access_token'),
+						array(
+							'client_id' => self::$appId,
+							'client_secret' => self::$appSecret,
+							'grant_type' => 'fb_exchange_token',
+							'fb_exchange_token' => $tUserAccessToken
+						)
+					);
+					
+					if($tExtendedUserAccessTokenResponse !== false) {
+						$tExtendedUserAccessTokenArray = array();
+						parse_str($tExtendedUserAccessTokenResponse, $tExtendedUserAccessTokenArray);
+
+						if(isset($tExtendedUserAccessTokenArray['access_token'])) {
+							$tExtendedUserAccessToken = $tExtendedUserAccessTokenArray['access_token'];
+
+							session::set('fbUserAccessTokenEx', $tExtendedUserAccessToken);
+							$tUserAccessToken = $tExtendedUserAccessToken;
+						}
+					}
+				}
+				else {
+					$tUserAccessToken = $tExtendedUserAccessToken;
+				}
+			}
  
 			return $tUserAccessToken;
 		}
@@ -94,7 +130,7 @@ if(extensions::isSelected('fb')) {
 				'scope' => $uPermissions,
 				'redirect_uri' => string::coalesce($uRedirectUri, self::$appRedirectUri)
 			));
-			
+
 			return $tLoginUrl;
 		}
 
@@ -104,6 +140,7 @@ if(extensions::isSelected('fb')) {
 				(!is_null($uRequiredPermissions) && strlen($uRequiredPermissions) > 0 && !self::checkUserPermission($uRequiredPermissions))
 			) {
 				$tLoginUrl = self::getLoginUrl($uPermissions, $uRedirectUri);
+				session::remove('fb_me_permissions');
 				http::sendRedirect($tLoginUrl, true);
 			}
 		}
@@ -113,19 +150,14 @@ if(extensions::isSelected('fb')) {
 				return false;
 			}
 
-			$tUserPermissions = session::get('fbUserPermissions', null);
-			if(is_null($tUserPermissions)) {
-				try {
-					$tUserPermissions = self::$api->api('/me/permissions');
-					session::set('fbUserPermissions', $tUserPermissions);
-				}
-				catch(FacebookApiException $tException) {
-					return false;
-				}
+			$tUserPermissions = self::get('/me/permissions', true);
+
+			if(count($tUserPermissions->data) == 0) {
+				return false;
 			}
 
 			foreach(explode(',', $uPermissions) as $tPermission) {
-				if(!array_key_exists($tPermission, $tUserPermissions['data'][0])) {
+				if(!array_key_exists($tPermission, $tUserPermissions->data[0])) {
 					return false;
 				}
 			}
@@ -138,49 +170,98 @@ if(extensions::isSelected('fb')) {
 				return false;
 			}
 
-			$tLikeResponse = self::$api->api('/me/likes/' . $uId);
+			$tLikeResponse = self::get('/me/likes/' . $uId, false, null);
 
-			if(!empty($tLikeResponse['data'])) {
+			if(!empty($tLikeResponse->data)) {
 				return true;
 			}
 
 			return false;
 		}
 
-		public static function getUser() {
+		public static function get($uQuery, $uUseCache = false, $uExtra = null) {
 			if(self::$userId == 0) {
 				return false;
 			}
+			
+			if(is_null($uExtra)) {
+				$uExtra = array();
+			}
 
-			$tUser = session::get('fbUser', null);
-			if(is_null($tUser)) {
+			if(!$uUseCache || framework::$development) {
 				try {
-					$tUser = self::$api->api('/me');
-					session::set('fbUser', $tUser);
+					$tObject = self::$api->api($uQuery, $uExtra);
+				}
+				catch(FacebookApiException $tException) {
+					return false;
+				}
+
+				return new FacebookQueryObject($tObject);
+			}
+
+			$tQuerySerialized = 'fb' . string::capitalize($uQuery, '/', '_');
+			$tObject = session::get($tQuerySerialized, null);
+			if(is_null($tObject)) {
+				try {
+					$tObject = self::$api->api($uQuery, $uExtra);
+					session::set($tQuerySerialized, $tObject);
 				}
 				catch(FacebookApiException $tException) {
 					return false;
 				}
 			}
 
-			return $tUser;
+			return new FacebookQueryObject($tObject);
 		}
-		
-		public static function getUserLikes() {
-			if(self::$userId == 0) {
-				return false;
+
+		public static function postToFeed($uUser, $uAccessToken, $uContent) {
+			$uContent['access_token'] = $uAccessToken;
+
+			self::$api->api('/' . $uUser . '/feed', 'post', $uContent);
+		}
+
+		public static function getUser($uExtra = null) {
+			if(is_null($uExtra)) {
+				$uExtra = array();
 			}
 
-			$tUserLikes = session::get('fbUserLikes', null);
-			try {
-				$tUserLikes = self::$api->api('/me/likes');
-				session::set('fbUserLikes', $tUserLikes);
-			}
-			catch(FacebookApiException $tException) {
-				return false;
+			if(!isset($uExtra['fields'])) {
+				$uExtra['fields'] = 'name,first_name,last_name,username,quotes,gender,email,timezone,locale,verified,updated_time,picture,link';
 			}
 
-			return $tUserLikes;
+			return self::get('/me', true, $uExtra);
+		}
+
+		public static function getUserLikes($uExtra = null) {
+			if(is_null($uExtra)) {
+				$uExtra = array();
+			}
+
+			if(!isset($uExtra['fields'])) {
+				$uExtra['fields'] = 'name,category,picture,link';
+			}
+
+			return self::get('/me/likes', true, $uExtra);
+		}
+
+		public static function getUserHome($uExtra = null) {
+			return self::get('/me/home', true, $uExtra);
+		}
+
+		public static function getUserFeed($uExtra = null) {
+			return self::get('/me/feed', true, $uExtra);
+		}
+
+		public static function getUserFriends($uExtra = null) {
+			if(is_null($uExtra)) {
+				$uExtra = array();
+			}
+
+			if(!isset($uExtra['fields'])) {
+				$uExtra['fields'] = 'name,username,picture,link';
+			}
+
+			return self::get('/me/friends', true, $uExtra);
 		}
 
 //		public static function getAccessToken($uCode) {
@@ -195,7 +276,27 @@ if(extensions::isSelected('fb')) {
 //			return ($tResult == 'true');
 //		}
 	}
-	
+
+	/**
+	* Facebook Query Object Class
+	*
+	* @package Scabbia
+	* @subpackage ExtensibilityExtensions
+	*/
+	class FacebookQueryObject {
+		public $object;
+		public $data;
+		public $hasPreviousPage;
+		public $hasNextPage;
+
+		public function __construct($uObject) {
+			$this->object = &$uObject;
+			$this->data = &$this->object['data'];
+			$this->hasPreviousPage = (isset($this->object['paging']) && isset($this->object['paging']['previous']));
+			$this->hasNextPage = (isset($this->object['paging']) && isset($this->object['paging']['next']));
+		}
+	}
+
 	/**
 	 * Extends the BaseFacebook class with the intent of using
 	 * PHP sessions to store user ids and access tokens.
@@ -265,6 +366,14 @@ if(extensions::isSelected('fb')) {
 
 		protected function constructSessionVariableName($key) {
 			return implode('_', array('fb', $this->getAppId(), $key));
+		}
+
+		public function unboxOauthRequest($url, $params) {
+			return $this->_oauthRequest($url, $params);
+		}
+		
+		public function unboxGetUrl($name, $path='', $params=array()) {
+			return $this->getUrl($name, $path, $params);
 		}
 	}
 }

@@ -5,7 +5,7 @@ if(extensions::isSelected('time')) {
 	* Time Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class time {
 		public static function extension_info() {

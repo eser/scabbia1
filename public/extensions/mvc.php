@@ -5,13 +5,15 @@ if(extensions::isSelected('mvc')) {
 	* MVC Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
+	*
+	* @todo remove underscore '_' in controller, action names
+	* @todo forbid 'shared' for controller names
 	*/
 	class mvc {
-		public static $controller = null;
+		public static $route = null;
 		public static $controllerActual = null;
-		public static $controllerClass = null;
-		public static $action = null;
+		public static $controllerStack = null;
 		public static $actionActual = null;
 		public static $defaultController = null;
 		public static $defaultAction = null;
@@ -23,13 +25,13 @@ if(extensions::isSelected('mvc')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'http', 'i8n', 'database')
+				'fwdepends' => array('string', 'arrays', 'http', 'i8n', 'database')
 			);
 		}
-		
+
 		public static function extension_load() {
-			self::$defaultController = config::get('/mvc/routing/@defaultController', 'home');
-			self::$defaultAction = config::get('/mvc/routing/@defaultAction', 'index');
+			self::$defaultController = config::get('/mvc/routes/@defaultController', 'home');
+			self::$defaultAction = config::get('/mvc/routes/@defaultAction', 'index');
 
 			$tAutoRun = intval(config::get('/mvc/@autorun', '1'));
 
@@ -38,42 +40,105 @@ if(extensions::isSelected('mvc')) {
 			}
 		}
 
+		protected static function &getControllerData($uController) {
+			$tControllerData = array(
+				'actionUrlKeys' => config::get('/mvc/routes/@actionUrlKeys', '1'),
+				'defaultAction' => self::$defaultAction,
+				'link' => config::get('/mvc/routes/@link', '{@siteroot}/{@controller}/{@action}{@queryString}')
+			);
+
+			foreach(config::get('/mvc/controllerList', array()) as $tController) {
+				if($uController != $tController['@name']) {
+					continue;
+				}
+
+				if(isset($tController['@actionUrlKeys'])) {
+					$tControllerData['actionUrlKeys'] = $tController['@actionUrlKeys'];
+				}
+
+				if(isset($tController['@defaultAction'])) {
+					$tControllerData['defaultAction'] = $tController['@defaultAction'];
+				}
+
+				if(isset($tController['@link'])) {
+					$tControllerData['link'] = $tController['@link'];
+				}
+
+				break;
+			}
+
+			return $tControllerData;
+		}
+
+		public static function findRoute($uArgs) {
+			if(!is_array($uArgs)) {
+				$uArgs = http::parseGet($uArgs);
+			}
+
+			$tControllerUrlKey = config::get('/mvc/routes/@controllerUrlKey', '0');
+
+			$tRoute = array(
+				'queryString' => $uArgs
+			);
+
+			if(array_key_exists($tControllerUrlKey, $tRoute['queryString']['segments']) && strlen($tRoute['queryString']['segments'][$tControllerUrlKey]) > 0) {
+				$tRoute['controller'] = $tRoute['queryString']['segments'][$tControllerUrlKey];
+				unset($tRoute['queryString']['segments'][$tControllerUrlKey]);
+			}
+			else {
+				$tRoute['controller'] = self::$defaultController;
+			}
+
+			$tControllerData = self::getControllerData($tRoute['controller']);
+
+			$tActionKeys = explode(',', $tControllerData['actionUrlKeys']);
+			$tRoute['action'] = '';
+
+			foreach($tActionKeys as $tActionKey) {
+				if(!isset($tRoute['queryString']['segments'][$tActionKey])) {
+					break;
+				}
+
+				if(strlen($tRoute['action']) > 0) {
+					$tRoute['action'] .= '_';
+				}
+				
+				$tRoute['action'] .= $tRoute['queryString']['segments'][$tActionKey];
+				unset($tRoute['queryString']['segments'][$tActionKey]);
+			}
+
+			if(strlen($tRoute['action']) == 0) {
+				$tRoute['action'] = $tControllerData['defaultAction'];
+			}
+
+			return $tRoute;
+		}
+
 		public static function run() {
-			$tNotfoundController = config::get('/mvc/routing/@notfoundController', 'home');
-			$tNotfoundAction = config::get('/mvc/routing/@notfoundAction', 'notfound');
-
-			$tControllerUrlKey = config::get('/mvc/routing/@controllerUrlKey', '0');
-			$tActionUrlKey = config::get('/mvc/routing/@actionUrlKey', '1');
-
-			if(array_key_exists($tControllerUrlKey, $_GET) && strlen($_GET[$tControllerUrlKey]) > 0) {
-				self::$controller = $_GET[$tControllerUrlKey];
-			}
-			else {
-				self::$controller = self::$defaultController;
-			}
+			self::$route = self::findRoute($_GET);
+			self::$controllerActual = self::$route['controller'];
 			
-			if(array_key_exists($tActionUrlKey, $_GET) && strlen($_GET[$tActionUrlKey]) > 0) {
-				self::$action = $_GET[$tActionUrlKey];
+			if(http::$isPost && method_exists(self::$route['controller'], self::$route['action'] . '_post')) {
+				self::$actionActual = self::$route['action'] . '_post';
+			}
+			else if(http::$isAjax && method_exists(self::$route['controller'], self::$route['action'] . '_ajax')) {
+				self::$actionActual = self::$route['action'] . '_ajax';
 			}
 			else {
-				self::$action = self::$defaultAction;
+				self::$actionActual = self::$route['action'];
 			}
 
-			self::$controllerActual = self::$controller;
-			
-			if(count($_POST) > 0 && method_exists(self::$controller, self::$action . '_post')) {
-				self::$actionActual = self::$action . '_post';
-			}
-			else {
-				self::$actionActual = self::$action;
-			}
-
+			$tParameterSegments = null;
 			events::invoke('routing', array(
-				'controller' => &self::$controller,
-				'action' => &self::$action,
+				'controller' => &self::$route['controller'],
+				'action' => &self::$route['action'],
 				'controllerActual' => &self::$controllerActual,
-				'actionActual' => &self::$actionActual
+				'actionActual' => &self::$actionActual,
+				'parameterSegments' => &$tParameterSegments
 			));
+
+			$tNotfoundController = config::get('/mvc/routes/@notfoundController', 'home');
+			$tNotfoundAction = config::get('/mvc/routes/@notfoundAction', 'notfound');
 
 			try {
 				$tReflectionMethod = new ReflectionMethod(self::$controllerActual, self::$actionActual);
@@ -88,11 +153,14 @@ if(extensions::isSelected('mvc')) {
 				self::$actionActual = $tNotfoundAction;
 			}
 
-			$tParms = http::getParameterSegments();
+			self::$controllerStack = array();
 
-			self::$controllerClass = new self::$controllerActual ();
-			call_user_func_array(array(&self::$controllerClass, self::$actionActual), $tParms);
-			
+			$tController = new self::$controllerActual ();
+
+			array_push(self::$controllerStack, $tController);
+			call_user_func_array(array(&$tController, self::$actionActual), self::$route['queryString']['segments']);
+			array_pop(self::$controllerStack);
+
 			// to interrupt event-chain execution
 			return false;
 		}
@@ -106,23 +174,42 @@ if(extensions::isSelected('mvc')) {
 			$tViewDefaultExtension = config::get('/mvc/view/@defaultExtension', QEXT_PHP);
 
 			$uArgs = func_get_args();
-			$uModel = isset($uArgs[0]) ? $uArgs[0] : null;
+			$uArgsCount = count($uArgs);
 
-			if(count($uArgs) == 2) {
-				$tViewFile = $uArgs[1];
+			$uController = end(self::$controllerStack);
+			$uView = ($uArgsCount >= 1) ? $uArgs[0] : $uController->defaultView;
+			$uModel = ($uArgsCount >= 2) ? $uArgs[1] : $uController->vars;
+
+			if(is_string($uView)) {
+				$tViewFile = $uView;
 				$tViewExtension = '.' . pathinfo($tViewFile, PATHINFO_EXTENSION);
 			}
 			else {
-				$tViewParameters = array(
-					'controller' => isset($uArgs[1]) ? $uArgs[1] : self::$controller,
-					'action' => isset($uArgs[2]) ? $uArgs[2] : self::$action,
-					'device' => isset($uArgs[3]) ? $uArgs[3] : http::$crawlerType,
-					'language' => isset($uArgs[4]) ? $uArgs[4] : i8n::$languageKey,
-					'extension' => isset($uArgs[5]) ? $uArgs[5] : $tViewDefaultExtension
-				);
+				if(is_null($uView)) {
+					$uView = array();
+				}
+				else if(!is_array($uView)) {
+					return;
+				}
 
-				$tViewFile = string::format($tViewNamePattern, $tViewParameters);
-				$tViewExtension = $tViewParameters['extension'];
+				if(!isset($uView['controller'])) {
+					$uView['controller'] = self::$route['controller'];
+				}
+				if(!isset($uView['action'])) {
+					$uView['action'] = self::$route['action'];
+				}
+				if(!isset($uView['device'])) {
+					$uView['device'] = http::$crawlerType;
+				}
+				if(!isset($uView['language'])) {
+					$uView['language'] = i8n::$languageKey;
+				}
+				if(!isset($uView['extension'])) {
+					$uView['extension'] = $tViewDefaultExtension;
+				}
+
+				$tViewFile = string::format($tViewNamePattern, $uView);
+				$tViewExtension = $uView['extension'];
 			}
 
 			$tExtra = array(
@@ -138,13 +225,49 @@ if(extensions::isSelected('mvc')) {
 			));
 		}
 
-		public static function json($uObject, $uOptions = 0) {
-			echo json_encode($uObject, $uOptions);
+		public static function json() {
+			$uArgs = func_get_args();
+			$uArgsCount = count($uArgs);
+
+			$uController = end(self::$controllerStack);
+			$uModel = ($uArgsCount >= 1) ? $uArgs[0] : $uController->vars;
+			$uOptions = ($uArgsCount >= 2) ? $uArgs[1] : 0;
+
+			http::sendHeader('Content-Type', 'application/json', true);
+			echo json_encode(
+				array(
+					'isSuccess' => true,
+					'errorMessage' => null,
+					'object' => &$uModel
+				),
+				$uOptions
+			);
+		}
+
+		public static function error($uMessage) {
+			$tViewbag = array(
+				'title' => 'Error',
+				'message' => $uMessage
+			);
+
+			self::view('shared_error.cshtml', $tViewbag);
+			exit(1);
 		}
 
 		private static function url_internal($uArgs) {
-			$tQueryStringPattern = config::get('/mvc/routing/@queryStringPattern', '{@siteroot}/{@controller}/{@action}{@queryString}');
+			$tSegments = self::findRoute($uArgs);
+			$tArray = array(
+				'siteroot' => framework::$siteroot,
+				'device' => http::$crawlerType,
+				'language' => i8n::$languageKey,
+				'controller' => $tSegments['controller'],
+				'action' => $tSegments['action'],
+				'queryString' =>  http::buildQueryString($tSegments['queryString'])
+			);
 
+			$tControllerData = self::getControllerData($tArray['controller']);
+			return string::format($tControllerData['link'], $tArray);
+/*
 			if(count($uArgs) == 1) {
 				if(!is_array($uArgs[0])) {
 					return $uArgs[0];
@@ -152,7 +275,7 @@ if(extensions::isSelected('mvc')) {
 
 				$tQueryParameters = array();
 				$tQueryParameters['siteroot'] = string::coalesce(array($uArgs[0], 'siteroot'), framework::$siteroot);
-				$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$controller, self::$defaultController);
+				$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$route['controller'], self::$defaultController);
 				$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
 				$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
 				$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$languageKey);
@@ -160,24 +283,118 @@ if(extensions::isSelected('mvc')) {
 			}
 			else {
 				$tQueryParameters = array();
-				$tQueryParameters['siteroot'] = string::coalesce(framework::$siteroot);
-				$tQueryParameters['controller'] = string::coalesce(array($uArgs, 0), self::$controller, self::$defaultController);
+				$tQueryParameters['siteroot'] = framework::$siteroot;
+				$tQueryParameters['controller'] = $uArgs[0];
+
+				$tControllerData = self::getControllerData($tQueryParameters['controller']);
+
 				$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
 				$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
 				$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$languageKey);
 				$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
 			}
 
-			return string::format($tQueryStringPattern, $tQueryParameters);
+			return string::format($tControllerData['link'], $tQueryParameters);
+*/
 		}
 
 		public static function url() {
-			return self::url_internal(func_get_args());
+			$tArgs = func_get_args();
+			return call_user_func_array('mvc::url_internal', $tArgs);
 		}
 		
 		public static function redirect() {
-			$tQuery = self::url_internal(func_get_args());
+			$tArgs = func_get_args();
+			$tQuery = call_user_func_array('mvc::url_internal', $tArgs);
+
 			http::sendRedirect($tQuery, true);
+		}
+
+		public static function export($uAjaxOnly = false) {
+			$tArray = array();
+
+			foreach(get_declared_classes() as $tClass) {
+				if(!is_subclass_of($tClass, 'controller')) { // && $tClass != 'controller'
+					continue;
+				}
+
+				$tReflectedClass = new ReflectionClass($tClass);
+				foreach($tReflectedClass->getMethods(ReflectionMethod::IS_PUBLIC) as $tMethod) {
+					if($tMethod->class == 'controller') {
+						continue;
+					}
+
+					if($uAjaxOnly && substr($tMethod->name, -5) != '_ajax') {
+						continue;
+					}
+
+					if(!isset($tArray[$tMethod->class])) {
+						$tArray[$tMethod->class] = array();
+					}
+
+					$tArray[$tMethod->class][] = $tMethod->name;
+				}
+			}
+
+			return $tArray;
+		}
+
+		public static function exportAjaxJs() {
+			$tArray = self::export(true);
+			
+			echo <<<EOD
+<script type="text/javascript">
+	$(document).ready(function() {
+		var ajaxObj = {};
+		if(typeof pageAjaxStart == 'function') {
+			ajaxObj.beforeSend = pageAjaxStart;
+		}
+
+		if(typeof pageAjaxEnd == 'function') {
+			ajaxObj.complete = pageAjaxEnd;
+		}
+
+		$.ajaxSetup(ajaxObj);
+
+		$.extend({
+			helpers: {
+				sendAjax: function(path, values, fnc) {
+					$.ajax({
+						type: 'POST',
+						url: path,
+						data: values,
+						success: function(data) {
+							if (!data.isSuccess) {
+								// $.helpers.msgbox(5, 'Error: ' + data.errorMessage);
+								alert(data.errorMessage);
+								return;
+							}
+
+							fnc(data.object);
+						},
+						datatype: 'json'
+					});
+				}
+			}
+EOD;
+		foreach($tArray as $tClassName => $tClass) {
+			$tLines = array();
+			
+			echo ',', "\r\n\t\t\t", $tClassName, ': {', "\r\n";
+
+			foreach($tClass as $tMethod) {
+				$tMethod = substr($tMethod, 0, -5);
+				$tLines[] = "\t\t\t\t" . $tMethod . ': function(values, fnc) { $.helpers.sendAjax(\'' . self::url($tClassName . '/' . strtr($tMethod, '_', '/')) . '\', values, fnc); }';
+			}
+			echo implode(',' . "\r\n", $tLines), "\r\n\t\t\t";
+			echo '}';
+		}
+echo <<<EOD
+
+		});
+	});
+</script>
+EOD;
 		}
 	}
 	
@@ -185,14 +402,15 @@ if(extensions::isSelected('mvc')) {
 	* Model Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	abstract class model {
 		public $controller;
+		public $db;
 
 		public function __construct($uController = null) {
 			$this->controller = &$uController;
-			$this->db = new databaseQuery(database::get()); // default database to member 'db'
+			$this->db = database::get(); // default database to member 'db'
 		}
 
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
@@ -200,7 +418,7 @@ if(extensions::isSelected('mvc')) {
 				$uMemberName = $uDatabaseName;
 			}
 
-			$this->{$uMemberName} = new databaseQuery(database::get($uDatabaseName));
+			$this->{$uMemberName} = database::get($uDatabaseName);
 		}
 	}
 
@@ -208,10 +426,25 @@ if(extensions::isSelected('mvc')) {
 	* Controller Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	abstract class controller {
-		public $defaultView;
+		public $defaultView = null;
+		public $db;
+		public $vars;
+
+		public function __construct() {
+			$this->db = database::get(); // default database to member 'db'
+			$this->vars = array();
+		}
+
+		public function loaddatabase($uDatabaseName, $uMemberName = null) {
+			if(is_null($uMemberName)) {
+				$uMemberName = $uDatabaseName;
+			}
+
+			$this->{$uMemberName} = database::get($uDatabaseName);
+		}
 
 		public function loadmodel($uModelClass, $uMemberName = null) {
 			if(is_null($uMemberName)) {
@@ -221,19 +454,24 @@ if(extensions::isSelected('mvc')) {
 			$this->{$uMemberName} = new $uModelClass ($this);
 		}
 
+		public function get($uKey) {
+			return $this->vars[$uKey];
+		}
+
+		public function set($uKey, $uValue) {
+			$this->vars[$uKey] = $uValue;
+		}
+
+		public function setRef($uKey, &$uValue) {
+			$this->vars[$uKey] = &$uValue;
+		}
+
+		public function remove($uKey) {
+			unset($this->vars[$uKey]);
+		}
+
 		public function view() {
 			$uArgs = func_get_args();
-
-			switch(count($uArgs)) {
-			case 0:
-				$uArgs[] = null;
-				$uArgs[] = $this->defaultView;
-				break;
-			case 1:
-				$uArgs[] = $this->defaultView;
-				break;
-			}
-
 			call_user_func_array('mvc::view', $uArgs);
 		}
 
@@ -247,14 +485,9 @@ if(extensions::isSelected('mvc')) {
 			call_user_func_array('mvc::redirect', $uArgs);
 		}
 
-		public function error($uMessage) {
-			$tViewbag = array(
-				'title' => 'Error',
-				'message' => $uMessage
-			);
-
-			call_user_func('mvc::view', $tViewbag, 'shared_error.cshtml');
-			exit(1);
+		public function error() {
+			$uArgs = func_get_args();
+			call_user_func_array('mvc::error', $uArgs);
 		}
 
 		public function end() {

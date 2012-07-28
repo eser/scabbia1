@@ -5,9 +5,10 @@ if(extensions::isSelected('database')) {
 	* Database Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*
 	* @todo integrate with cache extension
+	* @todo caching for databaseQuery (get hash of given parameters)
 	*/
 	class database {
 		public static $databases = array();
@@ -56,13 +57,17 @@ if(extensions::isSelected('database')) {
 			return null;
 		}
 		
-		public static function sqlInsert($uTable, $uObject) {
+		public static function sqlInsert($uTable, $uObject, $uReturning = '') {
 			$tSql =
 				'INSERT INTO ' . $uTable . ' ('
 				. implode(', ', array_keys($uObject))
 				. ') VALUES ('
 				. implode(', ', array_values($uObject))
 				. ')';
+
+			if(strlen($uReturning) > 0) {
+				$tSql .= ' RETURNING ' . $uReturning;
+			}
 
 			return $tSql;
 		}
@@ -133,7 +138,7 @@ if(extensions::isSelected('database')) {
 	* Database Connection Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class databaseConnection {
 		public $id;
@@ -559,13 +564,17 @@ if(extensions::isSelected('database')) {
 
 			return $tData;
 		}
+
+		public function createQuery() {
+			return new databaseQuery($this);
+		}
 	}
 
 	/**
 	* Database Dataset Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class databaseDataset {
 		public $id;
@@ -587,10 +596,10 @@ if(extensions::isSelected('database')) {
 	* Database Query Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class databaseQuery {
-		protected $database = null;
+		public $database = null;
 
 		private $table;
 		private $fields;
@@ -632,6 +641,7 @@ if(extensions::isSelected('database')) {
 			$this->limit = -1;
 			$this->offset = -1;
 			$this->sequence = '';
+			$this->returning = '';
 		}
 
 		public function setTable($uTableName) {
@@ -728,14 +738,20 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
-		public function setOrderBy($uOrderBy, $uOrder = 'ASC') {
-			$this->orderby = $uOrderBy . ' ' . $uOrder;
+		public function setOrderBy($uOrderBy, $uOrder = null) {
+			$this->orderby = $uOrderBy;
+			if(!is_null($uOrder)) {
+				$this->orderby .= ' ' . $uOrder;
+			}
 
 			return $this;
 		}
 
-		public function addOrderBy($uOrderBy, $uOrder = 'ASC') {
-			$this->orderby .= ', ' . $uOrderBy . ' ' . $uOrder;
+		public function addOrderBy($uOrderBy, $uOrder = null) {
+			$this->orderby .= ', ' . $uOrderBy;
+			if(!is_null($uOrder)) {
+				$this->orderby .= ' ' . $uOrder;
+			}
 
 			return $this;
 		}
@@ -752,14 +768,33 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
-		public function insert() {
-			$this->database->query(database::sqlInsert($this->table, $this->fields), $this->parameters);
+		public function setSequence($uSequence) {
+			$this->sequence = $uSequence;
 
-			if(!is_null($this->sequence) && strlen($this->sequence) > 0) {
-				$tInsertId = $this->database->lastInsertId($this->sequence);
+			return $this;
+		}
+
+		public function setReturning($uReturning) {
+			$this->returning = $uReturning;
+
+			return $this;
+		}
+
+		public function insert() {
+			$tQuery = database::sqlInsert($this->table, $this->fields, $this->returning);
+		
+			if(strlen($this->returning) > 0) {
+				$tInsertId = $this->database->queryScalar($tQuery, $this->parameters);
 			}
 			else {
-				$tInsertId = $this->database->lastInsertId();
+				$this->database->query($tQuery, $this->parameters);
+
+				if(!is_null($this->sequence) && strlen($this->sequence) > 0) {
+					$tInsertId = $this->database->lastInsertId($this->sequence);
+				}
+				else {
+					$tInsertId = $this->database->lastInsertId();
+				}
 			}
 
 			$this->clear();
@@ -862,62 +897,13 @@ if(extensions::isSelected('database')) {
 
 			return $tReturn;
 		}
-
-		// Eser -- COPIED FROM databaseConnection - BEGIN
-		public function dataset() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			return $this->database->datasetInternal(database::$datasets[$uDataset], $uProps);
-		}
-
-		public function &datasetFetch() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			return $this->database->datasetFetchInternal(database::$datasets[$uDataset], $uProps);
-		}
-
-		public function datasetSet() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			return $tData['data'];
-		}
-
-		public function datasetRow() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			if(count($tData['data']) > 0) {
-				return $tData['data'][0];
-			}
-
-			return null;
-		}
-
-		public function datasetScalar() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			$tData = $this->database->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			if(count($tData['data']) > 0) {
-				return current($tData['data'][0]);
-			}
-
-			return null;
-		}
-		// Eser -- COPIED FROM databaseConnection - END
 	}
 
 	/**
 	* DataRows Iterator Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class dataRowsIterator extends NoRewindIterator implements Countable {
 		private $connection;

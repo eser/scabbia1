@@ -5,13 +5,16 @@ if(extensions::isSelected('cache')) {
 	* Cache Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class cache {
 		public static $path;
 		public static $defaultAge;
 		public static $defaultEncryptKey;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'cache',

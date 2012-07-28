@@ -5,7 +5,7 @@ if(extensions::isSelected('stopwatch')) {
 	* StopWatch Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class stopwatch {
 		public static $markers = array();

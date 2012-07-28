@@ -5,13 +5,16 @@ if(extensions::isSelected('captcha')) {
 	* Captcha Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class captcha {
 		public static $fontFile;
 		public static $fontSize;
 		public static $length;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'captcha',
@@ -23,12 +26,21 @@ if(extensions::isSelected('captcha')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$fontFile = framework::translatePath(config::get('/captcha/@fontFile', '{core}res/font.ttf'));
 			self::$fontSize = intval(config::get('/captcha/@fontSize', '45'));
 			self::$length = intval(config::get('/captcha/@length', '8'));
 		}
 
+		/**
+		* Generates and outputs a captcha image
+		*
+		* @param string $uCookieName name of the cookie which will be stored on the client side
+		* @return string generated captcha code
+		*/
 		public static function generate($uCookieName = 'captcha') {
 			// pick a random word
 			$tCode = string::generatePassword(self::$length);

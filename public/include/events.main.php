@@ -16,7 +16,7 @@
 		*/
 		public static $eventDepth = array();
 		/**
-		* Shows weather event manager is currently disabled or not.
+		* Indicates the event manager is currently disabled or not.
 		*/
 		public static $disabled = false;
 	

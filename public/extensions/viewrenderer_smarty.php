@@ -54,17 +54,17 @@ if(extensions::isSelected('viewrenderer_smarty')) {
 				self::$renderer->clearAllAssign();
 			}
 
+			self::$renderer->assignByRef('model', $uObject['model']);
 			if(is_array($uObject['model'])) {
 				foreach($uObject['model'] as $tKey => &$tValue) {
 					self::$renderer->assignByRef($tKey, $tValue);
 				}
 			}
-			else {
-				self::$renderer->assignByRef('model', $uObject['model']);
-			}
 
-			foreach($uObject['extra'] as $tKey => &$tValue) {
-				self::$renderer->assignByRef($tKey, $tValue);
+			if(isset($uObject['extra'])) {
+				foreach($uObject['extra'] as $tKey => &$tValue) {
+					self::$renderer->assignByRef($tKey, $tValue);
+				}
 			}
 
 			self::$renderer->display($uObject['viewFile']);

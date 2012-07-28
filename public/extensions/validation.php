@@ -5,7 +5,7 @@ if(extensions::isSelected('validation')) {
 	* Validation Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class validation {
 		public static $rules = array();
@@ -114,7 +114,7 @@ if(extensions::isSelected('validation')) {
 	* Validation Rule Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class validationRule {
 		public $field;

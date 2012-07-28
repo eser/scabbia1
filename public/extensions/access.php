@@ -5,7 +5,7 @@ if(extensions::isSelected('access')) {
 	* Access Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage LayerExtensions
 	*/
 	class access {
 		/**
@@ -21,6 +21,9 @@ if(extensions::isSelected('access')) {
 		*/
 		public static $ipFilters = array();
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'access',
@@ -32,6 +35,9 @@ if(extensions::isSelected('access')) {
 			);
 		}
 		
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			events::register('run', events::Callback('access::run'));
 
@@ -52,6 +58,9 @@ if(extensions::isSelected('access')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function run() {
 			if(self::$maintenance && !in_array($_SERVER['REMOTE_ADDR'], self::$maintenanceExcludeIps)) {
 				$tFile = framework::translatePath(config::get('/access/maintenance/@page'));

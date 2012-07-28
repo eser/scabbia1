@@ -2,12 +2,16 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<mvc autorun="1">
-		<routing
-			defaultController="home" defaultAction="index"
+		<routes
 			notfoundController="home" notfoundAction="notfound"
-			controllerUrlKey="0" actionUrlKey="1"
-			queryStringPattern="{@siteroot}/{@controller}/{@action}{@queryString}"
+			controllerUrlKey="0" defaultController="home"
+			actionUrlKeys="1" defaultAction="index"
+			link="{@siteroot}/{@controller}/{@action}{@queryString}"
 			/>
+
+		<controllerList>
+			<controller name="moderator" actionUrlKeys="1,2" />
+		</controllerList>
 
 		<!-- _{@device}_{@language} -->
 		<view	namePattern="{@controller}_{@action}{@extension}"

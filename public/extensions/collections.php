@@ -5,7 +5,7 @@ if(extensions::isSelected('collections')) {
 	* Collections Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*
 	* @todo revisions
 	*/
@@ -26,7 +26,7 @@ if(extensions::isSelected('collections')) {
 	* Collection Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class collection implements ArrayAccess, IteratorAggregate {
 		public $id;
@@ -382,10 +382,10 @@ if(extensions::isSelected('collections')) {
 	}
 	
 	/**
-	* XmlCollection Class
+	* Xml Collection Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class xmlCollection extends collection {
 		public static function fromString($uString) {
@@ -470,10 +470,10 @@ if(extensions::isSelected('collections')) {
 	}
 
 	/**
-	* FileCollection Class
+	* File Collection Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class fileCollection extends collection {
 		public static function fromFile($uFile) {

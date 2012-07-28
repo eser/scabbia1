@@ -5,7 +5,7 @@ if(extensions::isSelected('html')) {
 	* Html Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*
 	* @todo form open
 	* @todo form fields
@@ -32,12 +32,18 @@ if(extensions::isSelected('html')) {
 			);
 		}
 
-		public static function tag($uName, $uAttributes) {
+		public static function tag($uName, $uAttributes, $uValue = null) {
 			$tReturn = '<' . $uName;
 			if(is_array($uAttributes)) {
 				$tReturn .= ' ' . self::attributes($uAttributes);
 			}
-			$tReturn .= ' />';
+
+			if(is_null($uValue)) {
+				$tReturn .= ' />';
+			}
+			else {
+				$tReturn .= '>' . $uValue . '</' . $uName . '>';
+			}
 
 			return $tReturn;
 		}

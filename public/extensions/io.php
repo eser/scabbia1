@@ -5,7 +5,7 @@ if(extensions::isSelected('io')) {
 	* IO Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage UtilityExtensions
 	*/
 	class io {
 		public static function extension_info() {

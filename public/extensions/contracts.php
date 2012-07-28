@@ -5,7 +5,7 @@ if(extensions::isSelected('contracts')) {
 	* Contracts Extension
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*
 	* @todo add more validators such as phone, date, digit, isUnique, etc.
 	*/
@@ -169,7 +169,7 @@ if(extensions::isSelected('contracts')) {
 	* Contract Object Class
 	*
 	* @package Scabbia
-	* @subpackage Extensions
+	* @subpackage ExtensibilityExtensions
 	*/
 	class contractObject {
 		public $value;

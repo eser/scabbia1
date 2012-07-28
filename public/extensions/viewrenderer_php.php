@@ -42,7 +42,9 @@ if(extensions::isSelected('viewrenderer_php')) {
 				extract($model, EXTR_SKIP|EXTR_REFS);
 			}
 
-			extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
+			if(isset($uObject['extra'])) {
+				extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
+			}
 
 			require($tInputFile);
 		}
