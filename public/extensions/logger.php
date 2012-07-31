@@ -11,7 +11,6 @@ if(extensions::isSelected('logger')) {
 		public static $filename;
 		public static $line;
 		public static $eof = "\r\n";
-		public static $directory;
 
 		public static function extension_info() {
 			return array(
@@ -28,8 +27,6 @@ if(extensions::isSelected('logger')) {
 			self::$filename = config::get('/logger/@filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get('/logger/@line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 			
-			self::$directory = framework::$applicationPath . 'writable/logs/';
-
 			set_exception_handler('logger::exceptionCallback');
 			set_error_handler('logger::errorCallback', E_ALL);
 			// ini_set('display_errors', '1');
@@ -96,15 +93,47 @@ if(extensions::isSelected('logger')) {
 
 				$tString = '';
 				$tString .= '<div>'; // for content-type: text/xml
-				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . self::$eof;
-				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uException->getMessage() . '</div>' . self::$eof;
+				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>';
+				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uException->getMessage() . '</div>';
 
 				if(framework::$development) {
 					if(count($tEventDepth) > 0) {
-						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b>' . implode('<br />' . self::$eof, $tEventDepth) . '</div>' . self::$eof;
+						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b><pre>' . implode(self::$eof, $tEventDepth) . '</pre></div>';
 					}
 					
-					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b>' . nl2br($uException->getTraceAsString()) . '</div>' . self::$eof;
+					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b><pre>';
+
+					$tCount = 0;
+					foreach($uException->getTrace() as $tFrame) {
+						if(isset($tFrame['args'])) {
+							$tArgs = array();
+							foreach($tFrame['args'] as $tArg) {
+								$tArgs[] = var_export($tArg, true);
+							}
+						}
+
+						if(isset($tFrame['class'])) {
+							$tFunction = $tFrame['class'] . $tFrame['type'] . $tFrame['function'];
+						}
+						else {
+							$tFunction = $tFrame['function'];
+						}
+
+						if(isset($tFrame['file'])) {
+							$tString .= sprintf(self::$eof . '#%s %s(%s):', ++$tCount, $tFrame['file'], $tFrame['line']);
+							$tString .= sprintf(self::$eof . '#%s <strong>%s</strong>(', $tCount, $tFunction);
+						}
+						else {
+							$tString .= sprintf(self::$eof . '#%s: <strong>%s</strong>(', ++$tCount, $tFunction);
+						}
+
+						$tString .= implode(', ', $tArgs);
+						$tString .= ')' . self::$eof;
+					}
+
+					// nl2br($uException->getTraceAsString())
+
+					$tString .= '</pre></div>' . self::$eof;
 				}
 
 				$tString .= '</div>';
@@ -122,7 +151,7 @@ if(extensions::isSelected('logger')) {
 			$uParams['category'] = &$uCategory;
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
-			$tFilename = self::$directory . string::format(self::$filename, $uParams);
+			$tFilename = framework::writablePath('logs/' . string::format(self::$filename, $uParams));
 			$tContent = string::format(self::$line . self::$eof . self::$eof, $uParams);
 
 			file_put_contents($tFilename, $tContent, FILE_APPEND);

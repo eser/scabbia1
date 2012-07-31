@@ -86,7 +86,8 @@
 			catch(Exception $tException) { 
 			}
 
-			return false;
+			$uArray = false;
+			return $uArray;
 		}
 	}
 

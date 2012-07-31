@@ -42,7 +42,7 @@ if(extensions::isSelected('session')) {
 
 			events::register('output', events::Callback('session::output'));
 			
-			self::$directory = framework::$applicationPath . 'writable/sessions/';
+			self::$directory = framework::writablePath('sessions/');
 		}
 
 		public static function output() {

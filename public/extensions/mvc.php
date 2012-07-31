@@ -17,6 +17,7 @@ if(extensions::isSelected('mvc')) {
 		public static $actionActual = null;
 		public static $defaultController = null;
 		public static $defaultAction = null;
+		public static $viewEngines = null;
 
 		public static function extension_info() {
 			return array(
@@ -33,11 +34,27 @@ if(extensions::isSelected('mvc')) {
 			self::$defaultController = config::get('/mvc/routes/@defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/@defaultAction', 'index');
 
-			$tAutoRun = intval(config::get('/mvc/@autorun', '1'));
+			// default viewengine
+			self::$viewEngines = array();
 
+			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
+				self::registerViewEngine($tViewEngine['@extension'], $tViewEngine['@class']);
+			}
+			self::registerViewEngine('php', 'viewengine_php');
+
+			// autorun
+			$tAutoRun = intval(config::get('/mvc/@autorun', '1'));
 			if($tAutoRun) {
 				events::register('run', events::Callback('mvc::run'));
 			}
+		}
+
+		public static function registerViewEngine($uExtension, $uClassName) {
+			if(isset(self::$viewEngines[$uExtension])) {
+				return;
+			}
+
+			self::$viewEngines[$uExtension] = $uClassName;
 		}
 
 		protected static function &getControllerData($uController) {
@@ -171,18 +188,29 @@ if(extensions::isSelected('mvc')) {
 
 		public static function view() {
 			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
-			$tViewDefaultExtension = config::get('/mvc/view/@defaultExtension', QEXT_PHP);
+			$tViewDefaultExtension = config::get('/mvc/view/@defaultViewExtension', 'php');
 
 			$uArgs = func_get_args();
 			$uArgsCount = count($uArgs);
 
-			$uController = end(self::$controllerStack);
-			$uView = ($uArgsCount >= 1) ? $uArgs[0] : $uController->defaultView;
-			$uModel = ($uArgsCount >= 2) ? $uArgs[1] : $uController->vars;
+			if(!is_null(self::$controllerStack)) {
+				$uController = end(self::$controllerStack);
+				$uView = ($uArgsCount >= 1) ? $uArgs[0] : $uController->defaultView;
+				$uModel = ($uArgsCount >= 2) ? $uArgs[1] : $uController->vars;
+			}
+			else {
+				$uController = 'shared';
+				$uView = ($uArgsCount >= 1) ? $uArgs[0] : null;
+				$uModel = ($uArgsCount >= 2) ? $uArgs[1] : null;
+			}
 
 			if(is_string($uView)) {
 				$tViewFile = $uView;
-				$tViewExtension = '.' . pathinfo($tViewFile, PATHINFO_EXTENSION);
+				$tViewExtension = pathinfo($tViewFile, PATHINFO_EXTENSION);
+
+				if(!isset(self::$viewEngines[$tViewExtension])) {
+					$tViewExtension = $tViewDefaultExtension;
+				}
 			}
 			else {
 				if(is_null($uView)) {
@@ -195,21 +223,28 @@ if(extensions::isSelected('mvc')) {
 				if(!isset($uView['controller'])) {
 					$uView['controller'] = self::$route['controller'];
 				}
+
 				if(!isset($uView['action'])) {
 					$uView['action'] = self::$route['action'];
 				}
+
 				if(!isset($uView['device'])) {
 					$uView['device'] = http::$crawlerType;
 				}
+
 				if(!isset($uView['language'])) {
 					$uView['language'] = i8n::$languageKey;
 				}
-				if(!isset($uView['extension'])) {
+
+				if(isset($uView['extension']) && isset(self::$viewEngines[$uView['extension']])) {
+					$tViewExtension = $uView['extension'];
+				}
+				else {
+					$tViewExtension = $tViewDefaultExtension;
 					$uView['extension'] = $tViewDefaultExtension;
 				}
 
 				$tViewFile = string::format($tViewNamePattern, $uView);
-				$tViewExtension = $uView['extension'];
 			}
 
 			$tExtra = array(
@@ -217,12 +252,16 @@ if(extensions::isSelected('mvc')) {
 				'lang' => i8n::$languageKey
 			);
 
-			events::invoke('renderview', array(
-				'viewFile' => &$tViewFile,
-				'viewExtension' => &$tViewExtension,
-				'model' => &$uModel,
-				'extra' => &$tExtra
-			));
+			call_user_func(
+				self::$viewEngines[$tViewExtension] . '::renderview',
+				array(
+					'templatePath' => framework::$applicationPath . 'views/',
+					'compiledPath' => framework::writablePath('viewCache/' . $tViewExtension . '/'),
+					'viewFile' => &$tViewFile,
+					'model' => &$uModel,
+					'extra' => &$tExtra
+				)
+			);
 		}
 
 		public static function json() {
@@ -492,6 +531,22 @@ EOD;
 
 		public function end() {
 			exit(0);
+		}
+	}
+
+	class viewengine_php {
+		public static function renderview($uObject) {
+			// variable extraction
+			$model = &$uObject['model'];
+			if(is_array($model)) {
+				extract($model, EXTR_SKIP|EXTR_REFS);
+			}
+
+			if(isset($uObject['extra'])) {
+				extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
+			}
+
+			require($uObject['templatePath'] . $uObject['viewFile']);
 		}
 	}
 }

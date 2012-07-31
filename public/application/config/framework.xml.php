@@ -48,14 +48,14 @@
 		<extension name="html" />
 		<extension name="media" />
 		<extension name="captcha" />
-		<extension name="viewrenderer_razor" />
-		<extension name="viewrenderer_markdown" />
+		<extension name="viewengine_razor" />
+		<extension name="viewengine_markdown" />
 <!--
-		<extension name="viewrenderer_php" />
-		<extension name="viewrenderer_phptal" />
-		<extension name="viewrenderer_smarty" />
-		<extension name="viewrenderer_raintpl" />
-		<extension name="viewrenderer_twig" />
+		<extension name="viewengine_php" />
+		<extension name="viewengine_phptal" />
+		<extension name="viewengine_smarty" />
+		<extension name="viewengine_raintpl" />
+		<extension name="viewengine_twig" />
 -->
 		<extension name="stopwatch" />
 		<extension name="fb" />

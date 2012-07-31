@@ -27,7 +27,7 @@ if(extensions::isSelected('media')) {
 		}
 
 		public static function extension_load() {
-			self::$cachePath = framework::translatePath(config::get('/media/@cachePath', '{app}writable/mediaCache'));
+			self::$cachePath = framework::writablePath('mediaCache/');
 			self::$cacheAge = intval(config::get('/media/@cacheAge', '120'));
 		}
 

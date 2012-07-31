@@ -183,7 +183,7 @@ if(extensions::isSelected('database')) {
 				$this->cachePath = framework::translatePath($uConfig['cachePath']['.']);
 			}
 			else {
-				$this->cachePath = framework::$applicationPath . 'writable/datasetCache/';
+				$this->cachePath = framework::writablePath('datasetCache/');
 			}
 		}
 		

@@ -1,65 +1,56 @@
 <?php
 
-if(extensions::isSelected('viewrenderer_razor')) {
+if(extensions::isSelected('viewengine_razor')) {
 	/**
-	* ViewRenderer: Razor Extension
+	* ViewEngine: Razor Extension
 	*
 	* @package Scabbia
 	* @subpackage Extensions
 	*/
-	class viewrenderer_razor {
-		public static $renderer = null;
-		public static $extension;
-		public static $templatePath;
+	class viewengine_razor {
+		public static $engine = null;
 		public static $compiledAge;
 
 		public static function extension_info() {
 			return array(
-				'name' => 'viewrenderer: razor',
+				'name' => 'viewengine: razor',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array()
+				'fwdepends' => array('mvc')
 			);
 		}
 
 		public static function extension_load() {
-			events::register('renderview', events::Callback('viewrenderer_razor::renderview'));
-
-			self::$extension = config::get('/razor/templates/@extension', '.cshtml');
-			self::$templatePath = framework::translatePath(config::get('/razor/templates/@templatePath', '{app}views'));
 			self::$compiledAge = intval(config::get('/razor/templates/@compiledAge', '120'));
+			mvc::registerViewEngine('cshtml', 'viewengine_razor');
 		}
 
 		public static function renderview($uObject) {
-			if($uObject['viewExtension'] != self::$extension) {
-				return;
-			}
-
-			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
+			$tInputFile = $uObject['templatePath'] . '/' . $uObject['viewFile'];
 			// $tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
 			// if(
 			//	framework::$development ||
 			//	!file_exists($tOutputFile) ||
 			//	time() - filemtime($tOutputFile) >= self::$compiledAge
 			// ) {
-			//	if(is_null(self::$renderer)) {
-			//		self::$renderer = new RazorViewRenderer();
+			//	if(is_null(self::$engine)) {
+			//		self::$engine = new RazorViewRenderer();
 			//	}
 			//
-			//	self::$renderer->generateViewFile($tInputFile, $tOutputFile);
+			//	self::$engine->generateViewFile($tInputFile, $tOutputFile);
 			// }
 
 			// cengiz: Render if file not exist
 			// or debug mode on
-			$tOutputFile = cache::getPath('razor', $uObject['viewFile'], self::$compiledAge);
+			$tOutputFile = cache::getPath('razor/', $uObject['viewFile'], self::$compiledAge);
 			if(!$tOutputFile[0]) {
-				if(is_null(self::$renderer)) {
-					self::$renderer = new RazorViewRenderer();
+				if(is_null(self::$engine)) {
+					self::$engine = new RazorViewRenderer();
 				}
 
-				self::$renderer->generateViewFile($tInputFile, $tOutputFile[1]);
+				self::$engine->generateViewFile($tInputFile, $tOutputFile[1]);
 			}
 
 			// variable extraction

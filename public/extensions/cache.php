@@ -27,19 +27,13 @@ if(extensions::isSelected('cache')) {
 		}
 
 		public static function extension_load() {
-			self::$path = framework::translatePath(config::get('/cache/@path', '{app}writable/cache'));
 			self::$defaultAge = intval(config::get('/cache/@defaultAge', '120'));
 			self::$defaultEncryptKey = config::get('/cache/@defaultEncryptKey', null);
 		}
 
 		public static function getPath($uFolder, $uHash, $uAge = 0) {
 			// path
-			$tPath = self::$path . '/' . $uFolder . '/';
-			if(!is_dir($tPath)) {
-				mkdir($tPath);
-			}
-
-			$tPath .= $uHash;
+			$tPath = framework::writablePath($uFolder . $uHash);
 
 			// age
 			if($uAge > 0) {
@@ -71,12 +65,7 @@ if(extensions::isSelected('cache')) {
 
 		public static function set($uFolder, $uHash, $uObject) {
 			// path
-			$tPath = self::$path . '/' . $uFolder . '/';
-			if(!is_dir($tPath)) {
-				mkdir($tPath);
-			}
-
-			$tPath .= $uHash;
+			$tPath = framework::writablePath($uFolder . $uHash);
 
 			// content
 			io::writeSerialize($tPath, $uObject, self::$defaultEncryptKey);
@@ -86,7 +75,7 @@ if(extensions::isSelected('cache')) {
 
 		public static function garbageCollect($uFolder, $uAge) {
 			// path
-			$tPath = self::$path . '/' . $uFolder;
+			$tPath = framework::writablePath($uFolder);
 			$tDirectory = new DirectoryIterator($tPath);
 			
 			// age

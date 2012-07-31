@@ -79,6 +79,17 @@
 			return $uPath;
 		}
 
+		public static function writablePath($uFile) {
+			$tPathConcat = self::$applicationPath . 'writable/' . $uFile;
+			$tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
+
+			if(!is_dir($tPathDirectory)) {
+				mkdir($tPathDirectory, 0777, true);
+			}
+
+			return $tPathConcat;
+		}
+
 		/**
 		* Checks the given php version is greater than running one.
 		*
@@ -261,7 +272,7 @@
 		* @param $uUrl string url of source
 		*/
 		public static function downloadFile($uFile, $uUrl) {
-			$tFilePath = self::$applicationPath . 'writable/downloaded/' . $uFile;
+			$tFilePath = self::writablePath('downloaded/' . $uFile);
 			if(file_exists($tFilePath)) {
 				return false;
 			}
@@ -279,12 +290,15 @@
 		*/
 		private static function includeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				foreach(glob3($tPath, false) as $tFilename) {
-					if(substr($tFilename, -1) == '/') {
-						continue;
-					}
+				$tFiles = glob3($tPath, false);
+				if($tFiles !== false) {
+					foreach($tFiles as $tFilename) {
+						if(substr($tFilename, -1) == '/') {
+							continue;
+						}
 
-					require($tFilename);
+						require($tFilename);
+					}
 				}
 			}
 		}

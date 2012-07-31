@@ -1,52 +1,41 @@
 <?php
 
-if(extensions::isSelected('viewrenderer_markdown')) {
+if(extensions::isSelected('viewengine_markdown')) {
 	/**
-	* ViewRenderer: MarkDown Extension
+	* ViewEngine: MarkDown Extension
 	*
 	* @package Scabbia
 	* @subpackage Extensions
 	*/
-	class viewrenderer_markdown {
-		public static $renderer = null;
-		public static $extension;
-		public static $templatePath;
-		public static $compiledPath;
+	class viewengine_markdown {
+		public static $engine = null;
 
 		public static function extension_info() {
 			return array(
-				'name' => 'viewrenderer: markdown',
+				'name' => 'viewengine: markdown',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array()
+				'fwdepends' => array('mvc')
 			);
 		}
 
 		public static function extension_load() {
-			events::register('renderview', events::Callback('viewrenderer_markdown::renderview'));
-
-			self::$extension = config::get('/markdown/templates/@extension', '.md');
-			self::$templatePath = framework::translatePath(config::get('/markdown/templates/@templatePath', '{app}views'));
-			self::$compiledPath = framework::translatePath(config::get('/markdown/templates/@compiledPath', '{app}writable/compiledViews'));
+			mvc::registerViewEngine('md', 'viewengine_markdown');
 		}
 
 		public static function renderview($uObject) {
-			if($uObject['viewExtension'] != self::$extension) {
-				return;
-			}
-
-			$tInputFile = self::$templatePath . '/' . $uObject['viewFile'];
-			$tOutputFile = self::$compiledPath . '/md_' . $uObject['viewFile']; // . QEXT_PHP
+			$tInputFile = $uObject['templatePath'] . '/' . $uObject['viewFile'];
+			$tOutputFile = $uObject['compiledPath'] . '/' . $uObject['viewFile']; // . QEXT_PHP
 
 			if(framework::$development || !file_exists($tOutputFile)) {
-				if(is_null(self::$renderer)) {
-					self::$renderer = new Markdown_Parser();
+				if(is_null(self::$engine)) {
+					self::$engine = new Markdown_Parser();
 				}
 
 				$tInput = file_get_contents($tInputFile);
-				$tOutput = self::$renderer->transform($tInput);
+				$tOutput = self::$engine->transform($tInput);
 				file_put_contents($tOutputFile, $tOutput);
 			}
 

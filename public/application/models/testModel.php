@@ -54,6 +54,44 @@
 
 			return $tUsers;
 		}
+
+		function checkLogin($uName, $uPassword) {
+			$tPassword = database::get('dbconn', 'getLoginPassword')->queryScalar($uName);
+
+			if(!is_null($tPassword) && $tPassword == md5($uPassword)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		function getSet($uOffset, $uLimit) {
+			$tUsers = database::get('dbconn', 'getUsers')->querySet($uOffset, $uLimit);
+
+			return $tUsers;
+		}
+
+		function getSingle($uUserId) {
+			return database::get('dbconn', 'getSingleUser')->queryRow($uUserId);
+		}
+
+		function countAll() {
+			$tCount = database::get('dbconn', 'getUserCount')->queryScalar();
+			return (int)$tCount;
+		}
+
+		function unsubscribe($uEmail) {
+			return database::get('dbconn', 'setUserUnsubscribed')->query($uEmail);
+		}
+
+		function logCampaignView($uUserId, $uCampaign, $uOperation) {
+			try {
+				return database::get('dbconn', 'logCampaignView')->query($uUserId, $uCampaign, $uOperation);
+			}
+			catch(PDOException $ex) {
+				return false;
+			}
+		}
 	}
 
 ?>

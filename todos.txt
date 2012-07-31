@@ -62,3 +62,23 @@ webpanel (database ve model otomatik olusturma)
 * controller'da private olan metodlara disaridan erisim olmayacak ci'deki '_' gibi.
 
 * build'in ftp secenegi de olacak. config'e girilen optionlar ve ftp bilgileri ile build isleminin ardindan secilen path'e framework'un derlenmis halini atacak.
+
+scabbia:
+---------------------------
+scabbia models:
+- bir class veya array verildiginde otomatik olarak insert/update/delete/select cumlesi calisabilsin.
+- $this->db->insert('users', array('userid' => '5', username => 'eser')); gibi
+
+scabbia controllers:
+- controllers/home.php controllers/shared.php controllers/developer.php default gelecek.
+- bunlar default gelmesine ragmen config'den actionlarla birlikte map edilebilecek. (shared/notfound shared/error home/index)
+
+scabbia developer controller:
+- development 1 ise veya ip range/filter tutuyor ise girilebilecek.
+- config editlenebilecek.
+- model yaratilabilecek.
+- model icin entity yaratilabilecek. entity class'lar ayni zamanda constraintleri tutacak, constraintler bizim validator'leri kullanabilir.
+- model entity siniflari sayesinde crud islemleri kolayca yapilabilecek.
+- extension ekleme cikarma olacak.
+- build islemleri yapilabilecek.
+- dosya editleme olacak.
