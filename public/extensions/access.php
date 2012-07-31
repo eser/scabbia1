@@ -63,16 +63,28 @@ if(extensions::isSelected('access')) {
 		*/
 		public static function run() {
 			if(self::$maintenance && !in_array($_SERVER['REMOTE_ADDR'], self::$maintenanceExcludeIps)) {
-				$tFile = framework::translatePath(config::get('/access/maintenance/@page'));
-				include($tFile);
+				$tMvcPage = config::get('/access/maintenance/@mvcpage', null);
+				if(!is_null($tMvcPage)) {
+					mvc::view($tMvcPage);
+				}
+				else {
+					$tFile = framework::translatePath(config::get('/access/maintenance/@page'));
+					include($tFile);
+				}
 
 				// to interrupt event-chain execution
 				return false;
 			}
 
 			if(count(self::$ipFilters) > 0) {
-				$tFile = framework::translatePath(config::get('/access/ipFilter/@page'));
-				include($tFile);
+				$tMvcPage = config::get('/access/ipFilter/@mvcpage', null);
+				if(!is_null($tMvcPage)) {
+					mvc::view($tMvcPage);
+				}
+				else {
+					$tFile = framework::translatePath(config::get('/access/ipFilter/@page'));
+					include($tFile);
+				}
 
 				// to interrupt event-chain execution
 				return false;

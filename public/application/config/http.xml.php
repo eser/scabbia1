@@ -51,12 +51,12 @@
 	</session>
 
 	<access>
-		<maintenance mode="0" page="{app}views/static_maintenance.php" />
+		<maintenance mode="0" page="{app}views/static_maintenance.php" mvcpage="shared/maintenance.cshtml" />
 		<maintenanceExcludeList>
 			<maintenanceExclude ip="127.0.0.1" />
 		</maintenanceExcludeList>
 
-		<ipFilter page="{app}views/static_ipban.php" />
+		<ipFilter page="{app}views/static_ipban.php" mvcpage="shared/ipban.cshtml" />
 		<ipFilterList>
 			<!-- <ipFilter type="deny" pattern="127.0.0.?" /> -->
 			<ipFilter type="allow" pattern="*.*.*.*" />
