@@ -22,7 +22,7 @@ if(extensions::isSelected('database')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array('pdo'),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'io')
+				'fwdepends' => array('string', 'cache')
 			);
 		}
 
@@ -155,9 +155,7 @@ if(extensions::isSelected('database')) {
 		protected $initCommand;
 		protected $overrideCase;
 		protected $persistent;
-		public $keyphase = null;
-		public $cachePath;
-		private $affectedRows;
+		public $affectedRows;
 
 		public function __construct($uConfig) {
 			$this->id = $uConfig['@id'];
@@ -174,17 +172,7 @@ if(extensions::isSelected('database')) {
 				$this->overrideCase = $uConfig['overrideCase']['.'];
 			}
 			
-			if(isset($uConfig['@keyphase'])) {
-				$this->keyphase = $uConfig['@keyphase'];
-			}
-
 			$this->persistent = isset($uConfig['persistent']);
-			if(isset($uConfig['cachePath'])) {
-				$this->cachePath = framework::translatePath($uConfig['cachePath']['.']);
-			}
-			else {
-				$this->cachePath = framework::writablePath('datasetCache/');
-			}
 		}
 		
 		public function __destruct() {
@@ -493,30 +481,35 @@ if(extensions::isSelected('database')) {
 //				$uProps = &$tPropMaps;
 //			}
 
+			$tFolder = 'database/' . $this->id . '/';
+
 			$uPropsSerialized = $uDataset->id;
 			foreach($uProps as &$tProp) {
-				$uPropsSerialized .= '_' . io::sanitize($tProp);
+				$uPropsSerialized .= '_' . $tProp;
 			}
-
-			$tFileName = $this->id . '_' . $uPropsSerialized;
-			$tFilePath = $this->cachePath . $tFileName;
-
-			$tData = null;
-			$tLoadedFromCache = false;
-
+			
 			if(isset($this->cache[$uPropsSerialized])) {
 				$tData = &$this->cache[$uPropsSerialized];
 				$tData['data']->iterator->rewind(); // rewind ArrayIterator
 				$tLoadedFromCache = true;
 			}
-			else if($uDataset->cacheLife > 0 && is_readable($tFilePath)) {
-				$tData = io::readSerialize($tFilePath, $this->keyphase);
-				$tLoadedFromCache = true;
+			else if($uDataset->cacheLife > 0) {
+				$tData = cache::get($tFolder, $uPropsSerialized, $uDataset->cacheLife);
+				if($tData !== false) {
+					$tLoadedFromCache = true;
 
-				$this->cache[$uPropsSerialized] = &$tData;
+					$this->cache[$uPropsSerialized] = &$tData;
+				}
+				else {
+					$tLoadedFromCache = false;
+				}
+			}
+			else {
+				$tData = false;
+				$tLoadedFromCache = false;
 			}
 
-			if(is_null($tData) || ($tData['lastmod'] + $uDataset->cacheLife < time())) {
+			if($tData === false) {
 				if($uDataset->transaction) {
 					$this->beginTransaction();
 				}
@@ -531,13 +524,8 @@ if(extensions::isSelected('database')) {
 
 					$tQueryExecute = string::format($uDataset->queryString, $tArray);
 
-					if(framework::$debug) {
-						echo 'query: ', $tQueryExecute, "\n";
-					}
-
 					$tData = array(
-						'data' => $this->querySet($tQueryExecute),
-						'lastmod' => time()
+						'data' => $this->querySet($tQueryExecute)
 					);
 
 					if($this->inTransaction) {
@@ -546,7 +534,7 @@ if(extensions::isSelected('database')) {
 
 					if($uDataset->cacheLife > 0) {
 						$this->cache[$uPropsSerialized] = &$tData;
-						io::writeSerialize($tFilePath, $tData, $this->keyphase);
+						cache::set($tFolder, $uPropsSerialized, $tData);
 					}
 				}
 				catch(PDOException $ex) {
@@ -601,15 +589,15 @@ if(extensions::isSelected('database')) {
 	class databaseQuery {
 		public $database = null;
 
-		private $table;
-		private $fields;
-		private $parameters;
-		private $where;
-		private $groupby;
-		private $orderby;
-		private $limit;
-		private $offset;
-		private $sequence;
+		public $table;
+		public $fields;
+		public $parameters;
+		public $where;
+		public $groupby;
+		public $orderby;
+		public $limit;
+		public $offset;
+		public $sequence;
 
 		public function __construct(&$uDatabase = null) {
 			$this->setDatabase($uDatabase);
@@ -906,10 +894,10 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*/
 	class dataRowsIterator extends NoRewindIterator implements Countable {
-		private $connection;
-		private $current;
-		private $count;
-		private $cursor = 0;
+		public $connection;
+		public $current;
+		public $count;
+		public $cursor = 0;
 
 		public function __construct($uConnection) {
 			$this->connection = &$uConnection;

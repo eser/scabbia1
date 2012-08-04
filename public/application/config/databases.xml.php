@@ -2,8 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<databaseList>
-		<database id="dbconn" default="default" keyphase="test">
-			<cachePath>{app}writable/datasetCache/</cachePath>
+		<database id="dbconn" default="default">
 			<persistent />
 			<overrideCase>natural</overrideCase>
 			<scope mode="development">

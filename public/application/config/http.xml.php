@@ -47,7 +47,7 @@
 	</http>
 
 	<session>
-		<cookie name="sessid" life="0" ipCheck="0" uaCheck="1" keyphase="test" />
+		<cookie name="sessid" life="0" ipCheck="0" uaCheck="1" />
 	</session>
 
 	<access>

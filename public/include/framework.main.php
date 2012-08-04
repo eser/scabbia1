@@ -203,12 +203,9 @@
 					if(self::$development && count($tParameters) > 0) {
 						if($tParameters[0] == 'build') {
 							self::build('index.php', !(count($tParameters) >= 2 && $tParameters[1] == 'pseudo'));
-							self::purgeFolder(self::$applicationPath . 'writable/sessions');
-							// self::purgeFolder(QPATH_APP . 'writable/datasetCache');
-							// self::purgeFolder(QPATH_APP . 'writable/mediaCache');
-							// self::purgeFolder(QPATH_APP . 'writable/downloaded');
-							// self::purgeFolder(QPATH_APP . 'writable/compiledViews'));
-							// self::purgeFolder(QPATH_APP . 'writable/logs');
+							// self::purgeFolder(self::$applicationPath . 'writable/downloaded');
+							// self::purgeFolder(self::$applicationPath . 'writable/cache');
+							// self::purgeFolder(self::$applicationPath . 'writable/logs');
 
 							echo 'build done.';
 							return;

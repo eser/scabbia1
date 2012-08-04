@@ -18,7 +18,7 @@ if(extensions::isSelected('viewengine_razor')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('mvc')
+				'fwdepends' => array('mvc', 'cache')
 			);
 		}
 
@@ -45,7 +45,7 @@ if(extensions::isSelected('viewengine_razor')) {
 			// cengiz: Render if file not exist
 			// or debug mode on
 			$tOutputFile = cache::getPath('razor/', $uObject['viewFile'], self::$compiledAge);
-			if(!$tOutputFile[0]) {
+			if(framework::$development || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
 					self::$engine = new RazorViewRenderer();
 				}

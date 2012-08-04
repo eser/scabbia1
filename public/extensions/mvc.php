@@ -256,7 +256,7 @@ if(extensions::isSelected('mvc')) {
 				self::$viewEngines[$tViewExtension] . '::renderview',
 				array(
 					'templatePath' => framework::$applicationPath . 'views/',
-					'compiledPath' => framework::writablePath('viewCache/' . $tViewExtension . '/'),
+					'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
 					'viewFile' => &$tViewFile,
 					'model' => &$uModel,
 					'extra' => &$tExtra

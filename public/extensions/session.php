@@ -17,8 +17,6 @@ if(extensions::isSelected('session')) {
 		public static $sessionName;
 		public static $sessionLife;
 		public static $isModified = false;
-		public static $keyphase = null;
-		public static $directory;
 
 		public static function extension_info() {
 			return array(
@@ -27,22 +25,19 @@ if(extensions::isSelected('session')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('io', 'http')
+				'fwdepends' => array('string', 'cache')
 			);
 		}
 		
 		public static function extension_load() {
 			self::$sessionName = config::get('/session/cookie/@name', 'sessid');
 			self::$sessionLife = intval(config::get('/session/cookie/@life', '0'));
-			self::$keyphase = config::get('/session/cookie/@keyphase', null);
 
 			if(array_key_exists(self::$sessionName, $_COOKIE)) {
 				self::$id = $_COOKIE[self::$sessionName];
 			}
 
 			events::register('output', events::Callback('session::output'));
-			
-			self::$directory = framework::writablePath('sessions/');
 		}
 
 		public static function output() {
@@ -54,13 +49,9 @@ if(extensions::isSelected('session')) {
 				$tIpCheck = (bool)config::get('/session/cookie/@ipCheck', '0');
 				$tUACheck = (bool)config::get('/session/cookie/@uaCheck', '1');
 
-				$tFilename = self::$directory . self::$id;
-
-				if(file_exists($tFilename)) {
-					$tData = io::readSerialize($tFilename, self::$keyphase);
-
+				$tData = cache::get('sessions/', self::$id, self::$sessionLife);
+				if($tData !== false) {
 					if(
-						(self::$sessionLife <= 0 || $tData['lastmod'] + self::$sessionLife >= time()) &&
 						(!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
 						(!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])
 					) {
@@ -77,17 +68,13 @@ if(extensions::isSelected('session')) {
 		}
 
 		public static function save() {
-			$tKeyphase = config::get('/session/cookie/@keyphase', null);
-
 			if(!self::$isModified) {
 				return;
 			}
 
 			if(is_null(self::$id)) {
-				self::$id = io::sanitize(string::generateUuid());
+				self::$id = string::generateUuid();
 			}
-
-			$tFilename = self::$directory . self::$id;
 
 			if(self::$sessionLife > 0) {
 				$tCookieLife = time() + self::$sessionLife;
@@ -97,16 +84,15 @@ if(extensions::isSelected('session')) {
 			}
 
 			setcookie(self::$sessionName, self::$id, $tCookieLife, '/');
-
-			io::writeSerialize($tFilename, array(
-					'data' => self::$data,
-					'flashdata' => self::$flashdata_next,
-					'lastmod' => time(),
-					'ip' => $_SERVER['REMOTE_ADDR'],
-					'ua' => $_SERVER['HTTP_USER_AGENT']
-				),
-				self::$keyphase
+			
+			$tData = array(
+				'data' => self::$data,
+				'flashdata' => self::$flashdata_next,
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'ua' => $_SERVER['HTTP_USER_AGENT']
 			);
+
+			cache::set('sessions/', self::$id, $tData);
 
 			self::$isModified = false;
 		}
@@ -120,13 +106,9 @@ if(extensions::isSelected('session')) {
 				return;
 			}
 
-			$tFilename = self::$directory . self::$id;
-
 			setcookie(self::$sessionName, '', time() - 3600, '/');
 
-			if(file_exists($tFilename)) {
-				unlink($tFilename);
-			}
+			cache::destroy('sessions/', self::$id);
 
 			self::$id = null;
 			self::$data = null;

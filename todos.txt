@@ -63,6 +63,9 @@ webpanel (database ve model otomatik olusturma)
 
 * build'in ftp secenegi de olacak. config'e girilen optionlar ve ftp bilgileri ile build isleminin ardindan secilen path'e framework'un derlenmis halini atacak.
 
+* query debug ->selectQuery() and framework::$debug
+* cache_*, database_* extensions
+
 scabbia:
 ---------------------------
 scabbia models:

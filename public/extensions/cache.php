@@ -8,9 +8,8 @@ if(extensions::isSelected('cache')) {
 	* @subpackage LayerExtensions
 	*/
 	class cache {
-		public static $path;
 		public static $defaultAge;
-		public static $defaultEncryptKey;
+		public static $keyphase;
 
 		/**
 		* @ignore
@@ -28,26 +27,22 @@ if(extensions::isSelected('cache')) {
 
 		public static function extension_load() {
 			self::$defaultAge = intval(config::get('/cache/@defaultAge', '120'));
-			self::$defaultEncryptKey = config::get('/cache/@defaultEncryptKey', null);
+			self::$keyphase = config::get('/cache/@keyphase', null);
 		}
 
-		public static function getPath($uFolder, $uHash, $uAge = 0) {
+		public static function getPath($uFolder, $uFilename, $uAge = -1) {
 			// path
-			$tPath = framework::writablePath($uFolder . $uHash);
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
 
 			// age
-			if($uAge > 0) {
-				$tAge = $uAge;
-			}
-			else {
-				$tAge = self::$defaultAge;
+			if($uAge == -1) {
+				$uAge = self::$defaultAge;
 			}
 
 			// check
 			if(
-				framework::$development ||
 				!file_exists($tPath) ||
-				time() - filemtime($tPath) >= $tAge
+				($uAge != 0 && time() - filemtime($tPath) >= $uAge)
 			) {
 				return array(false, $tPath);
 			}
@@ -55,27 +50,37 @@ if(extensions::isSelected('cache')) {
 			return array(true, $tPath);
 		}
 
-		public static function get($uFolder, $uHash, $uAge) {
+		public static function get($uFolder, $uFilename, $uAge = -1) {
 			// path
-			$tPath = self::getPath($uFolder, $uHash, $uAge);
-			
+			$tPath = self::getPath($uFolder, $uFilename, $uAge);
+
+			//! ambiguous return value
+			if(!$tPath[0]) {
+				return false;
+			}
+
 			// content
-			return io::readSerialize($tPath[1], self::$defaultEncryptKey);
+			return io::readSerialize($tPath[1], self::$keyphase);
 		}
 
-		public static function set($uFolder, $uHash, $uObject) {
+		public static function set($uFolder, $uFilename, $uObject) {
 			// path
-			$tPath = framework::writablePath($uFolder . $uHash);
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
 
 			// content
-			io::writeSerialize($tPath, $uObject, self::$defaultEncryptKey);
+			io::writeSerialize($tPath, $uObject, self::$keyphase);
 
 			return $tPath;
 		}
 
+		public static function destroy($uFolder, $uFilename) {
+			$tPath = framework::writablePath('cache/' . $uFolder);
+			io::destroy($tPath . io::sanitize($uFilename));
+		}
+
 		public static function garbageCollect($uFolder, $uAge) {
 			// path
-			$tPath = framework::writablePath($uFolder);
+			$tPath = framework::writablePath('cache/' . $uFolder);
 			$tDirectory = new DirectoryIterator($tPath);
 			
 			// age
@@ -96,7 +101,7 @@ if(extensions::isSelected('cache')) {
 					continue;
 				}
 
-				unlink($tFile->getPathname());
+				io::destroy($tFile->getPathname());
 			}
 		}
 	}

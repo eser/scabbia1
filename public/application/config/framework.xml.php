@@ -78,6 +78,6 @@
 		line="[{date|'d-m-Y H:i:s'}] {strtoupper|@category} | {@ip} | {@message}"
 		/>
 
-	<media
-		cachePath="{app}writable/mediaCache" />
+	<cache
+		keyphase="test" />
 </scabbia>

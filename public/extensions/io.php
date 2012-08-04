@@ -176,6 +176,10 @@ if(extensions::isSelected('io')) {
 		}
 
 		public static function read($uPath) {
+			if(!is_readable($uPath)) {
+				return false;
+			}
+
 			return file_get_contents($uPath);
 		}
 
@@ -183,21 +187,26 @@ if(extensions::isSelected('io')) {
 			return file_put_contents($uPath, $uContent, LOCK_EX);
 		}
 
-		public static function readSerialize($uPath, $uEncryptKey = null) {
+		public static function readSerialize($uPath, $uKeyphase = null) {
 			$tContent = self::read($uPath);
 
-			if(!is_null($uEncryptKey) && strlen($uEncryptKey) > 0) {
-				$tContent = string::decrypt($tContent, $uEncryptKey);
+			//! ambiguous return value
+			if($tContent === false) {
+				return false;
+			}
+
+			if(!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+				$tContent = string::decrypt($tContent, $uKeyphase);
 			}
 
 			return unserialize($tContent);
 		}
 
-		public static function writeSerialize($uPath, $uContent, $uEncryptKey = null) {
+		public static function writeSerialize($uPath, $uContent, $uKeyphase = null) {
 			$tContent = serialize($uContent);
 
-			if(!is_null($uEncryptKey) && strlen($uEncryptKey) > 0) {
-				$tContent = string::encrypt($tContent, $uEncryptKey);
+			if(!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+				$tContent = string::encrypt($tContent, $uKeyphase);
 			}
 
 			return self::write($uPath, $tContent);
@@ -205,6 +214,14 @@ if(extensions::isSelected('io')) {
 
 		public static function touch($uPath) {
 			return touch($uPath);
+		}
+
+		public static function destroy($uPath) {
+			if(file_exists($uPath)) {
+				return unlink($uPath);
+			}
+
+			return false;
 		}
 		
 		public static function sanitize($uFilename) {
