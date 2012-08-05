@@ -1,5 +1,5 @@
 <?php
-	
+
 	/**
 	* Configuration class which handles all configuration-based operations
 	*
@@ -22,11 +22,16 @@
 
 			if(isset($uNode['mode'])) {
 				if((string)$uNode['mode'] == 'development') {
-					if(!framework::$development) {
+					if(framework::$development < 1) {
 						return false;
 					}
 				}
-				else if(framework::$development) {
+				else if((string)$uNode['mode'] == 'debug') {
+					if(framework::$development < 2) {
+						return false;
+					}
+				}
+				else if(framework::$development >= 1) {
 					return false;
 				}
 			}
@@ -185,7 +190,7 @@
 		public static function dump() {
 			var_dump(self::$default);
 		}
-		
+
 		/**
 		* Returns the default configuration as an array.
 		*/

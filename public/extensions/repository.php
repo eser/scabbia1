@@ -10,8 +10,14 @@ if(extensions::isSelected('repository')) {
 	* @todo integrate with cache extension
 	*/
 	class repository {
+		/**
+		* @ignore
+		*/
 		public static $packageKey = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'repository',
@@ -22,11 +28,17 @@ if(extensions::isSelected('repository')) {
 				'fwdepends' => array('io')
 			);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			events::register('run', events::Callback('repository::run'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function run() {
 			$tCheckUrlKey = config::get('/repository/routing/@repositoryCheckUrlKey', 'rep');
 			$tCheckUrlValue = config::get('/repository/routing/@repositoryCheckUrlValue', '');
@@ -320,7 +332,7 @@ if(extensions::isSelected('repository')) {
 			$this->get();
 			$this->get();
 			$this->get();
-		} 
+		}
 
 		$this->a = "\n";
 		$this->action(self::ACTION_DELETE_A_B);

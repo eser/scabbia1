@@ -10,6 +10,14 @@ if(extensions::isSelected('string')) {
 	* @todo pluralize, singularize
 	*/
 	class string {
+		/**
+		* @ignore
+		*/
+		public static $mbstringEncoding;
+
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'string',
@@ -20,7 +28,17 @@ if(extensions::isSelected('string')) {
 				'fwdepends' => array()
 			);
 		}
-		
+
+		/**
+		* @ignore
+		*/
+		public static function extension_load() {
+			self::$mbstringEncoding = mb_preferred_mime_name(mb_internal_encoding());
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function coalesce() {
 			foreach(func_get_args() as $tValue) {
 				if(!is_null($tValue)) {
@@ -28,7 +46,7 @@ if(extensions::isSelected('string')) {
 						if(isset($tValue[0][$tValue[1]]) && !is_null($tValue[0][$tValue[1]])) {
 							return $tValue[0][$tValue[1]];
 						}
-						
+
 						continue;
 					}
 
@@ -37,6 +55,9 @@ if(extensions::isSelected('string')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function filter() {
 			$uArgs = func_get_args();
 
@@ -51,6 +72,9 @@ if(extensions::isSelected('string')) {
 			return call_user_func_array('filter_var', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function format($uString) {
 			$uArgs = func_get_args();
 			array_shift($uArgs);
@@ -64,13 +88,15 @@ if(extensions::isSelected('string')) {
 			$tLastItem = 0;
 			$tArrayItem = 1;
 
-			for($tPos = 0, $tLen = strlen($uString);$tPos < $tLen;$tPos++) {
-				if($uString[$tPos] == '\\') {
-					$tBrackets[$tLastItem][$tArrayItem] .= $uString[++$tPos];
+			for($tPos = 0, $tLen = self::length($uString);$tPos < $tLen;$tPos++) {
+				$tChar = self::substr($uString, $tPos, 1);
+
+				if($tChar == '\\') {
+					$tBrackets[$tLastItem][$tArrayItem] .= self::substr($uString, ++$tPos, 1);
 					continue;
 				}
 
-				if($tQuoteChar === false && $uString[$tPos] == '{') {
+				if($tQuoteChar === false && $tChar == '{') {
 					$tLastItem++;
 					$tBrackets[$tLastItem] = array(null, null);
 					$tArrayItem = 1;
@@ -79,69 +105,69 @@ if(extensions::isSelected('string')) {
 
 				if($tLastItem > 0) {
 					if(is_null($tBrackets[$tLastItem][$tArrayItem])) {
-						if($uString[$tPos] == '\'' || $uString[$tPos] == '"') {
-							$tQuoteChar = $uString[$tPos];
+						if($tChar == '\'' || $tChar == '"') {
+							$tQuoteChar = $tChar;
 							$tBrackets[$tLastItem][$tArrayItem] = '"';	// static text
-							$tPos++;
+							$tChar = self::substr($uString, ++$tPos, 1);
 						}
-						else if($uString[$tPos] == '!') {
+						else if($tChar == '!') {
 							$tBrackets[$tLastItem][$tArrayItem] = '!';	// dynamic text
-							$tPos++;
+							$tChar = self::substr($uString, ++$tPos, 1);
 						}
-						else if($uString[$tPos] == '@') {
+						else if($tChar == '@') {
 							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
-							$tPos++;
+							$tChar = self::substr($uString, ++$tPos, 1);
 						}
 						else {
 							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
 						}
 					}
 
-					if($tBrackets[$tLastItem][$tArrayItem][0] == '"') {
-						if($tQuoteChar == $uString[$tPos]) {
+					if(self::substr($tBrackets[$tLastItem][$tArrayItem], 0, 1) == '"') {
+						if($tQuoteChar == $tChar) {
 							$tQuoteChar = false;
 							continue;
 						}
 
 						if($tQuoteChar !== false) {
-							$tBrackets[$tLastItem][$tArrayItem] .= $uString[$tPos];
+							$tBrackets[$tLastItem][$tArrayItem] .= $tChar;
 							continue;
 						}
 
-						if($uString[$tPos] != ',' && $uString[$tPos] != '}') {
+						if($tChar != ',' && $tChar != '}') {
 							continue;
 						}
 					}
 
-					if($tArrayItem == 1 && $uString[$tPos] == '|' && is_null($tBrackets[$tLastItem][0])) {
+					if($tArrayItem == 1 && $tChar == '|' && is_null($tBrackets[$tLastItem][0])) {
 						$tBrackets[$tLastItem][0] = $tBrackets[$tLastItem][1];
 						$tBrackets[$tLastItem][1] = null;
 						continue;
 					}
 
-					if($uString[$tPos] == ',') {
+					if($tChar == ',') {
 						$tBrackets[$tLastItem][++$tArrayItem] = null;
 						continue;
 					}
 
-					if($uString[$tPos] == '}') {
+					if($tChar == '}') {
 						$tFunc = array_shift($tBrackets[$tLastItem]);
 						foreach($tBrackets[$tLastItem] as &$tItem) {
 							switch($tItem[0]) {
 							case '"':
-								$tItem = substr($tItem, 1);
+								$tItem = self::substr($tItem, 1);
 								break;
 							case '@':
-								$tItem = $uArgs[substr($tItem, 1)];
+								$tItem = $uArgs[self::substr($tItem, 1)];
 								break;
 							case '!':
-								$tItem = constant(substr($tItem, 1));
+								$tItem = constant(self::substr($tItem, 1));
 								break;
 							}
 						}
 
 						if(!is_null($tFunc)) {
-							$tString = call_user_func_array(substr($tFunc, 1), $tBrackets[$tLastItem]);
+							$tString = call_user_func_array(self::substr($tFunc, 1), $tBrackets[$tLastItem]);
 						}
 						else {
 							$tString = implode(', ', $tBrackets[$tLastItem]);
@@ -156,12 +182,15 @@ if(extensions::isSelected('string')) {
 					}
 				}
 
-				$tBrackets[$tLastItem][$tArrayItem] .= $uString[$tPos];
+				$tBrackets[$tLastItem][$tArrayItem] .= $tChar;
 			}
 
 			return $tBrackets[0][1];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function vardump($uVariable, $tOutput = true) {
 			$tVariable = $uVariable;
 			$tType = gettype($tVariable);
@@ -219,10 +248,16 @@ if(extensions::isSelected('string')) {
 			return $tOut;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function hash($uHash) {
 			return hexdec(hash('crc32', $uHash) . hash('crc32b', $uHash));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function generatePassword($uLength) {
 			srand(microtime(true) * 1000000);
 
@@ -239,6 +274,9 @@ if(extensions::isSelected('string')) {
 			return substr($tOutput, 0, $uLength);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function generateUuid() {
 			// return md5(uniqid(mt_rand(), true));
 			return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -265,17 +303,23 @@ if(extensions::isSelected('string')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function generate($uLength, $uCharset = '0123456789ABCDEF') {
 			srand(microtime(true) * 1000000);
 
-			$tCharsetLen = strlen($uCharset) - 1;
-			for($tOutput = '', $tLen = strlen($tOutput);$tLen < $uLength;) {
-				$tOutput .= $uCharset[rand(0, $tCharsetLen)];
+			$tCharsetLen = self::length($uCharset) - 1;
+			for($tOutput = '';$uLength > 0;$uLength--) {
+				$tOutput .= self::substr($uCharset, rand(0, $tCharsetLen), 1);
 			}
 
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function encrypt($uString, $uKey) {
 			$tResult = '';
 
@@ -288,6 +332,9 @@ if(extensions::isSelected('string')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function decrypt($uString, $uKey) {
 			$tResult = '';
 
@@ -300,60 +347,120 @@ if(extensions::isSelected('string')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function strip($uString, $uValids) {
 			$tOutput = '';
 
-			for($tCount = 0, $tLen = strlen($uString);$tCount < $tLen;$tCount++) {
-				if(strpos($uValids, $uString[$tCount]) === false) {
+			for($tCount = 0, $tLen = self::length($uString);$tCount < $tLen;$tCount++) {
+				$tChar = self::substr($uString, $tCount, 1);
+				if(self::strpos($uValids, $tChar) === false) {
 					continue;
 				}
 
-				$tOutput .= $uString[$tCount];
+				$tOutput .= $tChar;
 			}
 
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function squote($uString) {
 			return strtr($uString, array('\\' => '\\\\', '\'' => '\\\''));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function dquote($uString) {
 			return strtr($uString, array('\\' => '\\\\', '"' => '\\"'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function replaceBreaks($uString, $uBreaks = '<br />') {
 			return strtr($uString, array("\r" => '', "\n" => $uBreaks));
 		}
 
-		public static function cropText($uString, $uLength, $uContSign = '') {
-			if(strlen($uString) <= $uLength) {
+		/**
+		* @ignore
+		*/
+		public static function cut($uString, $uLength, $uSuffix = '...') {
+			if(self::length($uString) <= $uLength) {
 				return $uString;
 			}
 
-			return rtrim(substr($uString, 0, $uLength)) . $uContSign;
+			return rtrim(self::substr($uString, 0, $uLength)) . $uSuffix;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function encodeHtml($uString) {
 			return strtr($uString, array('&' => '&amp;', '"' => '&quot;', '<' => '&lt;', '>' => '&gt;'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function decodeHtml($uString) {
 			return strtr($uString, array('&amp;' => '&', '&quot;' => '"', '&lt;' => '<', '&gt;' => '>'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function toLower($uString) {
-			return mb_strtolower($uString);
+			return mb_convert_case($uString, MB_CASE_LOWER);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function toUpper($uString) {
-			return mb_strtoupper($uString);
+			return mb_convert_case($uString, MB_CASE_UPPER);
 		}
 
+		/**
+		* @ignore
+		*/
+		public static function capitalize($uString) {
+			return mb_convert_case($uString, MB_CASE_TITLE);
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function length($uString) {
-			return mb_strlen($uString);
+			// return mb_strlen($uString);
+			return strlen(utf8_decode($uString));
 		}
 
+		/**
+		* @ignore
+		*/
+		public static function substr($uString, $uStart, $uLength = null) {
+			if(is_null($uLength)) {
+				return mb_substr($uString, $uStart);
+			}
+
+			return mb_substr($uString, $uStart, $uLength);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function strpos($uString, $uNeedle, $uOffset = 0) {
+			return mb_strpos($uString, $uNeedle, $uOffset);
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function sizeCalc($uSize, $uPrecision = 0) {
 			static $tSize = ' KMGT';
 			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
@@ -361,6 +468,9 @@ if(extensions::isSelected('string')) {
 			return round($uSize, $uPrecision) . ' ' . $tSize[$tCount] . 'B';
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function quantityCalc($uSize, $uPrecision = 0) {
 			static $tSize = ' KMGT';
 			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
@@ -368,26 +478,37 @@ if(extensions::isSelected('string')) {
 			return round($uSize, $uPrecision) . $tSize[$tCount];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function htmlEscape($uString) {
 			return htmlspecialchars($uString, ENT_COMPAT, 'UTF-8'); //  | ENT_HTML5
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function htmlUnescape($uString) {
 			return htmlspecialchars_decode($uString, ENT_COMPAT); //  | ENT_HTML5
 		}
 
+		/**
+		* @ignore
+		*/
 		private static function readset_gquote($uString, &$uPosition) {
 			$tInSlash = false;
 			$tInQuote = false;
 			$tOutput = '';
 
-			for($tLen = strlen($uString);$uPosition <= $tLen;++$uPosition) {
-				if(($uString[$uPosition] == '\\') && !$tInSlash) {
+			for($tLen = self::length($uString);$uPosition <= $tLen;++$uPosition) {
+				$tChar = self::substr($uString, $uPosition, 1);
+
+				if(($tChar == '\\') && !$tInSlash) {
 					$tInSlash = true;
 					continue;
 				}
 
-				if($uString[$uPosition] == '"') {
+				if($tChar == '"') {
 					if(!$tInQuote) {
 						$tInQuote = true;
 						continue;
@@ -397,15 +518,18 @@ if(extensions::isSelected('string')) {
 						return $tOutput;
 					}
 				}
-				$tOutput .= $uString[$uPosition];
+				$tOutput .= $tChar;
 				$tInSlash = false;
 			}
 
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function readset($uString) {
-			$tStart = strpos($uString, '[');
+			$tStart = self::strpos($uString, '[');
 			$tOutput = array();
 			$tBuffer = '';
 
@@ -413,20 +537,22 @@ if(extensions::isSelected('string')) {
 				return $tOutput;
 			}
 
-			for($tLen = strlen($uString);$tStart <= $tLen;++$tStart) {
-				if($uString[$tStart] == ']') {
+			for($tLen = self::length($uString);$tStart <= $tLen;++$tStart) {
+				$tChar = self::substr($uString, $tStart, 1);
+
+				if($tChar == ']') {
 					$tOutput[] = $tBuffer;
 					$tBuffer = '';
 					return $tOutput;
 				}
 
-				if($uString[$tStart] == ',') {
+				if($tChar == ',') {
 					$tOutput[] = $tBuffer;
 					$tBuffer = '';
 					continue;
 				}
 
-				if($uString[$tStart] == '"') {
+				if($tChar == '"') {
 					$tBuffer = self::readset_gquote($uString, $tStart);
 					continue;
 				}
@@ -435,6 +561,9 @@ if(extensions::isSelected('string')) {
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
 			$tParsed = array(
 				'segments' => array()
@@ -443,12 +572,14 @@ if(extensions::isSelected('string')) {
 			$tStrIndex = 0;
 
 			$tPos = 0;
-			$tLen = strlen($uString);
+			$tLen = self::length($uString);
 
 			if(!is_null($uSeperator)) {
 				for(;$tPos < $tLen;$tPos++) {
-					if(strpos($uSeperator, $uString[$tPos]) !== false) {
-						if(strlen($tStrings[1]) > 0) {
+					$tChar = self::substr($uString, $tPos, 1);
+
+					if(self::strpos($uSeperator, $tChar) !== false) {
+						if(self::length($tStrings[1]) > 0) {
 							$tParsed['segments'][] = $tStrings[1];
 						}
 
@@ -456,25 +587,27 @@ if(extensions::isSelected('string')) {
 						continue;
 					}
 
-					if(strpos($uParameters, $uString[$tPos]) !== false) {
+					if(self::strpos($uParameters, $tChar) !== false) {
 						break;
 					}
 
-					$tStrings[1] .= $uString[$tPos];
+					$tStrings[1] .= $tChar;
 				}
 			}
 
-			if(strlen($tStrings[1]) > 0) {
-				if(strlen($tStrings[1]) > 0) {
+			if(self::length($tStrings[1]) > 0) {
+				if(self::length($tStrings[1]) > 0) {
 					$tParsed['segments'][] = $tStrings[1];
 				}
 
 				$tStrings = array('', null);
 			}
-			
+
 			for(;$tPos < $tLen;$tPos++) {
-				if(strpos($uParameters, $uString[$tPos]) !== false) {
-					if(strlen($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
+				$tChar = self::substr($uString, $tPos, 1);
+
+				if(self::strpos($uParameters, $tChar) !== false) {
+					if(self::length($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
 						$tParsed[$tStrings[0]] = $tStrings[1];
 						$tStrIndex = 0;
 					}
@@ -483,17 +616,17 @@ if(extensions::isSelected('string')) {
 					continue;
 				}
 
-				if(strpos($uKeys, $uString[$tPos]) !== false && $tStrIndex < 1) {
+				if(self::strpos($uKeys, $tChar) !== false && $tStrIndex < 1) {
 					$tStrIndex++;
 					$tStrings[$tStrIndex] = '';
 					continue;
 				}
 
-				$tStrings[$tStrIndex] .= $uString[$tPos];
+				$tStrings[$tStrIndex] .= $tChar;
 			}
 
-			if(strlen($tStrings[0]) > 0) {
-				if(strlen($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
+			if(self::length($tStrings[0]) > 0) {
+				if(self::length($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {
 					$tParsed[$tStrings[0]] = $tStrings[1];
 					$tStrIndex = 0;
 				}
@@ -504,6 +637,9 @@ if(extensions::isSelected('string')) {
 			return $tParsed;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function removeAccent($uString) {
 			$tAccented = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ', 'þ', 'Þ', 'ð');
 			$tStraight = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o', 'b', 'B', 'o');
@@ -511,21 +647,29 @@ if(extensions::isSelected('string')) {
 			return str_replace($tAccented, $tStraight, $uString);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function removeInvisibles($uString) {
 			$tInvisibles = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 127);
 			$tOutput = '';
 
-			for($tCount = 0, $tLen = strlen($uString);$tCount < $tLen;$tCount++) {
-				if(in_array(ord($uString[$tCount]), $tInvisibles)) {
+			for($tCount = 0, $tLen = self::length($uString);$tCount < $tLen;$tCount++) {
+				$tChar = self::substr($uString, $tCount, 1);
+
+				if(in_array(ord($tChar), $tInvisibles)) {
 					continue;
 				}
 
-				$tOutput .= $uString[$tCount];
+				$tOutput .= $tChar;
 			}
 
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function slug($uString) {
 			$uString = self::removeInvisibles($uString);
 			$uString = self::removeAccent($uString);
@@ -536,6 +680,9 @@ if(extensions::isSelected('string')) {
 			return $uString;
 		}
 
+		/**
+		* @ignore
+		*/
         public static function ordinalize($uNumber) {
             if(in_array(($uNumber % 100), range(11, 13))) {
                 return $uNumber . 'th';
@@ -557,16 +704,15 @@ if(extensions::isSelected('string')) {
 			}
         }
 
-	    public static function cut($uString, $uLength, $uSuffix = '...') {
-            return mb_substr($uString, 0, $uLength) . $uSuffix;
-	    }
-
-		public static function capitalize($uString, $uDelimiter = ' ', $uReplaceDelimiter = null) {
+		/**
+		* @ignore
+		*/
+		public static function capitalizeEx($uString, $uDelimiter = ' ', $uReplaceDelimiter = null) {
 			$tOutput = '';
 			$tCapital = true;
 
-			for($tPos = 0, $tLen = mb_strlen($uString);$tPos < $tLen;$tPos++) {
-				$tChar = mb_substr($uString, $tPos, 1);
+			for($tPos = 0, $tLen = self::length($uString);$tPos < $tLen;$tPos++) {
+				$tChar = self::substr($uString, $tPos, 1);
 
 				if($tChar == $uDelimiter) {
 					$tCapital = true;
@@ -575,7 +721,7 @@ if(extensions::isSelected('string')) {
 				}
 
 				if($tCapital) {
-					$tOutput .= mb_strtoupper($tChar);
+					$tOutput .= self::toUpper($tChar);
 					$tCapital = false;
 					continue;
 				}

@@ -11,14 +11,38 @@ if(extensions::isSelected('mvc')) {
 	* @todo forbid 'shared' for controller names
 	*/
 	class mvc {
+		/**
+		* @ignore
+		*/
 		public static $route = null;
+		/**
+		* @ignore
+		*/
 		public static $controllerActual = null;
+		/**
+		* @ignore
+		*/
 		public static $controllerStack = null;
+		/**
+		* @ignore
+		*/
 		public static $actionActual = null;
+		/**
+		* @ignore
+		*/
 		public static $defaultController = null;
+		/**
+		* @ignore
+		*/
 		public static $defaultAction = null;
+		/**
+		* @ignore
+		*/
 		public static $viewEngines = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'mvc',
@@ -30,6 +54,9 @@ if(extensions::isSelected('mvc')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$defaultController = config::get('/mvc/routes/@defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/@defaultAction', 'index');
@@ -49,6 +76,9 @@ if(extensions::isSelected('mvc')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function registerViewEngine($uExtension, $uClassName) {
 			if(isset(self::$viewEngines[$uExtension])) {
 				return;
@@ -57,6 +87,9 @@ if(extensions::isSelected('mvc')) {
 			self::$viewEngines[$uExtension] = $uClassName;
 		}
 
+		/**
+		* @ignore
+		*/
 		protected static function &getControllerData($uController) {
 			$tControllerData = array(
 				'actionUrlKeys' => config::get('/mvc/routes/@actionUrlKeys', '1'),
@@ -87,6 +120,9 @@ if(extensions::isSelected('mvc')) {
 			return $tControllerData;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function findRoute($uArgs) {
 			if(!is_array($uArgs)) {
 				$uArgs = http::parseGet($uArgs);
@@ -119,7 +155,7 @@ if(extensions::isSelected('mvc')) {
 				if(strlen($tRoute['action']) > 0) {
 					$tRoute['action'] .= '_';
 				}
-				
+
 				$tRoute['action'] .= $tRoute['queryString']['segments'][$tActionKey];
 				unset($tRoute['queryString']['segments'][$tActionKey]);
 			}
@@ -131,10 +167,13 @@ if(extensions::isSelected('mvc')) {
 			return $tRoute;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function run() {
 			self::$route = self::findRoute($_GET);
 			self::$controllerActual = self::$route['controller'];
-			
+
 			if(http::$isPost && method_exists(self::$route['controller'], self::$route['action'] . '_post')) {
 				self::$actionActual = self::$route['action'] . '_post';
 			}
@@ -182,10 +221,16 @@ if(extensions::isSelected('mvc')) {
 			return false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function loadmodel($uModelClass) {
 			return new $uModelClass (null);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function view() {
 			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
 			$tViewDefaultExtension = config::get('/mvc/view/@defaultViewExtension', 'php');
@@ -264,6 +309,9 @@ if(extensions::isSelected('mvc')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function json() {
 			$uArgs = func_get_args();
 			$uArgsCount = count($uArgs);
@@ -283,6 +331,9 @@ if(extensions::isSelected('mvc')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function error($uMessage) {
 			$tViewbag = array(
 				'title' => 'Error',
@@ -293,6 +344,9 @@ if(extensions::isSelected('mvc')) {
 			exit(1);
 		}
 
+		/**
+		* @ignore
+		*/
 		private static function url_internal($uArgs) {
 			$tSegments = self::findRoute($uArgs);
 			$tArray = array(
@@ -337,11 +391,17 @@ if(extensions::isSelected('mvc')) {
 */
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function url() {
 			$tArgs = func_get_args();
 			return call_user_func_array('mvc::url_internal', $tArgs);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function redirect() {
 			$tArgs = func_get_args();
 			$tQuery = call_user_func_array('mvc::url_internal', $tArgs);
@@ -349,6 +409,9 @@ if(extensions::isSelected('mvc')) {
 			http::sendRedirect($tQuery, true);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function export($uAjaxOnly = false) {
 			$tArray = array();
 
@@ -378,9 +441,12 @@ if(extensions::isSelected('mvc')) {
 			return $tArray;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function exportAjaxJs() {
 			$tArray = self::export(true);
-			
+
 			echo <<<EOD
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -418,7 +484,7 @@ if(extensions::isSelected('mvc')) {
 EOD;
 		foreach($tArray as $tClassName => $tClass) {
 			$tLines = array();
-			
+
 			echo ',', "\r\n\t\t\t", $tClassName, ': {', "\r\n";
 
 			foreach($tClass as $tMethod) {
@@ -436,7 +502,7 @@ echo <<<EOD
 EOD;
 		}
 	}
-	
+
 	/**
 	* Model Class
 	*
@@ -444,14 +510,26 @@ EOD;
 	* @subpackage LayerExtensions
 	*/
 	abstract class model {
+		/**
+		* @ignore
+		*/
 		public $controller;
+		/**
+		* @ignore
+		*/
 		public $db;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uController = null) {
 			$this->controller = &$uController;
 			$this->db = database::get(); // default database to member 'db'
 		}
 
+		/**
+		* @ignore
+		*/
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uDatabaseName;
@@ -468,15 +546,30 @@ EOD;
 	* @subpackage LayerExtensions
 	*/
 	abstract class controller {
+		/**
+		* @ignore
+		*/
 		public $defaultView = null;
+		/**
+		* @ignore
+		*/
 		public $db;
+		/**
+		* @ignore
+		*/
 		public $vars;
 
+		/**
+		* @ignore
+		*/
 		public function __construct() {
 			$this->db = database::get(); // default database to member 'db'
 			$this->vars = array();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uDatabaseName;
@@ -485,6 +578,9 @@ EOD;
 			$this->{$uMemberName} = database::get($uDatabaseName);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function loadmodel($uModelClass, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uModelClass;
@@ -493,48 +589,84 @@ EOD;
 			$this->{$uMemberName} = new $uModelClass ($this);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function get($uKey) {
 			return $this->vars[$uKey];
 		}
 
+		/**
+		* @ignore
+		*/
 		public function set($uKey, $uValue) {
 			$this->vars[$uKey] = $uValue;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setRef($uKey, &$uValue) {
 			$this->vars[$uKey] = &$uValue;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function remove($uKey) {
 			unset($this->vars[$uKey]);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function view() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::view', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function json() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::json', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function redirect() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::redirect', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function error() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::error', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function end() {
 			exit(0);
 		}
 	}
 
+	/**
+	* ViewEngine: PHP
+	*
+	* @package Scabbia
+	* @subpackage LayerExtensions
+	*/
 	class viewengine_php {
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			// variable extraction
 			$model = &$uObject['model'];

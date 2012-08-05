@@ -10,10 +10,22 @@ if(extensions::isSelected('i8n')) {
 	* @todo translitIt
 	*/
 	class i8n {
+		/**
+		* @ignore
+		*/
 		public static $languages = array();
+		/**
+		* @ignore
+		*/
 		public static $language = null;
+		/**
+		* @ignore
+		*/
 		public static $languageKey;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'i8n',
@@ -25,6 +37,9 @@ if(extensions::isSelected('i8n')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			foreach(config::get('/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['@id']] = array(
@@ -58,6 +73,9 @@ if(extensions::isSelected('i8n')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		private static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(array_key_exists($uLanguage, self::$languages)) {
 				self::$language = self::$languages[$uLanguage];

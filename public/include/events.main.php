@@ -19,7 +19,7 @@
 		* Indicates the event manager is currently disabled or not.
 		*/
 		public static $disabled = false;
-	
+
 		/**
 		* Makes a callback method subscribed to specified event.
 		*
@@ -30,7 +30,7 @@
 			if(!array_key_exists($uEventName, self::$callbacks)) {
 				self::$callbacks[$uEventName] = array();
 			}
-			
+
 			self::$callbacks[$uEventName][] = $uCallback;
 		}
 
@@ -44,7 +44,7 @@
 			if(self::$disabled) {
 				return;
 			}
-			
+
 			if(!array_key_exists($uEventName, self::$callbacks)) {
 				return;
 			}
@@ -82,7 +82,7 @@
 		public static function getEventDepth() {
 			return self::$eventDepth;
 		}
-		
+
 		// usage1: events::callback('method', $this));
 		// usage2: events::callback('static::method'));
 		/**
@@ -95,7 +95,7 @@
 			if(func_num_args() >= 2) {
 				return array(&$uCallbackObject, $uCallbackMethod);
 			}
-			
+
 			return $uCallbackMethod;
 		}
 	}

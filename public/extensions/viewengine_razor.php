@@ -8,9 +8,18 @@ if(extensions::isSelected('viewengine_razor')) {
 	* @subpackage Extensions
 	*/
 	class viewengine_razor {
+		/**
+		* @ignore
+		*/
 		public static $engine = null;
+		/**
+		* @ignore
+		*/
 		public static $compiledAge;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'viewengine: razor',
@@ -22,16 +31,22 @@ if(extensions::isSelected('viewengine_razor')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$compiledAge = intval(config::get('/razor/templates/@compiledAge', '120'));
 			mvc::registerViewEngine('cshtml', 'viewengine_razor');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			$tInputFile = $uObject['templatePath'] . '/' . $uObject['viewFile'];
 			// $tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
 			// if(
-			//	framework::$development ||
+			//	framework::$development >= 1 ||
 			//	!file_exists($tOutputFile) ||
 			//	time() - filemtime($tOutputFile) >= self::$compiledAge
 			// ) {
@@ -45,7 +60,7 @@ if(extensions::isSelected('viewengine_razor')) {
 			// cengiz: Render if file not exist
 			// or debug mode on
 			$tOutputFile = cache::getPath('razor/', $uObject['viewFile'], self::$compiledAge);
-			if(framework::$development || !$tOutputFile[0]) {
+			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
 					self::$engine = new RazorViewRenderer();
 				}
@@ -123,7 +138,7 @@ if(extensions::isSelected('viewengine_razor')) {
 	 *     This is some block of HTML.&lt;br/&gt;
 	 *     &lt;a href="@$item['url']"&gt;@$item['title']&lt;/a&gt;&lt;br/&gt;
 	 * }
-	 * 
+	 *
 	 * If-else examples:
 	 * @if($variable == "some value") {
 	 *     Could be some &lt;p&gt;HTML&lt;/p&gt; here.
@@ -175,7 +190,7 @@ if(extensions::isSelected('viewengine_razor')) {
 			$this->_output = "<?php /* source file: {$sourceFile} */ ?>\n";
 
 			$this->parse(0, strlen($this->_input));
-			
+
 			file_put_contents($viewFile, $this->_output);
 		}
 

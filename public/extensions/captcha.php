@@ -8,8 +8,17 @@ if(extensions::isSelected('captcha')) {
 	* @subpackage ExtensibilityExtensions
 	*/
 	class captcha {
+		/**
+		* @ignore
+		*/
 		public static $fontFile;
+		/**
+		* @ignore
+		*/
 		public static $fontSize;
+		/**
+		* @ignore
+		*/
 		public static $length;
 
 		/**
@@ -116,6 +125,9 @@ if(extensions::isSelected('captcha')) {
 			return $tCode;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function check($uCode, $uCookieName = 'captcha') {
 			// check the supplied code
 			$tResult = (session::getFlash($uCookieName, '') == strtolower($uCode));
@@ -128,3 +140,5 @@ if(extensions::isSelected('captcha')) {
 		}
 	}
 }
+
+?>

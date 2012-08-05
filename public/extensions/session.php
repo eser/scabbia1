@@ -10,14 +10,38 @@ if(extensions::isSelected('session')) {
 	* @todo integrate with cache extension
 	*/
 	class session {
+		/**
+		* @ignore
+		*/
 		public static $id = null;
+		/**
+		* @ignore
+		*/
 		public static $data = null;
+		/**
+		* @ignore
+		*/
 		public static $flashdata_loaded = null;
+		/**
+		* @ignore
+		*/
 		public static $flashdata_next = array();
+		/**
+		* @ignore
+		*/
 		public static $sessionName;
+		/**
+		* @ignore
+		*/
 		public static $sessionLife;
+		/**
+		* @ignore
+		*/
 		public static $isModified = false;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'session',
@@ -28,7 +52,10 @@ if(extensions::isSelected('session')) {
 				'fwdepends' => array('string', 'cache')
 			);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$sessionName = config::get('/session/cookie/@name', 'sessid');
 			self::$sessionLife = intval(config::get('/session/cookie/@life', '0'));
@@ -40,10 +67,16 @@ if(extensions::isSelected('session')) {
 			events::register('output', events::Callback('session::output'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function output() {
 			self::save();
 		}
 
+		/**
+		* @ignore
+		*/
 		private static function open() {
 			if(!is_null(self::$id)) {
 				$tIpCheck = (bool)config::get('/session/cookie/@ipCheck', '0');
@@ -67,6 +100,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function save() {
 			if(!self::$isModified) {
 				return;
@@ -84,7 +120,7 @@ if(extensions::isSelected('session')) {
 			}
 
 			setcookie(self::$sessionName, self::$id, $tCookieLife, '/');
-			
+
 			$tData = array(
 				'data' => self::$data,
 				'flashdata' => self::$flashdata_next,
@@ -97,6 +133,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function destroy() {
 			if(!is_null(self::$data)) {
 				self::open();
@@ -117,6 +156,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function get($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -129,6 +171,9 @@ if(extensions::isSelected('session')) {
 			return self::$data[$uKey];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function set($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -138,6 +183,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function remove($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -147,6 +195,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function exists($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -155,6 +206,9 @@ if(extensions::isSelected('session')) {
 			return array_key_exists($uKey, self::$data);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getKeys() {
 			if(is_null(self::$data)) {
 				self::open();
@@ -163,6 +217,9 @@ if(extensions::isSelected('session')) {
 			return array_keys(self::$data);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getFlash($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -176,6 +233,9 @@ if(extensions::isSelected('session')) {
 			return self::$flashdata_loaded[$uKey];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function setFlash($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -185,6 +245,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function removeFlash($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -194,6 +257,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function keepFlash($uKey, $uDefault) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -209,6 +275,9 @@ if(extensions::isSelected('session')) {
 			self::$isModified = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function existsFlash($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -217,6 +286,9 @@ if(extensions::isSelected('session')) {
 			return array_key_exists($uKey, self::$flashdata_loaded);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getKeysFlash() {
 			if(is_null(self::$data)) {
 				self::open();

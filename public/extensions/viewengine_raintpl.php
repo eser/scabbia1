@@ -8,8 +8,14 @@ if(extensions::isSelected('viewengine_raintpl')) {
 	* @subpackage Extensions
 	*/
 	class viewengine_raintpl {
+		/**
+		* @ignore
+		*/
 		public static $engine = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'viewengine: raintpl',
@@ -21,10 +27,16 @@ if(extensions::isSelected('viewengine_raintpl')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			mvc::registerViewEngine('rain', 'viewengine_raintpl');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/raintpl/installation/@path', '{core}include/3rdparty/raintpl/inc'));
@@ -35,7 +47,7 @@ if(extensions::isSelected('viewengine_raintpl')) {
 				raintpl::configure('tpl_ext', '.rain');
 				raintpl::configure('cache_dir', $uObject['compiledPath'] . '/');
 
-				if(framework::$development) {
+				if(framework::$development >= 1) {
 					raintpl::configure('check_template_update', true);
 				}
 

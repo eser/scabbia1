@@ -8,18 +8,54 @@ if(extensions::isSelected('http')) {
 	* @subpackage LayerExtensions
 	*/
 	class http {
+		/**
+		* @ignore
+		*/
 		public static $platform = null;
+		/**
+		* @ignore
+		*/
 		public static $crawler = null;
+		/**
+		* @ignore
+		*/
 		public static $crawlerType = null;
+		/**
+		* @ignore
+		*/
 		public static $isAjax = false;
+		/**
+		* @ignore
+		*/
 		public static $isGet = false;
+		/**
+		* @ignore
+		*/
 		public static $isPost = false;
+		/**
+		* @ignore
+		*/
 		public static $isBrowser = false;
+		/**
+		* @ignore
+		*/
 		public static $isRobot = false;
+		/**
+		* @ignore
+		*/
 		public static $isMobile = false;
+		/**
+		* @ignore
+		*/
 		public static $languages = array();
+		/**
+		* @ignore
+		*/
 		public static $contentTypes = array();
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'http',
@@ -30,11 +66,14 @@ if(extensions::isSelected('http')) {
 				'fwdepends' => array('string', 'io')
 			);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			// session trans sid
 			ini_set('session.use_trans_sid', '0');
-			
+
 			// required for IE in iframe facebook environments if sessions are to work.
 			header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
@@ -97,7 +136,7 @@ if(extensions::isSelected('http')) {
 					$_SERVER['HTTP_HOST'] .= $_SERVER['SERVER_PORT'];
 				}
 			}
-			
+
 			if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 				self::$isAjax = true;
 			}
@@ -124,6 +163,9 @@ if(extensions::isSelected('http')) {
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkUserAgent() {
 			foreach(config::get('/http/userAgents/platformList', array()) as $tPlatformList) {
 				if(preg_match('/' . $tPlatformList['@match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
@@ -136,7 +178,7 @@ if(extensions::isSelected('http')) {
 				if(preg_match('/' . $tCrawlerList['@match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 					self::$crawler = $tCrawlerList['@name'];
 					self::$crawlerType = $tCrawlerList['@type'];
-					
+
 					switch($tCrawlerList['@type']) {
 					case 'bot':
 						self::$isRobot = true;
@@ -149,12 +191,15 @@ if(extensions::isSelected('http')) {
 						self::$isBrowser = true;
 						break;
 					}
-					
+
 					break;
 				}
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkLanguage($uLanguage = null) {
 			if(is_null($uLanguage)) {
 				return self::$languages;
@@ -163,6 +208,9 @@ if(extensions::isSelected('http')) {
 			return in_array(strtolower($uLanguage), self::$languages);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkContentType($uContentType = null) {
 			if(is_null($uContentType)) {
 				return self::$contentTypes;
@@ -180,18 +228,30 @@ if(extensions::isSelected('http')) {
 //			return self::${$uMethod};
 //		}
 
+		/**
+		* @ignore
+		*/
 		public static function xss($uString) {
 			return str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function encode($uString) {
 			return urlencode($uString);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function decode($uString) {
 			return urldecode($uString);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function encodeArray($uArray) {
 			$tReturn = array();
 
@@ -202,6 +262,9 @@ if(extensions::isSelected('http')) {
 			return implode('&', $tReturn);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function copyStream($tFilename) {
 			$tInput = fopen('php://input', 'rb');
 			$tOutput = fopen($tFilename, 'wb');
@@ -210,6 +273,9 @@ if(extensions::isSelected('http')) {
 			fclose($tInput);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendStatus($uStatusCode) {
 			switch((int)$uStatusCode) {
 			case 100: $tStatus = 'HTTP/1.1 100 Continue'; break;
@@ -259,10 +325,16 @@ if(extensions::isSelected('http')) {
 			self::sendHeader($tStatus);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendStatus404() {
 			self::sendStatus(404);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendHeader($uHeader, $uValue = null, $uReplace = false) {
 			if(isset($uValue)) {
 				header($uHeader . ': ' . $uValue, $uReplace);
@@ -272,6 +344,9 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
@@ -296,6 +371,9 @@ if(extensions::isSelected('http')) {
 			exit();
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendHeaderLastModified($uTime, $uNotModified = false) {
 			self::sendHeader('Last-Modified', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 
@@ -304,10 +382,16 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendHeaderExpires($uTime) {
 			self::sendHeader('Expires', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendRedirect($uLocation, $uTerminate = true) {
 			self::sendHeader('Location', $uLocation, true);
 
@@ -316,6 +400,9 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendRedirectPermanent($uLocation, $uTerminate = true) {
 			self::sendStatus(301);
 			self::sendHeader('Location', $uLocation, true);
@@ -325,24 +412,39 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendHeaderETag($uHash) {
 			self::sendHeader('ETag', '"' . $uHash . '"', true);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendHeaderNoCache() {
 			self::sendHeader('Pragma', 'public', true);
 			self::sendHeader('Cache-Control', 'no-store, no-cache, must-revalidate', true);
 			self::sendHeader('Cache-Control', 'pre-check=0, post-check=0, max-age=0');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sendCookie($uCookie, $uValue, $uExpire = 0) {
 			setrawcookie($uCookie, self::encode($uValue), $uExpire);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function removeCookie() {
 			setrawcookie($uCookie, '', time() - 3600);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function parseGet($uQueryString) {
 			$tParsingType = config::get('/http/request/@parsingType', '0');
 			$tDefaultParameter = config::get('/http/request/@getParameters', '?&');
@@ -358,6 +460,9 @@ if(extensions::isSelected('http')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function parseHeaderString($uString, $uLowerAll = false) {
 			$tResult = array();
 
@@ -376,6 +481,9 @@ if(extensions::isSelected('http')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function buildQueryString($uArray) {
 			//! $tDefaultKey = config::get('/http/request/@getKeys', '=');
 			if(isset($uArray['segments'])) {
@@ -401,6 +509,9 @@ if(extensions::isSelected('http')) {
 			return substr($tString, 0, -1);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function get($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_GET)) {
 				return $uDefault;
@@ -416,6 +527,9 @@ if(extensions::isSelected('http')) {
 			return $_GET[$uKey];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function post($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_POST)) {
 				return $uDefault;
@@ -431,6 +545,9 @@ if(extensions::isSelected('http')) {
 			return $_POST[$uKey];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function cookie($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_COOKIE)) {
 				return $uDefault;

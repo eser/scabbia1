@@ -11,10 +11,22 @@ if(extensions::isSelected('database')) {
 	* @todo caching for databaseQuery (get hash of given parameters)
 	*/
 	class database {
+		/**
+		* @ignore
+		*/
 		public static $databases = array();
+		/**
+		* @ignore
+		*/
 		public static $datasets = array();
+		/**
+		* @ignore
+		*/
 		public static $default = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'database',
@@ -26,6 +38,9 @@ if(extensions::isSelected('database')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
 				$tDatabase = new databaseConnection($tDatabaseConfig);
@@ -42,6 +57,9 @@ if(extensions::isSelected('database')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function &get() {
 			$uArgs = func_get_args();
 
@@ -56,7 +74,10 @@ if(extensions::isSelected('database')) {
 
 			return null;
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function sqlInsert($uTable, $uObject, $uReturning = '') {
 			$tSql =
 				'INSERT INTO ' . $uTable . ' ('
@@ -72,6 +93,9 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = '') {
 			$tPairs = array();
 			foreach($uObject as $tKey => &$tValue) {
@@ -92,6 +116,9 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sqlDelete($uTable, $uWhere, $uExtra = '') {
 			$tSql = 'DELETE FROM ' . $uTable;
 
@@ -106,9 +133,12 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uExtra = '') {
 			$tSql = 'SELECT ';
-			
+
 			if(count($uFields) > 0) {
 				$tSql .= implode(', ', $uFields);
 			}
@@ -141,22 +171,70 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*/
 	class databaseConnection {
+		/**
+		* @ignore
+		*/
 		public $id;
+		/**
+		* @ignore
+		*/
 		public $default;
+		/**
+		* @ignore
+		*/
 		protected $connection = null;
+		/**
+		* @ignore
+		*/
 		public $driver = null;
+		/**
+		* @ignore
+		*/
 		public $cache = array();
+		/**
+		* @ignore
+		*/
 		public $stats = array('cache' => 0, 'query' => 0);
+		/**
+		* @ignore
+		*/
 		public $active = false;
+		/**
+		* @ignore
+		*/
 		public $inTransaction = false;
+		/**
+		* @ignore
+		*/
 		protected $pdoString;
+		/**
+		* @ignore
+		*/
 		protected $username;
+		/**
+		* @ignore
+		*/
 		protected $password;
+		/**
+		* @ignore
+		*/
 		protected $initCommand;
+		/**
+		* @ignore
+		*/
 		protected $overrideCase;
+		/**
+		* @ignore
+		*/
 		protected $persistent;
+		/**
+		* @ignore
+		*/
 		public $affectedRows;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uConfig) {
 			$this->id = $uConfig['@id'];
 			$this->default = isset($uConfig['@default']);
@@ -171,16 +249,22 @@ if(extensions::isSelected('database')) {
 			if(isset($uConfig['overrideCase'])) {
 				$this->overrideCase = $uConfig['overrideCase']['.'];
 			}
-			
+
 			$this->persistent = isset($uConfig['persistent']);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public function __destruct() {
 			if($this->active) {
 				$this->close();
 			}
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public function open() {
 			$tParms = array();
 			if($this->persistent) {
@@ -215,34 +299,49 @@ if(extensions::isSelected('database')) {
 				$this->connection->exec($this->initCommand);
 			}
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public function close() {
 			$this->active = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function beginTransaction() {
 			$this->open();
 			$this->connection->beginTransaction();
 			$this->inTransaction = true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function commit() {
 			$this->connection->commit();
 			$this->inTransaction = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function rollBack() {
 			$this->connection->rollBack();
 			$this->inTransaction = false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function query($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
 			$tResult = $tQuery->execute($uParameters);
 			// $tQuery->closeCursor();
 			$this->affectedRows = $tQuery->rowCount();
-			
+
 			if($tResult) {
 				return $this->affectedRows;
 			}
@@ -250,6 +349,9 @@ if(extensions::isSelected('database')) {
 			return false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &queryFetch($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
@@ -259,6 +361,9 @@ if(extensions::isSelected('database')) {
 			return $tIterator;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &querySet($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
@@ -270,6 +375,9 @@ if(extensions::isSelected('database')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &queryRow($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
@@ -281,6 +389,9 @@ if(extensions::isSelected('database')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &queryScalar($uQuery, $uParameters = array()) {
 			$this->open();
 			$tQuery = $this->connection->prepare($uQuery);
@@ -292,18 +403,30 @@ if(extensions::isSelected('database')) {
 			return $tResult[0];
 		}
 
+		/**
+		* @ignore
+		*/
 		public function lastInsertId($uName = null) {
 			return $this->connection->lastInsertId($uName);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function affectedRows() {
 			return $this->affectedRows;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function serverInfo() {
 			return $this->connection->getAttribute(PDO::ATTR_SERVER_INFO);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function dataset() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -311,6 +434,9 @@ if(extensions::isSelected('database')) {
 			return $this->datasetInternal(database::$datasets[$uDataset], $uProps);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &datasetFetch() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -318,6 +444,9 @@ if(extensions::isSelected('database')) {
 			return $this->datasetFetchInternal(database::$datasets[$uDataset], $uProps);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function datasetSet() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -326,6 +455,9 @@ if(extensions::isSelected('database')) {
 			return $tData['data'];
 		}
 
+		/**
+		* @ignore
+		*/
 		public function datasetRow() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -338,6 +470,9 @@ if(extensions::isSelected('database')) {
 			return null;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function datasetScalar() {
 			$uProps = func_get_args();
 			$uDataset = array_shift($uProps);
@@ -351,6 +486,9 @@ if(extensions::isSelected('database')) {
 			return null;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function datasetInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
@@ -380,11 +518,6 @@ if(extensions::isSelected('database')) {
 				}
 
 				$tQueryExecute = string::format($uDataset->queryString, $tArray);
-
-				if(framework::$debug) {
-					echo 'query: ', $tQueryExecute, "\n";
-				}
-
 				$tResult = $this->query($tQueryExecute);
 
 				if($this->inTransaction) {
@@ -408,6 +541,9 @@ if(extensions::isSelected('database')) {
 			return false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &datasetFetchInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
@@ -437,11 +573,6 @@ if(extensions::isSelected('database')) {
 				}
 
 				$tQueryExecute = string::format($uDataset->queryString, $tArray);
-
-				if(framework::$debug) {
-					echo 'query: ', $tQueryExecute, "\n";
-				}
-
 				$tResult = $this->queryFetch($tQueryExecute);
 
 				if($this->inTransaction) {
@@ -465,6 +596,9 @@ if(extensions::isSelected('database')) {
 			return false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &datasetSetInternal(&$uDataset, &$uProps) {
 //			if(count($uProps) == 1 && is_array($uProps[0])) {
 //				$tPropMaps = array();
@@ -487,7 +621,7 @@ if(extensions::isSelected('database')) {
 			foreach($uProps as &$tProp) {
 				$uPropsSerialized .= '_' . $tProp;
 			}
-			
+
 			if(isset($this->cache[$uPropsSerialized])) {
 				$tData = &$this->cache[$uPropsSerialized];
 				$tData['data']->iterator->rewind(); // rewind ArrayIterator
@@ -553,6 +687,9 @@ if(extensions::isSelected('database')) {
 			return $tData;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function createQuery() {
 			return new databaseQuery($this);
 		}
@@ -565,12 +702,30 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*/
 	class databaseDataset {
+		/**
+		* @ignore
+		*/
 		public $id;
+		/**
+		* @ignore
+		*/
 		public $queryString;
+		/**
+		* @ignore
+		*/
 		public $parameters;
+		/**
+		* @ignore
+		*/
 		public $cacheLife;
+		/**
+		* @ignore
+		*/
 		public $transaction;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uConfig) {
 			$this->id = $uConfig['@id'];
 			$this->queryString = $uConfig['.'];
@@ -579,7 +734,7 @@ if(extensions::isSelected('database')) {
 			$this->transaction = isset($uConfig['@transaction']);
 		}
 	}
-	
+
 	/**
 	* Database Query Class
 	*
@@ -587,22 +742,58 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*/
 	class databaseQuery {
+		/**
+		* @ignore
+		*/
 		public $database = null;
 
+		/**
+		* @ignore
+		*/
 		public $table;
+		/**
+		* @ignore
+		*/
 		public $fields;
+		/**
+		* @ignore
+		*/
 		public $parameters;
+		/**
+		* @ignore
+		*/
 		public $where;
+		/**
+		* @ignore
+		*/
 		public $groupby;
+		/**
+		* @ignore
+		*/
 		public $orderby;
+		/**
+		* @ignore
+		*/
 		public $limit;
+		/**
+		* @ignore
+		*/
 		public $offset;
+		/**
+		* @ignore
+		*/
 		public $sequence;
 
+		/**
+		* @ignore
+		*/
 		public function __construct(&$uDatabase = null) {
 			$this->setDatabase($uDatabase);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setDatabase(&$uDatabase = null) {
 			if(!is_null($uDatabase)) {
 				$this->database = &$uDatabase;
@@ -614,11 +805,17 @@ if(extensions::isSelected('database')) {
 			$this->clear();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setDatabaseName($uDatabaseName) {
 			$this->database = database::get($uDatabaseName);
 			$this->clear();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function clear() {
 			$this->table = '';
 			$this->fields = array();
@@ -632,18 +829,27 @@ if(extensions::isSelected('database')) {
 			$this->returning = '';
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setTable($uTableName) {
 			$this->table = $uTableName;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
 			$this->table .= ' ' . $uJoinType . ' JOIN ' . $uTableName . ' ON ' . $uCondition;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setFields($uArray) {
 			foreach($uArray as $tField => &$tValue) {
 				// $this->fields[$tField] = '\'' . string::squote($tValue) . '\'';
@@ -659,12 +865,18 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setFieldsDirect($uArray) {
 			$this->fields = &$uArray;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function addField($uField, $uValue = null) {
 			if(func_num_args() == 1) {
 				$this->fields[] = $uField;
@@ -684,48 +896,72 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function addFieldDirect($uField, $uValue) {
 			$this->fields[$uField] = $uValue;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function addParameter($uParameter, $uValue) {
 			$this->parameters[$uParameter] = $uValue;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setWhere($uCondition) {
 			$this->where = $uCondition;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function andWhere($uCondition) {
 			$this->where .= ' AND ' . $uCondition;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function orWhere($uCondition) {
 			$this->where .= ' OR ' . $uCondition;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setGroupBy($uGroupBy) {
 			$this->groupby = $uGroupBy;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function addGroupBy($uGroupBy) {
 			$this->groupby .= ', ' . $uGroupBy;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby = $uOrderBy;
 			if(!is_null($uOrder)) {
@@ -735,6 +971,9 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function addOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby .= ', ' . $uOrderBy;
 			if(!is_null($uOrder)) {
@@ -744,33 +983,48 @@ if(extensions::isSelected('database')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setLimit($uLimit) {
 			$this->limit = $uLimit;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setOffset($uOffset) {
 			$this->offset = $uOffset;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setSequence($uSequence) {
 			$this->sequence = $uSequence;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function setReturning($uReturning) {
 			$this->returning = $uReturning;
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function insert() {
 			$tQuery = database::sqlInsert($this->table, $this->fields, $this->returning);
-		
+
 			if(strlen($this->returning) > 0) {
 				$tInsertId = $this->database->queryScalar($tQuery, $this->parameters);
 			}
@@ -790,6 +1044,9 @@ if(extensions::isSelected('database')) {
 			return $tInsertId;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function update() {
 			if($this->database->driver == 'mysql' && $this->limit >= 0) {
 				$tExtra = 'LIMIT ' . $this->limit;
@@ -805,6 +1062,9 @@ if(extensions::isSelected('database')) {
 			return $this->database->affectedRows();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function delete() {
 			if($this->database->driver == 'mysql' && $this->limit >= 0) {
 				$tExtra = 'LIMIT ' . $this->limit;
@@ -820,6 +1080,9 @@ if(extensions::isSelected('database')) {
 			return $this->database->affectedRows();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &get() {
 			if($this->limit >= 0) {
 				if($this->offset >= 0) {
@@ -840,6 +1103,9 @@ if(extensions::isSelected('database')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &getRow() {
 			if($this->limit >= 0) {
 				if($this->offset >= 0) {
@@ -860,6 +1126,9 @@ if(extensions::isSelected('database')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &getScalar() {
 			if($this->limit >= 0) {
 				if($this->offset >= 0) {
@@ -880,6 +1149,9 @@ if(extensions::isSelected('database')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
 			$tReturn = $this->database->queryScalar(database::sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null), array());
 
@@ -894,11 +1166,26 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*/
 	class dataRowsIterator extends NoRewindIterator implements Countable {
+		/**
+		* @ignore
+		*/
 		public $connection;
+		/**
+		* @ignore
+		*/
 		public $current;
+		/**
+		* @ignore
+		*/
 		public $count;
+		/**
+		* @ignore
+		*/
 		public $cursor = 0;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uConnection) {
 			$this->connection = &$uConnection;
 			$this->count = $this->connection->rowCount();
@@ -906,28 +1193,46 @@ if(extensions::isSelected('database')) {
 			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function __destruct() {
 			$this->connection->closeCursor();
 		}
 
+		/**
+		* @ignore
+		*/
 		public function count() {
 			return $this->count;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function current() {
 			return $this->current;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function key() {
 			return null;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function next() {
 			$this->cursor++;
 			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
 			return $this->current;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function valid() {
 			if($this->cursor < $this->count) {
 				return true;

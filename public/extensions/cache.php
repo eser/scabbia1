@@ -8,7 +8,13 @@ if(extensions::isSelected('cache')) {
 	* @subpackage LayerExtensions
 	*/
 	class cache {
+		/**
+		* @ignore
+		*/
 		public static $defaultAge;
+		/**
+		* @ignore
+		*/
 		public static $keyphase;
 
 		/**
@@ -25,11 +31,17 @@ if(extensions::isSelected('cache')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$defaultAge = intval(config::get('/cache/@defaultAge', '120'));
 			self::$keyphase = config::get('/cache/@keyphase', null);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getPath($uFolder, $uFilename, $uAge = -1) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
@@ -50,6 +62,9 @@ if(extensions::isSelected('cache')) {
 			return array(true, $tPath);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function get($uFolder, $uFilename, $uAge = -1) {
 			// path
 			$tPath = self::getPath($uFolder, $uFilename, $uAge);
@@ -63,6 +78,9 @@ if(extensions::isSelected('cache')) {
 			return io::readSerialize($tPath[1], self::$keyphase);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function set($uFolder, $uFilename, $uObject) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
@@ -73,16 +91,22 @@ if(extensions::isSelected('cache')) {
 			return $tPath;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function destroy($uFolder, $uFilename) {
 			$tPath = framework::writablePath('cache/' . $uFolder);
 			io::destroy($tPath . io::sanitize($uFilename));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function garbageCollect($uFolder, $uAge) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder);
 			$tDirectory = new DirectoryIterator($tPath);
-			
+
 			// age
 			if($uAge > 0) {
 				$tAge = $uAge;

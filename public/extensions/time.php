@@ -8,6 +8,9 @@ if(extensions::isSelected('time')) {
 	* @subpackage UtilityExtensions
 	*/
 	class time {
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'time',
@@ -19,14 +22,23 @@ if(extensions::isSelected('time')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function today() {
 			return mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function now() {
 			return time();
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function toGmt($uTime = null, $uIsGMT = true) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -35,9 +47,15 @@ if(extensions::isSelected('time')) {
 			return gmdate('D, d M Y H:i:s', $uTime) . ($uIsGMT ? ' GMT' : '');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function fromGmt($uTime) {
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function toDos($uTime = null) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -58,6 +76,9 @@ if(extensions::isSelected('time')) {
 			return (($tTimeArray['year'] - 1980) << 25) | ($tTimeArray['mon'] << 21) | ($tTimeArray['mday'] << 16) | ($tTimeArray['hours'] << 11) | ($tTimeArray['minutes'] << 5) | ($tTimeArray['seconds'] >> 1);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function fromDos($uTime) {
 			$tSeconds = 2 * ($uTime & 0x1f);
 			$tMinutes = ($uTime >>  5) & 0x3f;
@@ -69,6 +90,9 @@ if(extensions::isSelected('time')) {
 			return mktime($tHours, $tMinutes, $tSeconds, $tMonths, $tDays, $tYears + 1980);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function toMysql($uTime = null) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -77,12 +101,18 @@ if(extensions::isSelected('time')) {
 			return date('Y-m-d H:i:s', $uTime);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function fromMysql($uTime) {
 			$tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
 
 			return mktime($tTime[3], $tTime[4], $tTime[5], $tTime[1], $tTime[2], $tTime[0]);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function timezones() {
 		}
 	}

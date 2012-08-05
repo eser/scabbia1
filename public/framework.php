@@ -39,7 +39,6 @@
 
 // Include framework dependencies and load them
 	require(QPATH_CORE . 'include/patches.main' . QEXT_PHP);
-	require(QPATH_CORE . 'bootconfig' . QEXT_PHP);
 	require(QPATH_CORE . 'include/config.main' . QEXT_PHP);
 	require(QPATH_CORE . 'include/events.main' . QEXT_PHP);
 	require(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
@@ -52,6 +51,8 @@
 	extensions::load();
 
 	framework::run();
-	// extensions::run();
+	if(isset($runExtensions) && $runExtensions !== false) {
+		extensions::run();
+	}
 
 ?>

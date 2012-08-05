@@ -1,18 +1,24 @@
 <?php
 
-if(extensions::isSelected('stopwatch')) {
+if(extensions::isSelected('profiler')) {
 	/**
-	* StopWatch Extension
+	* Profiler Extension
 	*
 	* @package Scabbia
 	* @subpackage UtilityExtensions
 	*/
-	class stopwatch {
+	class profiler {
+		/**
+		* @ignore
+		*/
 		public static $markers = array();
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
-				'name' => 'stopwatch',
+				'name' => 'profiler',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
@@ -21,22 +27,34 @@ if(extensions::isSelected('stopwatch')) {
 			);
 		}
 
-		public static function start($uName) {
+		/**
+		* @ignore
+		*/
+		public static function startTimer($uName) {
 			self::$markers[$uName] = microtime(true);
 		}
 
-		public static function stop($uName) {
+		/**
+		* @ignore
+		*/
+		public static function stopTimer($uName) {
 			$tValue = self::$markers[$uName];
 			unset(self::$markers[$uName]);
 
 			return microtime(true) - $tValue;
 		}
 
-		public static function get($uName) {
+		/**
+		* @ignore
+		*/
+		public static function getTimer($uName) {
 			return self::$markers[$uName];
 		}
 
-		public static function set($uName, $uTime) {
+		/**
+		* @ignore
+		*/
+		public static function setTimer($uName, $uTime) {
 			self::$markers[$uName] = $uTime;
 		}
 	}

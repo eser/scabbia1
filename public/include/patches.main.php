@@ -83,7 +83,7 @@
 
 				return $uArray;
 			}
-			catch(Exception $tException) { 
+			catch(Exception $tException) {
 			}
 
 			$uArray = false;

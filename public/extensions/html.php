@@ -13,6 +13,9 @@ if(extensions::isSelected('html')) {
 	* @todo add callStylesheetFromRepository
 	*/
 	class html {
+		/**
+		* @ignore
+		*/
 		public static $attributeOrder = array(
 			'action', 'method', 'type', 'id', 'name', 'value',
 			'href', 'src', 'width', 'height', 'cols', 'rows',
@@ -21,6 +24,9 @@ if(extensions::isSelected('html')) {
 			'style', 'selected', 'checked', 'readonly', 'disabled'
 		);
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'html',
@@ -32,6 +38,9 @@ if(extensions::isSelected('html')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function tag($uName, $uAttributes, $uValue = null) {
 			$tReturn = '<' . $uName;
 			if(is_array($uAttributes)) {
@@ -48,6 +57,9 @@ if(extensions::isSelected('html')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function attributes($uAttributes) {
 			$tAttributes = arrays::sortByPriority($uAttributes, self::$attributeOrder);
 
@@ -64,6 +76,9 @@ if(extensions::isSelected('html')) {
 			return implode(' ', $tReturn);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function selectOptions($uArray = array(), $uDefault = null) {
 			$tOutput = '';
 
@@ -80,12 +95,18 @@ if(extensions::isSelected('html')) {
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function textBox($uName, $uValue) {
 			$tOutput = '<input type="text" name="' . string::dquote($uValue) . '" value="' . string::dquote($uValue) . '" />';
 
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uId = null) {
 			if(is_null($uId)) {
 				$uId = $uName;
@@ -106,6 +127,9 @@ if(extensions::isSelected('html')) {
 			return $tOutput;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function pager($uOptions) {
 			$tPages = ceil($uOptions['total'] / $uOptions['pagesize']);
 
@@ -227,6 +251,9 @@ if(extensions::isSelected('html')) {
 			return $tResult;
 		}
 
+		/**
+		* @ignore
+		*/
 	    public static function doctype($type = 'html5') {
 			switch($uType) {
 			case 'html5':
@@ -262,6 +289,9 @@ if(extensions::isSelected('html')) {
 			return false;
 	    }
 
+		/**
+		* @ignore
+		*/
 		public static function table($uOptions) {
 			if(!isset($uOptions['table'])) {
 				$uOptions['table'] = '<table>';

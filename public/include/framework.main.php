@@ -20,13 +20,9 @@
 		*/
 		public static $downloadUrls = array();
 		/**
-		* Indicates framework is running in development mode.
+		* Indicates framework is running in production, development or debug mode.
 		*/
 		public static $development;
-		/**
-		* Indicates framework is running in debug mode.
-		*/
-		public static $debug;
 		/**
 		* Stores relative path of framework root.
 		*/
@@ -50,8 +46,8 @@
 		public static function init() {
 			$tApplicationDir = isset($GLOBALS['applicationDir']) ? $GLOBALS['applicationDir'] : 'application';
 
-			self::$applicationPath = QPATH_CORE . $tApplicationDir . DIRECTORY_SEPARATOR;
-			self::$development = (isset($GLOBALS['development']) && $GLOBALS['development'] !== false);
+			self::$applicationPath = QPATH_CORE . $tApplicationDir . '/';
+			self::$development = isset($GLOBALS['development']) ? $GLOBALS['development'] : 0;
 
 			if(isset($_SERVER['SERVER_NAME'])) {
 				self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
@@ -114,7 +110,6 @@
 		* @ignore
 		*/
 		public static function load() {
-			self::$debug = (bool)config::get('/options/debug/@value', '0');
 			self::$siteroot = config::get('/options/siteroot/@value', '');
 			self::$directCall = !COMPILED;
 
@@ -200,18 +195,21 @@
 				}
 
 				if(self::$directCall) {
-					if(self::$development && count($tParameters) > 0) {
+					if(self::$development >= 1 && count($tParameters) > 0) {
 						if($tParameters[0] == 'build') {
 							self::build('index.php', !(count($tParameters) >= 2 && $tParameters[1] == 'pseudo'));
-							// self::purgeFolder(self::$applicationPath . 'writable/downloaded');
-							// self::purgeFolder(self::$applicationPath . 'writable/cache');
-							// self::purgeFolder(self::$applicationPath . 'writable/logs');
+							self::purgeFolder(self::$applicationPath . 'writable/sessions');
+							// self::purgeFolder(QPATH_APP . 'writable/datasetCache');
+							// self::purgeFolder(QPATH_APP . 'writable/mediaCache');
+							// self::purgeFolder(QPATH_APP . 'writable/downloaded');
+							// self::purgeFolder(QPATH_APP . 'writable/compiledViews'));
+							// self::purgeFolder(QPATH_APP . 'writable/logs');
 
 							echo 'build done.';
 							return;
 						}
 					}
-					
+
 					exit('why?');
 				}
 			}
@@ -246,7 +244,7 @@
 				for($i = 0, $tMax = count($tTargetArgs), $tArgsMax = count($uArgs); $i < $tMax && $i < $tArgsMax; $i++) {
 					$tNewArray[$uArgs[$i]] = array_shift($tTargetArgs);
 				}
-				
+
 				$tTargetArgs = array_merge($tNewArray, $tTargetArgs);
 			}
 
@@ -299,7 +297,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		* @ignore
 		*/
@@ -356,7 +354,7 @@
 			ob_start();
 			ob_implicit_flush(false);
 
-			if(self::$development && !$uPseudo) {
+			if(self::$development >= 1 && !$uPseudo) {
 				$tPath = QPATH_CORE . 'framework' . QEXT_PHP;
 				echo '<', '?php
 	require(', var_export($tPath), ');

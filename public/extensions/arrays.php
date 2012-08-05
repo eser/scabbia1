@@ -22,6 +22,9 @@ if(extensions::isSelected('arrays')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function get($uArray, $uElement, $uDefault = null) {
 			if(!isset($uArray[$uElement])) {
 				return $uDefault;
@@ -30,6 +33,9 @@ if(extensions::isSelected('arrays')) {
 			return $uArray[$uElement];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getArray() {
 			$uArgs = func_get_args();
 			$uArray = array_shift($uArgs);
@@ -42,6 +48,9 @@ if(extensions::isSelected('arrays')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getRandom($uArray) {
 			$tCount = count($uArray);
 			if($tCount == 0) {
@@ -52,6 +61,9 @@ if(extensions::isSelected('arrays')) {
 			return $uValues[rand(0, $tCount - 1)];
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sortByKey($uArray, $uField, $uOrder = 'asc') {
             if(count($uArray) == 0) {
 				return;
@@ -77,6 +89,9 @@ if(extensions::isSelected('arrays')) {
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function categorize($uArray, $uKey) {
 			$tReturn = array();
 
@@ -88,10 +103,13 @@ if(extensions::isSelected('arrays')) {
 
 				$tReturn[$tKey][] = $tRow;
 			}
-			
+
 			return $tReturn;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function combine($uArray1, $uArray2) {
 			$tArray = array();
 
@@ -107,6 +125,9 @@ if(extensions::isSelected('arrays')) {
 			return $tArray;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function sortByPriority($uArray, $uPriorities) {
 			$tArray = array();
 

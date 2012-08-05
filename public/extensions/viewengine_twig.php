@@ -8,9 +8,18 @@ if(extensions::isSelected('viewengine_twig')) {
 	* @subpackage Extensions
 	*/
 	class viewengine_twig {
+		/**
+		* @ignore
+		*/
 		public static $loader = null;
+		/**
+		* @ignore
+		*/
 		public static $engine = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'viewengine: twig',
@@ -22,10 +31,16 @@ if(extensions::isSelected('viewengine_twig')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			mvc::registerViewEngine('twig', 'viewengine_twig');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/twig/installation/@path', '{core}include/3rdparty/twig/lib/Twig'));
@@ -38,7 +53,7 @@ if(extensions::isSelected('viewengine_twig')) {
 					'cache' => $uObject['compiledPath']
 				);
 
-				if(framework::$development) {
+				if(framework::$development >= 1) {
 					$tOptions['auto_reload'] = true;
 				}
 

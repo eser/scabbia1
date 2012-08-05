@@ -8,8 +8,14 @@ if(extensions::isSelected('viewengine_smarty')) {
 	* @subpackage Extensions
 	*/
 	class viewengine_smarty {
+		/**
+		* @ignore
+		*/
 		public static $engine = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'viewengine: smarty',
@@ -21,10 +27,16 @@ if(extensions::isSelected('viewengine_smarty')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			mvc::registerViewEngine('tpl', 'viewengine_smarty');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/smarty/installation/@path', '{core}include/3rdparty/smarty/libs'));
@@ -35,7 +47,7 @@ if(extensions::isSelected('viewengine_smarty')) {
 				self::$engine->setTemplateDir($uObject['templatePath'] . '/');
 				self::$engine->setCompileDir($uObject['compiledPath'] . '/');
 
-				if(framework::$development) {
+				if(framework::$development >= 1) {
 					self::$engine->force_compile = true;
 				}
 			}

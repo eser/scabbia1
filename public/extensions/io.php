@@ -8,6 +8,9 @@ if(extensions::isSelected('io')) {
 	* @subpackage UtilityExtensions
 	*/
 	class io {
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'io',
@@ -19,6 +22,9 @@ if(extensions::isSelected('io')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getMimeType($uExtension, $uDefault = 'application/octet-stream') {
 			switch(string::toLower($uExtension)) {
 			case 'pdf':
@@ -146,6 +152,9 @@ if(extensions::isSelected('io')) {
 			return $tType;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function map($uPath, $uPattern = null, $uRecursive = true) {
 			$tArray = array();
 			$tDir = new DirectoryIterator($uPath);
@@ -175,6 +184,9 @@ if(extensions::isSelected('io')) {
 			return $tArray;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function read($uPath) {
 			if(!is_readable($uPath)) {
 				return false;
@@ -183,10 +195,16 @@ if(extensions::isSelected('io')) {
 			return file_get_contents($uPath);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function write($uPath, $uContent) {
 			return file_put_contents($uPath, $uContent, LOCK_EX);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function readSerialize($uPath, $uKeyphase = null) {
 			$tContent = self::read($uPath);
 
@@ -202,6 +220,9 @@ if(extensions::isSelected('io')) {
 			return unserialize($tContent);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function writeSerialize($uPath, $uContent, $uKeyphase = null) {
 			$tContent = serialize($uContent);
 
@@ -212,10 +233,16 @@ if(extensions::isSelected('io')) {
 			return self::write($uPath, $tContent);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function touch($uPath) {
 			return touch($uPath);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function destroy($uPath) {
 			if(file_exists($uPath)) {
 				return unlink($uPath);
@@ -223,7 +250,10 @@ if(extensions::isSelected('io')) {
 
 			return false;
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function sanitize($uFilename) {
 			static $aReplaceChars = array('_' => '-', '\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
 

@@ -10,28 +10,91 @@ if(extensions::isSelected('contracts')) {
 	* @todo add more validators such as phone, date, digit, isUnique, etc.
 	*/
 	class contracts {
+		/**
+		* @ignore
+		*/
 		const isExist = 0;
+		/**
+		* @ignore
+		*/
 		const isRequired = 1;
+		/**
+		* @ignore
+		*/
 		const isNumeric = 2;
+		/**
+		* @ignore
+		*/
 		const isEqual = 3;
+		/**
+		* @ignore
+		*/
 		const isMinimum = 4;
+		/**
+		* @ignore
+		*/
 		const isMinimumOrEqual = 5;
+		/**
+		* @ignore
+		*/
 		const isMaximum = 6;
+		/**
+		* @ignore
+		*/
 		const isMaximumOrEqual = 7;
+		/**
+		* @ignore
+		*/
 		const length = 8;
+		/**
+		* @ignore
+		*/
 		const lengthMinimum = 9;
+		/**
+		* @ignore
+		*/
 		const lengthMaximum = 10;
+		/**
+		* @ignore
+		*/
 		const inArray = 11;
+		/**
+		* @ignore
+		*/
 		const regExp = 12;
+		/**
+		* @ignore
+		*/
 		const custom = 13;
+		/**
+		* @ignore
+		*/
 		const isEmail = 14;
+		/**
+		* @ignore
+		*/
 		const isUrl = 15;
+		/**
+		* @ignore
+		*/
 		const isIpAddress = 16;
 
+		/**
+		* @ignore
+		*/
 		const pregEmail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+		/**
+		* @ignore
+		*/
 		const pregUrl = '/^(https?|ftp):\/\/((?:[a-z0-9@:.-]|%[0-9A-F]{2}){3,})(?::(\d+))?((?:\/(?:[a-z0-9-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*)(?:\?((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?/i';
+		/**
+		* @ignore
+		*/
 		const pregIpAddress = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'contracts',
@@ -43,6 +106,9 @@ if(extensions::isSelected('contracts')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function test($uType, $uValue, $uArgs) {
 			switch($uType) {
 			case self::isRequired:
@@ -150,10 +216,13 @@ if(extensions::isSelected('contracts')) {
 
 				break;
 			}
-			
+
 			return true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function __callStatic($uName, $uArgs) {
 			$tContractObject = new contractObject(
 				array_shift($uArgs),
@@ -172,16 +241,31 @@ if(extensions::isSelected('contracts')) {
 	* @subpackage ExtensibilityExtensions
 	*/
 	class contractObject {
+		/**
+		* @ignore
+		*/
 		public $value;
+		/**
+		* @ignore
+		*/
 		public $type;
+		/**
+		* @ignore
+		*/
 		public $args;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uValue, $uType, $uArgs) {
 			$this->value = $uValue;
 			$this->type = $uType;
 			$this->args = $uArgs;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function error(&$uController, $uErrorMessage) {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return;
@@ -190,6 +274,9 @@ if(extensions::isSelected('contracts')) {
 			$uController->error($uErrorMessage);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function exception($uErrorMessage) {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return;
@@ -198,6 +285,9 @@ if(extensions::isSelected('contracts')) {
 			throw new Exception($uErrorMessage);
 		}
 
+		/**
+		* @ignore
+		*/
 		public function check() {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return true;

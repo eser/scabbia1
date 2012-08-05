@@ -12,9 +12,18 @@ if(extensions::isSelected('media')) {
 	* @todo integrate with cache extension
 	*/
 	class media {
+		/**
+		* @ignore
+		*/
 		public static $cachePath;
+		/**
+		* @ignore
+		*/
 		public static $cacheAge;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'media',
@@ -26,20 +35,32 @@ if(extensions::isSelected('media')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$cachePath = framework::writablePath('mediaCache/');
 			self::$cacheAge = intval(config::get('/media/@cacheAge', '120'));
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function open($uSource) {
 			return new mediaFile($uSource);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function calculateHash() {
 			$uArgs = func_get_args();
 			return implode('_', $uArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function garbageCollect() {
 			$tDirectory = new DirectoryIterator(self::$cachePath);
 
@@ -65,16 +86,46 @@ if(extensions::isSelected('media')) {
 	* @subpackage LayerExtensions
 	*/
 	class mediaFile {
+		/**
+		* @ignore
+		*/
 		public $source;
+		/**
+		* @ignore
+		*/
 		public $filename;
+		/**
+		* @ignore
+		*/
 		public $extension;
+		/**
+		* @ignore
+		*/
 		public $mime;
+		/**
+		* @ignore
+		*/
 		public $hash;
+		/**
+		* @ignore
+		*/
 		public $sw, $sh, $sa;
+		/**
+		* @ignore
+		*/
 		public $size;
+		/**
+		* @ignore
+		*/
 		public $image = null;
+		/**
+		* @ignore
+		*/
 		public $background;
 
+		/**
+		* @ignore
+		*/
 		public function __construct($uSource = null) {
 			$this->source = $uSource;
 			$this->background = array(255, 255, 255, 0);
@@ -113,23 +164,35 @@ if(extensions::isSelected('media')) {
 				}
 			}
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public function __destruct() {
 			if(!is_null($this->image)) {
 				imagedestroy($this->image);
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public function background() {
 			$this->background = func_get_args();
 
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function write($uX, $uY, $uSize, $uColor, $uText) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function rotate($uDegree, $uBackground = 0) {
 			$this->image = imagerotate($this->image, $uDegree, $uBackground);
 			$this->sw = imagesx($this->image);
@@ -139,6 +202,9 @@ if(extensions::isSelected('media')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function getCache($uTag) {
 			$tCachePath = media::$cachePath . '/' . $uTag;
 
@@ -151,6 +217,9 @@ if(extensions::isSelected('media')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public function resize($uWidth, $uHeight, $uMode = 'fit') {
 			$tAspectRatio = $uWidth / $uHeight;
 
@@ -251,6 +320,9 @@ if(extensions::isSelected('media')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function save($uPath = null) {
 			if(!is_null($uPath)) {
 				$this->source = $uPath;
@@ -272,6 +344,9 @@ if(extensions::isSelected('media')) {
 			return $this;
 		}
 
+		/**
+		* @ignore
+		*/
 		public function output() {
 			http::sendHeaderExpires(0);
 			http::sendHeaderNoCache();

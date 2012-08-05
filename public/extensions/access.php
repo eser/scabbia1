@@ -34,7 +34,7 @@ if(extensions::isSelected('access')) {
 				'fwdepends' => array('http')
 			);
 		}
-		
+
 		/**
 		* @ignore
 		*/

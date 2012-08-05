@@ -8,8 +8,14 @@ if(extensions::isSelected('viewengine_phptal')) {
 	* @subpackage Extensions
 	*/
 	class viewengine_phptal {
+		/**
+		* @ignore
+		*/
 		public static $engine = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'viewengine: phptal',
@@ -21,10 +27,16 @@ if(extensions::isSelected('viewengine_phptal')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			mvc::registerViewEngine('zpt', 'viewengine_phptal');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/phptal/installation/@path', '{core}include/3rdparty/PHPTAL'));
@@ -59,7 +71,7 @@ if(extensions::isSelected('viewengine_phptal')) {
 			self::$engine->setOutputMode(PHPTAL::HTML5);
 			self::$engine->setEncoding('UTF-8');
 			self::$engine->setTemplate($uObject['viewFile']);
-			if(framework::$development) {
+			if(framework::$development >= 1) {
 				self::$engine->prepare();
 			}
 

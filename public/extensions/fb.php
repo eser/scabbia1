@@ -10,15 +10,42 @@ if(extensions::isSelected('fb')) {
 	* @todo direct api query like /me/home
 	*/
 	class fb {
+		/**
+		* @ignore
+		*/
 		public static $appId;
+		/**
+		* @ignore
+		*/
 		public static $appSecret;
+		/**
+		* @ignore
+		*/
 		public static $appFileUpload;
+		/**
+		* @ignore
+		*/
 		public static $appUrl;
+		/**
+		* @ignore
+		*/
 		public static $appPageId;
+		/**
+		* @ignore
+		*/
 		public static $appRedirectUri;
+		/**
+		* @ignore
+		*/
 		public static $api = null;
+		/**
+		* @ignore
+		*/
 		public static $userId = null;
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'fb',
@@ -30,6 +57,9 @@ if(extensions::isSelected('fb')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 			self::$appId = config::get('/facebook/APP_ID/.');
 			self::$appSecret = config::get('/facebook/APP_SECRET/.');
@@ -39,6 +69,9 @@ if(extensions::isSelected('fb')) {
 			self::$appRedirectUri = config::get('/facebook/APP_REDIRECT_URI/.');
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function loadApi() {
 			if(is_null(self::$api)) {
 				self::$api = new Facebook(array(
@@ -57,6 +90,9 @@ if(extensions::isSelected('fb')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function resetSession() {
 			session::remove('fbUser');
 			session::remove('fbUserAccessToken');
@@ -71,11 +107,17 @@ if(extensions::isSelected('fb')) {
 
 			session::set('fbUserId', self::$userId);
 		}
-		
+
+		/**
+		* @ignore
+		*/
 		public static function getUserId() {
 			return self::$userId;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUserAccessToken($uExtended = false) {
 			if(self::$userId == 0) {
 				return false;
@@ -91,7 +133,7 @@ if(extensions::isSelected('fb')) {
 
 				session::set('fbUserAccessToken', $tUserAccessToken);
 			}
-			
+
 			if($uExtended && !is_null($tUserAccessToken)) {
 				$tExtendedUserAccessToken = session::get('fbUserAccessTokenEx', null);
 				if(is_null($tExtendedUserAccessToken)) {
@@ -104,7 +146,7 @@ if(extensions::isSelected('fb')) {
 							'fb_exchange_token' => $tUserAccessToken
 						)
 					);
-					
+
 					if($tExtendedUserAccessTokenResponse !== false) {
 						$tExtendedUserAccessTokenArray = array();
 						parse_str($tExtendedUserAccessTokenResponse, $tExtendedUserAccessTokenArray);
@@ -121,10 +163,13 @@ if(extensions::isSelected('fb')) {
 					$tUserAccessToken = $tExtendedUserAccessToken;
 				}
 			}
- 
+
 			return $tUserAccessToken;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getLoginUrl($uPermissions, $uRedirectUri = null) {
 			$tLoginUrl = self::$api->getLoginUrl(array(
 				'scope' => $uPermissions,
@@ -134,6 +179,9 @@ if(extensions::isSelected('fb')) {
 			return $tLoginUrl;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkLogin($uPermissions, $uRequiredPermissions = null, $uRedirectUri = null) {
 			if(
 				self::$userId == 0 ||
@@ -145,6 +193,9 @@ if(extensions::isSelected('fb')) {
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkUserPermission($uPermissions) {
 			if(self::$userId == 0) {
 				return false;
@@ -165,6 +216,9 @@ if(extensions::isSelected('fb')) {
 			return true;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function checkLike($uId) {
 			if(self::$userId == 0) {
 				return false;
@@ -179,16 +233,19 @@ if(extensions::isSelected('fb')) {
 			return false;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function get($uQuery, $uUseCache = false, $uExtra = null) {
 			if(self::$userId == 0) {
 				return false;
 			}
-			
+
 			if(is_null($uExtra)) {
 				$uExtra = array();
 			}
 
-			if(!$uUseCache || framework::$development) {
+			if(!$uUseCache || framework::$development >= 1) {
 				try {
 					$tObject = self::$api->api($uQuery, $uExtra);
 				}
@@ -199,7 +256,7 @@ if(extensions::isSelected('fb')) {
 				return new FacebookQueryObject($tObject);
 			}
 
-			$tQuerySerialized = 'fb' . string::capitalize($uQuery, '/', '_');
+			$tQuerySerialized = 'fb' . string::capitalizeEx($uQuery, '/', '_');
 			$tObject = session::get($tQuerySerialized, null);
 			if(is_null($tObject)) {
 				try {
@@ -214,12 +271,18 @@ if(extensions::isSelected('fb')) {
 			return new FacebookQueryObject($tObject);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function postToFeed($uUser, $uAccessToken, $uContent) {
 			$uContent['access_token'] = $uAccessToken;
 
 			self::$api->api('/' . $uUser . '/feed', 'post', $uContent);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUser($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -232,6 +295,9 @@ if(extensions::isSelected('fb')) {
 			return self::get('/me', true, $uExtra);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUserLikes($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -244,14 +310,23 @@ if(extensions::isSelected('fb')) {
 			return self::get('/me/likes', true, $uExtra);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUserHome($uExtra = null) {
 			return self::get('/me/home', true, $uExtra);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUserFeed($uExtra = null) {
 			return self::get('/me/feed', true, $uExtra);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function getUserFriends($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -371,7 +446,7 @@ if(extensions::isSelected('fb')) {
 		public function unboxOauthRequest($url, $params) {
 			return $this->_oauthRequest($url, $params);
 		}
-		
+
 		public function unboxGetUrl($name, $path='', $params=array()) {
 			return $this->getUrl($name, $path, $params);
 		}

@@ -8,8 +8,14 @@ if(extensions::isSelected('output')) {
 	* @subpackage ExtensibilityExtensions
 	*/
 	class output {
+		/**
+		* @ignore
+		*/
 		public static $effectList = array();
 
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'output',
@@ -21,9 +27,15 @@ if(extensions::isSelected('output')) {
 			);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function extension_load() {
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function begin() {
 			ob_start('output::flushOutput');
 			ob_implicit_flush(false);
@@ -32,6 +44,9 @@ if(extensions::isSelected('output')) {
 			array_push(self::$effectList, $tArgs);
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function &end($uFlush = true) {
 			$tContent = ob_get_contents();
 			ob_end_flush();
@@ -43,10 +58,13 @@ if(extensions::isSelected('output')) {
 			if($uFlush) {
 				echo $tContent;
 			}
-			
+
 			return $tContent;
 		}
 
+		/**
+		* @ignore
+		*/
 		public static function flushOutput($uContent) {
 			return '';
 		}
