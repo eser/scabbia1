@@ -139,7 +139,7 @@ if(extensions::isSelected('validation')) {
 		* @ignore
 		*/
 		public static function export() {
-			return string::vardump(self::$summary);
+			return string::vardump(self::$summary, true);
 		}
 	}
 

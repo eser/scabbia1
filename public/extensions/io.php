@@ -256,8 +256,10 @@ if(extensions::isSelected('io')) {
 		*/
 		public static function sanitize($uFilename) {
 			static $aReplaceChars = array('_' => '-', '\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
+			$tPathInfo = pathinfo($uFilename);
+			$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
 
-			return strtr($uFilename, $aReplaceChars);
+			return $tPathInfo['dirname'] . '/' . $tPathInfo['filename'] . '.' . $tPathInfo['extension'];
 		}
 	}
 }

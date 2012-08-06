@@ -120,7 +120,7 @@ if(extensions::isSelected('unittest')) {
 		* @ignore
 		*/
 		public static function export() {
-			return string::vardump(self::$report);
+			return string::vardump(self::$report, true);
 		}
 	}
 }

@@ -325,7 +325,7 @@
 		*
 		* @param $uFile string path of source file
 		*/
-		public static function printFile($uFile) {
+		public static function printFile($uFile, $uReturnContents = false) {
 			$tContent = php_strip_whitespace($uFile);
 
 			$tOpenTags = 0;
@@ -338,10 +338,15 @@
 				}
 			}
 
-			echo $tContent;
 			for(;$tOpenTags > 0;$tOpenTags--) {
-				echo ' ?', '>';
+				$tContent .= ' ?' . '>';
 			}
+
+			if($uReturnContents) {
+				return $tContent;
+			}
+
+			echo $tContent;
 		}
 
 		/**

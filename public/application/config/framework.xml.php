@@ -2,7 +2,6 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<options>
-		<debug value="0" />
 		<gzip value="1" />
 <!--
 		<scope mode="development">
@@ -38,6 +37,7 @@
 		<extension name="contracts" />
 		<extension name="validation" />
 		<extension name="unittest" />
+		<extension name="profiler" />
 		<extension name="database" />
 		<extension name="session" />
 		<extension name="output" />
@@ -57,7 +57,6 @@
 		<extension name="viewengine_raintpl" />
 		<extension name="viewengine_twig" />
 -->
-		<extension name="stopwatch" />
 		<extension name="fb" />
 	</extensionList>
 

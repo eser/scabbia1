@@ -11,7 +11,7 @@ if(extensions::isSelected('access')) {
 		/**
 		* @ignore
 		*/
-		public static $maintenance = 0;
+		public static $maintenance = false;
 		/**
 		* @ignore
 		*/
@@ -41,7 +41,7 @@ if(extensions::isSelected('access')) {
 		public static function extension_load() {
 			events::register('run', events::Callback('access::run'));
 
-			self::$maintenance = intval(config::get('/access/maintenance/@mode', '0')) > 0;
+			self::$maintenance = (intval(config::get('/access/maintenance/@mode', '0')) >= 1);
 			foreach(config::get('/access/maintenanceExcludeList', array()) as $tMaintenanceExcludeIp) {
 				self::$maintenanceExcludeIps[] = $tMaintenanceExcludeIp['@ip'];
 			}

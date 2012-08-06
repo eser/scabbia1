@@ -50,7 +50,7 @@ if(extensions::isSelected('mvc')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'arrays', 'http', 'i8n', 'database')
+				'fwdepends' => array('string', 'arrays', 'profiler', 'http', 'i8n', 'database')
 			);
 		}
 
@@ -61,7 +61,7 @@ if(extensions::isSelected('mvc')) {
 			self::$defaultController = config::get('/mvc/routes/@defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/@defaultAction', 'index');
 
-			// default viewengine
+			self::$controllerStack = array();
 			self::$viewEngines = array();
 
 			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
@@ -184,6 +184,7 @@ if(extensions::isSelected('mvc')) {
 				self::$actionActual = self::$route['action'];
 			}
 
+			profiler::start('mvc', array('action' => 'routing'));
 			$tParameterSegments = null;
 			events::invoke('routing', array(
 				'controller' => &self::$route['controller'],
@@ -196,26 +197,19 @@ if(extensions::isSelected('mvc')) {
 			$tNotfoundController = config::get('/mvc/routes/@notfoundController', 'home');
 			$tNotfoundAction = config::get('/mvc/routes/@notfoundAction', 'notfound');
 
-			try {
-				$tReflectionMethod = new ReflectionMethod(self::$controllerActual, self::$actionActual);
-
-				if(!$tReflectionMethod->isPublic()) {
-					self::$controllerActual = $tNotfoundController;
-					self::$actionActual = $tNotfoundAction;
-				}
-			}
-			catch(ReflectionException $ex) {
+			if(!is_callable(array(self::$controllerActual, self::$actionActual)) && !method_exists(self::$controllerActual, '__call')) {
 				self::$controllerActual = $tNotfoundController;
 				self::$actionActual = $tNotfoundAction;
 			}
+			profiler::stop();
 
-			self::$controllerStack = array();
-
+			profiler::start('mvc', array('action' => 'rendering'));
 			$tController = new self::$controllerActual ();
 
-			array_push(self::$controllerStack, $tController);
+			self::$controllerStack[] = &$tController;
 			call_user_func_array(array(&$tController, self::$actionActual), self::$route['queryString']['segments']);
 			array_pop(self::$controllerStack);
+			profiler::stop();
 
 			// to interrupt event-chain execution
 			return false;

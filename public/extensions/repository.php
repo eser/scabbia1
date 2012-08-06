@@ -13,7 +13,7 @@ if(extensions::isSelected('repository')) {
 		/**
 		* @ignore
 		*/
-		public static $packageKey = null;
+		public static $packages;
 
 		/**
 		* @ignore
@@ -25,7 +25,7 @@ if(extensions::isSelected('repository')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array(),
 				'fwversion' => '1.0',
-				'fwdepends' => array('io')
+				'fwdepends' => array('io', 'cache')
 			);
 		}
 
@@ -33,61 +33,60 @@ if(extensions::isSelected('repository')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			events::register('run', events::Callback('repository::run'));
+			self::$packages = config::get('/repository/packageList', array());
 		}
 
-		/**
-		* @ignore
-		*/
-		public static function run() {
-			$tCheckUrlKey = config::get('/repository/routing/@repositoryCheckUrlKey', 'rep');
-			$tCheckUrlValue = config::get('/repository/routing/@repositoryCheckUrlValue', '');
-			$tPackageUrlKey = config::get('/repository/routing/@repositoryPackageUrlKey', $tCheckUrlKey);
+		public static function get($uPackageKey) {
+			foreach(self::$packages as $tPackage) {
+				if($tPackage['@name'] != $uPackageKey) {
+					continue;
+				}
 
-			if(array_key_exists($tCheckUrlKey, $_GET)) {
-				if(strlen($tCheckUrlValue) == 0) {
-					self::$packageKey = $_GET[$tPackageUrlKey];
-				}
-				else if($_GET[$tCheckUrlKey] == $tCheckUrlValue) {
-					self::$packageKey = $_GET[$tPackageUrlKey];
-				}
+				$tSelectedPackage = &$tPackage;
+				break;
 			}
 
-			if(isset(self::$packageKey)) {
-				foreach(config::get('/repository/packageList', array()) as $tPackage) {
-					if($tPackage['@name'] != self::$packageKey) {
-						continue;
-					}
+			if(!isset($tSelectedPackage)) {
+				throw new Exception('package not found.');
+			}
 
-					$tSelectedPackage = &$tPackage;
-					break;
-				}
+			$tCompileAge = isset($tSelectedPackage['@compiledAge']) ? $tSelectedPackage['@compiledAge'] : 120;
 
-				if(!isset($tSelectedPackage)) {
-					throw new Exception('package not found.');
-				}
+			$tType = $tSelectedPackage['@type'];
+			$tFilename = $uPackageKey . '.' . $tType;
+			$tMimetype = io::getMimeType($tType);
+			header('Content-Type: ' . $tMimetype, true);
 
-				$tType = $tSelectedPackage['@type'];
-				$tMimetype = io::getMimeType($tType);
-				header('Content-Type: ' . $tMimetype, true);
-
+			$tOutputFile = cache::getPath('repository/', $tFilename, $tCompileAge);
+			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				foreach($tSelectedPackage['fileList'] as &$tFile) {
 					switch($tMimetype) {
 					case 'application/x-httpd-php':
 					case 'application/x-httpd-php-source':
-						framework::printFile(framework::translatePath($tFile['@path']));
+						$tContent = framework::printFile(framework::translatePath($tFile['@path']), true);
 						break;
 					case 'application/x-javascript':
-						echo JSMin::minify(file_get_contents(framework::translatePath($tFile['@path'])));
+						$tContent = JSMin::minify(file_get_contents(framework::translatePath($tFile['@path'])));
 						break;
 					default:
-						readfile(framework::translatePath($tFile['@path']));
+						$tContent = io::read(framework::translatePath($tFile['@path']));
 						break;
 					}
 				}
 
-				// to interrupt event-chain execution
-				return false;
+				io::write($tOutputFile[1], $tContent);
+				echo $tContent;
+			}
+			else {
+				readfile($tOutputFile[1]);
+			}
+		}
+	}
+
+	if(extensions::isSelected('mvc')) {
+		class reppackage extends controller {
+			public function __call($uMethod, $uArgs) {
+				repository::get($uMethod);
 			}
 		}
 	}

@@ -2,10 +2,6 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<repository>
-		<routing
-			repositoryCheckUrlKey="0" repositoryCheckUrlValue="repository"
-			repositoryPackageUrlKey="1" />
-
 		<packageList>
 			<package name="viewhome" type="txt">
 				<fileList>

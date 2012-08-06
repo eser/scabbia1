@@ -34,7 +34,7 @@ if(extensions::isSelected('database')) {
 				'phpversion' => '5.1.0',
 				'phpdepends' => array('pdo'),
 				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'cache')
+				'fwdepends' => array('string', 'cache', 'profiler')
 			);
 		}
 
@@ -337,10 +337,21 @@ if(extensions::isSelected('database')) {
 		*/
 		public function query($uQuery, $uParameters = array()) {
 			$this->open();
+
+			profiler::start(
+				'databaseQuery',
+				array(
+					'query' => $uQuery,
+					'parameters' => $uParameters
+				)
+			);
+
 			$tQuery = $this->connection->prepare($uQuery);
 			$tResult = $tQuery->execute($uParameters);
 			// $tQuery->closeCursor();
 			$this->affectedRows = $tQuery->rowCount();
+
+			profiler::stop();
 
 			if($tResult) {
 				return $this->affectedRows;
@@ -354,8 +365,19 @@ if(extensions::isSelected('database')) {
 		*/
 		public function &queryFetch($uQuery, $uParameters = array()) {
 			$this->open();
+
+			profiler::start(
+				'databaseQuery',
+				array(
+					'query' => $uQuery,
+					'parameters' => $uParameters
+				)
+			);
+
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
+
+			profiler::stop();
 
 			$tIterator = new dataRowsIterator($tQuery);
 			return $tIterator;
@@ -366,11 +388,22 @@ if(extensions::isSelected('database')) {
 		*/
 		public function &querySet($uQuery, $uParameters = array()) {
 			$this->open();
+
+			profiler::start(
+				'databaseQuery',
+				array(
+					'query' => $uQuery,
+					'parameters' => $uParameters
+				)
+			);
+
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
 			$tResult = $tQuery->fetchAll(PDO::FETCH_ASSOC);
 			// $this->affectedRows = $tQuery->rowCount();
 			$tQuery->closeCursor();
+
+			profiler::stop();
 
 			return $tResult;
 		}
@@ -380,11 +413,22 @@ if(extensions::isSelected('database')) {
 		*/
 		public function &queryRow($uQuery, $uParameters = array()) {
 			$this->open();
+
+			profiler::start(
+				'databaseQuery',
+				array(
+					'query' => $uQuery,
+					'parameters' => $uParameters
+				)
+			);
+
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
 			$tResult = $tQuery->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
 			// $this->affectedRows = $tQuery->rowCount();
 			$tQuery->closeCursor();
+
+			profiler::stop();
 
 			return $tResult;
 		}
@@ -394,11 +438,22 @@ if(extensions::isSelected('database')) {
 		*/
 		public function &queryScalar($uQuery, $uParameters = array()) {
 			$this->open();
+
+			profiler::start(
+				'databaseQuery',
+				array(
+					'query' => $uQuery,
+					'parameters' => $uParameters
+				)
+			);
+
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
 			$tResult = $tQuery->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
 			// $this->affectedRows = $tQuery->rowCount();
 			$tQuery->closeCursor();
+
+			profiler::stop();
 
 			return $tResult[0];
 		}
