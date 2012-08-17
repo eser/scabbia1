@@ -16,6 +16,8 @@
 		<include path="{core}extensions/output.php" />
 		<include path="{core}extensions/logger.php" />
 		<include path="{core}extensions/html.php" />
+		<include path="{core}extensions/i8n.php" />
+		<include path="{core}extensions/mvc.php" />
 		<include path="{core}controllers/*.php" />
 		<include path="{core}models/*.php" />
 	</includeList>
@@ -35,5 +37,7 @@
 		<extension name="output" />
 		<extension name="logger" />
 		<extension name="html" />
+		<extension name="i8n" />
+		<extension name="mvc" />
 	</extensionList>
 </scabbia>

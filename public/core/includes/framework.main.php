@@ -176,7 +176,7 @@
 		* @param string $uPath the framework-relative path
 		* @return string translated physical path
 		*/
-		public static function translatePath($uPath) {
+		public static function translatePath($uPath, $uBasePath = null) {
 			if(substr($uPath, 0, 6) == '{base}') {
 				return QPATH_BASE . substr($uPath, 6);
 			}
@@ -189,7 +189,11 @@
 				return self::$applicationPath . substr($uPath, 5);
 			}
 
-			return $uPath;
+			if(is_null($uBasePath)) {
+				return $uPath;
+			}
+
+			return $uBasePath . $uPath;
 		}
 
 		public static function writablePath($uFile) {

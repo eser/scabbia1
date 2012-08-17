@@ -226,7 +226,7 @@ if(extensions::isSelected('mvc')) {
 		* @ignore
 		*/
 		public static function view() {
-			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@controller}_{@action}_{@device}_{@language}{@extension}');
+			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@path}{@controller}_{@action}_{@device}_{@language}{@extension}');
 			$tViewDefaultExtension = config::get('/mvc/view/@defaultViewExtension', 'php');
 
 			$uArgs = func_get_args();
@@ -244,8 +244,8 @@ if(extensions::isSelected('mvc')) {
 			}
 
 			if(is_string($uView)) {
-				$tViewFile = $uView;
-				$tViewExtension = pathinfo($tViewFile, PATHINFO_EXTENSION);
+				$tViewFilePath = framework::translatePath($uView, framework::$applicationPath . 'views/');
+				$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
 
 				if(!isset(self::$viewEngines[$tViewExtension])) {
 					$tViewExtension = $tViewDefaultExtension;
@@ -257,6 +257,10 @@ if(extensions::isSelected('mvc')) {
 				}
 				else if(!is_array($uView)) {
 					return;
+				}
+
+				if(!isset($uView['path'])) {
+					$uView['path'] = framework::$applicationPath . 'views/';
 				}
 
 				if(!isset($uView['controller'])) {
@@ -283,7 +287,7 @@ if(extensions::isSelected('mvc')) {
 					$uView['extension'] = $tViewDefaultExtension;
 				}
 
-				$tViewFile = string::format($tViewNamePattern, $uView);
+				$tViewFilePath = string::format($tViewNamePattern, $uView);
 			}
 
 			$tExtra = array(
@@ -291,10 +295,13 @@ if(extensions::isSelected('mvc')) {
 				'lang' => i8n::$languageKey
 			);
 
+			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
+			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+
 			call_user_func(
 				self::$viewEngines[$tViewExtension] . '::renderview',
 				array(
-					'templatePath' => framework::$applicationPath . 'views/',
+					'templatePath' => &$tTemplatePath,
 					'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
 					'viewFile' => &$tViewFile,
 					'model' => &$uModel,
@@ -334,7 +341,7 @@ if(extensions::isSelected('mvc')) {
 				'message' => $uMessage
 			);
 
-			self::view('shared_error.cshtml', $tViewbag);
+			self::view(array('controller' => 'shared', 'action' => 'error'), $tViewbag);
 			exit(1);
 		}
 

@@ -18,12 +18,10 @@
 	</downloadList>
 
 	<includeList>
-		<include path="{core}include/3rdparty/facebook-php-sdk-3.1.1/src/base_facebook.php" />
+		<include path="{core}includes/3rdparty/facebook-php-sdk-3.1.1/src/base_facebook.php" />
 		<include path="{core}extensions/access.php" />
 		<include path="{core}extensions/collections.php" />
 		<include path="{core}extensions/unittest.php" />
-		<include path="{core}extensions/i8n.php" />
-		<include path="{core}extensions/mvc.php" />
 		<include path="{core}extensions/repository.php" />
 		<include path="{core}extensions/media.php" />
 		<include path="{core}extensions/captcha.php" />
@@ -42,8 +40,6 @@
 		<extension name="collections" />
 		<extension name="unittest" />
 		<extension name="repository" />
-		<extension name="i8n" />
-		<extension name="mvc" />
 		<extension name="media" />
 		<extension name="captcha" />
 		<extension name="fb" />
