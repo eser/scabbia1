@@ -19,35 +19,34 @@
 
 	<includeList>
 		<include path="{core}include/3rdparty/facebook-php-sdk-3.1.1/src/base_facebook.php" />
-		<include path="{core}extensions/*.php" />
+		<include path="{core}extensions/access.php" />
+		<include path="{core}extensions/collections.php" />
+		<include path="{core}extensions/unittest.php" />
+		<include path="{core}extensions/i8n.php" />
+		<include path="{core}extensions/mvc.php" />
+		<include path="{core}extensions/repository.php" />
+		<include path="{core}extensions/media.php" />
+		<include path="{core}extensions/captcha.php" />
+		<include path="{core}extensions/fb.php" />
+		<include path="{core}extensions/viewengine_razor.php" />
+		<include path="{core}extensions/viewengine_markdown.php" />
+		<include path="{app}includes/*.php" />
+		<include path="{app}extensions/*.php" />
 		<include path="{app}writable/downloaded/*.php" />
 		<include path="{app}controllers/*.php" />
 		<include path="{app}models/*.php" />
 	</includeList>
 
 	<extensionList>
-		<extension name="string" />
-		<extension name="io" />
-		<extension name="cache" />
-		<extension name="http" />
-		<extension name="arrays" />
 		<extension name="access" />
-		<extension name="time" />
 		<extension name="collections" />
-		<extension name="contracts" />
-		<extension name="validation" />
 		<extension name="unittest" />
-		<extension name="profiler" />
-		<extension name="database" />
-		<extension name="session" />
-		<extension name="output" />
 		<extension name="repository" />
 		<extension name="i8n" />
 		<extension name="mvc" />
-		<extension name="logger" />
-		<extension name="html" />
 		<extension name="media" />
 		<extension name="captcha" />
+		<extension name="fb" />
 		<extension name="viewengine_razor" />
 		<extension name="viewengine_markdown" />
 <!--
@@ -57,7 +56,6 @@
 		<extension name="viewengine_raintpl" />
 		<extension name="viewengine_twig" />
 -->
-		<extension name="fb" />
 	</extensionList>
 
 	<i8n>

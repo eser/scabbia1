@@ -25,7 +25,8 @@
 // Constant definitions
 	define('PHP_OS_WINDOWS', (DIRECTORY_SEPARATOR == '\\'));
 	define('PHP_SAPI_CLI', (PHP_SAPI == 'cli'));
-	define('QPATH_CORE', pathinfo(__FILE__, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR);
+	define('QPATH_BASE', pathinfo(__FILE__, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR);
+	define('QPATH_CORE', QPATH_BASE . 'core' . DIRECTORY_SEPARATOR);
 	define('QTIME_INIT', microtime(true));
 	define('QEXT_PHP', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
 
@@ -38,21 +39,25 @@
 	define('OUTPUT_MULTIBYTE', OUTPUT_NOHANDLER);
 
 // Include framework dependencies and load them
-	require(QPATH_CORE . 'include/patches.main' . QEXT_PHP);
-	require(QPATH_CORE . 'include/config.main' . QEXT_PHP);
-	require(QPATH_CORE . 'include/events.main' . QEXT_PHP);
-	require(QPATH_CORE . 'include/framework.main' . QEXT_PHP);
-	require(QPATH_CORE . 'include/extensions.main' . QEXT_PHP);
+	require(QPATH_CORE . 'includes/patches.main' . QEXT_PHP);
+	require(QPATH_CORE . 'includes/config.main' . QEXT_PHP);
+	require(QPATH_CORE . 'includes/events.main' . QEXT_PHP);
+	require(QPATH_CORE . 'includes/framework.main' . QEXT_PHP);
+	require(QPATH_CORE . 'includes/extensions.main' . QEXT_PHP);
 
+	// config::init();
+	// events::init();
 	framework::init();
+	// extensions::init();
 
 	config::load();
+	// events::load();
 	framework::load();
 	extensions::load();
 
+	// config::run();
+	// events::run();
 	framework::run();
-	if(isset($runExtensions) && $runExtensions !== false) {
-		extensions::run();
-	}
+	extensions::run();
 
 ?>
