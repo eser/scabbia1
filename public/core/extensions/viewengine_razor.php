@@ -59,7 +59,7 @@ if(extensions::isSelected('viewengine_razor')) {
 
 			// cengiz: Render if file not exist
 			// or debug mode on
-			$tOutputFile = cache::getPath('razor/', $uObject['viewFile'], self::$compiledAge);
+			$tOutputFile = cache::getPath('cshtml/', $uObject['viewFile'], self::$compiledAge);
 			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
 					self::$engine = new RazorViewRenderer();

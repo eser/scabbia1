@@ -45,7 +45,7 @@
 	require(QPATH_CORE . 'includes/framework.main' . QEXT_PHP);
 	require(QPATH_CORE . 'includes/extensions.main' . QEXT_PHP);
 
-	// config::init();
+	config::init();
 	// events::init();
 	framework::init();
 	// extensions::init();

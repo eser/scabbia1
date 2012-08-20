@@ -36,44 +36,65 @@
 		*/
 		public static $socket;
 		/**
-		* @ignore
+		* Stores active socket information.
 		*/
-		public static $runExtensions;
+		public static $issecure;
 		/**
 		* @ignore
 		*/
-		public static $directCall;
+		public static $runExtensions;
 
 		/**
 		* @ignore
 		*/
 		public static function init() {
-			if(!isset($GLOBALS['applicationDir'])) {
-				self::$applicationPath = QPATH_BASE . 'application/';
-			}
-			else {
-				self::$applicationPath = QPATH_BASE . $GLOBALS['applicationDir'] . '/';
+			$tApplications = config::get('/applicationList');
+			foreach($tApplications as &$tApplication) {
+				if(isset($tApplication['@host']) && $tApplication['@host'] != $_SERVER['SERVER_NAME']) {
+					continue;
+				}
+
+				if(isset($tApplication['@secureport']) && $tApplication['@secureport'] == $_SERVER['SERVER_PORT']) {
+					self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+					self::$issecure = true;
+					$tPickedApplication = &$tApplication;
+					break;
+				}
+
+				if(isset($tApplication['@port']) && $tApplication['@port'] == $_SERVER['SERVER_PORT']) {
+					self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+					self::$issecure = false;
+					$tPickedApplication = &$tApplication;
+					break;
+				}
+
+				if(isset($tApplication['bindList'])) {
+					foreach($tApplication['bindList'] as $tBind) {
+						if(isset($tBind['@host']) && $tBind['@host'] != $_SERVER['SERVER_NAME']) {
+							continue;
+						}
+
+						if($tBind['@port'] == $_SERVER['SERVER_PORT']) {
+							self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+							self::$issecure = (isset($tBind['@secure']) && (bool)$tBind['@secure']);
+							$tPickedApplication = &$tApplication;
+							break;
+						}
+					}
+				}
 			}
 
-			if(!isset($GLOBALS['development'])) {
-				self::$development = 1;
+			if(!isset($tPickedApplication)) {
+				exit('why?');
+			}
+			
+			self::$applicationPath = self::translatePath($tPickedApplication['@path']);
+			self::$development = isset($tPickedApplication['@development']) ? intval($tPickedApplication['@development']) : 0;
+			if(!defined('EXTENSIONS')) {
+				self::$runExtensions = (!isset($tPickedApplication['@runExtensions']) || (bool)$tPickedApplication['@runExtensions']);
 			}
 			else {
-				self::$development = $GLOBALS['development'];
-			}
-
-			if(!isset($GLOBALS['runExtensions'])) {
-				self::$runExtensions = true;
-			}
-			else {
-				self::$runExtensions = $GLOBALS['runExtensions'];
-			}
-
-			if(isset($_SERVER['SERVER_NAME'])) {
-				self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-			}
-			else {
-				self::$socket = 'localhost:80';
+				self::$runExtensions = constant('EXTENSIONS');
 			}
 		}
 
@@ -82,7 +103,6 @@
 		*/
 		public static function load() {
 			self::$siteroot = config::get('/options/siteroot/@value', '');
-			self::$directCall = !COMPILED;
 
 			if(strlen(self::$siteroot) <= 1) {
 				$tLen = strlen($_SERVER['DOCUMENT_ROOT']);
@@ -123,51 +143,29 @@
 			ob_start('framework::output');
 			ob_implicit_flush(false);
 
-			if(!COMPILED) {
-				if(self::phpVersion('5.3.6')) {
-					$tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-				}
-				else {
-					$tBacktrace = debug_backtrace(false);
-				}
-
-				foreach($tBacktrace as &$tValue) {
-					if(isset($tValue['function']) && ($tValue['function'] == 'include' || $tValue['function'] == 'require')) {
-						self::$directCall = false;
-					}
-				}
-
-				if(PHP_SAPI_CLI) {
-					$tParameters = array_slice($_SERVER['argv'], 1);
-				}
-				else {
-					$tParameters = array_keys($_GET);
-				}
-
-				if(self::$directCall) {
-					$tParameterCount = count($tParameters);
-					if(self::$development >= 1) {
-						if($tParameterCount >= 2 && $tParameters[0] == 'build') {
-							self::build($tParameters[1], !($tParameterCount >= 3 && $tParameters[2] == 'pseudo'));
-							// self::purgeFolder(self::$applicationPath . 'writable/sessions');
-							// self::purgeFolder(QPATH_APP . 'writable/datasetCache');
-							// self::purgeFolder(QPATH_APP . 'writable/mediaCache');
-							// self::purgeFolder(QPATH_APP . 'writable/downloaded');
-							// self::purgeFolder(QPATH_APP . 'writable/compiledViews'));
-							// self::purgeFolder(QPATH_APP . 'writable/logs');
-
-							echo 'build done.', "\r\n";
-						}
-						else {
-							echo 'see help.', "\r\n";
-						}
-						
-						exit();
-					}
-
-					exit('why?');
-				}
-			}
+			// if(!COMPILED) {
+			// 	$tDirectCall = true;
+			// 
+			// 	if(self::phpVersion('5.3.6')) {
+			// 		$tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+			// 	}
+			// 	else {
+			// 		$tBacktrace = debug_backtrace(false);
+			// 	}
+            // 
+			// 	foreach($tBacktrace as &$tValue) {
+			// 		if(isset($tValue['function']) && ($tValue['function'] == 'include' || $tValue['function'] == 'require')) {
+			// 			$tDirectCall = false;
+			// 		}
+			// 	}
+            // 
+			// 	if(PHP_SAPI_CLI) {
+			// 		$tParameters = array_slice($_SERVER['argv'], 1);
+			// 	}
+			// 	else {
+			// 		$tParameters = array_keys($_GET);
+			// 	}
+			// }
 		}
 
 		/**
@@ -253,36 +251,36 @@
 		*
 		* @return array array of parameters
 		*/
-		public static function getArgs() {
-			$uArgs = func_get_args();
-
-			if(self::phpVersion('5.3.6')) {
-				$tBacktrace = debug_backtrace();
-			}
-			else {
-				$tBacktrace = debug_backtrace(false);
-			}
-
-			if(count($tBacktrace) < 2) {
-				return null;
-			}
-
-			$tTargetArgs = $tBacktrace[1]['args'];
-
-			if(count($tTargetArgs) == 1 && is_array($tTargetArgs[0])) {
-				$tTargetArgs = $tTargetArgs[0];
-			}
-			else {
-				$tNewArray = array();
-				for($i = 0, $tMax = count($tTargetArgs), $tArgsMax = count($uArgs); $i < $tMax && $i < $tArgsMax; $i++) {
-					$tNewArray[$uArgs[$i]] = array_shift($tTargetArgs);
-				}
-
-				$tTargetArgs = array_merge($tNewArray, $tTargetArgs);
-			}
-
-			return $tTargetArgs;
-		}
+		// public static function getArgs() {
+		// 	$uArgs = func_get_args();
+        // 
+		// 	if(self::phpVersion('5.3.6')) {
+		// 		$tBacktrace = debug_backtrace();
+		// 	}
+		// 	else {
+		// 		$tBacktrace = debug_backtrace(false);
+		// 	}
+        // 
+		// 	if(count($tBacktrace) < 2) {
+		// 		return null;
+		// 	}
+        // 
+		// 	$tTargetArgs = $tBacktrace[1]['args'];
+        // 
+		// 	if(count($tTargetArgs) == 1 && is_array($tTargetArgs[0])) {
+		// 		$tTargetArgs = $tTargetArgs[0];
+		// 	}
+		// 	else {
+		// 		$tNewArray = array();
+		// 		for($i = 0, $tMax = count($tTargetArgs), $tArgsMax = count($uArgs); $i < $tMax && $i < $tArgsMax; $i++) {
+		// 			$tNewArray[$uArgs[$i]] = array_shift($tTargetArgs);
+		// 		}
+        // 
+		// 		$tTargetArgs = array_merge($tNewArray, $tTargetArgs);
+		// 	}
+        // 
+		// 	return $tTargetArgs;
+		// }
 
 		/**
 		* @ignore
@@ -334,9 +332,13 @@
 		/**
 		* @ignore
 		*/
-		private static function printIncludeFilesFromConfig() {
+		public static function printIncludeFilesFromConfig() {
 			foreach(self::$includePaths as &$tPath) {
-				self::printFiles(glob3($tPath, false));
+				$tFiles = glob3($tPath, false, true);
+				if($tFiles == false) {
+					continue;
+				}
+				self::printFiles($tFiles);
 			}
 		}
 
@@ -380,91 +382,6 @@
 			}
 
 			echo $tContent;
-		}
-
-		/**
-		* Builds a framework compilation.
-		*
-		* @param $uFilename string output file
-		* @param $uPseudo bool wheater file is an pseudo compilation or not
-		*/
-		public static function build($uFilename, $uPseudo = true) {
-			ob_start();
-			ob_implicit_flush(false);
-
-			if(self::$development >= 1 && !$uPseudo) {
-				$tPath = QPATH_BASE . 'framework' . QEXT_PHP;
-				echo '<', '?php
-	require(', var_export($tPath), ');
-	extensions::run();
-?', '>';
-			}
-			else {
-				// ', var_export($GLOBALS['development']), '
-				/* BEGIN */
-				echo '<', '?php
-				
-	$applicationDir = ', var_export($GLOBALS['applicationDir']), ';
-	$development = 0;
-	$runExtensions = ', var_export($GLOBALS['runExtensions']), ';
-
-	ignore_user_abort();
-	date_default_timezone_set(\'UTC\');
-	setlocale(LC_ALL, \'en_US.UTF-8\');
-	mb_internal_encoding(\'UTF-8\');
-	mb_http_output(\'UTF-8\');
-
-	define(\'PHP_OS_WINDOWS\', ', var_export(PHP_OS_WINDOWS), ');
-	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
-	define(\'QPATH_BASE\', ', var_export(QPATH_BASE), ');
-	define(\'QPATH_CORE\', ', var_export(QPATH_CORE), ');
-	define(\'QTIME_INIT\', microtime(true));
-	define(\'QEXT_PHP\', ', var_export(QEXT_PHP), ');
-
-	define(\'SCABBIA_VERSION\', ', var_export(SCABBIA_VERSION), ');
-	define(\'INCLUDED\', ', var_export(INCLUDED), ');
-	define(\'COMPILED\', true);
-
-	define(\'OUTPUT_NOHANDLER\', ', var_export(OUTPUT_NOHANDLER), ');
-	define(\'OUTPUT_GZIP\', ', var_export(OUTPUT_GZIP), ');
-	define(\'OUTPUT_MULTIBYTE\', ', var_export(OUTPUT_MULTIBYTE), ');
-?', '>';
-
-				echo php_strip_whitespace(QPATH_CORE . 'includes/patches.main' . QEXT_PHP);
-				echo php_strip_whitespace(QPATH_CORE . 'includes/config.main' . QEXT_PHP);
-				echo php_strip_whitespace(QPATH_CORE . 'includes/events.main' . QEXT_PHP);
-				echo php_strip_whitespace(QPATH_CORE . 'includes/framework.main' . QEXT_PHP);
-				echo php_strip_whitespace(QPATH_CORE . 'includes/extensions.main' . QEXT_PHP);
-
-				echo '<', '?php framework::init(); config::set(', config::export(), '); framework::load(); ?', '>';
-
-				self::printIncludeFilesFromConfig();
-
-				echo '<', '?php extensions::load(); framework::run(); extensions::run(); ?', '>';
-				/* END   */
-			}
-
-			$tContents = ob_get_contents();
-			ob_end_clean();
-
-			$tOutput = fopen($uFilename, 'w') or exit('Unable to write to ' . $uFilename);
-			fwrite($tOutput, $tContents);
-			fclose($tOutput);
-		}
-
-		/**
-		* Purges the files in given directory.
-		*
-		* @param $uFolder string destination directory
-		*/
-		public static function purgeFolder($uFolder) {
-			foreach(glob3($uFolder . '/*', true) as $tFilename) {
-				if(substr($tFilename, -1) == '/') {
-					continue;
-				}
-
-				unlink($tFilename);
-			}
 		}
 	}
 

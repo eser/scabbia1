@@ -15,8 +15,10 @@
 		/**
 		* @ignore
 		*/
-		// public static function init() {
-		// }
+		public static function init() {
+			self::$default = array();
+			self::loadFiles(self::$default, QPATH_CORE . 'config/*');
+		}
 
 		/**
 		* Loads the default configuration for the current application.
@@ -24,10 +26,7 @@
 		* @uses loadFiles()
 		*/
 		public static function load() {
-			self::$default = self::loadFiles(
-				QPATH_CORE . 'config/*',
-				framework::$applicationPath . 'config/*'
-			);
+			self::loadFiles(self::$default, framework::$applicationPath . 'config/*');
 		}
 
 		/**
@@ -164,21 +163,19 @@
 		* @param string $uFiles path of configuration files
 		* @return array configuration
 		*/
-		public static function &loadFiles($uFiles) {
-			$tConfig = array();
+		public static function loadFiles(&$uConfig, $uFiles) {
 			$tConfigNodes = array();
 
-			$tFileNames = array();
-			foreach(func_get_args() as $tFiles) {
-				$tFileNames = array_merge($tFileNames, glob3($tFiles, false, true));
+			$tFiles = glob3($uFiles, false, true);
+			if($tFiles !== false) {
+				foreach($tFiles as $tFilename) {
+					$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);
+					self::processChildren_r($uConfig, $tConfigNodes, $tXmlDom);
+				}
 			}
-
-			foreach($tFileNames as $tFilename) {
-				$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);
-				self::processChildren_r($tConfig, $tConfigNodes, $tXmlDom);
+			else {
+				echo $uFiles;
 			}
-
-			return $tConfig;
 		}
 
 		/**

@@ -14,6 +14,14 @@ if(extensions::isSelected('string')) {
 		* @ignore
 		*/
 		public static $mbstringEncoding;
+		/**
+		* @ignore
+		*/
+		public static $eol = "\r\n";
+		/**
+		* @ignore
+		*/
+		public static $tab = "\t";
 
 		/**
 		* @ignore
@@ -53,6 +61,24 @@ if(extensions::isSelected('string')) {
 					return $tValue;
 				}
 			}
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function prefixLines($uInput, $uPrefix = '- ', $uLineEnding = "\n") {
+			$tLines = explode($uLineEnding, $uInput);
+
+			$tOutput = $tLines[0] . $uLineEnding;
+			$tCount = 0; foreach($tLines as &$tLine) {
+				if($tCount++ == 0) {
+					continue;
+				}
+
+				$tOutput .= $uPrefix . $tLine . $uLineEnding;
+			}
+
+			return $tOutput;
 		}
 
 		/**
@@ -195,15 +221,16 @@ if(extensions::isSelected('string')) {
 			$tVariable = $uVariable;
 			$tType = gettype($tVariable);
 			$tOut = '';
+			static $tTabs = '';
 
 			switch($tType) {
 			case 'boolean':
-				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')<br />';
+				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')<br />' . self::$eol;
 				break;
 			case 'integer':
 			case 'double':
 			case 'string':
-				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')<br />';
+				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')<br />' . self::$eol;
 				break;
 			case 'array':
 			case 'object':
@@ -216,27 +243,29 @@ if(extensions::isSelected('string')) {
 				$tOut .= '<b>' . $tType . '</b>(' . $tCount . ')';
 
 				if($tCount > 0) {
-					$tOut .= ' {' . '<div style="padding: 0px 0px 0px 50px;">';
+					$tOut .= ' {' . '<div style="padding: 0px 0px 0px 50px;">' . self::$eol;
 
+					$tTabs .= self::$tab;
 					foreach($tVariable as $tKey => &$tVal) {
-						$tOut .= '[' . $tKey . '] ';
+						$tOut .= $tTabs . '[' . $tKey . '] = ';
 						$tOut .= self::vardump($tVal, false);
 					}
+					$tTabs = substr($tTabs, 0, -1);
 
-					$tOut .= '</div>}';
+					$tOut .= '</div>' . $tTabs . '}';
 				}
 
-				$tOut .= '<br />';
+				$tOut .= '<br />' . self::$eol;
 				break;
 			case 'resource':
-				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')<br />';
+				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')<br />' . self::$eol;
 				break;
 			case 'NULL':
-				$tOut .= '<b><i>null</i></b><br />';
+				$tOut .= '<b><i>null</i></b><br />' . self::$eol;
 				break;
 			case 'unknown type':
 			default:
-				$tOut .= 'unknown';
+				$tOut .= '<b>unknown</b><br />' . self::$eol;
 				break;
 			}
 

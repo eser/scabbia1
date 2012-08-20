@@ -297,16 +297,17 @@ if(extensions::isSelected('mvc')) {
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
 			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+			$tViewArray = array(
+				'templatePath' => &$tTemplatePath,
+				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
+				'viewFile' => &$tViewFile,
+				'model' => &$uModel,
+				'extra' => &$tExtra
+			);
 
 			call_user_func(
 				self::$viewEngines[$tViewExtension] . '::renderview',
-				array(
-					'templatePath' => &$tTemplatePath,
-					'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-					'viewFile' => &$tViewFile,
-					'model' => &$uModel,
-					'extra' => &$tExtra
-				)
+				$tViewArray
 			);
 		}
 

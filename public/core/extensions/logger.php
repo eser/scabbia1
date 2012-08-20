@@ -16,10 +16,6 @@ if(extensions::isSelected('logger')) {
 		* @ignore
 		*/
 		public static $line;
-		/**
-		* @ignore
-		*/
-		public static $eof = "\r\n";
 
 		/**
 		* @ignore
@@ -53,14 +49,31 @@ if(extensions::isSelected('logger')) {
 		* @ignore
 		*/
 		public static function errorCallback($uCode, $uMessage, $uFile, $uLine) {
-			throw new ErrorException($uMessage, $uCode, 0, $uFile, $uLine);
+			self::handler(
+				$uMessage,
+				$uCode,
+				$uFile,
+				$uLine
+			);
 		}
 
 		/**
 		* @ignore
 		*/
 		public static function exceptionCallback($uException) {
-			switch($uException->getCode()) {
+			self::handler(
+				$uException->getMessage(),
+				$uException->getCode(),
+				$uException->getFile(),
+				$uException->getLine()
+			);
+		}
+		
+		/**
+		* @ignore
+		*/
+		public static function handler($uMessage, $uCode, $uFile, $uLine) {
+			switch($uCode) {
 				case E_ERROR:
 				case E_USER_ERROR:
 				case E_RECOVERABLE_ERROR:
@@ -90,9 +103,9 @@ if(extensions::isSelected('logger')) {
 			$tIgnoreError = false;
 			events::invoke('reportError', array(
 				'type' => &$tType,
-				'message' => $uException->getMessage(),
-				'file' => $uException->getFile(),
-				'line' => $uException->getLine(),
+				'message' => $uMessage,
+				'file' => $uFile,
+				'line' => $uLine,
 				'ignore' => &$tIgnoreError
 			));
 
@@ -106,29 +119,28 @@ if(extensions::isSelected('logger')) {
 				for($tCount = ob_get_level(); --$tCount > 1;ob_end_flush());
 
 				if(framework::$development >= 1) {
-					$tDeveloperLocation = pathinfo($uException->getFile(), PATHINFO_FILENAME) . ' @' . $uException->getLine();
+					$tDeveloperLocation = $uFile . ' @' . $uLine;
 				}
 				else {
-					$tDeveloperLocation = '';
+					$tDeveloperLocation = pathinfo($uFile, PATHINFO_FILENAME);
 				}
 
 				$tString = '';
 				$tString .= '<div>'; // for content-type: text/xml
-				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>';
-				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uException->getMessage() . '</div>';
+				$tString .= '<div style="font: 11pt \'Lucida Sans Unicode\'; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . string::$eol . string::$eol;
+				$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uMessage . '</div>' . string::$eol . string::$eol;
 
 				if(framework::$development >= 1) {
 					if(count($tEventDepth) > 0) {
-						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b><pre>' . implode(self::$eof, $tEventDepth) . '</pre></div>';
+						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b><br />' . string::$eol . implode(string::$eol, $tEventDepth) . '</div>' . string::$eol . string::$eol;
 					}
 
-					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b><pre>';
+					$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b><br />' . string::$eol;
 
 					$tCount = 0;
-					/*
-					foreach($uException->getTrace() as $tFrame) {
+					foreach(debug_backtrace() as $tFrame) {
+						$tArgs = array();
 						if(isset($tFrame['args'])) {
-							$tArgs = array();
 							foreach($tFrame['args'] as $tArg) {
 								$tArgs[] = var_export($tArg, true);
 							}
@@ -141,40 +153,32 @@ if(extensions::isSelected('logger')) {
 							$tFunction = $tFrame['function'];
 						}
 
+						$tCount++;
 						if(isset($tFrame['file'])) {
-							$tString .= sprintf(self::$eof . '#%s %s(%s):', ++$tCount, $tFrame['file'], $tFrame['line']);
-							$tString .= sprintf(self::$eof . '#%s <strong>%s</strong>(', $tCount, $tFunction);
-						}
-						else {
-							$tString .= sprintf(self::$eof . '#%s: <strong>%s</strong>(', ++$tCount, $tFunction);
+							$tString .= '#' . $tCount . ' ' . $tFrame['file'] . '(' . $tFrame['line'] . '):<br />' . string::$eol;
 						}
 
-						$tString .= implode(', ', $tArgs);
-						$tString .= ')' . self::$eof;
+						$tString .= '#' . $tCount . ' <strong>' . $tFunction . '</strong>(' . implode(', ', $tArgs) . ')<br /><br />' . string::$eol . string::$eol;
 					}
-					*/
 
-					$tString .= $uException->getTraceAsString();
-
-					$tString .= '</pre></div>' . self::$eof;
+					$tString .= '</div>' . string::$eol;
 
 					if(extensions::isSelected('profiler')) {
-						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler output:</b><pre>';
-						$tString .= profiler::export(false);
-						$tString .= '</pre></div>' . self::$eof;
-
-						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler stack:</b><pre>';
+						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler stack:</b><br />' . string::$eol;
 						$tString .= profiler::exportStack(false);
-						$tString .= '</pre></div>' . self::$eof;
-					}
+						$tString .= '</div>' . string::$eol;
 
+						$tString .= '<div style="font: 10pt \'Lucida Sans Unicode\'; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler output:</b><br />' . string::$eol;
+						$tString .= profiler::export(false);
+						$tString .= '</div>';
+					}
 				}
 
 				$tString .= '</div>';
 
-				self::write('error', array('message' => $uException->__toString()));
+				self::write('error', array('message' => strip_tags($tString)));
 
-				$tString .= '<div style="font: 7pt \'Lucida Sans Unicode\'; color: #808080; padding: 0px 12px 0px 12px;">Generated by <a href="mailto:eser@sent.com">' . ucfirst(INCLUDED) . '</a>.</div>';
+				$tString .= '<div style="font: 7pt \'Lucida Sans Unicode\'; color: #808080; padding: 0px 12px 0px 12px;">Generated by <a href="mailto:eser@sent.com">' . ucfirst(INCLUDED) . '</a>.</div>' . string::$eol;
 				echo $tString;
 
 				exit();
@@ -188,8 +192,10 @@ if(extensions::isSelected('logger')) {
 			$uParams['category'] = &$uCategory;
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
+			$uParams['message'] = string::prefixLines($uParams['message'], '- ', "\n");
+
 			$tFilename = framework::writablePath('logs/' . string::format(self::$filename, $uParams));
-			$tContent = string::format(self::$line . self::$eof . self::$eof, $uParams);
+			$tContent = '+ ' . string::format(self::$line, $uParams);
 
 			file_put_contents($tFilename, $tContent, FILE_APPEND);
 		}
