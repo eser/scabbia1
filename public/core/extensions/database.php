@@ -22,6 +22,10 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public static $default = null;
+		/**
+		* @ignore
+		*/
+		public static $enableDataRows;
 
 		/**
 		* @ignore
@@ -56,6 +60,7 @@ if(extensions::isSelected('database')) {
 			}
 
 			// events::register('reportError', events::Callback('database::reportError'));
+			self::$enableDataRows = true;
 		}
 
 		/**
@@ -74,94 +79,6 @@ if(extensions::isSelected('database')) {
 			}
 
 			return null;
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function sqlInsert($uTable, $uObject, $uReturning = '') {
-			$tSql =
-				'INSERT INTO ' . $uTable . ' ('
-				. implode(', ', array_keys($uObject))
-				. ') VALUES ('
-				. implode(', ', array_values($uObject))
-				. ')';
-
-			if(strlen($uReturning) > 0) {
-				$tSql .= ' RETURNING ' . $uReturning;
-			}
-
-			return $tSql;
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = '') {
-			$tPairs = array();
-			foreach($uObject as $tKey => &$tValue) {
-				$tPairs[] = $tKey . '=' . $tValue;
-			}
-
-			$tSql = 'UPDATE ' . $uTable . ' SET '
-				. implode(', ', $tPairs);
-
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
-
-			if(strlen($uExtra) > 0) {
-				$tSql .= ' ' . $uExtra;
-			}
-
-			return $tSql;
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function sqlDelete($uTable, $uWhere, $uExtra = '') {
-			$tSql = 'DELETE FROM ' . $uTable;
-
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
-
-			if(strlen($uExtra) > 0) {
-				$tSql .= ' ' . $uExtra;
-			}
-
-			return $tSql;
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uExtra = '') {
-			$tSql = 'SELECT ';
-
-			if(count($uFields) > 0) {
-				$tSql .= implode(', ', $uFields);
-			}
-			else {
-				$tSql .= '*';
-			}
-
-			$tSql .= ' FROM ' . $uTable;
-
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
-
-			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
-				$tSql .= ' ORDER BY ' . $uOrderBy;
-			}
-
-			if(strlen($uExtra) > 0) {
-				$tSql .= ' ' . $uExtra;
-			}
-
-			return $tSql;
 		}
 	}
 
@@ -1038,7 +955,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function insert() {
-			$tQuery = database::sqlInsert($this->table, $this->fields, $this->returning);
+			$tQuery = $this->database->provider->sqlInsert($this->table, $this->fields, $this->returning);
 
 			if(strlen($this->returning) > 0) {
 				$tInsertId = $this->database->queryScalar($tQuery, $this->parameters);
@@ -1063,14 +980,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function update() {
-			if($this->database->provider->standard == 'mysql' && $this->limit >= 0) {
-				$tExtra = 'LIMIT ' . $this->limit;
-			}
-			else {
-				$tExtra = '';
-			}
-
-			$this->database->query(database::sqlUpdate($this->table, $this->fields, $this->where, $tExtra), $this->parameters);
+			$this->database->query($this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)), $this->parameters);
 
 			$this->clear();
 
@@ -1081,14 +991,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function delete() {
-			if($this->database->provider->standard == 'mysql' && $this->limit >= 0) {
-				$tExtra = 'LIMIT ' . $this->limit;
-			}
-			else {
-				$tExtra = '';
-			}
-
-			$this->database->query(database::sqlDelete($this->table, $this->where, $tExtra), $this->parameters);
+			$this->database->query($this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)), $this->parameters);
 
 			$this->clear();
 
@@ -1099,19 +1002,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function &get() {
-			if($this->limit >= 0) {
-				if($this->offset >= 0) {
-					$tExtra = 'LIMIT ' . $this->limit . ' OFFSET ' . $this->offset;
-				}
-				else {
-					$tExtra = 'LIMIT ' . $this->limit;
-				}
-			}
-			else {
-				$tExtra = '';
-			}
-
-			$tReturn = $this->database->querySet(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
+			$tReturn = $this->database->querySet($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
 
 			$this->clear();
 
@@ -1122,19 +1013,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function &getRow() {
-			if($this->limit >= 0) {
-				if($this->offset >= 0) {
-					$tExtra = 'LIMIT ' . $this->limit . ' OFFSET ' . $this->offset;
-				}
-				else {
-					$tExtra = 'LIMIT ' . $this->limit;
-				}
-			}
-			else {
-				$tExtra = '';
-			}
-
-			$tReturn = $this->database->queryRow(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
+			$tReturn = $this->database->queryRow($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
 
 			$this->clear();
 
@@ -1145,19 +1024,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function &getScalar() {
-			if($this->limit >= 0) {
-				if($this->offset >= 0) {
-					$tExtra = 'LIMIT ' . $this->limit . ' OFFSET ' . $this->offset;
-				}
-				else {
-					$tExtra = 'LIMIT ' . $this->limit;
-				}
-			}
-			else {
-				$tExtra = '';
-			}
-
-			$tReturn = $this->database->queryScalar(database::sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $tExtra), $this->parameters);
+			$tReturn = $this->database->queryScalar($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
 
 			$this->clear();
 
@@ -1168,11 +1035,74 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
-			$tReturn = $this->database->queryScalar(database::sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null), array());
+			$tReturn = $this->database->queryScalar($this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null), array());
 
 			return $tReturn;
 		}
 	}
+
+	/**
+	* DataRow Class
+	*
+	* @package Scabbia
+	* @subpackage LayerExtensions
+	*/
+	class dataRow implements ArrayAccess, Iterator, Countable {
+		public $row;
+
+		public function __construct(&$uRow) {
+			$this->row = $uRow;
+		}
+
+		public function __isset($uKey) {
+			return isset($this->row[$uKey]);
+		}
+
+		public function __get($uKey) {
+			return $this->row[$uKey];
+		}
+
+		public function offsetExists($uOffset) {
+			return isset($this->row[$uOffset]);
+		}
+
+		public function offsetGet($uOffset) {
+			return $this->row[$uOffset];
+		}
+
+		public function offsetSet($uOffset, $uValue) {
+			return $this->row[$uOffset] = $uValue;
+		}
+
+		public function offsetUnset($uOffset) {
+			unset($this->row[$uOffset]);
+		}
+
+		public function rewind() {
+			reset($this->row);
+		}
+
+		public function current() {
+			return current($this->row);
+		}
+
+		public function key() {
+			return key($this->row);
+		}
+
+		public function next() {
+			return next($this->row);
+		}
+
+		public function valid() {
+			return (current($this->row) !== false);
+		}
+
+		public function count() {
+			return count($this->row);
+		}
+	}
+
 
 	/**
 	* DataRows Iterator Class

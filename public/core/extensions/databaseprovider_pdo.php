@@ -2,7 +2,7 @@
 
 if(extensions::isSelected('databaseprovider_pdo')) {
 	/**
-	* Database PDO Extension
+	* Database Provider PDO Extension
 	*
 	* @package Scabbia
 	* @subpackage LayerExtensions
@@ -70,7 +70,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 			$this->persistent = isset($uConfig['persistent']);
 			$this->fetchMode = PDO::FETCH_ASSOC;
 		}
-		
+
 		/**
 		* @ignore
 		*/
@@ -137,7 +137,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		public function exec($uQuery) {
 			$this->connection->exec($uQuery);
 		}
-		
+
 		/**
 		* @ignore
 		*/
@@ -173,7 +173,15 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		public function &querySet($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetchAll(PDO::FETCH_ASSOC);
+			if(database::$enableDataRows) {
+				$tResult = array();
+				while($tRow = $tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT)) {
+					$tResult[] = new dataRow($tRow);
+				}
+			}
+			else {
+				$tResult = $tQuery->fetchAll($this->fetchMode);
+			}
 			$this->affectedRows = $tQuery->rowCount();
 			$tQuery->closeCursor();
 
@@ -186,7 +194,12 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		public function &queryRow($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+			if(database::$enableDataRows) {
+				$tResult = new dataRow($tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT));
+			}
+			else {
+				$tResult = $tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
+			}
 			$this->affectedRows = $tQuery->rowCount();
 			$tQuery->closeCursor();
 
@@ -210,7 +223,11 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		* @ignore
 		*/
 		public function itNext(&$uObject) {
-			return $uObject->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+			if(database::$enableDataRows) {
+				return new dataRow($uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT));
+			}
+
+			return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
 		}
 
 		/**
@@ -226,7 +243,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		public function itClose(&$uObject) {
 			return $uObject->closeCursor();
 		}
-		
+
 		/**
 		* @ignore
 		*/
@@ -246,6 +263,120 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		*/
 		public function serverInfo() {
 			return $this->connection->getAttribute(PDO::ATTR_SERVER_INFO);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function sqlInsert($uTable, $uObject, $uReturning = '') {
+			$tSql =
+				'INSERT INTO ' . $uTable . ' ('
+				. implode(', ', array_keys($uObject))
+				. ') VALUES ('
+				. implode(', ', array_values($uObject))
+				. ')';
+
+			if(strlen($uReturning) > 0) {
+				$tSql .= ' RETURNING ' . $uReturning;
+			}
+
+			return $tSql;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
+			$tPairs = array();
+			foreach($uObject as $tKey => &$tValue) {
+				$tPairs[] = $tKey . '=' . $tValue;
+			}
+
+			$tSql = 'UPDATE ' . $uTable . ' SET '
+				. implode(', ', $tPairs);
+
+			if(strlen($uWhere) > 0) {
+				$tSql .= ' WHERE ' . $uWhere;
+			}
+
+			if(!is_null($uExtra) > 0) {
+				if(isset($uExtra['limit'])) {
+					$tLimit = intval($uExtra['limit']);
+
+					if($this->standard == 'mysql' && $tLimit >= 0) {
+						$tSql .= ' LIMIT ' . $tLimit;
+					}
+				}
+			}
+
+			return $tSql;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function sqlDelete($uTable, $uWhere, $uExtra = null) {
+			$tSql = 'DELETE FROM ' . $uTable;
+
+			if(strlen($uWhere) > 0) {
+				$tSql .= ' WHERE ' . $uWhere;
+			}
+
+			if(!is_null($uExtra) > 0) {
+				if(isset($uExtra['limit'])) {
+					$tLimit = intval($uExtra['limit']);
+
+					if($this->standard == 'mysql' && $tLimit >= 0) {
+						$tSql .= ' LIMIT ' . $tLimit;
+					}
+				}
+			}
+
+			return $tSql;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uExtra = null) {
+			$tSql = 'SELECT ';
+
+			if(count($uFields) > 0) {
+				$tSql .= implode(', ', $uFields);
+			}
+			else {
+				$tSql .= '*';
+			}
+
+			$tSql .= ' FROM ' . $uTable;
+
+			if(strlen($uWhere) > 0) {
+				$tSql .= ' WHERE ' . $uWhere;
+			}
+
+			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+				$tSql .= ' ORDER BY ' . $uOrderBy;
+			}
+
+			if(!is_null($uExtra) > 0) {
+				if(isset($uExtra['limit'])) {
+					$tLimit = intval($uExtra['limit']);
+
+					if($this->standard == 'mysql' && $tLimit >= 0) {
+						$tSql .= ' LIMIT ' . $tLimit;
+					}
+				}
+
+				if(isset($uExtra['offset'])) {
+					$tOffset = intval($uExtra['offset']);
+
+					if($this->standard == 'mysql' && $tOffset >= 0) {
+						$tSql .= ' OFFSET ' . $tOffset;
+					}
+				}
+			}
+
+			return $tSql;
 		}
 	}
 }
