@@ -7,7 +7,6 @@ if(extensions::isSelected('database')) {
 	* @package Scabbia
 	* @subpackage LayerExtensions
 	*
-	* @todo integrate with cache extension
 	* @todo caching for databaseQuery (get hash of given parameters)
 	*/
 	class database {
@@ -32,7 +31,7 @@ if(extensions::isSelected('database')) {
 				'name' => 'database',
 				'version' => '1.0.2',
 				'phpversion' => '5.1.0',
-				'phpdepends' => array('pdo'),
+				'phpdepends' => array(),
 				'fwversion' => '1.0',
 				'fwdepends' => array('string', 'cache', 'profiler')
 			);
@@ -184,14 +183,6 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		protected $connection = null;
-		/**
-		* @ignore
-		*/
-		public $driver = null;
-		/**
-		* @ignore
-		*/
 		public $cache = array();
 		/**
 		* @ignore
@@ -208,31 +199,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		protected $pdoString;
-		/**
-		* @ignore
-		*/
-		protected $username;
-		/**
-		* @ignore
-		*/
-		protected $password;
-		/**
-		* @ignore
-		*/
-		protected $initCommand;
-		/**
-		* @ignore
-		*/
-		protected $overrideCase;
-		/**
-		* @ignore
-		*/
-		protected $persistent;
-		/**
-		* @ignore
-		*/
-		public $affectedRows;
+		public $initCommand;
 
 		/**
 		* @ignore
@@ -240,19 +207,14 @@ if(extensions::isSelected('database')) {
 		public function __construct($uConfig) {
 			$this->id = $uConfig['@id'];
 			$this->default = isset($uConfig['@default']);
-			$this->pdoString = $uConfig['pdoString']['.'];
-			$this->username = $uConfig['username']['.'];
-			$this->password = $uConfig['password']['.'];
+
+			$tProvider = 'databaseprovider_' . (isset($uConfig['@provider']) ? $uConfig['@provider'] : 'pdo');
+
+			$this->provider = new $tProvider ($uConfig);
 
 			if(isset($uConfig['initCommand']) && array_key_exists('.', $uConfig['initCommand'])) {
 				$this->initCommand = $uConfig['initCommand']['.'];
 			}
-
-			if(isset($uConfig['overrideCase'])) {
-				$this->overrideCase = $uConfig['overrideCase']['.'];
-			}
-
-			$this->persistent = isset($uConfig['persistent']);
 		}
 
 		/**
@@ -268,37 +230,11 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function open() {
-			$tParms = array();
-			if($this->persistent) {
-				$tParms[PDO::ATTR_PERSISTENT] = true;
-			}
-
-			switch($this->overrideCase) {
-			case 'lower':
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_LOWER;
-				break;
-			case 'upper':
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_UPPER;
-				break;
-			default:
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_NATURAL;
-				break;
-			}
-
-			$tParms[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-
-			try {
-				$this->connection = new PDO($this->pdoString, $this->username, $this->password, $tParms);
-			}
-			catch(PDOException $ex) {
-				throw new PDOException('PDO Exception: ' . $ex->getMessage());
-			}
-
-			$this->driver = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+			$this->provider->open();
 			$this->active = true;
 
 			if(strlen($this->initCommand) > 0) {
-				$this->connection->exec($this->initCommand);
+				$this->provider->exec($this->initCommand);
 			}
 		}
 
@@ -306,6 +242,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function close() {
+			$this->provider->close();
 			$this->active = false;
 		}
 
@@ -314,7 +251,7 @@ if(extensions::isSelected('database')) {
 		*/
 		public function beginTransaction() {
 			$this->open();
-			$this->connection->beginTransaction();
+			$this->provider->beginTransaction();
 			$this->inTransaction = true;
 		}
 
@@ -322,7 +259,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function commit() {
-			$this->connection->commit();
+			$this->provider->commit();
 			$this->inTransaction = false;
 		}
 
@@ -330,8 +267,16 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function rollBack() {
-			$this->connection->rollBack();
+			$this->provider->rollBack();
 			$this->inTransaction = false;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function exec($uQuery) {
+			$this->open();
+			$this->provider->exec($uQuery);
 		}
 
 		/**
@@ -350,19 +295,16 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tQuery = $this->connection->prepare($uQuery);
-			$tResult = $tQuery->execute($uParameters);
-			// $tQuery->closeCursor();
-			$this->affectedRows = $tQuery->rowCount();
+			$tResult = $this->provider->query($uQuery, $uParameters);
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $this->affectedRows)
+					array('affectedRows' => $this->provider->affectedRows())
 				);
 			}
 
 			if($tResult) {
-				return $this->affectedRows;
+				return $this->provider->affectedRows();
 			}
 
 			return false;
@@ -384,16 +326,14 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
+			$tIterator = $this->provider->queryFetch($uQuery, $uParameters);
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $tQuery->rowCount())
+					array('affectedRows' => $this->provider->affectedRows())
 				);
 			}
 
-			$tIterator = new dataRowsIterator($tQuery);
 			return $tIterator;
 		}
 
@@ -413,15 +353,11 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetchAll(PDO::FETCH_ASSOC);
-			// $this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
+			$tResult = $this->provider->querySet($uQuery, $uParameters);
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $tQuery->rowCount())
+					array('affectedRows' => $this->provider->affectedRows())
 				);
 			}
 
@@ -444,15 +380,11 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
-			// $this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
+			$tResult = $this->provider->queryRow($uQuery, $uParameters);
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $tQuery->rowCount())
+					array('affectedRows' => $this->provider->affectedRows())
 				);
 			}
 
@@ -475,40 +407,36 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
-			// $this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
+			$tResult = $this->provider->queryScalar($uQuery, $uParameters);
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $tQuery->rowCount())
+					array('affectedRows' => $this->provider->affectedRows())
 				);
 			}
 
-			return $tResult[0];
+			return $tResult;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function lastInsertId($uName = null) {
-			return $this->connection->lastInsertId($uName);
+			return $this->provider->lastInsertId($uName);
 		}
 
 		/**
 		* @ignore
 		*/
 		public function affectedRows() {
-			return $this->affectedRows;
+			return $this->provider->affectedRows();
 		}
 
 		/**
 		* @ignore
 		*/
 		public function serverInfo() {
-			return $this->connection->getAttribute(PDO::ATTR_SERVER_INFO);
+			return $this->provider->serverInfo();
 		}
 
 		/**
@@ -611,12 +539,12 @@ if(extensions::isSelected('database')) {
 					$this->commit();
 				}
 			}
-			catch(PDOException $ex) {
+			catch(Exception $ex) {
 				if($this->inTransaction) {
 					$this->rollBack();
 				}
 
-				throw new PDOException($ex->getMessage());
+				throw $ex;
 			}
 
 			$this->stats['query']++;
@@ -666,12 +594,12 @@ if(extensions::isSelected('database')) {
 					$this->commit();
 				}
 			}
-			catch(PDOException $ex) {
+			catch(Exception $ex) {
 				if($this->inTransaction) {
 					$this->rollBack();
 				}
 
-				throw new PDOException($ex->getMessage());
+				throw $ex;
 			}
 
 			$this->stats['query']++;
@@ -758,12 +686,12 @@ if(extensions::isSelected('database')) {
 						cache::set($tFolder, $uPropsSerialized, $tData);
 					}
 				}
-				catch(PDOException $ex) {
+				catch(Exception $ex) {
 					if($this->inTransaction) {
 						$this->rollBack();
 					}
 
-					throw new PDOException($ex->getMessage());
+					throw $ex;
 				}
 
 				$this->stats['query']++;
@@ -1135,7 +1063,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function update() {
-			if($this->database->driver == 'mysql' && $this->limit >= 0) {
+			if($this->database->provider->standard == 'mysql' && $this->limit >= 0) {
 				$tExtra = 'LIMIT ' . $this->limit;
 			}
 			else {
@@ -1153,7 +1081,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function delete() {
-			if($this->database->driver == 'mysql' && $this->limit >= 0) {
+			if($this->database->provider->standard == 'mysql' && $this->limit >= 0) {
 				$tExtra = 'LIMIT ' . $this->limit;
 			}
 			else {
@@ -1256,7 +1184,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public $connection;
+		public $object;
 		/**
 		* @ignore
 		*/
@@ -1273,18 +1201,18 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function __construct($uConnection) {
-			$this->connection = &$uConnection;
-			$this->count = $this->connection->rowCount();
+		public function __construct($uObject, &$uProvider) {
+			$this->object = &$uObject;
+			$this->count = $uProvider->itCount($this->object);
 
-			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+			$this->current = $uProvider->itNext($this->object);
 		}
 
 		/**
 		* @ignore
 		*/
 		public function __destruct() {
-			$this->connection->closeCursor();
+			$uProvider->itClose($this->object);
 		}
 
 		/**
@@ -1313,7 +1241,7 @@ if(extensions::isSelected('database')) {
 		*/
 		public function next() {
 			$this->cursor++;
-			$this->current = $this->connection->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT);
+			$this->current = $uProvider->itNext($this->object);
 			return $this->current;
 		}
 

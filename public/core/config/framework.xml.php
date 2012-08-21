@@ -12,6 +12,7 @@
 		<include path="{core}extensions/profiler.php" />
 		<include path="{core}extensions/cache.php" />
 		<include path="{core}extensions/database.php" />
+		<include path="{core}extensions/databaseprovider_pdo.php" />
 		<include path="{core}extensions/session.php" />
 		<include path="{core}extensions/output.php" />
 		<include path="{core}extensions/logger.php" />
@@ -33,6 +34,7 @@
 		<extension name="profiler" />
 		<extension name="cache" />
 		<extension name="database" />
+		<extension name="databaseprovider_pdo" />
 		<extension name="session" />
 		<extension name="output" />
 		<extension name="logger" />
