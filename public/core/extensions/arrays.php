@@ -64,6 +64,24 @@ if(extensions::isSelected('arrays')) {
 		/**
 		* @ignore
 		*/
+		public static function range($uMinimum, $uMaximum, $uWithKeys = false) {
+			$tReturn = array();
+
+			for($i = $uMinimum; $i <= $uMaximum; $i++) {
+				if($uWithKeys) {
+					$tReturn[$i] = $i;
+					continue;
+				}
+
+				$tReturn[] = $i;
+			}
+
+			return $tReturn;
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function sortByKey($uArray, $uField, $uOrder = 'asc') {
             if(count($uArray) == 0) {
 				return;

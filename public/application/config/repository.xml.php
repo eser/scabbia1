@@ -16,7 +16,7 @@
 			</package>
 			<package name="javascripts" type="js">
 				<fileList>
-					<file path="{core}res/js/calendar.js" />
+					<file path="{base}res/js/calendar.js" />
 				</fileList>
 			</package>
 		</packageList>

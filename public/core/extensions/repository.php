@@ -8,6 +8,7 @@ if(extensions::isSelected('repository')) {
 	* @subpackage LayerExtensions
 	*
 	* @todo integrate with cache extension
+	* @todo selective(optional) repository
 	*/
 	class repository {
 		/**
@@ -64,32 +65,32 @@ if(extensions::isSelected('repository')) {
 					$tType = isset($tPart['@type']) ? $tPart['@type'] : 'file';
 
 					if($tType == 'function') {
-						$tPartContent = call_user_func($tPart['@name']);
+						$tContent .= call_user_func($tPart['@name']);
 					}
 					else {
 						switch($tMimetype) {
 						case 'application/x-httpd-php':
 						case 'application/x-httpd-php-source':
-							$tPartContent = framework::printFile(framework::translatePath($tPart['@path']), true);
+							$tContent .= framework::printFile(framework::translatePath($tPart['@path']), true);
 							break;
 						default:
-							$tPartContent = io::read(framework::translatePath($tPart['@path']));
+							$tContent .= io::read(framework::translatePath($tPart['@path']));
 							break;
 						}
 					}
-
-					switch($tMimetype) {
-					case 'application/x-javascript':
-						$tContent .= JSMin::minify($tPartContent);
-						break;
-					default:
-						$tContent .= $tPartContent;
-						break;
-					}
 				}
 
-				io::write($tOutputFile[1], $tContent);
-				echo $tContent;
+				switch($tMimetype) {
+				case 'application/x-javascript':
+					// $tContent = JSMin::minify($tContent);
+					io::write($tOutputFile[1], $tContent);
+					echo $tContent;
+					break;
+				default:
+					io::write($tOutputFile[1], $tContent);
+					echo $tContent;
+					break;
+				}
 			}
 			else {
 				readfile($tOutputFile[1]);

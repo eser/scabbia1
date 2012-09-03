@@ -1,12 +1,18 @@
 <?php
 
 	class scabbia extends controller {
+		/**
+		* @ignore
+		*/
 		public function __construct() {
 			if(framework::$development <= 0) {
 				exit('why?');
 			}
 		}
 
+		/**
+		* @ignore
+		*/
 		public function index() {
 			$this->view('{core}views/scabbia/index.php');
 		}
@@ -19,7 +25,7 @@
 		*/
 		public function build($uParams = '') {
 			$tFilename = QPATH_BASE . 'compiled.php';
-		
+
 			ob_start();
 			ob_implicit_flush(false);
 
@@ -31,7 +37,7 @@
 			$tOutput = fopen($tFilename, 'w') or exit('Unable to write to ' . $tFilename);
 			fwrite($tOutput, $tContents);
 			fclose($tOutput);
-			
+
 			exit('done.');
 		}
 
@@ -39,7 +45,7 @@
 		* @ignore
 		*/
 		private function build_export($uPseudo) {
-			if($uPseudo) { // framework::$development >= 1 || 
+			if($uPseudo) { // framework::$development >= 1 ||
 				echo '<', '?php
 	require(', var_export('framework' . QEXT_PHP), ');
 ?', '>';
@@ -48,16 +54,12 @@
 
 			/* BEGIN */
 			echo '<', '?php
-				
+
 	$applicationDir = ', var_export(framework::$applicationPath), ';
 	$development = 0;
 	$runExtensions = ', var_export(framework::$runExtensions), ';
 
 	ignore_user_abort();
-	date_default_timezone_set(\'UTC\');
-	setlocale(LC_ALL, \'en_US.UTF-8\');
-	mb_internal_encoding(\'UTF-8\');
-	mb_http_output(\'UTF-8\');
 
 	define(\'PHP_OS_WINDOWS\', ', var_export(PHP_OS_WINDOWS), ');
 	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
@@ -88,7 +90,7 @@
 			echo '<', '?php extensions::load(); framework::run(); extensions::run(); ?', '>';
 			/* END   */
 		}
-		
+
 		/**
 		* Purges the files in given directory.
 		*
@@ -115,5 +117,5 @@
 			}
 		}
 	}
-	
+
 ?>

@@ -18,10 +18,6 @@ if(extensions::isSelected('i8n')) {
 		* @ignore
 		*/
 		public static $language = null;
-		/**
-		* @ignore
-		*/
-		public static $languageKey;
 
 		/**
 		* @ignore
@@ -44,31 +40,12 @@ if(extensions::isSelected('i8n')) {
 			foreach(config::get('/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['@id']] = array(
 					'key' => $tLanguage['@id'],
+					'locale' => $tLanguage['@locale'],
 					'name' => $tLanguage['.']
 				);
-			}
 
-			$tLanguageKey = config::get('/i8n/routing/@languageUrlKey', null);
-
-			if(!is_null($tLanguageKey)) {
-				if(array_key_exists($tLanguageKey, $_GET)) {
-					if(self::setLanguage($_GET[$tLanguageKey], true)) {
-						return;
-					}
-				}
-			}
-
-			if(!PHP_SAPI_CLI) {
-				foreach(http::$languages as $tLanguage) {
-					if(self::setLanguage($tLanguage, false)) {
-						return;
-					}
-				}
-			}
-
-			foreach(array_keys(self::$languages) as $tLanguage) {
-				if(self::setLanguage($tLanguage, false)) {
-					return;
+				if(!isset(self::$language)) {
+					self::$language = self::$languages[$tLanguage['@id']];
 				}
 			}
 		}
@@ -76,21 +53,37 @@ if(extensions::isSelected('i8n')) {
 		/**
 		* @ignore
 		*/
-		private static function setLanguage($uLanguage, $uLastChoice = false) {
+		public static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(array_key_exists($uLanguage, self::$languages)) {
-				self::$language = self::$languages[$uLanguage];
-				self::$languageKey = $uLanguage;
-				return true;
+				$tLanguage = &self::$languages[$uLanguage];
 			}
-
-			if($uLastChoice) {
+			else if($uLastChoice) {
 				$tExploded = explode('-', $uLanguage, 2);
 
 				if(array_key_exists($tExploded[0], self::$languages)) {
-					self::$language = self::$languages[$tExploded[0]];
-					self::$languageKey = $tExploded[0];
-					return true;
+					$tLanguage = &self::$languages[$tExploded[0]];
 				}
+			}
+
+			if(isset($tLanguage)) {
+				$tLocale = explode('.', $tLanguage['locale'], 2);
+				if(!isset($tLocale[1])) {
+					$tLocale[1] = 'UTF-8';
+				}
+
+				putenv('LC_ALL=' . $tLocale[0]);
+				setlocale(LC_ALL, $tLocale[0]);
+
+				mb_internal_encoding($tLocale[1]);
+				mb_http_output($tLocale[1]);
+
+				bindtextdomain('core', QPATH_CORE . 'locale');
+				bind_textdomain_codeset('core', $tLocale[1]);
+
+				bindtextdomain('application', framework::$applicationPath . 'locale');
+				bind_textdomain_codeset('application', $tLocale[1]);
+
+				return true;
 			}
 
 			return false;

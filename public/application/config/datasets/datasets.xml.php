@@ -3,7 +3,7 @@
 <scabbia>
 	<datasetList>
 		<dataset id="getUsers" cacheLife="60" parameters="offset,limit">
-			SELECT * FROM users OFFSET {offset} LIMIT {limit}
+			SELECT * FROM users OFFSET :offset LIMIT :limit
 		</dataset>
 	</datasetList>
 </scabbia>

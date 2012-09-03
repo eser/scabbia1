@@ -8,6 +8,7 @@ if(extensions::isSelected('database')) {
 	* @subpackage LayerExtensions
 	*
 	* @todo caching for databaseQuery (get hash of given parameters)
+	* @todo databaseQuery inTransaction(true)
 	*/
 	class database {
 		/**
@@ -22,10 +23,6 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public static $default = null;
-		/**
-		* @ignore
-		*/
-		public static $enableDataRows;
 
 		/**
 		* @ignore
@@ -60,7 +57,6 @@ if(extensions::isSelected('database')) {
 			}
 
 			// events::register('reportError', events::Callback('database::reportError'));
-			self::$enableDataRows = true;
 		}
 
 		/**
@@ -100,15 +96,15 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
+		public $provider;
+		/**
+		* @ignore
+		*/
 		public $cache = array();
 		/**
 		* @ignore
 		*/
 		public $stats = array('cache' => 0, 'query' => 0);
-		/**
-		* @ignore
-		*/
-		public $active = false;
 		/**
 		* @ignore
 		*/
@@ -138,9 +134,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function __destruct() {
-			if($this->active) {
-				$this->close();
-			}
+			$this->close();
 		}
 
 		/**
@@ -148,10 +142,9 @@ if(extensions::isSelected('database')) {
 		*/
 		public function open() {
 			$this->provider->open();
-			$this->active = true;
 
 			if(strlen($this->initCommand) > 0) {
-				$this->provider->exec($this->initCommand);
+				$this->execute($this->initCommand);
 			}
 		}
 
@@ -160,7 +153,7 @@ if(extensions::isSelected('database')) {
 		*/
 		public function close() {
 			$this->provider->close();
-			$this->active = false;
+			$this->provider = null;
 		}
 
 		/**
@@ -191,15 +184,30 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function exec($uQuery) {
+		public function execute($uQuery) {
 			$this->open();
-			$this->provider->exec($uQuery);
+
+			if(framework::$development >= 1) {
+				profiler::start(
+					'databaseQuery',
+					array(
+						'query' => $uQuery,
+						'parameters' => null
+					)
+				);
+			}
+
+			$this->provider->execute($uQuery);
+
+			if(framework::$development >= 1) {
+				profiler::stop();
+			}
 		}
 
 		/**
 		* @ignore
 		*/
-		public function query($uQuery, $uParameters = array()) {
+		public function query($uQuery, $uParameters = array(), $uCaching = false) {
 			$this->open();
 
 			if(framework::$development >= 1) {
@@ -212,127 +220,59 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$tResult = $this->provider->query($uQuery, $uParameters);
+			$tFolder = 'database/' . $this->id . '/';
+
+			$uPropsSerialized = crc32($uQuery);
+			foreach($uParameters as &$tProp) {
+				$uPropsSerialized .= '_' . io::sanitize($tProp);
+			}
+
+			if($uCaching) {
+				if(isset($this->cache[$uPropsSerialized])) {
+					$tData = &$this->cache[$uPropsSerialized]->resume($this);
+					$tLoadedFromCache = true;
+				}
+				else { //  && framework::$development <= 0
+					$tData = cache::get($tFolder, $uPropsSerialized, cache::$defaultAge);
+
+					if($tData !== false) {
+						$this->cache[$uPropsSerialized] = &$tData->resume($this);
+						$tLoadedFromCache = true;
+					}
+					else {
+						$tLoadedFromCache = false;
+					}
+				}
+			}
+			else {
+				$tData = false;
+				$tLoadedFromCache = false;
+			}
+
+			if($tData === false) {
+				if($uCaching) {
+					$tData = new databaseQueryResult($uQuery, $uParameters, $this, $tFolder, $uPropsSerialized);
+				}
+				else {
+					$tData = new databaseQueryResult($uQuery, $uParameters, $this, null, null);
+				}
+
+				$this->stats['query']++;
+			}
+			else {
+				$this->stats['cache']++;
+			}
 
 			if(framework::$development >= 1) {
 				profiler::stop(
-					array('affectedRows' => $this->provider->affectedRows())
-				);
-			}
-
-			if($tResult) {
-				return $this->provider->affectedRows();
-			}
-
-			return false;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &queryFetch($uQuery, $uParameters = array()) {
-			$this->open();
-
-			if(framework::$development >= 1) {
-				profiler::start(
-					'databaseQuery',
 					array(
-						'query' => $uQuery,
-						'parameters' => $uParameters
+						'affectedRows' => $tData->count(),
+						'fromCache' => $tLoadedFromCache
 					)
 				);
 			}
 
-			$tIterator = $this->provider->queryFetch($uQuery, $uParameters);
-
-			if(framework::$development >= 1) {
-				profiler::stop(
-					array('affectedRows' => $this->provider->affectedRows())
-				);
-			}
-
-			return $tIterator;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &querySet($uQuery, $uParameters = array()) {
-			$this->open();
-
-			if(framework::$development >= 1) {
-				profiler::start(
-					'databaseQuery',
-					array(
-						'query' => $uQuery,
-						'parameters' => $uParameters
-					)
-				);
-			}
-
-			$tResult = $this->provider->querySet($uQuery, $uParameters);
-
-			if(framework::$development >= 1) {
-				profiler::stop(
-					array('affectedRows' => $this->provider->affectedRows())
-				);
-			}
-
-			return $tResult;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &queryRow($uQuery, $uParameters = array()) {
-			$this->open();
-
-			if(framework::$development >= 1) {
-				profiler::start(
-					'databaseQuery',
-					array(
-						'query' => $uQuery,
-						'parameters' => $uParameters
-					)
-				);
-			}
-
-			$tResult = $this->provider->queryRow($uQuery, $uParameters);
-
-			if(framework::$development >= 1) {
-				profiler::stop(
-					array('affectedRows' => $this->provider->affectedRows())
-				);
-			}
-
-			return $tResult;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &queryScalar($uQuery, $uParameters = array()) {
-			$this->open();
-
-			if(framework::$development >= 1) {
-				profiler::start(
-					'databaseQuery',
-					array(
-						'query' => $uQuery,
-						'parameters' => $uParameters
-					)
-				);
-			}
-
-			$tResult = $this->provider->queryScalar($uQuery, $uParameters);
-
-			if(framework::$development >= 1) {
-				profiler::stop(
-					array('affectedRows' => $this->provider->affectedRows())
-				);
-			}
-
-			return $tResult;
+			return $tData;
 		}
 
 		/**
@@ -340,13 +280,6 @@ if(extensions::isSelected('database')) {
 		*/
 		public function lastInsertId($uName = null) {
 			return $this->provider->lastInsertId($uName);
-		}
-
-		/**
-		* @ignore
-		*/
-		public function affectedRows() {
-			return $this->provider->affectedRows();
 		}
 
 		/**
@@ -360,82 +293,10 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function dataset() {
+			$this->open();
+
 			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			return $this->datasetInternal(database::$datasets[$uDataset], $uProps);
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &datasetFetch() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			return $this->datasetFetchInternal(database::$datasets[$uDataset], $uProps);
-		}
-
-		/**
-		* @ignore
-		*/
-		public function datasetSet() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			return $tData['data'];
-		}
-
-		/**
-		* @ignore
-		*/
-		public function datasetRow() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			if(count($tData['data']) > 0) {
-				return $tData['data'][0];
-			}
-
-			return null;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function datasetScalar() {
-			$uProps = func_get_args();
-			$uDataset = array_shift($uProps);
-
-			$tData = $this->datasetSetInternal(database::$datasets[$uDataset], $uProps);
-
-			if(count($tData['data']) > 0) {
-				return current($tData['data'][0]);
-			}
-
-			return null;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function datasetInternal(&$uDataset, &$uProps) {
-//			if(count($uProps) == 1 && is_array($uProps[0])) {
-//				$tPropMaps = array();
-//
-//				foreach($uDataset->parameters as $tKey => &$tParam) {
-//					if(isset($uProps[0][$tParam])) {
-//						$tPropMaps[] = $uProps[0][$tParam];
-//						continue;
-//					}
-//
-//					$tPropMaps[] = null;
-//				}
-//
-//				$uProps = &$tPropMaps;
-//			}
+			$uDataset = database::$datasets[array_shift($uProps)];
 
 			if($uDataset->transaction) {
 				$this->beginTransaction();
@@ -449,63 +310,7 @@ if(extensions::isSelected('database')) {
 					$tArray[$tParam] = $uProps[$tCount++];
 				}
 
-				$tQueryExecute = string::format($uDataset->queryString, $tArray);
-				$tResult = $this->query($tQueryExecute);
-
-				if($this->inTransaction) {
-					$this->commit();
-				}
-			}
-			catch(Exception $ex) {
-				if($this->inTransaction) {
-					$this->rollBack();
-				}
-
-				throw $ex;
-			}
-
-			$this->stats['query']++;
-
-			if(isset($tResult)) {
-				return $this->affectedRows();
-			}
-
-			return false;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &datasetFetchInternal(&$uDataset, &$uProps) {
-//			if(count($uProps) == 1 && is_array($uProps[0])) {
-//				$tPropMaps = array();
-//
-//				foreach($this->parameters as $tKey => &$tParam) {
-//					if(isset($uProps[0][$tParam])) {
-//						$tPropMaps[] = $uProps[0][$tParam];
-//						continue;
-//					}
-//
-//					$tPropMaps[] = null;
-//				}
-//
-//				$uProps = &$tPropMaps;
-//			}
-
-			if($uDataset->transaction) {
-				$this->beginTransaction();
-			}
-
-			try {
-				$tCount = 0;
-				$tArray = array();
-
-				foreach($uDataset->parameters as &$tParam) {
-					$tArray[$tParam] = $uProps[$tCount++];
-				}
-
-				$tQueryExecute = string::format($uDataset->queryString, $tArray);
-				$tResult = $this->queryFetch($tQueryExecute);
+				$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
 
 				if($this->inTransaction) {
 					$this->commit();
@@ -526,97 +331,6 @@ if(extensions::isSelected('database')) {
 			}
 
 			return false;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &datasetSetInternal(&$uDataset, &$uProps) {
-//			if(count($uProps) == 1 && is_array($uProps[0])) {
-//				$tPropMaps = array();
-//
-//				foreach($this->parameters as $tKey => &$tParam) {
-//					if(isset($uProps[0][$tParam])) {
-//						$tPropMaps[] = $uProps[0][$tParam];
-//						continue;
-//					}
-//
-//					$tPropMaps[] = null;
-//				}
-//
-//				$uProps = &$tPropMaps;
-//			}
-
-			$tFolder = 'database/' . $this->id . '/';
-
-			$uPropsSerialized = $uDataset->id;
-			foreach($uProps as &$tProp) {
-				$uPropsSerialized .= '_' . $tProp;
-			}
-
-			if(isset($this->cache[$uPropsSerialized])) {
-				$tData = &$this->cache[$uPropsSerialized];
-				$tData['data']->iterator->rewind(); // rewind ArrayIterator
-				$tLoadedFromCache = true;
-			}
-			else if($uDataset->cacheLife > 0 && framework::$development <= 0) {
-				$tData = cache::get($tFolder, $uPropsSerialized, $uDataset->cacheLife);
-				if($tData !== false) {
-					$tLoadedFromCache = true;
-
-					$this->cache[$uPropsSerialized] = &$tData;
-				}
-				else {
-					$tLoadedFromCache = false;
-				}
-			}
-			else {
-				$tData = false;
-				$tLoadedFromCache = false;
-			}
-
-			if($tData === false) {
-				if($uDataset->transaction) {
-					$this->beginTransaction();
-				}
-
-				try {
-					$tCount = 0;
-					$tArray = array();
-
-					foreach($uDataset->parameters as &$tParam) {
-						$tArray[$tParam] = $uProps[$tCount++];
-					}
-
-					$tQueryExecute = string::format($uDataset->queryString, $tArray);
-
-					$tData = array(
-						'data' => $this->querySet($tQueryExecute)
-					);
-
-					if($this->inTransaction) {
-						$this->commit();
-					}
-
-					if($uDataset->cacheLife > 0) {
-						$this->cache[$uPropsSerialized] = &$tData;
-						cache::set($tFolder, $uPropsSerialized, $tData);
-					}
-				}
-				catch(Exception $ex) {
-					if($this->inTransaction) {
-						$this->rollBack();
-					}
-
-					throw $ex;
-				}
-
-				$this->stats['query']++;
-			} else {
-				$this->stats['cache']++;
-			}
-
-			return $tData;
 		}
 
 		/**
@@ -715,6 +429,10 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public $sequence;
+		/**
+		* @ignore
+		*/
+		public $caching;
 
 		/**
 		* @ignore
@@ -759,6 +477,7 @@ if(extensions::isSelected('database')) {
 			$this->offset = -1;
 			$this->sequence = '';
 			$this->returning = '';
+			$this->caching = false;
 		}
 
 		/**
@@ -954,77 +673,73 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function insert() {
-			$tQuery = $this->database->provider->sqlInsert($this->table, $this->fields, $this->returning);
+		public function setCaching($uCaching) {
+			$this->caching = $uCaching;
 
-			if(strlen($this->returning) > 0) {
-				$tInsertId = $this->database->queryScalar($tQuery, $this->parameters);
+			return $this;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function insert() {
+			$tReturn = $this->database->query(
+				$this->database->provider->sqlInsert($this->table, $this->fields, $this->returning),
+				$this->parameters,
+				$this->caching
+			);
+
+			if(!is_null($this->sequence) && strlen($this->sequence) > 0) {
+				$tReturn->_lastInsertId = $this->database->lastInsertId($this->sequence);
 			}
 			else {
-				$this->database->query($tQuery, $this->parameters);
-
-				if(!is_null($this->sequence) && strlen($this->sequence) > 0) {
-					$tInsertId = $this->database->lastInsertId($this->sequence);
-				}
-				else {
-					$tInsertId = $this->database->lastInsertId();
-				}
+				$tReturn->_lastInsertId = $this->database->lastInsertId();
 			}
 
 			$this->clear();
 
-			return $tInsertId;
+			return $tReturn;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function update() {
-			$this->database->query($this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)), $this->parameters);
+			$tReturn = $this->database->query(
+				$this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)),
+				$this->parameters,
+				$this->caching
+			);
 
 			$this->clear();
 
-			return $this->database->affectedRows();
+			return $tReturn;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function delete() {
-			$this->database->query($this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)), $this->parameters);
+			$tReturn = $this->database->query(
+				$this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)),
+				$this->parameters,
+				$this->caching
+			);
 
 			$this->clear();
 
-			return $this->database->affectedRows();
+			return $tReturn;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function &get() {
-			$tReturn = $this->database->querySet($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
-
-			$this->clear();
-
-			return $tReturn;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &getRow() {
-			$tReturn = $this->database->queryRow($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
-
-			$this->clear();
-
-			return $tReturn;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &getScalar() {
-			$tReturn = $this->database->queryScalar($this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)), $this->parameters);
+			$tReturn = $this->database->query(
+				$this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)),
+				$this->parameters,
+				$this->caching
+			);
 
 			$this->clear();
 
@@ -1035,155 +750,305 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
-			$tReturn = $this->database->queryScalar($this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null), array());
+			$tReturn = $this->database->query(
+				$this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null),
+				array(),
+				$this->caching
+			);
 
 			return $tReturn;
 		}
+
+		/**
+		* @ignore
+		*/
+		public function runSmartObject(&$uInstance) {
+			$tRow = $this->getRow();
+
+			foreach($tRow as $tKey => $tValue) {
+				$uInstance->obtained[$tKey] = $tValue;
+			}
+		}
 	}
 
 	/**
-	* DataRow Class
+	* Database Query Result Class
 	*
 	* @package Scabbia
 	* @subpackage LayerExtensions
 	*/
-	class dataRow implements ArrayAccess, Iterator, Countable {
-		public $row;
-
-		public function __construct(&$uRow) {
-			$this->row = $uRow;
-		}
-
-		public function __isset($uKey) {
-			return isset($this->row[$uKey]);
-		}
-
-		public function __get($uKey) {
-			return $this->row[$uKey];
-		}
-
-		public function offsetExists($uOffset) {
-			return isset($this->row[$uOffset]);
-		}
-
-		public function offsetGet($uOffset) {
-			return $this->row[$uOffset];
-		}
-
-		public function offsetSet($uOffset, $uValue) {
-			return $this->row[$uOffset] = $uValue;
-		}
-
-		public function offsetUnset($uOffset) {
-			unset($this->row[$uOffset]);
-		}
-
-		public function rewind() {
-			reset($this->row);
-		}
-
-		public function current() {
-			return current($this->row);
-		}
-
-		public function key() {
-			return key($this->row);
-		}
-
-		public function next() {
-			return next($this->row);
-		}
-
-		public function valid() {
-			return (current($this->row) !== false);
-		}
-
-		public function count() {
-			return count($this->row);
-		}
-	}
-
-
-	/**
-	* DataRows Iterator Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
-	class dataRowsIterator extends NoRewindIterator implements Countable {
+	class databaseQueryResult implements ArrayAccess, Countable, Iterator {
 		/**
 		* @ignore
 		*/
-		public $object;
+		public $_query;
 		/**
 		* @ignore
 		*/
-		public $current;
+		public $_parameters;
 		/**
 		* @ignore
 		*/
-		public $count;
+		public $_object = null;
 		/**
 		* @ignore
 		*/
-		public $cursor = 0;
+		public $_database = null;
+		/**
+		* @ignore
+		*/
+		public $_directory = null;
+		/**
+		* @ignore
+		*/
+		public $_filename = null;
+		/**
+		* @ignore
+		*/
+		public $_rows = array();
+		/**
+		* @ignore
+		*/
+		public $_count = -1;
+		/**
+		* @ignore
+		*/
+		public $_cursor = 0;
+		/**
+		* @ignore
+		*/
+		public $_lastInsertId = null;
 
 		/**
 		* @ignore
 		*/
-		public function __construct($uObject, &$uProvider) {
-			$this->object = &$uObject;
-			$this->count = $uProvider->itCount($this->object);
-
-			$this->current = $uProvider->itNext($this->object);
+		public function __construct($uQuery, $uParameters, &$uDatabase, $uDirectory, $uFilename) {
+			$this->_query = &$uQuery;
+			$this->_parameters = &$uParameters;
+			$this->_database = &$uDatabase;
+			$this->_directory = &$uDirectory;
+			$this->_filename = &$uFilename;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function __destruct() {
-			$uProvider->itClose($this->object);
+			$this->close();
+		}
+
+		/**
+		* @ignore
+		*/
+		public function __isset($uKey) {
+			return isset($this->_rows[$this->_cursor][$uKey]);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function __get($uKey) {
+			return $this->_rows[$this->_cursor][$uKey];
+		}
+
+		/**
+		* @ignore
+		*/
+		public function __set($uKey, $uValue) {
+			return $this->_rows[$this->_cursor][$uKey] = $uValue;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function __unset($uKey) {
+			unset($this->_rows[$this->_cursor][$uKey]);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function offsetExists($uOffset) {
+			return isset($this->_rows[$this->_cursor][$uOffset]);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function offsetGet($uOffset) {
+			return $this->_rows[$this->_cursor][$uOffset];
+		}
+
+		/**
+		* @ignore
+		*/
+		public function offsetSet($uOffset, $uValue) {
+			return $this->_rows[$this->_cursor][$uOffset] = $uValue;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function offsetUnset($uOffset) {
+			unset($this->_rows[$this->_cursor][$uOffset]);
 		}
 
 		/**
 		* @ignore
 		*/
 		public function count() {
-			return $this->count;
+			return $this->_count;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function current() {
-			return $this->current;
+			return $this->_rows[$this->_cursor];
 		}
 
 		/**
 		* @ignore
 		*/
 		public function key() {
-			return null;
+			return $this->_cursor;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function next() {
-			$this->cursor++;
-			$this->current = $uProvider->itNext($this->object);
-			return $this->current;
+			++$this->_cursor;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function execute() {
+			$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
+			$this->_count = $this->_database->provider->itCount($this->_object);
+
+			$this->close();
+		}
+
+		/**
+		* @ignore
+		*/
+		public function all() {
+			// $this->_cursor = 0;
+			while($this->valid()) {
+				$this->_cursor++;
+			}
+
+			$this->close();
+
+			return $this->_rows;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function row() {
+			if(!$this->valid()) {
+				$this->close();
+				return false;
+			}
+
+			$tRow = $this->current();
+			$this->close();
+
+			return $tRow;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function scalar($uColumn = 0, $uDefault = false) {
+			if(!$this->valid()) {
+				$this->close();
+				return $uDefault;
+			}
+
+			$tRow = $this->current();
+			$this->close();
+
+			for($i = 0; $i < $uColumn; $i++) {
+				next($tRow);
+			}
+
+			return current($tRow);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function rewind() {
+			$this->_cursor = 0;
 		}
 
 		/**
 		* @ignore
 		*/
 		public function valid() {
-			if($this->cursor < $this->count) {
+			if(count($this->_rows) > $this->_cursor) {
 				return true;
 			}
 
-			return false;
+			if(is_null($this->_object)) {
+				$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
+				$this->_count = $this->_database->provider->itCount($this->_object);
+
+				if($this->_count <= $this->_cursor) {
+					return false;
+				}
+
+				$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
+				return true;
+			}
+
+			if($this->_count <= $this->_cursor) {
+				return false;
+			}
+
+			$this->_rows[$this->_cursor] = $this->_database->provider->itNext($this->_object);
+			return true;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function close() {
+			if(!is_null($this->_object)) {
+				$this->_database->provider->itClose($this->_object);
+				$this->_object = null;
+			}
+
+			$this->_cursor = 0;
+
+			if(!is_null($this->_directory)) {
+				$this->_database->cache[$this->_filename] = &$this;
+				$this->_database = null;
+				cache::set($this->_directory, $this->_filename, $this);
+			}
+			else {
+				$this->_database = null;
+			}
+		}
+
+		/**
+		* @ignore
+		*/
+		public function &resume($uDatabase) {
+			$this->_database = &$uDatabase;
+
+			return $this;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function lastInsertId() {
+			return $this->_lastInsertId;
 		}
 	}
 }

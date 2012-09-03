@@ -98,6 +98,25 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
+		public static function radioOptions($uName, $uArray = array(), $uDefault = null, $uField = null) {
+			$tOutput = '';
+
+			foreach($uArray as $tKey => &$tVal) {
+				$tOutput .= '<label><input type="radio" name="' . string::dquote($uName) . '" value="' . string::dquote($tKey) . '"';
+
+				if($uDefault == $tKey) {
+					$tOutput .= ' checked="checked"';
+				}
+
+				$tOutput .= ' />' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</label>';
+			}
+
+			return $tOutput;
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function textBox($uName, $uValue) {
 			$tOutput = '<input type="text" name="' . string::dquote($uValue) . '" value="' . string::dquote($uValue) . '" />';
 
@@ -254,7 +273,7 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-	    public static function doctype($type = 'html5') {
+	    public static function doctype($uType = 'html5') {
 			switch($uType) {
 			case 'html5':
 			case 'xhtml5':

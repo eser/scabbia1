@@ -58,6 +58,11 @@ if(extensions::isSelected('session')) {
 		*/
 		public static function extension_load() {
 			self::$sessionName = config::get('/session/cookie/@name', 'sessid');
+
+			if(config::get('/session/cookie/@nameIp', true)) {
+				self::$sessionName .= crc32($_SERVER['REMOTE_ADDR']);
+			}
+
 			self::$sessionLife = intval(config::get('/session/cookie/@life', '0'));
 
 			if(array_key_exists(self::$sessionName, $_COOKIE)) {

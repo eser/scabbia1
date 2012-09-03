@@ -17,10 +17,6 @@ if(extensions::isSelected('string')) {
 		/**
 		* @ignore
 		*/
-		public static $eol = "\r\n";
-		/**
-		* @ignore
-		*/
 		public static $tab = "\t";
 
 		/**
@@ -66,7 +62,7 @@ if(extensions::isSelected('string')) {
 		/**
 		* @ignore
 		*/
-		public static function prefixLines($uInput, $uPrefix = '- ', $uLineEnding = "\n") {
+		public static function prefixLines($uInput, $uPrefix = '- ', $uLineEnding = PHP_EOL) {
 			$tLines = explode($uLineEnding, $uInput);
 
 			$tOutput = $tLines[0] . $uLineEnding;
@@ -225,12 +221,14 @@ if(extensions::isSelected('string')) {
 
 			switch($tType) {
 			case 'boolean':
-				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')<br />' . self::$eol;
+				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')<br />' . PHP_EOL;
+				break;
+			case 'double':
+				$tOut .= '<b>' . $tType . '</b>(\'' . number_format($tVariable, 22, '.', '') . '\')<br />' . PHP_EOL;
 				break;
 			case 'integer':
-			case 'double':
 			case 'string':
-				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')<br />' . self::$eol;
+				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')<br />' . PHP_EOL;
 				break;
 			case 'array':
 			case 'object':
@@ -243,7 +241,7 @@ if(extensions::isSelected('string')) {
 				$tOut .= '<b>' . $tType . '</b>(' . $tCount . ')';
 
 				if($tCount > 0) {
-					$tOut .= ' {' . '<div style="padding: 0px 0px 0px 50px;">' . self::$eol;
+					$tOut .= ' {' . '<div style="padding: 0px 0px 0px 50px;">' . PHP_EOL;
 
 					$tTabs .= self::$tab;
 					foreach($tVariable as $tKey => &$tVal) {
@@ -255,17 +253,17 @@ if(extensions::isSelected('string')) {
 					$tOut .= '</div>' . $tTabs . '}';
 				}
 
-				$tOut .= '<br />' . self::$eol;
+				$tOut .= '<br />' . PHP_EOL;
 				break;
 			case 'resource':
-				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')<br />' . self::$eol;
+				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')<br />' . PHP_EOL;
 				break;
 			case 'NULL':
-				$tOut .= '<b><i>null</i></b><br />' . self::$eol;
+				$tOut .= '<b><i>null</i></b><br />' . PHP_EOL;
 				break;
 			case 'unknown type':
 			default:
-				$tOut .= '<b>unknown</b><br />' . self::$eol;
+				$tOut .= '<b>unknown</b><br />' . PHP_EOL;
 				break;
 			}
 
@@ -759,6 +757,15 @@ if(extensions::isSelected('string')) {
 			}
 
 			return $tOutput;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function swap(&$uVariable1, &$uVariable2) {
+			$tTemp = $uVariable1;
+			$uVariable1 = $uVariable2;
+			$uVariable2 = $tTemp;
 		}
 	}
 }

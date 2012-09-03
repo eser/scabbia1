@@ -58,10 +58,9 @@ kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil
 
 * build'in ftp secenegi de olacak. config'e girilen optionlar ve ftp bilgileri ile build isleminin ardindan secilen path'e framework'un derlenmis halini atacak.
 
-* cache_*, database_* extensions
+* profiler ile hizlandirmalar
 
 * facebook, twitter**, oauth**, last.fm**, tumblr**, rss**, foursquare**, gravatar helper
-* curl icin extension
 
 * html::grid, html::menu, html::header ve bunun gibi basit elementlarle olusturulmus panel arabirimi
   ve arabirim olusturabilme imkani
@@ -69,11 +68,17 @@ kusmuk: bu ew sitesini manual olarak maintain etmek sikici oluyor. sayfalari dil
 * yukaridaki elementler ve site bazli css ile tema destegi
 * html javascript/css manager (collection) to create <head> tag and details
 
-* profiler ile hizlandirmalar
-
 * smtp extension
-
 * pdf extension
+* javascript extension ?
+* curl icin extension
+* soap client
+* xmlrpc client
+* rss reader/parser
+* mvc::notfound
+* autoload?
+* controller imports-dependencies / partial loading
+* oauth extension
 
 * default javascript
 

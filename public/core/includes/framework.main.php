@@ -49,36 +49,49 @@
 		*/
 		public static function init() {
 			$tApplications = config::get('/applicationList');
-			foreach($tApplications as &$tApplication) {
-				if(isset($tApplication['@host']) && $tApplication['@host'] != $_SERVER['SERVER_NAME']) {
-					continue;
+
+			if(defined('APPLICATION')) {
+				foreach($tApplications as &$tApplication) {
+					if(constant('APPLICATION') == $tApplication['@name']) {
+						self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+						self::$issecure = false;
+						$tPickedApplication = &$tApplication;
+						break;
+					}
 				}
+			}
+			else {
+				foreach($tApplications as &$tApplication) {
+					if(isset($tApplication['@host']) && $tApplication['@host'] != $_SERVER['SERVER_NAME']) {
+						continue;
+					}
 
-				if(isset($tApplication['@secureport']) && $tApplication['@secureport'] == $_SERVER['SERVER_PORT']) {
-					self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-					self::$issecure = true;
-					$tPickedApplication = &$tApplication;
-					break;
-				}
+					if(isset($tApplication['@secureport']) && $tApplication['@secureport'] == $_SERVER['SERVER_PORT']) {
+						self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+						self::$issecure = true;
+						$tPickedApplication = &$tApplication;
+						break;
+					}
 
-				if(isset($tApplication['@port']) && $tApplication['@port'] == $_SERVER['SERVER_PORT']) {
-					self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-					self::$issecure = false;
-					$tPickedApplication = &$tApplication;
-					break;
-				}
+					if(isset($tApplication['@port']) && $tApplication['@port'] == $_SERVER['SERVER_PORT']) {
+						self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+						self::$issecure = false;
+						$tPickedApplication = &$tApplication;
+						break;
+					}
 
-				if(isset($tApplication['bindList'])) {
-					foreach($tApplication['bindList'] as $tBind) {
-						if(isset($tBind['@host']) && $tBind['@host'] != $_SERVER['SERVER_NAME']) {
-							continue;
-						}
+					if(isset($tApplication['bindList'])) {
+						foreach($tApplication['bindList'] as $tBind) {
+							if(isset($tBind['@host']) && $tBind['@host'] != $_SERVER['SERVER_NAME']) {
+								continue;
+							}
 
-						if($tBind['@port'] == $_SERVER['SERVER_PORT']) {
-							self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-							self::$issecure = (isset($tBind['@secure']) && (bool)$tBind['@secure']);
-							$tPickedApplication = &$tApplication;
-							break;
+							if($tBind['@port'] == $_SERVER['SERVER_PORT']) {
+								self::$socket = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
+								self::$issecure = (isset($tBind['@secure']) && (bool)$tBind['@secure']);
+								$tPickedApplication = &$tApplication;
+								break;
+							}
 						}
 					}
 				}
@@ -87,7 +100,7 @@
 			if(!isset($tPickedApplication)) {
 				exit('why?');
 			}
-			
+
 			self::$applicationPath = self::translatePath($tPickedApplication['@path']);
 			self::$development = isset($tPickedApplication['@development']) ? intval($tPickedApplication['@development']) : 0;
 			if(!defined('EXTENSIONS')) {
@@ -145,20 +158,20 @@
 
 			// if(!COMPILED) {
 			// 	$tDirectCall = true;
-			// 
+			//
 			// 	if(self::phpVersion('5.3.6')) {
 			// 		$tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 			// 	}
 			// 	else {
 			// 		$tBacktrace = debug_backtrace(false);
 			// 	}
-            // 
+            //
 			// 	foreach($tBacktrace as &$tValue) {
 			// 		if(isset($tValue['function']) && ($tValue['function'] == 'include' || $tValue['function'] == 'require')) {
 			// 			$tDirectCall = false;
 			// 		}
 			// 	}
-            // 
+            //
 			// 	if(PHP_SAPI_CLI) {
 			// 		$tParameters = array_slice($_SERVER['argv'], 1);
 			// 	}
@@ -166,6 +179,14 @@
 			// 		$tParameters = array_keys($_GET);
 			// 	}
 			// }
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function end($uError = 0) {
+			ob_end_flush();
+			exit($uError);
 		}
 
 		/**
@@ -253,20 +274,20 @@
 		*/
 		// public static function getArgs() {
 		// 	$uArgs = func_get_args();
-        // 
+        //
 		// 	if(self::phpVersion('5.3.6')) {
 		// 		$tBacktrace = debug_backtrace();
 		// 	}
 		// 	else {
 		// 		$tBacktrace = debug_backtrace(false);
 		// 	}
-        // 
+        //
 		// 	if(count($tBacktrace) < 2) {
 		// 		return null;
 		// 	}
-        // 
+        //
 		// 	$tTargetArgs = $tBacktrace[1]['args'];
-        // 
+        //
 		// 	if(count($tTargetArgs) == 1 && is_array($tTargetArgs[0])) {
 		// 		$tTargetArgs = $tTargetArgs[0];
 		// 	}
@@ -275,10 +296,10 @@
 		// 		for($i = 0, $tMax = count($tTargetArgs), $tArgsMax = count($uArgs); $i < $tMax && $i < $tArgsMax; $i++) {
 		// 			$tNewArray[$uArgs[$i]] = array_shift($tTargetArgs);
 		// 		}
-        // 
+        //
 		// 		$tTargetArgs = array_merge($tNewArray, $tTargetArgs);
 		// 	}
-        // 
+        //
 		// 	return $tTargetArgs;
 		// }
 

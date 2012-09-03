@@ -18,9 +18,6 @@
 
 // Use the Universal Coordinated Time and most common English standards
 	date_default_timezone_set('UTC');
-	setlocale(LC_ALL, 'en_US.UTF-8');
-	mb_internal_encoding('UTF-8');
-	mb_http_output('UTF-8');
 
 // Constant definitions
 	define('PHP_OS_WINDOWS', (DIRECTORY_SEPARATOR == '\\'));

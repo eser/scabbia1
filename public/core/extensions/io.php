@@ -259,7 +259,13 @@ if(extensions::isSelected('io')) {
 			$tPathInfo = pathinfo($uFilename);
 			$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
 
-			$uFilename = $tPathInfo['dirname'] . '/' . $tPathInfo['filename'];
+			$uFilename = '';
+			if(isset($tPathInfo['dirname'])) {
+				$uFilename = $tPathInfo['dirname'] . '/';
+			}
+
+			$uFilename .= $tPathInfo['filename'];
+
 			if(isset($tPathInfo['extension'])) {
 				$uFilename .= '.' . $tPathInfo['extension'];
 			}

@@ -61,8 +61,8 @@
 -->
 
 		<languageList>
-			<language id="tr">Turkish</language>
-			<language id="en">English</language>
+			<language id="en" locale="en_US.UTF-8">English</language>
+			<language id="tr" locale="tr_TR.UTF-8">Turkish</language>
 		</languageList>
 	</i8n>
 

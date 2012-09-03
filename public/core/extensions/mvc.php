@@ -9,6 +9,9 @@ if(extensions::isSelected('mvc')) {
 	*
 	* @todo remove underscore '_' in controller, action names
 	* @todo forbid 'shared' for controller names
+	* @todo controller and action names localizations
+	* @todo selective loading with controller imports
+	* @todo routing optimizations.
 	*/
 	class mvc {
 		/**
@@ -276,7 +279,7 @@ if(extensions::isSelected('mvc')) {
 				}
 
 				if(!isset($uView['language'])) {
-					$uView['language'] = i8n::$languageKey;
+					$uView['language'] = i8n::$language['key'];
 				}
 
 				if(isset($uView['extension']) && isset(self::$viewEngines[$uView['extension']])) {
@@ -292,7 +295,7 @@ if(extensions::isSelected('mvc')) {
 
 			$tExtra = array(
 				'root' => framework::$siteroot,
-				'lang' => i8n::$languageKey
+				'lang' => i8n::$language['key']
 			);
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
@@ -343,7 +346,7 @@ if(extensions::isSelected('mvc')) {
 			);
 
 			self::view(array('controller' => 'shared', 'action' => 'error'), $tViewbag);
-			exit(1);
+			framework::end(1);
 		}
 
 		/**
@@ -354,7 +357,7 @@ if(extensions::isSelected('mvc')) {
 			$tArray = array(
 				'siteroot' => framework::$siteroot,
 				'device' => http::$crawlerType,
-				'language' => i8n::$languageKey,
+				'language' => i8n::$language['key'],
 				'controller' => $tSegments['controller'],
 				'action' => $tSegments['action'],
 				'queryString' =>  http::buildQueryString($tSegments['queryString'])
@@ -373,7 +376,7 @@ if(extensions::isSelected('mvc')) {
 				$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$route['controller'], self::$defaultController);
 				$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
 				$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
-				$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$languageKey);
+				$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$language['key']);
 				$tQueryParameters['queryString'] = string::coalesce(array($uArgs[0], 'queryString'), '');
 			}
 			else {
@@ -385,7 +388,7 @@ if(extensions::isSelected('mvc')) {
 
 				$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
 				$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
-				$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$languageKey);
+				$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$language['key']);
 				$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
 			}
 
@@ -487,13 +490,13 @@ EOD;
 		foreach($tArray as $tClassName => $tClass) {
 			$tLines = array();
 
-			$tReturn .= ',' . "\r\n\t\t\t" . $tClassName . ': {' . "\r\n";
+			$tReturn .= ',' . PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
 
 			foreach($tClass as $tMethod) {
 				$tMethod = substr($tMethod, 0, -5);
 				$tLines[] = "\t\t\t\t" . $tMethod . ': function(values, fnc) { $.helpers.sendAjax(\'' . self::url($tClassName . '/' . strtr($tMethod, '_', '/')) . '\', values, fnc); }';
 			}
-			$tReturn .= implode(',' . "\r\n", $tLines) . "\r\n\t\t\t" . '}';
+			$tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
 		}
 $tReturn .= <<<EOD
 
@@ -644,6 +647,15 @@ EOD;
 
 		/**
 		* @ignore
+		* @todo
+		*/
+		public function notfound() {
+			$uArgs = func_get_args();
+			call_user_func_array('mvc::notfound', $uArgs);
+		}
+
+		/**
+		* @ignore
 		*/
 		public function error() {
 			$uArgs = func_get_args();
@@ -654,7 +666,7 @@ EOD;
 		* @ignore
 		*/
 		public function end() {
-			exit(0);
+			framework::end(0);
 		}
 	}
 

@@ -23,6 +23,10 @@ if(extensions::isSelected('http')) {
 		/**
 		* @ignore
 		*/
+		public static $isSecure = false;
+		/**
+		* @ignore
+		*/
 		public static $isAjax = false;
 		/**
 		* @ignore
@@ -89,7 +93,8 @@ if(extensions::isSelected('http')) {
 				'REQUEST_URI',
 				'SERVER_ADDR',
 				'SERVER_NAME',
-				'SERVER_PORT'
+				'SERVER_PORT',
+				'HTTPS'
 			);
 
 			foreach($aEnvNames as &$tEnv) {
@@ -128,6 +133,10 @@ if(extensions::isSelected('http')) {
 					$_SERVER['REQUEST_URI'] = $tReturn;
 					break;
 				}
+			}
+
+			if($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on') {
+				self::$isSecure = true;
 			}
 
 			if(strlen($_SERVER['HTTP_HOST']) == 0) {
@@ -277,6 +286,28 @@ if(extensions::isSelected('http')) {
 		/**
 		* @ignore
 		*/
+		public static function baseUrl() {
+			if(http::$isSecure) {
+				return 'https://' . $_SERVER['HTTP_HOST'];
+			}
+
+			return 'http://' . $_SERVER['HTTP_HOST'] . framework::$siteroot;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function secureUrl($uUrl) {
+			if(http::$isSecure && substr($uUrl, 0, 7) == 'http://') {
+				return 'https://' . substr($uUrl, 7);
+			}
+
+			return $uUrl;
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function sendStatus($uStatusCode) {
 			switch((int)$uStatusCode) {
 			case 100: $tStatus = 'HTTP/1.1 100 Continue'; break;
@@ -360,16 +391,17 @@ if(extensions::isSelected('http')) {
 
 			self::sendHeaderExpires(0); // 1970
 			self::sendHeaderNoCache();
-			// self::sendHeader('Accept-Ranges', 'bytes', true);
+			self::sendHeader('Accept-Ranges', 'bytes', true);
 			self::sendHeader('Content-Type', $tType, true);
 			if($uAttachment) {
 				self::sendHeader('Content-Disposition', 'attachment; filename=' . pathinfo($uFilePath, PATHINFO_BASENAME) . ';', true);
 			}
 			self::sendHeader('Content-Transfer-Encoding', 'binary', true);
-			self::sendHeader('Content-Length', filesize($uFilePath), true);
+			//! filesize problem
+			// self::sendHeader('Content-Length', filesize($uFilePath), true);
 			self::sendHeaderETag(md5_file($uFilePath));
-			@readfile($uFilePath);
-			exit();
+			readfile($uFilePath, false);
+			framework::end(0);
 		}
 
 		/**
@@ -397,7 +429,7 @@ if(extensions::isSelected('http')) {
 			self::sendHeader('Location', $uLocation, true);
 
 			if($uTerminate) {
-				exit();
+				framework::end(0);
 			}
 		}
 
@@ -409,7 +441,7 @@ if(extensions::isSelected('http')) {
 			self::sendHeader('Location', $uLocation, true);
 
 			if($uTerminate) {
-				exit();
+				framework::end(0);
 			}
 		}
 

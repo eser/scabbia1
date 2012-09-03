@@ -50,10 +50,6 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		* @ignore
 		*/
 		public $fetchMode;
-		/**
-		* @ignore
-		*/
-		public $affectedRows;
 
 		/**
 		* @ignore
@@ -134,99 +130,36 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		/**
 		* @ignore
 		*/
-		public function exec($uQuery) {
+		public function execute($uQuery) {
 			$this->connection->exec($uQuery);
 		}
 
 		/**
 		* @ignore
 		*/
-		public function query($uQuery, $uParameters = array()) {
+		public function &queryDirect($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 			$tResult = $tQuery->execute($uParameters);
-			// $tQuery->closeCursor();
-			$this->affectedRows = $tQuery->rowCount();
 
-			if($tResult) {
-				return $this->affectedRows;
-			}
-
-			return false;
+			return $tQuery;
 		}
 
 		/**
 		* @ignore
 		*/
-		public function &queryFetch($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-
-			$this->affectedRows = $tQuery->rowCount();
-
-			$tIterator = new dataRowsIterator($tQuery, $this);
-			return $tIterator;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &querySet($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			if(database::$enableDataRows) {
-				$tResult = array();
-				while($tRow = $tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT)) {
-					$tResult[] = new dataRow($tRow);
-				}
+		public function itSeek(&$uObject, $uRow) {
+			// return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_ABS, $uRow);
+			for($i = 0; $i < $uRow; $i++) {
+				$uObject->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
 			}
-			else {
-				$tResult = $tQuery->fetchAll($this->fetchMode);
-			}
-			$this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
 
-			return $tResult;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &queryRow($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			if(database::$enableDataRows) {
-				$tResult = new dataRow($tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT));
-			}
-			else {
-				$tResult = $tQuery->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
-			}
-			$this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
-
-			return $tResult;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function &queryScalar($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
-			$tQuery->execute($uParameters);
-			$tResult = $tQuery->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
-			$this->affectedRows = $tQuery->rowCount();
-			$tQuery->closeCursor();
-
-			return $tResult[0];
+			return $this->itNext($uObject);
 		}
 
 		/**
 		* @ignore
 		*/
 		public function itNext(&$uObject) {
-			if(database::$enableDataRows) {
-				return new dataRow($uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT));
-			}
-
 			return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
 		}
 
@@ -249,13 +182,6 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		*/
 		public function lastInsertId($uName = null) {
 			return $this->connection->lastInsertId($uName);
-		}
-
-		/**
-		* @ignore
-		*/
-		public function affectedRows() {
-			return $this->affectedRows;
 		}
 
 		/**
