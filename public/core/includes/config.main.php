@@ -167,6 +167,7 @@
 			$tConfigNodes = array();
 
 			$tFiles = glob3($uFiles, false, true);
+
 			if($tFiles !== false) {
 				foreach($tFiles as $tFilename) {
 					$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);

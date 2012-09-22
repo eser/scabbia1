@@ -131,7 +131,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		* @ignore
 		*/
 		public function execute($uQuery) {
-			$this->connection->exec($uQuery);
+			return $this->connection->exec($uQuery);
 		}
 
 		/**
@@ -225,7 +225,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 				$tSql .= ' WHERE ' . $uWhere;
 			}
 
-			if(!is_null($uExtra) > 0) {
+			if(!is_null($uExtra)) {
 				if(isset($uExtra['limit'])) {
 					$tLimit = intval($uExtra['limit']);
 
@@ -248,7 +248,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 				$tSql .= ' WHERE ' . $uWhere;
 			}
 
-			if(!is_null($uExtra) > 0) {
+			if(!is_null($uExtra)) {
 				if(isset($uExtra['limit'])) {
 					$tLimit = intval($uExtra['limit']);
 
@@ -264,7 +264,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 		/**
 		* @ignore
 		*/
-		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uExtra = null) {
+		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null) {
 			$tSql = 'SELECT ';
 
 			if(count($uFields) > 0) {
@@ -280,15 +280,19 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 				$tSql .= ' WHERE ' . $uWhere;
 			}
 
+			if(!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
+				$tSql .= ' GROUP BY ' . $uGroupBy;
+			}
+
 			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
 				$tSql .= ' ORDER BY ' . $uOrderBy;
 			}
 
-			if(!is_null($uExtra) > 0) {
+			if(!is_null($uExtra)) {
 				if(isset($uExtra['limit'])) {
 					$tLimit = intval($uExtra['limit']);
 
-					if($this->standard == 'mysql' && $tLimit >= 0) {
+					if(($this->standard == 'mysql' || $this->standard == 'pgsql') && $tLimit >= 0) {
 						$tSql .= ' LIMIT ' . $tLimit;
 					}
 				}
@@ -296,7 +300,7 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 				if(isset($uExtra['offset'])) {
 					$tOffset = intval($uExtra['offset']);
 
-					if($this->standard == 'mysql' && $tOffset >= 0) {
+					if(($this->standard == 'mysql' || $this->standard == 'pgsql') && $tOffset >= 0) {
 						$tSql .= ' OFFSET ' . $tOffset;
 					}
 				}

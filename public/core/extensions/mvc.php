@@ -12,6 +12,7 @@ if(extensions::isSelected('mvc')) {
 	* @todo controller and action names localizations
 	* @todo selective loading with controller imports
 	* @todo routing optimizations.
+	* @todo map controller to path (/docs/index/* => views/docs/*.md)
 	*/
 	class mvc {
 		/**
@@ -33,11 +34,15 @@ if(extensions::isSelected('mvc')) {
 		/**
 		* @ignore
 		*/
-		public static $defaultController = null;
+		public static $defaultController;
 		/**
 		* @ignore
 		*/
-		public static $defaultAction = null;
+		public static $defaultAction;
+		/**
+		* @ignore
+		*/
+		public static $errorPage;
 		/**
 		* @ignore
 		*/
@@ -63,6 +68,7 @@ if(extensions::isSelected('mvc')) {
 		public static function extension_load() {
 			self::$defaultController = config::get('/mvc/routes/@defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/@defaultAction', 'index');
+			self::$errorPage = config::get('/mvc/view/@errorPage', 'shared/error.php');
 
 			self::$controllerStack = array();
 			self::$viewEngines = array();
@@ -133,13 +139,11 @@ if(extensions::isSelected('mvc')) {
 
 			$tControllerUrlKey = config::get('/mvc/routes/@controllerUrlKey', '0');
 
-			$tRoute = array(
-				'queryString' => $uArgs
-			);
+			$tRoute = array();
 
-			if(array_key_exists($tControllerUrlKey, $tRoute['queryString']['segments']) && strlen($tRoute['queryString']['segments'][$tControllerUrlKey]) > 0) {
-				$tRoute['controller'] = $tRoute['queryString']['segments'][$tControllerUrlKey];
-				unset($tRoute['queryString']['segments'][$tControllerUrlKey]);
+			if(array_key_exists($tControllerUrlKey, $uArgs['_segments']) && strlen($uArgs['_segments'][$tControllerUrlKey]) > 0) {
+				$tRoute['controller'] = $uArgs['_segments'][$tControllerUrlKey];
+				unset($uArgs['_segments'][$tControllerUrlKey]);
 			}
 			else {
 				$tRoute['controller'] = self::$defaultController;
@@ -151,21 +155,34 @@ if(extensions::isSelected('mvc')) {
 			$tRoute['action'] = '';
 
 			foreach($tActionKeys as $tActionKey) {
-				if(!isset($tRoute['queryString']['segments'][$tActionKey])) {
+				if(!isset($uArgs['_segments'][$tActionKey])) {
 					break;
 				}
 
 				if(strlen($tRoute['action']) > 0) {
-					$tRoute['action'] .= '_';
+					$tRoute['action'] .= '/';
 				}
 
-				$tRoute['action'] .= $tRoute['queryString']['segments'][$tActionKey];
-				unset($tRoute['queryString']['segments'][$tActionKey]);
+				$tRoute['action'] .= $uArgs['_segments'][$tActionKey];
+				unset($uArgs['_segments'][$tActionKey]);
 			}
 
 			if(strlen($tRoute['action']) == 0) {
 				$tRoute['action'] = $tControllerData['defaultAction'];
 			}
+
+			$tRoute['parameters'] = '';
+			$tRoute['parametersArray'] = array();
+			foreach($uArgs['_segments'] as &$tSegment) {
+				$tRoute['parameters'] .= '/' . $tSegment;
+				$tRoute['parametersArray'][] = $tSegment;
+			}
+
+			unset($uArgs['_segments']);
+			unset($uArgs['_hash']);
+
+			$tRoute['queryString'] = http::buildQueryString($uArgs);
+			$tRoute['queryStringArray'] = &$uArgs;
 
 			return $tRoute;
 		}
@@ -176,16 +193,7 @@ if(extensions::isSelected('mvc')) {
 		public static function run() {
 			self::$route = self::findRoute($_GET);
 			self::$controllerActual = self::$route['controller'];
-
-			if(http::$isPost && method_exists(self::$route['controller'], self::$route['action'] . '_post')) {
-				self::$actionActual = self::$route['action'] . '_post';
-			}
-			else if(http::$isAjax && method_exists(self::$route['controller'], self::$route['action'] . '_ajax')) {
-				self::$actionActual = self::$route['action'] . '_ajax';
-			}
-			else {
-				self::$actionActual = self::$route['action'];
-			}
+			self::$actionActual = self::$route['action'];
 
 			profiler::start('mvc', array('action' => 'routing'));
 			$tParameterSegments = null;
@@ -196,22 +204,35 @@ if(extensions::isSelected('mvc')) {
 				'actionActual' => &self::$actionActual,
 				'parameterSegments' => &$tParameterSegments
 			));
-
-			$tNotfoundController = config::get('/mvc/routes/@notfoundController', 'home');
-			$tNotfoundAction = config::get('/mvc/routes/@notfoundAction', 'notfound');
-
-			if(!is_callable(array(self::$controllerActual, self::$actionActual)) && !method_exists(self::$controllerActual, '__call')) {
-				self::$controllerActual = $tNotfoundController;
-				self::$actionActual = $tNotfoundAction;
-			}
 			profiler::stop();
 
 			profiler::start('mvc', array('action' => 'rendering'));
-			$tController = new self::$controllerActual ();
+			$tActionMethodName = strtr(self::$actionActual, '/', '_');
+			if(http::$isPost && method_exists(self::$controllerActual, $tActionMethodName . '_post')) {
+				$tActionMethodName .= '_post';
+			}
+			else if(http::$isAjax && method_exists(self::$controllerActual, $tActionMethodName . '_ajax')) {
+				$tActionMethodName .= '_ajax';
+			}
 
-			self::$controllerStack[] = &$tController;
-			call_user_func_array(array(&$tController, self::$actionActual), self::$route['queryString']['segments']);
-			array_pop(self::$controllerStack);
+			if(!is_subclass_of(self::$controllerActual, 'controller')) {
+				mvc::notfound();
+			}
+			else {
+				$tController = new self::$controllerActual ();
+				self::$controllerStack[] = &$tController;
+
+				try {
+					if($tController->render($tActionMethodName, self::$route['parametersArray']) === false) {
+						mvc::notfound();
+					}
+				}
+				catch(Exception $ex) {
+					mvc::error($ex->getMessage());
+				}
+
+				array_pop(self::$controllerStack);
+			}
 			profiler::stop();
 
 			// to interrupt event-chain execution
@@ -229,7 +250,6 @@ if(extensions::isSelected('mvc')) {
 		* @ignore
 		*/
 		public static function view() {
-			$tViewNamePattern = config::get('/mvc/view/@namePattern', '{@path}{@controller}_{@action}_{@device}_{@language}{@extension}');
 			$tViewDefaultExtension = config::get('/mvc/view/@defaultViewExtension', 'php');
 
 			$uArgs = func_get_args();
@@ -238,7 +258,12 @@ if(extensions::isSelected('mvc')) {
 			if(!is_null(self::$controllerStack)) {
 				$uController = end(self::$controllerStack);
 				$uView = ($uArgsCount >= 1) ? $uArgs[0] : $uController->defaultView;
-				$uModel = ($uArgsCount >= 2) ? $uArgs[1] : $uController->vars;
+				if($uArgsCount >= 2) {
+					$uModel = $uArgs[1];
+				}
+				else {
+					$uModel = &$uController->vars;
+				}
 			}
 			else {
 				$uController = 'shared';
@@ -246,64 +271,40 @@ if(extensions::isSelected('mvc')) {
 				$uModel = ($uArgsCount >= 2) ? $uArgs[1] : null;
 			}
 
-			if(is_string($uView)) {
+			if(!is_null($uView)) {
 				$tViewFilePath = framework::translatePath($uView, framework::$applicationPath . 'views/');
 				$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-
-				if(!isset(self::$viewEngines[$tViewExtension])) {
-					$tViewExtension = $tViewDefaultExtension;
-				}
 			}
 			else {
-				if(is_null($uView)) {
-					$uView = array();
-				}
-				else if(!is_array($uView)) {
-					return;
-				}
+				// $uView['path'] = framework::$applicationPath . 'views/';
+				// $uView['controller'] = self::$route['controller'];
+				// $uView['action'] = self::$route['action'];
+				// $uView['device'] = http::$crawlerType;
+				// $uView['language'] = i8n::$language['key'];
+				// $uView['extension'] = $tViewDefaultExtension;
+				$uView = self::$route['controller'] . '/' . self::$route['action'] . '.' . $tViewDefaultExtension;
+				$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
+				$tViewExtension = $tViewDefaultExtension;
+			}
 
-				if(!isset($uView['path'])) {
-					$uView['path'] = framework::$applicationPath . 'views/';
-				}
-
-				if(!isset($uView['controller'])) {
-					$uView['controller'] = self::$route['controller'];
-				}
-
-				if(!isset($uView['action'])) {
-					$uView['action'] = self::$route['action'];
-				}
-
-				if(!isset($uView['device'])) {
-					$uView['device'] = http::$crawlerType;
-				}
-
-				if(!isset($uView['language'])) {
-					$uView['language'] = i8n::$language['key'];
-				}
-
-				if(isset($uView['extension']) && isset(self::$viewEngines[$uView['extension']])) {
-					$tViewExtension = $uView['extension'];
-				}
-				else {
-					$tViewExtension = $tViewDefaultExtension;
-					$uView['extension'] = $tViewDefaultExtension;
-				}
-
-				$tViewFilePath = string::format($tViewNamePattern, $uView);
+			if(!isset(self::$viewEngines[$tViewExtension])) {
+				$tViewExtension = $tViewDefaultExtension;
 			}
 
 			$tExtra = array(
+				'controller' => &$uController,
 				'root' => framework::$siteroot,
 				'lang' => i8n::$language['key']
 			);
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
 			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
+				'templateFile' => &$tViewFile,
 				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'viewFile' => &$tViewFile,
+				'compiledFile' => $uView,
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			);
@@ -319,20 +320,20 @@ if(extensions::isSelected('mvc')) {
 		*/
 		public static function json() {
 			$uArgs = func_get_args();
-			$uArgsCount = count($uArgs);
 
 			$uController = end(self::$controllerStack);
-			$uModel = ($uArgsCount >= 1) ? $uArgs[0] : $uController->vars;
-			$uOptions = ($uArgsCount >= 2) ? $uArgs[1] : 0;
+			if(count($uArgs) >= 1) {
+				$uModel = &$uArgs[0];
+			}
+			else {
+				$uModel = &$uController->vars;
+			}
 
 			http::sendHeader('Content-Type', 'application/json', true);
+
 			echo json_encode(
-				array(
-					'isSuccess' => true,
-					'errorMessage' => null,
-					'object' => &$uModel
-				),
-				$uOptions
+				$uModel,
+				0
 			);
 		}
 
@@ -340,12 +341,25 @@ if(extensions::isSelected('mvc')) {
 		* @ignore
 		*/
 		public static function error($uMessage) {
-			$tViewbag = array(
-				'title' => 'Error',
-				'message' => $uMessage
-			);
+			if(!http::$isAjax) {
+				self::view(self::$errorPage, array(
+					'title' => 'Error',
+					'message' => $uMessage
+				));
+			}
 
-			self::view(array('controller' => 'shared', 'action' => 'error'), $tViewbag);
+			framework::end(1, $uMessage);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function notfound() {
+			self::view(self::$errorPage, array(
+				'title' => 'Error',
+				'message' => '404 Not Found'
+			));
+
 			framework::end(1);
 		}
 
@@ -353,14 +367,21 @@ if(extensions::isSelected('mvc')) {
 		* @ignore
 		*/
 		private static function url_internal($uArgs) {
-			$tSegments = self::findRoute($uArgs);
+			$tSegments = self::findRoute(
+				string::format(
+					$uArgs,
+					self::$route
+				)
+			);
+
 			$tArray = array(
 				'siteroot' => framework::$siteroot,
 				'device' => http::$crawlerType,
 				'language' => i8n::$language['key'],
 				'controller' => $tSegments['controller'],
 				'action' => $tSegments['action'],
-				'queryString' =>  http::buildQueryString($tSegments['queryString'])
+				'parameters' => $tSegments['parameters'],
+				'queryString' => $tSegments['queryString']
 			);
 
 			$tControllerData = self::getControllerData($tArray['controller']);
@@ -449,52 +470,28 @@ if(extensions::isSelected('mvc')) {
 		/**
 		* @ignore
 		*/
-		public static function exportAjaxJs() {
+		public static function &exportAjaxJs() {
 			$tArray = self::export(true);
 
 			$tReturn = <<<EOD
-	$(document).ready(function() {
-		var ajaxObj = {};
-		if(typeof pageAjaxStart == 'function') {
-			ajaxObj.beforeSend = pageAjaxStart;
-		}
-
-		if(typeof pageAjaxEnd == 'function') {
-			ajaxObj.complete = pageAjaxEnd;
-		}
-
-		$.ajaxSetup(ajaxObj);
-
-		$.extend({
-			helpers: {
-				sendAjax: function(path, values, fnc) {
-					$.ajax({
-						type: 'POST',
-						url: path,
-						data: values,
-						success: function(data) {
-							if (!data.isSuccess) {
-								// $.helpers.msgbox(5, 'Error: ' + data.errorMessage);
-								alert(data.errorMessage);
-								return;
-							}
-							if(fnc != null) {
-								fnc(data.object);
-							}
-						},
-						datatype: 'json'
-					});
-				}
-			}
+	\$l.ready(function() {
+		\$l.extend({
 EOD;
 		foreach($tArray as $tClassName => $tClass) {
 			$tLines = array();
 
-			$tReturn .= ',' . PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
+			if(isset($tFirst)) {
+				$tReturn .= ',';
+			}
+			else {
+				$tFirst = false;
+			}
+
+			$tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
 
 			foreach($tClass as $tMethod) {
 				$tMethod = substr($tMethod, 0, -5);
-				$tLines[] = "\t\t\t\t" . $tMethod . ': function(values, fnc) { $.helpers.sendAjax(\'' . self::url($tClassName . '/' . strtr($tMethod, '_', '/')) . '\', values, fnc); }';
+				$tLines[] = "\t\t\t\t" . $tMethod . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethod, '_', '/')) . '\', values, fnc); }';
 			}
 			$tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
 		}
@@ -503,6 +500,7 @@ $tReturn .= <<<EOD
 		});
 	});
 EOD;
+
 			return $tReturn;
 		}
 	}
@@ -561,14 +559,13 @@ EOD;
 		/**
 		* @ignore
 		*/
-		public $vars;
+		public $vars = array();
 
 		/**
 		* @ignore
 		*/
 		public function __construct() {
 			$this->db = database::get(); // default database to member 'db'
-			$this->vars = array();
 		}
 
 		/**
@@ -590,7 +587,41 @@ EOD;
 				$uMemberName = $uModelClass;
 			}
 
+			// if(isset($this->{$uMemberName})) {
+			//	return;
+			// }
+
 			$this->{$uMemberName} = new $uModelClass ($this);
+		}
+
+		/**
+		* @ignore
+		*/
+		public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs) {
+			$tMap = io::mapFlatten(framework::translatePath($uDirectory), '*' . $uExtension, true, true);
+
+			array_unshift($uArgs, $uAction);
+			$tPath = implode('/', $uArgs);
+
+			if(in_array($tPath, $tMap, true)) {
+				$this->view($uDirectory . $tPath . $uExtension);
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function render(&$uAction, &$uArgs) {
+			$tCallback = array(&$this, $uAction);
+
+			if(is_callable($tCallback)) {
+				return call_user_func_array($tCallback, $uArgs);
+			}
+
+			return false;
 		}
 
 		/**
@@ -691,7 +722,7 @@ EOD;
 				extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
 			}
 
-			require($uObject['templatePath'] . $uObject['viewFile']);
+			require($uObject['templatePath'] . $uObject['templateFile']);
 		}
 	}
 }

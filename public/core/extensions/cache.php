@@ -16,6 +16,14 @@ if(extensions::isSelected('cache')) {
 		* @ignore
 		*/
 		public static $keyphase;
+		/**
+		* @ignore
+		*/
+		public static $storage = null;
+		/**
+		* @ignore
+		*/
+		public static $storageObject = null;
 
 		/**
 		* @ignore
@@ -36,15 +44,67 @@ if(extensions::isSelected('cache')) {
 		*/
 		public static function extension_load() {
 			self::$defaultAge = intval(config::get('/cache/@defaultAge', '120'));
-			self::$keyphase = config::get('/cache/@keyphase', null);
+			self::$keyphase = config::get('/cache/@keyphase', '');
+
+			$tStorage = config::get('/cache/@storage', '');
+			if(strlen($tStorage) > 0) {
+				self::$storage = parse_url($tStorage);
+			}
 		}
 
 		/**
 		* @ignore
 		*/
-		public static function getPath($uFolder, $uFilename, $uAge = -1) {
+		public static function storageOpen() {
+			if(!is_null(self::$storageObject)) {
+				return;
+			}
+
+			if(self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
+				self::$storageObject = new Memcache();
+				self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
+				return;
+			}
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function storageGet($uKey) {
+			self::storageOpen();
+
+			return self::$storageObject->get($uKey);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function storageSet($uKey, $uValue, $uAge = -1) {
+			self::storageOpen();
+
+			// age
+			if($uAge == -1) {
+				$uAge = self::$defaultAge;
+			}
+
+			self::$storageObject->set($uKey, $uValue, 0, $uAge);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function storageDestroy($uKey) {
+			self::storageOpen();
+
+			self::$storageObject->delete($uKey);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function filePath($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
 			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename, $uIncludeAll));
 
 			// age
 			if($uAge == -1) {
@@ -65,9 +125,9 @@ if(extensions::isSelected('cache')) {
 		/**
 		* @ignore
 		*/
-		public static function get($uFolder, $uFilename, $uAge = -1) {
+		public static function fileGet($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
 			// path
-			$tPath = self::getPath($uFolder, $uFilename, $uAge);
+			$tPath = self::filePath($uFolder, $uFilename, $uAge, $uIncludeAll);
 
 			//! ambiguous return value
 			if(!$tPath[0]) {
@@ -81,7 +141,22 @@ if(extensions::isSelected('cache')) {
 		/**
 		* @ignore
 		*/
-		public static function set($uFolder, $uFilename, $uObject) {
+		public static function fileGetUrl($uKey, $uUrl, $uAge = -1) {
+			$tFile = self::filePath('url/', $uKey, $uAge, true);
+
+			if(!$tFile[0]) {
+				$tContent = file_get_contents($uUrl);
+				io::write($tFile[1], $tContent);
+				return $tContent;
+			}
+
+			return io::read($tFile[1]);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function fileSet($uFolder, $uFilename, $uObject) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
 
@@ -94,7 +169,7 @@ if(extensions::isSelected('cache')) {
 		/**
 		* @ignore
 		*/
-		public static function destroy($uFolder, $uFilename) {
+		public static function fileDestroy($uFolder, $uFilename) {
 			$tPath = framework::writablePath('cache/' . $uFolder);
 			io::destroy($tPath . io::sanitize($uFilename));
 		}
@@ -102,17 +177,14 @@ if(extensions::isSelected('cache')) {
 		/**
 		* @ignore
 		*/
-		public static function garbageCollect($uFolder, $uAge) {
+		public static function fileGarbageCollect($uFolder, $uAge = -1) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder);
 			$tDirectory = new DirectoryIterator($tPath);
 
 			// age
-			if($uAge > 0) {
-				$tAge = $uAge;
-			}
-			else {
-				$tAge = self::$defaultAge;
+			if($uAge == -1) {
+				$uAge = self::$defaultAge;
 			}
 
 			clearstatcache();
@@ -127,21 +199,6 @@ if(extensions::isSelected('cache')) {
 
 				io::destroy($tFile->getPathname());
 			}
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function getFromUrl($uKey, $uUrl, $uAge = -1) {
-			$tFile = cache::getPath('url/', $uKey, $uAge);
-
-			if(!$tFile[0]) {
-				$tContent = file_get_contents($uUrl);
-				io::write($tFile[1], $tContent);
-				return $tContent;
-			}
-
-			return io::read($tFile[1]);
 		}
 	}
 }

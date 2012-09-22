@@ -39,6 +39,60 @@ if(extensions::isSelected('time')) {
 		/**
 		* @ignore
 		*/
+		public static function ago($uDifference) {
+			if($uDifference < 60) {
+				return array($uDifference, 'seconds');
+			}
+
+			$uDifference = round($uDifference / 60);
+			if($uDifference < 60) {
+				return array($uDifference, 'minutes');
+			}
+
+			$uDifference = round($uDifference / 60);
+			if($uDifference <= 5) { // 5 hour limit
+				return array($uDifference, 'hours');
+			}
+
+			return null;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function humanize($uTimestamp, $uTime = null, $uCalculateAgo = true) {
+			if(is_null($uTime)) {
+				$uTime = time();
+			}
+
+			$tDifference = $uTime - $uTimestamp;
+
+			if($tDifference >= 0 && $uCalculateAgo) {
+				$tAgo = self::ago($tDifference);
+
+				if(!is_null($tAgo)) {
+					return implode(' ', $tAgo);
+				}
+			}
+
+			if(date('d-m-Y', $uTime - (24 * 60 * 60)) == date('d-m-Y', $uTimestamp)) {
+				return 'Yesterday, ' . date('H:i', $uTimestamp);
+			}
+
+			if(date('d-m-Y', $uTime) == date('d-m-Y', $uTimestamp)) {
+				return 'Today, ' . date('H:i', $uTimestamp);
+			}
+
+			if(date('d-m-Y', $uTime + (24 * 60 * 60)) == date('d-m-Y', $uTimestamp)) {
+				return 'Tomorrow, ' . date('H:i', $uTimestamp);
+			}
+
+			return date('d-m-Y H:i', $uTimestamp);
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function toGmt($uTime = null, $uIsGMT = true) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -93,9 +147,10 @@ if(extensions::isSelected('time')) {
 		/**
 		* @ignore
 		*/
-		public static function toMysql($uTime = null) {
-			if(!isset($uTime)) {
-				$uTime = time();
+		public static function toDb($uTime, $uFormat = 'd-m-Y H:i:s') {
+			if(!is_numeric($uTime)) {
+				$tTime = date_parse_from_format($uFormat, $uTime);
+				$uTime = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
 			}
 
 			return date('Y-m-d H:i:s', $uTime);
@@ -104,16 +159,38 @@ if(extensions::isSelected('time')) {
 		/**
 		* @ignore
 		*/
-		public static function fromMysql($uTime) {
-			$tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
+		public static function fromDb($uTime) {
+			$tTime = date_parse_from_format('Y-m-d H:i:s', $uTime);
 
-			return mktime($tTime[3], $tTime[4], $tTime[5], $tTime[1], $tTime[2], $tTime[0]);
+			return mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function convert($uTime, $uSourceFormat, $uDestinationFormat = null) {
+			$tTime = date_parse_from_format($uSourceFormat, $uTime);
+			$tTimestamp = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
+
+			if(is_null($uDestinationFormat)) {
+				return $tTimestamp;
+			}
+
+			return date($uDestinationFormat, $tTimestamp);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function format($uTime, $uFormat) {
+			return date($uFormat, $uTime);
 		}
 
 		/**
 		* @ignore
 		*/
 		public static function timezones() {
+			return timezone_identifiers_list();
 		}
 	}
 }

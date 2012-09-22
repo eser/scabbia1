@@ -66,11 +66,11 @@ if(extensions::isSelected('viewengine_phptal')) {
 			}
 
 			self::$engine->setForceReparse(false);
-			self::$engine->setTemplateRepository($uObject['templatePath'] . '/');
-			self::$engine->setPhpCodeDestination($uObject['compiledPath'] . '/');
+			self::$engine->setTemplateRepository($uObject['templatePath']);
+			self::$engine->setPhpCodeDestination($uObject['compiledPath']);
 			self::$engine->setOutputMode(PHPTAL::HTML5);
 			self::$engine->setEncoding('UTF-8');
-			self::$engine->setTemplate($uObject['viewFile']);
+			self::$engine->setTemplate($uObject['templateFile']);
 			if(framework::$development >= 1) {
 				self::$engine->prepare();
 			}

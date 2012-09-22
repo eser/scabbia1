@@ -39,7 +39,7 @@ if(extensions::isSelected('captcha')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$fontFile = framework::translatePath(config::get('/captcha/@fontFile', '{core}res/font.ttf'));
+			self::$fontFile = framework::translatePath(config::get('/captcha/@fontFile', '{base}res/font.ttf'));
 			self::$fontSize = intval(config::get('/captcha/@fontSize', '45'));
 			self::$length = intval(config::get('/captcha/@length', '8'));
 		}

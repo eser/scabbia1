@@ -41,9 +41,9 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-		public static function tag($uName, $uAttributes, $uValue = null) {
+		public static function tag($uName, $uAttributes = array(), $uValue = null) {
 			$tReturn = '<' . $uName;
-			if(is_array($uAttributes)) {
+			if(count($uAttributes) > 0) {
 				$tReturn .= ' ' . self::attributes($uAttributes);
 			}
 
@@ -79,12 +79,11 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-		public static function selectOptions($uArray = array(), $uDefault = null, $uField = null) {
+		public static function selectOptions($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
-			foreach($uArray as $tKey => &$tVal) {
+			foreach($uOptions as $tKey => &$tVal) {
 				$tOutput .= '<option value="' . string::dquote($tKey) . '"';
-
 				if($uDefault == $tKey) {
 					$tOutput .= ' selected="selected"';
 				}
@@ -98,11 +97,17 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-		public static function radioOptions($uName, $uArray = array(), $uDefault = null, $uField = null) {
+		public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
-			foreach($uArray as $tKey => &$tVal) {
-				$tOutput .= '<label><input type="radio" name="' . string::dquote($uName) . '" value="' . string::dquote($tKey) . '"';
+			foreach($uOptions as $tKey => &$tVal) {
+				$tOutput .= '<label';
+
+				if($uDefault == $tKey) {
+					$tOutput .= ' class="selected"';
+				}
+
+				$tOutput .= '><input type="radio" name="' . string::dquote($uName) . '" value="' . string::dquote($tKey) . '"';
 
 				if($uDefault == $tKey) {
 					$tOutput .= ' checked="checked"';
@@ -117,8 +122,11 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-		public static function textBox($uName, $uValue) {
-			$tOutput = '<input type="text" name="' . string::dquote($uValue) . '" value="' . string::dquote($uValue) . '" />';
+		public static function textBox($uName, $uValue = '', $uAttributes = array()) {
+			$uAttributes['name'] = $uName;
+			$uAttributes['value'] = $uValue;
+
+			$tOutput = '<input type="text" ' . self::attributes($uAttributes) . ' />';
 
 			return $tOutput;
 		}
@@ -126,22 +134,21 @@ if(extensions::isSelected('html')) {
 		/**
 		* @ignore
 		*/
-		public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uId = null) {
-			if(is_null($uId)) {
-				$uId = $uName;
-			}
-
-			$tOutput = '<input type="checkbox" id="' . string::dquote($uId) . '" name="' . string::dquote($uName) . '" value="' . string::dquote($uValue) . '"';
+		public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uAttributes = array()) {
+			$uAttributes['name'] = $uName;
+			$uAttributes['value'] = $uValue;
 
 			if($uCurrentValue == $uValue) {
-				$tOutput .= ' checked="checked"';
+				$uAttributes['checked'] = 'checked';
 			}
-
-			$tOutput .= ' />';
+			
+			$tOutput = '<label><input type="checkbox" ' . self::attributes($uAttributes) . ' />';
 
 			if(!is_null($uText)) {
-				$tOutput .= '<label for="' . string::dquote($uId) . '">' . $uText . '</label>';
+				$tOutput .= $uText;
 			}
+			
+			$tOutput .= '</label>';
 
 			return $tOutput;
 		}
@@ -213,15 +220,15 @@ if(extensions::isSelected('html')) {
 			if($tPages > 1) {
 				if($tCurrent <= 1) {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;'));
 				}
 				else {
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
 					}
-					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
 				}
 
 				if($tStart > 1) {
@@ -234,10 +241,10 @@ if(extensions::isSelected('html')) {
 
 			for($i = $tStart;$i <= $tEnd;$i++) {
 				if($tCurrent == $i) {
-					$tResult .= string::format($uOptions['activelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['activelink'], array('root' => framework::$siteroot, 'page' => $i, 'pagetext' => $i));
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $i, 'pagetext' => $i));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'page' => $i, 'pagetext' => $i));
 				}
 
 				if($i != $tEnd) {
@@ -254,15 +261,15 @@ if(extensions::isSelected('html')) {
 				}
 
 				if($tCurrent >= $tPages) {
-					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['passivelink'], array('root' => framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 				else {
-					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
+					$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
 					if($uOptions['firstlast']) {
-						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'lang' => i8n::$languageKey, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+						$tResult .= string::format($uOptions['link'], array('root' => framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
 					}
 				}
 			}
@@ -277,31 +284,31 @@ if(extensions::isSelected('html')) {
 			switch($uType) {
 			case 'html5':
 			case 'xhtml5':
-				return '<!DOCTYPE html>';
+				return '<!DOCTYPE html>' . PHP_EOL;
 				break;
 			case 'xhtml11':
 			case 'xhtml1.1':
-				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' . PHP_EOL;
 				break;
 			case 'xhtml1':
 			case 'xhtml1-strict':
-				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . PHP_EOL;
 				break;
 			case 'xhtml1-trans':
-				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . PHP_EOL;
 				break;
 			case 'xhtml1-frame':
-				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+				return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' . PHP_EOL;
 				break;
 			case 'html4-strict':
-				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL;
 				break;
 			case 'html4':
 			case 'html4-trans':
-				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . PHP_EOL;
 				break;
 			case 'html4-frame':
-				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">';
+				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">' . PHP_EOL;
 				break;
 			}
 

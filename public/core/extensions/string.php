@@ -1,6 +1,8 @@
 <?php
 
 if(extensions::isSelected('string')) {
+	define('FILTER_VALIDATE_BOOLEAN_FIX', 'filterValidateBooleanFix');
+
 	/**
 	* String Extension
 	*
@@ -83,7 +85,14 @@ if(extensions::isSelected('string')) {
 		public static function filter() {
 			$uArgs = func_get_args();
 
-			if(is_callable($uArgs[1], true)) {
+			if($uArgs[1] == FILTER_VALIDATE_BOOLEAN_FIX) {
+				if($uArgs[0] === true || $uArgs[0] == 'true' || $uArgs[0] === 1 || $uArgs[0] == '1') {
+					return true;
+				}
+
+				return false;
+			}
+			else if(is_callable($uArgs[1], true)) {
 				$tValue = array_shift($uArgs);
 				$tFunction = $uArgs[0];
 				$uArgs[0] = $tValue;
@@ -221,14 +230,14 @@ if(extensions::isSelected('string')) {
 
 			switch($tType) {
 			case 'boolean':
-				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')<br />' . PHP_EOL;
+				$tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')' . PHP_EOL;
 				break;
 			case 'double':
-				$tOut .= '<b>' . $tType . '</b>(\'' . number_format($tVariable, 22, '.', '') . '\')<br />' . PHP_EOL;
+				$tOut .= '<b>' . $tType . '</b>(\'' . number_format($tVariable, 22, '.', '') . '\')' . PHP_EOL;
 				break;
 			case 'integer':
 			case 'string':
-				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')<br />' . PHP_EOL;
+				$tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')' . PHP_EOL;
 				break;
 			case 'array':
 			case 'object':
@@ -241,7 +250,7 @@ if(extensions::isSelected('string')) {
 				$tOut .= '<b>' . $tType . '</b>(' . $tCount . ')';
 
 				if($tCount > 0) {
-					$tOut .= ' {' . '<div style="padding: 0px 0px 0px 50px;">' . PHP_EOL;
+					$tOut .= ' {' . PHP_EOL;
 
 					$tTabs .= self::$tab;
 					foreach($tVariable as $tKey => &$tVal) {
@@ -250,25 +259,25 @@ if(extensions::isSelected('string')) {
 					}
 					$tTabs = substr($tTabs, 0, -1);
 
-					$tOut .= '</div>' . $tTabs . '}';
+					$tOut .= $tTabs . '}';
 				}
 
-				$tOut .= '<br />' . PHP_EOL;
+				$tOut .= PHP_EOL;
 				break;
 			case 'resource':
-				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')<br />' . PHP_EOL;
+				$tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')' . PHP_EOL;
 				break;
 			case 'NULL':
-				$tOut .= '<b><i>null</i></b><br />' . PHP_EOL;
+				$tOut .= '<b><i>null</i></b>' . PHP_EOL;
 				break;
 			case 'unknown type':
 			default:
-				$tOut .= '<b>unknown</b><br />' . PHP_EOL;
+				$tOut .= '<b>unknown</b>' . PHP_EOL;
 				break;
 			}
 
 			if($tOutput) {
-				echo $tOut;
+				echo '<pre>' . $tOut . '</pre>';
 				return;
 			}
 
@@ -395,15 +404,65 @@ if(extensions::isSelected('string')) {
 		/**
 		* @ignore
 		*/
-		public static function squote($uString) {
+		public static function squote($uString, $uCover = false) {
+			// if(is_null($uString)) {
+			// 	return 'null';
+			// }
+
+			if($uCover) {
+				return '\'' . strtr($uString, array('\\' => '\\\\', '\'' => '\\\'')) . '\'';
+			}
+
 			return strtr($uString, array('\\' => '\\\\', '\'' => '\\\''));
 		}
 
 		/**
 		* @ignore
 		*/
-		public static function dquote($uString) {
+		public static function dquote($uString, $uCover = false) {
+			// if(is_null($uString)) {
+			// 	return 'null';
+			// }
+
+			if($uCover) {
+				return '"' . strtr($uString, array('\\' => '\\\\', '"' => '\\"')) . '"';
+			}
+
 			return strtr($uString, array('\\' => '\\\\', '"' => '\\"'));
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function &squoteArray($uArray, $uCover = false) {
+			$tArray = array();
+			foreach($uArray as $tKey => &$tValue) {
+				if($uCover) {
+					$tArray[$tKey] = '\'' . strtr($tValue, array('\\' => '\\\\', '\'' => '\\\'')) . '\'';
+					continue;
+				}
+
+				$tArray[$tKey] = strtr($tValue, array('\\' => '\\\\', '\'' => '\\\''));
+			}
+
+			return $tArray;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function &dquoteArray($uArray, $uCover = false) {
+			$tArray = array();
+			foreach($uArray as $tKey => &$tValue) {
+				if($uCover) {
+					$tArray[$tKey] = '\'' . strtr($tValue, array('\\' => '\\\\', '"' => '\\"')) . '\'';
+					continue;
+				}
+
+				$tArray[$tKey] = strtr($tValue, array('\\' => '\\\\', '"' => '\\"'));
+			}
+
+			return $tArray;
 		}
 
 		/**
@@ -488,6 +547,13 @@ if(extensions::isSelected('string')) {
 		/**
 		* @ignore
 		*/
+		public static function strstr($uString, $uNeedle, $uBeforeNeedle = false) {
+			return mb_strstr($uString, $uNeedle, $uBeforeNeedle);
+		}
+		
+		/**
+		* @ignore
+		*/
 		public static function sizeCalc($uSize, $uPrecision = 0) {
 			static $tSize = ' KMGT';
 			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
@@ -509,7 +575,7 @@ if(extensions::isSelected('string')) {
 		* @ignore
 		*/
 		public static function htmlEscape($uString) {
-			return htmlspecialchars($uString, ENT_COMPAT, 'UTF-8'); //  | ENT_HTML5
+			return htmlspecialchars($uString, ENT_COMPAT, mb_internal_encoding()); //  | ENT_HTML5
 		}
 
 		/**
@@ -592,22 +658,25 @@ if(extensions::isSelected('string')) {
 		* @ignore
 		*/
 		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
+			$tParts = explode('#', $uString, 2);
+
 			$tParsed = array(
-				'segments' => array()
+				'_segments' => array(),
+				'_hash' => isset($tParts[1]) ? $tParts[1] : null
 			);
 			$tStrings = array('', '');
 			$tStrIndex = 0;
 
 			$tPos = 0;
-			$tLen = self::length($uString);
+			$tLen = self::length($tParts[0]);
 
 			if(!is_null($uSeperator)) {
 				for(;$tPos < $tLen;$tPos++) {
-					$tChar = self::substr($uString, $tPos, 1);
+					$tChar = self::substr($tParts[0], $tPos, 1);
 
 					if(self::strpos($uSeperator, $tChar) !== false) {
 						if(self::length($tStrings[1]) > 0) {
-							$tParsed['segments'][] = $tStrings[1];
+							$tParsed['_segments'][] = $tStrings[1];
 						}
 
 						$tStrings = array('', null);
@@ -624,14 +693,14 @@ if(extensions::isSelected('string')) {
 
 			if(self::length($tStrings[1]) > 0) {
 				if(self::length($tStrings[1]) > 0) {
-					$tParsed['segments'][] = $tStrings[1];
+					$tParsed['_segments'][] = $tStrings[1];
 				}
 
 				$tStrings = array('', null);
 			}
 
 			for(;$tPos < $tLen;$tPos++) {
-				$tChar = self::substr($uString, $tPos, 1);
+				$tChar = self::substr($tParts[0], $tPos, 1);
 
 				if(self::strpos($uParameters, $tChar) !== false) {
 					if(self::length($tStrings[0]) > 0 && !array_key_exists($tStrings[0], $tParsed)) {

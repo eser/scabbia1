@@ -27,6 +27,23 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
+		const CACHE_NONE = 0;
+		/**
+		* @ignore
+		*/
+		const CACHE_MEMORY = 1;
+		/**
+		* @ignore
+		*/
+		const CACHE_FILE = 2;
+		/**
+		* @ignore
+		*/
+		const CACHE_STORAGE = 4;
+
+		/**
+		* @ignore
+		*/
 		public static function extension_info() {
 			return array(
 				'name' => 'database',
@@ -184,7 +201,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function execute($uQuery) {
+		public function &execute($uQuery) {
 			$this->open();
 
 			if(framework::$development >= 1) {
@@ -197,17 +214,19 @@ if(extensions::isSelected('database')) {
 				);
 			}
 
-			$this->provider->execute($uQuery);
+			$tReturn = $this->provider->execute($uQuery);
 
 			if(framework::$development >= 1) {
 				profiler::stop();
 			}
+
+			return $tReturn;
 		}
 
 		/**
 		* @ignore
 		*/
-		public function query($uQuery, $uParameters = array(), $uCaching = false) {
+		public function query($uQuery, $uParameters = array(), $uCaching = database::CACHE_MEMORY) {
 			$this->open();
 
 			if(framework::$development >= 1) {
@@ -224,24 +243,34 @@ if(extensions::isSelected('database')) {
 
 			$uPropsSerialized = crc32($uQuery);
 			foreach($uParameters as &$tProp) {
-				$uPropsSerialized .= '_' . io::sanitize($tProp);
+				$uPropsSerialized .= '_' . $tProp;
 			}
 
-			if($uCaching) {
-				if(isset($this->cache[$uPropsSerialized])) {
-					$tData = &$this->cache[$uPropsSerialized]->resume($this);
+			if(($uCaching & database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
+				$tData = &$this->cache[$uPropsSerialized]->resume($this);
+				$tLoadedFromCache = true;
+			}
+			else if(($uCaching & database::CACHE_FILE) > 0) { //  && framework::$development <= 0
+				$tData = cache::fileGet($tFolder, $uPropsSerialized, -1, true);
+
+				if($tData !== false) {
+					$this->cache[$uPropsSerialized] = &$tData->resume($this);
 					$tLoadedFromCache = true;
 				}
-				else { //  && framework::$development <= 0
-					$tData = cache::get($tFolder, $uPropsSerialized, cache::$defaultAge);
+				else {
+					$tLoadedFromCache = false;
+				}
+			}
+			else if(($uCaching & database::CACHE_STORAGE) > 0) { //  && framework::$development <= 0
+				$tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
+				$tData = cache::storageGet($tKey);
 
-					if($tData !== false) {
-						$this->cache[$uPropsSerialized] = &$tData->resume($this);
-						$tLoadedFromCache = true;
-					}
-					else {
-						$tLoadedFromCache = false;
-					}
+				if($tData !== false) {
+					$this->cache[$uPropsSerialized] = &$tData->resume($this);
+					$tLoadedFromCache = true;
+				}
+				else {
+					$tLoadedFromCache = false;
 				}
 			}
 			else {
@@ -250,13 +279,7 @@ if(extensions::isSelected('database')) {
 			}
 
 			if($tData === false) {
-				if($uCaching) {
-					$tData = new databaseQueryResult($uQuery, $uParameters, $this, $tFolder, $uPropsSerialized);
-				}
-				else {
-					$tData = new databaseQueryResult($uQuery, $uParameters, $this, null, null);
-				}
-
+				$tData = new databaseQueryResult($uQuery, $uParameters, $this, $uCaching, $tFolder, $uPropsSerialized);
 				$this->stats['query']++;
 			}
 			else {
@@ -265,6 +288,7 @@ if(extensions::isSelected('database')) {
 
 			if(framework::$development >= 1) {
 				profiler::stop(
+					//! affected rows
 					array(
 						'affectedRows' => $tData->count(),
 						'fromCache' => $tLoadedFromCache
@@ -286,6 +310,8 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public function serverInfo() {
+			$this->open();
+
 			return $this->provider->serverInfo();
 		}
 
@@ -477,13 +503,13 @@ if(extensions::isSelected('database')) {
 			$this->offset = -1;
 			$this->sequence = '';
 			$this->returning = '';
-			$this->caching = false;
+			$this->caching = database::CACHE_NONE;
 		}
 
 		/**
 		* @ignore
 		*/
-		public function setTable($uTableName) {
+		public function &setTable($uTableName) {
 			$this->table = $uTableName;
 
 			return $this;
@@ -492,7 +518,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
+		public function &joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
 			$this->table .= ' ' . $uJoinType . ' JOIN ' . $uTableName . ' ON ' . $uCondition;
 
 			return $this;
@@ -501,9 +527,9 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setFields($uArray) {
+		public function &setFields($uArray) {
 			foreach($uArray as $tField => &$tValue) {
-				// $this->fields[$tField] = '\'' . string::squote($tValue) . '\'';
+				// $this->fields[$tField] = string::squote($tValue, true);
 				if(is_null($tValue)) {
 					$this->fields[$tField] = 'NULL';
 				}
@@ -519,7 +545,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setFieldsDirect($uArray) {
+		public function &setFieldsDirect($uArray) {
 			$this->fields = &$uArray;
 
 			return $this;
@@ -528,7 +554,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function addField($uField, $uValue = null) {
+		public function &addField($uField, $uValue = null) {
 			if(func_num_args() == 1) {
 				$this->fields[] = $uField;
 
@@ -539,7 +565,7 @@ if(extensions::isSelected('database')) {
 				$this->fields[$uField] = 'NULL';
 			}
 			else {
-				// $this->fields[$uField] = '\'' . string::squote($uValue) . '\'';
+				// $this->fields[$uField] = string::squote($uValue, true);
 				$this->fields[$uField] = ':' . $uField;
 				$this->parameters[$this->fields[$uField]] = $uValue;
 			}
@@ -550,7 +576,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function addFieldDirect($uField, $uValue) {
+		public function &addFieldDirect($uField, $uValue) {
 			$this->fields[$uField] = $uValue;
 
 			return $this;
@@ -559,7 +585,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function addParameter($uParameter, $uValue) {
+		public function &addParameter($uParameter, $uValue) {
 			$this->parameters[$uParameter] = $uValue;
 
 			return $this;
@@ -568,17 +594,12 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setWhere($uCondition) {
+		public function &setWhere($uCondition, $uList = null) {
 			$this->where = $uCondition;
 
-			return $this;
-		}
-
-		/**
-		* @ignore
-		*/
-		public function andWhere($uCondition) {
-			$this->where .= ' AND ' . $uCondition;
+			if(!is_null($uList)) {
+				$this->where .= ' (' . implode(', ', string::squoteArray($uList, true)) . ')';
+			}
 
 			return $this;
 		}
@@ -586,8 +607,27 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function orWhere($uCondition) {
-			$this->where .= ' OR ' . $uCondition;
+		public function &andWhere($uCondition, $uList = null, $uKeyword = 'OR') {
+			if(is_array($uCondition)) {
+				if(count($uCondition) > 0) {
+					if(strlen($this->where) > 0) {
+						$this->where .= ' AND ';
+					}
+
+					$this->where .= '(' . implode(' ' . $uKeyword . ' ', $uCondition) . ')';
+				}
+			}
+			else {
+				if(strlen($this->where) > 0) {
+					$this->where .= ' AND ';
+				}
+
+				$this->where .= $uCondition;
+
+				if(!is_null($uList)) {
+					$this->where .= ' (' . implode(', ', string::squoteArray($uList, true)) . ')';
+				}
+			}
 
 			return $this;
 		}
@@ -595,7 +635,35 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setGroupBy($uGroupBy) {
+		public function &orWhere($uCondition, $uList = null, $uKeyword = 'AND') {
+			if(is_array($uCondition)) {
+				if(count($uCondition) > 0) {
+					if(strlen($this->where) > 0) {
+						$this->where .= ' OR ';
+					}
+
+					$this->where .= '(' . implode(' ' . $uKeyword . ' ', $uCondition) . ')';
+				}
+			}
+			else {
+				if(strlen($this->where) > 0) {
+					$this->where .= ' OR ';
+				}
+
+				$this->where .= $uCondition;
+
+				if(!is_null($uList)) {
+					$this->where .= ' (' . implode(', ', string::squoteArray($uList, true)) . ')';
+				}
+			}
+
+			return $this;
+		}
+
+		/**
+		* @ignore
+		*/
+		public function &setGroupBy($uGroupBy) {
 			$this->groupby = $uGroupBy;
 
 			return $this;
@@ -604,7 +672,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function addGroupBy($uGroupBy) {
+		public function &addGroupBy($uGroupBy) {
 			$this->groupby .= ', ' . $uGroupBy;
 
 			return $this;
@@ -613,7 +681,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setOrderBy($uOrderBy, $uOrder = null) {
+		public function &setOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby = $uOrderBy;
 			if(!is_null($uOrder)) {
 				$this->orderby .= ' ' . $uOrder;
@@ -625,7 +693,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function addOrderBy($uOrderBy, $uOrder = null) {
+		public function &addOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby .= ', ' . $uOrderBy;
 			if(!is_null($uOrder)) {
 				$this->orderby .= ' ' . $uOrder;
@@ -637,7 +705,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setLimit($uLimit) {
+		public function &setLimit($uLimit) {
 			$this->limit = $uLimit;
 
 			return $this;
@@ -646,7 +714,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setOffset($uOffset) {
+		public function &setOffset($uOffset) {
 			$this->offset = $uOffset;
 
 			return $this;
@@ -655,7 +723,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setSequence($uSequence) {
+		public function &setSequence($uSequence) {
 			$this->sequence = $uSequence;
 
 			return $this;
@@ -664,7 +732,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setReturning($uReturning) {
+		public function &setReturning($uReturning) {
 			$this->returning = $uReturning;
 
 			return $this;
@@ -673,7 +741,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function setCaching($uCaching) {
+		public function &setCaching($uCaching) {
 			$this->caching = $uCaching;
 
 			return $this;
@@ -682,7 +750,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function insert() {
+		public function &insert() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlInsert($this->table, $this->fields, $this->returning),
 				$this->parameters,
@@ -704,7 +772,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function update() {
+		public function &update() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)),
 				$this->parameters,
@@ -719,7 +787,7 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function delete() {
+		public function &delete() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)),
 				$this->parameters,
@@ -734,9 +802,16 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
+		public function getQuery() {
+			return $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
+		}
+
+		/**
+		* @ignore
+		*/
 		public function &get() {
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, array('limit' => $this->limit, 'offset' => $this->offset)),
+				$this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset)),
 				$this->parameters,
 				$this->caching
 			);
@@ -797,6 +872,10 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
+		public $_caching = null;
+		/**
+		* @ignore
+		*/
 		public $_directory = null;
 		/**
 		* @ignore
@@ -822,10 +901,11 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
-		public function __construct($uQuery, $uParameters, &$uDatabase, $uDirectory, $uFilename) {
+		public function __construct($uQuery, $uParameters, &$uDatabase, $uCaching, $uDirectory, $uFilename) {
 			$this->_query = &$uQuery;
 			$this->_parameters = &$uParameters;
 			$this->_database = &$uDatabase;
+			$this->_caching = &$uCaching;
 			$this->_directory = &$uDirectory;
 			$this->_filename = &$uFilename;
 		}
@@ -948,6 +1028,24 @@ if(extensions::isSelected('database')) {
 		/**
 		* @ignore
 		*/
+		public function column($uKey) {
+			$tItems = array();
+
+			$this->_cursor = 0;
+			while($this->valid()) {
+				$tCurrent = $this->current();
+				$tItems[] = $tCurrent[$uKey];
+				$this->_cursor++;
+			}
+
+			$this->close();
+
+			return $tItems;
+		}
+
+		/**
+		* @ignore
+		*/
 		public function row() {
 			if(!$this->valid()) {
 				$this->close();
@@ -1025,13 +1123,18 @@ if(extensions::isSelected('database')) {
 
 			$this->_cursor = 0;
 
-			if(!is_null($this->_directory)) {
+			if(($this->_caching & database::CACHE_MEMORY) > 0) {
 				$this->_database->cache[$this->_filename] = &$this;
-				$this->_database = null;
-				cache::set($this->_directory, $this->_filename, $this);
 			}
-			else {
-				$this->_database = null;
+
+			$this->_database = null;
+
+			if(($this->_caching & database::CACHE_FILE) > 0) {
+				cache::fileSet($this->_directory, $this->_filename, $this);
+			}
+			else if(($this->_caching & database::CACHE_STORAGE) > 0) {
+				$tKey = strtr($this->_directory, '/', '_') . $this->_filename;
+				cache::storageSet($tKey, $this);
 			}
 		}
 

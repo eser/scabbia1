@@ -110,10 +110,11 @@
 		* @param object $uCallbackObject container object
 		*/
 		public static function callback($uCallbackMethod, &$uCallbackObject = null) {
+			/*
 			if(func_num_args() >= 2) {
 				return array(&$uCallbackObject, $uCallbackMethod);
 			}
-
+			*/
 			return $uCallbackMethod;
 		}
 	}

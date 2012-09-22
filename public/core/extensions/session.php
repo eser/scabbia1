@@ -69,13 +69,13 @@ if(extensions::isSelected('session')) {
 				self::$id = $_COOKIE[self::$sessionName];
 			}
 
-			events::register('output', events::Callback('session::output'));
+			events::register('output', events::callback('session::output'));
 		}
 
 		/**
 		* @ignore
 		*/
-		public static function output() {
+		public static function output($uParms) {
 			self::save();
 		}
 
@@ -87,7 +87,7 @@ if(extensions::isSelected('session')) {
 				$tIpCheck = (bool)config::get('/session/cookie/@ipCheck', '0');
 				$tUACheck = (bool)config::get('/session/cookie/@uaCheck', '1');
 
-				$tData = cache::get('sessions/', self::$id, self::$sessionLife);
+				$tData = cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
 				if($tData !== false) {
 					if(
 						(!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
@@ -133,7 +133,7 @@ if(extensions::isSelected('session')) {
 				'ua' => $_SERVER['HTTP_USER_AGENT']
 			);
 
-			cache::set('sessions/', self::$id, $tData);
+			cache::fileSet('sessions/', self::$id, $tData);
 
 			self::$isModified = false;
 		}
@@ -152,7 +152,7 @@ if(extensions::isSelected('session')) {
 
 			setcookie(self::$sessionName, '', time() - 3600, '/');
 
-			cache::destroy('sessions/', self::$id);
+			cache::fileDestroy('sessions/', self::$id);
 
 			self::$id = null;
 			self::$data = null;
@@ -164,7 +164,7 @@ if(extensions::isSelected('session')) {
 		/**
 		* @ignore
 		*/
-		public static function get($uKey, $uDefault = null) {
+		public static function &get($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
 			}
@@ -300,6 +300,15 @@ if(extensions::isSelected('session')) {
 			}
 
 			return array_keys(self::$flashdata_loaded);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function export($tOutput = true) {
+			self::open();
+
+			return string::vardump(self::$data, $tOutput);
 		}
 	}
 }

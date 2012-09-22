@@ -70,7 +70,7 @@ if(extensions::isSelected('viewengine_twig')) {
 				$model = array_merge($model, $uObject['extra']);
 			}
 
-			echo self::$engine->render($uObject['viewFile'], $model);
+			echo self::$engine->render($uObject['templateFile'], $model);
 		}
 	}
 }

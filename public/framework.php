@@ -22,8 +22,8 @@
 // Constant definitions
 	define('PHP_OS_WINDOWS', (DIRECTORY_SEPARATOR == '\\'));
 	define('PHP_SAPI_CLI', (PHP_SAPI == 'cli'));
-	define('QPATH_BASE', pathinfo(__FILE__, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR);
-	define('QPATH_CORE', QPATH_BASE . 'core' . DIRECTORY_SEPARATOR);
+	define('QPATH_BASE', strtr(pathinfo(__FILE__, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/');
+	define('QPATH_CORE', QPATH_BASE . 'core/');
 	define('QTIME_INIT', microtime(true));
 	define('QEXT_PHP', '.' . pathinfo(__FILE__, PATHINFO_EXTENSION));
 

@@ -19,6 +19,8 @@
 		<include path="{core}extensions/html.php" />
 		<include path="{core}extensions/i8n.php" />
 		<include path="{core}extensions/mvc.php" />
+		<include path="{core}extensions/repository.php" />
+		<include path="{core}extensions/viewengine_markdown.php" />
 		<include path="{core}controllers/*.php" />
 		<include path="{core}models/*.php" />
 	</includeList>
@@ -41,5 +43,7 @@
 		<extension name="html" />
 		<extension name="i8n" />
 		<extension name="mvc" />
+		<extension name="repository" />
+		<extension name="viewengine_markdown" />
 	</extensionList>
 </scabbia>

@@ -155,33 +155,68 @@ if(extensions::isSelected('io')) {
 		/**
 		* @ignore
 		*/
-		public static function map($uPath, $uPattern = null, $uRecursive = true) {
-			$tArray = array();
+		public static function map($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false) {
+			$tArray = array('.' => array());
 			$tDir = new DirectoryIterator($uPath);
 
 			foreach($tDir as $tFile) {
-				if($tFile->isDot()) {
+				$tFileName = $tFile->getFilename();
+
+				if($tFileName[0] == '.') { // $tFile->isDot()
 					continue;
 				}
-
-				$tFile2 = $tFile->getFilename();
 
 				if($tFile->isDir()) {
 					if($uRecursive) {
-						$tArray[$tFile2] = self::map($uPath . '/' . $tFile2, $uPattern, true);
+						$tArray[$tFileName] = self::map($uPath . '/' . $tFileName, $uPattern, true, $uBasenames);
+						continue;
 					}
-					else {
-						$tArray[$tFile2] = null;
-					}
+
+					$tArray[$tFileName] = null;
 					continue;
 				}
 
-				if($tFile->isFile() && (is_null($uPattern) || fnmatch3($uPattern, $tFile2))) {
-					$tArray[] = $tFile2;
+				if($tFile->isFile() && (is_null($uPattern) || fnmatch($uPattern, $tFileName))) {
+					$tArray['.'][] = ($uBasenames ? pathinfo($tFileName, PATHINFO_FILENAME) : $tFileName);
 				}
 			}
 
 			return $tArray;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function &mapFlatten($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false, &$uArray = null, $uPrefix = '') {
+			if(is_null($uArray)) {
+				$uArray = array();
+			}
+
+			$tDir = new DirectoryIterator($uPath);
+
+			foreach($tDir as $tFile) {
+				$tFileName = $tFile->getFilename();
+
+				if($tFileName[0] == '.') { // $tFile->isDot()
+					continue;
+				}
+
+				if($tFile->isDir()) {
+					if($uRecursive) {
+						$tDirectory = $uPrefix . $tFileName . '/';
+						// $uArray[] = $tDirectory;
+						self::mapFlatten($uPath . '/' . $tFileName, $uPattern, true, $uBasenames, $uArray, $tDirectory);
+					}
+
+					continue;
+				}
+
+				if($tFile->isFile() && (is_null($uPattern) || fnmatch($uPattern, $tFileName))) {
+					$uArray[] = $uPrefix . ($uBasenames ? pathinfo($tFileName, PATHINFO_FILENAME) : $tFileName);
+				}
+			}
+
+			return $uArray;
 		}
 
 		/**
@@ -254,8 +289,14 @@ if(extensions::isSelected('io')) {
 		/**
 		* @ignore
 		*/
-		public static function &sanitize($uFilename) {
-			static $aReplaceChars = array('_' => '-', '\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
+		public static function &sanitize($uFilename, $uIncludeAll = false) {
+			static $aReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
+
+			if($uIncludeAll) {
+				$uFilename = strtr($uFilename, $aReplaceChars);
+				return $uFilename;
+			}
+
 			$tPathInfo = pathinfo($uFilename);
 			$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
 

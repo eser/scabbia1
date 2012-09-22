@@ -88,6 +88,7 @@ if(extensions::isSelected('http')) {
 				'HTTP_HOST',
 				'HTTP_USER_AGENT',
 				'HTTP_REFERER',
+				'SCRIPT_FILENAME',
 				'PHP_SELF',
 				'QUERY_STRING',
 				'REQUEST_URI',
@@ -117,14 +118,16 @@ if(extensions::isSelected('http')) {
 
 			// phpself and query string
 			$_SERVER['PHP_SELF'] = str_replace(array('<', '>'), array('%3C', '%3E'), $_SERVER['PHP_SELF']);
-			$_SERVER['QUERY_STRING'] = self::xss($_SERVER['QUERY_STRING']);
-
-			$tPos = strpos($_SERVER['REQUEST_URI'], '?');
-			if($tPos === false) {
-				$_SERVER['REQUEST_PATH'] = $_SERVER['REQUEST_URI'];
+			$tPhpSelfInfo = pathinfo($_SERVER['PHP_SELF']);
+			if($tPhpSelfInfo['basename'] == 'index.php') {
+				$_SERVER['PHP_SELF'] = $tPhpSelfInfo['dirname'] . '/';
 			}
-			else {
-				$_SERVER['REQUEST_PATH'] = substr($_SERVER['REQUEST_URI'], 0, $tPos);
+
+			$_SERVER['REQUEST_STRING'] = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['PHP_SELF']));
+
+			$tPos = strpos($_SERVER['REQUEST_STRING'], '?');
+			if($tPos !== false) {
+				$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_STRING'], $tPos + 1);
 			}
 
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
@@ -168,9 +171,35 @@ if(extensions::isSelected('http')) {
 			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true);
 			self::$contentTypes = self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true);
 
-			$_GET = self::parseGet($_SERVER['QUERY_STRING']);
+			$_GET = self::parseGet($_SERVER['REQUEST_STRING']);
 
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
+
+			events::register('output', events::callback('http::output'));
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function output($uParms) {
+			if(self::$isAjax) {
+				$tLastContentType = http::sentHeaderValue('Content-Type');
+				$tArray = array(
+					'"isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true'),
+					'"errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true))
+				);
+
+				if($tLastContentType == false) {
+					self::sendHeader('Content-Type', 'application/json', true);
+
+					$tArray[] = '"object": ' . string::dquote($uParms['content'], true);
+				}
+				else {
+					$tArray[] = '"object": ' . $uParms['content'];
+				}
+
+				$uParms['content'] = '{' . implode(', ', $tArray) . '}';
+			}
 		}
 
 		/**
@@ -241,8 +270,13 @@ if(extensions::isSelected('http')) {
 		/**
 		* @ignore
 		*/
-		public static function xss($uString) {
-			return str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
+		public static function &xss(&$uString) {
+			if(is_string($uString)) {
+				$tString = str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
+				return $tString;
+			}
+
+			return $uString;
 		}
 
 		/**
@@ -265,8 +299,8 @@ if(extensions::isSelected('http')) {
 		public static function encodeArray($uArray) {
 			$tReturn = array();
 
-			foreach($uArray as $tKey => $tValue) {
-				$tReturn[] = $tKey . '=' . urlencode($tValue);
+			foreach($uArray as $tKey => &$tValue) {
+				$tReturn[] = urlencode($tKey) . '=' . urlencode($tValue);
 			}
 
 			return implode('&', $tReturn);
@@ -298,9 +332,9 @@ if(extensions::isSelected('http')) {
 		* @ignore
 		*/
 		public static function secureUrl($uUrl) {
-			if(http::$isSecure && substr($uUrl, 0, 7) == 'http://') {
-				return 'https://' . substr($uUrl, 7);
-			}
+//			if(http::$isSecure && substr($uUrl, 0, 7) == 'http://') {
+//				return 'https://' . substr($uUrl, 7);
+//			}
 
 			return $uUrl;
 		}
@@ -374,6 +408,25 @@ if(extensions::isSelected('http')) {
 			else {
 				header($uHeader, $uReplace);
 			}
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function sentHeaderValue($uKey) {
+			foreach(headers_list() as $tHeaderRow) {
+				$tHeader = explode(': ', $tHeaderRow, 2);
+
+				if(count($tHeader) < 2) {
+					continue;
+				}
+
+				if(strcasecmp($tHeader[0], $uKey) == 0) {
+					return $tHeader[1];
+				}
+			}
+
+			return false;
 		}
 
 		/**
@@ -519,15 +572,18 @@ if(extensions::isSelected('http')) {
 		*/
 		public static function buildQueryString($uArray) {
 			//! $tDefaultKey = config::get('/http/request/@getKeys', '=');
-			if(isset($uArray['segments'])) {
-				$tString = '/' . implode('/', $uArray['segments']) . '?';
+			/*
+			if(isset($uArray['_segments'])) {
+				$tString = '/' . implode('/', $uArray['_segments']) . '?';
 			}
 			else {
 				$tString = '?';
 			}
+			*/
+			$tString = '?';
 
 			foreach($uArray as $tKey => &$tItem) {
-				if($tKey == 'segments') {
+				if($tKey == '_segments' || $tKey == '_hash') {
 					continue;
 				}
 
@@ -552,12 +608,12 @@ if(extensions::isSelected('http')) {
 
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, $_GET[$uKey]);
+				array_unshift($tArgs, self::xss($_GET[$uKey]));
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
 
-			return $_GET[$uKey];
+			return self::xss($_GET[$uKey]);
 		}
 
 		/**
@@ -570,12 +626,12 @@ if(extensions::isSelected('http')) {
 
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, $_POST[$uKey]);
+				array_unshift($tArgs, self::xss($_POST[$uKey]));
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
 
-			return $_POST[$uKey];
+			return self::xss($_POST[$uKey]);
 		}
 
 		/**
@@ -588,12 +644,12 @@ if(extensions::isSelected('http')) {
 
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, $_COOKIE[$uKey]);
+				array_unshift($tArgs, self::xss($_COOKIE[$uKey]));
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
 
-			return $_COOKIE[$uKey];
+			return self::xss($_COOKIE[$uKey]);
 		}
 	}
 }

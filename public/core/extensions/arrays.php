@@ -25,7 +25,32 @@ if(extensions::isSelected('arrays')) {
 		/**
 		* @ignore
 		*/
-		public static function get($uArray, $uElement, $uDefault = null) {
+		public static function &flat() {
+			$tArray = array();
+
+			foreach(func_get_args() as $tKey => $tValue) {
+				if(is_array($tValue)) {
+					foreach(call_user_func_array('self::flat', $tValue) as $tKey2 => $tValue2) {
+						$tArray[] = $tValue2;
+					}
+
+					continue;
+				}
+
+				$tArray[] = $tValue;
+			}
+
+			return $tArray;
+		}
+
+		/**
+		* Gets the specified element in array, otherwise returns default value.
+		*
+		* @param array $uArray array
+		* @param mixed $uElement key
+		* @param mixed $uDefault default value
+		*/
+		public static function &get($uArray, $uElement, $uDefault = null) {
 			if(!isset($uArray[$uElement])) {
 				return $uDefault;
 			}
@@ -34,14 +59,15 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Gets the specified elements in array.
+		*
+		* @param array $uArray array
+		* @param mixed $uElement key
 		*/
-		public static function getArray() {
-			$uArgs = func_get_args();
-			$uArray = array_shift($uArgs);
+		public static function &getArray($uArray) {
 			$tReturn = array();
 
-			foreach(array_keys($uArgs) as $tKey) {
+			foreach(array_slice(func_get_args(), 1) as $tKey) {
 				$tReturn[$tKey] = $uArray[$tKey];
 			}
 
@@ -49,9 +75,11 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Gets a random element in array.
+		*
+		* @param array $uArray array
 		*/
-		public static function getRandom($uArray) {
+		public static function &getRandom($uArray) {
 			$tCount = count($uArray);
 			if($tCount == 0) {
 				return null;
@@ -62,7 +90,11 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Returns an array filled with the elements in specified range.
+		*
+		* @param int $uMinimum minumum number
+		* @param int $uMaximum maximum number
+		* @param bool $uWithKeys whether set keys or not
 		*/
 		public static function range($uMinimum, $uMaximum, $uWithKeys = false) {
 			$tReturn = array();
@@ -80,15 +112,20 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Sorts an array by key.
+		*
+		* @param array $uArray array
+		* @param mixed $uField field
+		* @param string $uOrder order
 		*/
-		public static function sortByKey($uArray, $uField, $uOrder = 'asc') {
+		public static function &sortByKey($uArray, $uField, $uOrder = 'asc') {
+			$tReturn = array();
             if(count($uArray) == 0) {
-				return;
+				return $tReturn;
 			}
 
 			$tValues = array();
-			foreach ($uArray as $tKey => $tValue) {
+			foreach($uArray as $tKey => &$tValue) {
 				$tValues[$tKey] = $tValue[$uField];
 			}
 
@@ -99,7 +136,6 @@ if(extensions::isSelected('arrays')) {
 				asort($tValues);
 			}
 
-			$tReturn = array();
 			foreach(array_keys($tValues) as $tKey) {
 				$tReturn[] = $uArray[$tKey];
 			}
@@ -108,7 +144,10 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Categorizes an array by key.
+		*
+		* @param array $uArray array
+		* @param mixed $uKey key
 		*/
 		public static function &categorize($uArray, $uKey) {
 			$tReturn = array();
@@ -126,14 +165,34 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* ....
+		*
+		* @param array $uArray array
+		* @param mixed $uKey key
+		*/
+		public static function &assignKeys($uArray, $uKey) {
+			$tReturn = array();
+
+			foreach($uArray as &$tRow) {
+				$tReturn[$tRow[$uKey]] = $tRow;
+			}
+
+			return $tReturn;
+		}
+
+		/**
+		* Extracts specified column from the array.
+		*
+		* @param array $uArray array
+		* @param mixed $uKey key
+		* @param bool $uSkipEmpties whether skip empty entries or not
 		*/
 		public static function &column($uArray, $uKey, $uSkipEmpties = false) {
 			$tReturn = array();
 
 			foreach($uArray as &$tRow) {
-				if(isset($tRow[$tKey])) {
-					$tReturn[] = $tRow[$tKey];
+				if(isset($tRow[$uKey])) {
+					$tReturn[] = $tRow[$uKey];
 				}
 				else if(!$uSkipEmpties) {
 					$tReturn[] = null;
@@ -144,11 +203,15 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Gets the first matching row.
+		*
+		* @param array $uArray array
+		* @param mixed $uKey key
+		* @param mixed $uValue value
 		*/
 		public static function getRow($uArray, $uKey, $uValue) {
 			foreach($uArray as &$tRow) {
-				if(isset($tRow[$tKey]) && $tRow[$tKey] == $uValue) {
+				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
 					return $tRow;
 				}
 			}
@@ -157,9 +220,48 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		 * Gets the first matching row's key.
+			*
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 * @param mixed $uValue value
+		 */
+		public static function getRowKey($uArray, $uKey, $uValue) {
+			foreach($uArray as $tKey => &$tRow) {
+				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
+					return $tKey;
+				}
+			}
+			
+			return false;
+		}
+
+		/**
+		* Gets the matching rows.
+		*
+		* @param array $uArray array
+		* @param mixed $uKey key
+		* @param mixed $uValue value
 		*/
-		public static function combine($uArray1, $uArray2) {
+		public static function &getRows($uArray, $uKey, $uValue) {
+			$tReturn = array();
+
+			foreach($uArray as $tKey => &$tRow) {
+				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
+					$tReturn[$tKey] = $tRow;
+				}
+			}
+
+			return $tReturn;
+		}
+
+		/**
+		* Combines two array properly.
+		*
+		* @param array $uArray1 first array
+		* @param array $uArray2 second array
+		*/
+		public static function &combine($uArray1, $uArray2) {
 			$tArray = array();
 
 			for($i = 0, $tLen = count($uArray1); $i < $tLen; $i++) {
@@ -175,7 +277,10 @@ if(extensions::isSelected('arrays')) {
 		}
 
 		/**
-		* @ignore
+		* Sorts an array by priority list.
+		*
+		* @param array $uArray array
+		* @param array $uPriorities priority list
 		*/
 		public static function sortByPriority($uArray, $uPriorities) {
 			$tArray = array();

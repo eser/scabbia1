@@ -1,6 +1,6 @@
 <?php
 
-	class shared extends Controller {
+	class shared extends controller {
 		public function notfound() {
 			$this->view();
 		}

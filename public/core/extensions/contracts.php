@@ -7,7 +7,7 @@ if(extensions::isSelected('contracts')) {
 	* @package Scabbia
 	* @subpackage ExtensibilityExtensions
 	*
-	* @todo add more validators such as phone, date, digit, isUnique, etc.
+	* @todo add more validators such as phone, hex, octal, digit, isUnique, etc.
 	*/
 	class contracts {
 		/**
@@ -21,63 +21,91 @@ if(extensions::isSelected('contracts')) {
 		/**
 		* @ignore
 		*/
-		const isNumeric = 2;
+		const isBoolean = 2;
 		/**
 		* @ignore
 		*/
-		const isEqual = 3;
+		const isFloat = 3;
 		/**
 		* @ignore
 		*/
-		const isMinimum = 4;
+		const isInteger = 4;
 		/**
 		* @ignore
 		*/
-		const isMinimumOrEqual = 5;
+		const isHex = 5;
 		/**
 		* @ignore
 		*/
-		const isMaximum = 6;
+		const isOctal = 6;
 		/**
 		* @ignore
 		*/
-		const isMaximumOrEqual = 7;
+		const isSlugString = 7;
 		/**
 		* @ignore
 		*/
-		const length = 8;
+		const isDate = 8;
 		/**
 		* @ignore
 		*/
-		const lengthMinimum = 9;
+		const isUuid = 9;
 		/**
 		* @ignore
 		*/
-		const lengthMaximum = 10;
+		const isEmail = 10;
 		/**
 		* @ignore
 		*/
-		const inArray = 11;
+		const isUrl = 11;
 		/**
 		* @ignore
 		*/
-		const regExp = 12;
+		const isIpAddress = 12;
 		/**
 		* @ignore
 		*/
-		const custom = 13;
+		const isEqual = 13;
 		/**
 		* @ignore
 		*/
-		const isEmail = 14;
+		const isMinimum = 14;
 		/**
 		* @ignore
 		*/
-		const isUrl = 15;
+		const isLower = 15;
 		/**
 		* @ignore
 		*/
-		const isIpAddress = 16;
+		const isMaximum = 16;
+		/**
+		* @ignore
+		*/
+		const isGreater = 17;
+		/**
+		* @ignore
+		*/
+		const length = 18;
+		/**
+		* @ignore
+		*/
+		const lengthMinimum = 19;
+		/**
+		* @ignore
+		*/
+		const lengthMaximum = 20;
+		/**
+		* @ignore
+		*/
+		const inArray = 21;
+		/**
+		* @ignore
+		*/
+		const regExp = 22;
+		/**
+		* @ignore
+		*/
+		const custom = 23;
 
 		/**
 		* @ignore
@@ -117,14 +145,83 @@ if(extensions::isSelected('contracts')) {
 				}
 
 				break;
-			case self::isNumeric:
-				if(!is_numeric($uValue)) {
+			case self::isBoolean:
+				if($uValue !== false && $uValue !== true &&
+					$uValue != 'false' && $uValue != 'true' &&
+					$uValue !== 0 && $uValue !== 1 &&
+					$uValue != '0' && $uValue != '1'
+					) {
 					return false;
 				}
 
 				break;
+			case self::isFloat:
+				if(filter_var($uValue, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND) === false) {
+					return false;
+				}
+
+				break;
+			case self::isInteger:
+				if(filter_var($uValue, FILTER_VALIDATE_INT) === false) {
+					return false;
+				}
+
+				break;
+			case self::isHex:
+				if(filter_var($uValue, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX) === false) {
+					return false;
+				}
+
+				break;
+			case self::isOctal:
+				if(filter_var($uValue, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_OCTAL) === false) {
+					return false;
+				}
+
+				break;
+			case self::isSlugString:
+				for($i = mb_strlen($uValue) - 1;$i >= 0;$i--) {
+					$tChar = mb_substr($uValue, $i, 1);
+
+					if(!ctype_alnum($uValue[$i]) && $uValue[$i] != '-') {
+						return false;
+					}
+				}
+
+				break;
+			case self::isDate:
+				$tArray = date_parse_from_format($uArgs[0], $uValue);
+				if($tArray['error_count'] > 0) {
+					return false;
+				}
+
+				if(!checkdate($tArray['month'], $tArray['day'], $tArray['year'])) {
+					return false;
+				}
+
+				break;
+			case self::isUuid:
+				if(strlen($uValue) != 36) {
+					return false;
+				}
+
+				for($i = strlen($uValue) - 1;$i >= 0;$i--) {
+					if($i == 8 || $i == 13 || $i == 18 || $i == 23) {
+						if($uValue[$i] != '-') {
+							return false;
+						}
+
+						continue;
+					}
+
+					if(!ctype_xdigit($uValue[$i])) {
+						return false;
+					}
+				}
+
+				break;
 			case self::isEqual:
-				for($tCount = count($uArgs);$tCount > 0;$tCount--) {
+				for($tCount = count($uArgs) - 1;$tCount >= 0;$tCount--) {
 					if($uValue == $uArgs[$tCount]) {
 						$tPasses = true;
 						break;
@@ -137,25 +234,25 @@ if(extensions::isSelected('contracts')) {
 
 				break;
 			case self::isMinimum:
-				if($uValue >= $uArgs[0]) { // inverse of <
+				if($uValue < $uArgs[0]) {
 					return false;
 				}
 
 				break;
-			case self::isMinimumOrEqual:
-				if($uValue > $uArgs[0]) { // inverse of <=
+			case self::isLower:
+				if($uValue >= $uArgs[0]) {
 					return false;
 				}
 
 				break;
 			case self::isMaximum:
-				if($uValue <= $uArgs[0]) { // inverse of >
+				if($uValue > $uArgs[0]) {
 					return false;
 				}
 
 				break;
-			case self::isMaximumOrEqual:
-				if($uValue < $uArgs[0]) { // inverse of >=
+			case self::isGreater:
+				if($uValue <= $uArgs[0]) {
 					return false;
 				}
 

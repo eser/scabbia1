@@ -41,12 +41,10 @@ if(extensions::isSelected('i8n')) {
 				self::$languages[$tLanguage['@id']] = array(
 					'key' => $tLanguage['@id'],
 					'locale' => $tLanguage['@locale'],
+					// 'localewin' => $tLanguage['@localewin'],
+					'internalEncoding' => $tLanguage['@internalEncoding'],
 					'name' => $tLanguage['.']
 				);
-
-				if(!isset(self::$language)) {
-					self::$language = self::$languages[$tLanguage['@id']];
-				}
 			}
 		}
 
@@ -55,33 +53,40 @@ if(extensions::isSelected('i8n')) {
 		*/
 		public static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(array_key_exists($uLanguage, self::$languages)) {
-				$tLanguage = &self::$languages[$uLanguage];
+				self::$language = &self::$languages[$uLanguage];
 			}
 			else if($uLastChoice) {
 				$tExploded = explode('-', $uLanguage, 2);
 
 				if(array_key_exists($tExploded[0], self::$languages)) {
-					$tLanguage = &self::$languages[$tExploded[0]];
+					self::$language = &self::$languages[$tExploded[0]];
 				}
 			}
 
-			if(isset($tLanguage)) {
-				$tLocale = explode('.', $tLanguage['locale'], 2);
-				if(!isset($tLocale[1])) {
-					$tLocale[1] = 'UTF-8';
-				}
+			if(!is_null(self::$language)) {
+				// if(PHP_OS_WINDOWS) {
+				// 	$tLocale = explode('.', self::$language['localewin'], 2);
+				// }
+				// else {
+					$tLocale = explode('.', self::$language['locale'], 2);
+				// }
 
-				putenv('LC_ALL=' . $tLocale[0]);
-				setlocale(LC_ALL, $tLocale[0]);
+				$tLocale['all'] = implode('.', $tLocale);
 
-				mb_internal_encoding($tLocale[1]);
-				mb_http_output($tLocale[1]);
+				// putenv('LC_ALL=' . $tLocale[0]);
+				putenv('LANG=' . $tLocale[0]);
+				$tTest = setlocale(LC_ALL, $tLocale[0]);
+
+				mb_internal_encoding(self::$language['internalEncoding']);
+				mb_http_output(self::$language['internalEncoding']);
 
 				bindtextdomain('core', QPATH_CORE . 'locale');
-				bind_textdomain_codeset('core', $tLocale[1]);
+				bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
 				bindtextdomain('application', framework::$applicationPath . 'locale');
-				bind_textdomain_codeset('application', $tLocale[1]);
+				bind_textdomain_codeset('application', self::$language['internalEncoding']);
+
+				textdomain('application');
 
 				return true;
 			}

@@ -43,9 +43,9 @@ if(extensions::isSelected('viewengine_raintpl')) {
 				require($tPath . '/rain.tpl.class.php');
 
 				raintpl::configure('base_url', null);
-				raintpl::configure('tpl_dir', $uObject['templatePath'] . '/');
+				raintpl::configure('tpl_dir', $uObject['templatePath']);
 				raintpl::configure('tpl_ext', '.rain');
-				raintpl::configure('cache_dir', $uObject['compiledPath'] . '/');
+				raintpl::configure('cache_dir', $uObject['compiledPath']);
 
 				if(framework::$development >= 1) {
 					raintpl::configure('check_template_update', true);
@@ -70,7 +70,7 @@ if(extensions::isSelected('viewengine_raintpl')) {
 				}
 			}
 
-			self::$engine->draw($uObject['viewFile']);
+			self::$engine->draw($uObject['templateFile']);
 		}
 	}
 }

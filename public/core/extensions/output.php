@@ -48,8 +48,7 @@ if(extensions::isSelected('output')) {
 		* @ignore
 		*/
 		public static function &end($uFlush = true) {
-			$tContent = ob_get_contents();
-			ob_end_flush();
+			$tContent = ob_get_clean();
 
 			foreach(array_pop(self::$effectList) as $tEffect) {
 				$tContent = call_user_func($tEffect, $tContent);

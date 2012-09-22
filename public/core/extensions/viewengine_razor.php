@@ -43,23 +43,11 @@ if(extensions::isSelected('viewengine_razor')) {
 		* @ignore
 		*/
 		public static function renderview($uObject) {
-			$tInputFile = $uObject['templatePath'] . '/' . $uObject['viewFile'];
-			// $tOutputFile = self::$compiledPath . '/rzr_' . $uObject['viewFile']; // . QEXT_PHP
-			// if(
-			//	framework::$development >= 1 ||
-			//	!file_exists($tOutputFile) ||
-			//	time() - filemtime($tOutputFile) >= self::$compiledAge
-			// ) {
-			//	if(is_null(self::$engine)) {
-			//		self::$engine = new RazorViewRenderer();
-			//	}
-			//
-			//	self::$engine->generateViewFile($tInputFile, $tOutputFile);
-			// }
+			$tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
 
 			// cengiz: Render if file not exist
 			// or debug mode on
-			$tOutputFile = cache::getPath('cshtml/', $uObject['viewFile'], self::$compiledAge);
+			$tOutputFile = cache::filePath('cshtml/', $uObject['compiledFile'], self::$compiledAge);
 			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
 					self::$engine = new RazorViewRenderer();

@@ -22,12 +22,10 @@
 		<include path="{core}extensions/access.php" />
 		<include path="{core}extensions/collections.php" />
 		<include path="{core}extensions/unittest.php" />
-		<include path="{core}extensions/repository.php" />
 		<include path="{core}extensions/media.php" />
 		<include path="{core}extensions/captcha.php" />
 		<include path="{core}extensions/fb.php" />
 		<include path="{core}extensions/viewengine_razor.php" />
-		<include path="{core}extensions/viewengine_markdown.php" />
 		<include path="{app}includes/*.php" />
 		<include path="{app}extensions/*.php" />
 		<include path="{app}writable/downloaded/*.php" />
@@ -39,12 +37,10 @@
 		<extension name="access" />
 		<extension name="collections" />
 		<extension name="unittest" />
-		<extension name="repository" />
 		<extension name="media" />
 		<extension name="captcha" />
 		<extension name="fb" />
 		<extension name="viewengine_razor" />
-		<extension name="viewengine_markdown" />
 <!--
 		<extension name="viewengine_php" />
 		<extension name="viewengine_phptal" />
@@ -61,8 +57,8 @@
 -->
 
 		<languageList>
-			<language id="en" locale="en_US.UTF-8">English</language>
-			<language id="tr" locale="tr_TR.UTF-8">Turkish</language>
+			<language id="tr" locale="tr_TR.UTF-8" localewin="Turkish_Turkey.1254" internalEncoding="UTF-8">Turkish</language>
+			<language id="en" locale="en_US.UTF-8" localewin="English_United States.1252" internalEncoding="UTF-8">English</language>
 		</languageList>
 	</i8n>
 
@@ -72,5 +68,7 @@
 		/>
 
 	<cache
-		keyphase="test" />
+		keyphase=""
+		storage="memcache://127.0.0.1:11211"
+		/>
 </scabbia>

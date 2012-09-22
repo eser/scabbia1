@@ -44,8 +44,8 @@ if(extensions::isSelected('viewengine_smarty')) {
 
 				self::$engine = new Smarty();
 
-				self::$engine->setTemplateDir($uObject['templatePath'] . '/');
-				self::$engine->setCompileDir($uObject['compiledPath'] . '/');
+				self::$engine->setTemplateDir($uObject['templatePath']);
+				self::$engine->setCompileDir($uObject['compiledPath']);
 
 				if(framework::$development >= 1) {
 					self::$engine->force_compile = true;
@@ -68,7 +68,7 @@ if(extensions::isSelected('viewengine_smarty')) {
 				}
 			}
 
-			self::$engine->display($uObject['viewFile']);
+			self::$engine->display($uObject['templateFile']);
 		}
 	}
 }
