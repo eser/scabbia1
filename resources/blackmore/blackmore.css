@@ -1,0 +1,689 @@
+html, body {
+	height:100%; /* needed for container min-height */
+}
+
+p { padding-bottom: 15px; }
+img, a img { border: 0px; }
+
+body {
+	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
+	font-family: 'Arial', 'Helvetica', sans-serif;
+	font-size: 12px;
+	color: #666666;
+	line-height: 20px;
+}
+
+a {
+	color: #56789A;
+	text-decoration: none;
+	outline: none;
+}
+
+a:hover {
+	color: #008EE8;
+}
+
+/* LOGIN PAGE */
+
+.block.small.center.login {
+	width: 470px;
+	background: #FFFFFF url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	padding-bottom: 5px;
+	}
+
+.block {
+	padding-bottom: 5px;
+	margin-bottom: 25px;
+	clear: both;
+	background: #fff url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
+	}
+
+.block .bendl {
+	width: 5px;
+	height: 5px;
+	background: url('scabbia/blackmore/images/bendl.gif') bottom left no-repeat;
+	float: left;
+	}
+
+.block .bendr {
+	width: 5px;
+	height: 5px;
+	background: url('scabbia/blackmore/images/bendr.gif') bottom left no-repeat;
+	float: right;
+	}
+
+.block .block_head {
+	height: 54px;
+	line-height: 54px;
+	background: url('scabbia/blackmore/images/bhead.gif') 0 0 repeat-x;
+	overflow: hidden;
+	}
+
+.block .block_head .bheadl {
+	width: 20px;
+	height: 54px;
+	float: left;
+	background: url('scabbia/blackmore/images/bheadl.gif') top left no-repeat;
+	}
+
+.block .block_head .bheadr {
+	width: 20px;
+	height: 54px;
+	float: right;
+	background: url('scabbia/blackmore/images/bheadr.gif') top right no-repeat;
+	}
+
+.block .block_head h2 {
+	font-size: 18px;
+	font-weight: normal;
+	text-transform: uppercase;
+	color: #555;
+	text-shadow: 1px 1px 0 #fff;
+	float: left;
+	}
+
+.block .block_content {
+	overflow: hidden;
+	background: #fff;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding: 10px 20px 0;
+	}
+
+.block.small.center {
+	float: none;
+	margin: 0 auto;
+}
+
+.block.small.center.login {
+	width: 470px;
+	background: #fff url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	padding-bottom: 5px;
+}
+
+/* FORMS */
+form p {
+	overflow: hidden;
+	clear: both;
+}
+
+form label {
+	font-size: 12px;
+	font-weight: bold;
+	color: #555;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+form input.text {
+	width: 280px;
+	background: #fefefe;
+	border: 1px solid #bbb;
+	font-size: 14px;
+	color: #333;
+	padding: 7px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;
+	vertical-align: middle;
+}
+
+form textarea.cleditor  {
+	width: 98%;
+	height: 140px;
+	padding: 5px;
+	background: #fefefe;
+	border: 1px solid #bbb;
+	font-size: 14px;
+	color: #333;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	outline: none;
+}
+
+form input.radio,
+form input.checkbox {
+	vertical-align: middle;
+}
+
+form select.select {
+	width:300px;
+	cursor: pointer;
+	padding: 7px;
+	display: block;
+	margin-right: 20px;
+	border: 1px solid #bbb;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: url('scabbia/blackmore/images/sdd.jpg') center right no-repeat;
+	padding: 5px 7px;
+	font-size: 14px;
+	color: #333;
+}
+
+form .fileupload {
+	position: relative;
+	height:30px;
+}
+
+form .fileupload  {
+    background: url('scabbia/blackmore/images/upload_file.gif') right top no-repeat;
+    border:none;
+    overflow:hidden;
+}
+form .fileupload .file-text {
+	width: 209px !important;
+	height: 14px !important;
+	border-radius: 3px 0px 0px 3px;
+	border-right: 0px;
+}
+
+form input.file{
+    margin-left:-145px;
+    opacity:0.0;
+	float:right;
+}
+
+form input.file {
+	width: 75px;
+	height: 30px;
+	margin-top:10px;
+	background: #fefefe;
+	border: 1px solid #bbb;
+	border-right: 0;
+	font-size: 14px;
+	color: #333;
+	padding: 4px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	outline: none;
+}
+
+form input.submit {
+	width: 85px;
+	height: 30px;
+	line-height: 30px;
+	background: url('scabbia/blackmore/images/btns.gif') top center no-repeat;
+	border: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-transform: uppercase;
+	color: #fff;
+	text-shadow: 1px 1px 0 #0a5482;
+	cursor: pointer;
+	margin-right: 10px;
+	vertical-align: middle;
+	}
+
+form input.submit:hover {
+	background: url('scabbia/blackmore/images/btns_.gif') top center no-repeat;
+	text-shadow: 1px 1px 0 #b55f10;
+}
+
+/* Messages */
+
+.message {
+	padding: 10px 15px 10px 40px;
+	margin: 15px;
+	font-weight: bold;
+	overflow: hidden;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.message p {
+	padding: 0;
+	width: 93%;
+	float: left;
+}
+
+.message.errormsg {
+	border: 1px solid #e9c59b;
+	background: #ffecce url('scabbia/blackmore/images/error.gif') 12px 12px no-repeat ;
+	color: #e3302c;
+}
+
+.message.success {
+	border: 1px solid #bfde84;
+	background: #edfbd8 url('scabbia/blackmore/images/success.gif') 12px 12px no-repeat;
+	color: #508600;
+}
+
+.message.info {
+	border: 1px solid #bbdbe0;
+	background: #ecf9ff url('scabbia/blackmore/images/info.gif') 12px 12px no-repeat;
+	color: #0888c3;
+}
+
+.message.warning {
+	border: 1px solid #e5e181;
+	background: #fefde2 url('scabbia/blackmore/images/warning.gif') 12px 12px no-repeat;
+	color: #666;
+}
+
+/* MISC
+----------------------------------------------------------*/
+.clear {
+    clear: both;
+}
+
+.floatLeft {
+	float: left;
+}
+
+.floatRight {
+	float: right;
+}
+
+.fullWidth {
+	width: 100%;
+}
+
+.halfWidth {
+	width: 50%;
+}
+
+.noMargin {
+	list-style: none outside none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.padding4px {
+	padding: 4px;
+}
+
+.paddingTop20px {
+	padding: 20px 0px 0px 0px;
+}
+
+.boxed {
+	display: block;
+	width: 100%;
+	color: inherit;
+	text-decoration: inherit;
+}
+
+/* Memu
+----------------------------------------------------------*/
+.memu-root {
+	cursor: pointer;
+}
+
+.memu-root:hover > .memu-item, .memu-item:hover{
+	background-color: #F0F0F0;
+	border-color: #C0C0C0;
+	color: #56789A;
+}
+
+#pageMiddleSidebar ul {
+	margin:10px 0px;
+}
+#pageMiddleSidebar ul li:first-of-type  {
+	border-top:1px solid #C0C0C0;
+}
+#pageMiddleSidebar li {
+	padding: 5px 6px 5px 10px;
+	list-style-type: none;
+	border-bottom:1px solid #C0C0C0;
+}
+#pageMiddleSidebar .memu-item:hover{
+	background-color: #F0F0F0;
+	color: #56789A;
+}
+
+.memu-caption {
+	font-weight: bold !important;
+}
+
+.memu-item {
+	border: 1px solid transparent;
+	color: #333333;
+	display: block;
+	font-size: 12px;
+	line-height: 28px;
+	padding: 0px 10px 0px 10px;
+	text-decoration: none;
+	text-overflow: ellipsis;
+}
+
+.memu-root > .memu-submenu .memu-item, .memu-submenu .memu-item {
+	border: 0px;
+}
+
+.memu-submenu {
+	border: 1px solid #C0C0C0;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+	margin-left: 20px;
+	width: 150px;
+	box-shadow: 4px 4px 3px -2px #606060;
+
+	left: -20px;
+	top: 29px;
+}
+
+.memu-submenu .memu-submenu {
+	left: 130px !important;
+	top: -1px !important;
+}
+
+.memu-submenu .memu-caption:after {
+	float: right;
+	margin: 0px 20px 0px 0px;
+	content: " »";
+}
+
+.memu-root:hover {
+	position: relative;
+	z-index: 2;
+}
+
+.memu-root:hover > .memu-submenu {
+	display: block;
+	opacity: 1;
+	z-index: 3;
+}
+
+/* Theme specific
+----------------------------------------------------------*/
+.containerBox {
+	margin: 2px 20px 0px 20px;
+}
+
+.display {
+	border-collapse: separate;
+	border-spacing: 1px;
+}
+
+.bgCount {
+	background-color: #2B485C;
+	color: #FFFFFF;
+	padding: 0px 6px 0px 6px;
+	border-radius: 2px;
+}
+
+.bgSpacer {
+	margin: 0px 0px 0px 20px;
+}
+
+.bgLink {
+	padding: 2px 6px 2px 6px;
+	color: inherit;
+	text-decoration: inherit;
+}
+
+.bgLink:hover {
+	background-color: #2B485C;
+	border-radius: 2px;
+	color: #FFFFFF;
+}
+
+#page {
+	font-size: 13px;
+	width: 100%;
+	height: auto !important;
+}
+
+#pageTop {
+	background: #176093;
+	width: 100%;
+}
+
+#pageTopHead {
+	background: #182844;
+	color: #6ABAFC;
+	border-bottom: 1px solid #65A5D1;
+}
+
+#pageTopLogo {
+	color: #FFFFFF;
+	/* background: transparent url('images/background.jpg') no-repeat 0px 0px; */
+}
+
+#pageTopMenu {
+  background: -webkit-linear-gradient(top, #FFFFFF, #C0C0C0);
+
+  /* Firefox 3.6+ */
+  background: -moz-linear-gradient(top, #FFFFFF, #C0C0C0);
+
+  /* IE 10 */
+  background: -ms-linear-gradient(top, #FFFFFF, #C0C0C0);
+
+  /* Opera 11.10+ */
+  background: -o-linear-gradient(top, #FFFFFF, #C0C0C0);
+
+  background: linear-gradient(top, #FFFFFF, #C0C0C0);
+}
+
+#pageMiddle {
+	border-top: 1px solid #000000;
+	width: 100%;
+}
+#pageMiddle table.tablesorter tr td{
+	padding:8px 4px 8px 4px;
+}
+#pageMiddle table.tablesorter thead tr .header{
+	min-width: 65px;
+}
+#pageMiddleTable {
+	table-layout: fixed;
+	width: 100%;
+	height: 100%;
+}
+
+#pageMiddleContent {
+	vertical-align: top;
+}
+
+#pageMiddleContent .topLine {
+	background: #E0E0E0;
+	height: 1px;
+}
+
+#pageMiddleContent .middleLine {
+	background: #FFFFFF;
+	padding: 15px 15px 15px 5px;
+	min-height: 500px;
+}
+
+#pageMiddleContent .bottomLine {
+	clear: both;
+}
+
+#pageMiddleContent .postDate {
+	width: 50px;
+	height: 61px;
+	position: absolute;
+	margin: 0px 0px 0px 0px;
+	padding: 4px 0px 0px 0px;
+	border-radius: 5px 0px 0px 5px;
+	font-size: 11pt;
+	text-align: center;
+}
+
+#pageMiddleContent .postTitle {
+	height: 53px;
+	padding: 7px 5px 5px 7px;
+	margin: 0px 15px 0px 50px;
+}
+
+#pageMiddleContent .postTitleFirst {
+	font-size: 20pt;
+	border-left: 7px solid;
+	padding: 0px 0px 0px 7px;
+}
+
+#pageMiddleContent .postTitleSecond {
+	font-size: 12pt;
+	border-left: 7px solid;
+	padding: 0px 0px 0px 8px;
+}
+
+#pageMiddleContent .postContent {
+	padding: 30px;
+	font-size: 11pt;
+	line-height: 17pt;
+}
+
+#pageMiddleExtra {
+	vertical-align: top;
+	width: 1px;
+}
+
+#pageMiddleSidebar {
+	border-top: 1px solid #A0A0A0;
+	background: #E0E0E0;
+	width: 350px;
+	vertical-align: top;
+}
+
+#pageMiddleSidebar .topLine {
+	background: #CFCFCF;
+	width: 100%;
+	height: 1px;
+}
+
+#pageMiddleSidebar .menuDiv {
+	margin: 15px;
+	padding: 5px 10px 5px 10px;
+	background: #FFFFFF;
+}
+
+#pageMiddleSidebar .menuDivHeader {
+	color: #808080;
+	font-size: 12pt;
+	line-height: 12pt;
+	font-weight: bold;
+	margin: 5px 0px 5px 0px;
+}
+
+#pageMiddleSidebar br {
+	height: 20px;
+}
+
+#pageMiddleSidebarToggle {
+	width: 10px;
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #A0A0A0;
+	text-align: center;
+	vertical-align: top;
+	cursor: pointer;
+	background: #FFFFFF;
+}
+
+#pageBottom {
+	clear: both;
+	width: 100%;
+}
+
+#crudTable {
+	border-collapse: collapse;
+	margin: 20px 0px 0px 0px;
+	width: 100%;
+}
+
+#crudTable td {
+	padding: 4px;
+}
+
+#crudInnerTable {
+	border-collapse: collapse;
+}
+
+#crudInnerTable td {
+	padding: 4px;
+}
+
+.tableHeader {
+	background: #E0E0E0;
+	border-top: 2px solid #B0B0B0;
+	padding: 4px 4px 4px 12px;
+	font-size: 15px;
+	font-weight: bold;
+	text-shadow: 0px 2px 2px rgba(50, 50, 50, .3);
+	text-align: left;
+}
+
+.ui {
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+	background: #E0E0E0;
+	border: 1px solid #555555 !important;
+	color: #000000 !important;
+	font-weight: bold !important;
+}
+
+.tablesorter {
+	border-collapse: separate;
+	border-spacing: 1px;
+}
+
+.tablesorter tr:last-child {
+	/* white-space: nowrap; */
+}
+
+#tablepager img {
+	cursor: pointer;
+}
+#tablepager {
+	margin:20px 0px 0px 0px;
+	position: relative !important;
+	top: 0px !important;
+}
+
+/* Icons */
+.iconcategory { background: transparent url('scabbia/blackmore/images/category.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategoryadd { background: transparent url('scabbia/blackmore/images/category_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategoryedit { background: transparent url('scabbia/blackmore/images/category_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategorydelete { background: transparent url('scabbia/blackmore/images/category_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconpost { background: transparent url('scabbia/blackmore/images/post.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpostadd { background: transparent url('scabbia/blackmore/images/post_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpostedit { background: transparent url('scabbia/blackmore/images/post_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpostdelete { background: transparent url('scabbia/blackmore/images/post_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconpage { background: transparent url('scabbia/blackmore/images/page.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpageadd { background: transparent url('scabbia/blackmore/images/page_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpageedit { background: transparent url('scabbia/blackmore/images/page_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpagedelete { background: transparent url('scabbia/blackmore/images/page_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconlink { background: transparent url('scabbia/blackmore/images/link.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconlinkadd { background: transparent url('scabbia/blackmore/images/link_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconlinkedit { background: transparent url('scabbia/blackmore/images/link_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconlinkdelete { background: transparent url('scabbia/blackmore/images/link_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconfile { background: transparent url('scabbia/blackmore/images/file.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconfileadd { background: transparent url('scabbia/blackmore/images/file_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconfileedit { background: transparent url('scabbia/blackmore/images/file_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconfiledelete { background: transparent url('scabbia/blackmore/images/file_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconuser { background: transparent url('scabbia/blackmore/images/user.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconuseradd { background: transparent url('scabbia/blackmore/images/user_add.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconuseredit { background: transparent url('scabbia/blackmore/images/user_edit.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconuserdelete { background: transparent url('scabbia/blackmore/images/user_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+
+.iconxdashboard { background: transparent url('scabbia/blackmore/images/iconxdashboard.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconxcategories { background: transparent url('scabbia/blackmore/images/iconxcategories.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconxposts { background: transparent url('scabbia/blackmore/images/iconxposts.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconxpages { background: transparent url('scabbia/blackmore/images/iconxpages.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconxlinks { background: transparent url('scabbia/blackmore/images/iconxlinks.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconxfiles { background: transparent url('scabbia/blackmore/images/iconxfiles.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+
+.iconxcontent { background: transparent url('scabbia/blackmore/images/iconxcontent.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
