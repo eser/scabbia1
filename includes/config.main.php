@@ -10,9 +10,14 @@
 	*/
 	class config {
 		/**
-		* Default configuration
+		* @ignore
 		*/
-		public static $default = null;
+		const MAIN = '';
+	
+		/**
+		* All configurations
+		*/
+		public static $configurations = array();
 
 		/**
 		* Loads the default configuration for the current application.
@@ -24,13 +29,28 @@
 			self::loadFiles($tConfig, QPATH_CORE . 'config/*');
 			self::loadFiles($tConfig, framework::$applicationPath . 'config/*');
 
-			if(is_null(self::$default)) {
-				self::$default = $tConfig;
+			if(!isset(self::$configurations[self::MAIN])) {
+				self::$configurations[self::MAIN] = &$tConfig;
 			}
 
 			return $tConfig;
 		}
 
+		/**
+		* Loads a configuration for the current application.
+		*
+		* @uses loadFiles()
+		*/
+		public static function &loadConfiguration($uName, $uPath) {
+			$tConfig = array();
+			self::loadFiles($tConfig, $uPath);
+
+			if(!isset(self::$configurations[$uName])) {
+				self::$configurations[$uName] = &$tConfig;
+			}
+
+			return $tConfig;
+		}
 		/**
 		* @ignore
 		*/
@@ -204,12 +224,12 @@
 		* @param string $uKey path of the value
 		* @param mixed $uDefault default value
 		*/
-		public static function &get($uKey, $uDefault = null) {
-			if(!array_key_exists($uKey, self::$default)) {
+		public static function &get($uConfiguration, $uKey, $uDefault = null) {
+			if(!array_key_exists($uKey, self::$configurations[$uConfiguration])) {
 				return $uDefault;
 			}
 
-			return self::$default[$uKey];
+			return self::$configurations[$uConfiguration][$uKey];
 		}
 
 		/**
@@ -217,15 +237,8 @@
 		*
 		* @param string $uVariable instance
 		*/
-		public static function set($uVariable) {
-			self::$default = $uVariable;
-		}
-
-		/**
-		* Returns the default configuration as an array.
-		*/
-		public static function export() {
-			return var_export(self::$default, true);
+		public static function set($uConfiguration, $uVariable) {
+			self::$configurations[$uConfiguration] = &$uVariable;
 		}
 	}
 

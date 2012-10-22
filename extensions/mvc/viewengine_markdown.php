@@ -41,7 +41,7 @@ if(extensions::isSelected('viewengine_markdown')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$compiledAge = intval(config::get('/razor/templates/compiledAge', '120'));
+			self::$compiledAge = intval(config::get(config::MAIN, '/razor/templates/compiledAge', '120'));
 			mvc::registerViewEngine('md', 'viewengine_markdown');
 		}
 

@@ -41,8 +41,8 @@ if(extensions::isSelected('logger')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$filename = config::get('/logger/filename', '{date|\'d-m-Y\'}.txt');
-			self::$line = config::get('/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
+			self::$filename = config::get(config::MAIN, '/logger/filename', '{date|\'d-m-Y\'}.txt');
+			self::$line = config::get(config::MAIN, '/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 
 			set_exception_handler('logger::exceptionCallback');
 			set_error_handler('logger::errorCallback', E_ALL);

@@ -67,12 +67,12 @@ if(extensions::isSelected('fb')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$appId = config::get('/facebook/APP_ID');
-			self::$appSecret = config::get('/facebook/APP_SECRET');
-			self::$appFileUpload = config::get('/facebook/APP_FILEUPLOAD');
-			self::$appUrl = config::get('/facebook/APP_URL');
-			self::$appPageId = config::get('/facebook/APP_PAGE_ID');
-			self::$appRedirectUri = config::get('/facebook/APP_REDIRECT_URI');
+			self::$appId = config::get(config::MAIN, '/facebook/APP_ID');
+			self::$appSecret = config::get(config::MAIN, '/facebook/APP_SECRET');
+			self::$appFileUpload = config::get(config::MAIN, '/facebook/APP_FILEUPLOAD');
+			self::$appUrl = config::get(config::MAIN, '/facebook/APP_URL');
+			self::$appPageId = config::get(config::MAIN, '/facebook/APP_PAGE_ID');
+			self::$appRedirectUri = config::get(config::MAIN, '/facebook/APP_REDIRECT_URI');
 		}
 
 		/**

@@ -74,7 +74,7 @@ if(extensions::isSelected('database')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
+			foreach(config::get(config::MAIN, '/databaseList', array()) as $tDatabaseConfig) {
 				$tDatabase = new databaseConnection($tDatabaseConfig);
 				self::$databases[$tDatabase->id] = $tDatabase;
 
@@ -83,7 +83,7 @@ if(extensions::isSelected('database')) {
 				}
 			}
 
-			foreach(config::get('/datasetList', array()) as $tDatasetConfig) {
+			foreach(config::get(config::MAIN, '/datasetList', array()) as $tDatasetConfig) {
 				$tDataset = new databaseDataset($tDatasetConfig);
 				self::$datasets[$tDataset->id] = $tDataset;
 			}

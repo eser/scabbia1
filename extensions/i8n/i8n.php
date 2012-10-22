@@ -44,7 +44,7 @@ if(extensions::isSelected('i8n')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			foreach(config::get('/i8n/languageList', array()) as $tLanguage) {
+			foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['id']] = array(
 					'key' => $tLanguage['id'],
 					'locale' => $tLanguage['locale'],

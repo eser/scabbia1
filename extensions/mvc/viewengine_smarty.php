@@ -45,7 +45,7 @@ if(extensions::isSelected('viewengine_smarty')) {
 		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get('/smarty/path', '{core}include/3rdparty/smarty/libs'));
+				$tPath = framework::translatePath(config::get(config::MAIN, '/smarty/path', '{core}include/3rdparty/smarty/libs'));
 				require($tPath . '/Smarty.class.php');
 
 				self::$engine = new Smarty();

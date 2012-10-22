@@ -45,7 +45,7 @@ if(extensions::isSelected('viewengine_raintpl')) {
 		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get('/raintpl/path', '{core}include/3rdparty/raintpl/inc'));
+				$tPath = framework::translatePath(config::get(config::MAIN, '/raintpl/path', '{core}include/3rdparty/raintpl/inc'));
 				require($tPath . '/rain.tpl.class.php');
 
 				raintpl::configure('base_url', null);

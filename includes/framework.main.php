@@ -84,7 +84,7 @@
 
 			// siteroot
 			if(is_null(self::$siteroot)) {
-				self::$siteroot = config::get('/options/siteroot', '');
+				self::$siteroot = config::get(config::MAIN, '/options/siteroot', '');
 
 				if(strlen(self::$siteroot) <= 1) {
 					$tDocumentRoot = strtr($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR, '/');
@@ -98,26 +98,22 @@
 
 			if(!COMPILED) {
 				// downloads
-				if(isset(config::$default['/downloadList'])) {
-					foreach(config::$default['/downloadList'] as &$tUrl) {
-						self::downloadFile($tUrl['filename'], $tUrl['url']);
-					}
+				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
+					self::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
 
 				// includes
-				if(isset(config::$default['/includeList'])) {
-					foreach(config::$default['/includeList'] as &$tInclude) {
-						$tIncludePath = self::translatePath($tInclude);
+				foreach(config::get(config::MAIN, '/includeList', array()) as $tInclude) {
+					$tIncludePath = self::translatePath($tInclude);
 
-						$tFiles = glob3($tIncludePath, false);
-						if($tFiles !== false) {
-							foreach($tFiles as $tFilename) {
-								if(substr($tFilename, -1) == '/') {
-									continue;
-								}
-
-								require_once($tFilename);
+					$tFiles = glob3($tIncludePath, false);
+					if($tFiles !== false) {
+						foreach($tFiles as $tFilename) {
+							if(substr($tFilename, -1) == '/') {
+								continue;
 							}
+
+							require_once($tFilename);
 						}
 					}
 				}
@@ -226,7 +222,7 @@
 				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 
-			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get('/options/gzip', '1') != '0') {
+			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get(config::MAIN, '/options/gzip', '1') != '0') {
 				// $tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 

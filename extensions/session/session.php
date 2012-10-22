@@ -63,13 +63,13 @@ if(extensions::isSelected('session')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$sessionName = config::get('/session/cookie/name', 'sessid');
+			self::$sessionName = config::get(config::MAIN, '/session/cookie/name', 'sessid');
 
-			if(config::get('/session/cookie/nameIp', true)) {
+			if(config::get(config::MAIN, '/session/cookie/nameIp', true)) {
 				self::$sessionName .= crc32($_SERVER['REMOTE_ADDR']);
 			}
 
-			self::$sessionLife = intval(config::get('/session/cookie/life', '0'));
+			self::$sessionLife = intval(config::get(config::MAIN, '/session/cookie/life', '0'));
 
 			if(array_key_exists(self::$sessionName, $_COOKIE)) {
 				self::$id = $_COOKIE[self::$sessionName];
@@ -90,8 +90,8 @@ if(extensions::isSelected('session')) {
 		*/
 		private static function open() {
 			if(!is_null(self::$id)) {
-				$tIpCheck = (bool)config::get('/session/cookie/ipCheck', '0');
-				$tUACheck = (bool)config::get('/session/cookie/uaCheck', '1');
+				$tIpCheck = (bool)config::get(config::MAIN, '/session/cookie/ipCheck', '0');
+				$tUACheck = (bool)config::get(config::MAIN, '/session/cookie/uaCheck', '1');
 
 				$tData = cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
 				if($tData !== false) {

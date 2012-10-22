@@ -45,7 +45,7 @@ if(extensions::isSelected('viewengine_phptal')) {
 		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get('/phptal/path', '{core}include/3rdparty/PHPTAL'));
+				$tPath = framework::translatePath(config::get(config::MAIN, '/phptal/path', '{core}include/3rdparty/PHPTAL'));
 				require($tPath . '/PHPTAL.php');
 
 				self::$engine = new PHPTAL();

@@ -20,7 +20,7 @@
 		* Loads the extensions module.
 		*/
 		public static function load() {
-			foreach(config::get('/extensionList', array()) as $tExtension) {
+			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtension) {
 				self::$selected[] = $tExtension;
 			}
 		}

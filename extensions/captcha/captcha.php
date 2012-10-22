@@ -45,9 +45,9 @@ if(extensions::isSelected('captcha')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$fontFile = framework::translatePath(config::get('/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
-			self::$fontSize = intval(config::get('/captcha/fontSize', '45'));
-			self::$length = intval(config::get('/captcha/length', '8'));
+			self::$fontFile = framework::translatePath(config::get(config::MAIN, '/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
+			self::$fontSize = intval(config::get(config::MAIN, '/captcha/fontSize', '45'));
+			self::$length = intval(config::get(config::MAIN, '/captcha/length', '8'));
 		}
 
 		/**

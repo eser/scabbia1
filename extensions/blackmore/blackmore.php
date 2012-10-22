@@ -158,7 +158,7 @@ if(extensions::isSelected('blackmore')) {
 			framework::$module = (strlen($uModule) > 0) ? $uModule : null;
 
 			$tConfig = config::load();
-			$tCompiled .= framework::printFile('<' . '?php config::set(' . var_export($tConfig, true) . '); extensions::load(); ?' . '>');
+			$tCompiled .= framework::printFile('<' . '?php config::set(config::MAIN, ' . var_export($tConfig, true) . '); extensions::load(); ?' . '>');
 
 			// downloads
 			if(isset($tConfig['/downloadList'])) {

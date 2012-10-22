@@ -43,8 +43,8 @@ if(extensions::isSelected('resources')) {
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$packs = config::get('/resources/packList', array());
-			foreach(config::get('/resources/fileList', array()) as $tFile) {
+			self::$packs = config::get(config::MAIN, '/resources/packList', array());
+			foreach(config::get(config::MAIN, '/resources/fileList', array()) as $tFile) {
 				self::$packs[] = array(
 					'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
 					'name' => $tFile['name'],
@@ -52,7 +52,7 @@ if(extensions::isSelected('resources')) {
 				);
 			}
 
-			self::$directories = config::get('/resources/directoryList', array());
+			self::$directories = config::get(config::MAIN, '/resources/directoryList', array());
 
 			events::register('http_route', 'resources::http_route');
 		}

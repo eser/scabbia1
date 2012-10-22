@@ -137,7 +137,7 @@ if(extensions::isSelected('http')) {
 				$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_STRING'], $tPos + 1);
 			}
 
-			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
+			foreach(config::get(config::MAIN, '/http/rewriteList', array()) as $tRewriteList) {
 				$tReturn = preg_replace('|^' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
 				if($tCount > 0) {
 					$_SERVER['REQUEST_URI'] = $tReturn;
@@ -168,7 +168,7 @@ if(extensions::isSelected('http')) {
 				self::$isGet = true;
 			}
 
-			$tAutoCheckUserAgents = intval(config::get('/http/userAgents/autoCheck', '1'));
+			$tAutoCheckUserAgents = intval(config::get(config::MAIN, '/http/userAgents/autoCheck', '1'));
 
 			if($tAutoCheckUserAgents) {
 				self::checkUserAgent();
@@ -190,7 +190,7 @@ if(extensions::isSelected('http')) {
 		* @ignore
 		*/
 		public static function run($uParms) {
-			$tAutoRun = intval(config::get('/http/autorun', '1'));
+			$tAutoRun = intval(config::get(config::MAIN, '/http/autorun', '1'));
 			if(!$tAutoRun) {
 				return;
 			}
@@ -237,14 +237,14 @@ if(extensions::isSelected('http')) {
 		* @ignore
 		*/
 		public static function checkUserAgent() {
-			foreach(config::get('/http/userAgents/platformList', array()) as $tPlatformList) {
+			foreach(config::get(config::MAIN, '/http/userAgents/platformList', array()) as $tPlatformList) {
 				if(preg_match('/' . $tPlatformList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 					self::$platform = $tPlatformList['name'];
 					break;
 				}
 			}
 
-			foreach(config::get('/http/userAgents/crawlerList', array()) as $tCrawlerList) {
+			foreach(config::get(config::MAIN, '/http/userAgents/crawlerList', array()) as $tCrawlerList) {
 				if(preg_match('/' . $tCrawlerList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 					self::$crawler = $tCrawlerList['name'];
 					self::$crawlerType = $tCrawlerList['type'];
@@ -558,10 +558,10 @@ if(extensions::isSelected('http')) {
 		* @ignore
 		*/
 		public static function parseGet($uQueryString) {
-			$tParsingType = config::get('/http/request/parsingType', '0');
-			$tDefaultParameter = config::get('/http/request/getParameters', '?&');
-			$tDefaultKey = config::get('/http/request/getKeys', '=');
-			$tDefaultSeperator = config::get('/http/request/getSeperator', '/');
+			$tParsingType = config::get(config::MAIN, '/http/request/parsingType', '0');
+			$tDefaultParameter = config::get(config::MAIN, '/http/request/getParameters', '?&');
+			$tDefaultKey = config::get(config::MAIN, '/http/request/getKeys', '=');
+			$tDefaultSeperator = config::get(config::MAIN, '/http/request/getSeperator', '/');
 
 			if($tParsingType == '1') {
 				return string::parseQueryString($uQueryString, $tDefaultParameter, $tDefaultKey);
@@ -599,7 +599,7 @@ if(extensions::isSelected('http')) {
 		* @ignore
 		*/
 		public static function buildQueryString($uArray) {
-			//! $tDefaultKey = config::get('/http/request/getKeys', '=');
+			//! $tDefaultKey = config::get(config::MAIN, '/http/request/getKeys', '=');
 			/*
 			if(isset($uArray['_segments'])) {
 				$tString = '/' . implode('/', $uArray['_segments']) . '?';
