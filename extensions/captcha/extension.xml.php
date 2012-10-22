@@ -14,8 +14,7 @@
 		<includeList>
 			<include>captcha.php</include>
 		</includeList>
-	</extension>
-</s	<events>
+		<events>
 			<loadList>
 				<load>captcha::extension_load</load>
 			</loadList>

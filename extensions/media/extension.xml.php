@@ -11,8 +11,7 @@
 		<includeList>
 			<include>media.php</include>
 		</includeList>
-	</extension>
-	<events>
+		<events>
 			<loadList>
 				<load>media::extension_load</load>
 			</loadList>

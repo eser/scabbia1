@@ -13,8 +13,7 @@
 		<includeList>
 			<include>fb.php</include>
 		</includeList>
-	</extension>
-</	<events>
+		<events>
 			<loadList>
 				<load>fb::extension_load</load>
 			</loadList>

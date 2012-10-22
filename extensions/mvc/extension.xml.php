@@ -21,8 +21,7 @@
 			<include>viewengine_smarty.php</include>
 			<include>viewengine_twig.php</include>
 		</includeList>
-	</extension>
-</scabbia>	<events>
+		<events>
 			<loadList>
 				<load>mvc::extension_load</load>
 				<load>viewengine_markdown::extension_load</load>

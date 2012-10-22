@@ -13,8 +13,7 @@
 		<includeList>
 			<include>logger.php</include>
 		</includeList>
-	</extension>
-</	<events>
+		<events>
 			<loadList>
 				<load>logger::extension_load</load>
 			</loadList>

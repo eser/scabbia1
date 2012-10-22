@@ -18,8 +18,7 @@
 			</scope>
 			<include>databaseprovider_mysql.php</include>
 		</includeList>
-	</extension>
-</scabb	<events>
+		<events>
 			<loadList>
 				<load>database::extension_load</load>
 			</loadList>

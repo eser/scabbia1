@@ -15,8 +15,7 @@
 		<includeList>
 			<include>resources.php</include>
 		</includeList>
-	</extension>
-</sc	<events>
+		<events>
 			<loadList>
 				<load>resources::extension_load</load>
 			</loadList>

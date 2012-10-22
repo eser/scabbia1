@@ -13,8 +13,7 @@
 		<includeList>
 			<include>string.php</include>
 		</includeList>
-	</extension>
-</	<events>
+		<events>
 			<loadList>
 				<load>string::extension_load</load>
 			</loadList>

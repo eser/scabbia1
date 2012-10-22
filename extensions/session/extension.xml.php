@@ -13,8 +13,7 @@
 		<includeList>
 			<include>session.php</include>
 		</includeList>
-	</extension>
-</	<events>
+		<events>
 			<loadList>
 				<load>session::extension_load</load>
 			</loadList>

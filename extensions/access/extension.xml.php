@@ -11,8 +11,7 @@
 		<includeList>
 			<include>access.php</include>
 		</includeList>
-	</extension>
-	<events>
+		<events>
 			<loadList>
 				<load>access::extension_load</load>
 			</loadList>

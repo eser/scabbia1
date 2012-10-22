@@ -13,8 +13,7 @@
 		<includeList>
 			<include>cache.php</include>
 		</includeList>
-	</extension>
-</	<events>
+		<events>
 			<loadList>
 				<load>cache::extension_load</load>
 			</loadList>

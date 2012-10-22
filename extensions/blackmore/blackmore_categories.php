@@ -1,5 +1,6 @@
 <?php
-/**
+
+	/**
 	* Blackmore: Categories Extension
 	*
 	* @package Scabbia
@@ -15,8 +16,8 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return ckmore_buildMenu', 'blackmore_categories::blackmore_buildMenu');
+		public static function extension_load() {
+			events::register('blackmore_buildMenu', 'blackmore_categories::blackmore_buildMenu');
 		}
 
 		/**
@@ -39,7 +40,5 @@
 			);
 		}
 	}
-}
 
-?>
 ?>

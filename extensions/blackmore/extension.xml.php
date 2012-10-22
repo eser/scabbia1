@@ -15,8 +15,7 @@
 			<include>blackmore.php</include>
 			<include>blackmore_categories.php</include>
 		</includeList>
-	</extension>
-</sc	<events>
+		<events>
 			<loadList>
 				<load>blackmore::extension_load</load>
 				<load>blackmore_categories::extension_load</load>
