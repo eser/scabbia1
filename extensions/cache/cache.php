@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('cache')) {
 	/**
 	* Cache Extension
 	*
@@ -193,6 +192,5 @@ if(extensions::isSelected('cache')) {
 			}
 		}
 	}
-}
 
 ?>

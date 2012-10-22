@@ -14,4 +14,10 @@
 			<include>session.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>session::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

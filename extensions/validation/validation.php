@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('validation')) {
 	/**
 	* Validation Extension
 	*
@@ -215,6 +214,5 @@ if(extensions::isSelected('validation')) {
 			$this->errorMessage = &$uErrorMessage;
 		}
 	}
-}
 
 ?>

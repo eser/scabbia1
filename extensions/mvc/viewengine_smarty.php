@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: Smarty Extension
 	*
@@ -63,6 +62,5 @@ if(extensions::isSelected('mvc')) {
 			self::$engine->display($uObject['templateFile']);
 		}
 	}
-}
 
 ?>

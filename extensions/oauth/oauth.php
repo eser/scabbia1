@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('oauth')) {
 	/**
 	* Docs Extension
 	*

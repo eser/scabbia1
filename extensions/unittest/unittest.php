@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('unittest')) {
 	/**
 	* UnitTest Extension
 	*
@@ -119,6 +118,5 @@ if(extensions::isSelected('unittest')) {
 			return print_r(self::$report, $tOutput);
 		}
 	}
-}
 
 ?>

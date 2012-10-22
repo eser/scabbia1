@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('io')) {
 	/**
 	* IO Extension
 	*
@@ -336,6 +335,5 @@ if(extensions::isSelected('io')) {
 			return $uFilename;
 		}
 	}
-}
 
 ?>

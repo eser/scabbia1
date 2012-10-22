@@ -19,4 +19,10 @@
 			<include>databaseprovider_mysql.php</include>
 		</includeList>
 	</extension>
+</scabb	<events>
+			<loadList>
+				<load>database::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

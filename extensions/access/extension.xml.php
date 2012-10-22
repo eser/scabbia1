@@ -12,4 +12,10 @@
 			<include>access.php</include>
 		</includeList>
 	</extension>
+	<events>
+			<loadList>
+				<load>access::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

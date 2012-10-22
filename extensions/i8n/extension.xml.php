@@ -14,4 +14,10 @@
 			<include>i8n.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>i8n::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('media')) {
 	/**
 	* Media Extension
 	*
@@ -368,6 +367,5 @@ if(extensions::isSelected('media')) {
 			return $this;
 		}
 	}
-}
 
 ?>

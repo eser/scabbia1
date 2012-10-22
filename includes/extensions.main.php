@@ -87,8 +87,10 @@
 				}
 			}
 
-			if(method_exists($uExtensionName, 'extension_load')) {
-				call_user_func(array($uExtensionName, 'extension_load'));
+			if(isset($tClassInfo['/extension/events/loadList'])) {
+				foreach($tClassInfo['/extension/events/loadList'] as &$tLoad) {
+					call_user_func($tLoad);
+				}
 			}
 
 			return true;

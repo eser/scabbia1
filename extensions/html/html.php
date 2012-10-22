@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('html')) {
 	/**
 	* Html Extension
 	*
@@ -357,6 +356,5 @@ if(extensions::isSelected('html')) {
 			return $tResult;
 		}
 	}
-}
 
 ?>

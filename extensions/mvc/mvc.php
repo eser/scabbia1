@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* MVC Extension
 	*
@@ -768,6 +767,5 @@ EOD;
 			require($uObject['templatePath'] . $uObject['templateFile']);
 		}
 	}
-}
 
 ?>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('profiler')) {
 	/**
 	* Profiler Extension
 	*
@@ -158,6 +157,5 @@ if(extensions::isSelected('profiler')) {
 			$this->parameters += $uNewParameters;
 		}
 	}
-}
 
 ?>

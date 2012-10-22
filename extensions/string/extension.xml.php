@@ -14,4 +14,10 @@
 			<include>string.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>string::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('database')) {
 	/**
 	* Database Extension
 	*
@@ -1195,6 +1194,5 @@ if(extensions::isSelected('database')) {
 			return $this->_lastInsertId;
 		}
 	}
-}
 
 ?>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('resources')) {
 	/**
 	* Resources Extension
 	*
@@ -1467,6 +1466,5 @@ if(extensions::isSelected('resources')) {
 			}
 		}
 	}
-}
 
 ?>

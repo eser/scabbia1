@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('arrays')) {
 	/**
 	* Arrays Extension
 	*
@@ -332,6 +331,5 @@ if(extensions::isSelected('arrays')) {
 			return $tArray + $uArray;
 		}
 	}
-}
 
 ?>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: RainTpl Extension
 	*
@@ -65,6 +64,5 @@ if(extensions::isSelected('mvc')) {
 			self::$engine->draw($uObject['templateFile']);
 		}
 	}
-}
 
 ?>

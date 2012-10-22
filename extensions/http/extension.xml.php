@@ -14,4 +14,10 @@
 			<include>http.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>http::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

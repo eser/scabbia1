@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('http')) {
 	/**
 	* Http Extension
 	*
@@ -700,6 +699,5 @@ if(extensions::isSelected('http')) {
 		}
 
 	}
-}
 
 ?>

@@ -14,4 +14,10 @@
 			<include>logger.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>logger::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

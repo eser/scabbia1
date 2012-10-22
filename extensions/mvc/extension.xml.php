@@ -22,4 +22,16 @@
 			<include>viewengine_twig.php</include>
 		</includeList>
 	</extension>
+</scabbia>	<events>
+			<loadList>
+				<load>mvc::extension_load</load>
+				<load>viewengine_markdown::extension_load</load>
+				<load>viewengine_phptal::extension_load</load>
+				<load>viewengine_raintpl::extension_load</load>
+				<load>viewengine_razor::extension_load</load>
+				<load>viewengine_smarty::extension_load</load>
+				<load>viewengine_twig::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

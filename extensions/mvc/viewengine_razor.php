@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: Razor Extension
 	*
@@ -435,6 +434,5 @@ if(extensions::isSelected('mvc')) {
 			parent::__construct("Invalid view template: {$templateFileName}, at line {$line}. {$message}", null, null);
 		}
 	}
-}
 
 ?>

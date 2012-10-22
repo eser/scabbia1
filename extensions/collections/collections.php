@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('collections')) {
 	/**
 	* Collections Extension
 	*
@@ -694,6 +693,5 @@ if(extensions::isSelected('collections')) {
 			return $tTemp;
 		}
 	}
-}
 
 ?>

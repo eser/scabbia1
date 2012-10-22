@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('output')) {
 	/**
 	* Output Extension
 	*
@@ -18,12 +17,6 @@ if(extensions::isSelected('output')) {
 		* @ignore
 		*/
 		public static $effectList = array();
-
-		/**
-		* @ignore
-		*/
-		public static function extension_load() {
-		}
 
 		/**
 		* @ignore
@@ -60,6 +53,5 @@ if(extensions::isSelected('output')) {
 			return '';
 		}
 	}
-}
 
 ?>

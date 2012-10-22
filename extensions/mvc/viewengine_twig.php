@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: Twig Extension
 	*
@@ -65,6 +64,5 @@ if(extensions::isSelected('mvc')) {
 			echo self::$engine->render($uObject['templateFile'], $model);
 		}
 	}
-}
 
 ?>

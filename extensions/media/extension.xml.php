@@ -12,4 +12,10 @@
 			<include>media.php</include>
 		</includeList>
 	</extension>
+	<events>
+			<loadList>
+				<load>media::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

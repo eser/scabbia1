@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('databaseprovider_mysql')) {
+if(extensions::isSelected('database')) {
 	/**
 	* Database Provider Mysql Extension
 	*

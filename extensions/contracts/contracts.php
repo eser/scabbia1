@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('contracts')) {
 	/**
 	* Contracts Extension
 	*
@@ -412,6 +411,5 @@ if(extensions::isSelected('contracts')) {
 			return false;
 		}
 	}
-}
 
 ?>

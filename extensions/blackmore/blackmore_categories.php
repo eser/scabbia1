@@ -1,7 +1,5 @@
 <?php
-
-if(extensions::isSelected('blackmore_categories')) {
-	/**
+/**
 	* Blackmore: Categories Extension
 	*
 	* @package Scabbia
@@ -43,4 +41,5 @@ if(extensions::isSelected('blackmore_categories')) {
 	}
 }
 
+?>
 ?>

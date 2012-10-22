@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('captcha')) {
 	/**
 	* Captcha Extension
 	*
@@ -134,6 +133,5 @@ if(extensions::isSelected('captcha')) {
 			return $tResult;
 		}
 	}
-}
 
 ?>

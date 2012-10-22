@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('access')) {
 	/**
 	* Access Extension
 	*
@@ -86,6 +85,5 @@ if(extensions::isSelected('access')) {
 			}
 		}
 	}
-}
 
 ?>

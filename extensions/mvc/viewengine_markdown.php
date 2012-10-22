@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: MarkDown Extension
 	*
@@ -2967,6 +2966,5 @@ if(extensions::isSelected('mvc')) {
 			}
 		}
 	}
-}
 
 ?>

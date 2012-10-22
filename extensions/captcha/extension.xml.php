@@ -15,4 +15,10 @@
 			<include>captcha.php</include>
 		</includeList>
 	</extension>
+</s	<events>
+			<loadList>
+				<load>captcha::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

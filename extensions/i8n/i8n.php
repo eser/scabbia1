@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('i8n')) {
 	/**
 	* I8N Extension
 	*
@@ -93,6 +92,5 @@ if(extensions::isSelected('i8n')) {
 			return false;
 		}
 	}
-}
 
 ?>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('time')) {
 	/**
 	* Time Extension
 	*
@@ -206,6 +205,5 @@ if(extensions::isSelected('time')) {
 			return timezone_identifiers_list();
 		}
 	}
-}
 
 ?>

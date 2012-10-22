@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('blackmore')) {
 	/**
 	* Blackmore Extension
 	*
@@ -214,6 +213,5 @@ if(extensions::isSelected('blackmore')) {
 			}
 		}
 	}
-}
 
 ?>

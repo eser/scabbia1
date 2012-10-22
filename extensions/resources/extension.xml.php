@@ -16,4 +16,10 @@
 			<include>resources.php</include>
 		</includeList>
 	</extension>
+</sc	<events>
+			<loadList>
+				<load>resources::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('fb')) {
 	/**
 	* Facebook (FB) Extension
 	*
@@ -444,6 +443,5 @@ if(extensions::isSelected('fb')) {
 			return $this->getUrl($name, $path, $params);
 		}
 	}
-}
 
 ?>

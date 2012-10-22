@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('docs')) {
 	/**
 	* Docs Extension
 	*
@@ -15,6 +14,5 @@ if(extensions::isSelected('docs')) {
 	*/
 	class docs {
 	}
-}
 
 ?>

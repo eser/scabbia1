@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('smartobjects')) {
 	/**
 	* SmartObjects Extension
 	*
@@ -148,6 +147,5 @@ if(extensions::isSelected('smartobjects')) {
 			}
 		}
 	}
-}
 
 ?>

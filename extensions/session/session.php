@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('session')) {
 	/**
 	* Session Extension
 	*
@@ -312,6 +311,5 @@ if(extensions::isSelected('session')) {
 			return print_r(self::$data, $tOutput);
 		}
 	}
-}
 
 ?>

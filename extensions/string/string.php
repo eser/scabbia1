@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('string')) {
 	define('FILTER_VALIDATE_BOOLEAN_FIX', 'filterValidateBooleanFix');
 
 	if(!defined('ENT_HTML5')) {
@@ -834,6 +833,5 @@ if(extensions::isSelected('string')) {
 			$uVariable2 = $tTemp;
 		}
 	}
-}
 
 ?>

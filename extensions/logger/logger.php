@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('logger')) {
 	/**
 	* Logger Extension
 	*
@@ -189,6 +188,5 @@ if(extensions::isSelected('logger')) {
 			file_put_contents($tFilename, $tContent, FILE_APPEND);
 		}
 	}
-}
 
 ?>

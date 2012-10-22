@@ -14,4 +14,10 @@
 			<include>cache.php</include>
 		</includeList>
 	</extension>
+</	<events>
+			<loadList>
+				<load>cache::extension_load</load>
+			</loadList>
+		</events>
+	</extension>
 </scabbia>

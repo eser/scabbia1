@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: PHPTAL Extension
 	*
@@ -70,6 +69,5 @@ if(extensions::isSelected('mvc')) {
 			self::$engine->echoExecute();
 		}
 	}
-}
 
 ?>
