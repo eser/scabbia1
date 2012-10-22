@@ -41,13 +41,9 @@
 		*
 		* @uses loadFiles()
 		*/
-		public static function &loadConfiguration($uName, $uPath) {
+		public static function &loadConfiguration($uPath) {
 			$tConfig = array();
 			self::loadFiles($tConfig, $uPath);
-
-			if(!isset(self::$configurations[$uName])) {
-				self::$configurations[$uName] = &$tConfig;
-			}
 
 			return $tConfig;
 		}

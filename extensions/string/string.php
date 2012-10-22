@@ -34,20 +34,6 @@ if(extensions::isSelected('string')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'string',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array('mbstring'),
-				'fwversion' => '1.0',
-				'fwdepends' => array()
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$mbstringEncoding = mb_preferred_mime_name(mb_internal_encoding());
 		}

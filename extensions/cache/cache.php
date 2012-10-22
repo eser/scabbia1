@@ -34,20 +34,6 @@ if(extensions::isSelected('cache')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'cache',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('io')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$defaultAge = intval(config::get(config::MAIN, '/cache/defaultAge', '120'));
 			self::$keyphase = config::get(config::MAIN, '/cache/keyphase', '');

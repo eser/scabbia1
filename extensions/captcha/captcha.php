@@ -30,20 +30,6 @@ if(extensions::isSelected('captcha')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'captcha',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'session')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$fontFile = framework::translatePath(config::get(config::MAIN, '/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
 			self::$fontSize = intval(config::get(config::MAIN, '/captcha/fontSize', '45'));

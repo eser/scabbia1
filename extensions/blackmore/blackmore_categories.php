@@ -18,21 +18,7 @@ if(extensions::isSelected('blackmore_categories')) {
 		* @ignore
 		*/
 		public static function extension_info() {
-			return array(
-				'name' => 'blackmore_categories',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'resources', 'blackmore')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function extension_load() {
-			events::register('blackmore_buildMenu', 'blackmore_categories::blackmore_buildMenu');
+			return ckmore_buildMenu', 'blackmore_categories::blackmore_buildMenu');
 		}
 
 		/**

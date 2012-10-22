@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('viewengine_raintpl')) {
+if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: RainTpl Extension
 	*
@@ -18,20 +18,6 @@ if(extensions::isSelected('viewengine_raintpl')) {
 		* @ignore
 		*/
 		public static $engine = null;
-
-		/**
-		* @ignore
-		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'viewengine: raintpl',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('mvc')
-			);
-		}
 
 		/**
 		* @ignore

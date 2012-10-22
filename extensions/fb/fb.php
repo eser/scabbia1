@@ -52,20 +52,6 @@ if(extensions::isSelected('fb')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'fb',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('session')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$appId = config::get(config::MAIN, '/facebook/APP_ID');
 			self::$appSecret = config::get(config::MAIN, '/facebook/APP_SECRET');

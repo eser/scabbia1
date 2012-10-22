@@ -133,20 +133,6 @@ if(extensions::isSelected('contracts')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'contracts',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array()
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function test($uType, $uValue, $uArgs) {
 			switch($uType) {
 			case self::isRequired:

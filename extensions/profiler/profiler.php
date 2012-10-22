@@ -23,20 +23,6 @@ if(extensions::isSelected('profiler')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'profiler',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array()
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function start($uName, $uParameters = null) {
 			/*
 			if(framework::phpVersion('5.3.6')) {

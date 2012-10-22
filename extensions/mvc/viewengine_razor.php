@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('viewengine_razor')) {
+if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: Razor Extension
 	*
@@ -22,20 +22,6 @@ if(extensions::isSelected('viewengine_razor')) {
 		* @ignore
 		*/
 		public static $compiledAge;
-
-		/**
-		* @ignore
-		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'viewengine: razor',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('mvc', 'cache')
-			);
-		}
 
 		/**
 		* @ignore

@@ -29,20 +29,6 @@ if(extensions::isSelected('i8n')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'i8n',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array('mbstring'),
-				'fwversion' => '1.0',
-				'fwdepends' => array()
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['id']] = array(

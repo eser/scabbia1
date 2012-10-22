@@ -26,20 +26,6 @@ if(extensions::isSelected('logger')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'logger',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('string')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$filename = config::get(config::MAIN, '/logger/filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get(config::MAIN, '/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');

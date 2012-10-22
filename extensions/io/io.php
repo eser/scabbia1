@@ -17,20 +17,6 @@ if(extensions::isSelected('io')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'io',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('string')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function getMimeType($uExtension, $uDefault = 'application/octet-stream') {
 			switch(string::toLower($uExtension)) {
 			case 'pdf':

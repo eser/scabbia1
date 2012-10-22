@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('databaseprovider_pdo')) {
+if(extensions::isSelected('database')) {
 	/**
 	* Database Provider PDO Extension
 	*
@@ -14,20 +14,6 @@ if(extensions::isSelected('databaseprovider_pdo')) {
 	* @scabbia-phpdepends pdo
 	*/
 	class databaseprovider_pdo {
-		/**
-		* @ignore
-		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'databaseprovider: pdo',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array('pdo'),
-				'fwversion' => '1.0',
-				'fwdepends' => array('database')
-			);
-		}
-
 		/**
 		* @ignore
 		*/

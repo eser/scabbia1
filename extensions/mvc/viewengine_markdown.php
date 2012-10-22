@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('viewengine_markdown')) {
+if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: MarkDown Extension
 	*
@@ -22,20 +22,6 @@ if(extensions::isSelected('viewengine_markdown')) {
 		* @ignore
 		*/
 		public static $compiledAge;
-
-		/**
-		* @ignore
-		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'viewengine: markdown',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('mvc', 'io', 'cache')
-			);
-		}
 
 		/**
 		* @ignore

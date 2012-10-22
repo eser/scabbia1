@@ -1,6 +1,6 @@
 <?php
 
-if(extensions::isSelected('viewengine_smarty')) {
+if(extensions::isSelected('mvc')) {
 	/**
 	* ViewEngine: Smarty Extension
 	*
@@ -18,20 +18,6 @@ if(extensions::isSelected('viewengine_smarty')) {
 		* @ignore
 		*/
 		public static $engine = null;
-
-		/**
-		* @ignore
-		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'viewengine: smarty',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('mvc')
-			);
-		}
 
 		/**
 		* @ignore

@@ -17,20 +17,6 @@ if(extensions::isSelected('databaseprovider_mysql')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'databaseprovider: mysql',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array('mysqli'),
-				'fwversion' => '1.0',
-				'fwdepends' => array('database')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public $standard = null;
 		/**
 		* @ignore

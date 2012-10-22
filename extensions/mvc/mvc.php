@@ -57,20 +57,6 @@ if(extensions::isSelected('mvc')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'mvc',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('string', 'http', 'resources')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$defaultController = config::get(config::MAIN, '/mvc/routes/defaultController', 'home');
 			self::$defaultAction = config::get(config::MAIN, '/mvc/routes/defaultAction', 'index');

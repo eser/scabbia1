@@ -30,20 +30,6 @@ if(extensions::isSelected('media')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'media',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array()
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$cachePath = framework::writablePath('cache/media/');
 			self::$cacheAge = intval(config::get(config::MAIN, '/media/cacheAge', '120'));

@@ -28,20 +28,6 @@ if(extensions::isSelected('resources')) {
 		/**
 		* @ignore
 		*/
-		public static function extension_info() {
-			return array(
-				'name' => 'resources',
-				'version' => '1.0.2',
-				'phpversion' => '5.2.0',
-				'phpdepends' => array(),
-				'fwversion' => '1.0',
-				'fwdepends' => array('io', 'cache', 'http')
-			);
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function extension_load() {
 			self::$packs = config::get(config::MAIN, '/resources/packList', array());
 			foreach(config::get(config::MAIN, '/resources/fileList', array()) as $tFile) {
