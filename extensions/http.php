@@ -215,19 +215,21 @@ if(extensions::isSelected('http')) {
 		public static function output($uParms) {
 			if(self::$isAjax) {
 				$tLastContentType = http::sentHeaderValue('Content-Type');
-				$uParms['content'] = '{ "isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true')
+				$tContent = '{ "isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true')
 					. ', "errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true));
 
 				if($tLastContentType == false) {
 					self::sendHeader('Content-Type', 'application/json', true);
 
-					$uParms['content'] .= ', "object": ' . json_encode($uParms['content']);
+					$tContent .= ', "object": ' . json_encode($uParms['content']);
 				}
 				else {
-					$uParms['content'] .= ', "object": ' . $uParms['content'];
+					$tContent .= ', "object": ' . $uParms['content'];
 				}
 
-				$uParms['content'] .= ' }';
+				$tContent .= ' }';
+				
+				$uParms['content'] = $tContent;
 			}
 		}
 
