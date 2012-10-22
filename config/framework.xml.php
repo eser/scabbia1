@@ -4,37 +4,37 @@
 	<moduleList />
 
 	<includeList>
-		<include>{core}extensions/string.php</include>
-		<include>{core}extensions/io.php</include>
-		<include>{core}extensions/http.php</include>
-		<include>{core}extensions/arrays.php</include>
-		<include>{core}extensions/time.php</include>
-		<include>{core}extensions/contracts.php</include>
-		<include>{core}extensions/validation.php</include>
+		<include>{core}extensions/string/string.php</include>
+		<include>{core}extensions/io/io.php</include>
+		<include>{core}extensions/http/http.php</include>
+		<include>{core}extensions/arrays/arrays.php</include>
+		<include>{core}extensions/time/time.php</include>
+		<include>{core}extensions/contracts/contracts.php</include>
+		<include>{core}extensions/validation/validation.php</include>
 		<scope mode="development">
-			<include>{core}extensions/profiler.php</include>
+			<include>{core}extensions/profiler/profiler.php</include>
 		</scope>
-		<include>{core}extensions/cache.php</include>
+		<include>{core}extensions/cache/cache.php</include>
 		<scope mode="development">
-			<include>{core}extensions/database.php</include>
+			<include>{core}extensions/database/database.php</include>
 			<scope phpextension="pdo">
-				<include>{core}extensions/databaseprovider_pdo.php</include>
+				<include>{core}extensions/database/databaseprovider_pdo.php</include>
 			</scope>
-			<include>{core}extensions/databaseprovider_mysql.php</include>
+			<include>{core}extensions/database/databaseprovider_mysql.php</include>
 		</scope>
-		<include>{core}extensions/session.php</include>
-		<include>{core}extensions/logger.php</include>
-		<include>{core}extensions/html.php</include>
-		<include>{core}extensions/i8n.php</include>
-		<include>{core}extensions/resources.php</include>
-		<include>{core}extensions/mvc.php</include>
+		<include>{core}extensions/session/session.php</include>
+		<include>{core}extensions/logger/logger.php</include>
+		<include>{core}extensions/html/html.php</include>
+		<include>{core}extensions/i8n/i8n.php</include>
+		<include>{core}extensions/resources/resources.php</include>
+		<include>{core}extensions/mvc/mvc.php</include>
 		<scope mode="development">
-			<include>{core}extensions/viewengine_markdown.php</include>
-			<include>{core}extensions/docs.php</include>
-			<include>{core}extensions/blackmore.php</include>
-			<include>{core}extensions/blackmore_categories.php</include>
+			<include>{core}extensions/mvc/viewengine_markdown.php</include>
+			<include>{core}extensions/docs/docs.php</include>
+			<include>{core}extensions/blackmore/blackmore.php</include>
+			<include>{core}extensions/blackmore/blackmore_categories.php</include>
 		</scope>
-		<!-- <include>{core}extensions/oauth.php</include> -->
+		<!-- <include>{core}extensions/oauth/oauth.php</include> -->
 		<!-- <include>{core}controllers/*.php</include> -->
 		<!-- <include>{core}models/*.php</include> -->
 	</includeList>
