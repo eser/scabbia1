@@ -32,6 +32,7 @@
 			<include>{core}extensions/viewengine_markdown.php</include>
 			<include>{core}extensions/docs.php</include>
 			<include>{core}extensions/blackmore.php</include>
+			<include>{core}extensions/blackmore_categories.php</include>
 		</scope>
 		<!-- <include>{core}extensions/oauth.php</include> -->
 		<!-- <include>{core}controllers/*.php</include> -->
@@ -67,6 +68,7 @@
 			<extension>viewengine_markdown</extension>
 			<extension>docs</extension>
 			<extension>blackmore</extension>
+			<extension>blackmore_categories</extension>
 		</scope>
 	</extensionList>
 </scabbia>

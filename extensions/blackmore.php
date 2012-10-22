@@ -31,6 +31,35 @@ if(extensions::isSelected('blackmore')) {
 		/**
 		* @ignore
 		*/
+		public static function extension_load() {
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function &buildMenu() {
+			$tMenuItems = array(
+				array(
+					'title' => 'Dashboard',
+				'link' => mvc::url('blackmore/index')
+				)
+			);
+
+			events::invoke('blackmore_buildMenu', array(
+				'menuItems' => &$tMenuItems
+			));
+
+			$tMenuItems[] = array(
+				'title' => 'Logout',
+				'link' => mvc::url('blackmore/logout')
+			);
+
+			return $tMenuItems;
+		}
+
+		/**
+		* @ignore
+		*/
 		public function render(&$uAction, &$uArgs) {
 			if(framework::$development <= 0) {
 				return false;
