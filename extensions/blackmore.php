@@ -9,7 +9,7 @@ if(extensions::isSelected('blackmore')) {
 	* @version 1.0.2
 	*
 	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
+	* @scabbia-fwdepends string, resources
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
@@ -43,7 +43,7 @@ if(extensions::isSelected('blackmore')) {
 		* @ignore
 		*/
 		public function index() {
-			$this->view('{core}views/blackmore/index.php');
+			$this->viewFile('{core}views/blackmore/index.php');
 		}
 
 		/**

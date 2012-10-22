@@ -261,14 +261,11 @@ if(extensions::isSelected('mvc')) {
 				$uModel = (isset($uArgs[1])) ? $uArgs[1] : null;
 			}
 
-			if(!is_null($uView)) {
-				$tViewFilePath = framework::translatePath($uView, framework::$applicationPath . 'views/');
-			}
-			else {
+			if(is_null($uView)) {
 				$uView = self::$route['controller'] . '/' . self::$route['action'] . '.' . $tViewDefaultExtension;
-				$tViewFilePath = framework::translatePath($uView, framework::$applicationPath . 'views/');
 			}
 
+			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
 			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
 			if(!isset(self::$viewEngines[$tViewExtension])) {
 				$tViewExtension = $tViewDefaultExtension;
@@ -318,7 +315,8 @@ if(extensions::isSelected('mvc')) {
 				$uModel = (isset($uArgs[1])) ? $uArgs[1] : null;
 			}
 
-			$tViewExtension = pathinfo($uView, PATHINFO_EXTENSION);
+			$tViewFilePath = framework::translatePath($uView);
+			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
 			if(!isset(self::$viewEngines[$tViewExtension])) {
 				$tViewExtension = $tViewDefaultExtension;
 			}
@@ -332,8 +330,8 @@ if(extensions::isSelected('mvc')) {
 				$tExtra['lang'] = i8n::$language['key'];
 			}
 
-			$tTemplatePath = pathinfo($uView, PATHINFO_DIRNAME) . '/';
-			$tViewFile = pathinfo($uView, PATHINFO_BASENAME);
+			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
+			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
 
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
@@ -711,6 +709,14 @@ EOD;
 			call_user_func_array('mvc::view', $uArgs);
 		}
 
+		/**
+		 * @ignore
+		 */
+		public function viewFile() {
+			$uArgs = func_get_args();
+			call_user_func_array('mvc::viewFile', $uArgs);
+		}
+		
 		/**
 		* @ignore
 		*/
