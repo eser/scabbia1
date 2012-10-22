@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>http</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 		</fwdependList>
-		<includeList>
-			<include>http.php</include>
-		</includeList>
-		<events>
-			<loadList>
-				<load>http::extension_load</load>
-			</loadList>
-		</events>
-	</extension>
+	</info>
+	<includeList>
+		<include>http.php</include>
+	</includeList>
+	<classList>
+		<class>http</class>
+	</classList>
+	<events>
+		<loadList>
+			<load>http::extension_load</load>
+		</loadList>
+	</events>
 </scabbia>

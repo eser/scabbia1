@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>fb</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList>
 			<fwdepend>session</fwdepend>
 		</fwdependList>
-		<includeList>
-			<include>fb.php</include>
-		</includeList>
-		<events>
-			<loadList>
-				<load>fb::extension_load</load>
-			</loadList>
-		</events>
-	</extension>
+	</info>
+	<includeList>
+		<include>fb.php</include>
+	</includeList>
+	<classList>
+		<class>fb</class>
+		<class>FacebookQueryObject</class>
+		<class>Facebook</class>
+	</classList>
+	<events>
+		<loadList>
+			<load>fb::extension_load</load>
+		</loadList>
+	</events>
 </scabbia>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>database</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
@@ -11,17 +12,28 @@
 			<fwdepend>string</fwdepend>
 			<fwdepend>cache</fwdepend>
 		</fwdependList>
-		<includeList>
-			<include>database.php</include>
-			<scope phpextension="pdo">
-				<include>databaseprovider_pdo.php</include>
-			</scope>
-			<include>databaseprovider_mysql.php</include>
-		</includeList>
-		<events>
-			<loadList>
-				<load>database::extension_load</load>
-			</loadList>
-		</events>
-	</extension>
+	</info>
+	<includeList>
+		<include>database.php</include>
+		<scope phpextension="pdo">
+			<include>databaseprovider_pdo.php</include>
+		</scope>
+		<include>databaseprovider_mysql.php</include>
+	</includeList>
+	<classList>
+		<class>database</class>
+		<class>databaseConnection</class>
+		<class>databaseDataset</class>
+		<class>databaseQuery</class>
+		<class>databaseQueryResult</class>
+		<scope phpextension="pdo">
+			<class>databaseprovider_pdo</class>
+		</scope>
+		<class>databaseprovider_mysql</class>
+	</classList>
+	<events>
+		<loadList>
+			<load>database::extension_load</load>
+		</loadList>
+	</events>
 </scabbia>

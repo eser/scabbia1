@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>access</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList />
-		<includeList>
-			<include>access.php</include>
-		</includeList>
-		<events>
-			<loadList>
-				<load>access::extension_load</load>
-			</loadList>
-		</events>
-	</extension>
+	</info>
+	<includeList>
+		<include>access.php</include>
+	</includeList>
+	<classList>
+		<class>access</class>
+	</classList>
+	<events>
+		<loadList>
+			<load>access::extension_load</load>
+		</loadList>
+	</events>
 </scabbia>

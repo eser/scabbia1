@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>mvc</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
@@ -12,25 +13,37 @@
 			<fwdepend>http</fwdepend>
 			<fwdepend>resources</fwdepend>
 		</fwdependList>
-		<includeList>
-			<include>mvc.php</include>
-			<include>viewengine_markdown.php</include>
-			<include>viewengine_phptal.php</include>
-			<include>viewengine_raintpl.php</include>
-			<include>viewengine_razor.php</include>
-			<include>viewengine_smarty.php</include>
-			<include>viewengine_twig.php</include>
-		</includeList>
-		<events>
-			<loadList>
-				<load>mvc::extension_load</load>
-				<load>viewengine_markdown::extension_load</load>
-				<load>viewengine_phptal::extension_load</load>
-				<load>viewengine_raintpl::extension_load</load>
-				<load>viewengine_razor::extension_load</load>
-				<load>viewengine_smarty::extension_load</load>
-				<load>viewengine_twig::extension_load</load>
-			</loadList>
-		</events>
-	</extension>
+	</info>
+	<includeList>
+		<include>mvc.php</include>
+		<include>viewengine_markdown.php</include>
+		<include>viewengine_phptal.php</include>
+		<include>viewengine_raintpl.php</include>
+		<include>viewengine_razor.php</include>
+		<include>viewengine_smarty.php</include>
+		<include>viewengine_twig.php</include>
+	</includeList>
+	<classList>
+		<class>mvc</class>
+		<class>model</class>
+		<class>controller</class>
+		<class>viewengine_php</class>
+		<class>viewengine_markdown</class>
+		<class>viewengine_phptal</class>
+		<class>viewengine_raintpl</class>
+		<class>viewengine_razor</class>
+		<class>viewengine_smarty</class>
+		<class>viewengine_twig</class>
+	</classList>
+	<events>
+		<loadList>
+			<load>mvc::extension_load</load>
+			<load>viewengine_markdown::extension_load</load>
+			<load>viewengine_phptal::extension_load</load>
+			<load>viewengine_raintpl::extension_load</load>
+			<load>viewengine_razor::extension_load</load>
+			<load>viewengine_smarty::extension_load</load>
+			<load>viewengine_twig::extension_load</load>
+		</loadList>
+	</events>
 </scabbia>

@@ -12,7 +12,7 @@
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
-	class blackmore_categories extends controller {
+	class blackmore_categories {
 		/**
 		* @ignore
 		*/

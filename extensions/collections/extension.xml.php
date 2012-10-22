@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<extension>
+	<info>
 		<name>collections</name>
 		<version>1.0.2</version>
+		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList />
-		<includeList>
-			<include>collections.php</include>
-		</includeList>
-	</extension>
+	</info>
+	<includeList>
+		<include>collections.php</include>
+	</includeList>
+	<classList>
+		<class>collections</class>
+		<class>collection</class>
+		<class>xmlCollection</class>
+		<class>fileCollection</class>
+	</classList>
 </scabbia>

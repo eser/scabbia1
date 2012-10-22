@@ -8,9 +8,13 @@
 	*/
 	class extensions {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $selected = array();
+		/**
+		 * @ignore
+		 */
+		public static $classmap = array();
 		/**
 		* @ignore
 		*/
@@ -20,6 +24,8 @@
 		* Loads the extensions module.
 		*/
 		public static function load() {
+			spl_autoload_register('extensions::autoloader');
+
 			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtension) {
 				$tPath = framework::translatePath(rtrim($tExtension, '/') . '/');
 				$tConfiguration = config::loadConfiguration($tPath . 'extension.xml.php');
@@ -28,14 +34,36 @@
 					continue;
 				}
 
-				self::$selected[] = $tConfiguration['/extension/name'];
-				config::set($tConfiguration['/extension/name'], $tConfiguration);
-				foreach($tConfiguration['/extension/includeList'] as &$tFile) {
-					require_once($tPath . $tFile);
+				$tName = $tConfiguration['/info/name'];
+
+				self::$selected[] = $tName;
+				config::set($tName, $tConfiguration);
+				if(isset($tConfiguration['/includeList'])) {
+					foreach($tConfiguration['/includeList'] as &$tFile) {
+						require_once($tPath . $tFile);
+					}
 				}
-			}		
+
+				if(isset($tConfiguration['/classList'])) {
+					foreach($tConfiguration['/classList'] as &$tClass) {
+						self::$classmap[$tClass] = $tName;
+					}
+				}
+			}
 		}
 
+		/**
+		* Autoloader method.
+		* 
+		*/
+		public static function autoloader($uClass) {
+			if(isset(self::$classmap[$uClass])) {
+				throw new Exception('class not found - ' . $uClass . ' but autoload is possible.');
+			}
+
+			throw new Exception('class not found - ' . $uClass);
+		}
+		
 		/**
 		* Loads the selected extensions.
 		*
@@ -61,24 +89,24 @@
 			$tClassInfo = &config::$configurations[$uExtensionName];
 
 			if(!COMPILED) {
-				if(isset($tClassInfo['/extension/phpversion']) && !framework::phpVersion($tClassInfo['/extension/phpversion'])) {
+				if(isset($tClassInfo['/info/phpversion']) && !framework::phpVersion($tClassInfo['/info/phpversion'])) {
 					return false;
 				}
 
-				if(isset($tClassInfo['/extension/phpdependList'])) {
-					foreach($tClassInfo['/extension/phpdependList'] as &$tExtension) {
+				if(isset($tClassInfo['/info/phpdependList'])) {
+					foreach($tClassInfo['/info/phpdependList'] as &$tExtension) {
 						if(!extension_loaded($tExtension)) {
 							throw new Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
 					}
 				}
 
-				if(isset($tClassInfo['/extension/fwversion']) && !framework::version($tClassInfo['/extension/fwversion'])) {
+				if(isset($tClassInfo['/info/fwversion']) && !framework::version($tClassInfo['/info/fwversion'])) {
 					return false;
 				}
 
-				if(isset($tClassInfo['/extension/fwdependList'])) {
-					foreach($tClassInfo['/extension/fwdependList'] as &$tExtension) {
+				if(isset($tClassInfo['/info/fwdependList'])) {
+					foreach($tClassInfo['/info/fwdependList'] as &$tExtension) {
 						// if(!self::add($tExtension)) {
 						if(!in_array($tExtension, self::$loaded)) {
 							throw new Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
@@ -87,8 +115,8 @@
 				}
 			}
 
-			if(isset($tClassInfo['/extension/events/loadList'])) {
-				foreach($tClassInfo['/extension/events/loadList'] as &$tLoad) {
+			if(isset($tClassInfo['/events/loadList'])) {
+				foreach($tClassInfo['/events/loadList'] as &$tLoad) {
 					call_user_func($tLoad);
 				}
 			}
