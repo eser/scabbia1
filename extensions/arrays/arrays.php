@@ -189,13 +189,16 @@
 		* @param array $uArray array
 		* @param mixed $uKey key
 		* @param bool $uSkipEmpties whether skip empty entries or not
+		* @param bool $uDistinct whether returns multiple instances of same entries or not
 		*/
-		public static function &column($uArray, $uKey, $uSkipEmpties = false) {
+		public static function &column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false) {
 			$tReturn = array();
 
 			foreach($uArray as &$tRow) {
 				if(isset($tRow[$uKey])) {
-					$tReturn[] = $tRow[$uKey];
+					if(!$uDistinct || !in_array($tRow[$uKey], $tReturn)) {
+						$tReturn[] = $tRow[$uKey];
+					}
 				}
 				else if(!$uSkipEmpties) {
 					$tReturn[] = null;

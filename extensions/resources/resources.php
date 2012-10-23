@@ -182,13 +182,13 @@
 				}
 
 				if(isset($uSelectedDirectory['autoViewer']['header'])) {
-					mvc::view($uSelectedDirectory['autoViewer']['header']);
+					mvc::viewFile($uSelectedDirectory['autoViewer']['header']);
 				}
 
 				mvc::viewFile($tPath);
 
 				if(isset($uSelectedDirectory['autoViewer']['footer'])) {
-					mvc::view($uSelectedDirectory['autoViewer']['footer']);
+					mvc::viewFile($uSelectedDirectory['autoViewer']['footer']);
 				}
 
 				return true;
