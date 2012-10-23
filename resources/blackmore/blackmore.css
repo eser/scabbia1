@@ -7,7 +7,7 @@ img, a img { border: 0px; }
 
 body {
 	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
-	font-family: 'Arial', 'Helvetica', sans-serif;
+	font-family: 'Tahoma', 'Arial', 'Helvetica', sans-serif;
 	font-size: 12px;
 	color: #666666;
 	line-height: 20px;
@@ -23,6 +23,15 @@ a:hover {
 	color: #008EE8;
 }
 
+.wrapper {
+	width: 100%;
+}
+
+.wrapper .inner {
+	width: 100%;
+	margin: 0px 100px 0px 100px;
+}
+
 /* LOGIN PAGE */
 
 .block.small.center.login {
@@ -31,66 +40,66 @@ a:hover {
 	margin-top: 100px;
 	margin-bottom: 100px;
 	padding-bottom: 5px;
-	}
+}
 
 .block {
 	padding-bottom: 5px;
 	margin-bottom: 25px;
 	clear: both;
 	background: #fff url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
-	}
+}
 
 .block .bendl {
 	width: 5px;
 	height: 5px;
 	background: url('scabbia/blackmore/images/bendl.gif') bottom left no-repeat;
 	float: left;
-	}
+}
 
 .block .bendr {
 	width: 5px;
 	height: 5px;
 	background: url('scabbia/blackmore/images/bendr.gif') bottom left no-repeat;
 	float: right;
-	}
+}
 
 .block .block_head {
 	height: 54px;
 	line-height: 54px;
 	background: url('scabbia/blackmore/images/bhead.gif') 0 0 repeat-x;
 	overflow: hidden;
-	}
+}
 
 .block .block_head .bheadl {
 	width: 20px;
 	height: 54px;
 	float: left;
 	background: url('scabbia/blackmore/images/bheadl.gif') top left no-repeat;
-	}
+}
 
 .block .block_head .bheadr {
 	width: 20px;
 	height: 54px;
 	float: right;
 	background: url('scabbia/blackmore/images/bheadr.gif') top right no-repeat;
-	}
+}
 
 .block .block_head h2 {
 	font-size: 18px;
 	font-weight: normal;
 	text-transform: uppercase;
-	color: #555;
-	text-shadow: 1px 1px 0 #fff;
+	color: #555555;
+	text-shadow: 1px 1px 0px #FFFFFF;
 	float: left;
-	}
+}
 
 .block .block_content {
 	overflow: hidden;
-	background: #fff;
-	border-left: 1px solid #ccc;
-	border-right: 1px solid #ccc;
-	padding: 10px 20px 0;
-	}
+	background: #FFFFFF;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	padding: 10px 20px 0px 20px;
+}
 
 .block.small.center {
 	float: none;
@@ -401,7 +410,7 @@ form input.submit:hover {
 /* Theme specific
 ----------------------------------------------------------*/
 .containerBox {
-	margin: 2px 20px 0px 20px;
+	margin: 0px 20px 0px 20px;
 }
 
 .display {
@@ -473,6 +482,7 @@ form input.submit:hover {
 	border-top: 1px solid #000000;
 	width: 100%;
 }
+
 #pageMiddle table.tablesorter tr td{
 	padding:8px 4px 8px 4px;
 }
@@ -489,19 +499,9 @@ form input.submit:hover {
 	vertical-align: top;
 }
 
-#pageMiddleContent .topLine {
-	background: #E0E0E0;
-	height: 1px;
-}
-
 #pageMiddleContent .middleLine {
-	background: #FFFFFF;
 	padding: 15px 15px 15px 5px;
 	min-height: 500px;
-}
-
-#pageMiddleContent .bottomLine {
-	clear: both;
 }
 
 #pageMiddleContent .postDate {
@@ -545,8 +545,6 @@ form input.submit:hover {
 }
 
 #pageMiddleSidebar {
-	border-top: 1px solid #A0A0A0;
-	background: #E0E0E0;
 	width: 350px;
 	vertical-align: top;
 }
@@ -557,17 +555,23 @@ form input.submit:hover {
 	height: 1px;
 }
 
-#pageMiddleSidebar .menuDiv {
+#pageMiddleSidebar .menuDivContainer {
 	margin: 15px;
+}
+
+#pageMiddleSidebar .menuDiv {
 	padding: 5px 10px 5px 10px;
-	background: #FFFFFF;
+	background: #FEFEFE;
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #FFFFFF;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
 }
 
 #pageMiddleSidebar .menuDivHeader {
-	color: #808080;
-	font-size: 12pt;
+	color: #181818;
+	font-size: 14pt;
 	line-height: 12pt;
-	font-weight: bold;
 	margin: 5px 0px 5px 0px;
 }
 
@@ -577,12 +581,9 @@ form input.submit:hover {
 
 #pageMiddleSidebarToggle {
 	width: 10px;
-	border-top: 1px solid #E0E0E0;
-	border-left: 1px solid #A0A0A0;
 	text-align: center;
 	vertical-align: top;
 	cursor: pointer;
-	background: #FFFFFF;
 }
 
 #pageBottom {

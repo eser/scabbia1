@@ -17,21 +17,21 @@
 		</script>
 
 		<div id="page">
-			<header id="pageTop">
+			<header id="pageTop" class="wrapper">
 				<div id="pageTopHead">
-					<div class="containerBox padding4px">
+					<div class="containerBox padding4px inner">
 						<a href="#" class="bgLink"><?php echo _('Notifications:'); ?> <span class="bgCount">0</span></a>
 						<span class="bgSpacer"></span>
 						<a href="#" class="bgLink"><?php echo _('Users:'); ?> <span class="bgCount">0</span></a>
 					</div>
 				</div>
 				<div id="pageTopLogo">
-					<div class="containerBox">
+					<div class="containerBox inner">
 						<a href="<?php echo mvc::url('editor/index'); ?>"><img src="<?php echo $root; ?>/scabbia/blackmore/images/logo.png" width="400" height="84" alt="" /></a>
 					</div>
 				</div>
 				<div id="pageTopMenu">
-					<div class="containerBox">
+					<div class="containerBox inner">
 						<nav>
 							<ul class="noMargin">
 								<?php foreach(blackmore::buildMenu() as $tMenuItem) { ?>
@@ -51,4 +51,5 @@
 					</div>
 				</div>
 			</header>
-			<section id="pageMiddle">
+			<section id="pageMiddle" class="wrapper">
+				<div class="inner">
