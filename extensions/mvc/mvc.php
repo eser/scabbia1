@@ -143,7 +143,7 @@
 			$tControllerData = array(
 				'actionUrlKeys' => config::get(config::MAIN, '/mvc/routes/actionUrlKeys', '1'),
 				'defaultAction' => self::$defaultAction,
-				'link' => config::get(config::MAIN, '/mvc/routes/@link', '{@siteroot}/{@controller}/{@action}{@queryString}')
+				'link' => config::get(config::MAIN, '/mvc/routes/link', '{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}')
 			);
 
 			foreach(config::get(config::MAIN, '/mvc/controllerList', array()) as $tController) {
