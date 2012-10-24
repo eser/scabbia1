@@ -45,12 +45,13 @@
 		/**
 		* @ignore
 		*/
-		public function render(&$uAction, &$uArgs) {
-			if(framework::$development <= 0) {
-				return false;
+		public function debug() {
+			$tPrevious = QTIME_INIT;
+			foreach(framework::$milestones as $tKey => &$tMilestone) {
+				echo $tKey, ' = ', number_format($tMilestone - $tPrevious, 5), ' ms.<br />';
+				$tPrevious = $tMilestone;
 			}
-
-			return parent::render($uAction, $uArgs);
+			echo '<b>total</b> = ', number_format($tPrevious - QTIME_INIT, 5), ' ms.<br />';
 		}
 
 		/**
@@ -90,7 +91,7 @@
 		*/
 		private function &build_export($uModule, $uPseudo) {
 			if($uPseudo) { // framework::$development >= 1 ||
-				$tPseudoCompile = '<' . '?php require(' . var_export('framework' . QEXT_PHP, true) . '); ?' . '>';
+				$tPseudoCompile = '<' . '?php require(' . var_export('framework.php', true) . '); ?' . '>';
 				return $tPseudoCompile;
 			}
 
@@ -99,15 +100,6 @@
 
 	ignore_user_abort();
 
-	date_default_timezone_set(\'UTC\');
-
-	$tBacktrace = debug_backtrace();
-	if(count($tBacktrace) <= 0) {
-		trigger_error(\'Scabbia framework cannot be called directly\', E_USER_ERROR);
-		exit;
-	}
-
-	define(\'PHP_OS_WINDOWS\', ' . var_export(PHP_OS_WINDOWS, true) . ');
 	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
 	define(\'PHP_SAFEMODE\', ' . var_export(PHP_SAFEMODE, true) . ');
 	if(!defined(\'QPATH_BASE\')) {
@@ -115,14 +107,12 @@
 	}
 	define(\'QPATH_CORE\', ' . var_export(framework::$applicationPath, true) . ');
 	define(\'QTIME_INIT\', microtime(true));
-	define(\'QEXT_PHP\', ' . var_export(QEXT_PHP, true) . ');
 
 	define(\'SCABBIA_VERSION\', ' . var_export(SCABBIA_VERSION, true) . ');
 	define(\'COMPILED\', true);
 
 	define(\'OUTPUT_NOHANDLER\', ' . var_export(OUTPUT_NOHANDLER, true) . ');
 	define(\'OUTPUT_GZIP\', ' . var_export(OUTPUT_GZIP, true) . ');
-	define(\'OUTPUT_MULTIBYTE\', ' . var_export(OUTPUT_MULTIBYTE, true) . ');
 
 	error_reporting(' . var_export(error_reporting(), true) . ');
 	ini_set(\'display_errors\', ' . var_export(ini_get('display_errors'), true) . ');
@@ -130,11 +120,11 @@
 
 ?' . '>');
 
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/patches.main' . QEXT_PHP));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/config.main' . QEXT_PHP));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/events.main' . QEXT_PHP));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/framework.main' . QEXT_PHP));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/extensions.main' . QEXT_PHP));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/patches.main.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/framework.main.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/config.main.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/events.main.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'includes/extensions.main.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;

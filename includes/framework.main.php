@@ -36,8 +36,12 @@
 		*/
 		public static $applicationPath = null;
 		/**
-		 * @ignore
-		 */
+		* @ignore
+	 	*/
+		public static $milestones = array();
+		/**
+		* Stores all available endpoints.
+	 	*/
 		public static $endpoints = array();
 		/**
 		* Stores active endpoint information.
@@ -56,6 +60,8 @@
 		* @ignore
 		*/
 		public static function load($uRunExtensions = true) {
+			self::$milestones['begin'] = microtime(true);
+
 			// endpoints
 			if(count(self::$endpoints) > 0) {
 				foreach(self::$endpoints as &$tEndpoint) {
@@ -80,18 +86,22 @@
 			if(is_null(self::$applicationPath)) {
 				self::$applicationPath = QPATH_BASE . 'application/';
 			}
+			self::$milestones['endpoints'] = microtime(true);
 
 			// load config
 			if(!COMPILED) {
 				config::load();
+				self::$milestones['configLoad'] = microtime(true);
 
 				// downloads
 				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
 					self::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
+				self::$milestones['downloads'] = microtime(true);
 
 				// events::load();
 				extensions::load();
+				self::$milestones['extensions'] = microtime(true);
 			}
 
 			// siteroot
@@ -108,9 +118,11 @@
 				}
 			}
 			self::$siteroot = rtrim(self::$siteroot, '/');
+			self::$milestones['siteRoot'] = microtime(true);
 
 			// extensions
 			extensions::loadExtensions();
+			self::$milestones['extensionsLoad'] = microtime(true);
 
 			if(!COMPILED) {
 				// includes
@@ -128,6 +140,7 @@
 						}
 					}
 				}
+				self::$milestones['includesLoad'] = microtime(true);
 			}
 
 			// output handling
@@ -138,6 +151,7 @@
 			if($uRunExtensions) {
 				events::invoke('run', array());
 			}
+			self::$milestones['extensionsRun'] = microtime(true);
 		}
 
 		/**
@@ -226,7 +240,7 @@
 			events::invoke('output', $tParms);
 
 			//! check invoke order
-			if(OUTPUT_MULTIBYTE) {
+			if(OUTPUT_NOHANDLER) {
 				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 

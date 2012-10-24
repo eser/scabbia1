@@ -29,6 +29,9 @@
 		* @ignore
 		*/
 		public static function extension_load() {
+			// Use the Universal Coordinated Time and most common English standards
+			date_default_timezone_set('UTC');
+
 			foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
 				self::$languages[$tLanguage['id']] = array(
 					'key' => $tLanguage['id'],
@@ -60,7 +63,7 @@
 			}
 
 			if(!is_null(self::$language)) {
-				// if(PHP_OS_WINDOWS) {
+				// if(DIRECTORY_SEPARATOR == '\\') {
 				// 	$tLocale = explode('.', self::$language['localewin'], 2);
 				// }
 				// else {
