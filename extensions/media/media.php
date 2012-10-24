@@ -134,7 +134,7 @@
 				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
 				$this->extension = pathinfo($this->source, PATHINFO_EXTENSION);
 
-				if(extensions::isSelected('io')) {
+				if(extensions::isLoaded('io')) {
 					$this->mime = io::getMimeType($this->extension);
 				}
 

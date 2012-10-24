@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('database')) {
 	/**
 	* Database Provider Mysql Extension
 	*
@@ -273,6 +272,5 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 	}
-}
 
 ?>

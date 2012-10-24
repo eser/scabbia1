@@ -105,7 +105,7 @@
 			}
 
 			if(is_null(self::$id)) {
-				if(extensions::isSelected('string')) {
+				if(extensions::isLoaded('string')) {
 					self::$id = string::generateUuid();
 				}
 				else {
@@ -304,7 +304,7 @@
 		public static function export($tOutput = true) {
 			self::open();
 
-			if(extensions::isSelected('string')) {
+			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$data, $tOutput);
 			}
 

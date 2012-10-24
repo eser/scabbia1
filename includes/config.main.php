@@ -22,12 +22,18 @@
 		/**
 		* Loads the default configuration for the current application.
 		*
-		* @uses loadFiles()
+		* @uses loadFile()
 		*/
 		public static function &load() {
 			$tConfig = array();
-			self::loadFiles($tConfig, QPATH_CORE . 'config/*');
-			self::loadFiles($tConfig, framework::$applicationPath . 'config/*');
+			
+			foreach(framework::glob(QPATH_CORE . 'config/*', GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
+				self::loadFile($tConfig, $tFile);
+			}
+
+			foreach(framework::glob(framework::$applicationPath . 'config/*', GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
+				self::loadFile($tConfig, $tFile);
+			}
 
 			if(!isset(self::$configurations[self::MAIN])) {
 				self::$configurations[self::MAIN] = &$tConfig;
@@ -36,17 +42,6 @@
 			return $tConfig;
 		}
 
-		/**
-		* Loads a configuration for the current application.
-		*
-		* @uses loadFiles()
-		*/
-		public static function &loadConfiguration($uPath) {
-			$tConfig = array();
-			self::loadFiles($tConfig, $uPath);
-
-			return $tConfig;
-		}
 		/**
 		* @ignore
 		*/
@@ -196,22 +191,16 @@
 		}
 
 		/**
-		* Returns a configuration array which is a compilation of multiple configuration files.
+		* Returns a configuration which is a compilation of a configuration file.
 		*
-		* @param string $uFiles path of configuration files
+		* @param string $uFile path of configuration file
 		* @return array configuration
 		*/
-		public static function loadFiles(&$uConfig, $uFiles) {
+		public static function loadFile(&$uConfig, $uFile) {
 			$tConfigNodes = array();
 
-			$tFiles = glob3($uFiles, false, true);
-
-			if($tFiles !== false) {
-				foreach($tFiles as $tFilename) {
-					$tXmlDom = simplexml_load_file($tFilename, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $tFilename);
-					self::processChildren_r($uConfig, $tConfigNodes, $tXmlDom);
-				}
-			}
+			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
+			self::processChildren_r($uConfig, $tConfigNodes, $tXmlDom);
 		}
 
 		/**

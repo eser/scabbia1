@@ -180,7 +180,7 @@
 				return;
 			}
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::start('http', array('action' => 'routing'));
 			}
 
@@ -189,7 +189,7 @@
 				'get' => &$_GET
 			));
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
 		}
@@ -446,7 +446,7 @@
 		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
-			if($uFindMimeType && extensions::isSelected('io')) {
+			if($uFindMimeType && extensions::isLoaded('io')) {
 				$tType = io::getMimeType($tExtension);
 			}
 			else {

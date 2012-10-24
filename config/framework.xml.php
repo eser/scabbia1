@@ -9,30 +9,30 @@
 	</includeList>
 
 	<extensionList>
-		<extension>{core}extensions/string/</extension>
-		<extension>{core}extensions/io/</extension>
-		<extension>{core}extensions/http/</extension>
-		<extension>{core}extensions/arrays/</extension>
-		<extension>{core}extensions/time/</extension>
-		<extension>{core}extensions/contracts/</extension>
-		<extension>{core}extensions/validation/</extension>
+		<extension>string</extension>
+		<extension>io</extension>
+		<extension>http</extension>
+		<extension>arrays</extension>
+		<extension>time</extension>
+		<extension>contracts</extension>
+		<extension>validation</extension>
 		<scope mode="development">
-			<extension>{core}extensions/profiler/</extension>
+			<extension>profiler</extension>
 		</scope>
-		<extension>{core}extensions/cache/</extension>
+		<extension>cache</extension>
 		<scope mode="development">
-			<extension>{core}extensions/database/</extension>
+			<extension>database</extension>
 		</scope>
-		<extension>{core}extensions/session/</extension>
-		<extension>{core}extensions/logger/</extension>
-		<extension>{core}extensions/html/</extension>
-		<extension>{core}extensions/i8n/</extension>
-		<extension>{core}extensions/resources/</extension>
-		<extension>{core}extensions/mvc/</extension>
+		<extension>session</extension>
+		<extension>logger</extension>
+		<extension>html</extension>
+		<extension>i8n</extension>
+		<extension>resources</extension>
+		<extension>mvc</extension>
 		<scope mode="development">
-			<extension>{core}extensions/docs/</extension>
-			<extension>{core}extensions/blackmore/</extension>
+			<extension>docs</extension>
+			<extension>blackmore</extension>
 		</scope>
-		<!-- <extension>{core}extensions/oauth/</extension> -->
+		<!-- <extension>oauth</extension> -->
 	</extensionList>
 </scabbia>

@@ -28,7 +28,6 @@ a:hover {
 }
 
 .wrapper .inner {
-	width: 100%;
 	margin: 0px 100px 0px 100px;
 }
 
@@ -337,24 +336,9 @@ form input.submit:hover {
 	color: #56789A;
 }
 
-#pageMiddleSidebar ul {
-	margin:10px 0px;
-}
-#pageMiddleSidebar ul li:first-of-type  {
-	border-top:1px solid #C0C0C0;
-}
-#pageMiddleSidebar li {
-	padding: 5px 6px 5px 10px;
-	list-style-type: none;
-	border-bottom:1px solid #C0C0C0;
-}
-#pageMiddleSidebar .memu-item:hover{
-	background-color: #F0F0F0;
-	color: #56789A;
-}
-
 .memu-caption {
 	font-weight: bold !important;
+	text-shadow: 0px 1px 1px #BABABA;
 }
 
 .memu-item {
@@ -483,6 +467,10 @@ form input.submit:hover {
 	width: 100%;
 }
 
+#pageMiddle > .wrapper {
+	border-top: 1px solid #A0A0A0;
+}
+
 #pageMiddle table.tablesorter tr td{
 	padding:8px 4px 8px 4px;
 }
@@ -547,6 +535,22 @@ form input.submit:hover {
 #pageMiddleSidebar {
 	width: 350px;
 	vertical-align: top;
+}
+
+#pageMiddleSidebar ul {
+	margin:10px 0px;
+}
+#pageMiddleSidebar ul li:first-of-type  {
+	border-top:1px solid #C0C0C0;
+}
+#pageMiddleSidebar li {
+	padding: 5px 6px 5px 10px;
+	list-style-type: none;
+	border-bottom:1px solid #C0C0C0;
+}
+#pageMiddleSidebar .memu-item:hover{
+	background-color: #F0F0F0;
+	color: #56789A;
 }
 
 #pageMiddleSidebar .topLine {

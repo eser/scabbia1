@@ -86,7 +86,7 @@
 				'parameterSegments' => &$tParameterSegments
 			));
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));
 			}
 
@@ -117,7 +117,7 @@
 				array_pop(self::$controllerStack);
 			}
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
 
@@ -261,7 +261,7 @@
 				'root' => framework::$siteroot
 			);
 
-			if(extensions::isSelected('i8n')) {
+			if(extensions::isLoaded('i8n')) {
 				$tExtra['lang'] = i8n::$language['key'];
 			}
 
@@ -311,7 +311,7 @@
 				'root' => framework::$siteroot
 			);
 
-			if(extensions::isSelected('i8n')) {
+			if(extensions::isLoaded('i8n')) {
 				$tExtra['lang'] = i8n::$language['key'];
 			}
 
@@ -400,7 +400,7 @@
 				'queryString' => $tSegments['queryString']
 			);
 
-			if(extensions::isSelected('i8n')) {
+			if(extensions::isLoaded('i8n')) {
 				$tArray['language'] = i8n::$language['key'];
 			}
 
@@ -546,7 +546,7 @@ EOD;
 		*/
 		public function __construct($uController = null) {
 			$this->controller = &$uController;
-			if(extensions::isSelected('database')) {
+			if(extensions::isLoaded('database')) {
 				$this->db = database::get(); // default database to member 'db'
 			}
 		}
@@ -555,7 +555,7 @@ EOD;
 		* @ignore
 		*/
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
-			if(!extensions::isSelected('database')) {
+			if(!extensions::isLoaded('database')) {
 				return false;
 			}
 
@@ -592,7 +592,7 @@ EOD;
 		* @ignore
 		*/
 		public function __construct() {
-			if(extensions::isSelected('database')) {
+			if(extensions::isLoaded('database')) {
 				$this->db = database::get(); // default database to member 'db'
 			}
 		}
@@ -601,7 +601,7 @@ EOD;
 		* @ignore
 		*/
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
-			if(!extensions::isSelected('database')) {
+			if(!extensions::isLoaded('database')) {
 				return false;
 			}
 

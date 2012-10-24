@@ -4,6 +4,12 @@
 	// TODO: global event-based garbage collector
 	// TODO: download caching w/ aging
 
+	define('GLOB_NONE', 0);
+	define('GLOB_RECURSIVE', 1);
+	define('GLOB_FILES', 2);
+	define('GLOB_DIRECTORIES', 4);
+	define('GLOB_JUSTNAMES', 8);
+
 	/**
 	* Base framework functions
 	*
@@ -78,6 +84,12 @@
 			// load config
 			if(!COMPILED) {
 				config::load();
+
+				// downloads
+				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
+					self::downloadFile($tUrl['filename'], $tUrl['url']);
+				}
+
 				// events::load();
 				extensions::load();
 			}
@@ -89,6 +101,7 @@
 				if(strlen(self::$siteroot) <= 1) {
 					$tDocumentRoot = strtr($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR, '/');
 					$tLen = strlen($tDocumentRoot);
+
 					if(substr(QPATH_BASE, 0, $tLen) == $tDocumentRoot) {
 						self::$siteroot = substr(QPATH_BASE, $tLen);
 					}
@@ -96,17 +109,15 @@
 			}
 			self::$siteroot = rtrim(self::$siteroot, '/');
 
-			if(!COMPILED) {
-				// downloads
-				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
-					self::downloadFile($tUrl['filename'], $tUrl['url']);
-				}
+			// extensions
+			extensions::loadExtensions();
 
+			if(!COMPILED) {
 				// includes
 				foreach(config::get(config::MAIN, '/includeList', array()) as $tInclude) {
 					$tIncludePath = self::translatePath($tInclude);
 
-					$tFiles = glob3($tIncludePath, false);
+					$tFiles = self::glob($tIncludePath, GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
 							if(substr($tFilename, -1) == '/') {
@@ -118,9 +129,6 @@
 					}
 				}
 			}
-
-			// extensions
-			extensions::loadExtensions();
 
 			// output handling
 			ob_start('framework::output');
@@ -297,6 +305,65 @@
 			fclose($tUrlHandle);
 
 			return true;
+		}
+
+		/**
+		* Returns a php file source to view.
+		*
+		* @param $uInput string path of source file
+		*/
+		public static function &glob($uPattern, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
+			$tPath = strtr(pathinfo($uPattern, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/');
+			$tPattern = pathinfo($uPattern, PATHINFO_BASENAME);
+
+			try {
+				$tDir = new DirectoryIterator($tPath);
+
+				foreach($tDir as $tFile) {
+					$tFileName = $tFile->getFilename();
+
+					if($tFileName[0] == '.') { // $tFile->isDot()
+						continue;
+					}
+
+					if($tFile->isDir()) {
+						$tDirectory = $uRecursivePath . $tFileName . '/';
+
+						if(($uOptions & GLOB_DIRECTORIES) > 0) {
+							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . '/' . $tDirectory;
+						}
+
+						if(($uOptions & GLOB_RECURSIVE) > 0) {
+							self::glob(
+								$tPath . '/' . $tDirectory . $tPattern,
+								$uOptions,
+								$tDirectory,
+								$uArray
+							);
+						}
+
+						continue;
+					}
+
+					if(($uOptions & GLOB_FILES) > 0 && $tFile->isFile()) {
+						$tFile2 = $uRecursivePath . $tFileName;
+
+						if(fnmatch($uPattern, $tPath . '/' . $tFile2)) {
+							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $tFile2 : $tPath . '/' . $tFile2;
+						}
+
+						continue;
+					}
+				}
+
+				return $uArray;
+			}
+			catch(Exception $tException) {
+				// echo $tException->getMessage();
+			}
+
+			$uArray = false;
+			return $uArray;
 		}
 
 		/**

@@ -206,7 +206,7 @@
 		public function &execute($uQuery) {
 			$this->open();
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::start(
 					'databaseQuery',
 					array(
@@ -218,7 +218,7 @@
 
 			$tReturn = $this->provider->execute($uQuery);
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
 
@@ -231,7 +231,7 @@
 		public function query($uQuery, $uParameters = array(), $uCaching = database::CACHE_MEMORY) {
 			$this->open();
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::start(
 					'databaseQuery',
 					array(
@@ -288,7 +288,7 @@
 				$this->stats['cache']++;
 			}
 
-			if(extensions::isSelected('profiler')) {
+			if(extensions::isLoaded('profiler')) {
 				profiler::stop(
 					//! affected rows
 					array(

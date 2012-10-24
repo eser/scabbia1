@@ -1,6 +1,5 @@
 <?php
 
-if(extensions::isSelected('database')) {
 	/**
 	* Database Provider PDO Extension
 	*
@@ -301,6 +300,5 @@ if(extensions::isSelected('database')) {
 			return $tSql;
 		}
 	}
-}
 
 ?>

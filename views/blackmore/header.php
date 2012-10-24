@@ -20,9 +20,11 @@
 			<header id="pageTop" class="wrapper">
 				<div id="pageTopHead">
 					<div class="containerBox padding4px inner">
-						<a href="#" class="bgLink"><?php echo _('Notifications:'); ?> <span class="bgCount">0</span></a>
-						<span class="bgSpacer"></span>
-						<a href="#" class="bgLink"><?php echo _('Users:'); ?> <span class="bgCount">0</span></a>
+						<a href="#" class="bgLink floatLeft"><?php echo _('Notifications:'); ?> <span class="bgCount">0</span></a>
+						<span class="bgSpacer floatLeft"></span>
+						<a href="#" class="bgLink floatLeft"><?php echo _('Users:'); ?> <span class="bgCount">0</span></a>
+						<a href="http://eser.ozvataf.com/scabbia/" class="bgLink floatRight"><?php echo _('Scabbia Framework'); ?></a>
+						<div class="clear"></div>
 					</div>
 				</div>
 				<div id="pageTopLogo">
@@ -51,5 +53,6 @@
 					</div>
 				</div>
 			</header>
-			<section id="pageMiddle" class="wrapper">
-				<div class="inner">
+			<section id="pageMiddle">
+				<div class="wrapper">
+					<div class="inner">

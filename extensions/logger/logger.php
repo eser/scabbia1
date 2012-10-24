@@ -151,7 +151,7 @@
 
 					$tString .= '</div>' . PHP_EOL;
 
-					if(extensions::isSelected('profiler')) {
+					if(extensions::isLoaded('profiler')) {
 						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler stack:</b><br />' . PHP_EOL;
 						$tString .= profiler::exportStack(false);
 						$tString .= '</div>' . PHP_EOL;

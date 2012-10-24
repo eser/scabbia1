@@ -158,7 +158,7 @@
 				foreach($tConfig['/includeList'] as &$tInclude) {
 					$tIncludePath = framework::translatePath($tInclude['@path']);
 
-					$tFiles = glob3($tIncludePath, false);
+					$tFiles = framework::glob($tIncludePath, GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
 							if(substr($tFilename, -1) == '/') {
@@ -199,7 +199,7 @@
 		* @ignore
 		*/
 		private function purgeFolder($uFolder) {
-			$tDirectory = glob3($uFolder . '/*', false, true);
+			$tDirectory = framework::glob($uFolder . '/*', GLOB_RECURSIVE|GLOB_FILES);
 			if($tDirectory === false) {
 				return;
 			}

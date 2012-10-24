@@ -136,7 +136,7 @@
 		* @ignore
 		*/
 		public static function export($tOutput = true) {
-			if(extensions::isSelected('string')) {
+			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$summary, $tOutput);
 			}
 

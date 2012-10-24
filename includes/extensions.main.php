@@ -10,45 +10,37 @@
 		/**
 		 * @ignore
 		 */
-		public static $selected = array();
-		/**
-		 * @ignore
-		 */
 		public static $classmap = array();
 		/**
 		* @ignore
 		*/
-		public static $loaded = array();
+		public static $list = array();
 
 		/**
 		* Loads the extensions module.
 		*/
 		public static function load() {
-			spl_autoload_register('extensions::autoloader');
+			// spl_autoload_register('extensions::autoloader');
 
-			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtension) {
-				$tPath = framework::translatePath(rtrim($tExtension, '/') . '/');
-				$tConfiguration = config::loadConfiguration($tPath . 'extension.xml.php');
-
-				if(count($tConfiguration) == 0) {
+			foreach(framework::glob(QPATH_CORE . 'extensions/*', GLOB_DIRECTORIES|GLOB_RECURSIVE) as $tFile) {
+				if(!is_file($tFile . 'extension.xml.php')) {
 					continue;
 				}
 
+				$tConfiguration = array();
+				config::loadFile($tConfiguration, $tFile . 'extension.xml.php');
+
 				$tName = $tConfiguration['/info/name'];
 
-				self::$selected[] = $tName;
-				config::set($tName, $tConfiguration);
-				if(isset($tConfiguration['/includeList'])) {
-					foreach($tConfiguration['/includeList'] as &$tFile) {
-						require_once($tPath . $tFile);
-					}
-				}
+				self::$list[$tName] = array('path' => $tFile, 'loaded' => false);
 
 				if(isset($tConfiguration['/classList'])) {
 					foreach($tConfiguration['/classList'] as &$tClass) {
 						self::$classmap[$tClass] = $tName;
 					}
 				}
+
+				config::set($tName, $tConfiguration);
 			}
 		}
 
@@ -58,7 +50,7 @@
 		*/
 		public static function autoloader($uClass) {
 			if(isset(self::$classmap[$uClass])) {
-				throw new Exception('class not found - ' . $uClass . ' but autoload is possible.');
+				throw new Exception('class not found - ' . $uClass . ' but autoloading ' .  self::$classmap[$uClass] . ' extension is possible.');
 			}
 
 			throw new Exception('class not found - ' . $uClass);
@@ -70,7 +62,7 @@
 		* @uses loadExtension()
 		*/
 		public static function loadExtensions() {
-			foreach(self::$selected as &$tExtensionName) {
+			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtensionName) {
 				self::loadExtension($tExtensionName);
 			}
 		}
@@ -81,14 +73,25 @@
 		* @param string $uExtensionName the extension
 		*/
 		public static function loadExtension($uExtensionName) {
-			if(in_array($uExtensionName, self::$loaded)) {
+			if(!isset(self::$list[$uExtensionName])) {
+				return false;
+			}
+
+			if(self::$list[$uExtensionName]['loaded']) {
 				return true;
 			}
 
-			self::$loaded[] = $uExtensionName;
+			self::$list[$uExtensionName]['loaded'] = true;
 			$tClassInfo = &config::$configurations[$uExtensionName];
 
 			if(!COMPILED) {
+				if(isset($tClassInfo['/includeList'])) {
+					foreach($tClassInfo['/includeList'] as &$tFile) {
+						//! todo
+						require_once(self::$list[$uExtensionName]['path'] . $tFile);
+					}
+				}
+
 				if(isset($tClassInfo['/info/phpversion']) && !framework::phpVersion($tClassInfo['/info/phpversion'])) {
 					return false;
 				}
@@ -108,7 +111,7 @@
 				if(isset($tClassInfo['/info/fwdependList'])) {
 					foreach($tClassInfo['/info/fwdependList'] as &$tExtension) {
 						// if(!self::add($tExtension)) {
-						if(!in_array($tExtension, self::$loaded)) {
+						if(!self::isLoaded($tExtension)) {
 							throw new Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
 					}
@@ -125,12 +128,12 @@
 		}
 
 		/**
-		* Checks weather an extension is selected or not.
+		* Checks weather an extension is loaded or not.
 		*
-		* @return bool selection status.
+		* @return bool load status.
 		*/
-		public static function isSelected($uExtensionName) {
-			return in_array($uExtensionName, self::$selected);
+		public static function isLoaded($uExtensionName) {
+			return (isset(self::$list[$uExtensionName]) && self::$list[$uExtensionName]['loaded']);
 		}
 	}
 
