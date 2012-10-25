@@ -5,7 +5,7 @@
 		<autorun>1</autorun>
 
 		<userAgents>
-			<autoCheck>1</autoCheck>
+			<autoCheck>0</autoCheck>
 			<platformList>
 				<platform>
 					<match>windows|winnt|win95|win98</match>

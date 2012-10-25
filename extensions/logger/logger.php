@@ -141,7 +141,7 @@
 							$tFunction = $tFrame['function'];
 						}
 
-						$tCount++;
+						++$tCount;
 						if(isset($tFrame['file'])) {
 							$tString .= '#' . $tCount . ' ' . $tFrame['file'] . '(' . $tFrame['line'] . '):<br />' . PHP_EOL;
 						}

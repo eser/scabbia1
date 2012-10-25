@@ -123,7 +123,7 @@
 				}
 
 				if($tQuoteChar === false && $tChar == '{') {
-					$tLastItem++;
+					++$tLastItem;
 					$tBrackets[$tLastItem] = array(null, null);
 					$tArrayItem = 1;
 					continue;
@@ -709,7 +709,7 @@
 				}
 
 				if(self::strpos($uKeys, $tChar) !== false && $tStrIndex < 1) {
-					$tStrIndex++;
+					++$tStrIndex;
 					$tStrings[$tStrIndex] = '';
 					continue;
 				}

@@ -114,7 +114,7 @@
 					continue;
 				}
 
-				$tCounted++;
+				++$tCounted;
 			}
 
 			return $tCounted;
@@ -144,7 +144,7 @@
 					continue;
 				}
 
-				$tRemoved++;
+				++$tRemoved;
 				unset($this->tag['items'][$tKey]);
 
 				if(isset($uLimit) && $uLimit >= $tRemoved) {

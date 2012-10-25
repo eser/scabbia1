@@ -35,4 +35,9 @@
 		</scope>
 		<!-- <extension>oauth</extension> -->
 	</extensionList>
+
+	<options>
+		<gzip>1</gzip>
+		<autoload>0</autoload>
+	</options>
 </scabbia>

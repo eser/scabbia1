@@ -18,7 +18,7 @@
 				else {
 					$tPregPattern .= $tChar;
 					if($tChar == '[') {
-						$tBrackets++;
+						++$tBrackets;
 					}
 					else if($tChar == ']') {
 						if($tBrackets == 0) {

@@ -282,10 +282,10 @@
 
 			if($tData === false) {
 				$tData = new databaseQueryResult($uQuery, $uParameters, $this, $uCaching, $tFolder, $uPropsSerialized);
-				$this->stats['query']++;
+				++$this->stats['query'];
 			}
 			else {
-				$this->stats['cache']++;
+				++$this->stats['cache'];
 			}
 
 			if(extensions::isLoaded('profiler')) {
@@ -352,7 +352,7 @@
 				throw $ex;
 			}
 
-			$this->stats['query']++;
+			++$this->stats['query'];
 
 			if(isset($tResult)) {
 				return $tResult;
@@ -1057,7 +1057,7 @@
 		public function all() {
 			// $this->_cursor = 0;
 			while($this->valid()) {
-				$this->_cursor++;
+				++$this->_cursor;
 			}
 
 			$this->close();
@@ -1075,7 +1075,7 @@
 			while($this->valid()) {
 				$tCurrent = $this->current();
 				$tItems[] = $tCurrent[$uKey];
-				$this->_cursor++;
+				++$this->_cursor;
 			}
 
 			$this->close();

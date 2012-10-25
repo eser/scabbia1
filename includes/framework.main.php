@@ -122,7 +122,6 @@
 
 			// extensions
 			extensions::loadExtensions();
-			self::$milestones['extensionsLoad'] = microtime(true);
 
 			if(!COMPILED) {
 				// includes
@@ -136,7 +135,7 @@
 								continue;
 							}
 
-							require_once($tFilename);
+							include($tFilename);
 						}
 					}
 				}
@@ -245,7 +244,7 @@
 			}
 
 			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get(config::MAIN, '/options/gzip', '1') != '0') {
-				// $tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+				$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 
 			return $tParms['content'];

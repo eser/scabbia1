@@ -20,7 +20,7 @@
 		* Loads the extensions module.
 		*/
 		public static function load() {
-			// spl_autoload_register('extensions::autoloader');
+			spl_autoload_register('extensions::autoloader');
 
 			foreach(framework::glob(QPATH_CORE . 'extensions/*', GLOB_DIRECTORIES|GLOB_RECURSIVE) as $tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {
@@ -46,16 +46,21 @@
 
 		/**
 		* Autoloader method.
-		* 
+		*
 		*/
 		public static function autoloader($uClass) {
-			if(isset(self::$classmap[$uClass])) {
-				throw new Exception('class not found - ' . $uClass . ' but autoloading ' .  self::$classmap[$uClass] . ' extension is possible.');
+			if(!isset(self::$classmap[$uClass])) {
+				throw new Exception('class not found - ' . $uClass);
 			}
 
-			throw new Exception('class not found - ' . $uClass);
+			if(config::get(config::MAIN, '/options/autoload', '0') == '1') {
+				self::loadExtension(self::$classmap[$uClass]);
+				return;
+			}
+
+			// throw new Exception('class not found - ' . $uClass . ' but autoloading ' .  self::$classmap[$uClass] . ' extension is possible.');
 		}
-		
+
 		/**
 		* Loads the selected extensions.
 		*
@@ -64,6 +69,7 @@
 		public static function loadExtensions() {
 			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtensionName) {
 				self::loadExtension($tExtensionName);
+				framework::$milestones['extension_' . $tExtensionName] = microtime(true);
 			}
 		}
 
@@ -88,7 +94,7 @@
 				if(isset($tClassInfo['/includeList'])) {
 					foreach($tClassInfo['/includeList'] as &$tFile) {
 						//! todo
-						require_once(self::$list[$uExtensionName]['path'] . $tFile);
+						include(self::$list[$uExtensionName]['path'] . $tFile);
 					}
 				}
 
