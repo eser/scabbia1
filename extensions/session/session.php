@@ -138,7 +138,7 @@
 		* @ignore
 		*/
 		public static function destroy() {
-			if(!is_null(self::$data)) {
+			if(is_null(self::$data)) { // !is_null
 				self::open();
 			}
 
@@ -302,7 +302,9 @@
 		* @ignore
 		*/
 		public static function export($tOutput = true) {
-			self::open();
+			if(is_null(self::$data)) {
+				self::open();
+			}
 
 			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$data, $tOutput);

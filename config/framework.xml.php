@@ -31,6 +31,7 @@
 		<extension>mvc</extension>
 		<scope mode="development">
 			<extension>docs</extension>
+			<extension>users</extension>
 			<extension>blackmore</extension>
 		</scope>
 		<!-- <extension>oauth</extension> -->

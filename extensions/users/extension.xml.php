@@ -2,30 +2,25 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>blackmore</name>
+		<name>users</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList>
-			<fwdepend>string</fwdepend>
-			<fwdepend>resources</fwdepend>
-		</fwdependLis	<fwdepend>user
+			<fwdepend>session</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>blackmore.php</include>
-		<include>blackmore_categories.php</include>
+		<include>users.php</include>
 	</includeList>
 	<classList>
-		<class>blackmore</class>
-		<class>blackmore_categories</class>
+		<class>users</class>
 	</classList>
 	<events>
 		<loadList>
-			<load>blackmore::extension_load</load>
-			<load>blackmore_categories::extension_load</load>
+			<load>users::extension_load</load>
 		</loadList>
 	</events>
 </scabbia>

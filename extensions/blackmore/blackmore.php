@@ -8,7 +8,7 @@
 	* @version 1.0.2
 	*
 	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, resources
+	* @scabbia-fwdepends string, resources, users
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
