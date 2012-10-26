@@ -11,8 +11,8 @@
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>resources</fwdepend>
-		</fwdependLis	<fwdepend>user
-		</fwdependList>
+		</fwdependLis	<fwdepend>auth</fwdepend>
+			<fwdepend>validation		</fwdependList>
 	</info>
 	<includeList>
 		<include>blackmore.php</include>

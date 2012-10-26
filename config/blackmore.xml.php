@@ -7,8 +7,8 @@
 		<bodyStyle>stretch</bodyStyle>
 	</blackmore>
 
-	<users>
-		<loginUrl>blackmore/login</loginUrl>
+	<auth>
+		<loginMvcUrl>blackmore/login</loginMvcUrl>
 		<authType>config</authType>
 
 		<userList>
@@ -18,5 +18,5 @@
 				<roles>admin,editor,user</roles>
 			</user>
 		</userList>
-	</users>
+	</auth>
 </scabbia>

@@ -56,7 +56,7 @@
 				header('Retry-After: 600', true);
 
 				$tMvcPage = config::get(config::MAIN, '/access/maintenance/mvcpage', null);
-				if(!is_null($tMvcPage)) {
+				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
 					mvc::view($tMvcPage);
 				}
 				else {
@@ -72,7 +72,7 @@
 				header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 
 				$tMvcPage = config::get(config::MAIN, '/access/ipFilter/mvcpage', null);
-				if(!is_null($tMvcPage)) {
+				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
 					mvc::view($tMvcPage);
 				}
 				else {

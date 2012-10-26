@@ -1,10 +1,10 @@
 <?php
 
 	/**
-	* Users Extension
+	* Auth Extension
 	*
 	* @package Scabbia
-	* @subpackage users
+	* @subpackage auth
 	* @version 1.0.2
 	*
 	* @scabbia-fwversion 1.0
@@ -12,7 +12,7 @@
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
-	class users {
+	class auth {
 		/**
 		* @ignore
 		*/
@@ -22,8 +22,8 @@
 		/**
 		* @ignore
 		*/
-		public static function auth($uUsername, $uPassword) {
-			foreach(config::get(config::MAIN, '/users/userList', array()) as $tUser) {
+		public static function login($uUsername, $uPassword) {
+			foreach(config::get(config::MAIN, '/auth/userList', array()) as $tUser) {
 				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
 					continue;
 				}
@@ -32,8 +32,15 @@
 				return true;
 			}
 
-			session::remove('user');
+			// session::remove('user');
 			return false;
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function clear() {
+			session::remove('user');
 		}
 
 		/**
@@ -44,7 +51,7 @@
 			if(is_null($tUser)) {
 				return false;
 			}
-		
+
 			$tAvailableRoles = explode(',', $tUser['roles']);
 
 			foreach(explode(',', $uRequiredRoles) as $tRequiredRole) {
@@ -54,6 +61,26 @@
 			}
 
 			return true;
+		}
+		
+		/**
+		* @ignore
+		*/
+		public static function checkRedirect($uRequiredRoles = 'user') {
+			if(self::check($uRequiredRoles)) {
+				return;
+			}
+
+			$tMvcUrl = config::get(config::MAIN, '/auth/loginMvcUrl', null);
+			if(!is_null($tMvcUrl) && extensions::isLoaded('mvc')) {
+				//! todo: warning messages like insufficent privileges.
+				mvc::redirect($tMvcUrl);
+			}
+			else {
+				header('Location: ' . config::get(config::MAIN, '/auth/loginUrl'));
+			}
+
+			framework::end(0);
 		}
 	}
 

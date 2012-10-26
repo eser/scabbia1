@@ -8,7 +8,7 @@
 	* @version 1.0.2
 	*
 	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, resources, users
+	* @scabbia-fwdepends string, resources, auth, validation
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
@@ -36,7 +36,7 @@
 
 			$tMenuItems[] = array(
 				'title' => 'Logout',
-				'link' => mvc::url('blackmore/logout')
+				'link' => mvc::url('blackmore/login')
 			);
 
 			return $tMenuItems;
@@ -46,6 +46,8 @@
 		* @ignore
 		*/
 		public function debug() {
+			auth::checkRedirect('admin');
+
 			$tPrevious = QTIME_INIT;
 			foreach(framework::$milestones as $tKey => &$tMilestone) {
 				echo $tKey, ' = ', number_format($tMilestone - $tPrevious, 5), ' ms.<br />';
@@ -57,7 +59,49 @@
 		/**
 		* @ignore
 		*/
+		public function login() {
+			auth::clear();
+
+			$this->viewFile('{core}views/blackmore/login.php');
+		}
+
+		/**
+		* @ignore
+		*/
+		public function login_post() {
+			// validations
+			validation::addRule('username')->isRequired()->errorMessage('Username shouldn\'t be blank.');
+			// validation::addRule('username')->isEmail()->errorMessage('Please consider your e-mail address once again.');
+			validation::addRule('password')->isRequired()->errorMessage('Password shouldn\'t be blank.');
+			validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
+
+			if(!validation::validate($_POST)) {
+				$this->set('error', implode('<br />', validation::getErrorMessages(true)));
+				$this->viewFile('{core}views/blackmore/login.php');
+
+				return;
+			}
+
+			$username = http::post('username');
+			$password = http::post('password');
+
+			// user not found
+			if(!auth::login($username, $password)) {
+				$this->set('error', 'User not found');
+				$this->viewFile('{core}views/blackmore/login.php');
+
+				return;
+			}
+
+			$this->redirect('blackmore/index');
+		}
+
+		/**
+		* @ignore
+		*/
 		public function index() {
+			auth::checkRedirect('user');
+
 			$this->viewFile('{core}views/blackmore/index.php');
 		}
 
@@ -68,6 +112,8 @@
 		* @param $uPseudo bool wheater file is an pseudo compilation or not
 		*/
 		public function build($uModule = '') {
+			auth::checkRedirect('admin');
+
 			$tStart = microtime(true);
 
 			if(strlen($uModule) > 0) {
@@ -177,6 +223,8 @@
 		* @param $uFolder string destination directory
 		*/
 		public function purge() {
+			auth::checkRedirect('admin');
+
 			$tStart = microtime(true);
 
 			$this->purgeFolder(framework::$applicationPath . 'writable/cache');

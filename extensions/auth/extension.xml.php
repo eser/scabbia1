@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>users</name>
+		<name>auth</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
@@ -13,14 +13,14 @@
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>users.php</include>
+		<include>auth.php</include>
 	</includeList>
 	<classList>
-		<class>users</class>
+		<class>auth</class>
 	</classList>
 	<events>
 		<loadList>
-			<load>users::extension_load</load>
+			<load>auth::extension_load</load>
 		</loadList>
 	</events>
 </scabbia>
