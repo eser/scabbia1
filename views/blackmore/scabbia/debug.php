@@ -43,18 +43,17 @@
 									<tbody>
 										<tr>
 											<td class="halfWidth">
-												<h3><?php echo _('Framework Directives:'); ?></h3>
+												<h3><?php echo _('Framework Debug:'); ?></h3>
 												<div id="placeholder">
 
-													* model generator<br />
-													* edit configuration files<br />
-													* edit .htaccess/web.config<br />
-													* add/remove/download extensions<br />
-													* add/remove downloads<br />
-													* edit database<br />
-													* edit files<br />
-													* <a href="<?php echo mvc::url('blackmore/build'); ?>">build</a><br />
-													* <a href="<?php echo mvc::url('blackmore/purge'); ?>">purge</a><br />
+												<?php
+													$tPrevious = QTIME_INIT;
+													foreach(framework::$milestones as $tKey => &$tMilestone) {
+														echo $tKey, ' = ', number_format($tMilestone - $tPrevious, 5), ' ms.<br />';
+														$tPrevious = $tMilestone;
+													}
+													echo '<b>total</b> = ', number_format($tPrevious - QTIME_INIT, 5), ' ms.<br />';
+												?>
 
 												</div>
 												<div class="clear"></div>

@@ -36,12 +36,14 @@
 					<div class="containerBox inner">
 						<nav>
 							<ul class="noMargin">
-								<?php foreach(blackmore::buildMenu() as $tMenuItem) { ?>
-									<li class="memu-root floatLeft"><a class="memu-caption memu-item" href="<?php echo $tMenuItem['link']; ?>"><?php echo _($tMenuItem['title']); ?></a>
-									<?php if(isset($tMenuItem['subitems'])) { ?>
+								<?php foreach(blackmore::$modules as $tKey => &$tModule) { ?>
+									<li class="memu-root floatLeft"><a class="memu-caption memu-item" href="<?php echo mvc::url('blackmore/' . $tKey); ?>"><?php echo _($tModule['title']); ?></a>
+									<?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
 									<ul class="memu-submenu noMargin">
-										<?php foreach($tMenuItem['subitems'] as $tSubmenuItem) { ?>
-											<li class="memu-item"><a class="boxed" href="<?php echo $tSubmenuItem['link']; ?>"><?php echo _($tSubmenuItem['title']); ?></a></li>
+										<?php
+											foreach($tModule['actions'] as $tSubmenuItem) {
+										?>
+											<li class="memu-item"><a class="boxed" href="<?php echo mvc::url('blackmore/' . $tKey . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a></li>
 										<?php } ?>
 									</ul>
 									<?php } ?>

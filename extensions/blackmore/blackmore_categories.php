@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	* Blackmore: Categories Extension
+	* Blackmore Extension: Categories Sect
 	*
 	* @package Scabbia
 	* @subpackage blackmore_categories
@@ -9,7 +9,7 @@
 	*
 	* @scabbia-fwversion 1.0
 	* @scabbia-fwdepends string, resources, blackmore
-	* @scabbia-phpversion 5.2.0
+auth, validation, httpia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
 	class blackmore_categories {
@@ -17,14 +17,13 @@
 		* @ignore
 		*/
 		public static function extension_load() {
-			events::register('blackmore_buildMenu', 'blackmore_categories::blackmore_buildMenu');
+			events::register('blackmore_buildMenu', 'blackmregisterModules', 'blackmore_categories::blackmore_registerModules');
 		}
 
 		/**
 		* @ignore
 		*/
-		public static function blackmore_buildMenu($uParms) {
-			$uParms['menuItems'][] = array(
+		public static function blackmore_registerModulesenuItems'][] = array(
 				'title' => 'Categories',
 				'link' => mvc::url('blackmore/categories'),
 				'subitems' => array(

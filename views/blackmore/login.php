@@ -5,11 +5,11 @@
 
 		<title><?php echo _(config::get(config::MAIN, '/blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
-		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,cleditor,tablesorter,shadowbox,blackmore" rel="stylesheet" media="all" />
+		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,shadowbox,blackmore" rel="stylesheet" media="all" />
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
 		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
 
-		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,flot,blackmore"></script>
+		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,shadowbox,blackmore"></script>
 	</head>
 	<body class="<?php echo config::get(config::MAIN, '/blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
@@ -23,7 +23,7 @@
 					<div class="bheadl"></div>
 					<div class="bheadr"></div>
 
-					<img src="<?php echo $root; ?>/res/css/images/logocube_black.png" style="margin: 7px 20px 0px 45px; float: left;" /> <h2><?php echo _('Administration Panel'); ?></h2>
+					<h2><?php echo _(config::get(config::MAIN, '/blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
 				</div>
 
 				<div class="block_content">
@@ -44,7 +44,7 @@
 						</p>
 
 						<p>
-							<input type="submit" class="submit" value="<?php echo _('Submit'); ?>" name="submit" />
+							<input type="submit" class="submit" value="<?php echo _('Login'); ?>" name="submit" />
 						</p>
 					</form>
 

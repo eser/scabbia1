@@ -5,6 +5,8 @@
 		<title>Scabbia: Blackmore</title>
 		<logo>/scabbia/blackmore/images/logo.png</logo>
 		<bodyStyle>stretch</bodyStyle>
+
+		<loginTitle>Scabbia: Blackmore Login</loginTitle>
 	</blackmore>
 
 	<auth>
