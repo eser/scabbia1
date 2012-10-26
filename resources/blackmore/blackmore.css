@@ -23,12 +23,20 @@ a:hover {
 	color: #008EE8;
 }
 
-.wrapper {
+body.narrow .wrapper {
 	width: 100%;
 }
 
-.wrapper .inner {
-	margin: 0px 100px 0px 100px;
+body.narrow .wrapper .inner {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+body.stretch .wrapper {
+	width: 100%;
+}
+
+body.stretch .wrapper .inner {
 }
 
 /* LOGIN PAGE */

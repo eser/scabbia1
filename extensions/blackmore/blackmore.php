@@ -26,7 +26,7 @@
 			$tMenuItems = array(
 				array(
 					'title' => 'Dashboard',
-				'link' => mvc::url('blackmore/index')
+					'link' => mvc::url('blackmore/index')
 				)
 			);
 
