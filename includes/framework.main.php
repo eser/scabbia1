@@ -106,18 +106,8 @@
 
 			// siteroot
 			if(is_null(self::$siteroot)) {
-				self::$siteroot = config::get(config::MAIN, '/options/siteroot', '');
-
-				if(strlen(self::$siteroot) <= 1) {
-					$tDocumentRoot = strtr($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR, '/');
-					$tLen = strlen($tDocumentRoot);
-
-					if(substr(QPATH_BASE, 0, $tLen) == $tDocumentRoot) {
-						self::$siteroot = substr(QPATH_BASE, $tLen);
-					}
-				}
+				self::$siteroot = config::get(config::MAIN, '/options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
 			}
-			self::$siteroot = rtrim(self::$siteroot, '/');
 			self::$milestones['siteRoot'] = microtime(true);
 
 			// extensions
