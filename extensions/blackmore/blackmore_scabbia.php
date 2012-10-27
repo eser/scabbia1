@@ -51,6 +51,15 @@
 		/**
 		* @ignore
 		*/
+		public static function index() {
+			auth::checkRedirect('user');
+
+			mvc::viewFile('{core}views/blackmore/scabbia/index.php');
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function debug() {
 			auth::checkRedirect('admin');
 

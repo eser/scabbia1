@@ -11,8 +11,9 @@
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>resources</fwdepend>
-		</fwdependLis	<fwdepend>auth</fwdepend>
-			<fwdepend>validation		</fwdependList	<fwdepend>http</fwdepend>
+			<fwdepend>auth</fwdepend>
+			<fwdepend>validation</fwdepend>
+			<fwdepend>http</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
