@@ -19,17 +19,18 @@
 	<includeList>
 		<include>blackmore.php</include>
 		<include>blackmore_scabbia.php</include>
-		<!-- <include>blackmore_categories.php</include> -->
+		<include>blackmore_categories.php</include>
+		<include>blackmore_categories_model.php</include>
 	</includeList>
 	<classList>
 		<class>blackmore</class>
 		<class>blackmore_scabbia</class>
-		<!-- <class>blackmore_categories</class> -->
+		<class>blackmore_categories</class>
 	</classList>
 	<events>
 		<loadList>
 			<load>blackmore_scabbia::extension_load</load>
-			<!-- <load>blackmore_categories::extension_load</load> -->
+			<load>blackmore_categories::extension_load</load>
 		</loadList>
 	</events>
 </scabbia>
