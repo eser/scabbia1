@@ -18,9 +18,4 @@
 	<classList>
 		<class>i8n</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>i8n::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

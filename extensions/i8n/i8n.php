@@ -19,7 +19,7 @@
 		/**
 		* @ignore
 		*/
-		public static $languages = array();
+		public static $languages = null;
 		/**
 		* @ignore
 		*/
@@ -28,29 +28,33 @@
 		/**
 		* @ignore
 		*/
+		/*
 		public static function extension_load() {
 			// Use the Universal Coordinated Time and most common English standards
 			date_default_timezone_set('UTC');
 
-			foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
-				self::$languages[$tLanguage['id']] = array(
-					'key' => $tLanguage['id'],
-					'locale' => $tLanguage['locale'],
-					// 'localewin' => $tLanguage['@localewin'],
-					'internalEncoding' => $tLanguage['internalEncoding'],
-					'name' => $tLanguage['name']
-				);
-				//! temporarily solution for kibristayim.com project.
-				if(is_null(self::$language)) {
-					self::setLanguage($tLanguage['id']);
-				}
-			}
+			//! todo: determine language by browser's language priorities.
 		}
+		*/
 
 		/**
 		* @ignore
 		*/
 		public static function setLanguage($uLanguage, $uLastChoice = false) {
+			if(is_null(self::$languages)) {
+				self::$languages = array();
+
+				foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
+					self::$languages[$tLanguage['id']] = array(
+						'key' => $tLanguage['id'],
+						'locale' => $tLanguage['locale'],
+						// 'localewin' => $tLanguage['@localewin'],
+						'internalEncoding' => $tLanguage['internalEncoding'],
+						'name' => $tLanguage['name']
+					);
+				}
+			}
+
 			if(array_key_exists($uLanguage, self::$languages)) {
 				self::$language = &self::$languages[$uLanguage];
 			}
