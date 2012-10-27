@@ -1,10 +1,10 @@
 <?php
 
 	/**
-	* Blackmore Extension: Categories Section
+	* Blackmore CMS Extension: Categories Section
 	*
 	* @package Scabbia
-	* @subpackage blackmore_categories
+	* @subpackage blackmorecms_categories
 	* @version 1.0.2
 	*
 	* @scabbia-fwversion 1.0
@@ -12,12 +12,12 @@
 	* @scabbia-phpversion 5.2.0
 	* @scabbia-phpdepends
 	*/
-	class blackmore_categories {
+	class blackmorecms_categories {
 		/**
 		* @ignore
 		*/
 		public static function extension_load() {
-			events::register('blackmore_registerModules', 'blackmore_categories::blackmore_registerModules');
+			events::register('blackmore_registerModules', 'blackmorecms_categories::blackmore_registerModules');
 		}
 
 		/**
@@ -26,16 +26,16 @@
 		public static function blackmore_registerModules($uParms) {
 			$uParms['modules']['categories'] = array(
 				'title' => 'Categories',
-				'callback' => 'blackmore_categories::index',
+				'callback' => 'blackmorecms_categories::all',
 				'submenus' => true,
 				'actions' => array(
 					array(
-						'callback' => 'blackmore_categories::new',
+						'callback' => 'blackmorecms_categories::new',
 						'menutitle' => 'New Category',
 						'action' => 'new'
 					),
 					array(
-						'callback' => 'blackmore_categories::all',
+						'callback' => 'blackmorecms_categories::all',
 						'menutitle' => 'All Categories',
 						'action' => 'all'
 					)
@@ -49,11 +49,11 @@
 		public static function all() {
 			auth::checkRedirect('editor');
 
-			$tModel = new blackmoreCategoriesModel();
+			$tModel = new blackmoreCmsCategoriesModel();
 
 			$tCategories = $tModel->getAll();
 
-			mvc::viewFile('{core}views/blackmore/categories/all.php', array(
+			mvc::viewFile('{core}views/blackmorecms/categories/all.php', array(
 				'categories' => &$tCategories
 			));
 		}

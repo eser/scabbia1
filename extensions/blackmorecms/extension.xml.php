@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>blackmore</name>
+		<name>blackmorecms</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
@@ -17,16 +17,15 @@
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>blackmore.php</include>
-		<include>blackmore_scabbia.php</include>
+		<include>blackmorecms_categories.php</include>
+		<include>blackmorecms_categories_model.php</include>
 	</includeList>
 	<classList>
-		<class>blackmore</class>
-		<class>blackmore_scabbia</class>
+		<class>blackmorecms_categories</class>
 	</classList>
 	<events>
 		<loadList>
-			<load>blackmore_scabbia::extension_load</load>
+			<load>blackmorecms_categories::extension_load</load>
 		</loadList>
 	</events>
 </scabbia>

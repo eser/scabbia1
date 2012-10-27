@@ -62,11 +62,11 @@
 								</table>
 								<div id="tablepager">
 									<form>
-										<img src="<?php echo $root; ?>/res/css/tablesorter/images/first.png" class="first"/>
-										<img src="<?php echo $root; ?>/res/css/tablesorter/images/prev.png" class="prev"/>
+										<img src="<?php echo $root; ?>/scabbia/tablesorter/images/first.png" class="first"/>
+										<img src="<?php echo $root; ?>/scabbia/tablesorter/images/prev.png" class="prev"/>
 										<input type="text" class="pagedisplay" readonly="readonly" />
-										<img src="<?php echo $root; ?>/res/css/tablesorter/images/next.png" class="next"/>
-										<img src="<?php echo $root; ?>/res/css/tablesorter/images/last.png" class="last"/>
+										<img src="<?php echo $root; ?>/scabbia/tablesorter/images/next.png" class="next"/>
+										<img src="<?php echo $root; ?>/scabbia/tablesorter/images/last.png" class="last"/>
 										<select class="pagesize">
 											<option value="10">10</option>
 											<option selected="selected" value="25">25</option>

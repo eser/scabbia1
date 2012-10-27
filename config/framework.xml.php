@@ -33,6 +33,7 @@
 			<extension>docs</extension>
 			<extension>auth</extension>
 			<extension>blackmore</extension>
+			<extension>blackmorecms</extension>
 		</scope>
 		<!-- <extension>oauth</extension> -->
 	</extensionList>
