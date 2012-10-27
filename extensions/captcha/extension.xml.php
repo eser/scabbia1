@@ -19,9 +19,4 @@
 	<classList>
 		<class>captcha</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>captcha::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

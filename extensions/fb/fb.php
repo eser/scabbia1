@@ -51,19 +51,14 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
+		public static function loadApi() {
 			self::$appId = config::get(config::MAIN, '/facebook/APP_ID');
 			self::$appSecret = config::get(config::MAIN, '/facebook/APP_SECRET');
 			self::$appFileUpload = config::get(config::MAIN, '/facebook/APP_FILEUPLOAD');
 			self::$appUrl = config::get(config::MAIN, '/facebook/APP_URL');
 			self::$appPageId = config::get(config::MAIN, '/facebook/APP_PAGE_ID');
 			self::$appRedirectUri = config::get(config::MAIN, '/facebook/APP_REDIRECT_URI');
-		}
 
-		/**
-		* @ignore
-		*/
-		public static function loadApi() {
 			if(is_null(self::$api)) {
 				self::$api = new Facebook(array(
 					'appId'			=> self::$appId,

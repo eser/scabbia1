@@ -20,9 +20,4 @@
 		<class>FacebookQueryObject</class>
 		<class>Facebook</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>fb::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

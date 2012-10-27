@@ -16,13 +16,6 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			events::register('blackmore_registerModules', 'blackmore_scabbia::blackmore_registerModules');
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function blackmore_registerModules($uParms) {
 			$uParms['modules']['scabbia'] = array(
 				'title' => 'Scabbia',

@@ -17,9 +17,10 @@
 		<class>media</class>
 		<class>mediaFile</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>media::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>media::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>

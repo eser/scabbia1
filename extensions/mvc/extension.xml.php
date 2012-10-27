@@ -35,15 +35,38 @@
 		<class>viewengine_smarty</class>
 		<class>viewengine_twig</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>mvc::extension_load</load>
-			<load>viewengine_markdown::extension_load</load>
-			<load>viewengine_phptal::extension_load</load>
-			<load>viewengine_raintpl::extension_load</load>
-			<load>viewengine_razor::extension_load</load>
-			<load>viewengine_smarty::extension_load</load>
-			<load>viewengine_twig::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>mvc::extension_load</callback>
+		</event>
+		<event>
+			<name>http_route</name>
+			<callback>mvc::http_route</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_markdown::extension_load</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_phptal::extension_load</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_raintpl::extension_load</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_razor::extension_load</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_smarty::extension_load</callback>
+		</event>
+		<event>
+			<name>load</name>
+			<callback>viewengine_twig::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>

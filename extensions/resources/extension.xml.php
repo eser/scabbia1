@@ -20,9 +20,10 @@
 	<classList>
 		<class>resources</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>resources::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>http_route</name>
+			<callback>resources::http_route</callback>
+		</event>
+	</eventList>
 </scabbia>

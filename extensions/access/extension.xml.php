@@ -16,9 +16,10 @@
 	<classList>
 		<class>access</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>access::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>run</name>
+			<callback>access::run</callback>
+		</event>
+	</eventList>
 </scabbia>

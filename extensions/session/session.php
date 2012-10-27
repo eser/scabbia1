@@ -47,7 +47,7 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
+		private static function open() {
 			self::$sessionName = config::get(config::MAIN, '/session/cookie/name', 'sessid');
 
 			if(config::get(config::MAIN, '/session/cookie/nameIp', true)) {
@@ -60,20 +60,6 @@
 				self::$id = $_COOKIE[self::$sessionName];
 			}
 
-			events::register('output', 'session::output');
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function output($uParms) {
-			self::save();
-		}
-
-		/**
-		* @ignore
-		*/
-		private static function open() {
 			if(!is_null(self::$id)) {
 				$tIpCheck = (bool)config::get(config::MAIN, '/session/cookie/ipCheck', '0');
 				$tUACheck = (bool)config::get(config::MAIN, '/session/cookie/uaCheck', '1');

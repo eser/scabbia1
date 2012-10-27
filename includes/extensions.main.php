@@ -124,9 +124,14 @@
 				}
 			}
 
-			if(isset($tClassInfo['/events/loadList'])) {
-				foreach($tClassInfo['/events/loadList'] as &$tLoad) {
-					call_user_func($tLoad);
+			if(isset($tClassInfo['/eventList'])) {
+				foreach($tClassInfo['/eventList'] as &$tLoad) {
+					if($tLoad['name'] == 'load') {
+						call_user_func($tLoad['callback']);
+						continue;
+					}
+
+					events::register($tLoad['name'], $tLoad['callback']);
 				}
 			}
 

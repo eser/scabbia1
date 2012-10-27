@@ -27,13 +27,6 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			events::register('http_route', 'resources::http_route');
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function http_route($uParms) {
 			if(is_null(self::$packs)) {
 				self::$packs = config::get(config::MAIN, '/resources/packList', array());

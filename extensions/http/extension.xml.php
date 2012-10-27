@@ -18,9 +18,10 @@
 	<classList>
 		<class>http</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>http::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>http::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>

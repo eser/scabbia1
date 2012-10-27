@@ -18,9 +18,10 @@
 	<classList>
 		<class>logger</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>logger::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>logger::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>

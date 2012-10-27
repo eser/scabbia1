@@ -65,8 +65,6 @@
 				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
 			}
 			self::registerViewEngine('php', 'viewengine_php');
-
-			events::register('http_route', 'mvc::http_route');
 		}
 
 		/**

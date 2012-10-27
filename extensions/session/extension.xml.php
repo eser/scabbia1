@@ -18,9 +18,10 @@
 	<classList>
 		<class>session</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>session::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>output</name>
+			<callback>session::save</callback>
+		</event>
+	</eventList>
 </scabbia>

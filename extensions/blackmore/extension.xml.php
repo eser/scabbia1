@@ -24,9 +24,10 @@
 		<class>blackmore</class>
 		<class>blackmore_scabbia</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>blackmore_scabbia::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>blackmore_registerModules</name>
+			<callback>blackmore_scabbia::blackmore_registerModules</callback>
+		</event>
+	</eventList>
 </scabbia>

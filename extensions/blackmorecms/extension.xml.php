@@ -23,9 +23,10 @@
 	<classList>
 		<class>blackmorecms_categories</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>blackmorecms_categories::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>blackmore_registerModules</name>
+			<callback>blackmorecms_categories::blackmore_registerModules</callback>
+		</event>
+	</eventList>
 </scabbia>

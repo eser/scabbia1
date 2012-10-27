@@ -29,9 +29,7 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			events::register('run', 'access::run');
-
+		public static function run() {
 			self::$maintenance = (intval(config::get(config::MAIN, '/access/maintenance/mode', '0')) >= 1);
 			self::$maintenanceExcludeIps = config::get(config::MAIN, '/access/maintenance/ipExcludeList', array());
 
@@ -45,12 +43,7 @@
 					self::$ipFilters[] = $tIpFilterList['pattern'];
 				}
 			}
-		}
 
-		/**
-		* @ignore
-		*/
-		public static function run() {
 			if(self::$maintenance && !in_array($_SERVER['REMOTE_ADDR'], self::$maintenanceExcludeIps)) {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503);
 				header('Retry-After: 600', true);

@@ -18,9 +18,4 @@
 	<classList>
 		<class>auth</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>auth::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

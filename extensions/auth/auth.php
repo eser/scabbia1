@@ -16,12 +16,6 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function login($uUsername, $uPassword) {
 			foreach(config::get(config::MAIN, '/auth/userList', array()) as $tUser) {
 				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {

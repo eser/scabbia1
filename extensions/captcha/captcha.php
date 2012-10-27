@@ -14,36 +14,18 @@
 	*/
 	class captcha {
 		/**
-		* @ignore
-		*/
-		public static $fontFile;
-		/**
-		* @ignore
-		*/
-		public static $fontSize;
-		/**
-		* @ignore
-		*/
-		public static $length;
-
-		/**
-		* @ignore
-		*/
-		public static function extension_load() {
-			self::$fontFile = framework::translatePath(config::get(config::MAIN, '/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
-			self::$fontSize = intval(config::get(config::MAIN, '/captcha/fontSize', '45'));
-			self::$length = intval(config::get(config::MAIN, '/captcha/length', '8'));
-		}
-
-		/**
 		* Generates and outputs a captcha image
 		*
 		* @param string $uCookieName name of the cookie which will be stored on the client side
 		* @return string generated captcha code
 		*/
 		public static function generate($uCookieName = 'captcha') {
+			$tFontFile = framework::translatePath(config::get(config::MAIN, '/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
+			$tFontSize = intval(config::get(config::MAIN, '/captcha/fontSize', '45'));
+			$tLength = intval(config::get(config::MAIN, '/captcha/length', '8'));
+
 			// pick a random word
-			$tCode = string::generatePassword(self::$length);
+			$tCode = string::generatePassword($tLength);
 
 			// create a random gray shade
 			$tColorScale = rand(40, 120);
@@ -61,13 +43,13 @@
 			// create the background letters
 			$tBackgroundChars = 'abcdefghijklmnopqrstuvwxyz';
 
-			for ($i = 0; $i < rand(60, 120); $i++) {
+			for($i = 0; $i < rand(60, 120); $i++) {
 				// randomize the place and angle
 				$x = rand(-50, 300);
 				$y = rand(-50, 80);
 				$tAngle = rand(-90, 90);
 
-				imagettftext($tImageCanvas, self::$fontSize, $tAngle, $x, $y, $tColorBackgroundChars, self::$fontFile, $tBackgroundChars[rand(0, strlen($tBackgroundChars) - 1)]);
+				imagettftext($tImageCanvas, $tFontSize, $tAngle, $x, $y, $tColorBackgroundChars, $tFontFile, $tBackgroundChars[rand(0, strlen($tBackgroundChars) - 1)]);
 			}
 
 			// randomize the start of the code
@@ -75,23 +57,23 @@
 			$y = 56 + rand(-8, 8);
 
 			// write the code letter-by-letter
-			for ($i = 0; $i < strlen($tCode); $i++) {
+			for($i = 0; $i < strlen($tCode); $i++) {
 				// angle is random
 				$tAngle = rand(-10, 10);
 
 				// create the shadow for the letter
 				for($ax = -1; $ax < 0; $ax++) {
 					for($ay = -1; $ay < 0; $ay++) {
-						imagettftext($tImageCanvas, self::$fontSize, $tAngle, $x + $ax, $y + $ay, $tColorTextShadow, self::$fontFile, $tCode[$i]);
+						imagettftext($tImageCanvas, $tFontSize, $tAngle, $x + $ax, $y + $ay, $tColorTextShadow, $tFontFile, $tCode[$i]);
 					}
 				}
 
 				// create the letter
-				imagettftext($tImageCanvas, self::$fontSize, $tAngle, $x, $y, $tColorText, self::$fontFile, $tCode[$i]);
+				imagettftext($tImageCanvas, $tFontSize, $tAngle, $x, $y, $tColorText, $tFontFile, $tCode[$i]);
 
 				// calculate the place of the next letter
 				$y += rand(-2, 2);
-				$tTemp = imagettfbbox(self::$fontSize, 0, self::$fontFile, $tCode[$i]);
+				$tTemp = imagettfbbox($tFontSize, 0, $tFontFile, $tCode[$i]);
 				$x += $tTemp[2] + rand(-4, 0);
 			}
 

@@ -16,13 +16,6 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			events::register('blackmore_registerModules', 'blackmorecms_categories::blackmore_registerModules');
-		}
-
-		/**
-		* @ignore
-		*/
 		public static function blackmore_registerModules($uParms) {
 			$uParms['modules']['categories'] = array(
 				'title' => 'Categories',

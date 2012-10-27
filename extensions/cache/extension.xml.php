@@ -18,9 +18,10 @@
 	<classList>
 		<class>cache</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>cache::extension_load</load>
-		</loadList>
-	</events>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>cache::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>
