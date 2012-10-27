@@ -28,7 +28,7 @@
 		/**
 		* @ignore
 		*/
-		public static $databases = array();
+		public static $databases = null;
 		/**
 		* @ignore
 		*/
@@ -58,28 +58,26 @@
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			foreach(config::get(config::MAIN, '/databaseList', array()) as $tDatabaseConfig) {
-				$tDatabase = new databaseConnection($tDatabaseConfig);
-				self::$databases[$tDatabase->id] = $tDatabase;
+		public static function &get() {
+			if(is_null(self::$databases)) {
+				self::$databases = array();
 
-				if(is_null(self::$default) || $tDatabase->default) {
-					self::$default = $tDatabase;
+				foreach(config::get(config::MAIN, '/databaseList', array()) as $tDatabaseConfig) {
+					$tDatabase = new databaseConnection($tDatabaseConfig);
+					self::$databases[$tDatabase->id] = $tDatabase;
+
+					if(is_null(self::$default) || $tDatabase->default) {
+						self::$default = $tDatabase;
+					}
+				}
+
+				foreach(config::get(config::MAIN, '/datasetList', array()) as $tDatasetConfig) {
+					$tDataset = new databaseDataset($tDatasetConfig);
+					self::$datasets[$tDataset->id] = $tDataset;
 				}
 			}
 
-			foreach(config::get(config::MAIN, '/datasetList', array()) as $tDatasetConfig) {
-				$tDataset = new databaseDataset($tDatasetConfig);
-				self::$datasets[$tDataset->id] = $tDataset;
-			}
 
-			// events::register('reportError', 'database::reportError');
-		}
-
-		/**
-		* @ignore
-		*/
-		public static function &get() {
 			$uArgs = func_get_args();
 
 			switch(count($uArgs)) {

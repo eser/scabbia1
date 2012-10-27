@@ -60,7 +60,7 @@
 		* @ignore
 		*/
 		public static function load($uRunExtensions = true) {
-			self::$milestones['begin'] = microtime(true);
+			self::$milestones[] = array('begin', microtime(true));
 
 			// endpoints
 			if(count(self::$endpoints) > 0) {
@@ -86,29 +86,29 @@
 			if(is_null(self::$applicationPath)) {
 				self::$applicationPath = QPATH_BASE . 'application/';
 			}
-			self::$milestones['endpoints'] = microtime(true);
+			self::$milestones[] = array('endpoints', microtime(true));
 
 			// load config
 			if(!COMPILED) {
 				config::load();
-				self::$milestones['configLoad'] = microtime(true);
+				self::$milestones[] = array('configLoad', microtime(true));
 
 				// downloads
 				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
 					self::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
-				self::$milestones['downloads'] = microtime(true);
+				self::$milestones[] = array('downloads', microtime(true));
 
 				// events::load();
 				extensions::load();
-				self::$milestones['extensions'] = microtime(true);
+				self::$milestones[] = array('extensions', microtime(true));
 			}
 
 			// siteroot
 			if(is_null(self::$siteroot)) {
 				self::$siteroot = config::get(config::MAIN, '/options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
 			}
-			self::$milestones['siteRoot'] = microtime(true);
+			self::$milestones[] = array('siteRoot', microtime(true));
 
 			// extensions
 			extensions::loadExtensions();
@@ -129,7 +129,7 @@
 						}
 					}
 				}
-				self::$milestones['includesLoad'] = microtime(true);
+				self::$milestones[] = array('includesLoad', microtime(true));
 			}
 
 			// output handling
@@ -140,7 +140,7 @@
 			if($uRunExtensions) {
 				events::invoke('run', array());
 			}
-			self::$milestones['extensionsRun'] = microtime(true);
+			self::$milestones[] = array('extensionsRun', microtime(true));
 		}
 
 		/**

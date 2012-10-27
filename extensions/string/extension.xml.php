@@ -18,9 +18,4 @@
 	<classList>
 		<class>string</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>string::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

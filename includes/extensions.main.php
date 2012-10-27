@@ -69,7 +69,7 @@
 		public static function loadExtensions() {
 			foreach(config::get(config::MAIN, '/extensionList', array()) as $tExtensionName) {
 				self::loadExtension($tExtensionName);
-				framework::$milestones['extension_' . $tExtensionName] = microtime(true);
+				framework::$milestones[] = array('extension_' . $tExtensionName, microtime(true));
 			}
 		}
 

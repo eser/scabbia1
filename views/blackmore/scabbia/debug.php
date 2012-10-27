@@ -48,9 +48,9 @@
 
 												<?php
 													$tPrevious = QTIME_INIT;
-													foreach(framework::$milestones as $tKey => &$tMilestone) {
-														echo $tKey, ' = ', number_format($tMilestone - $tPrevious, 5), ' ms.<br />';
-														$tPrevious = $tMilestone;
+													foreach(framework::$milestones as $tMilestone) {
+														echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
+														$tPrevious = $tMilestone[1];
 													}
 													echo '<b>total</b> = ', number_format($tPrevious - QTIME_INIT, 5), ' ms.<br />';
 												?>

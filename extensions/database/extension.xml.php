@@ -31,9 +31,4 @@
 		</scope>
 		<class>databaseprovider_mysql</class>
 	</classList>
-	<events>
-		<loadList>
-			<load>database::extension_load</load>
-		</loadList>
-	</events>
 </scabbia>

@@ -66,6 +66,7 @@
 		* @ignore
 		*/
 		public static function extension_load() {
+			/*
 			// session trans sid
 			ini_set('session.use_trans_sid', '0');
 
@@ -97,6 +98,7 @@
 
 				$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
 			}
+			*/
 
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -108,20 +110,7 @@
 				$_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
 			}
 
-			// phpself and query string
-			$_SERVER['PHP_SELF'] = str_replace(array('<', '>'), array('%3C', '%3E'), $_SERVER['PHP_SELF']);
-			$tPhpSelfInfo = pathinfo($_SERVER['PHP_SELF']);
-			if($tPhpSelfInfo['basename'] == 'index.php') {
-				$_SERVER['PHP_SELF'] = rtrim($tPhpSelfInfo['dirname'], DIRECTORY_SEPARATOR) . '/';
-			}
-
-			$_SERVER['REQUEST_STRING'] = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['PHP_SELF']));
-
-			$tPos = strpos($_SERVER['REQUEST_STRING'], '?');
-			if($tPos !== false) {
-				$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_STRING'], $tPos + 1);
-			}
-
+			// request handling
 			foreach(config::get(config::MAIN, '/http/rewriteList', array()) as $tRewriteList) {
 				$tReturn = preg_replace('|^' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
 				if($tCount > 0) {
@@ -130,11 +119,18 @@
 				}
 			}
 
+			$_SERVER['REQUEST_STRING'] = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot) + 1);
+
+			$tPos = strpos($_SERVER['REQUEST_STRING'], '?');
+			if($tPos !== false) {
+				$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_STRING'], $tPos + 1);
+			}
+
 			if($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on') {
 				self::$isSecure = true;
 			}
 
-			if(strlen($_SERVER['HTTP_HOST']) == 0) {
+			if(!isset($_SERVER['HTTP_HOST']) || strlen($_SERVER['HTTP_HOST']) == 0) {
 				$_SERVER['HTTP_HOST'] = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
 
 				if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') {
@@ -153,9 +149,7 @@
 				self::$isGet = true;
 			}
 
-			$tAutoCheckUserAgents = intval(config::get(config::MAIN, '/http/userAgents/autoCheck', '1'));
-
-			if($tAutoCheckUserAgents) {
+			if(config::get(config::MAIN, '/http/userAgents/autoCheck', '1') == '1') {
 				self::checkUserAgent();
 			}
 

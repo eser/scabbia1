@@ -24,17 +24,13 @@
 		/**
 		* @ignore
 		*/
-		public static $mbstringEncoding;
-		/**
-		* @ignore
-		*/
 		public static $tab = "\t";
 
 		/**
 		* @ignore
 		*/
-		public static function extension_load() {
-			self::$mbstringEncoding = mb_preferred_mime_name(mb_internal_encoding());
+		public static function getEncoding() {
+			return mb_preferred_mime_name(mb_internal_encoding());
 		}
 
 		/**
