@@ -135,13 +135,11 @@
 						<class>flot</class>
 						<path>{core}resources/flot/jquery.flot.pie.js</path>
 					</part>
-					<scope mode="development">
-						<part>
-							<type>file</type>
-							<class>blackmore</class>
-							<path>{core}resources/blackmore/blackmore.js</path>
-						</part>
-					</scope>
+					<part>
+						<type>file</type>
+						<class>blackmore</class>
+						<path>{core}resources/blackmore/blackmore.js</path>
+					</part>
 					<part>
 						<type>function</type>
 						<name>mvc::exportAjaxJs</name>
@@ -212,18 +210,16 @@
 						<class>snippet</class>
 						<path>{core}resources/snippet/jquery.snippet.css</path>
 					</part>
-					<scope mode="development">
-						<part>
-							<type>file</type>
-							<class>blackmore</class>
-							<path>{core}resources/blackmore/blackmore.css</path>
-						</part>
-						<part>
-							<type>file</type>
-							<class>docs</class>
-							<path>{core}resources/docs/markdown.css</path>
-						</part>
-					</scope>
+					<part>
+						<type>file</type>
+						<class>blackmore</class>
+						<path>{core}resources/blackmore/blackmore.css</path>
+					</part>
+					<part>
+						<type>file</type>
+						<class>docs</class>
+						<path>{core}resources/docs/markdown.css</path>
+					</part>
 				</partList>
 			</pack>
 		</packList>

@@ -151,7 +151,9 @@
 			// include extensions
 			$tIncludedFiles = array();
 
-			foreach($tExtensions as $tKey => &$tExtension) {
+			foreach($tConfig['/extensionList'] as &$tExtensionName) {
+				$tExtension = $tExtensions[$tExtensionName];
+
 				if(isset($tExtension['config']['/includeList'])) {
 					foreach($tExtension['config']['/includeList'] as &$tFile) {
 						$tFilename = $tExtension['path'] . $tFile;
