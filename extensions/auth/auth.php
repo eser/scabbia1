@@ -16,17 +16,29 @@
 		/**
 		* @ignore
 		*/
+		public static $sessionKey;
+
+		/**
+		* @ignore
+		*/
+		public static function extension_load() {
+			self::$sessionKey = config::get('/auth/sessionKey', 'authuser');
+		}
+
+		/**
+		* @ignore
+		*/
 		public static function login($uUsername, $uPassword) {
 			foreach(config::get('/auth/userList', array()) as $tUser) {
 				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
 					continue;
 				}
 
-				session::set('user', $tUser);
+				session::set(self::$sessionKey, $tUser);
 				return true;
 			}
 
-			// session::remove('user');
+			// session::remove(self::$sessionKey);
 			return false;
 		}
 
@@ -34,14 +46,14 @@
 		* @ignore
 		*/
 		public static function clear() {
-			session::remove('user');
+			session::remove(self::$sessionKey);
 		}
 
 		/**
 		* @ignore
 		*/
 		public static function check($uRequiredRoles = 'user') {
-			$tUser = session::get('user');
+			$tUser = session::get(self::$sessionKey);
 			if(is_null($tUser)) {
 				return false;
 			}

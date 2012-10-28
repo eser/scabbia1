@@ -18,4 +18,10 @@
 	<classList>
 		<class>auth</class>
 	</classList>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>auth::extension_load</callback>
+		</event>
+	</eventList>
 </scabbia>

@@ -12,6 +12,7 @@
 	<auth>
 		<loginMvcUrl>blackmore/login</loginMvcUrl>
 		<authType>config</authType>
+		<sessionKey>authUser</sessionKey>
 
 		<userList>
 			<user>
