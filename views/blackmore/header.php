@@ -42,6 +42,9 @@
 									<ul class="memu-submenu noMargin">
 										<?php
 											foreach($tModule['actions'] as $tSubmenuItem) {
+												if(!isset($tSubmenuItem['menutitle'])) {
+													continue;
+												}
 										?>
 											<li class="memu-item"><a class="boxed" href="<?php echo mvc::url('blackmore/' . $tKey . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a></li>
 										<?php } ?>

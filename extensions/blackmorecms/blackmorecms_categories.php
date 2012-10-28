@@ -28,6 +28,14 @@
 						'action' => 'new'
 					),
 					array(
+						'callback' => 'blackmorecms_categories::edit',
+						'action' => 'edit'
+					),
+					array(
+						'callback' => 'blackmorecms_categories::delete',
+						'action' => 'delete'
+					),
+					array(
 						'callback' => 'blackmorecms_categories::all',
 						'menutitle' => 'All Categories',
 						'action' => 'all'
@@ -51,9 +59,8 @@
 			));
 		}
 
-		/*
-		public function category($uSlug = '', $uDeleteTag = '') {
-			$user = shared::requireAuthentication($this);
+		public function category($uAction, $uSlug = '', $uDeleteTag = '') {
+			auth::checkRedirect('editor');
 
 			if($uDeleteTag == 'delete') {
 				session::setFlash('notification', 'Category deleted.');
@@ -191,7 +198,6 @@
 			session::setFlash('notification', 'Category sent.');
 			$this->redirect('editor/categories');
 		}
-		*/
 	}
 
 ?>
