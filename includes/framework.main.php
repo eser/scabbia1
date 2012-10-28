@@ -88,43 +88,41 @@
 			}
 			self::$milestones[] = array('endpoints', microtime(true));
 
-			// load config
 			if(!COMPILED) {
-				config::load();
+				// load config
+				config::$default = config::load();
 				self::$milestones[] = array('configLoad', microtime(true));
 
-				// downloads
-				foreach(config::get(config::MAIN, '/downloadList', array()) as $tUrl) {
+				// download files
+				foreach(config::get('/downloadList', array()) as $tUrl) {
 					self::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
 				self::$milestones[] = array('downloads', microtime(true));
 
-				// events::load();
-				extensions::load();
+				// load extensions
+				extensions::$list = extensions::load();
 				self::$milestones[] = array('extensions', microtime(true));
 			}
 
 			// siteroot
 			if(is_null(self::$siteroot)) {
-				self::$siteroot = config::get(config::MAIN, '/options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+				self::$siteroot = config::get('/options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
 			}
 			self::$milestones[] = array('siteRoot', microtime(true));
 
-			// extensions
+			// extensions and autoload
+			spl_autoload_register('extensions::autoloader');
 			extensions::loadExtensions();
 
 			if(!COMPILED) {
-				// includes
-				foreach(config::get(config::MAIN, '/includeList', array()) as $tInclude) {
+				// include files
+				foreach(config::get('/includeList', array()) as $tInclude) {
 					$tIncludePath = pathinfo(self::translatePath($tInclude));
 
 					$tFiles = self::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
-							if(substr($tFilename, -1) == '/') {
-								continue;
-							}
-
+							//! todo require_once?
 							include($tFilename);
 						}
 					}
@@ -139,8 +137,8 @@
 			// run extensions
 			if($uRunExtensions) {
 				events::invoke('run', array());
+				self::$milestones[] = array('extensionsRun', microtime(true));
 			}
-			self::$milestones[] = array('extensionsRun', microtime(true));
 		}
 
 		/**
@@ -233,7 +231,7 @@
 				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 
-			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get(config::MAIN, '/options/gzip', '1') != '0') {
+			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get('/options/gzip', '1') != '0') {
 				$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 			}
 

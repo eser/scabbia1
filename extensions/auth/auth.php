@@ -17,7 +17,7 @@
 		* @ignore
 		*/
 		public static function login($uUsername, $uPassword) {
-			foreach(config::get(config::MAIN, '/auth/userList', array()) as $tUser) {
+			foreach(config::get('/auth/userList', array()) as $tUser) {
 				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
 					continue;
 				}
@@ -65,13 +65,13 @@
 				return;
 			}
 
-			$tMvcUrl = config::get(config::MAIN, '/auth/loginMvcUrl', null);
+			$tMvcUrl = config::get('/auth/loginMvcUrl', null);
 			if(!is_null($tMvcUrl) && extensions::isLoaded('mvc')) {
 				//! todo: warning messages like insufficent privileges.
 				mvc::redirect($tMvcUrl);
 			}
 			else {
-				header('Location: ' . config::get(config::MAIN, '/auth/loginUrl'));
+				header('Location: ' . config::get('/auth/loginUrl'));
 			}
 
 			framework::end(0);

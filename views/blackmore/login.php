@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 
-		<title><?php echo _(config::get(config::MAIN, '/blackmore/title', 'Scabbia: Blackmore')); ?></title>
+		<title><?php echo _(config::get('/blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
 		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,shadowbox,blackmore" rel="stylesheet" media="all" />
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
@@ -11,7 +11,7 @@
 
 		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,shadowbox,blackmore"></script>
 	</head>
-	<body class="<?php echo config::get(config::MAIN, '/blackmore/bodyStyle', 'stretch'); ?>">
+	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
 			$l.contentBegin('main', '<?php echo framework::$siteroot; ?>');
 		</script>
@@ -23,7 +23,7 @@
 					<div class="bheadl"></div>
 					<div class="bheadr"></div>
 
-					<h2><?php echo _(config::get(config::MAIN, '/blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
+					<h2><?php echo _(config::get('/blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
 				</div>
 
 				<div class="block_content">

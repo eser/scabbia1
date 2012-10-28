@@ -34,10 +34,10 @@
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$defaultAge = intval(config::get(config::MAIN, '/cache/defaultAge', '120'));
-			self::$keyphase = config::get(config::MAIN, '/cache/keyphase', '');
+			self::$defaultAge = intval(config::get('/cache/defaultAge', '120'));
+			self::$keyphase = config::get('/cache/keyphase', '');
 
-			$tStorage = config::get(config::MAIN, '/cache/storage', '');
+			$tStorage = config::get('/cache/storage', '');
 			if(strlen($tStorage) > 0) {
 				self::$storage = parse_url($tStorage);
 			}

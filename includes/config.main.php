@@ -10,14 +10,9 @@
 	*/
 	class config {
 		/**
-		* @ignore
+		* Defaul configuration
 		*/
-		const MAIN = '';
-	
-		/**
-		* All configurations
-		*/
-		public static $configurations = array();
+		public static $default;
 
 		/**
 		* Loads the default configuration for the current application.
@@ -33,10 +28,6 @@
 
 			foreach(framework::glob(framework::$applicationPath . 'config/', null, GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
 				self::loadFile($tConfig, $tFile);
-			}
-
-			if(!isset(self::$configurations[self::MAIN])) {
-				self::$configurations[self::MAIN] = &$tConfig;
 			}
 
 			return $tConfig;
@@ -145,7 +136,8 @@
 		/**
 		* @ignore
 		*/
-		private static function processChildren_r(&$uArray, &$uNodes, $uNode) {
+		private static function processChildren_r(&$uArray, $uNode) {
+			static $uNodes = array();
 			$tNodeName = $uNode->getName();
 
 			if($tNodeName == 'scope') {
@@ -174,7 +166,7 @@
 			}
 			else {
 				foreach($uNode->children() as $tKey => $tNode) {
-					self::processChildren_r($uArray, $uNodes, $tNode);
+					self::processChildren_r($uArray, $tNode);
 				}
 
 				if(!isset($tScope)) {
@@ -197,10 +189,8 @@
 		* @return array configuration
 		*/
 		public static function loadFile(&$uConfig, $uFile) {
-			$tConfigNodes = array();
-
 			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS|LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
-			self::processChildren_r($uConfig, $tConfigNodes, $tXmlDom);
+			self::processChildren_r($uConfig, $tXmlDom);
 		}
 
 		/**
@@ -209,21 +199,12 @@
 		* @param string $uKey path of the value
 		* @param mixed $uDefault default value
 		*/
-		public static function &get($uConfiguration, $uKey, $uDefault = null) {
-			if(!array_key_exists($uKey, self::$configurations[$uConfiguration])) {
+		public static function &get($uKey, $uDefault = null) {
+			if(!array_key_exists($uKey, self::$default)) {
 				return $uDefault;
 			}
 
-			return self::$configurations[$uConfiguration][$uKey];
-		}
-
-		/**
-		* Sets the default configuration for the current application.
-		*
-		* @param string $uVariable instance
-		*/
-		public static function set($uConfiguration, $uVariable) {
-			self::$configurations[$uConfiguration] = &$uVariable;
+			return self::$default[$uKey];
 		}
 	}
 

@@ -13,11 +13,13 @@
 		</fwdependList>
 	</info>
 	<includeList>
+		<include>facebook-php-sdk-3.1.1/src/base_facebook.php</include>
 		<include>fb.php</include>
 	</includeList>
 	<classList>
 		<class>fb</class>
 		<class>FacebookQueryObject</class>
 		<class>Facebook</class>
+		<class>BaseFacebook</class>
 	</classList>
 </scabbia>

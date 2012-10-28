@@ -20,9 +20,9 @@
 		* @return string generated captcha code
 		*/
 		public static function generate($uCookieName = 'captcha') {
-			$tFontFile = framework::translatePath(config::get(config::MAIN, '/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
-			$tFontSize = intval(config::get(config::MAIN, '/captcha/fontSize', '45'));
-			$tLength = intval(config::get(config::MAIN, '/captcha/length', '8'));
+			$tFontFile = framework::translatePath(config::get('/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
+			$tFontSize = intval(config::get('/captcha/fontSize', '45'));
+			$tLength = intval(config::get('/captcha/length', '8'));
 
 			// pick a random word
 			$tCode = string::generatePassword($tLength);

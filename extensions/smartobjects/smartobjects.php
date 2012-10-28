@@ -105,7 +105,7 @@
 				return;
 			}
 
-			return unset($this->{$uKey});
+			unset($this->{$uKey});
 		}
 
 		/**

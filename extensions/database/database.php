@@ -62,7 +62,7 @@
 			if(is_null(self::$databases)) {
 				self::$databases = array();
 
-				foreach(config::get(config::MAIN, '/databaseList', array()) as $tDatabaseConfig) {
+				foreach(config::get('/databaseList', array()) as $tDatabaseConfig) {
 					$tDatabase = new databaseConnection($tDatabaseConfig);
 					self::$databases[$tDatabase->id] = $tDatabase;
 
@@ -71,7 +71,7 @@
 					}
 				}
 
-				foreach(config::get(config::MAIN, '/datasetList', array()) as $tDatasetConfig) {
+				foreach(config::get('/datasetList', array()) as $tDatasetConfig) {
 					$tDataset = new databaseDataset($tDatasetConfig);
 					self::$datasets[$tDataset->id] = $tDataset;
 				}

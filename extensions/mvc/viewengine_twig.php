@@ -34,7 +34,7 @@
 		*/
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get(config::MAIN, '/twig/path', '{core}include/3rdparty/twig/lib/Twig'));
+				$tPath = framework::translatePath(config::get('/twig/path', '{core}include/3rdparty/twig/lib/Twig'));
 				require($tPath . '/Autoloader.php');
 
 				Twig_Autoloader::register();

@@ -29,8 +29,8 @@
 		*/
 		public static function http_route($uParms) {
 			if(is_null(self::$packs)) {
-				self::$packs = config::get(config::MAIN, '/resources/packList', array());
-				foreach(config::get(config::MAIN, '/resources/fileList', array()) as $tFile) {
+				self::$packs = config::get('/resources/packList', array());
+				foreach(config::get('/resources/fileList', array()) as $tFile) {
 					self::$packs[] = array(
 						'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
 						'name' => $tFile['name'],
@@ -38,7 +38,7 @@
 					);
 				}
 
-				self::$directories = config::get(config::MAIN, '/resources/directoryList', array());
+				self::$directories = config::get('/resources/directoryList', array());
 			}
 
 			if(strlen($uParms['queryString']) > 0) {

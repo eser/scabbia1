@@ -57,11 +57,11 @@
 		* @ignore
 		*/
 		public static function extension_load() {
-			self::$defaultController = config::get(config::MAIN, '/mvc/routes/defaultController', 'home');
-			self::$defaultAction = config::get(config::MAIN, '/mvc/routes/defaultAction', 'index');
-			self::$errorPage = config::get(config::MAIN, '/mvc/view/errorPage', 'shared/error.php');
+			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
+			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
+			self::$errorPage = config::get('/mvc/view/errorPage', 'shared/error.php');
 
-			foreach(config::get(config::MAIN, '/mvc/view/viewEngineList', array()) as $tViewEngine) {
+			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
 				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
 			}
 			self::registerViewEngine('php', 'viewengine_php');
@@ -139,12 +139,12 @@
 		*/
 		protected static function &getControllerData($uController) {
 			$tControllerData = array(
-				'actionUrlKeys' => config::get(config::MAIN, '/mvc/routes/actionUrlKeys', '1'),
+				'actionUrlKeys' => config::get('/mvc/routes/actionUrlKeys', '1'),
 				'defaultAction' => self::$defaultAction,
-				'link' => config::get(config::MAIN, '/mvc/routes/link', '{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}')
+				'link' => config::get('/mvc/routes/link', '{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}')
 			);
 
-			foreach(config::get(config::MAIN, '/mvc/controllerList', array()) as $tController) {
+			foreach(config::get('/mvc/controllerList', array()) as $tController) {
 				if($uController != $tController['name']) {
 					continue;
 				}
@@ -175,7 +175,7 @@
 				$uArgs = http::parseGet($uArgs);
 			}
 
-			$tControllerUrlKey = config::get(config::MAIN, '/mvc/routes/controllerUrlKey', '0');
+			$tControllerUrlKey = config::get('/mvc/routes/controllerUrlKey', '0');
 
 			$tRoute = array();
 
@@ -229,7 +229,7 @@
 		* @ignore
 		*/
 		public static function view() {
-			$tViewDefaultExtension = config::get(config::MAIN, '/mvc/view/defaultViewExtension', 'php');
+			$tViewDefaultExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 
 			$uArgs = func_get_args();
 
@@ -285,7 +285,7 @@
 		* @ignore
 		*/
 		public static function viewFile($uView) {
-			$tViewDefaultExtension = config::get(config::MAIN, '/mvc/view/defaultViewExtension', 'php');
+			$tViewDefaultExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 
 			$uArgs = func_get_args();
 

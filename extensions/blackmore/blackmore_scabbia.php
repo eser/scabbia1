@@ -65,25 +65,30 @@
 		* @param $uFilename string output file
 		* @param $uPseudo bool wheater file is an pseudo compilation or not
 		*/
-		public static function build($uModule = '') {
+		public static function build($uAction, $uModule = '') {
 			auth::checkRedirect('admin');
 
-			$tStart = microtime(true);
+			// $tStart = microtime(true);
 
 			if(strlen($uModule) > 0) {
-				$tFilename = framework::$applicationPath . 'compiled.' . $uModule . '.php';
+				$tFilename = 'compiled.' . $uModule . '.php';
 			}
 			else {
-				$tFilename = framework::$applicationPath . 'compiled.php';
+				$tFilename = 'compiled.php';
 			}
 
 			$tContents = self::build_export($uModule, false);
 
-			$tOutput = fopen($tFilename, 'w') or exit('Unable to write to ' . $tFilename);
-			fwrite($tOutput, $tContents);
-			fclose($tOutput);
+			header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
+			header('Pragma: public', true);
+			header('Cache-Control: no-store, no-cache, must-revalidate', true);
+			header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+			header('Content-Type: application/octet-stream', true);
+			header('Content-Disposition: attachment;filename=' . $tFilename, true);
 
-			exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
+			echo $tContents;
+
+			// exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
 		}
 
 		/**
@@ -133,20 +138,36 @@
 			framework::$module = (strlen($uModule) > 0) ? $uModule : null;
 
 			$tConfig = config::load();
-			$tCompiled .= framework::printFile('<' . '?php config::set(config::MAIN, ' . var_export($tConfig, true) . '); extensions::load(); ?' . '>');
+			$tExtensions = extensions::load();
+			$tCompiled .= framework::printFile('<' . '?php config::$default = ' . var_export($tConfig, true) . '; extensions::$list = ' . var_export($tExtensions, true) . '; ?' . '>');
 
-			// downloads
+			// download files
 			if(isset($tConfig['/downloadList'])) {
 				foreach($tConfig['/downloadList'] as &$tUrl) {
-					framework::downloadFile($tUrl['@filename'], $tUrl['@url']);
+					framework::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
 			}
 
-			// includes
+			// include extensions
+			$tIncludedFiles = array();
+
+			foreach($tExtensions as $tKey => &$tExtension) {
+				if(isset($tExtension['config']['/includeList'])) {
+					foreach($tExtension['config']['/includeList'] as &$tFile) {
+						$tFilename = $tExtension['path'] . $tFile;
+
+						if(!in_array($tFilename, $tIncludedFiles, true)) {
+							$tCompiled .= framework::printFile(file_get_contents($tFilename));
+							$tIncludedFiles[] = $tFilename;
+						}
+					}
+				}
+			}
+
+			// include files
 			if(isset($tConfig['/includeList'])) {
-				$tIncludedFiles = array();
 				foreach($tConfig['/includeList'] as &$tInclude) {
-					$tIncludePath = pathinfo(framework::translatePath($tInclude['@path']));
+					$tIncludePath = pathinfo(framework::translatePath($tInclude));
 
 					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
 					if($tFiles !== false) {

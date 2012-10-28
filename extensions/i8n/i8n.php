@@ -44,7 +44,7 @@
 			if(is_null(self::$languages)) {
 				self::$languages = array();
 
-				foreach(config::get(config::MAIN, '/i8n/languageList', array()) as $tLanguage) {
+				foreach(config::get('/i8n/languageList', array()) as $tLanguage) {
 					self::$languages[$tLanguage['id']] = array(
 						'key' => $tLanguage['id'],
 						'locale' => $tLanguage['locale'],

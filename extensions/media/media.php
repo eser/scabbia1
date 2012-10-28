@@ -31,7 +31,7 @@
 		*/
 		public static function extension_load() {
 			self::$cachePath = framework::writablePath('cache/media/');
-			self::$cacheAge = intval(config::get(config::MAIN, '/media/cacheAge', '120'));
+			self::$cacheAge = intval(config::get('/media/cacheAge', '120'));
 		}
 
 		/**
