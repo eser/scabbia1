@@ -151,6 +151,7 @@
 			// include extensions
 			$tIncludedFiles = array();
 
+			//! autoloaded extensions?
 			foreach($tConfig['/extensionList'] as &$tExtensionName) {
 				$tExtension = $tExtensions[$tExtensionName];
 

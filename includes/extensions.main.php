@@ -38,7 +38,7 @@
 					}
 				}
 
-				$tExtensions[$tName] = array('path' => $tFile, 'loaded' => false, 'config' => $tSubconfig);
+				$tExtensions[$tName] = array('path' => $tFile, 'loaded' => 0, 'config' => $tSubconfig);
 			}
 
 			return $tExtensions;
@@ -54,7 +54,7 @@
 			}
 
 			if(config::get('/options/autoload', '0') == '1') {
-				self::loadExtension(self::$classmap[$uClass]);
+				self::loadExtension(self::$classmap[$uClass], true);
 				return;
 			}
 
@@ -68,7 +68,7 @@
 		*/
 		public static function loadExtensions() {
 			foreach(config::get('/extensionList', array()) as $tExtensionName) {
-				self::loadExtension($tExtensionName);
+				self::loadExtension($tExtensionName, false);
 				framework::$milestones[] = array('extension_' . $tExtensionName, microtime(true));
 			}
 		}
@@ -78,16 +78,16 @@
 		*
 		* @param string $uExtensionName the extension
 		*/
-		public static function loadExtension($uExtensionName) {
+		public static function loadExtension($uExtensionName, $uAutoload = false) {
 			if(!isset(self::$list[$uExtensionName])) {
 				return false;
 			}
 
-			if(self::$list[$uExtensionName]['loaded']) {
+			if(self::$list[$uExtensionName]['loaded'] >= 1) {
 				return true;
 			}
 
-			self::$list[$uExtensionName]['loaded'] = true;
+			self::$list[$uExtensionName]['loaded'] = ($uAutoload) ? 2 : 1;
 			$tClassInfo = &self::$list[$uExtensionName]['config'];
 
 			if(!COMPILED) {
@@ -144,7 +144,7 @@
 		* @return bool load status.
 		*/
 		public static function isLoaded($uExtensionName) {
-			return (isset(self::$list[$uExtensionName]) && self::$list[$uExtensionName]['loaded']);
+			return (isset(self::$list[$uExtensionName]) && self::$list[$uExtensionName]['loaded'] >= 1);
 		}
 	}
 
