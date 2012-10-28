@@ -29,7 +29,7 @@
 				</div>
 				<div id="pageTopLogo">
 					<div class="containerBox inner">
-						<a href="<?php echo mvc::url('editor/index'); ?>"><img src="<?php echo $root, config::get(config::MAIN, '/blackmore/logo', '/scabbia/blackmore/images/logo.png'); ?>" width="400" height="84" alt="" /></a>
+						<a href="<?php echo mvc::url('editor/index'); ?>"><img src="<?php echo $root, config::get(config::MAIN, '/blackmore/logo', '/scabbia/blackmore/images/logo.png'); ?>" alt="" /></a>
 					</div>
 				</div>
 				<div id="pageTopMenu">

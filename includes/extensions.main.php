@@ -22,7 +22,7 @@
 		public static function load() {
 			spl_autoload_register('extensions::autoloader');
 
-			foreach(framework::glob(QPATH_CORE . 'extensions/*', GLOB_DIRECTORIES|GLOB_RECURSIVE) as $tFile) {
+			foreach(framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES|GLOB_RECURSIVE) as $tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {
 					continue;
 				}

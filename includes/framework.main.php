@@ -116,9 +116,9 @@
 			if(!COMPILED) {
 				// includes
 				foreach(config::get(config::MAIN, '/includeList', array()) as $tInclude) {
-					$tIncludePath = self::translatePath($tInclude);
+					$tIncludePath = pathinfo(self::translatePath($tInclude));
 
-					$tFiles = self::glob($tIncludePath, GLOB_FILES);
+					$tFiles = self::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
 							if(substr($tFilename, -1) == '/') {
@@ -315,12 +315,12 @@
 		*
 		* @param $uInput string path of source file
 		*/
-		public static function &glob($uPattern, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
-			$tPath = strtr(pathinfo($uPattern, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/');
-			$tPattern = pathinfo($uPattern, PATHINFO_BASENAME);
+		public static function &glob($uPath, $uFilter = null, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
+			$tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
+			$tRecursivePath = $tPath . $uRecursivePath;
 
 			try {
-				$tDir = new DirectoryIterator($tPath);
+				$tDir = new DirectoryIterator($tRecursivePath);
 
 				foreach($tDir as $tFile) {
 					$tFileName = $tFile->getFilename();
@@ -333,12 +333,13 @@
 						$tDirectory = $uRecursivePath . $tFileName . '/';
 
 						if(($uOptions & GLOB_DIRECTORIES) > 0) {
-							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . '/' . $tDirectory;
+							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . $tDirectory;
 						}
 
 						if(($uOptions & GLOB_RECURSIVE) > 0) {
 							self::glob(
-								$tPath . '/' . $tDirectory . $tPattern,
+								$tPath,
+								$uFilter,
 								$uOptions,
 								$tDirectory,
 								$uArray
@@ -349,10 +350,8 @@
 					}
 
 					if(($uOptions & GLOB_FILES) > 0 && $tFile->isFile()) {
-						$tFile2 = $uRecursivePath . $tFileName;
-
-						if(fnmatch($uPattern, $tPath . '/' . $tFile2)) {
-							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $tFile2 : $tPath . '/' . $tFile2;
+						if(is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
+							$uArray[] = (($uOptions & GLOB_JUSTNAMES) > 0) ? $uRecursivePath . $tFileName : $tRecursivePath . $tFileName;
 						}
 
 						continue;

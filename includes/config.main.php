@@ -27,11 +27,11 @@
 		public static function &load() {
 			$tConfig = array();
 			
-			foreach(framework::glob(QPATH_CORE . 'config/*', GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
+			foreach(framework::glob(QPATH_CORE . 'config/', null, GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
 				self::loadFile($tConfig, $tFile);
 			}
 
-			foreach(framework::glob(framework::$applicationPath . 'config/*', GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
+			foreach(framework::glob(framework::$applicationPath . 'config/', null, GLOB_RECURSIVE|GLOB_FILES) as $tFile) {
 				self::loadFile($tConfig, $tFile);
 			}
 

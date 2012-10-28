@@ -146,9 +146,9 @@
 			if(isset($tConfig['/includeList'])) {
 				$tIncludedFiles = array();
 				foreach($tConfig['/includeList'] as &$tInclude) {
-					$tIncludePath = framework::translatePath($tInclude['@path']);
+					$tIncludePath = pathinfo(framework::translatePath($tInclude['@path']));
 
-					$tFiles = framework::glob($tIncludePath, GLOB_FILES);
+					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
 							if(substr($tFilename, -1) == '/') {
@@ -181,8 +181,8 @@
 
 			$tStart = microtime(true);
 
-			self::purgeFolder(framework::$applicationPath . 'writable/cache');
-			self::purgeFolder(framework::$applicationPath . 'writable/logs');
+			self::purgeFolder(framework::$applicationPath . 'writable/cache/');
+			self::purgeFolder(framework::$applicationPath . 'writable/logs/');
 
 			exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
 		}
@@ -191,7 +191,8 @@
 		* @ignore
 		*/
 		private static function purgeFolder($uFolder) {
-			$tDirectory = framework::glob($uFolder . '/*', GLOB_RECURSIVE|GLOB_FILES);
+			$tDirectory = framework::glob($uFolder, null, GLOB_RECURSIVE|GLOB_FILES);
+
 			if($tDirectory === false) {
 				return;
 			}
