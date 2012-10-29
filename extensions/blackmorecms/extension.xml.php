@@ -22,6 +22,7 @@
 	</includeList>
 	<classList>
 		<class>blackmorecms_categories</class>
+		<class>blackmoreCmsCategoriesModel</class>
 	</classList>
 	<eventList>
 		<event>

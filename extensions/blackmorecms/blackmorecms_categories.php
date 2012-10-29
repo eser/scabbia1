@@ -23,17 +23,17 @@
 				'submenus' => true,
 				'actions' => array(
 					array(
-						'callback' => 'blackmorecms_categories::new',
-						'menutitle' => 'New Category',
-						'action' => 'new'
+						'callback' => 'blackmorecms_categories::add',
+						'menutitle' => 'Add Category',
+						'action' => 'add'
 					),
 					array(
 						'callback' => 'blackmorecms_categories::edit',
 						'action' => 'edit'
 					),
 					array(
-						'callback' => 'blackmorecms_categories::delete',
-						'action' => 'delete'
+						'callback' => 'blackmorecms_categories::remove',
+						'action' => 'remove'
 					),
 					array(
 						'callback' => 'blackmorecms_categories::all',
@@ -51,23 +51,18 @@
 			auth::checkRedirect('editor');
 
 			$tModel = new blackmoreCmsCategoriesModel();
-
 			$tCategories = $tModel->getAll();
 
-			mvc::viewFile('{core}views/blackmorecms/categories/all.php', array(
+			mvc::viewFile('{core}views/blackmorecms/categories/list.php', array(
 				'categories' => &$tCategories
 			));
 		}
 
-		public function category($uAction, $uSlug = '', $uDeleteTag = '') {
+		/**
+		* @ignore
+		*/
+		public static function add($uAction) {
 			auth::checkRedirect('editor');
-
-			if($uDeleteTag == 'delete') {
-				session::setFlash('notification', 'Category deleted.');
-				$this->redirect('editor/categories');
-
-				return;
-			}
 
 			$tTypes = array(
 				'post' => 'Post',
@@ -76,127 +71,177 @@
 				'file' => 'File'
 			);
 
-			if(http::$isPost || strlen($uSlug) == 0) {
-				$this->set(
-					'inputId',
-					html::tag('input', array(
-						'type' => 'hidden',
-						'name' => 'categoryid',
-						'value' => http::post('categoryid', '')
-					))
-				);
+			$tViewbag = array();
 
-				$this->set(
-					'inputType',
-					html::tag(
-						'select',
-						array('name' => 'type', 'class' => 'select'),
-						html::selectOptions($tTypes, http::post('type', null))
-					)
-				);
+			if(http::$isPost) {
+				// validations
+				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
+				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
-				$this->set(
-					'inputName',
-					html::tag('input', array(
-						'type' => 'text',
-						'name' => 'name',
-						'value' => http::post('name', ''),
-						'class' => 'text'
-					))
-				);
+				if(validation::validate($_POST)) {
+					$tSlug = http::post('slug', '');
+					if(strlen(rtrim($tSlug)) == 0) {
+						$tSlug = http::post('name', '');
+					}
 
-				$this->set(
-					'inputSlug',
-					html::tag('input', array(
-						'type' => 'text',
-						'name' => 'slug',
-						'value' => http::post('slug', ''),
-						'class' => 'text'
-					))
-				);
+					$tDate = time();
+					$tInput = array(
+						'type' => http::post('type'),
+						'name' => http::post('name'),
+						'slug' => string::slug(string::removeAccent($tSlug))
+					);
+
+					$tModel = new blackmoreCmsCategoriesModel();
+					$tModel->insert($tInput);
+
+					session::setFlash('notification', 'Category added.');
+					mvc::redirect('blackmore/categories');
+
+					return;
+				}
+
+				$tViewbag['error'] = implode('<br />', validation::getErrorMessages(true));
 			}
-			else {
-				$this->load('blackmoreCategoriesModel');
-				$tCategory = $this->categoryModel->getBySlug($uSlug);
+			
+			$tViewbag['inputId'] = '';
 
-				$this->set(
-					'inputId',
-					html::tag('input', array(
-						'type' => 'hidden',
-						'name' => 'categoryid',
-						'value' => $tCategory['categoryid']
-					))
-				);
+			$tViewbag['inputType'] = html::tag(
+										'select',
+										array('name' => 'type', 'class' => 'select'),
+										html::selectOptions($tTypes, http::post('type', null))
+									);
 
-				$this->set(
-					'inputType',
-					html::tag(
-						'select',
-						array('name' => 'type', 'class' => 'select'),
-						html::selectOptions($tTypes, $tCategory['type'])
-					)
-				);
+			$tViewbag['inputName'] = html::tag('input', array(
+										'type' => 'text',
+										'name' => 'name',
+										'value' => http::post('name', ''),
+										'class' => 'text'
+									));
 
-				$this->set(
-					'inputName',
-					html::tag('input', array(
-						'type' => 'text',
-						'name' => 'name',
-						'value' => $tCategory['name'],
-						'class' => 'text'
-					))
-				);
+			$tViewbag['inputSlug'] = html::tag('input', array(
+										'type' => 'text',
+										'name' => 'slug',
+										'value' => http::post('slug', ''),
+										'class' => 'text'
+									));
 
-				$this->set(
-					'inputSlug',
-					html::tag('input', array(
-						'type' => 'text',
-						'name' => 'slug',
-						'value' => $tCategory['slug'],
-						'class' => 'text'
-					))
-				);
-			}
-
-			$this->view();
+			mvc::viewFile('{core}views/blackmorecms/categories/form.php', $tViewbag);
 		}
 
-		public function category_post() {
-			$user = shared::requireAuthentication($this);
+		/**
+		* @ignore
+		*/
+		public static function edit($uAction, $uSlug) {
+			auth::checkRedirect('editor');
 
-			//validations
-			validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
-			// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
-
-			if(!validation::validate($_POST)) {
-				$this->set('error', implode('<br />', validation::getErrorMessages(true)));
-				return $this->category();
-			}
-
-			$tCategoryId = http::post('categoryid', '');
-
-			$tSlug = http::post('slug', '');
-			if(strlen(rtrim($tSlug)) == 0) {
-				$tSlug = http::post('name', '');
-			}
-
-			$tDate = time();
-			$tInput = array(
-				'type' => http::post('type'),
-				'name' => http::post('name'),
-				'slug' => string::slug(string::removeAccent($tSlug))
+			$tTypes = array(
+				'post' => 'Post',
+				'page' => 'Page',
+				'link' => 'Link',
+				'file' => 'File'
 			);
 
-			$this->load('blackmoreCategoriesModel');
-			if(strlen($tCategoryId) == 0) {
-				$this->categoryModel->insert($tInput);
-			}
-			else {
-				$this->categoryModel->update($tCategoryId, $tInput);
+			if(http::$isPost) {
+				// validations
+				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
+				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
+
+				if(validation::validate($_POST)) {
+					$tCategoryId = http::post('categoryid', '');
+
+					$tSlug = http::post('slug', '');
+					if(strlen(rtrim($tSlug)) == 0) {
+						$tSlug = http::post('name', '');
+					}
+
+					$tDate = time();
+					$tInput = array(
+						'type' => http::post('type'),
+						'name' => http::post('name'),
+						'slug' => string::slug(string::removeAccent($tSlug))
+					);
+
+					$tModel = new blackmoreCmsCategoriesModel();
+					$tModel->update($tCategoryId, $tInput);
+
+					session::setFlash('notification', 'Category modified.');
+					mvc::redirect('blackmore/categories');
+
+					return;
+				}
+
+				$tViewbag['error'] = implode('<br />', validation::getErrorMessages(true));
+
+				$tViewbag['inputId'] = html::tag('input', array(
+											'type' => 'hidden',
+											'name' => 'categoryid',
+											'value' => http::post('categoryid', '')
+										));
+
+				$tViewbag['inputType'] = html::tag(
+											'select',
+											array('name' => 'type', 'class' => 'select'),
+											html::selectOptions($tTypes, http::post('type', null))
+										);
+
+				$tViewbag['inputName'] = html::tag('input', array(
+											'type' => 'text',
+											'name' => 'name',
+											'value' => http::post('name', ''),
+											'class' => 'text'
+										));
+
+				$tViewbag['inputSlug'] = html::tag('input', array(
+											'type' => 'text',
+											'name' => 'slug',
+											'value' => http::post('slug', ''),
+											'class' => 'text'
+										));
+				
+				mvc::viewFile('{core}views/blackmorecms/categories/form.php', $tViewbag);
+				return;
 			}
 
-			session::setFlash('notification', 'Category sent.');
-			$this->redirect('editor/categories');
+			$tModel = new blackmoreCmsCategoriesModel();
+			$tCategory = $tModel->getBySlug($uSlug);
+
+			$tViewbag['inputId'] = html::tag('input', array(
+										'type' => 'hidden',
+										'name' => 'categoryid',
+										'value' => $tCategory['categoryid']
+									));
+
+			$tViewbag['inputType'] = html::tag(
+										'select',
+										array('name' => 'type', 'class' => 'select'),
+										html::selectOptions($tTypes, $tCategory['type'])
+									);
+
+			$tViewbag['inputName'] = html::tag('input', array(
+										'type' => 'text',
+										'name' => 'name',
+										'value' => $tCategory['name'],
+										'class' => 'text'
+									));
+
+			$tViewbag['inputSlug'] = html::tag('input', array(
+										'type' => 'text',
+										'name' => 'slug',
+										'value' => $tCategory['slug'],
+										'class' => 'text'
+									));
+
+			mvc::viewFile('{core}views/blackmorecms/categories/form.php', $tViewbag);
+		}
+
+		/**
+		* @ignore
+		*/
+		public static function remove($uAction, $uSlug) {
+			auth::checkRedirect('editor');
+
+			session::setFlash('notification', 'Category removed.');
+			mvc::redirect('blackmore/categories');
 		}
 	}
 

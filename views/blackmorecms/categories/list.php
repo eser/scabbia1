@@ -19,7 +19,7 @@
 									<div class="menuDiv">
 										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _('Create'); ?></a></div>
 										<ul>
-											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('blackmore/categories/new'); ?>"><?php echo _('New Category'); ?></a></li>
+											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('blackmore/categories/add'); ?>"><?php echo _('Add Category'); ?></a></li>
 										</ul>
 									</div>
 								</div>
@@ -54,7 +54,7 @@
 												<td><?php echo $category['createdate']; ?></td>
 												<td>
 													<a class="iconcategoryedit" href="<?php echo mvc::url('blackmore/categories/edit/' . $category['slug']); ?>"><?php echo _('Edit'); ?></a>
-													<a class="iconcategorydelete delete" href="<?php echo mvc::url('blackmore/categories/delete/' . $category['slug']); ?>"><?php echo _('Delete'); ?></a>
+													<a class="iconcategorydelete delete" href="<?php echo mvc::url('blackmore/categories/remove/' . $category['slug']); ?>"><?php echo _('Remove'); ?></a>
 												</td>
 											</tr>
 										<?php } ?>
