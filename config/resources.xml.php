@@ -137,6 +137,11 @@
 					</part>
 					<part>
 						<type>file</type>
+						<class>tipsy</class>
+						<path>{core}resources/tipsy/jquery.tipsy.js</path>
+					</part>
+					<part>
+						<type>file</type>
 						<class>blackmore</class>
 						<path>{core}resources/blackmore/blackmore.js</path>
 					</part>
@@ -209,6 +214,11 @@
 						<type>file</type>
 						<class>snippet</class>
 						<path>{core}resources/snippet/jquery.snippet.css</path>
+					</part>
+					<part>
+						<type>file</type>
+						<class>tipsy</class>
+						<path>{core}resources/tipsy/tipsy.css</path>
 					</part>
 					<part>
 						<type>file</type>
