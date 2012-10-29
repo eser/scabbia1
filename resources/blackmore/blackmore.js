@@ -65,4 +65,7 @@ $(document).ready(function() {
 		// handleOversize: 'drag',
 		modal: true
 	});
+
+	$('.tipsyFocus').tipsy({fade: true, gravity: 'w', trigger: 'focus'});
+	$('.tipsyHover').tipsy({fade: true, gravity: 'w', live: true});
 });

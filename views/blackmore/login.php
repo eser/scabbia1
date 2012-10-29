@@ -5,11 +5,11 @@
 
 		<title><?php echo _(config::get('/blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
-		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,shadowbox,blackmore" rel="stylesheet" media="all" />
+		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,blackmore" rel="stylesheet" media="all" />
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
 		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
 
-		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,shadowbox,blackmore"></script>
+		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore"></script>
 	</head>
 	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
@@ -35,12 +35,12 @@
 					<form method="POST" action="<?php echo mvc::url('blackmore/login'); ?>">
 						<p>
 							<label><?php echo _('Username:'); ?></label> <br />
-							<input type="text" class="text" name="username"/>
+							<input type="text" class="text tipsyFocus" name="username" title="Enter username" />
 						</p>
 
 						<p>
 							<label><?php echo _('Password:'); ?></label> <br />
-							<input type="password" class="text" name="password"/>
+							<input type="password" class="text tipsyFocus" name="password" title="Enter password" />
 						</p>
 
 						<p>
