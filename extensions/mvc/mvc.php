@@ -64,6 +64,7 @@
 			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
 				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
 			}
+
 			self::registerViewEngine('php', 'viewengine_php');
 		}
 
@@ -102,6 +103,7 @@
 			else {
 				$tController = new self::$controllerActual ();
 				self::$controllerStack[] = &$tController;
+				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
 					if($tController->render($tActionMethodName, self::$route['parametersArray']) === false) {
@@ -229,13 +231,11 @@
 		* @ignore
 		*/
 		public static function view() {
-			$tViewDefaultExtension = config::get('/mvc/view/defaultViewExtension', 'php');
-
 			$uArgs = func_get_args();
 
 			if(count(self::$controllerStack) > 0) {
 				$uController = end(self::$controllerStack);
-				$uView = (isset($uArgs[0])) ? $uArgs[0] : $uController->defaultView;
+				$uView = (isset($uArgs[0])) ? $uArgs[0] : $uController->view;
 				$uModel = (isset($uArgs[1])) ? $uArgs[1] : $uController->vars;
 			}
 			else {
@@ -245,13 +245,13 @@
 			}
 
 			if(is_null($uView)) {
-				$uView = self::$route['controller'] . '/' . self::$route['action'] . '.' . $tViewDefaultExtension;
+				throw new Exception('no view file specified.');
 			}
 
 			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
 			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
 			if(!isset(self::$viewEngines[$tViewExtension])) {
-				$tViewExtension = $tViewDefaultExtension;
+				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
 			$tExtra = array(
@@ -285,8 +285,6 @@
 		* @ignore
 		*/
 		public static function viewFile($uView) {
-			$tViewDefaultExtension = config::get('/mvc/view/defaultViewExtension', 'php');
-
 			$uArgs = func_get_args();
 
 			if(count(self::$controllerStack) > 0) {
@@ -301,7 +299,7 @@
 			$tViewFilePath = framework::translatePath($uView);
 			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
 			if(!isset(self::$viewEngines[$tViewExtension])) {
-				$tViewExtension = $tViewDefaultExtension;
+				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
 			$tExtra = array(
@@ -576,7 +574,7 @@ EOD;
 		/**
 		* @ignore
 		*/
-		public $defaultView = null;
+		public $view = null;
 		/**
 		* @ignore
 		*/
