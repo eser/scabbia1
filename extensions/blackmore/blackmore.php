@@ -61,7 +61,7 @@
 		* @ignore
 		*/
 		public function login() {
-			if(!http::$isPost) {
+			if(!http::$method == 'post') {
 				auth::clear();
 
 				$this->viewFile('{core}views/blackmore/login.php');

@@ -73,7 +73,7 @@
 
 			$tViewbag = array();
 
-			if(http::$isPost) {
+			if(http::$method == 'post') {
 				// validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
@@ -141,7 +141,7 @@
 				'file' => 'File'
 			);
 
-			if(http::$isPost) {
+			if(http::$method == 'post') {
 				// validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');

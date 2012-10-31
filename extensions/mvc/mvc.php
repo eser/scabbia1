@@ -89,18 +89,25 @@
 				profiler::start('mvc', array('action' => 'rendering'));
 			}
 
-			$tActionMethodName = strtr(self::$actionActual, '/', '_');
-			if(http::$isPost && method_exists(self::$controllerActual, $tActionMethodName . '_post')) {
-				$tActionMethodName .= '_post';
-			}
-			else if(http::$isAjax && method_exists(self::$controllerActual, $tActionMethodName . '_ajax')) {
-				$tActionMethodName .= '_ajax';
-			}
+			while(true) {
+				if(strpos(self::$actionActual, '_') !== false) {
+					mvc::notfound();
+					break;
+				}
 
-			if(!is_subclass_of(self::$controllerActual, 'controller')) {
-				mvc::notfound();
-			}
-			else {
+				$tActionMethodName = strtr(self::$actionActual, '/', '_');
+				
+				if(http::$isAjax && method_exists(self::$controllerActual, http::$method . 'Ajax_' . $tActionMethodName)) {
+					$tActionMethodName = http::$method . 'Ajax_' . $tActionMethodName;
+				}
+				else if(method_exists(self::$controllerActual, http::$method . '_' . $tActionMethodName)) {
+					$tActionMethodName = http::$method . '_' . $tActionMethodName;
+				}
+				else if(!method_exists(self::$controllerActual, $tActionMethodName)) {
+					mvc::notfound();
+					break;
+				}
+
 				$tController = new self::$controllerActual ();
 				self::$controllerStack[] = &$tController;
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
@@ -108,6 +115,7 @@
 				try {
 					if($tController->render($tActionMethodName, self::$route['parametersArray']) === false) {
 						mvc::notfound();
+						break;
 					}
 				}
 				catch(Exception $ex) {
@@ -115,6 +123,7 @@
 				}
 
 				array_pop(self::$controllerStack);
+				break;
 			}
 
 			if(extensions::isLoaded('profiler')) {
@@ -468,7 +477,8 @@
 						continue;
 					}
 
-					if($uAjaxOnly && substr($tMethod->name, -5) != '_ajax') {
+					$tPos = strpos($tMethod->name, 'Ajax_');
+					if($uAjaxOnly && $tPos === false) {
 						continue;
 					}
 

@@ -36,11 +36,7 @@
 		/**
 		* @ignore
 		*/
-		public static $isGet = false;
-		/**
-		* @ignore
-		*/
-		public static $isPost = false;
+		public static $method;
 		/**
 		* @ignore
 		*/
@@ -142,12 +138,7 @@
 				self::$isAjax = true;
 			}
 
-			if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
-				self::$isPost = true;
-			}
-			else {
-				self::$isGet = true;
-			}
+			self::$method = strtolower($_SERVER['REQUEST_METHOD']);
 
 			if(config::get('/http/userAgents/autoCheck', '1') == '1') {
 				self::checkUserAgent();
