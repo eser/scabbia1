@@ -95,25 +95,12 @@
 					break;
 				}
 
-				$tActionMethodName = strtr(self::$actionActual, '/', '_');
-				
-				if(http::$isAjax && method_exists(self::$controllerActual, http::$method . 'Ajax_' . $tActionMethodName)) {
-					$tActionMethodName = http::$method . 'Ajax_' . $tActionMethodName;
-				}
-				else if(method_exists(self::$controllerActual, http::$method . '_' . $tActionMethodName)) {
-					$tActionMethodName = http::$method . '_' . $tActionMethodName;
-				}
-				else if(!method_exists(self::$controllerActual, $tActionMethodName)) {
-					mvc::notfound();
-					break;
-				}
-
 				$tController = new self::$controllerActual ();
 				self::$controllerStack[] = &$tController;
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
-					if($tController->render($tActionMethodName, self::$route['parametersArray']) === false) {
+					if($tController->render(self::$actionActual, self::$route['parametersArray']) === false) {
 						mvc::notfound();
 						break;
 					}
@@ -659,13 +646,32 @@ EOD;
 		* @ignore
 		*/
 		public function render(&$uAction, &$uArgs) {
-			$tCallback = array(&$this, $uAction);
+			$tActionMethodName = strtr($uAction, '/', '_');
 
-			if(is_callable($tCallback)) {
-				return call_user_func_array($tCallback, $uArgs);
+			$tMe = new ReflectionClass($this);
+
+			while(true) {
+				if(http::$isAjax) {
+					$tMethod = http::$method . 'Ajax_' . $tActionMethodName;
+					if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
+						break;
+					}
+				}
+
+				$tMethod = http::$method . '_' . $tActionMethodName;
+				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
+					break;
+				}
+
+				if($tMe->hasMethod($tActionMethodName) && $tMe->getMethod($tActionMethodName)->isPublic()) {
+					$tMethod = $tActionMethodName;
+					break;
+				}
+
+				return false;
 			}
 
-			return false;
+			return call_user_func_array(array(&$this, $tMethod), $uArgs);
 		}
 
 		/**

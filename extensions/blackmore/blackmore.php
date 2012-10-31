@@ -30,7 +30,7 @@
 				'title' => 'Dashboard',
 				'callback' => array(&$this, 'index')
 			);
-			
+
 			events::invoke('blackmore_registerModules', array(
 				'modules' => &self::$modules
 			));
@@ -61,7 +61,7 @@
 		* @ignore
 		*/
 		public function login() {
-			if(!http::$method == 'post') {
+			if(http::$method != 'post') {
 				auth::clear();
 
 				$this->viewFile('{core}views/blackmore/login.php');

@@ -114,16 +114,16 @@
 				}
 
 				$tString = '';
-				$tString .= '<div>'; // for content-type: text/xml
-				$tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . PHP_EOL . PHP_EOL;
-				$tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;">' . $uMessage . '</div>' . PHP_EOL . PHP_EOL;
+				$tString .= '<pre style="font-family: \'Consolas\', monospace;">'; // for content-type: text/xml
+				$tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . PHP_EOL;
+				$tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; line-height: 20px;">' . $uMessage . '</div>' . PHP_EOL . PHP_EOL;
 
 				if(framework::$development >= 1) {
 					if(count($tEventDepth) > 0) {
-						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>eventDepth:</b><br />' . PHP_EOL . implode(PHP_EOL, $tEventDepth) . '</div>' . PHP_EOL . PHP_EOL;
+						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>eventDepth:</b>' . PHP_EOL . implode(PHP_EOL, $tEventDepth) . '</div>' . PHP_EOL . PHP_EOL;
 					}
 
-					$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>stackTrace:</b><br />' . PHP_EOL;
+					$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>stackTrace:</b>' . PHP_EOL;
 
 					$tCount = 0;
 					foreach(array_slice(debug_backtrace(), 2) as $tFrame) {
@@ -143,26 +143,26 @@
 
 						++$tCount;
 						if(isset($tFrame['file'])) {
-							$tString .= '#' . $tCount . ' ' . $tFrame['file'] . '(' . $tFrame['line'] . '):<br />' . PHP_EOL;
+							$tString .= '#' . $tCount . ' ' . $tFrame['file'] . '(' . $tFrame['line'] . '):' . PHP_EOL;
 						}
 
-						$tString .= '#' . $tCount . ' <strong>' . $tFunction . '</strong>(' . implode(', ', $tArgs) . ')<br /><br />' . PHP_EOL . PHP_EOL;
+						$tString .= '#' . $tCount . ' <strong>' . $tFunction . '</strong>(' . implode(', ', $tArgs) . ')' . PHP_EOL . PHP_EOL;
 					}
 
 					$tString .= '</div>' . PHP_EOL;
 
 					if(extensions::isLoaded('profiler')) {
-						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler stack:</b><br />' . PHP_EOL;
+						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler stack:</b>' . PHP_EOL;
 						$tString .= profiler::exportStack(false);
 						$tString .= '</div>' . PHP_EOL;
 
-						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; margin: 20px 0px 20px 0px; line-height: 20px;"><b>profiler output:</b><br />' . PHP_EOL;
+						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler output:</b>' . PHP_EOL;
 						$tString .= profiler::export(false);
 						$tString .= '</div>';
 					}
 				}
 
-				$tString .= '</div>';
+				$tString .= '</pre>';
 
 				self::write('error', array('message' => strip_tags($tString)));
 
