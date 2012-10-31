@@ -515,9 +515,13 @@ EOD;
 
 			$tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
 
-			foreach($tClass as $tMethod) {
-				$tMethod = substr($tMethod, 0, -5);
-				$tLines[] = "\t\t\t\t" . $tMethod . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethod, '_', '/')) . '\', values, fnc); }';
+			foreach($tClass as &$tMethod) {
+				$tMethods = explode('_', $tMethod, 2);
+				if(count($tMethods) < 2 || strpos($tMethods[0], 'Ajax') === false) {
+					continue;
+				}
+
+				$tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
 			}
 			$tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
 		}
