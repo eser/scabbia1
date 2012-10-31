@@ -11,23 +11,30 @@
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>resources</fwdepend>
-			<fwdepend>auth</fwdepend>
 			<fwdepend>validation</fwdepend>
 			<fwdepend>http</fwdepend>
+			<fwdepend>auth</fwdepend>
+			<fwdepend>zmodels</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
 		<include>blackmore.php</include>
 		<include>blackmore_scabbia.php</include>
+		<include>blackmore_zmodels.php</include>
 	</includeList>
 	<classList>
 		<class>blackmore</class>
 		<class>blackmore_scabbia</class>
+		<class>blackmore_zmodels</class>
 	</classList>
 	<eventList>
 		<event>
 			<name>blackmore_registerModules</name>
 			<callback>blackmore_scabbia::blackmore_registerModules</callback>
+		</event>
+		<event>
+			<name>blackmore_registerModules</name>
+			<callback>blackmore_zmodels::blackmore_registerModules</callback>
 		</event>
 	</eventList>
 </scabbia>

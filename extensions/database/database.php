@@ -77,7 +77,6 @@
 				}
 			}
 
-
 			$uArgs = func_get_args();
 
 			switch(count($uArgs)) {

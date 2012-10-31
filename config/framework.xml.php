@@ -32,8 +32,8 @@
 		<scope mode="development">
 			<extension>docs</extension>
 			<extension>auth</extension>
+			<extension>zmodels</extension>
 			<extension>blackmore</extension>
-			<extension>blackmorecms</extension>
 		</scope>
 		<!-- <extension>oauth</extension> -->
 	</extensionList>
