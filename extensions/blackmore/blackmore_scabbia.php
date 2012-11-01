@@ -17,27 +17,24 @@
 		* @ignore
 		*/
 		public static function blackmore_registerModules($uParms) {
-			$uParms['modules']['scabbia'] = array(
-				'title' => 'Scabbia',
-				'callback' => 'blackmore_scabbia::index',
-				'submenus' => true,
-				'actions' => array(
-					array(
-						'action' => 'debug',
-						'callback' => 'blackmore_scabbia::debug',
-						'menutitle' => 'Debug Info'
-					),
-					array(
-						'action' => 'build',
-						'callback' => 'blackmore_scabbia::build',
-						'menutitle' => 'Build'
-					),
-					array(
-						'action' => 'purge',
-						'callback' => 'blackmore_scabbia::purge',
-						'menutitle' => 'Purge'
-					)
-				)
+			$uParms['modules']['index']['submenus'] = true;
+
+			$uParms['modules']['index']['actions'][] = array(
+				'action' => 'debug',
+				'callback' => 'blackmore_scabbia::debug',
+				'menutitle' => 'Debug Info'
+			);
+
+			$uParms['modules']['index']['actions'][] = array(
+				'action' => 'build',
+				'callback' => 'blackmore_scabbia::build',
+				'menutitle' => 'Build'
+			);
+
+			$uParms['modules']['index']['actions'][] = array(
+				'action' => 'purge',
+				'callback' => 'blackmore_scabbia::purge',
+				'menutitle' => 'Purge'
 			);
 		}
 

@@ -28,6 +28,34 @@
 				self::$zmodels[$tZmodel['name']] = $tZmodel;
 			}
 		}
+
+		/**
+		* @ignore
+		*/
+		public static function generateCreateSql($uTable) {
+			if(!isset(self::$zmodels[$uTable])) {
+				return false;
+			}
+
+			$tModule = &self::$zmodels[$uTable];
+
+			$tSql = 'CREATE TABLE ' . $tModule['name'] . ' (
+	id UUID NOT NULL,
+	createdate DATETIME NOT NULL,
+	updatedate DATETIME NOT NULL,
+	deletedate DATETIME,';
+
+			foreach($tModule['fieldList'] as &$tField) {
+				$tSql .= '
+	' . $tField['name'] . ' ' . strtoupper($tField['type']) . ' NOT NULL,';
+			}
+
+			$tSql .= '
+	PRIMARY KEY(id)
+)';
+
+			return $tSql;
+		}
 	}
 
 ?>

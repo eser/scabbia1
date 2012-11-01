@@ -18,24 +18,12 @@
 
 								<div class="menuDivContainer">
 									<div class="menuDiv">
-										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _('Category'); ?></a></div>
-										<?php echo $inputId; ?>
-
-										<p>
-											<?php echo _('Type:'); ?>
-											<?php echo $inputType; ?>
-										</p>
-
-										<p>
-											<?php echo _('Name:'); ?>
-											<?php echo $inputName; ?>
-										</p>
-
-										<p>
-											<?php echo _('Slug:'); ?>
-											<?php echo $inputSlug; ?>
-										</p>
-
+										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _($module['singularTitle']); ?></a></div>
+										<?php
+											foreach($fields as &$tField) {
+												echo $tField['html'];
+											}
+										?>
 										<p>
 											<input type="submit" class="submit" value="<?php echo _('Submit'); ?>" />
 										</p>
