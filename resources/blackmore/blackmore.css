@@ -6,11 +6,15 @@ p { padding-bottom: 15px; }
 img, a img { border: 0px; }
 
 body {
-	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
-	font-family: 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
+	background: #FFFFFF;
+	font-family: 'Arial', 'Helvetica', sans-serif;
 	font-size: 12px;
 	color: #666666;
 	line-height: 20px;
+}
+
+body.login {
+	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
 }
 
 a {
@@ -544,6 +548,8 @@ form input.submit:hover {
 #pageMiddleSidebar {
 	width: 350px;
 	vertical-align: top;
+	background: #E0E0E0;
+	border-right: 1px solid #A0A0A0;
 }
 
 #pageMiddleSidebar ul {
@@ -582,8 +588,9 @@ form input.submit:hover {
 }
 
 #pageMiddleSidebar .menuDivHeader {
-	color: #181818;
-	font-size: 14pt;
+	color: #707070;
+	font-size: 12pt;
+	font-weight: bold;
 	line-height: 12pt;
 	margin: 5px 0px 5px 0px;
 }

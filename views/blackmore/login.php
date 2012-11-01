@@ -11,7 +11,7 @@
 
 		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore"></script>
 	</head>
-	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?>">
+	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?> login">
 		<script type="text/javascript">
 			$l.contentBegin('main', '<?php echo framework::$siteroot; ?>');
 		</script>
