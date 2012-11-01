@@ -19,7 +19,7 @@
 									<div class="menuDiv">
 										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _('Create'); ?></a></div>
 										<ul>
-											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('blackmore/categories/add'); ?>"><?php echo _('Add Category'); ?></a></li>
+											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('blackmore/' . $module['name'] . '/add'); ?>"><?php echo _('Add ' . $module['singularTitle']); ?></a></li>
 										</ul>
 									</div>
 								</div>
@@ -33,28 +33,36 @@
 							<div class="topLine"></div>
 							<div class="middleLine">
 
-								<h2 class="iconxcategories"><?php echo _('Categories'); ?></h2>
+								<h2 class="iconxcategories"><?php echo _($module['title']); ?></h2>
 
 								<table class="tablesorter">
 									<thead>
 										<tr>
-											<th><?php echo _('Type'); ?></th>
-											<th><?php echo _('Name'); ?></th>
-											<th><?php echo _('Slug'); ?></th>
-											<th><?php echo _('Date'); ?></th>
+											<?php
+												foreach($module['fieldList'] as &$field) {
+													if(!array_key_exists('list', $field['methods'])) {
+														continue;
+													}
+											?>
+												<th><?php echo _($field['title']); ?></th>
+											<?php } ?>
 											<th></th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach($categories as $category) { ?>
-											<tr class="category" id="category-<?php echo $category['slug']; ?>">
-												<td><?php echo $category['type']; ?></td>
-												<td><a href="<?php echo mvc::url('home/category/' . $category['slug']); ?>"><?php echo $category['name']; ?></a></td>
-												<td><?php echo $category['slug']; ?></td>
-												<td><?php echo $category['createdate']; ?></td>
+										<?php foreach($rows as &$row) { ?>
+											<tr class="row" id="row-<?php echo $row['slug']; ?>">
+												<?php
+													foreach($module['fieldList'] as &$field) {
+														if(!array_key_exists('list', $field['methods'])) {
+															continue;
+														}
+												?>
+													<td><?php echo $row[$field['name']]; ?></td>
+												<?php } ?>
 												<td>
-													<a class="iconcategoryedit" href="<?php echo mvc::url('blackmore/categories/edit/' . $category['slug']); ?>"><?php echo _('Edit'); ?></a>
-													<a class="iconcategorydelete delete" href="<?php echo mvc::url('blackmore/categories/remove/' . $category['slug']); ?>"><?php echo _('Remove'); ?></a>
+													<a class="iconcategoryedit" href="<?php echo mvc::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
+													<a class="iconcategorydelete delete" href="<?php echo mvc::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
 												</td>
 											</tr>
 										<?php } ?>

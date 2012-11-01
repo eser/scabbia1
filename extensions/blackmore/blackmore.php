@@ -21,6 +21,10 @@
 		* @ignore
 		*/
 		public static $modules = array();
+		/**
+		* @ignore
+		*/
+		public static $module;
 
 		/**
 		* @ignore
@@ -39,10 +43,12 @@
 				'title' => 'Logout',
 				'callback' => array(&$this, 'login')
 			);
-// exit($uAction);
+
 			if(!isset(self::$modules[$uAction])) {
 				return false;
 			}
+
+			self::$module = $uAction;
 
 			if(count($uArgs) > 0) {
 				foreach(self::$modules[$uAction]['actions'] as &$tAction) {

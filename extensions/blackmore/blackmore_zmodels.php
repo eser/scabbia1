@@ -49,14 +49,17 @@
 		/**
 		* @ignore
 		*/
-		public static function all($uAction) {
+		public static function all() {
 			auth::checkRedirect('editor');
 
 			$tModel = new blackmoreZmodelModel();
-			$tCategories = $tModel->getAll('categories');
+			$tModule = zmodels::$zmodels[blackmore::$module];
+			
+			$tRows = $tModel->getAll($tModule['name']);
 
 			mvc::viewFile('{core}views/blackmore/zmodels/list.php', array(
-				'categories' => &$tCategories
+				'module' => &$tModule,
+				'rows' => &$tRows
 			));
 		}
 

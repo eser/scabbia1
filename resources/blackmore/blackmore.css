@@ -7,7 +7,7 @@ img, a img { border: 0px; }
 
 body {
 	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
-	font-family: 'Tahoma', 'Arial', 'Helvetica', sans-serif;
+	font-family: 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
 	font-size: 12px;
 	color: #666666;
 	line-height: 20px;
@@ -348,7 +348,6 @@ form input.submit:hover {
 
 .memu-caption {
 	font-weight: bold !important;
-	text-shadow: 0px 1px 1px #BABABA;
 }
 
 .memu-item {
