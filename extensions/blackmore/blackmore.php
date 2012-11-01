@@ -39,7 +39,7 @@
 				'title' => 'Logout',
 				'callback' => array(&$this, 'login')
 			);
-
+// exit($uAction);
 			if(!isset(self::$modules[$uAction])) {
 				return false;
 			}

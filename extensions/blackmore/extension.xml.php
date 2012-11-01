@@ -21,6 +21,7 @@
 		<include>blackmore.php</include>
 		<include>blackmore_scabbia.php</include>
 		<include>blackmore_zmodels.php</include>
+		<include>blackmore_zmodels_model.php</include>
 	</includeList>
 	<classList>
 		<class>blackmore</class>

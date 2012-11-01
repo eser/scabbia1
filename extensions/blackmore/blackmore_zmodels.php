@@ -18,7 +18,7 @@
 		*/
 		public static function blackmore_registerModules($uParms) {
 			foreach(zmodels::$zmodels as $tKey => &$tZmodel) {
-				$uParms['modules']['zmodels/' . $tKey] = array(
+				$uParms['modules'][$tKey] = array(
 					'title' => $tZmodel['title'],
 					'callback' => 'blackmore_zmodels::all',
 					'submenus' => true,
@@ -49,11 +49,11 @@
 		/**
 		* @ignore
 		*/
-		public static function all() {
+		public static function all($uAction) {
 			auth::checkRedirect('editor');
 
 			$tModel = new blackmoreZmodelModel();
-			$tCategories = $tModel->getAll();
+			$tCategories = $tModel->getAll('categories');
 
 			mvc::viewFile('{core}views/blackmore/zmodels/list.php', array(
 				'categories' => &$tCategories
