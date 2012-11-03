@@ -56,6 +56,9 @@
 
 			$this->persistent = isset($uConfig['persistent']);
 			$this->fetchMode = PDO::FETCH_ASSOC;
+
+			$tConnectionString = explode(':', $this->pdoString, 2);
+			$this->standard = $tConnectionString[0];
 		}
 
 		/**
@@ -88,7 +91,7 @@
 				throw new PDOException('PDO Exception: ' . $ex->getMessage());
 			}
 
-			$this->standard = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+			// $this->standard = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
 		}
 
 		/**
@@ -282,7 +285,7 @@
 					}
 
 					if(isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
-						$tSql .= ' OFFSET ' . $tOffset;
+						$tSql .= ' OFFSET ' . $uExtra['offset'];
 					}
 				}
 				else if($this->standard == 'mysql') {
