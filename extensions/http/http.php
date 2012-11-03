@@ -108,9 +108,9 @@
 
 			// request handling
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				$tReturn = preg_replace('|^' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
+				$tReturn = preg_replace('|^' . framework::$siteroot . '/'. $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
 				if($tCount > 0) {
-					$_SERVER['REQUEST_URI'] = $tReturn;
+					$_SERVER['REQUEST_URI'] = framework::$siteroot . '/'. $tReturn;
 					break;
 				}
 			}

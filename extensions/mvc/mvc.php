@@ -72,7 +72,7 @@
 		* @ignore
 		*/
 		public static function http_route($uParms) {
-			self::$route = self::findRoute($_GET);
+			self::$route = self::findRoute($uParms['get']);
 			self::$controllerActual = self::$route['controller'];
 			self::$actionActual = self::$route['action'];
 
@@ -190,7 +190,7 @@
 			$tActionKeys = explode(',', $tControllerData['actionUrlKeys']);
 			$tRoute['action'] = '';
 
-			foreach($tActionKeys as $tActionKey) {
+			foreach($tActionKeys as &$tActionKey) {
 				if(!isset($uArgs['_segments'][$tActionKey])) {
 					break;
 				}
