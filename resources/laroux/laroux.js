@@ -685,6 +685,25 @@ window.laroux = window.$l = (function() {
 			});
 		}
 	};
+	
+	// stack
+	laroux.stack = function() {
+		this.entries = {};
+
+		this.add = function(entry) {
+			this.entries[entry.id] = entry;
+		};
+
+		this.addRange = function(entryArray) {
+			for(entry in entryArray) {
+				this.entries[entryArray[entry].id] = entryArray[entry];
+			}
+		};
+
+		this.clear = function() {
+			this.entries = {};
+		};
+	};
 
 	return laroux;
 })();
