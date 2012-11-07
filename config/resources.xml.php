@@ -92,6 +92,21 @@
 					</part>
 					<part>
 						<type>file</type>
+						<class>jqueryuifx</class>
+						<path>{core}resources/jquery/jquery.effects.core.js</path>
+					</part>
+					<part>
+						<type>file</type>
+						<class>jqueryuifx</class>
+						<path>{core}resources/jquery/jquery.effects.highlight.js</path>
+					</part>
+					<part>
+						<type>file</type>
+						<class>jqueryuifx</class>
+						<path>{core}resources/jquery/jquery.effects.shake.js</path>
+					</part>
+					<part>
+						<type>file</type>
 						<class>map</class>
 						<path>{core}resources/mapbox/mapbox-0.6.5.js</path>
 					</part>
