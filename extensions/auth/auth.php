@@ -1,33 +1,33 @@
 <?php
 
 	/**
-	* Auth Extension
-	*
-	* @package Scabbia
-	* @subpackage auth
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends session
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Auth Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage auth
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends session
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class auth {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $sessionKey;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$sessionKey = config::get('/auth/sessionKey', 'authuser');
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function login($uUsername, $uPassword) {
 			foreach(config::get('/auth/userList', array()) as $tUser) {
 				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
@@ -35,6 +35,7 @@
 				}
 
 				session::set(self::$sessionKey, $tUser);
+
 				return true;
 			}
 
@@ -43,15 +44,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function clear() {
 			session::remove(self::$sessionKey);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function check($uRequiredRoles = 'user') {
 			$tUser = session::get(self::$sessionKey);
 			if(is_null($tUser)) {
@@ -68,10 +69,10 @@
 
 			return true;
 		}
-		
+
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkRedirect($uRequiredRoles = 'user') {
 			if(self::check($uRequiredRoles)) {
 				return;

@@ -38,7 +38,7 @@
 	define('OUTPUT_GZIP', (OUTPUT_NOHANDLER && !ini_get('zlib.output_compression')));
 
 // Set error reporting occasions
-	error_reporting(defined('E_STRICT') ? E_ALL|E_STRICT : E_ALL);
+	error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
 	ini_set('display_errors', '1');
 	ini_set('log_errors', '0');
 	// ini_set('error_log', QPATH_BASE . 'error.log');

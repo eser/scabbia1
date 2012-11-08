@@ -11,54 +11,54 @@
 	define('GLOB_JUSTNAMES', 8);
 
 	/**
-	* Base framework functions
-	*
-	* @package Scabbia
-	* @subpackage Core
-	*
-	* @todo serialize/unserialize data (example: resources)
-	*/
+	 * Base framework functions
+	 *
+	 * @package Scabbia
+	 * @subpackage Core
+	 *
+	 * @todo serialize/unserialize data (example: resources)
+	 */
 	class framework {
 		/**
-		* Indicates framework is running in production, development or debug mode.
-		*/
+		 * Indicates framework is running in production, development or debug mode.
+		 */
 		public static $development = 0;
 		/**
-		* Stores active module information.
-		*/
+		 * Stores active module information.
+		 */
 		public static $module = null;
 		/**
-		* Stores relative path of framework root.
-		*/
+		 * Stores relative path of framework root.
+		 */
 		public static $siteroot = null;
 		/**
-		* Stores relative path of running application.
-		*/
+		 * Stores relative path of running application.
+		 */
 		public static $applicationPath = null;
 		/**
-		* @ignore
-	 	*/
+		 * @ignore
+		 */
 		public static $milestones = array();
 		/**
-		* Stores all available endpoints.
-	 	*/
+		 * Stores all available endpoints.
+		 */
 		public static $endpoints = array();
 		/**
-		* Stores active endpoint information.
-		*/
+		 * Stores active endpoint information.
+		 */
 		public static $endpoint = null;
 		/**
-		* Stores active ssl socket information.
-		*/
+		 * Stores active ssl socket information.
+		 */
 		public static $issecure;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $error = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function load($uRunExtensions = true) {
 			self::$milestones[] = array('begin', microtime(true));
 
@@ -71,7 +71,7 @@
 					}
 
 					if($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-						self::$endpoint = &$tEndpoint;
+						self::$endpoint = & $tEndpoint;
 						self::$issecure = ($tParsed['scheme'] == 'https');
 						break;
 					}
@@ -142,8 +142,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function end($uLevel = 0, $uErrorMessage = null) {
 			self::$error = array($uLevel, $uErrorMessage);
 			ob_end_flush();
@@ -152,11 +152,13 @@
 		}
 
 		/**
-		* Translates given framework-relative path to physical path.
-		*
-		* @param string $uPath the framework-relative path
-		* @return string translated physical path
-		*/
+		 * Translates given framework-relative path to physical path.
+		 *
+		 * @param string $uPath the framework-relative path
+		 * @param null $uBasePath
+		 *
+		 * @return string translated physical path
+		 */
 		public static function translatePath($uPath, $uBasePath = null) {
 			if(substr($uPath, 0, 6) == '{base}') {
 				return QPATH_BASE . substr($uPath, 6);
@@ -196,28 +198,30 @@
 		}
 
 		/**
-		* Checks the given php version is greater than running one.
-		*
-		* @param string $uVersion php version
-		* @return bool running php version is greater than parameter.
-		*/
+		 * Checks the given php version is greater than running one.
+		 *
+		 * @param string $uVersion php version
+		 *
+		 * @return bool running php version is greater than parameter.
+		 */
 		public static function phpVersion($uVersion) {
 			return version_compare(PHP_VERSION, $uVersion, '>=');
 		}
 
 		/**
-		* Checks the given framework version is greater than running one.
-		*
-		* @param string $uVersion framework version
-		* @return bool running framework version is greater than parameter.
-		*/
+		 * Checks the given framework version is greater than running one.
+		 *
+		 * @param string $uVersion framework version
+		 *
+		 * @return bool running framework version is greater than parameter.
+		 */
 		public static function version($uVersion) {
 			return version_compare(SCABBIA_VERSION, $uVersion, '>=');
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &output($uValue, $uSecond) {
 			$tParms = array(
 				'error' => &self::$error,
@@ -239,10 +243,10 @@
 		}
 
 		/**
-		* An utility function which helps functions to get parameters in array.
-		*
-		* @return array array of parameters
-		*/
+		 * An utility function which helps functions to get parameters in array.
+		 *
+		 * @return array array of parameters
+		 */
 		// public static function getArgs() {
 		// 	$uArgs = func_get_args();
 		//
@@ -275,11 +279,12 @@
 		// }
 
 		/**
-		* Downloads given file into framework's download directory.
-		*
-		* @param $uFile string filename in destination
-		* @param $uUrl string url of source
-		*/
+		 * Downloads given file into framework's download directory.
+		 *
+		 * @param $uFile string filename in destination
+		 * @param $uUrl string url of source
+		 * @return bool
+		 */
 		public static function downloadFile($uFile, $uUrl) {
 			$tUrlHandle = fopen($uUrl, 'rb', false);
 			if($tUrlHandle === false) {
@@ -289,12 +294,14 @@
 			$tHandle = fopen(self::writablePath('downloaded/' . $uFile), 'wb', false);
 			if($tHandle === false) {
 				fclose($tUrlHandle);
+
 				return false;
 			}
 
 			if(flock($tHandle, LOCK_EX) === false) {
 				fclose($tHandle);
 				fclose($tUrlHandle);
+
 				return false;
 			}
 
@@ -309,10 +316,17 @@
 		}
 
 		/**
-		* Returns a php file source to view.
-		*
-		* @param $uInput string path of source file
-		*/
+		 * Returns a php file source to view.
+		 *
+		 * @param $uPath
+		 * @param null $uFilter
+		 * @param int $uOptions
+		 * @param string $uRecursivePath
+		 * @param array $uArray
+		 *
+		 * @internal param string $uInput path of source file
+		 * @return array|bool
+		 */
 		public static function &glob($uPath, $uFilter = null, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
 			$tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
 			$tRecursivePath = $tPath . $uRecursivePath;
@@ -363,14 +377,18 @@
 			}
 
 			$uArray = false;
+
 			return $uArray;
 		}
 
 		/**
-		* Returns a php file source to view.
-		*
-		* @param $uInput string path of source file
-		*/
+		 * Returns a php file source to view.
+		 *
+		 * @param $uInput string path of source file
+		 * @param bool $uOnlyContent
+		 *
+		 * @return array|string
+		 */
 		public static function printFile($uInput, $uOnlyContent = true) {
 			$tDocComments = array();
 			$tReturn = '';
@@ -405,8 +423,10 @@
 					if($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
 						$tReturn .= '; ';
 					}
-					else if($tLastToken != T_WHITESPACE) {
-						$tReturn .= ' ';
+					else {
+						if($tLastToken != T_WHITESPACE) {
+							$tReturn .= ' ';
+						}
 					}
 
 					$tReturn .= '?' . '>';
@@ -468,8 +488,10 @@
 				if($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
 					$tReturn .= '; ';
 				}
-				else if($tLastToken != T_WHITESPACE) {
-					$tReturn .= ' ';
+				else {
+					if($tLastToken != T_WHITESPACE) {
+						$tReturn .= ' ';
+					}
 				}
 
 				$tReturn .= '?' . '>';
@@ -477,6 +499,7 @@
 
 			if(!$uOnlyContent) {
 				$tArray = array(&$tReturn, &$tDocComments);
+
 				return $tArray;
 			}
 

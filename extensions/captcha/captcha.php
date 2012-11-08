@@ -1,24 +1,25 @@
 <?php
 
 	/**
-	* Captcha Extension
-	*
-	* @package Scabbia
-	* @subpackage captcha
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, session
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Captcha Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage captcha
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, session
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class captcha {
 		/**
-		* Generates and outputs a captcha image
-		*
-		* @param string $uCookieName name of the cookie which will be stored on the client side
-		* @return string generated captcha code
-		*/
+		 * Generates and outputs a captcha image
+		 *
+		 * @param string $uCookieName name of the cookie which will be stored on the client side
+		 *
+		 * @return string generated captcha code
+		 */
 		public static function generate($uCookieName = 'captcha') {
 			$tFontFile = framework::translatePath(config::get('/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
 			$tFontSize = intval(config::get('/captcha/fontSize', '45'));
@@ -102,8 +103,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function check($uCode, $uCookieName = 'captcha') {
 			// check the supplied code
 			$tResult = (session::getFlash($uCookieName, '') == strtolower($uCode));

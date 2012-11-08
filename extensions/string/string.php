@@ -3,39 +3,39 @@
 	define('FILTER_VALIDATE_BOOLEAN_FIX', 'filterValidateBooleanFix');
 
 	if(!defined('ENT_HTML5')) {
-		define('ENT_HTML5', (16|32));
+		define('ENT_HTML5', (16 | 32));
 	}
 
 	/**
-	* String Extension
-	*
-	* @package Scabbia
-	* @subpackage string
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends mbstring
-	*
-	* @todo pluralize, singularize
-	*/
+	 * String Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage string
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends mbstring
+	 *
+	 * @todo pluralize, singularize
+	 */
 	class string {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $tab = "\t";
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getEncoding() {
 			return mb_preferred_mime_name(mb_internal_encoding());
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function coalesce() {
 			foreach(func_get_args() as $tValue) {
 				if(!is_null($tValue)) {
@@ -50,16 +50,19 @@
 					return $tValue;
 				}
 			}
+
+			return null;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function prefixLines($uInput, $uPrefix = '- ', $uLineEnding = PHP_EOL) {
 			$tLines = explode($uLineEnding, $uInput);
 
 			$tOutput = $tLines[0] . $uLineEnding;
-			$tCount = 0; foreach($tLines as &$tLine) {
+			$tCount = 0;
+			foreach($tLines as &$tLine) {
 				if($tCount++ == 0) {
 					continue;
 				}
@@ -71,8 +74,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function filter() {
 			$uArgs = func_get_args();
 
@@ -83,20 +86,22 @@
 
 				return false;
 			}
-			else if(is_callable($uArgs[1], true)) {
-				$tValue = array_shift($uArgs);
-				$tFunction = $uArgs[0];
-				$uArgs[0] = $tValue;
+			else {
+				if(is_callable($uArgs[1], true)) {
+					$tValue = array_shift($uArgs);
+					$tFunction = $uArgs[0];
+					$uArgs[0] = $tValue;
 
-				return call_user_func_array($tFunction, $uArgs);
+					return call_user_func_array($tFunction, $uArgs);
+				}
 			}
 
 			return call_user_func_array('filter_var', $uArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function format($uString) {
 			$uArgs = func_get_args();
 			array_shift($uArgs);
@@ -110,7 +115,7 @@
 			$tLastItem = 0;
 			$tArrayItem = 1;
 
-			for($tPos = 0, $tLen = self::length($uString);$tPos < $tLen;$tPos++) {
+			for($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {
 				$tChar = self::substr($uString, $tPos, 1);
 
 				if($tChar == '\\') {
@@ -129,19 +134,23 @@
 					if(is_null($tBrackets[$tLastItem][$tArrayItem])) {
 						if($tChar == '\'' || $tChar == '"') {
 							$tQuoteChar = $tChar;
-							$tBrackets[$tLastItem][$tArrayItem] = '"';	// static text
-							$tChar = self::substr($uString, ++$tPos, 1);
-						}
-						else if($tChar == '!') {
-							$tBrackets[$tLastItem][$tArrayItem] = '!';	// dynamic text
-							$tChar = self::substr($uString, ++$tPos, 1);
-						}
-						else if($tChar == '@') {
-							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
+							$tBrackets[$tLastItem][$tArrayItem] = '"'; // static text
 							$tChar = self::substr($uString, ++$tPos, 1);
 						}
 						else {
-							$tBrackets[$tLastItem][$tArrayItem] = '@';	// parameter
+							if($tChar == '!') {
+								$tBrackets[$tLastItem][$tArrayItem] = '!'; // dynamic text
+								$tChar = self::substr($uString, ++$tPos, 1);
+							}
+							else {
+								if($tChar == '@') {
+									$tBrackets[$tLastItem][$tArrayItem] = '@'; // parameter
+									$tChar = self::substr($uString, ++$tPos, 1);
+								}
+								else {
+									$tBrackets[$tLastItem][$tArrayItem] = '@'; // parameter
+								}
+							}
 						}
 					}
 
@@ -211,8 +220,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function vardump($uVariable, $tOutput = true) {
 			$tVariable = $uVariable;
 			$tType = gettype($tVariable);
@@ -234,7 +243,7 @@
 			case 'object':
 				if($tType == 'object') {
 					$tType = get_class($tVariable);
-					$tVariable = @get_object_vars($tVariable);
+					$tVariable = get_object_vars($tVariable);
 				}
 
 				$tCount = count($tVariable);
@@ -269,22 +278,23 @@
 
 			if($tOutput) {
 				echo '<pre>' . $tOut . '</pre>';
-				return;
+
+				return null;
 			}
 
 			return $tOut;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function hash($uHash) {
 			return hexdec(hash('crc32', $uHash) . hash('crc32b', $uHash));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function generatePassword($uLength) {
 			srand(microtime(true) * 1000000);
 
@@ -293,7 +303,7 @@
 
 			$tConsLen = count($aCons) - 1;
 			$tVowelsLen = count($aVowels) - 1;
-			for($tOutput = '';strlen($tOutput) < $uLength;) {
+			for($tOutput = ''; strlen($tOutput) < $uLength;) {
 				$tOutput .= $aCons[rand(0, $tConsLen)] . $aVowels[rand(0, $tVowelsLen)];
 			}
 
@@ -302,8 +312,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function generateUuid() {
 			// return md5(uniqid(mt_rand(), true));
 			return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -331,13 +341,13 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function generate($uLength, $uCharset = '0123456789ABCDEF') {
 			srand(microtime(true) * 1000000);
 
 			$tCharsetLen = self::length($uCharset) - 1;
-			for($tOutput = '';$uLength > 0;$uLength--) {
+			for($tOutput = ''; $uLength > 0; $uLength--) {
 				$tOutput .= self::substr($uCharset, rand(0, $tCharsetLen), 1);
 			}
 
@@ -345,8 +355,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function encrypt($uString, $uKey) {
 			$tResult = '';
 
@@ -360,8 +370,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function decrypt($uString, $uKey) {
 			$tResult = '';
 
@@ -375,12 +385,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function strip($uString, $uValids) {
 			$tOutput = '';
 
-			for($tCount = 0, $tLen = self::length($uString);$tCount < $tLen;$tCount++) {
+			for($tCount = 0, $tLen = self::length($uString); $tCount < $tLen; $tCount++) {
 				$tChar = self::substr($uString, $tCount, 1);
 				if(self::strpos($uValids, $tChar) === false) {
 					continue;
@@ -393,8 +403,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function squote($uString, $uCover = false) {
 			// if(is_null($uString)) {
 			// 	return 'null';
@@ -408,8 +418,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function dquote($uString, $uCover = false) {
 			// if(is_null($uString)) {
 			// 	return 'null';
@@ -423,8 +433,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &squoteArray($uArray, $uCover = false) {
 			$tArray = array();
 			foreach($uArray as $tKey => &$tValue) {
@@ -440,8 +450,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &dquoteArray($uArray, $uCover = false) {
 			$tArray = array();
 			foreach($uArray as $tKey => &$tValue) {
@@ -457,15 +467,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function replaceBreaks($uString, $uBreaks = '<br />') {
 			return strtr($uString, array("\r" => '', "\n" => $uBreaks));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function cut($uString, $uLength, $uSuffix = '...') {
 			if(self::length($uString) <= $uLength) {
 				return $uString;
@@ -475,51 +485,51 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function encodeHtml($uString) {
 			return strtr($uString, array('&' => '&amp;', '"' => '&quot;', '<' => '&lt;', '>' => '&gt;'));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function decodeHtml($uString) {
 			return strtr($uString, array('&amp;' => '&', '&quot;' => '"', '&lt;' => '<', '&gt;' => '>'));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function toLower($uString) {
 			return mb_convert_case($uString, MB_CASE_LOWER);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function toUpper($uString) {
 			return mb_convert_case($uString, MB_CASE_UPPER);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function capitalize($uString) {
 			return mb_convert_case($uString, MB_CASE_TITLE);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function length($uString) {
 			// return mb_strlen($uString);
 			return strlen(utf8_decode($uString));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function substr($uString, $uStart, $uLength = null) {
 			if(is_null($uLength)) {
 				return mb_substr($uString, $uStart);
@@ -529,62 +539,66 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function strpos($uString, $uNeedle, $uOffset = 0) {
 			return mb_strpos($uString, $uNeedle, $uOffset);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function strstr($uString, $uNeedle, $uBeforeNeedle = false) {
 			return mb_strstr($uString, $uNeedle, $uBeforeNeedle);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sizeCalc($uSize, $uPrecision = 0) {
 			static $tSize = ' KMGT';
-			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
+			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++) {
+				;
+			}
 
 			return round($uSize, $uPrecision) . ' ' . $tSize[$tCount] . 'B';
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function quantityCalc($uSize, $uPrecision = 0) {
 			static $tSize = ' KMGT';
-			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++);
+			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++) {
+				;
+			}
 
 			return round($uSize, $uPrecision) . $tSize[$tCount];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function htmlEscape($uString) {
-			return htmlspecialchars($uString, ENT_COMPAT|ENT_HTML5, mb_internal_encoding());
+			return htmlspecialchars($uString, ENT_COMPAT | ENT_HTML5, mb_internal_encoding());
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function htmlUnescape($uString) {
-			return htmlspecialchars_decode($uString, ENT_COMPAT|ENT_HTML5);
+			return htmlspecialchars_decode($uString, ENT_COMPAT | ENT_HTML5);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function readset_gquote($uString, &$uPosition) {
 			$tInSlash = false;
 			$tInQuote = false;
 			$tOutput = '';
 
-			for($tLen = self::length($uString);$uPosition <= $tLen;++$uPosition) {
+			for($tLen = self::length($uString); $uPosition <= $tLen; ++$uPosition) {
 				$tChar = self::substr($uString, $uPosition, 1);
 
 				if(($tChar == '\\') && !$tInSlash) {
@@ -610,8 +624,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function readset($uString) {
 			$tStart = self::strpos($uString, '[');
 			$tOutput = array();
@@ -621,12 +635,13 @@
 				return $tOutput;
 			}
 
-			for($tLen = self::length($uString);$tStart <= $tLen;++$tStart) {
+			for($tLen = self::length($uString); $tStart <= $tLen; ++$tStart) {
 				$tChar = self::substr($uString, $tStart, 1);
 
 				if($tChar == ']') {
 					$tOutput[] = $tBuffer;
 					$tBuffer = '';
+
 					return $tOutput;
 				}
 
@@ -646,8 +661,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
 			$tParts = explode('#', $uString, 2);
 
@@ -663,7 +678,7 @@
 			$tLen = self::length($tParts[0]);
 
 			if(!is_null($uSeperator)) {
-				for(;$tPos < $tLen;$tPos++) {
+				for(; $tPos < $tLen; $tPos++) {
 					$tChar = self::substr($tParts[0], $tPos, 1);
 
 					if(self::strpos($uSeperator, $tChar) !== false) {
@@ -691,7 +706,7 @@
 				$tStrings = array('', null);
 			}
 
-			for(;$tPos < $tLen;$tPos++) {
+			for(; $tPos < $tLen; $tPos++) {
 				$tChar = self::substr($tParts[0], $tPos, 1);
 
 				if(self::strpos($uParameters, $tChar) !== false) {
@@ -726,8 +741,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function removeAccent($uString) {
 			$tAccented = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ', 'þ', 'Þ', 'ð');
 			$tStraight = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o', 'b', 'B', 'o');
@@ -736,13 +751,13 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function removeInvisibles($uString) {
 			$tInvisibles = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 127);
 			$tOutput = '';
 
-			for($tCount = 0, $tLen = self::length($uString);$tCount < $tLen;$tCount++) {
+			for($tCount = 0, $tLen = self::length($uString); $tCount < $tLen; $tCount++) {
 				$tChar = self::substr($uString, $tCount, 1);
 
 				if(in_array(ord($tChar), $tInvisibles)) {
@@ -756,8 +771,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function slug($uString) {
 			$uString = self::removeInvisibles($uString);
 			$uString = self::removeAccent($uString);
@@ -769,37 +784,37 @@
 		}
 
 		/**
-		* @ignore
-		*/
-        public static function ordinalize($uNumber) {
-            if(in_array(($uNumber % 100), range(11, 13))) {
-                return $uNumber . 'th';
-            }
-
-			switch ($uNumber % 10) {
-				case 1:
-					return $uNumber . 'st';
-					break;
-				case 2:
-					return $uNumber . 'nd';
-					break;
-				case 3:
-					return $uNumber . 'rd';
-					break;
-				default:
-					return $uNumber . 'th';
-					break;
+		 * @ignore
+		 */
+		public static function ordinalize($uNumber) {
+			if(in_array(($uNumber % 100), range(11, 13))) {
+				return $uNumber . 'th';
 			}
-        }
+
+			switch($uNumber % 10) {
+			case 1:
+				return $uNumber . 'st';
+				break;
+			case 2:
+				return $uNumber . 'nd';
+				break;
+			case 3:
+				return $uNumber . 'rd';
+				break;
+			default:
+				return $uNumber . 'th';
+				break;
+			}
+		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function capitalizeEx($uString, $uDelimiter = ' ', $uReplaceDelimiter = null) {
 			$tOutput = '';
 			$tCapital = true;
 
-			for($tPos = 0, $tLen = self::length($uString);$tPos < $tLen;$tPos++) {
+			for($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {
 				$tChar = self::substr($uString, $tPos, 1);
 
 				if($tChar == $uDelimiter) {
@@ -821,8 +836,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function swap(&$uVariable1, &$uVariable2) {
 			$tTemp = $uVariable1;
 			$uVariable1 = $uVariable2;

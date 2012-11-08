@@ -1,41 +1,42 @@
 <?php
 
 	/**
-	* Collections Extension
-	*
-	* @package Scabbia
-	* @subpackage collections
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo revisions
-	*/
+	 * Collections Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage collections
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo revisions
+	 */
 	class collections {
 	}
 
 	/**
-	* Collection Class
-	*
-	* @package Scabbia
-	* @subpackage UtilityExtensions
-	*/
+	 * Collection Class
+	 *
+	 * @property mixed count
+	 * @package Scabbia
+	 * @subpackage UtilityExtensions
+	 */
 	class collection implements ArrayAccess, IteratorAggregate {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $id;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $tag;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($tArray = null) {
 			$this->id = null;
 			$this->tag = array();
@@ -45,22 +46,22 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function add($uItem) {
 			$this->tag['items'][] = $uItem;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function addKey($uKey, $uItem) {
 			$this->tag['items'][$uKey] = $uItem;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function addRange($uItems) {
 			foreach($uItems as &$tItem) { //SPD (array)$uItems cast
 				$this->add($tItem);
@@ -68,8 +69,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function addKeyRange($uItems) {
 			foreach($uItems as $tKey => &$tItem) { //SPD (array)$uItems cast
 				$this->addKey($tKey, $tItem);
@@ -77,8 +78,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function keyExists($uKey, $uNullValue = true) {
 			if($uNullValue) {
 				return array_key_exists($uKey, $this->tag['items']);
@@ -88,8 +89,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function contains($uItem) {
 			foreach($this->tag['items'] as &$tItem) {
 				if($uItem == $tItem) {
@@ -101,8 +102,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function count($uItem = null) {
 			if(!isset($uItem)) {
 				return count($this->tag['items']);
@@ -121,8 +122,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function countRange($uItems) {
 			$tCounted = 0;
 
@@ -134,8 +135,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function remove($uItem, $uLimit = null) {
 			$tRemoved = 0;
 
@@ -156,8 +157,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function removeRange($uItems, $uLimitEach = null, $uLimitTotal = null) {
 			$tRemoved = 0;
 
@@ -173,28 +174,29 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function removeKey($uKey) {
 			if(!$this->keyExists($uKey, true)) {
 				return 0;
 			}
 
 			unset($this->tag['items'][$uKey]);
+
 			return 1;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function removeIndex($uIndex) {
-		// todo: seek with iterator
+			// todo: seek with iterator
 			if($this->count < $uIndex) {
 				return 0;
 			} //SPD (int)$uIndex cast
 
 			reset($this->tag['items']);
-			for($i = 0;$i < $uIndex;$i++) {
+			for($i = 0; $i < $uIndex; $i++) {
 				next($this->tag['items']);
 			}
 
@@ -204,8 +206,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function chunk($uSize, $uPreserveKeys = false) {
 			$tArray = array_chunk($this->tag['items'], $uSize, $uPreserveKeys);
 
@@ -213,8 +215,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function combineKeys($uArray) {
 			if(is_subclass_of($uArray, 'collection')) {
 				$uArray = $uArray->toArrayRef();
@@ -226,8 +228,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function combineValues($uArray) {
 			if(is_subclass_of($uArray, 'collection')) {
 				$uArray = $uArray->toArrayRef();
@@ -239,8 +241,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function countValues() {
 			$tArray = array_count_values($this->tag['items']);
 
@@ -248,8 +250,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function diff() {
 			$uParms = array(&$this->tag['items']);
 			foreach(func_get_args() as $tItem) {
@@ -267,8 +269,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function filter($uCallback) {
 			$tArray = array_filter($this->tag['items'], $uCallback);
 
@@ -276,8 +278,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function flip() {
 			$tArray = array_flip($this->tag['items']);
 
@@ -285,8 +287,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function intersect() {
 			$uParms = array(&$this->tag['items']);
 
@@ -305,8 +307,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function keys() {
 			$tArray = array_keys($this->tag['items']);
 
@@ -314,8 +316,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function map($uCallback) {
 			$tArray = array_map($uCallback, $this->tag['items']);
 
@@ -323,8 +325,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function mergeRecursive() {
 			$uParms = array(&$this->tag['items']);
 
@@ -343,8 +345,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function merge() {
 			$uParms = array(&$this->tag['items']);
 			foreach(func_get_args() as $tItem) {
@@ -362,8 +364,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function pad($uSize, $uValue) {
 			$tArray = array_pad($this->tag['items'], $uSize, $uValue);
 
@@ -371,22 +373,22 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function pop() {
 			return array_pop($this->tag['items']);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function product() {
 			return array_product($this->tag['items']);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function push() {
 			$uParms = array(&$this->tag['items']);
 
@@ -398,8 +400,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function first() {
 			reset($this->tag['items']);
 
@@ -407,15 +409,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function last() {
 			return end($this->tag['items']);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function current() {
 			$tValue = current($this->tag['items']);
 
@@ -427,8 +429,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function next() {
 			$tValue = $this->current();
 			next($this->tag['items']);
@@ -437,89 +439,89 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function clear() {
 			$this->tag['items'] = array();
 //			$this->internalIterator->rewind();
 		}
 
-	// for array access, $items
+		// for array access, $items
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetExists($uId) {
 			return $this->keyExists($uId);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetGet($uId) {
 			return $this->tag['items'][$uId];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetSet($uId, $uValue) {
 			$this->tag['items'][$uId] = $uValue;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetUnset($uId) {
 			$this->removeKey($uId);
 		}
 
-	// for iteration access
+		// for iteration access
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function getIterator() {
 			return new ArrayIterator($this->tag['items']);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function toCollection() {
 			return new collection($this->tag['items']);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function toArray() {
 			return $this->tag['items'];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &toArrayRef() {
 			return $this->tag['items'];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function toString($uSeperator = '') {
 			return implode($uSeperator, $this->tag['items']);
 		}
 	}
 
 	/**
-	* Xml Collection Class
-	*
-	* @package Scabbia
-	* @subpackage UtilityExtensions
-	*/
+	 * Xml Collection Class
+	 *
+	 * @package Scabbia
+	 * @subpackage UtilityExtensions
+	 */
 	class xmlCollection extends collection {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromString($uString) {
 			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_load_string($uString));
@@ -528,8 +530,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFile($uFile) {
 			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_load_file($uFile));
@@ -538,8 +540,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFiles() {
 			$uFiles = func_get_args();
 			if(is_array($uFiles[0])) {
@@ -555,8 +557,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFileScan($uPattern) {
 			$tSep = quotemeta(DIRECTORY_SEPARATOR);
 			$tPos = strrpos($uPattern, $tSep);
@@ -579,7 +581,7 @@
 			$tHandle = new DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
-			for(;$tHandle->valid();$tHandle->next()) {
+			for(; $tHandle->valid(); $tHandle->next()) {
 				if(!($tHandle->isFile())) {
 					continue;
 				}
@@ -596,8 +598,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromSimplexml($uObject) {
 			$tTemp = new xmlCollection();
 			$tTemp->add($uObject);
@@ -606,8 +608,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromDom($uDom) {
 			$tTemp = new xmlCollection();
 			$tTemp->add(simplexml_import_dom($uDom));
@@ -617,15 +619,15 @@
 	}
 
 	/**
-	* File Collection Class
-	*
-	* @package Scabbia
-	* @subpackage UtilityExtensions
-	*/
+	 * File Collection Class
+	 *
+	 * @package Scabbia
+	 * @subpackage UtilityExtensions
+	 */
 	class fileCollection extends collection {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFile($uFile) {
 			$tTemp = new fileCollection();
 			$tTemp->add($uFile);
@@ -634,8 +636,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFiles() {
 			$uFiles = func_get_args();
 			if(is_array($uFiles[0])) {
@@ -652,8 +654,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromFileScan($uPattern) {
 			$tSep = quotemeta(DIRECTORY_SEPARATOR);
 			$tPos = strrpos($uPattern, $tSep);
@@ -676,7 +678,7 @@
 			$tHandle = new DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
-			for(;$tHandle->valid();$tHandle->next()) {
+			for(; $tHandle->valid(); $tHandle->next()) {
 				if(!($tHandle->isFile())) {
 					continue;
 				}

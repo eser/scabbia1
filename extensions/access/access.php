@@ -1,34 +1,34 @@
 <?php
 
 	/**
-	* Access Extension
-	*
-	* @package Scabbia
-	* @subpackage access
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Access Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage access
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class access {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $maintenance = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $maintenanceExcludeIps = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $ipFilters = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function run() {
 			self::$maintenance = (intval(config::get('/access/maintenance/mode', '0')) >= 1);
 			self::$maintenanceExcludeIps = config::get('/access/maintenance/ipExcludeList', array());
@@ -76,6 +76,8 @@
 				// to interrupt event-chain execution
 				return false;
 			}
+
+			return null;
 		}
 	}
 

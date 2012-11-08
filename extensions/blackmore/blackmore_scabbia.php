@@ -1,21 +1,21 @@
 <?php
 
 	/**
-	* Blackmore Extension: Scabbia Section
-	*
-	* @package Scabbia
-	* @subpackage blackmore_scabbia
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, resources, validation, http, auth, zmodels
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Blackmore Extension: Scabbia Section
+	 *
+	 * @package Scabbia
+	 * @subpackage blackmore_scabbia
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class blackmore_scabbia {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function blackmore_registerModules($uParms) {
 			$uParms['modules']['index']['submenus'] = true;
 
@@ -39,8 +39,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function index() {
 			auth::checkRedirect('user');
 
@@ -48,20 +48,23 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function debug() {
 			auth::checkRedirect('admin');
 
 			mvc::viewFile('{core}views/blackmore/scabbia/debug.php');
 		}
-		
+
 		/**
-		* Builds a framework compilation.
-		*
-		* @param $uFilename string output file
-		* @param $uPseudo bool wheater file is an pseudo compilation or not
-		*/
+		 * Builds a framework compilation.
+		 *
+		 * @param $uAction
+		 * @param string $uModule
+		 *
+		 * @internal param string $uFilename output file
+		 * @internal param bool $uPseudo wheater file is an pseudo compilation or not
+		 */
 		public static function build($uAction, $uModule = '') {
 			auth::checkRedirect('admin');
 
@@ -89,11 +92,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function &build_export($uModule, $uPseudo) {
 			if($uPseudo) { // framework::$development >= 1 ||
 				$tPseudoCompile = '<' . '?php require(' . var_export('framework.php', true) . '); ?' . '>';
+
 				return $tPseudoCompile;
 			}
 
@@ -193,10 +197,10 @@
 		}
 
 		/**
-		* Purges the files in given directory.
-		*
-		* @param $uFolder string destination directory
-		*/
+		 * Purges the files in given directory.
+		 *
+		 * @internal param string $uFolder destination directory
+		 */
 		public static function purge() {
 			auth::checkRedirect('admin');
 
@@ -209,10 +213,10 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function purgeFolder($uFolder) {
-			$tDirectory = framework::glob($uFolder, null, GLOB_RECURSIVE|GLOB_FILES);
+			$tDirectory = framework::glob($uFolder, null, GLOB_RECURSIVE | GLOB_FILES);
 
 			if($tDirectory === false) {
 				return;

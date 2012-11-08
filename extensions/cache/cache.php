@@ -1,38 +1,38 @@
 <?php
 
 	/**
-	* Cache Extension
-	*
-	* @package Scabbia
-	* @subpackage cache
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends io
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Cache Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage cache
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends io
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class cache {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $defaultAge;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $keyphase;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $storage = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $storageObject = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$defaultAge = intval(config::get('/cache/defaultAge', '120'));
 			self::$keyphase = config::get('/cache/keyphase', '');
@@ -44,8 +44,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function storageOpen() {
 			if(!is_null(self::$storageObject)) {
 				return;
@@ -54,13 +54,14 @@
 			if(self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
 				self::$storageObject = new Memcache();
 				self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
+
 				return;
 			}
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function storageGet($uKey) {
 			self::storageOpen();
 
@@ -68,8 +69,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function storageSet($uKey, $uValue, $uAge = -1) {
 			self::storageOpen();
 
@@ -82,8 +83,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function storageDestroy($uKey) {
 			self::storageOpen();
 
@@ -91,8 +92,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function filePath($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename, $uIncludeAll));
@@ -114,8 +115,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fileGet($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
 			// path
 			$tPath = self::filePath($uFolder, $uFilename, $uAge, $uIncludeAll);
@@ -130,14 +131,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fileGetUrl($uKey, $uUrl, $uAge = -1) {
 			$tFile = self::filePath('url/', $uKey, $uAge, true);
 
 			if(!$tFile[0]) {
 				$tContent = file_get_contents($uUrl);
 				io::write($tFile[1], $tContent);
+
 				return $tContent;
 			}
 
@@ -145,8 +147,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fileSet($uFolder, $uFilename, $uObject) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
@@ -158,16 +160,16 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fileDestroy($uFolder, $uFilename) {
 			$tPath = framework::writablePath('cache/' . $uFolder);
 			io::destroy($tPath . io::sanitize($uFilename));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fileGarbageCollect($uFolder, $uAge = -1) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder);
@@ -184,7 +186,7 @@
 					continue;
 				}
 
-				if(time() - $tFile->getMTime() < $tAge) {
+				if(time() - $tFile->getMTime() < $uAge) {
 					continue;
 				}
 

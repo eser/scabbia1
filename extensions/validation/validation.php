@@ -1,48 +1,48 @@
 <?php
 
 	/**
-	* Validation Extension
-	*
-	* @package Scabbia
-	* @subpackage validation
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends contracts
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Validation Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage validation
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends contracts
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class validation {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $rules = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $summary = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function addRule($uKey = null) {
 			$tRule = new validationRule($uKey);
-			self::$rules[] = &$tRule;
+			self::$rules[] = & $tRule;
 
 			return $tRule;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function clear() {
 			self::$rules = array();
 			self::$summary = array();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function addSummary($uRule) {
 			if(!isset(self::$summary[$uRule->field])) {
 				self::$summary[$uRule->field] = array();
@@ -52,8 +52,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function validate($uArray = null) {
 			foreach(self::$rules as &$tRule) {
 				if(!is_null($tRule->value)) {
@@ -83,8 +83,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function hasErrors() {
 			$uArgs = func_get_args();
 
@@ -96,19 +96,19 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getErrors($uKey) {
 			if(!array_key_exists($uKey, self::$summary)) {
 				return false;
 			}
 
-			return self::$summary($uKey);
+			return self::$summary[$uKey];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
 			$tMessages = array();
 
@@ -133,8 +133,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function export($tOutput = true) {
 			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$summary, $tOutput);
@@ -145,46 +145,46 @@
 	}
 
 	/**
-	* Validation Rule Class
-	*
-	* @package Scabbia
-	* @subpackage ExtensibilityExtensions
-	*/
+	 * Validation Rule Class
+	 *
+	 * @package Scabbia
+	 * @subpackage ExtensibilityExtensions
+	 */
 	class validationRule {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $field;
 		/**
 		 * @ignore
 		 */
 		public $value = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $type;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $args;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $errorMessage;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct(&$uField) {
-			$this->field = &$uField;
+			$this->field = & $uField;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __call($uName, $uArgs) {
 			$this->type = constant('contracts::' . $uName);
-			$this->args = &$uArgs;
+			$this->args = & $uArgs;
 
 			return $this;
 		}
@@ -193,7 +193,7 @@
 		 * @ignore
 		 */
 		public function &field($uField) {
-			$this->field = &$uField;
+			$this->field = & $uField;
 
 			return $this;
 		}
@@ -202,7 +202,7 @@
 		 * @ignore
 		 */
 		public function &value($uValue) {
-			$this->value = &$uValue;
+			$this->value = & $uValue;
 
 			return $this;
 		}
@@ -211,7 +211,7 @@
 		 * @ignore
 		 */
 		public function errorMessage($uErrorMessage) {
-			$this->errorMessage = &$uErrorMessage;
+			$this->errorMessage = & $uErrorMessage;
 		}
 	}
 

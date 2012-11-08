@@ -1,34 +1,34 @@
 <?php
 
 	/**
-	* Blackmore Extension
-	*
-	* @package Scabbia
-	* @subpackage blackmore
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, resources, validation, http, auth, zmodels
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Blackmore Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage blackmore
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class blackmore extends controller {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $menuItems = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $modules = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $module;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function render(&$uAction, &$uArgs) {
 			self::$modules['index'] = array(
 				'title' => 'Dashboard',
@@ -36,8 +36,8 @@
 			);
 
 			events::invoke('blackmore_registerModules', array(
-				'modules' => &self::$modules
-			));
+			                                                 'modules' => &self::$modules
+			                                            ));
 
 			self::$modules['login'] = array(
 				'title' => 'Logout',
@@ -64,13 +64,14 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function login() {
 			if(http::$method != 'post') {
 				auth::clear();
 
 				$this->viewFile('{core}views/blackmore/login.php');
+
 				return;
 			}
 
@@ -102,8 +103,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function index() {
 			auth::checkRedirect('user');
 

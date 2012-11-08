@@ -1,28 +1,28 @@
 <?php
 
 	/**
-	* Extensions manager which extends the framework capabilities with extra routines
-	*
-	* @package Scabbia
-	* @subpackage Core
-	*/
+	 * Extensions manager which extends the framework capabilities with extra routines
+	 *
+	 * @package Scabbia
+	 * @subpackage Core
+	 */
 	class extensions {
 		/**
 		 * @ignore
 		 */
 		public static $classmap = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $list;
 
 		/**
-		* Loads the extensions module.
-		*/
+		 * Loads the extensions module.
+		 */
 		public static function &load() {
 			$tExtensions = array();
 
-			foreach(framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES|GLOB_RECURSIVE) as $tFile) {
+			foreach(framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE) as $tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {
 					continue;
 				}
@@ -45,9 +45,9 @@
 		}
 
 		/**
-		* Autoloader method.
-		*
-		*/
+		 * Autoloader method.
+		 *
+		 */
 		public static function autoloader($uClass) {
 			if(!isset(self::$classmap[$uClass])) {
 				throw new Exception('class not found - ' . $uClass);
@@ -55,6 +55,7 @@
 
 			if(config::get('/options/autoload', '0') == '1') {
 				self::loadExtension(self::$classmap[$uClass], true);
+
 				return;
 			}
 
@@ -62,10 +63,10 @@
 		}
 
 		/**
-		* Loads the selected extensions.
-		*
-		* @uses loadExtension()
-		*/
+		 * Loads the selected extensions.
+		 *
+		 * @uses loadExtension()
+		 */
 		public static function loadExtensions() {
 			foreach(config::get('/extensionList', array()) as $tExtensionName) {
 				self::loadExtension($tExtensionName, false);
@@ -74,10 +75,14 @@
 		}
 
 		/**
-		* Loads an extension.
-		*
-		* @param string $uExtensionName the extension
-		*/
+		 * Loads an extension.
+		 *
+		 * @param string $uExtensionName the extension
+		 * @param bool $uAutoload
+		 *
+		 * @throws Exception
+		 * @return bool
+		 */
 		public static function loadExtension($uExtensionName, $uAutoload = false) {
 			if(!isset(self::$list[$uExtensionName])) {
 				return false;
@@ -88,7 +93,7 @@
 			}
 
 			self::$list[$uExtensionName]['loaded'] = ($uAutoload) ? 2 : 1;
-			$tClassInfo = &self::$list[$uExtensionName]['config'];
+			$tClassInfo = & self::$list[$uExtensionName]['config'];
 
 			if(!COMPILED) {
 				if(isset($tClassInfo['/includeList'])) {
@@ -139,10 +144,12 @@
 		}
 
 		/**
-		* Checks weather an extension is loaded or not.
-		*
-		* @return bool load status.
-		*/
+		 * Checks weather an extension is loaded or not.
+		 *
+		 * @param $uExtensionName
+		 *
+		 * @return bool load status.
+		 */
 		public static function isLoaded($uExtensionName) {
 			return (isset(self::$list[$uExtensionName]) && self::$list[$uExtensionName]['loaded'] >= 1);
 		}

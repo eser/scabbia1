@@ -1,137 +1,137 @@
 <?php
 
 	/**
-	* Contracts Extension
-	*
-	* @package Scabbia
-	* @subpackage contracts
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo add more validators such as phone, hex, octal, digit, isUnique, etc.
-	*/
+	 * Contracts Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage contracts
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo add more validators such as phone, hex, octal, digit, isUnique, etc.
+	 */
 	class contracts {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isExist = 0;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isRequired = 1;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isBoolean = 2;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isFloat = 3;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isInteger = 4;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isHex = 5;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isOctal = 6;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isNumeric = 7;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isSlugString = 8;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isDate = 9;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isUuid = 10;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isEmail = 11;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isUrl = 12;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isIpAddress = 13;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isEqual = 14;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isMinimum = 15;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isLower = 16;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isMaximum = 17;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const isGreater = 18;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const length = 19;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const lengthMinimum = 20;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const lengthMaximum = 21;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const inArray = 22;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const regExp = 23;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const custom = 24;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const pregEmail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const pregUrl = '/^(https?|ftp):\/\/((?:[a-z0-9@:.-]|%[0-9A-F]{2}){3,})(?::(\d+))?((?:\/(?:[a-z0-9-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*)(?:\?((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?/i';
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const pregIpAddress = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function test($uType, $uValue, $uArgs) {
 			switch($uType) {
 			case self::isRequired:
@@ -145,7 +145,7 @@
 					$uValue != 'false' && $uValue != 'true' &&
 					$uValue !== 0 && $uValue !== 1 &&
 					$uValue != '0' && $uValue != '1'
-					) {
+				) {
 					return false;
 				}
 
@@ -181,10 +181,10 @@
 
 				break;
 			case self::isSlugString:
-				for($i = mb_strlen($uValue) - 1;$i >= 0;$i--) {
+				for($i = mb_strlen($uValue) - 1; $i >= 0; $i--) {
 					$tChar = mb_substr($uValue, $i, 1);
 
-					if(!ctype_alnum($uValue[$i]) && $uValue[$i] != '-') {
+					if(!ctype_alnum($tChar) && $tChar != '-') {
 						return false;
 					}
 				}
@@ -206,7 +206,7 @@
 					return false;
 				}
 
-				for($i = strlen($uValue) - 1;$i >= 0;$i--) {
+				for($i = strlen($uValue) - 1; $i >= 0; $i--) {
 					if($i == 8 || $i == 13 || $i == 18 || $i == 23) {
 						if($uValue[$i] != '-') {
 							return false;
@@ -222,7 +222,7 @@
 
 				break;
 			case self::isEqual:
-				for($tCount = count($uArgs) - 1;$tCount >= 0;$tCount--) {
+				for($tCount = count($uArgs) - 1; $tCount >= 0; $tCount--) {
 					if($uValue == $uArgs[$tCount]) {
 						$tPasses = true;
 						break;
@@ -271,7 +271,7 @@
 
 				break;
 			case self::lengthMaximum:
-				if(strlen($uValue) > $uArgs[0]) {  // inverse of <=
+				if(strlen($uValue) > $uArgs[0]) { // inverse of <=
 					return false;
 				}
 
@@ -319,8 +319,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function __callStatic($uName, $uArgs) {
 			$tContractObject = new contractObject(
 				array_shift($uArgs),
@@ -332,8 +332,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function check() {
 			$uArgs = func_get_args();
 			$uName = array_shift($uArgs);
@@ -350,28 +350,28 @@
 	}
 
 	/**
-	* Contract Object Class
-	*
-	* @package Scabbia
-	* @subpackage ExtensibilityExtensions
-	*/
+	 * Contract Object Class
+	 *
+	 * @package Scabbia
+	 * @subpackage ExtensibilityExtensions
+	 */
 	class contractObject {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $value;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $type;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $args;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uValue, $uType, $uArgs) {
 			$this->value = $uValue;
 			$this->type = $uType;
@@ -379,8 +379,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function error(&$uController, $uErrorMessage) {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return;
@@ -390,8 +390,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function exception($uErrorMessage) {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return;
@@ -401,8 +401,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function check() {
 			if(contracts::test($this->type, $this->value, $this->args)) {
 				return true;

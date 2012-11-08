@@ -1,33 +1,33 @@
 <?php
 
 	/**
-	* ViewEngine: Smarty Extension
-	*
-	* @package Scabbia
-	* @subpackage viewengine_smarty
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends mvc
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * ViewEngine: Smarty Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage viewengine_smarty
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends mvc
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class viewengine_smarty {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $engine = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			mvc::registerViewEngine('tpl', 'viewengine_smarty');
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/smarty/path', '{core}include/3rdparty/smarty/libs'));

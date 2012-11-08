@@ -1,27 +1,27 @@
 <?php
 
 	/**
-	* Arrays Extension
-	*
-	* @package Scabbia
-	* @subpackage arrays
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Arrays Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage arrays
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class arrays {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &flat() {
 			$tArray = array();
 
-			foreach(func_get_args() as $tKey => $tValue) {
+			foreach(func_get_args() as $tValue) {
 				if(is_array($tValue)) {
-					foreach(call_user_func_array('self::flat', $tValue) as $tKey2 => $tValue2) {
+					foreach(call_user_func_array('self::flat', $tValue) as $tValue2) {
 						$tArray[] = $tValue2;
 					}
 
@@ -35,8 +35,8 @@
 		}
 
 		/**
-		* Gets the first element in array, otherwise returns default value.
-		*/
+		 * Gets the first element in array, otherwise returns default value.
+		 */
 		public static function &getFirst($uArray, $uDefault = null) {
 			$tValue = current($uArray);
 			if($tValue === false) {
@@ -47,12 +47,14 @@
 		}
 
 		/**
-		* Gets the specified element in array, otherwise returns default value.
-		*
-		* @param array $uArray array
-		* @param mixed $uElement key
-		* @param mixed $uDefault default value
-		*/
+		 * Gets the specified element in array, otherwise returns default value.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uElement key
+		 * @param mixed $uDefault default value
+		 *
+		 * @return mixed|null
+		 */
 		public static function &get($uArray, $uElement, $uDefault = null) {
 			if(!isset($uArray[$uElement])) {
 				return $uDefault;
@@ -62,11 +64,13 @@
 		}
 
 		/**
-		* Gets the specified elements in array.
-		*
-		* @param array $uArray array
-		* @param mixed $uElement key
-		*/
+		 * Gets the specified elements in array.
+		 *
+		 * @param array $uArray array
+		 *
+		 * @internal param mixed $uElement key
+		 * @return array
+		 */
 		public static function &getArray($uArray) {
 			$tReturn = array();
 
@@ -78,10 +82,12 @@
 		}
 
 		/**
-		* Gets a random element in array.
-		*
-		* @param array $uArray array
-		*/
+		 * Gets a random element in array.
+		 *
+		 * @param array $uArray array
+		 *
+		 * @return null
+		 */
 		public static function &getRandom($uArray) {
 			$tCount = count($uArray);
 			if($tCount == 0) {
@@ -89,16 +95,19 @@
 			}
 
 			$uValues = array_values($uArray);
+
 			return $uValues[rand(0, $tCount - 1)];
 		}
 
 		/**
-		* Returns an array filled with the elements in specified range.
-		*
-		* @param int $uMinimum minumum number
-		* @param int $uMaximum maximum number
-		* @param bool $uWithKeys whether set keys or not
-		*/
+		 * Returns an array filled with the elements in specified range.
+		 *
+		 * @param int $uMinimum minumum number
+		 * @param int $uMaximum maximum number
+		 * @param bool $uWithKeys whether set keys or not
+		 *
+		 * @return array
+		 */
 		public static function range($uMinimum, $uMaximum, $uWithKeys = false) {
 			$tReturn = array();
 
@@ -115,15 +124,17 @@
 		}
 
 		/**
-		* Sorts an array by key.
-		*
-		* @param array $uArray array
-		* @param mixed $uField field
-		* @param string $uOrder order
-		*/
+		 * Sorts an array by key.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uField field
+		 * @param string $uOrder order
+		 *
+		 * @return array
+		 */
 		public static function &sortByKey($uArray, $uField, $uOrder = 'asc') {
 			$tReturn = array();
-            if(count($uArray) == 0) {
+			if(count($uArray) == 0) {
 				return $tReturn;
 			}
 
@@ -147,11 +158,13 @@
 		}
 
 		/**
-		* Categorizes an array by key.
-		*
-		* @param array $uArray array
-		* @param mixed $uKey key
-		*/
+		 * Categorizes an array by key.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 *
+		 * @return array
+		 */
 		public static function &categorize($uArray, $uKey) {
 			$tReturn = array();
 
@@ -168,11 +181,13 @@
 		}
 
 		/**
-		* ....
-		*
-		* @param array $uArray array
-		* @param mixed $uKey key
-		*/
+		 * ....
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 *
+		 * @return array
+		 */
 		public static function &assignKeys($uArray, $uKey) {
 			$tReturn = array();
 
@@ -184,13 +199,15 @@
 		}
 
 		/**
-		* Extracts specified column from the array.
-		*
-		* @param array $uArray array
-		* @param mixed $uKey key
-		* @param bool $uSkipEmpties whether skip empty entries or not
-		* @param bool $uDistinct whether returns multiple instances of same entries or not
-		*/
+		 * Extracts specified column from the array.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 * @param bool $uSkipEmpties whether skip empty entries or not
+		 * @param bool $uDistinct whether returns multiple instances of same entries or not
+		 *
+		 * @return array
+		 */
 		public static function &column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false) {
 			$tReturn = array();
 
@@ -200,8 +217,10 @@
 						$tReturn[] = $tRow[$uKey];
 					}
 				}
-				else if(!$uSkipEmpties) {
-					$tReturn[] = null;
+				else {
+					if(!$uSkipEmpties) {
+						$tReturn[] = null;
+					}
 				}
 			}
 
@@ -209,12 +228,14 @@
 		}
 
 		/**
-		* Gets the first matching row.
-		*
-		* @param array $uArray array
-		* @param mixed $uKey key
-		* @param mixed $uValue value
-		*/
+		 * Gets the first matching row.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 * @param mixed $uValue value
+		 *
+		 * @return bool
+		 */
 		public static function getRow($uArray, $uKey, $uValue) {
 			foreach($uArray as &$tRow) {
 				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
@@ -227,10 +248,12 @@
 
 		/**
 		 * Gets the first matching row's key.
-			*
+		 *
 		 * @param array $uArray array
 		 * @param mixed $uKey key
 		 * @param mixed $uValue value
+		 *
+		 * @return bool|int|string
 		 */
 		public static function getRowKey($uArray, $uKey, $uValue) {
 			foreach($uArray as $tKey => &$tRow) {
@@ -243,12 +266,14 @@
 		}
 
 		/**
-		* Gets the matching rows.
-		*
-		* @param array $uArray array
-		* @param mixed $uKey key
-		* @param mixed $uValue value
-		*/
+		 * Gets the matching rows.
+		 *
+		 * @param array $uArray array
+		 * @param mixed $uKey key
+		 * @param mixed $uValue value
+		 *
+		 * @return array
+		 */
 		public static function &getRows($uArray, $uKey, $uValue) {
 			$tReturn = array();
 
@@ -262,11 +287,13 @@
 		}
 
 		/**
-		* Combines two array properly.
-		*
-		* @param array $uArray1 first array
-		* @param array $uArray2 second array
-		*/
+		 * Combines two array properly.
+		 *
+		 * @param array $uArray1 first array
+		 * @param array $uArray2 second array
+		 *
+		 * @return array
+		 */
 		public static function &combine($uArray1, $uArray2) {
 			$tArray = array();
 
@@ -283,8 +310,8 @@
 		}
 
 		/**
-		* Combines two array properly.
-		*/
+		 * Combines two array properly.
+		 */
 		public static function &combine2() {
 			$uArgs = func_get_args();
 			$tArray = array();
@@ -314,11 +341,13 @@
 		}
 
 		/**
-		* Sorts an array by priority list.
-		*
-		* @param array $uArray array
-		* @param array $uPriorities priority list
-		*/
+		 * Sorts an array by priority list.
+		 *
+		 * @param array $uArray array
+		 * @param array $uPriorities priority list
+		 *
+		 * @return array
+		 */
 		public static function sortByPriority($uArray, $uPriorities) {
 			$tArray = array();
 

@@ -1,21 +1,21 @@
 <?php
 
 	/**
-	* Blackmore Extension: ZModels Section
-	*
-	* @package Scabbia
-	* @subpackage blackmore_zmodels
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, resources, validation, http, auth, zmodels
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Blackmore Extension: ZModels Section
+	 *
+	 * @package Scabbia
+	 * @subpackage blackmore_zmodels
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class blackmore_zmodels {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function blackmore_registerModules($uParms) {
 			$uParms['modules']['index']['submenus'] = true;
 
@@ -55,8 +55,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function generateSql() {
 			auth::checkRedirect('admin');
 
@@ -68,8 +68,8 @@
 		}
 		
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function all() {
 			auth::checkRedirect('editor');
 
@@ -85,8 +85,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function add($uAction) {
 			auth::checkRedirect('editor');
 
@@ -94,13 +94,6 @@
 			$tViewbag = array(
 				'module' => &$tModule,
 				'fields' => array()
-			);
-
-			$tTypes = array(
-				'post' => 'Post',
-				'page' => 'Page',
-				'link' => 'Link',
-				'file' => 'File'
 			);
 
 			if(http::$method == 'post') {
@@ -183,8 +176,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function edit($uAction, $uSlug) {
 			auth::checkRedirect('editor');
 
@@ -289,8 +282,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function remove($uAction, $uSlug) {
 			auth::checkRedirect('editor');
 

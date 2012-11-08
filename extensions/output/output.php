@@ -1,26 +1,26 @@
 <?php
 
 	/**
-	* Output Extension
-	*
-	* @package Scabbia
-	* @subpackage output
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Output Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage output
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class output {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $effectList = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function begin() {
 			ob_start('output::flushOutput');
 			ob_implicit_flush(false);
@@ -30,8 +30,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &end($uFlush = true) {
 			$tContent = ob_get_clean();
 
@@ -47,8 +47,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function flushOutput($uContent) {
 			return '';
 		}

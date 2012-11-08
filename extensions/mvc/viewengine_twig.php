@@ -1,37 +1,37 @@
 <?php
 
 	/**
-	* ViewEngine: Twig Extension
-	*
-	* @package Scabbia
-	* @subpackage viewengine_twig
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends mvc
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * ViewEngine: Twig Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage viewengine_twig
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends mvc
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class viewengine_twig {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $loader = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $engine = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			mvc::registerViewEngine('twig', 'viewengine_twig');
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function renderview($uObject) {
 			if(is_null(self::$engine)) {
 				$tPath = framework::translatePath(config::get('/twig/path', '{core}include/3rdparty/twig/lib/Twig'));

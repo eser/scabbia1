@@ -1,56 +1,56 @@
 <?php
 
 	/**
-	* Facebook (FB) Extension
-	*
-	* @package Scabbia
-	* @subpackage fb
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends session
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo direct api query like /me/home
-	*/
+	 * Facebook (FB) Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage fb
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends session
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo direct api query like /me/home
+	 */
 	class fb {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appId;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appSecret;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appFileUpload;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appUrl;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appPageId;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $appRedirectUri;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $api = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $userId = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function loadApi() {
 			self::$appId = config::get('/facebook/APP_ID');
 			self::$appSecret = config::get('/facebook/APP_SECRET');
@@ -61,11 +61,11 @@
 
 			if(is_null(self::$api)) {
 				self::$api = new Facebook(array(
-					'appId'			=> self::$appId,
-					'secret'		=> self::$appSecret,
-					'cookie'		=> true,
-					'fileUpload'	=> (self::$appFileUpload == '1')
-				));
+				                               'appId' => self::$appId,
+				                               'secret' => self::$appSecret,
+				                               'cookie' => true,
+				                               'fileUpload' => (self::$appFileUpload == '1')
+				                          ));
 			}
 
 			self::$userId = self::$api->getUser();
@@ -77,8 +77,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function resetSession() {
 			session::remove('fbUser');
 			session::remove('fbUserAccessToken');
@@ -95,15 +95,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserId() {
 			return self::$userId;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserAccessToken($uExtended = false) {
 			if(self::$userId == 0) {
 				return false;
@@ -126,10 +126,10 @@
 					$tExtendedUserAccessTokenResponse = self::$api->unboxOauthRequest(
 						self::$api->unboxGetUrl('graph', '/oauth/access_token'),
 						array(
-							'client_id' => self::$appId,
-							'client_secret' => self::$appSecret,
-							'grant_type' => 'fb_exchange_token',
-							'fb_exchange_token' => $tUserAccessToken
+						     'client_id' => self::$appId,
+						     'client_secret' => self::$appSecret,
+						     'grant_type' => 'fb_exchange_token',
+						     'fb_exchange_token' => $tUserAccessToken
 						)
 					);
 
@@ -154,20 +154,20 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getLoginUrl($uPermissions, $uRedirectUri = null) {
 			$tLoginUrl = self::$api->getLoginUrl(array(
-				'scope' => $uPermissions,
-				'redirect_uri' => string::coalesce($uRedirectUri, self::$appRedirectUri)
-			));
+			                                          'scope' => $uPermissions,
+			                                          'redirect_uri' => string::coalesce($uRedirectUri, self::$appRedirectUri)
+			                                     ));
 
 			return $tLoginUrl;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkLogin($uPermissions, $uRequiredPermissions = null, $uRedirectUri = null) {
 			if(
 				self::$userId == 0 ||
@@ -181,8 +181,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkUserPermission($uPermissions) {
 			if(self::$userId == 0) {
 				return false;
@@ -204,8 +204,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkLike($uId) {
 			if(self::$userId == 0) {
 				return false;
@@ -221,8 +221,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function get($uQuery, $uUseCache = false, $uExtra = null) {
 			if(self::$userId == 0) {
 				return false;
@@ -259,8 +259,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function postToFeed($uUser, $uAccessToken, $uContent) {
 			$uContent['access_token'] = $uAccessToken;
 
@@ -268,8 +268,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUser($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -283,8 +283,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserLikes($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -298,22 +298,22 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserHome($uExtra = null) {
 			return self::get('/me/home', true, $uExtra);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserFeed($uExtra = null) {
 			return self::get('/me/feed', true, $uExtra);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getUserFriends($uExtra = null) {
 			if(is_null($uExtra)) {
 				$uExtra = array();
@@ -340,20 +340,23 @@
 	}
 
 	/**
-	* Facebook Query Object Class
-	*
-	* @package Scabbia
-	* @subpackage ExtensibilityExtensions
-	*/
+	 * Facebook Query Object Class
+	 *
+	 * @package Scabbia
+	 * @subpackage ExtensibilityExtensions
+	 */
 	class FacebookQueryObject {
 		public $object;
 		public $data;
 		public $hasPreviousPage;
 		public $hasNextPage;
 
+		/**
+		 * @param $uObject
+		 */
 		public function __construct($uObject) {
-			$this->object = &$uObject;
-			$this->data = &$this->object['data'];
+			$this->object = & $uObject;
+			$this->data = & $this->object['data'];
 			$this->hasPreviousPage = (isset($this->object['paging']) && isset($this->object['paging']['previous']));
 			$this->hasNextPage = (isset($this->object['paging']) && isset($this->object['paging']['next']));
 		}
@@ -367,14 +370,15 @@
 	 */
 	class Facebook extends BaseFacebook {
 		/**
-		* Identical to the parent constructor, except that
-		* we start a PHP session to store the user ID and
-		* access token if during the course of execution
-		* we discover them.
-		*
-		* @param Array $config the application configuration.
-		* @see BaseFacebook::__construct in facebook.php
-		*/
+		 * Identical to the parent constructor, except that
+		 * we start a PHP session to store the user ID and
+		 * access token if during the course of execution
+		 * we discover them.
+		 *
+		 * @param Array $config the application configuration.
+		 *
+		 * @see BaseFacebook::__construct in facebook.php
+		 */
 		public function __construct($config) {
 			parent::__construct($config);
 		}
@@ -382,14 +386,15 @@
 		protected static $kSupportedKeys = array('state', 'code', 'access_token', 'user_id');
 
 		/**
-		* Provides the implementations of the inherited abstract
-		* methods.  The implementation uses PHP sessions to maintain
-		* a store for authorization codes, user ids, CSRF states, and
-		* access tokens.
-		*/
+		 * Provides the implementations of the inherited abstract
+		 * methods.  The implementation uses PHP sessions to maintain
+		 * a store for authorization codes, user ids, CSRF states, and
+		 * access tokens.
+		 */
 		protected function setPersistentData($key, $value) {
 			if(!in_array($key, self::$kSupportedKeys)) {
 				self::errorLog('Unsupported key passed to setPersistentData.');
+
 				return;
 			}
 
@@ -413,6 +418,7 @@
 		protected function clearPersistentData($key) {
 			if(!in_array($key, self::$kSupportedKeys)) {
 				self::errorLog('Unsupported key passed to clearPersistentData.');
+
 				return;
 			}
 
@@ -434,7 +440,7 @@
 			return $this->_oauthRequest($url, $params);
 		}
 
-		public function unboxGetUrl($name, $path='', $params=array()) {
+		public function unboxGetUrl($name, $path = '', $params = array()) {
 			return $this->getUrl($name, $path, $params);
 		}
 	}

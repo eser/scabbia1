@@ -1,20 +1,5 @@
 <?php
 
-	/**
-	* Database Extension
-	*
-	* @package Scabbia
-	* @subpackage database
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, cache
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo caching for databaseQuery (get hash of given parameters)
-	* @todo databaseQuery inTransaction(true)
-	*/
 	define('_and', ' AND ');
 	define('_or', ' OR ');
 	define('_in', ' IN ');
@@ -24,40 +9,55 @@
 	define('_ilike', ' ILIKE ');
 	define('_notilike', ' NOT ILIKE ');
 
+	/**
+	 * Database Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage database
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, cache
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo caching for databaseQuery (get hash of given parameters)
+	 * @todo databaseQuery inTransaction(true)
+	 */
 	class database {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $databases = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $datasets = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $default = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const CACHE_NONE = 0;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const CACHE_MEMORY = 1;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const CACHE_FILE = 2;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		const CACHE_STORAGE = 4;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &get() {
 			if(is_null(self::$databases)) {
 				self::$databases = array();
@@ -93,44 +93,44 @@
 	}
 
 	/**
-	* Database Connection Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Database Connection Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class databaseConnection {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $id;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $default;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $provider;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $cache = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $stats = array('cache' => 0, 'query' => 0);
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $inTransaction = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $initCommand;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uConfig) {
 			$this->id = $uConfig['id'];
 			$this->default = isset($uConfig['default']);
@@ -145,15 +145,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __destruct() {
 			$this->close();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function open() {
 			$this->provider->open();
 
@@ -165,16 +165,16 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function close() {
 			$this->provider->close();
 			$this->provider = null;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function beginTransaction() {
 			$this->open();
 			$this->provider->beginTransaction();
@@ -182,24 +182,24 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function commit() {
 			$this->provider->commit();
 			$this->inTransaction = false;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function rollBack() {
 			$this->provider->rollBack();
 			$this->inTransaction = false;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &execute($uQuery) {
 			$this->open();
 
@@ -207,8 +207,8 @@
 				profiler::start(
 					'databaseQuery',
 					array(
-						'query' => $uQuery,
-						'parameters' => null
+					     'query' => $uQuery,
+					     'parameters' => null
 					)
 				);
 			}
@@ -223,8 +223,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function query($uQuery, $uParameters = array(), $uCaching = database::CACHE_MEMORY) {
 			$this->open();
 
@@ -232,8 +232,8 @@
 				profiler::start(
 					'databaseQuery',
 					array(
-						'query' => $uQuery,
-						'parameters' => $uParameters
+					     'query' => $uQuery,
+					     'parameters' => $uParameters
 					)
 				);
 			}
@@ -246,35 +246,39 @@
 			}
 
 			if(($uCaching & database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
-				$tData = &$this->cache[$uPropsSerialized]->resume($this);
+				$tData = & $this->cache[$uPropsSerialized]->resume($this);
 				$tLoadedFromCache = true;
 			}
-			else if(($uCaching & database::CACHE_FILE) > 0) { //  && framework::$development <= 0
-				$tData = cache::fileGet($tFolder, $uPropsSerialized, -1, true);
-
-				if($tData !== false) {
-					$this->cache[$uPropsSerialized] = &$tData->resume($this);
-					$tLoadedFromCache = true;
-				}
-				else {
-					$tLoadedFromCache = false;
-				}
-			}
-			else if(($uCaching & database::CACHE_STORAGE) > 0) { //  && framework::$development <= 0
-				$tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
-				$tData = cache::storageGet($tKey);
-
-				if($tData !== false) {
-					$this->cache[$uPropsSerialized] = &$tData->resume($this);
-					$tLoadedFromCache = true;
-				}
-				else {
-					$tLoadedFromCache = false;
-				}
-			}
 			else {
-				$tData = false;
-				$tLoadedFromCache = false;
+				if(($uCaching & database::CACHE_FILE) > 0) { //  && framework::$development <= 0
+					$tData = cache::fileGet($tFolder, $uPropsSerialized, -1, true);
+
+					if($tData !== false) {
+						$this->cache[$uPropsSerialized] = & $tData->resume($this);
+						$tLoadedFromCache = true;
+					}
+					else {
+						$tLoadedFromCache = false;
+					}
+				}
+				else {
+					if(($uCaching & database::CACHE_STORAGE) > 0) { //  && framework::$development <= 0
+						$tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
+						$tData = cache::storageGet($tKey);
+
+						if($tData !== false) {
+							$this->cache[$uPropsSerialized] = & $tData->resume($this);
+							$tLoadedFromCache = true;
+						}
+						else {
+							$tLoadedFromCache = false;
+						}
+					}
+					else {
+						$tData = false;
+						$tLoadedFromCache = false;
+					}
+				}
 			}
 
 			if($tData === false) {
@@ -287,10 +291,10 @@
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop(
-					//! affected rows
+				//! affected rows
 					array(
-						'affectedRows' => $tData->count(),
-						'fromCache' => $tLoadedFromCache
+					     'affectedRows' => $tData->count(),
+					     'fromCache' => $tLoadedFromCache
 					)
 				);
 			}
@@ -299,15 +303,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function lastInsertId($uName = null) {
 			return $this->provider->lastInsertId($uName);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function serverInfo() {
 			$this->open();
 
@@ -315,8 +319,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function dataset() {
 			$this->open();
 
@@ -359,44 +363,44 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function createQuery() {
 			return new databaseQuery($this);
 		}
 	}
 
 	/**
-	* Database Dataset Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Database Dataset Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class databaseDataset {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $id;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $queryString;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $parameters;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $cacheLife;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $transaction;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uConfig) {
 			$this->id = $uConfig['id'];
 			$this->queryString = $uConfig['command'];
@@ -407,71 +411,71 @@
 	}
 
 	/**
-	* Database Query Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Database Query Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class databaseQuery {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $database = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $table;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $fields;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $parameters;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $where;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $groupby;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $orderby;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $limit;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $offset;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $sequence;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $caching;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct(&$uDatabase = null) {
 			$this->setDatabase($uDatabase);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function setDatabase(&$uDatabase = null) {
 			if(!is_null($uDatabase)) {
-				$this->database = &$uDatabase;
+				$this->database = & $uDatabase;
 			}
 			else {
 				$this->database = database::get(); // default
@@ -481,16 +485,16 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function setDatabaseName($uDatabaseName) {
 			$this->database = database::get($uDatabaseName);
 			$this->clear();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function clear() {
 			$this->table = '';
 			$this->fields = array();
@@ -506,8 +510,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setTable($uTableName) {
 			$this->table = $uTableName;
 
@@ -515,8 +519,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
 			$this->table .= ' ' . $uJoinType . ' JOIN ' . $uTableName . ' ON ' . $uCondition;
 
@@ -524,8 +528,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setFields($uArray) {
 			foreach($uArray as $tField => &$tValue) {
 				// $this->fields[$tField] = string::squote($tValue, true);
@@ -542,17 +546,17 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setFieldsDirect($uArray) {
-			$this->fields = &$uArray;
+			$this->fields = & $uArray;
 
 			return $this;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &addField($uField, $uValue = null) {
 			if(func_num_args() == 1) {
 				$this->fields[] = $uField;
@@ -573,8 +577,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &addFieldDirect($uField, $uValue) {
 			$this->fields[$uField] = $uValue;
 
@@ -582,8 +586,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &addParameter($uParameter, $uValue) {
 			$this->parameters[$uParameter] = $uValue;
 
@@ -591,8 +595,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function constructWhere($uArray, $uIsList = false) {
 			$tOutput = '(';
 			$tPreviousElement = null;
@@ -624,11 +628,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setWhere($uCondition, $uList = null) {
 			if(is_array($uCondition)) {
 				$this->where = self::constructWhere($uCondition);
+
 				return $this;
 			}
 
@@ -642,8 +647,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &andWhere($uCondition, $uList = null, $uKeyword = 'OR') {
 			if(is_array($uCondition)) {
 				if(count($uCondition) > 0) {
@@ -670,8 +675,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &orWhere($uCondition, $uList = null, $uKeyword = 'AND') {
 			if(is_array($uCondition)) {
 				if(count($uCondition) > 0) {
@@ -698,8 +703,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setGroupBy($uGroupBy) {
 			$this->groupby = $uGroupBy;
 
@@ -707,8 +712,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &addGroupBy($uGroupBy) {
 			$this->groupby .= ', ' . $uGroupBy;
 
@@ -716,8 +721,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby = $uOrderBy;
 			if(!is_null($uOrder)) {
@@ -728,8 +733,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &addOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby .= ', ' . $uOrderBy;
 			if(!is_null($uOrder)) {
@@ -740,8 +745,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setLimit($uLimit) {
 			$this->limit = $uLimit;
 
@@ -749,8 +754,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setOffset($uOffset) {
 			$this->offset = $uOffset;
 
@@ -758,8 +763,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setSequence($uSequence) {
 			$this->sequence = $uSequence;
 
@@ -767,8 +772,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setReturning($uReturning) {
 			$this->returning = $uReturning;
 
@@ -776,8 +781,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &setCaching($uCaching) {
 			$this->caching = $uCaching;
 
@@ -785,8 +790,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &insert() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlInsert($this->table, $this->fields, $this->returning),
@@ -807,8 +812,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &update() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)),
@@ -822,8 +827,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &delete() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)),
@@ -837,15 +842,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function getQuery() {
 			return $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &get() {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset)),
@@ -859,8 +864,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
 			$tReturn = $this->database->query(
 				$this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null),
@@ -872,8 +877,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function runSmartObject(&$uInstance) {
 			$tRow = $this->getRow();
 
@@ -884,163 +889,163 @@
 	}
 
 	/**
-	* Database Query Result Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Database Query Result Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class databaseQueryResult implements ArrayAccess, Countable, Iterator {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_query;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_parameters;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_object = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_database = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_caching = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_directory = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_filename = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_rows = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_count = -1;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_cursor = 0;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $_lastInsertId = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uQuery, $uParameters, &$uDatabase, $uCaching, $uDirectory, $uFilename) {
-			$this->_query = &$uQuery;
-			$this->_parameters = &$uParameters;
-			$this->_database = &$uDatabase;
-			$this->_caching = &$uCaching;
-			$this->_directory = &$uDirectory;
-			$this->_filename = &$uFilename;
+			$this->_query = & $uQuery;
+			$this->_parameters = & $uParameters;
+			$this->_database = & $uDatabase;
+			$this->_caching = & $uCaching;
+			$this->_directory = & $uDirectory;
+			$this->_filename = & $uFilename;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __destruct() {
 			$this->close();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __isset($uKey) {
 			return isset($this->_rows[$this->_cursor][$uKey]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __get($uKey) {
 			return $this->_rows[$this->_cursor][$uKey];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __set($uKey, $uValue) {
 			return $this->_rows[$this->_cursor][$uKey] = $uValue;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __unset($uKey) {
 			unset($this->_rows[$this->_cursor][$uKey]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetExists($uOffset) {
 			return isset($this->_rows[$this->_cursor][$uOffset]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetGet($uOffset) {
 			return $this->_rows[$this->_cursor][$uOffset];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetSet($uOffset, $uValue) {
 			return $this->_rows[$this->_cursor][$uOffset] = $uValue;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function offsetUnset($uOffset) {
 			unset($this->_rows[$this->_cursor][$uOffset]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function count() {
 			return $this->_count;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function current() {
 			return $this->_rows[$this->_cursor];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function key() {
 			return $this->_cursor;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function next() {
 			++$this->_cursor;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function execute() {
 			$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
 			$this->_count = $this->_database->provider->itCount($this->_object);
@@ -1049,8 +1054,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function all() {
 			// $this->_cursor = 0;
 			while($this->valid()) {
@@ -1063,8 +1068,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function column($uKey) {
 			$tItems = array();
 
@@ -1081,11 +1086,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function row() {
 			if(!$this->valid()) {
 				$this->close();
+
 				return false;
 			}
 
@@ -1096,11 +1102,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function scalar($uColumn = 0, $uDefault = false) {
 			if(!$this->valid()) {
 				$this->close();
+
 				return $uDefault;
 			}
 
@@ -1115,15 +1122,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function rewind() {
 			$this->_cursor = 0;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function valid() {
 			if(count($this->_rows) > $this->_cursor) {
 				return true;
@@ -1138,6 +1145,7 @@
 				}
 
 				$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
+
 				return true;
 			}
 
@@ -1146,12 +1154,13 @@
 			}
 
 			$this->_rows[$this->_cursor] = $this->_database->provider->itNext($this->_object);
+
 			return true;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function close() {
 			if(!is_null($this->_object)) {
 				$this->_database->provider->itClose($this->_object);
@@ -1161,7 +1170,7 @@
 			$this->_cursor = 0;
 
 			if(($this->_caching & database::CACHE_MEMORY) > 0) {
-				$this->_database->cache[$this->_filename] = &$this;
+				$this->_database->cache[$this->_filename] = & $this;
 			}
 
 			$this->_database = null;
@@ -1169,24 +1178,26 @@
 			if(($this->_caching & database::CACHE_FILE) > 0) {
 				cache::fileSet($this->_directory, $this->_filename, $this);
 			}
-			else if(($this->_caching & database::CACHE_STORAGE) > 0) {
-				$tKey = strtr($this->_directory, '/', '_') . $this->_filename;
-				cache::storageSet($tKey, $this);
+			else {
+				if(($this->_caching & database::CACHE_STORAGE) > 0) {
+					$tKey = strtr($this->_directory, '/', '_') . $this->_filename;
+					cache::storageSet($tKey, $this);
+				}
 			}
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &resume($uDatabase) {
-			$this->_database = &$uDatabase;
+			$this->_database = & $uDatabase;
 
 			return $this;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function lastInsertId() {
 			return $this->_lastInsertId;
 		}

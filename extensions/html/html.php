@@ -1,26 +1,26 @@
 <?php
 
 	/**
-	* Html Extension
-	*
-	* @package Scabbia
-	* @subpackage html
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, arrays
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo form open
-	* @todo form fields
-	* @todo add callJavascriptFromRepository
-	* @todo add callStylesheetFromRepository
-	*/
+	 * Html Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage html
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, arrays
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo form open
+	 * @todo form fields
+	 * @todo add callJavascriptFromRepository
+	 * @todo add callStylesheetFromRepository
+	 */
 	class html {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $attributeOrder = array(
 			'action', 'method', 'type', 'id', 'name', 'value',
 			'href', 'src', 'width', 'height', 'cols', 'rows',
@@ -30,8 +30,8 @@
 		);
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function tag($uName, $uAttributes = array(), $uValue = null) {
 			$tReturn = '<' . $uName;
 			if(count($uAttributes) > 0) {
@@ -49,8 +49,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function attributes($uAttributes) {
 			$tAttributes = arrays::sortByPriority($uAttributes, self::$attributeOrder);
 
@@ -68,8 +68,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function selectOptions($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
@@ -86,8 +86,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
@@ -111,8 +111,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function textBox($uName, $uValue = '', $uAttributes = array()) {
 			$uAttributes['name'] = $uName;
 			$uAttributes['value'] = $uValue;
@@ -123,8 +123,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uAttributes = array()) {
 			$uAttributes['name'] = $uName;
 			$uAttributes['value'] = $uValue;
@@ -145,8 +145,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function pager($uOptions) {
 			$tPages = ceil($uOptions['total'] / $uOptions['pagesize']);
 
@@ -230,7 +230,7 @@
 				}
 			}
 
-			for($i = $tStart;$i <= $tEnd;$i++) {
+			for($i = $tStart; $i <= $tEnd; $i++) {
 				if($tCurrent == $i) {
 					$tResult .= string::format($uOptions['activelink'], array('root' => framework::$siteroot, 'page' => $i, 'pagetext' => $i));
 				}
@@ -269,9 +269,9 @@
 		}
 
 		/**
-		* @ignore
-		*/
-	    public static function doctype($uType = 'html5') {
+		 * @ignore
+		 */
+		public static function doctype($uType = 'html5') {
 			switch($uType) {
 			case 'html5':
 			case 'xhtml5':
@@ -304,11 +304,11 @@
 			}
 
 			return false;
-	    }
+		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function table($uOptions) {
 			if(!isset($uOptions['table'])) {
 				$uOptions['table'] = '<table>';
@@ -337,17 +337,19 @@
 				if(isset($uOptions['rowFunc'])) {
 					$tResult .= call_user_func($uOptions['rowFunc'], $tRow, $tCount++);
 				}
-				else if(isset($uOptions['row'])) {
-					$tResult .= string::format($uOptions['row'], $tRow);
-				}
 				else {
-					$tResult .= '<tr>';
-
-					foreach($tRow as &$tColumn) {
-						$tResult .= string::format($uOptions['cell'], array('value' => $tColumn));
+					if(isset($uOptions['row'])) {
+						$tResult .= string::format($uOptions['row'], $tRow);
 					}
+					else {
+						$tResult .= '<tr>';
 
-					$tResult .= '</tr>';
+						foreach($tRow as &$tColumn) {
+							$tResult .= string::format($uOptions['cell'], array('value' => $tColumn));
+						}
+
+						$tResult .= '</tr>';
+					}
 				}
 			}
 

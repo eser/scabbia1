@@ -1,66 +1,66 @@
 <?php
 
 	/**
-	* Http Extension
-	*
-	* @package Scabbia
-	* @subpackage http
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Http Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage http
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class http {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $platform = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $crawler = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $crawlerType = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isSecure = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isAjax = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $method;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isBrowser = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isRobot = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isMobile = false;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $languages = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $contentTypes = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			/*
 			// session trans sid
@@ -99,18 +99,20 @@
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
 			}
-			else if(!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			}
 			else {
-				$_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
+				if(!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+					$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+				}
+				else {
+					$_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
+				}
 			}
 
 			// request handling
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				$tReturn = preg_replace('|^' . framework::$siteroot . '/'. $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
+				$tReturn = preg_replace('|^' . framework::$siteroot . '/' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
 				if($tCount > 0) {
-					$_SERVER['REQUEST_URI'] = framework::$siteroot . '/'. $tReturn;
+					$_SERVER['REQUEST_URI'] = framework::$siteroot . '/' . $tReturn;
 					break;
 				}
 			}
@@ -157,8 +159,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function run($uParms) {
 			$tAutoRun = intval(config::get('/http/autorun', '1'));
 			if(!$tAutoRun) {
@@ -170,9 +172,9 @@
 			}
 
 			events::invoke('http_route', array(
-				'queryString' => &$_SERVER['REQUEST_STRING'],
-				'get' => &$_GET
-			));
+			                                  'queryString' => &$_SERVER['REQUEST_STRING'],
+			                                  'get' => &$_GET
+			                             ));
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
@@ -180,8 +182,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function output($uParms) {
 			if(self::$isAjax) {
 				$tLastContentType = http::sentHeaderValue('Content-Type');
@@ -198,14 +200,14 @@
 				}
 
 				$tContent .= ' }';
-				
+
 				$uParms['content'] = $tContent;
 			}
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkUserAgent() {
 			foreach(config::get('/http/userAgents/platformList', array()) as $tPlatformList) {
 				if(preg_match('/' . $tPlatformList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
@@ -238,8 +240,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkLanguage($uLanguage = null) {
 			if(is_null($uLanguage)) {
 				return self::$languages;
@@ -249,8 +251,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function checkContentType($uContentType = null) {
 			if(is_null($uContentType)) {
 				return self::$contentTypes;
@@ -269,8 +271,8 @@
 //		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &xss(&$uString) {
 			if(is_string($uString)) {
 				$tString = str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
@@ -281,22 +283,22 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function encode($uString) {
 			return urlencode($uString);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function decode($uString) {
 			return urldecode($uString);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function encodeArray($uArray) {
 			$tReturn = array();
 
@@ -308,8 +310,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function copyStream($tFilename) {
 			$tInput = fopen('php://input', 'rb');
 			$tOutput = fopen($tFilename, 'wb');
@@ -319,8 +321,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function baseUrl() {
 			if(http::$isSecure) {
 				return 'https://' . $_SERVER['HTTP_HOST'];
@@ -330,8 +332,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function secureUrl($uUrl) {
 //			if(http::$isSecure && substr($uUrl, 0, 7) == 'http://') {
 //				return 'https://' . substr($uUrl, 7);
@@ -341,52 +343,132 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendStatus($uStatusCode) {
 			$tStatus = $_SERVER['SERVER_PROTOCOL'] . ' ';
 
 			switch($uStatusCode) {
-			case 100: $tStatus .= '100 Continue'; break;
-			case 101: $tStatus .= '101 Switching Protocols'; break;
-			case 200: $tStatus .= '200 OK'; break;
-			case 201: $tStatus .= '201 Created'; break;
-			case 202: $tStatus .= '202 Accepted'; break;
-			case 203: $tStatus .= '203 Non-Authoritative Information'; break;
-			case 204: $tStatus .= '204 No Content'; break;
-			case 205: $tStatus .= '205 Reset Content'; break;
-			case 206: $tStatus .= '206 Partial Content'; break;
-			case 300: $tStatus .= '300 Multiple Choices'; break;
-			case 301: $tStatus .= '301 Moved Permanently'; break;
-			case 302: $tStatus .= '302 Found'; break;
-			case 303: $tStatus .= '303 See Other'; break;
-			case 304: $tStatus .= '304 Not Modified'; break;
-			case 305: $tStatus .= '305 Use Proxy'; break;
-			case 307: $tStatus .= '307 Temporary Redirect'; break;
-			case 400: $tStatus .= '400 Bad Request'; break;
-			case 401: $tStatus .= '401 Unauthorized'; break;
-			case 402: $tStatus .= '402 Payment Required'; break;
-			case 403: $tStatus .= '403 Forbidden'; break;
-			case 404: $tStatus .= '404 Not Found'; break;
-			case 405: $tStatus .= '405 Method Not Allowed'; break;
-			case 406: $tStatus .= '406 Not Acceptable'; break;
-			case 407: $tStatus .= '407 Proxy Authentication Required'; break;
-			case 408: $tStatus .= '408 Request Timeout'; break;
-			case 409: $tStatus .= '409 Conflict'; break;
-			case 410: $tStatus .= '410 Gone'; break;
-			case 411: $tStatus .= '411 Length Required'; break;
-			case 412: $tStatus .= '412 Precondition Failed'; break;
-			case 413: $tStatus .= '413 Request Entity Too Large'; break;
-			case 414: $tStatus .= '414 Request-URI Too Long'; break;
-			case 415: $tStatus .= '415 Unsupported Media Type'; break;
-			case 416: $tStatus .= '416 Requested Range Not Satisfiable'; break;
-			case 417: $tStatus .= '417 Expectation Failed'; break;
-			case 500: $tStatus .= '500 Internal Server Error'; break;
-			case 501: $tStatus .= '501 Not Implemented'; break;
-			case 502: $tStatus .= '502 Bad Gateway'; break;
-			case 503: $tStatus .= '503 Service Unavailable'; break;
-			case 504: $tStatus .= '504 Gateway Timeout'; break;
-			case 505: $tStatus .= '505 HTTP Version Not Supported'; break;
+			case 100:
+				$tStatus .= '100 Continue';
+				break;
+			case 101:
+				$tStatus .= '101 Switching Protocols';
+				break;
+			case 200:
+				$tStatus .= '200 OK';
+				break;
+			case 201:
+				$tStatus .= '201 Created';
+				break;
+			case 202:
+				$tStatus .= '202 Accepted';
+				break;
+			case 203:
+				$tStatus .= '203 Non-Authoritative Information';
+				break;
+			case 204:
+				$tStatus .= '204 No Content';
+				break;
+			case 205:
+				$tStatus .= '205 Reset Content';
+				break;
+			case 206:
+				$tStatus .= '206 Partial Content';
+				break;
+			case 300:
+				$tStatus .= '300 Multiple Choices';
+				break;
+			case 301:
+				$tStatus .= '301 Moved Permanently';
+				break;
+			case 302:
+				$tStatus .= '302 Found';
+				break;
+			case 303:
+				$tStatus .= '303 See Other';
+				break;
+			case 304:
+				$tStatus .= '304 Not Modified';
+				break;
+			case 305:
+				$tStatus .= '305 Use Proxy';
+				break;
+			case 307:
+				$tStatus .= '307 Temporary Redirect';
+				break;
+			case 400:
+				$tStatus .= '400 Bad Request';
+				break;
+			case 401:
+				$tStatus .= '401 Unauthorized';
+				break;
+			case 402:
+				$tStatus .= '402 Payment Required';
+				break;
+			case 403:
+				$tStatus .= '403 Forbidden';
+				break;
+			case 404:
+				$tStatus .= '404 Not Found';
+				break;
+			case 405:
+				$tStatus .= '405 Method Not Allowed';
+				break;
+			case 406:
+				$tStatus .= '406 Not Acceptable';
+				break;
+			case 407:
+				$tStatus .= '407 Proxy Authentication Required';
+				break;
+			case 408:
+				$tStatus .= '408 Request Timeout';
+				break;
+			case 409:
+				$tStatus .= '409 Conflict';
+				break;
+			case 410:
+				$tStatus .= '410 Gone';
+				break;
+			case 411:
+				$tStatus .= '411 Length Required';
+				break;
+			case 412:
+				$tStatus .= '412 Precondition Failed';
+				break;
+			case 413:
+				$tStatus .= '413 Request Entity Too Large';
+				break;
+			case 414:
+				$tStatus .= '414 Request-URI Too Long';
+				break;
+			case 415:
+				$tStatus .= '415 Unsupported Media Type';
+				break;
+			case 416:
+				$tStatus .= '416 Requested Range Not Satisfiable';
+				break;
+			case 417:
+				$tStatus .= '417 Expectation Failed';
+				break;
+			case 500:
+				$tStatus .= '500 Internal Server Error';
+				break;
+			case 501:
+				$tStatus .= '501 Not Implemented';
+				break;
+			case 502:
+				$tStatus .= '502 Bad Gateway';
+				break;
+			case 503:
+				$tStatus .= '503 Service Unavailable';
+				break;
+			case 504:
+				$tStatus .= '504 Gateway Timeout';
+				break;
+			case 505:
+				$tStatus .= '505 HTTP Version Not Supported';
+				break;
 			default:
 				return;
 			}
@@ -395,8 +477,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendHeader($uHeader, $uValue = null, $uReplace = false) {
 			if(isset($uValue)) {
 				header($uHeader . ': ' . $uValue, $uReplace);
@@ -407,8 +489,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sentHeaderValue($uKey) {
 			foreach(headers_list() as $tHeaderRow) {
 				$tHeader = explode(': ', $tHeaderRow, 2);
@@ -426,8 +508,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
@@ -454,8 +536,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendHeaderLastModified($uTime, $uNotModified = false) {
 			self::sendHeader('Last-Modified', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 
@@ -465,15 +547,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendHeaderExpires($uTime) {
 			self::sendHeader('Expires', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendRedirect($uLocation, $uTerminate = true) {
 			self::sendHeader('Location', $uLocation, true);
 
@@ -483,8 +565,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendRedirectPermanent($uLocation, $uTerminate = true) {
 			self::sendStatus(301);
 			self::sendHeader('Location', $uLocation, true);
@@ -495,15 +577,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendHeaderETag($uHash) {
 			self::sendHeader('ETag', '"' . $uHash . '"', true);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendHeaderNoCache() {
 			self::sendHeader('Pragma', 'public', true);
 			self::sendHeader('Cache-Control', 'no-store, no-cache, must-revalidate', true);
@@ -511,22 +593,22 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function sendCookie($uCookie, $uValue, $uExpire = 0) {
 			setrawcookie($uCookie, self::encode($uValue), $uExpire);
 		}
 
 		/**
-		* @ignore
-		*/
-		public static function removeCookie() {
+		 * @ignore
+		 */
+		public static function removeCookie($uCookie) {
 			setrawcookie($uCookie, '', time() - 3600);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function parseGet($uQueryString) {
 			$tParsingType = config::get('/http/request/parsingType', '0');
 			$tDefaultParameter = config::get('/http/request/getParameters', '?&');
@@ -545,8 +627,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function parseHeaderString($uString, $uLowerAll = false) {
 			$tResult = array();
 
@@ -566,8 +648,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function buildQueryString($uArray) {
 			//! $tDefaultKey = config::get('/http/request/getKeys', '=');
 			/*
@@ -597,8 +679,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function get($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_GET)) {
 				return $uDefault;
@@ -615,8 +697,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function post($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_POST)) {
 				return $uDefault;
@@ -633,8 +715,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function cookie($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_COOKIE)) {
 				return $uDefault;
@@ -651,8 +733,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getDirect($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, $_GET)) {
 				return $uDefault;
@@ -662,8 +744,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function postDirect($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, $_POST)) {
 				return $uDefault;
@@ -673,8 +755,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function cookieDirect($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, $_COOKIE)) {
 				return $uDefault;

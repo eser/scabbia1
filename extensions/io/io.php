@@ -1,141 +1,191 @@
 <?php
 
 	/**
-	* IO Extension
-	*
-	* @package Scabbia
-	* @subpackage io
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * IO Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage io
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class io {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getMimeType($uExtension, $uDefault = 'application/octet-stream') {
 			switch(string::toLower($uExtension)) {
 			case 'pdf':
-				$tType = 'application/pdf'; break;
+				$tType = 'application/pdf';
+				break;
 			case 'exe':
-				$tType = 'application/octet-stream'; break;
+				$tType = 'application/octet-stream';
+				break;
 			case 'dll':
-				$tType = 'application/x-msdownload'; break;
+				$tType = 'application/x-msdownload';
+				break;
 			case 'zip':
-				$tType = 'application/zip'; break;
+				$tType = 'application/zip';
+				break;
 			case 'rar':
-				$tType = 'application/x-rar-compressed'; break;
+				$tType = 'application/x-rar-compressed';
+				break;
 			case 'gz':
-				$tType = 'application/x-gzip'; break;
+				$tType = 'application/x-gzip';
+				break;
 			case 'tar':
-				$tType = 'application/x-tar'; break;
+				$tType = 'application/x-tar';
+				break;
 			case 'deb':
-				$tType = 'application/x-deb'; break;
+				$tType = 'application/x-deb';
+				break;
 			case 'dmg':
-				$tType = 'application/x-apple-diskimage'; break;
+				$tType = 'application/x-apple-diskimage';
+				break;
 			case 'csv':
-				$tType = 'text/csv'; break;
+				$tType = 'text/csv';
+				break;
 			case 'txt':
 			case 'text':
 			case 'log':
 			case 'ini':
-				$tType = 'text/plain'; break;
+				$tType = 'text/plain';
+				break;
 			case 'rtf':
-				$tType = 'text/rtf'; break;
+				$tType = 'text/rtf';
+				break;
 			case 'odt':
-				$tType = 'application/vnd.oasis.opendocument.text'; break;
+				$tType = 'application/vnd.oasis.opendocument.text';
+				break;
 			case 'eml':
-				$tType = 'message/rfc822'; break;
+				$tType = 'message/rfc822';
+				break;
 			case 'xml':
 			case 'xsl':
-				$tType = 'text/xml'; break;
+				$tType = 'text/xml';
+				break;
 			case 'doc':
 			case 'word':
-				$tType = 'application/msword'; break;
+				$tType = 'application/msword';
+				break;
 			case 'docx':
-				$tType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'; break;
+				$tType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+				break;
 			case 'xls':
-				$tType = 'application/vnd.ms-excel'; break;
+				$tType = 'application/vnd.ms-excel';
+				break;
 			case 'xl':
-				$tType = 'application/excel'; break;
+				$tType = 'application/excel';
+				break;
 			case 'xlsx':
-				$tType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; break;
+				$tType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+				break;
 			case 'ppt':
-				$tType = 'application/vnd.ms-powerpoint'; break;
+				$tType = 'application/vnd.ms-powerpoint';
+				break;
 			case 'bmp':
-				$tType = 'image/x-ms-bmp'; break;
+				$tType = 'image/x-ms-bmp';
+				break;
 			case 'gif':
-				$tType = 'image/gif'; break;
+				$tType = 'image/gif';
+				break;
 			case 'png':
-				$tType = 'image/png'; break;
+				$tType = 'image/png';
+				break;
 			case 'jpeg':
 			case 'jpe':
 			case 'jpg':
-				$tType = 'image/jpeg'; break;
+				$tType = 'image/jpeg';
+				break;
 			case 'webp':
-				$tType = 'image/webp'; break;
+				$tType = 'image/webp';
+				break;
 			case 'tif':
 			case 'tiff':
-				$tType = 'image/tiff'; break;
+				$tType = 'image/tiff';
+				break;
 			case 'psd':
-				$tType = 'image/vnd.adobe.photoshop'; break;
+				$tType = 'image/vnd.adobe.photoshop';
+				break;
 			case 'mid':
 			case 'midi':
-				$tType = 'audio/midi'; break;
+				$tType = 'audio/midi';
+				break;
 			case 'mpga':
 			case 'mp2':
 			case 'mp3':
-				$tType = 'audio/mpeg'; break;
+				$tType = 'audio/mpeg';
+				break;
 			case 'wav':
-				$tType = 'audio/x-wav'; break;
+				$tType = 'audio/x-wav';
+				break;
 			case 'aac':
-				$tType = 'audio/aac'; break;
+				$tType = 'audio/aac';
+				break;
 			case 'ogg':
-				$tType = 'audio/ogg'; break;
+				$tType = 'audio/ogg';
+				break;
 			case 'wma':
-				$tType = 'audio/x-ms-wma'; break;
+				$tType = 'audio/x-ms-wma';
+				break;
 			case 'mpeg':
 			case 'mpg':
 			case 'mpe':
-				$tType = 'video/mpeg'; break;
+				$tType = 'video/mpeg';
+				break;
 			case 'mp4':
-				$tType = 'application/mp4'; break;
+				$tType = 'application/mp4';
+				break;
 			case 'qt':
 			case 'mov':
-				$tType = 'video/quicktime'; break;
+				$tType = 'video/quicktime';
+				break;
 			case 'avi':
-				$tType = 'video/x-msvideo'; break;
+				$tType = 'video/x-msvideo';
+				break;
 			case 'wmv':
-				$tType = 'video/x-ms-wmv'; break;
+				$tType = 'video/x-ms-wmv';
+				break;
 			case 'swf':
-				$tType = 'application/x-shockwave-flash'; break;
+				$tType = 'application/x-shockwave-flash';
+				break;
 			case 'flv':
-				$tType = 'video/x-flv'; break;
+				$tType = 'video/x-flv';
+				break;
 			case 'htm':
 			case 'html':
 			case 'shtm':
 			case 'shtml':
-				$tType = 'text/html'; break;
+				$tType = 'text/html';
+				break;
 			case 'php':
-				$tType = 'application/x-httpd-php'; break;
+				$tType = 'application/x-httpd-php';
+				break;
 			case 'phps':
-				$tType = 'application/x-httpd-php-source'; break;
+				$tType = 'application/x-httpd-php-source';
+				break;
 			case 'css':
-				$tType = 'text/css'; break;
+				$tType = 'text/css';
+				break;
 			case 'js':
-				$tType = 'application/x-javascript'; break;
+				$tType = 'application/x-javascript';
+				break;
 			case 'json':
-				$tType = 'application/json'; break;
+				$tType = 'application/json';
+				break;
 			case 'c':
 			case 'h':
-				$tType = 'text/x-c'; break;
+				$tType = 'text/x-c';
+				break;
 			case 'py':
-				$tType = 'application/x-python'; break;
+				$tType = 'application/x-python';
+				break;
 			case 'sh':
-				$tType = 'text/x-shellscript'; break;
+				$tType = 'text/x-shellscript';
+				break;
 			default:
 				$tType = $uDefault;
 			}
@@ -144,8 +194,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function map($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false) {
 			$tArray = array('.' => array());
 			$tDir = new DirectoryIterator($uPath);
@@ -176,8 +226,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &mapFlatten($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false, &$uArray = null, $uPrefix = '') {
 			if(is_null($uArray)) {
 				$uArray = array();
@@ -211,8 +261,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function read($uPath, $uFlags = LOCK_SH) {
 			if(!is_readable($uPath)) {
 				return false;
@@ -226,6 +276,7 @@
 			$tLock = flock($tHandle, $uFlags);
 			if($tLock === false) {
 				fclose($tHandle);
+
 				return false;
 			}
 
@@ -237,8 +288,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function write($uPath, $uContent, $uFlags = LOCK_EX) {
 			$tHandle = fopen($uPath, 'w', false);
 			if($tHandle === false) {
@@ -247,6 +298,7 @@
 
 			if(flock($tHandle, $uFlags) === false) {
 				fclose($tHandle);
+
 				return false;
 			}
 
@@ -259,8 +311,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function readSerialize($uPath, $uKeyphase = null) {
 			$tContent = self::read($uPath);
 
@@ -277,8 +329,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function writeSerialize($uPath, $uContent, $uKeyphase = null) {
 			$tContent = serialize($uContent);
 
@@ -290,15 +342,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function touch($uPath) {
 			return touch($uPath);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function destroy($uPath) {
 			if(file_exists($uPath)) {
 				return unlink($uPath);
@@ -308,13 +360,14 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &sanitize($uFilename, $uIncludeAll = false) {
 			static $aReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
 
 			if($uIncludeAll) {
 				$uFilename = strtr($uFilename, $aReplaceChars);
+
 				return $uFilename;
 			}
 

@@ -1,30 +1,30 @@
 <?php
 
 	/**
-	* Logger Extension
-	*
-	* @package Scabbia
-	* @subpackage logger
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Logger Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage logger
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class logger {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $filename;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $line;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$filename = config::get('/logger/filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get('/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
@@ -34,8 +34,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function errorCallback($uCode, $uMessage, $uFile, $uLine) {
 			self::handler(
 				$uMessage,
@@ -46,8 +46,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function exceptionCallback($uException) {
 			self::handler(
 				$uException->getMessage(),
@@ -58,44 +58,44 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function handler($uMessage, $uCode, $uFile, $uLine) {
 			switch($uCode) {
-				case E_ERROR:
-				case E_USER_ERROR:
-				case E_RECOVERABLE_ERROR:
-					$tType = 'Error';
-					break;
-				case E_WARNING:
-				case E_USER_WARNING:
-					$tType = 'Warning';
-					break;
-				case E_NOTICE:
-				case E_USER_NOTICE:
-					$tType = 'Notice';
-					break;
-				case E_STRICT:
-					$tType = 'Strict';
-					break;
+			case E_ERROR:
+			case E_USER_ERROR:
+			case E_RECOVERABLE_ERROR:
+				$tType = 'Error';
+				break;
+			case E_WARNING:
+			case E_USER_WARNING:
+				$tType = 'Warning';
+				break;
+			case E_NOTICE:
+			case E_USER_NOTICE:
+				$tType = 'Notice';
+				break;
+			case E_STRICT:
+				$tType = 'Strict';
+				break;
 				// case E_DEPRECATED: // PHP >= 5.3.0
-				case 8192:
+			case 8192:
 				// case E_USER_DEPRECATED: // PHP >= 5.3.0
-				case 16384:
-					break;
-				default:
-					$tType = 'Unknown';
-					break;
+			case 16384:
+				break;
+			default:
+				$tType = 'Unknown';
+				break;
 			}
 
 			$tIgnoreError = false;
 			events::invoke('reportError', array(
-				'type' => &$tType,
-				'message' => $uMessage,
-				'file' => $uFile,
-				'line' => $uLine,
-				'ignore' => &$tIgnoreError
-			));
+			                                   'type' => &$tType,
+			                                   'message' => $uMessage,
+			                                   'file' => $uFile,
+			                                   'line' => $uLine,
+			                                   'ignore' => &$tIgnoreError
+			                              ));
 
 			if(!$tIgnoreError) {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
@@ -104,7 +104,9 @@
 				events::$disabled = true;
 				$tEventDepth = events::$eventDepth;
 
-				for($tCount = ob_get_level(); --$tCount > 1;ob_end_flush());
+				for($tCount = ob_get_level(); --$tCount > 1; ob_end_flush()) {
+					;
+				}
 
 				if(framework::$development >= 1) {
 					$tDeveloperLocation = $uFile . ' @' . $uLine;
@@ -174,10 +176,10 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function write($uCategory, $uParams) {
-			$uParams['category'] = &$uCategory;
+			$uParams['category'] = & $uCategory;
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
 			$uParams['message'] = string::prefixLines($uParams['message'], '- ', PHP_EOL);

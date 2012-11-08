@@ -1,52 +1,52 @@
 <?php
 
 	/**
-	* Session Extension
-	*
-	* @package Scabbia
-	* @subpackage session
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends cache
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo integrate with cache extension
-	*/
+	 * Session Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage session
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends cache
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo integrate with cache extension
+	 */
 	class session {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $id = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $data = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $flashdata_loaded = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $flashdata_next = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $sessionName;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $sessionLife;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $isModified = false;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function open() {
 			self::$sessionName = config::get('/session/cookie/name', 'sessid');
 
@@ -72,6 +72,7 @@
 					) {
 						self::$data = $tData['data'];
 						self::$flashdata_loaded = $tData['flashdata'];
+
 						return;
 					}
 				}
@@ -83,8 +84,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function save() {
 			if(!self::$isModified) {
 				return;
@@ -121,8 +122,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function destroy() {
 			if(is_null(self::$data)) { // !is_null
 				self::open();
@@ -144,8 +145,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &get($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -159,8 +160,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function set($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -171,8 +172,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function remove($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -183,8 +184,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function exists($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -194,8 +195,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getKeys() {
 			if(is_null(self::$data)) {
 				self::open();
@@ -205,8 +206,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getFlash($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -217,12 +218,13 @@
 			}
 
 			self::$isModified = true;
+
 			return self::$flashdata_loaded[$uKey];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function setFlash($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -233,8 +235,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function removeFlash($uKey, $uValue) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -245,8 +247,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function keepFlash($uKey, $uDefault) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -263,8 +265,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function existsFlash($uKey) {
 			if(is_null(self::$data)) {
 				self::open();
@@ -274,8 +276,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function getKeysFlash() {
 			if(is_null(self::$data)) {
 				self::open();
@@ -285,8 +287,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function export($tOutput = true) {
 			if(is_null(self::$data)) {
 				self::open();

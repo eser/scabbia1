@@ -1,35 +1,35 @@
 <?php
 
 	/**
-	* Time Extension
-	*
-	* @package Scabbia
-	* @subpackage time
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Time Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage time
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class time {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function today() {
 			return mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function now() {
 			return time();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function ago($uDifference) {
 			if($uDifference < 60) {
 				return array($uDifference, 'seconds');
@@ -49,8 +49,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function humanize($uTimestamp, $uTime = null, $uCalculateAgo = true) {
 			if(is_null($uTime)) {
 				$uTime = time();
@@ -86,8 +86,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function toGmt($uTime = null, $uIsGMT = true) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -97,14 +97,14 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromGmt($uTime) {
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function toDos($uTime = null) {
 			if(!isset($uTime)) {
 				$uTime = time();
@@ -126,11 +126,11 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromDos($uTime) {
 			$tSeconds = 2 * ($uTime & 0x1f);
-			$tMinutes = ($uTime >>  5) & 0x3f;
+			$tMinutes = ($uTime >> 5) & 0x3f;
 			$tHours = ($uTime >> 11) & 0x1f;
 			$tDays = ($uTime >> 16) & 0x1f;
 			$tMonths = ($uTime >> 21) & 0x0f;
@@ -140,8 +140,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function toDb($uTime, $uFormat = 'd-m-Y H:i:s') {
 			if(!is_numeric($uTime)) {
 				if(version_compare(PHP_VERSION, '5.3.0', '<')) {
@@ -158,8 +158,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function fromDb($uTime) {
 			if(version_compare(PHP_VERSION, '5.3.0', '<')) {
 				$tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
@@ -172,8 +172,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function convert($uTime, $uSourceFormat, $uDestinationFormat = null) {
 			if(version_compare(PHP_VERSION, '5.3.0', '<')) {
 				$tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
@@ -192,15 +192,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function format($uTime, $uFormat) {
 			return date($uFormat, $uTime);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function timezones() {
 			return timezone_identifiers_list();
 		}

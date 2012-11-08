@@ -1,57 +1,58 @@
 <?php
 
 	/**
-	* Media Extension
-	*
-	* @package Scabbia
-	* @subpackage media
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo add watermark
-	* @todo write text w/ truetype fonts
-	* @todo integrate with cache extension
-	*/
+	 * Media Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage media
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo add watermark
+	 * @todo write text w/ truetype fonts
+	 * @todo integrate with cache extension
+	 */
 	class media {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $cachePath;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $cacheAge;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$cachePath = framework::writablePath('cache/media/');
 			self::$cacheAge = intval(config::get('/media/cacheAge', '120'));
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function open($uSource) {
 			return new mediaFile($uSource);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function calculateHash() {
 			$uArgs = func_get_args();
+
 			return implode('_', $uArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function garbageCollect() {
 			$tDirectory = new DirectoryIterator(self::$cachePath);
 
@@ -71,52 +72,52 @@
 	}
 
 	/**
-	* Media File Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Media File Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class mediaFile {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $source;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $filename;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $extension;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $mime;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $hash;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $sw, $sh, $sa;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $size;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $image = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $background;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uSource = null) {
 			$this->source = $uSource;
 			$this->background = array(255, 255, 255, 0);
@@ -162,8 +163,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __destruct() {
 			if(!is_null($this->image)) {
 				imagedestroy($this->image);
@@ -171,8 +172,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function background() {
 			$this->background = func_get_args();
 
@@ -180,15 +181,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function write($uX, $uY, $uSize, $uColor, $uText) {
 			return $this;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function rotate($uDegree, $uBackground = 0) {
 			$this->image = imagerotate($this->image, $uDegree, $uBackground);
 			$this->sw = imagesx($this->image);
@@ -199,8 +200,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function getCache($uTag) {
 			$tCachePath = media::$cachePath . '/' . $uTag;
 
@@ -214,8 +215,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function resize($uWidth, $uHeight, $uMode = 'fit') {
 			$tAspectRatio = $uWidth / $uHeight;
 
@@ -226,18 +227,22 @@
 				$tSourceW = $this->sw;
 				$tSourceH = $this->sh;
 
-				if ($uWidth == null && $uHeight != null) {
+				if($uWidth == null && $uHeight != null) {
 					$uWidth = ceil($uHeight * $this->sa);
 				}
-				else if ($uWidth != null && $uHeight == null) {
-					$uHeight = ceil($uWidth / $this->sa);
-				}
 				else {
-					if ($this->sa > $tAspectRatio) {
-						$uHeight = $uWidth / $this->sa;
+					if($uWidth != null && $uHeight == null) {
+						$uHeight = ceil($uWidth / $this->sa);
 					}
-					else if ($this->sa < $tAspectRatio) {
-						$uWidth = $uHeight * $this->sa;
+					else {
+						if($this->sa > $tAspectRatio) {
+							$uHeight = $uWidth / $this->sa;
+						}
+						else {
+							if($this->sa < $tAspectRatio) {
+								$uWidth = $uHeight * $this->sa;
+							}
+						}
 					}
 				}
 
@@ -306,7 +311,7 @@
 			}
 
 			imagedestroy($this->image);
-			$this->image = &$tImage;
+			$this->image = & $tImage;
 			// $this->size = filesize($this->source);
 
 			$this->sw = $uWidth;
@@ -317,8 +322,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function save($uPath = null) {
 			if(!is_null($uPath)) {
 				$this->source = $uPath;
@@ -341,8 +346,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function output() {
 			http::sendHeaderExpires(0);
 			http::sendHeaderNoCache();

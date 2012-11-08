@@ -1,26 +1,26 @@
 <?php
 
 	/**
-	* ZModels Extension
-	*
-	* @package Scabbia
-	* @subpackage zmodels
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * ZModels Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage zmodels
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class zmodels {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $zmodels = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$zmodels = array();
 
@@ -30,14 +30,14 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function generateCreateSql($uTable) {
 			if(!isset(self::$zmodels[$uTable])) {
 				return false;
 			}
 
-			$tModule = &self::$zmodels[$uTable];
+			$tModule = & self::$zmodels[$uTable];
 
 			$tSql = 'CREATE TABLE ' . $tModule['name'] . ' (
 	id UUID NOT NULL,

@@ -1,46 +1,46 @@
 <?php
 
 	/**
-	* Database Provider Mysql Extension
-	*
-	* @package Scabbia
-	* @subpackage databaseprovider_mysql
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends database
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends mysqli
-	*/
+	 * Database Provider Mysql Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage databaseprovider_mysql
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends database
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends mysqli
+	 */
 	class databaseprovider_mysql {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $standard = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $host;
 		/**
 		 * @ignore
 		 */
 		public $database;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $username;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $password;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $persistent;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uConfig) {
 			$this->host = $uConfig['host'];
 			$this->database = $uConfig['database'];
@@ -51,8 +51,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function open() {
 			$tParms = array();
 			// if($this->persistent) {
@@ -65,42 +65,42 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function close() {
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function beginTransaction() {
 			$this->connection->autocommit(false);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function commit() {
 			$this->connection->commit();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function rollBack() {
 			$this->connection->rollback();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function execute($uQuery) {
 			return $this->connection->query($uQuery);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function &queryDirect($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 
@@ -126,8 +126,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function itSeek(&$uObject, $uRow) {
 			$uObject->data_seek($uRow);
 
@@ -135,50 +135,50 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function itNext(&$uObject) {
 			return $uObject->fetch();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function itCount(&$uObject) {
 			return $uObject->num_rows;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function itClose(&$uObject) {
 			return $uObject->close();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function lastInsertId($uName = null) {
 			return $this->connection->insert_id;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function serverInfo() {
 			return $this->connection->server_info;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function sqlInsert($uTable, $uObject, $uReturning = '') {
 			$tSql =
 				'INSERT INTO ' . $uTable . ' ('
-				. implode(', ', array_keys($uObject))
-				. ') VALUES ('
-				. implode(', ', array_values($uObject))
-				. ')';
+					. implode(', ', array_keys($uObject))
+					. ') VALUES ('
+					. implode(', ', array_values($uObject))
+					. ')';
 
 			// if(strlen($uReturning) > 0) {
 			// 	$tSql .= ' RETURNING ' . $uReturning;
@@ -188,8 +188,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
 			$tPairs = array();
 			foreach($uObject as $tKey => &$tValue) {
@@ -213,8 +213,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function sqlDelete($uTable, $uWhere, $uExtra = null) {
 			$tSql = 'DELETE FROM ' . $uTable;
 
@@ -232,8 +232,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null) {
 			$tSql = 'SELECT ';
 

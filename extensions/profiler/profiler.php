@@ -1,27 +1,27 @@
 <?php
 
 	/**
-	* Profiler Extension
-	*
-	* @package Scabbia
-	* @subpackage profiler
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * Profiler Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage profiler
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class profiler {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $markers = array();
 		public static $stack = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function start($uName, $uParameters = null) {
 			/*
 			if(framework::phpVersion('5.3.6')) {
@@ -38,13 +38,13 @@
 
 			$tProfileData = new profilerData($uName, $uParameters, $uSource);
 
-			self::$stack[] = &$tProfileData;
+			self::$stack[] = & $tProfileData;
 			$tProfileData->start();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &stop($uExtraParameters = null) {
 			$tProfileData = array_pop(self::$stack);
 
@@ -69,8 +69,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function clear() {
 			while(count(self::$stack) > 0) {
 				self::stop();
@@ -78,15 +78,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &get($uName) {
 			return self::$markers[$uName];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function export($tOutput = true) {
 			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$markers, $tOutput);
@@ -96,8 +96,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function exportStack($tOutput = true) {
 			if(extensions::isLoaded('string')) {
 				return string::vardump(self::$stack, $tOutput);
@@ -108,15 +108,15 @@
 	}
 
 	/**
-	* Profiler Data Class
-	*
-	* @package Scabbia
-	* @subpackage UtilityExtensions
-	*/
+	 * Profiler Data Class
+	 *
+	 * @package Scabbia
+	 * @subpackage UtilityExtensions
+	 */
 	class profilerData {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $name;
 		public $parameters;
 		public $source;
@@ -126,8 +126,8 @@
 		public $consumedMemory;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uName, $uParameters = null, $uSource) {
 			$this->name = $uName;
 			$this->parameters = $uParameters;
@@ -135,24 +135,24 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function start() {
 			$this->startTime = microtime(true);
 			$this->startMemory = memory_get_peak_usage();
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function stop() {
 			$this->consumedTime = microtime(true) - $this->startTime;
 			$this->consumedMemory = memory_get_peak_usage() - $this->startMemory;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function addParameters($uNewParameters) {
 			$this->parameters += $uNewParameters;
 		}

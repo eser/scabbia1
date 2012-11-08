@@ -1,61 +1,61 @@
 <?php
 
 	/**
-	* MVC Extension
-	*
-	* @package Scabbia
-	* @subpackage mvc
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends string, http
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*
-	* @todo remove underscore '_' in controller, action names
-	* @todo forbid 'shared' for controller names
-	* @todo controller and action names localizations
-	* @todo selective loading with controller imports
-	* @todo routing optimizations.
-	* @todo map controller to path (/docs/index/* => views/docs/*.md)
-	*/
+	 * MVC Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage mvc
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends string, http
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 *
+	 * @todo remove underscore '_' in controller, action names
+	 * @todo forbid 'shared' for controller names
+	 * @todo controller and action names localizations
+	 * @todo selective loading with controller imports
+	 * @todo routing optimizations.
+	 * @todo map controller to path (/docs/index/* => views/docs/*.md)
+	 */
 	class mvc {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $route = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $controllerActual = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $controllerStack = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $actionActual = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $defaultController;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $defaultAction;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $errorPage;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $viewEngines = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function extension_load() {
 			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
@@ -69,8 +69,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function http_route($uParms) {
 			self::$route = self::findRoute($uParms['get']);
 			self::$controllerActual = self::$route['controller'];
@@ -78,12 +78,12 @@
 
 			$tParameterSegments = null;
 			events::invoke('routing', array(
-				'controller' => &self::$route['controller'],
-				'action' => &self::$route['action'],
-				'controllerActual' => &self::$controllerActual,
-				'actionActual' => &self::$actionActual,
-				'parameterSegments' => &$tParameterSegments
-			));
+			                               'controller' => &self::$route['controller'],
+			                               'action' => &self::$route['action'],
+			                               'controllerActual' => &self::$controllerActual,
+			                               'actionActual' => &self::$actionActual,
+			                               'parameterSegments' => &$tParameterSegments
+			                          ));
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));
@@ -96,7 +96,7 @@
 				}
 
 				$tController = new self::$controllerActual ();
-				self::$controllerStack[] = &$tController;
+				self::$controllerStack[] = & $tController;
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
@@ -122,8 +122,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function registerViewEngine($uExtension, $uClassName) {
 			if(isset(self::$viewEngines[$uExtension])) {
 				return;
@@ -133,8 +133,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		protected static function &getControllerData($uController) {
 			$tControllerData = array(
 				'actionUrlKeys' => config::get('/mvc/routes/actionUrlKeys', '1'),
@@ -166,8 +166,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function findRoute($uArgs) {
 			if(!is_array($uArgs)) {
 				$uArgs = http::parseGet($uArgs);
@@ -218,14 +218,14 @@
 			unset($uArgs['_hash']);
 
 			$tRoute['queryString'] = http::buildQueryString($uArgs);
-			$tRoute['queryStringArray'] = &$uArgs;
+			$tRoute['queryStringArray'] = & $uArgs;
 
 			return $tRoute;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function view() {
 			$uArgs = func_get_args();
 
@@ -278,8 +278,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function viewFile($uView) {
 			$uArgs = func_get_args();
 
@@ -326,17 +326,17 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function json() {
 			$uArgs = func_get_args();
 
 			$uController = end(self::$controllerStack);
 			if(count($uArgs) >= 1) {
-				$uModel = &$uArgs[0];
+				$uModel = & $uArgs[0];
 			}
 			else {
-				$uModel = &$uController->vars;
+				$uModel = & $uController->vars;
 			}
 
 			http::sendHeader('Content-Type', 'application/json', true);
@@ -347,34 +347,34 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function error($uMessage) {
 			if(!http::$isAjax) {
 				self::view(self::$errorPage, array(
-					'title' => 'Error',
-					'message' => $uMessage
-				));
+				                                  'title' => 'Error',
+				                                  'message' => $uMessage
+				                             ));
 			}
 
 			framework::end(1, $uMessage);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function notfound() {
 			self::view(self::$errorPage, array(
-				'title' => 'Error',
-				'message' => '404 Not Found'
-			));
+			                                  'title' => 'Error',
+			                                  'message' => '404 Not Found'
+			                             ));
 
 			framework::end(1);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		private static function url_internal($uArgs) {
 			$tSegments = self::findRoute(
 				string::format(
@@ -397,49 +397,51 @@
 			}
 
 			$tControllerData = self::getControllerData($tArray['controller']);
+
 			return string::format($tControllerData['link'], $tArray);
-/*
-			if(count($uArgs) == 1) {
-				if(!is_array($uArgs[0])) {
-					return $uArgs[0];
-				}
+			/*
+						if(count($uArgs) == 1) {
+							if(!is_array($uArgs[0])) {
+								return $uArgs[0];
+							}
 
-				$tQueryParameters = array();
-				$tQueryParameters['siteroot'] = string::coalesce(array($uArgs[0], 'siteroot'), framework::$siteroot);
-				$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$route['controller'], self::$defaultController);
-				$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
-				$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
-				$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$language['key']);
-				$tQueryParameters['queryString'] = string::coalesce(array($uArgs[0], 'queryString'), '');
-			}
-			else {
-				$tQueryParameters = array();
-				$tQueryParameters['siteroot'] = framework::$siteroot;
-				$tQueryParameters['controller'] = $uArgs[0];
+							$tQueryParameters = array();
+							$tQueryParameters['siteroot'] = string::coalesce(array($uArgs[0], 'siteroot'), framework::$siteroot);
+							$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$route['controller'], self::$defaultController);
+							$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
+							$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
+							$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$language['key']);
+							$tQueryParameters['queryString'] = string::coalesce(array($uArgs[0], 'queryString'), '');
+						}
+						else {
+							$tQueryParameters = array();
+							$tQueryParameters['siteroot'] = framework::$siteroot;
+							$tQueryParameters['controller'] = $uArgs[0];
 
-				$tControllerData = self::getControllerData($tQueryParameters['controller']);
+							$tControllerData = self::getControllerData($tQueryParameters['controller']);
 
-				$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
-				$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
-				$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$language['key']);
-				$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
-			}
+							$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
+							$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
+							$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$language['key']);
+							$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
+						}
 
-			return string::format($tControllerData['link'], $tQueryParameters);
-*/
+						return string::format($tControllerData['link'], $tQueryParameters);
+			*/
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function url() {
 			$tArgs = func_get_args();
+
 			return call_user_func_array('mvc::url_internal', $tArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function redirect() {
 			$tArgs = func_get_args();
 			$tQuery = call_user_func_array('mvc::url_internal', $tArgs);
@@ -448,8 +450,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function export($uAjaxOnly = false) {
 			$tArray = array();
 
@@ -481,8 +483,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function &exportAjaxJs() {
 			$tArray = self::export(true);
 
@@ -490,29 +492,29 @@
 	\$l.ready(function() {
 		\$l.extend({
 EOD;
-		foreach($tArray as $tClassName => $tClass) {
-			$tLines = array();
+			foreach($tArray as $tClassName => $tClass) {
+				$tLines = array();
 
-			if(isset($tFirst)) {
-				$tReturn .= ',';
-			}
-			else {
-				$tFirst = false;
-			}
-
-			$tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
-
-			foreach($tClass as &$tMethod) {
-				$tMethods = explode('_', $tMethod, 2);
-				if(count($tMethods) < 2 || strpos($tMethods[0], 'Ajax') === false) {
-					continue;
+				if(isset($tFirst)) {
+					$tReturn .= ',';
+				}
+				else {
+					$tFirst = false;
 				}
 
-				$tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
+				$tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
+
+				foreach($tClass as &$tMethod) {
+					$tMethods = explode('_', $tMethod, 2);
+					if(count($tMethods) < 2 || strpos($tMethods[0], 'Ajax') === false) {
+						continue;
+					}
+
+					$tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
+				}
+				$tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
 			}
-			$tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
-		}
-$tReturn .= <<<EOD
+			$tReturn .= <<<EOD
 
 		});
 	});
@@ -523,34 +525,34 @@ EOD;
 	}
 
 	/**
-	* Model Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Model Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	abstract class model {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $controller;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $db;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct($uController = null) {
-			$this->controller = &$uController;
+			$this->controller = & $uController;
 			if(extensions::isLoaded('database')) {
 				$this->db = database::get(); // default database to member 'db'
 			}
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
 			if(!extensions::isLoaded('database')) {
 				return false;
@@ -561,33 +563,34 @@ EOD;
 			}
 
 			$this->{$uMemberName} = database::get($uDatabaseName);
+
 			return true;
 		}
 	}
 
 	/**
-	* Controller Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * Controller Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	abstract class controller {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $view = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $db;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $vars = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __construct() {
 			if(extensions::isLoaded('database')) {
 				$this->db = database::get(); // default database to member 'db'
@@ -595,8 +598,8 @@ EOD;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function loaddatabase($uDatabaseName, $uMemberName = null) {
 			if(!extensions::isLoaded('database')) {
 				return false;
@@ -607,12 +610,13 @@ EOD;
 			}
 
 			$this->{$uMemberName} = database::get($uDatabaseName);
+
 			return true;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function load($uModelClass, $uMemberName = null) {
 			if(is_null($uMemberName)) {
 				$uMemberName = $uModelClass;
@@ -626,8 +630,8 @@ EOD;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs) {
 			$tMap = io::mapFlatten(framework::translatePath($uDirectory), '*' . $uExtension, true, true);
 
@@ -636,6 +640,7 @@ EOD;
 
 			if(in_array($tPath, $tMap, true)) {
 				$this->view($uDirectory . $tPath . $uExtension);
+
 				return true;
 			}
 
@@ -643,8 +648,8 @@ EOD;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function render(&$uAction, &$uArgs) {
 			$tActionMethodName = strtr($uAction, '/', '_');
 
@@ -675,36 +680,36 @@ EOD;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function get($uKey) {
 			return $this->vars[$uKey];
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function set($uKey, $uValue) {
 			$this->vars[$uKey] = $uValue;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function setRef($uKey, &$uValue) {
-			$this->vars[$uKey] = &$uValue;
+			$this->vars[$uKey] = & $uValue;
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function remove($uKey) {
 			unset($this->vars[$uKey]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function view() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::view', $uArgs);
@@ -717,67 +722,67 @@ EOD;
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::viewFile', $uArgs);
 		}
-		
+
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function json() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::json', $uArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function redirect() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::redirect', $uArgs);
 		}
 
 		/**
-		* @ignore
-		* @todo
-		*/
+		 * @ignore
+		 * @todo
+		 */
 		public function notfound() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::notfound', $uArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function error() {
 			$uArgs = func_get_args();
 			call_user_func_array('mvc::error', $uArgs);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function end() {
 			framework::end(0);
 		}
 	}
 
 	/**
-	* ViewEngine: PHP
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * ViewEngine: PHP
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class viewengine_php {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function renderview($uObject) {
 			// variable extraction
-			$model = &$uObject['model'];
+			$model = & $uObject['model'];
 			if(is_array($model)) {
-				extract($model, EXTR_SKIP|EXTR_REFS);
+				extract($model, EXTR_SKIP | EXTR_REFS);
 			}
 
 			if(isset($uObject['extra'])) {
-				extract($uObject['extra'], EXTR_SKIP|EXTR_REFS);
+				extract($uObject['extra'], EXTR_SKIP | EXTR_REFS);
 			}
 
 			require($uObject['templatePath'] . $uObject['templateFile']);

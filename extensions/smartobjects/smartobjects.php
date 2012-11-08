@@ -1,39 +1,39 @@
 <?php
 
 	/**
-	* SmartObjects Extension
-	*
-	* @package Scabbia
-	* @subpackage smartobjects
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends
-	*/
+	 * SmartObjects Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage smartobjects
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends
+	 */
 	class smartobjects {
 	}
 
 	/**
-	* SmartObject Class
-	*
-	* @package Scabbia
-	* @subpackage LayerExtensions
-	*/
+	 * SmartObject Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class smartObject {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $obtained = array();
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public $data = array();
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __isset($uKey) {
 			if(array_key_exists($uKey, $this->obtained)) {
 				return true;
@@ -56,8 +56,8 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __get($uKey) {
 			if(array_key_exists($uKey, $this->obtained)) {
 				return $this->obtained[$uKey];
@@ -76,6 +76,7 @@
 						}
 
 						$this->data[$uKey]->runSmartObject($this);
+
 						return $this->obtained[$uKey];
 					}
 				}
@@ -85,11 +86,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __set($uKey, $uValue) {
 			if(array_key_exists($uKey, $this->obtained)) {
 				$this->obtained[$uKey] = $uValue;
+
 				return;
 			}
 
@@ -97,11 +99,12 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function __unset($uKey) {
 			if(array_key_exists($uKey, $this->obtained)) {
 				unset($this->obtained[$uKey]);
+
 				return;
 			}
 
@@ -109,15 +112,15 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function removeReference($uOffset) {
 			unset($this->obtained[$uOffset]);
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function register($uOffset, $uValue) {
 			foreach((array)$uOffset as $uOffsetKey) {
 				$this->obtained[$uOffsetKey] = $uValue;
@@ -125,18 +128,18 @@
 		}
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public function listItems() {
 			echo '<h2>Items</h2>';
 
-			foreach($this->data as $tDataKey => $tDataValue) {
-				if(!is_array($item->fields)) {
+			foreach($this->data as $tDataKey => &$tDataValue) {
+				if(!is_array($tDataValue->fields)) {
 					continue;
 				}
 
 				echo '<br /><b>', $tDataKey, ': </b><br />';
-				foreach($item->fields as $tFieldKey => $tFieldValue) {
+				foreach($tDataValue->fields as $tFieldKey => $tFieldValue) {
 					if(is_numeric($tFieldKey)) {
 						echo '<pre>', $tFieldValue, ' </pre>';
 						continue;

@@ -1,33 +1,33 @@
 <?php
 
 	/**
-	* I8N Extension
-	*
-	* @package Scabbia
-	* @subpackage i8n
-	* @version 1.0.2
-	*
-	* @scabbia-fwversion 1.0
-	* @scabbia-fwdepends
-	* @scabbia-phpversion 5.2.0
-	* @scabbia-phpdepends mbstring
-	*
-	* @todo translitIt
-	* @todo intl extension methods
-	*/
+	 * I8N Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage i8n
+	 * @version 1.0.2
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends
+	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpdepends mbstring
+	 *
+	 * @todo translitIt
+	 * @todo intl extension methods
+	 */
 	class i8n {
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $languages = null;
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static $language = null;
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		/*
 		public static function extension_load() {
 			// Use the Universal Coordinated Time and most common English standards
@@ -38,8 +38,8 @@
 		*/
 
 		/**
-		* @ignore
-		*/
+		 * @ignore
+		 */
 		public static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(is_null(self::$languages)) {
 				self::$languages = array();
@@ -56,13 +56,15 @@
 			}
 
 			if(array_key_exists($uLanguage, self::$languages)) {
-				self::$language = &self::$languages[$uLanguage];
+				self::$language = & self::$languages[$uLanguage];
 			}
-			else if($uLastChoice) {
-				$tExploded = explode('-', $uLanguage, 2);
+			else {
+				if($uLastChoice) {
+					$tExploded = explode('-', $uLanguage, 2);
 
-				if(array_key_exists($tExploded[0], self::$languages)) {
-					self::$language = &self::$languages[$tExploded[0]];
+					if(array_key_exists($tExploded[0], self::$languages)) {
+						self::$language = & self::$languages[$tExploded[0]];
+					}
 				}
 			}
 
@@ -71,7 +73,7 @@
 				// 	$tLocale = explode('.', self::$language['localewin'], 2);
 				// }
 				// else {
-					$tLocale = explode('.', self::$language['locale'], 2);
+				$tLocale = explode('.', self::$language['locale'], 2);
 				// }
 
 				$tLocale['all'] = implode('.', $tLocale);
@@ -80,7 +82,7 @@
 				if(!PHP_SAFEMODE) {
 					putenv('LANG=' . $tLocale[0]);
 				}
-				$tTest = setlocale(LC_ALL, $tLocale[0]);
+				setlocale(LC_ALL, $tLocale[0]);
 
 				mb_internal_encoding(self::$language['internalEncoding']);
 				mb_http_output(self::$language['internalEncoding']);
