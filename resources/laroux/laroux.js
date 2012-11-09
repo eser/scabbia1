@@ -690,13 +690,13 @@ window.laroux = window.$l = (function() {
 	laroux.stack = function() {
 		this.entries = {};
 
-		this.add = function(entry, id) {
-			this.entries[entry[id]] = entry;
+		this.add = function(id, entry) {
+			this.entries[id] = entry;
 		};
 
-		this.addRange = function(entryArray, id) {
+		this.addRange = function(entryArray) {
 			for(entry in entryArray) {
-				this.entries[entryArray[entry][id]] = entryArray[entry];
+				this.entries[entry] = entryArray[entry];
 			}
 		};
 
