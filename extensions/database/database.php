@@ -58,7 +58,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &get() {
+		public static function &get($uDatabase = null) {
 			if(is_null(self::$databases)) {
 				self::$databases = array();
 
@@ -77,18 +77,11 @@
 				}
 			}
 
-			$uArgs = func_get_args();
-
-			switch(count($uArgs)) {
-			case 0:
+			if(is_null($uDatabase)) {
 				return self::$default;
-				break;
-			case 1:
-				return self::$databases[$uArgs[0]];
-				break;
 			}
 
-			return null;
+			return self::$databases[$uDatabase];
 		}
 	}
 

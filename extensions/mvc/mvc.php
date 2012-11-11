@@ -245,9 +245,9 @@
 		/**
 		 * @ignore
 		 */
-		public static function &load($uModelClass, $uMemberName = null) {
+		public static function &load($uModelClass, $uMemberName = null, $uDatabase = null) {
 			if(!isset(mvc::$models[$uModelClass])) {
-				mvc::$models[$uModelClass] = new $uModelClass ();
+				mvc::$models[$uModelClass] = new $uModelClass ($uDatabase);
 			}
 
 			return mvc::$models[$uModelClass];
@@ -564,37 +564,15 @@ EOD;
 		/**
 		 * @ignore
 		 */
-		public $controller;
-		/**
-		 * @ignore
-		 */
 		public $db;
 
 		/**
 		 * @ignore
 		 */
-		public function __construct($uController = null) {
-			$this->controller = & $uController;
+		public function __construct($uDatabase = null) {
 			if(extensions::isLoaded('database')) {
-				$this->db = database::get(); // default database to member 'db'
+				$this->db = database::get($uDatabase);
 			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function loaddatabase($uDatabaseName, $uMemberName = null) {
-			if(!extensions::isLoaded('database')) {
-				return false;
-			}
-
-			if(is_null($uMemberName)) {
-				$uMemberName = $uDatabaseName;
-			}
-
-			$this->{$uMemberName} = database::get($uDatabaseName);
-
-			return true;
 		}
 	}
 

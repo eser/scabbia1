@@ -57,6 +57,13 @@
 		/**
 		 * @ignore
 		 */
+		public static function &getModel() {
+			return mvc::load('blackmoreZmodelModel', null, config::get('/blackmore/database', null));
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function generateSql() {
 			auth::checkRedirect('admin');
 
@@ -73,7 +80,7 @@
 		public static function all() {
 			auth::checkRedirect('editor');
 
-			$tModel = new blackmoreZmodelModel();
+			$tModel = self::getModel();
 			$tModule = &zmodels::$zmodels[blackmore::$module];
 			
 			$tRows = $tModel->getAll($tModule['name']);
@@ -114,7 +121,7 @@
 						'slug' => string::slug(string::removeAccent($tSlug))
 					);
 
-					$tModel = new blackmoreZmodelModel();
+					$tModel = self::getModel();
 					$tModel->insert($tInput);
 
 					session::setFlash('notification', 'Category added.');
@@ -208,7 +215,7 @@
 						'slug' => string::slug(string::removeAccent($tSlug))
 					);
 
-					$tModel = new blackmoreZmodelModel();
+					$tModel = self::getModel();
 					$tModel->update($tCategoryId, $tInput);
 
 					session::setFlash('notification', 'Category modified.');
@@ -249,7 +256,7 @@
 				return;
 			}
 
-			$tModel = new blackmoreZmodelModel();
+			$tModel = self::getModel();
 			$tCategory = $tModel->getBySlug($uSlug);
 
 			$tViewbag['inputId'] = html::tag('input', array(
