@@ -16,12 +16,7 @@
 								<?php } ?>
 
 								<div class="menuDivContainer">
-									<div class="menuDiv">
-										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _('Create'); ?></a></div>
-										<ul>
-											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('blackmore/' . $module['name'] . '/add'); ?>"><?php echo _('Add ' . $module['singularTitle']); ?></a></li>
-										</ul>
-									</div>
+<?php mvc::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
 								</div>
 							</div>
 							<div class="clear"></div>

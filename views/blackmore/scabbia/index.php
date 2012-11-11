@@ -16,16 +16,7 @@
 								<?php } ?>
 
 								<div class="menuDivContainer">
-									<div class="menuDiv">
-										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _('Create'); ?></a></div>
-										<ul>
-											<li><a class="boxed iconcategoryadd" href="<?php echo mvc::url('editor/category'); ?>"><?php echo _('New Category'); ?></a></li>
-											<li><a class="boxed iconpostadd" href="<?php echo mvc::url('editor/post'); ?>"><?php echo _('New Post'); ?></a></li>
-											<li><a class="boxed iconpageadd" href="<?php echo mvc::url('editor/page'); ?>"><?php echo _('New Page'); ?></a></li>
-											<li><a class="boxed iconlinkadd" href="<?php echo mvc::url('editor/link'); ?>"><?php echo _('New Link'); ?></a></li>
-											<li><a class="boxed iconfileadd" href="<?php echo mvc::url('editor/file'); ?>"><?php echo _('New File'); ?></a></li>
-										</ul>
-									</div>
+<?php mvc::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
 								</div>
 							</div>
 							<div class="clear"></div>
