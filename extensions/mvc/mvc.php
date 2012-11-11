@@ -52,6 +52,10 @@
 		 * @ignore
 		 */
 		public static $viewEngines = array();
+		/**
+		 * @ignore
+		 */
+		public static $models = array();
 
 		/**
 		 * @ignore
@@ -221,6 +225,32 @@
 			$tRoute['queryStringArray'] = & $uArgs;
 
 			return $tRoute;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function &loaddatabase($uDatabaseName, $uMemberName = null) {
+			if(!extensions::isLoaded('database')) {
+				return false;
+			}
+
+			if(!isset(mvc::$models[$uDatabaseName])) {
+				mvc::$models[$uDatabaseName] = database::get($uDatabaseName);
+			}
+
+			return mvc::$models[$uDatabaseName];
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function &load($uModelClass, $uMemberName = null) {
+			if(!isset(mvc::$models[$uModelClass])) {
+				mvc::$models[$uModelClass] = new $uModelClass ();
+			}
+
+			return mvc::$models[$uModelClass];
 		}
 
 		/**
@@ -600,38 +630,6 @@ EOD;
 		/**
 		 * @ignore
 		 */
-		public function loaddatabase($uDatabaseName, $uMemberName = null) {
-			if(!extensions::isLoaded('database')) {
-				return false;
-			}
-
-			if(is_null($uMemberName)) {
-				$uMemberName = $uDatabaseName;
-			}
-
-			$this->{$uMemberName} = database::get($uDatabaseName);
-
-			return true;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function load($uModelClass, $uMemberName = null) {
-			if(is_null($uMemberName)) {
-				$uMemberName = $uModelClass;
-			}
-
-			// if(isset($this->{$uMemberName})) {
-			//	return;
-			// }
-
-			$this->{$uMemberName} = new $uModelClass ($this);
-		}
-
-		/**
-		 * @ignore
-		 */
 		public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs) {
 			$tMap = io::mapFlatten(framework::translatePath($uDirectory), '*' . $uExtension, true, true);
 
@@ -705,6 +703,32 @@ EOD;
 		 */
 		public function remove($uKey) {
 			unset($this->vars[$uKey]);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public function loaddatabase($uDatabaseName, $uMemberName = null) {
+			$uArgs = func_get_args();
+
+			if(is_null($uMemberName)) {
+				$uMemberName = $uDatabaseName;
+			}
+
+			$this->{$uMemberName} = call_user_func_array('mvc::loaddatabase', $uArgs);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public function load($uModelClass, $uMemberName = null) {
+			$uArgs = func_get_args();
+
+			if(is_null($uMemberName)) {
+				$uMemberName = $uModelClass;
+			}
+
+			$this->{$uMemberName} = call_user_func_array('mvc::load', $uArgs);
 		}
 
 		/**
