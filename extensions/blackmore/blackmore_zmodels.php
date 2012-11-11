@@ -104,7 +104,7 @@
 			);
 
 			if(http::$method == 'post') {
-				// validations
+				// todo: validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
@@ -114,7 +114,6 @@
 						$tSlug = http::post('name', '');
 					}
 
-					$tDate = time();
 					$tInput = array(
 						'type' => http::post('type'),
 						'name' => http::post('name'),
@@ -124,7 +123,7 @@
 					$tModel = self::getModel();
 					$tModel->insert($tInput);
 
-					session::setFlash('notification', 'Category added.');
+					session::setFlash('notification', 'Record added.');
 					mvc::redirect('blackmore/categories');
 
 					return;
@@ -145,7 +144,7 @@
 							$tTypes[$tValue['name']] = $tValue['title'];
 						}
 
-						$tAttributes = array('name' => $tField['name'], 'class' => 'select');
+						$tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
 						if(!$tIsEdit) {
 							$tAttributes['readonly'] = 'readonly';
 						}
@@ -162,7 +161,7 @@
 							'type' => 'text',
 							'name' => $tField['name'],
 							'value' => http::post($tField['name'], ''),
-							'class' => 'text'
+							'class' => 'input input_' . $tField['type']
 						);
 						if(!$tIsEdit) {
 							$tAttributes['readonly'] = 'readonly';
@@ -188,27 +187,23 @@
 		public static function edit($uAction, $uSlug) {
 			auth::checkRedirect('editor');
 
-			$tTypes = array(
-				'post' => 'Post',
-				'page' => 'Page',
-				'link' => 'Link',
-				'file' => 'File'
+			$tModule = &zmodels::$zmodels[blackmore::$module];
+			$tViewbag = array(
+				'module' => &$tModule,
+				'fields' => array()
 			);
 
 			if(http::$method == 'post') {
-				// validations
+				// todo: validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
 				if(validation::validate($_POST)) {
-					$tCategoryId = http::post('categoryid', '');
-
 					$tSlug = http::post('slug', '');
 					if(strlen(rtrim($tSlug)) == 0) {
 						$tSlug = http::post('name', '');
 					}
 
-					$tDate = time();
 					$tInput = array(
 						'type' => http::post('type'),
 						'name' => http::post('name'),
@@ -216,9 +211,9 @@
 					);
 
 					$tModel = self::getModel();
-					$tModel->update($tCategoryId, $tInput);
+					$tModel->update($uSlug, $tInput);
 
-					session::setFlash('notification', 'Category modified.');
+					session::setFlash('notification', 'Record modified.');
 					mvc::redirect('blackmore/categories');
 
 					return;
@@ -226,64 +221,104 @@
 
 				$tViewbag['error'] = implode('<br />', validation::getErrorMessages(true));
 
-				$tViewbag['inputId'] = html::tag('input', array(
-											'type' => 'hidden',
-											'name' => 'categoryid',
-											'value' => http::post('categoryid', '')
-										));
+				foreach($tModule['fieldList'] as &$tField) {
+					$tIsView = array_key_exists('view', $tField['methods']);
+					$tIsEdit = array_key_exists('edit', $tField['methods']);
 
-				$tViewbag['inputType'] = html::tag(
-											'select',
-											array('name' => 'type', 'class' => 'select'),
-											html::selectOptions($tTypes, http::post('type', null))
-										);
+					if($tIsView || $tIsEdit) {
+						switch($tField['type']) {
+						case 'enum':
+							$tTypes = array();
+							foreach($tField['valueList'] as &$tValue) {
+								$tTypes[$tValue['name']] = $tValue['title'];
+							}
 
-				$tViewbag['inputName'] = html::tag('input', array(
-											'type' => 'text',
-											'name' => 'name',
-											'value' => http::post('name', ''),
-											'class' => 'text'
-										));
+							$tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+							if(!$tIsEdit) {
+								$tAttributes['readonly'] = 'readonly';
+							}
 
-				$tViewbag['inputSlug'] = html::tag('input', array(
-											'type' => 'text',
-											'name' => 'slug',
-											'value' => http::post('slug', ''),
-											'class' => 'text'
-										));
-				
+							$tTag = '<p>' . _($tField['title']) . ': ' . html::tag(
+								'select',
+								$tAttributes,
+								html::selectOptions($tTypes, http::post($tField['name'], null))
+							) . '</p>';
+							break;
+
+						default:
+							$tAttributes = array(
+								'type' => 'text',
+								'name' => $tField['name'],
+								'value' => http::post($tField['name'], ''),
+								'class' => 'input input_' . $tField['type']
+							);
+							if(!$tIsEdit) {
+								$tAttributes['readonly'] = 'readonly';
+							}
+
+							$tTag = '<p>' . _($tField['title']) . ': ' . html::tag('input', $tAttributes) . '</p>';
+							break;
+						}
+					}
+
+					$tViewbag['fields'][] = array(
+						'data' => &$tField,
+						'html' => $tTag
+					);
+				}
+
 				mvc::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 				return;
 			}
 
 			$tModel = self::getModel();
-			$tCategory = $tModel->getBySlug($uSlug);
+			$tCategory = $tModel->getBySlug($tModule['name'], $uSlug);
 
-			$tViewbag['inputId'] = html::tag('input', array(
-										'type' => 'hidden',
-										'name' => 'categoryid',
-										'value' => $tCategory['categoryid']
-									));
+			foreach($tModule['fieldList'] as &$tField) {
+				$tIsView = array_key_exists('view', $tField['methods']);
+				$tIsEdit = array_key_exists('edit', $tField['methods']);
 
-			$tViewbag['inputType'] = html::tag(
-										'select',
-										array('name' => 'type', 'class' => 'select'),
-										html::selectOptions($tTypes, $tCategory['type'])
-									);
+				if($tIsView || $tIsEdit) {
+					switch($tField['type']) {
+					case 'enum':
+						$tTypes = array();
+						foreach($tField['valueList'] as &$tValue) {
+							$tTypes[$tValue['name']] = $tValue['title'];
+						}
 
-			$tViewbag['inputName'] = html::tag('input', array(
-										'type' => 'text',
-										'name' => 'name',
-										'value' => $tCategory['name'],
-										'class' => 'text'
-									));
+						$tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+						if(!$tIsEdit) {
+							$tAttributes['readonly'] = 'readonly';
+						}
 
-			$tViewbag['inputSlug'] = html::tag('input', array(
-										'type' => 'text',
-										'name' => 'slug',
-										'value' => $tCategory['slug'],
-										'class' => 'text'
-									));
+						$tTag = '<p>' . _($tField['title']) . ': ' . html::tag(
+							'select',
+							$tAttributes,
+							html::selectOptions($tTypes, $tCategory[$tField['name']])
+						) . '</p>';
+						break;
+
+					default:
+						$tAttributes = array(
+							'type' => 'text',
+							'name' => $tField['name'],
+							'value' => $tCategory[$tField['name']],
+							'class' => 'input input_' . $tField['type']
+						);
+						if(!$tIsEdit) {
+							$tAttributes['readonly'] = 'readonly';
+						}
+
+						$tTag = '<p>' . _($tField['title']) . ': ' . html::tag('input', $tAttributes) . '</p>';
+						break;
+					}
+				}
+
+				$tViewbag['fields'][] = array(
+					'data' => &$tField,
+					'html' => $tTag
+				);
+			}
 
 			mvc::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 		}

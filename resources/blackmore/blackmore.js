@@ -68,4 +68,6 @@ $(document).ready(function() {
 
 	$('.tipsyFocus').tipsy({fade: true, gravity: 'w', trigger: 'focus'});
 	$('.tipsyHover').tipsy({fade: true, gravity: 'w', live: true});
+
+    $l.ui.datepicker($('.input_datetime'), {})
 });
