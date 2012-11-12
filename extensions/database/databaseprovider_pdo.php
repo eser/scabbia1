@@ -84,12 +84,7 @@
 
 			$tParms[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 
-			try {
-				$this->connection = new PDO($this->pdoString, $this->username, $this->password, $tParms);
-			}
-			catch(PDOException $ex) {
-				throw new PDOException('PDO Exception: ' . $ex->getMessage());
-			}
+			$this->connection = new PDO($this->pdoString, $this->username, $this->password, $tParms);
 
 			// $this->standard = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
 		}

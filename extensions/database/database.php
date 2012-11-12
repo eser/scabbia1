@@ -28,19 +28,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $databases = null;
-		/**
-		 * @ignore
-		 */
-		public static $datasets = array();
-		/**
-		 * @ignore
-		 */
-		public static $default = null;
-
-		/**
-		 * @ignore
-		 */
 		const CACHE_NONE = 0;
 		/**
 		 * @ignore
@@ -54,6 +41,32 @@
 		 * @ignore
 		 */
 		const CACHE_STORAGE = 4;
+
+		/**
+		 * @ignore
+		 */
+		const ERROR_NONE = 0;
+		/**
+		 * @ignore
+		 */
+		const ERROR_EXCEPTION = 1;
+
+		/**
+		 * @ignore
+		 */
+		public static $databases = null;
+		/**
+		 * @ignore
+		 */
+		public static $datasets = array();
+		/**
+		 * @ignore
+		 */
+		public static $default = null;
+		/**
+		 * @ignore
+		 */
+		public static $errorHandling = self::ERROR_NONE;
 
 		/**
 		 * @ignore
@@ -153,7 +166,16 @@
 			if(strlen($this->initCommand) > 0) {
 				// $this->execute($this->initCommand); // occurs recursive loop
 				//! may need pass the initial command to the profiler extension
-				$this->provider->execute($this->initCommand);
+				try {
+					$this->provider->execute($this->initCommand);
+				}
+				catch(Exception $ex) {
+					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+						throw $ex;
+					}
+
+					return false;
+				}
 			}
 		}
 
@@ -206,7 +228,16 @@
 				);
 			}
 
-			$tReturn = $this->provider->execute($uQuery);
+			try {
+				$tReturn = $this->provider->execute($uQuery);
+			}
+			catch(Exception $ex) {
+				if(database::$errorHandling == database::ERROR_EXCEPTION) {
+					throw $ex;
+				}
+
+				$tReturn = false;
+			}
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
@@ -332,7 +363,16 @@
 					$tArray[$tParam] = $uProps[$tCount++];
 				}
 
-				$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
+				try {
+					$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
+				}
+				catch(Exception $ex) {
+					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+						throw $ex;
+					}
+
+					$tReturn = false;
+				}
 
 				if($this->inTransaction) {
 					$this->commit();
@@ -1040,8 +1080,17 @@
 		 * @ignore
 		 */
 		public function execute() {
-			$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
-			$this->_count = $this->_database->provider->itCount($this->_object);
+			try {
+				$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
+				$this->_count = $this->_database->provider->itCount($this->_object);
+			}
+			catch(Exception $ex) {
+				if(database::$errorHandling == database::ERROR_EXCEPTION) {
+					throw $ex;
+				}
+
+				return false;
+			}
 
 			$this->close();
 		}
@@ -1130,14 +1179,23 @@
 			}
 
 			if(is_null($this->_object)) {
-				$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
-				$this->_count = $this->_database->provider->itCount($this->_object);
+				try {
+					$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
+					$this->_count = $this->_database->provider->itCount($this->_object);
 
-				if($this->_count <= $this->_cursor) {
+					if($this->_count <= $this->_cursor) {
+						return false;
+					}
+
+					$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
+				}
+				catch(Exception $ex) {
+					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+						throw $ex;
+					}
+
 					return false;
 				}
-
-				$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
 
 				return true;
 			}
