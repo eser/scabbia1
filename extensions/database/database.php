@@ -1089,10 +1089,14 @@
 					throw $ex;
 				}
 
+				$this->close();
+
 				return false;
 			}
 
 			$this->close();
+			
+			return $this->_count;
 		}
 
 		/**
