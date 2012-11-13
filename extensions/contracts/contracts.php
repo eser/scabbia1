@@ -277,7 +277,7 @@
 
 				break;
 			case self::inArray:
-				if(!in_array($uArgs, $uValue)) {
+				if(!in_array($uValue, $uArgs[0])) {
 					return false;
 				}
 
