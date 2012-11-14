@@ -196,6 +196,35 @@ window.laroux = window.$l = (function() {
 
 			var head = document.getElementsByTagName('head')[0];
 			head.appendChild(elem);
+		},
+
+		hasClass: function(element, className) {
+			return element.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+		},
+
+		addClass: function(element, className) {
+			if(laroux.dom.hasClass(element, className)) {
+				return;
+			}
+
+			element.className += ' ' + className;
+		},
+
+		removeClass: function(element, className) {
+			if(!laroux.dom.hasClass(element, className)) {
+				return;
+			}
+
+			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
+		},
+
+		toggleClass: function(element, className) {
+			if(!laroux.dom.hasClass(element, className)) {
+				element.className += ' ' + className;
+				return;
+			}
+
+			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
 		}
 	};
 

@@ -41,6 +41,24 @@
 			});
 		},
 
+		// $l.ui.applyTemplate($('*[data-bindings]').get(0), { test: 'ok', content: 'nok' });
+		applyTemplate: function(element, model) {
+			var elem = $(element);
+			var bindings = eval('(' + elem.attr('data-bindings') + ')');
+
+			for(binding in bindings) {
+				if(binding.substring(0, 1) == '_') {
+					elem.attr(binding.substring(1), bindings[binding]);
+					continue;
+				}
+
+				if(binding == 'content') {
+					elem.text(bindings[binding]);
+					continue;
+				}
+			}
+		},
+
 		createBox: function(id, xclass, message) {
 			return laroux.dom.createElement('DIV', { id: id, class: xclass },
 				message
