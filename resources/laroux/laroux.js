@@ -225,6 +225,47 @@ window.laroux = window.$l = (function() {
 			}
 
 			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
+		},
+
+		// $l.dom.applyTemplate($('*[data-bindings]').get(0), { test: 'ok', content: 'nok' });
+		applyTemplate: function(element, model) {
+			var bindings = eval('(' + element.getAttribute('data-bindings') + ')');
+
+			for(binding in bindings) {
+				if(binding.substring(0, 1) == '_') {
+					element.setAttribute(binding.substring(1), bindings[binding]);
+					continue;
+				}
+
+				if(binding == 'content') {
+					element.innerText = bindings[binding];
+					continue;
+				}
+			}
+		},
+
+		applyDefaultTexts: function() {
+			var focusFunc = function() {
+				if(this.value == this.getAttribute('data-defaulttext')) {
+					this.value = '';
+				}
+			};
+			
+			var blurFunc = function() {
+				if(this.value == '') {
+					this.value = this.getAttribute('data-defaulttext');
+				}
+			};
+			
+			var domElements = document.body.querySelectorAll('*[data-defaulttext]');
+			for(var i = domElements.length - 1; i >= 0; i--) {
+				if(domElements[i].value == '') {
+					domElements[i].value = domElements[i].getAttribute('data-defaulttext');
+				}
+
+				domElements[i].addEventListener('focus', focusFunc, false);
+				domElements[i].addEventListener('blur', blurFunc, false);
+			}
 		}
 	};
 
@@ -738,5 +779,6 @@ window.laroux = window.$l = (function() {
 		}
 	};
 
+	laroux.ready(laroux.dom.applyDefaultTexts);
 	return laroux;
 })();
