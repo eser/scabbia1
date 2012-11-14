@@ -703,6 +703,10 @@ window.laroux = window.$l = (function() {
 		this.clear = function() {
 			this.entries = {};
 		};
+
+		this.length = function() {
+			return Object.keys(this.entries).length;
+		}
 	};
 
 	return laroux;
