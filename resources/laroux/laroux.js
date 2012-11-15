@@ -227,21 +227,53 @@ window.laroux = window.$l = (function() {
 			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
 		},
 
+		cloneAppend: 0,
+		cloneInsertAfter: 1,
+		cloneInsertBefore: 2,
+
+		clone: function(element, type, container) {
+			if(typeof container == 'undefined') {
+				container = element.parentNode;
+			}
+
+			var newElement = element.cloneNode(true);
+			if(typeof type == 'undefined' || type == laroux.dom.cloneAppend) {
+				container.appendChild(newElement);
+			}
+			else if(type == laroux.dom.cloneInsertAfter) {
+				container.insertBefore(newElement, element.nextSibling);
+			}
+			else { // type == 2
+				container.insertBefore(newElement, element);
+			}
+
+			return newElement;
+		},
+
 		// $l.dom.applyTemplate($('*[data-bindings]').get(0), { test: 'ok', content: 'nok' });
 		applyTemplate: function(element, model) {
-			var bindings = eval('(' + element.getAttribute('data-bindings') + ')');
+			var domElements = element.querySelectorAll('*[data-bindings]');
 
-			for(binding in bindings) {
-				if(binding.substring(0, 1) == '_') {
-					element.setAttribute(binding.substring(1), bindings[binding]);
-					continue;
-				}
+			for(var i = domElements.length - 1; i >= 0; i--) {
+				var bindings = eval('(' + domElements[i].getAttribute('data-bindings') + ')');
 
-				if(binding == 'content') {
-					element.innerText = bindings[binding];
-					continue;
+				for(binding in bindings) {
+					if(binding.substring(0, 1) == '_') {
+						domElements[i].setAttribute(binding.substring(1), bindings[binding]);
+						continue;
+					}
+
+					if(binding == 'content') {
+						domElements[i].innerText = bindings[binding];
+						continue;
+					}
 				}
 			}
+		},
+
+		cloneTemplate: function(element, model, type, container) {
+			var newElement = laroux.dom.clone(element, type, container);
+			laroux.dom.applyTemplate(newElement, model);
 		},
 
 		applyDefaultTexts: function() {
