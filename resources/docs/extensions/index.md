@@ -2,10 +2,14 @@
 
 + [access](access.md)
 + [arrays](arrays.md)
++ auth
++ blackmore
 + [cache](cache.md)
 + [captcha](captcha.md)
++ collections
 + [contracts](contracts.md)
 + [database](database.md)
++ docs
 + fb
 + [html](html.md)
 + [http](http.md)
@@ -14,12 +18,14 @@
 + logger
 + media
 + mvc
++ oauth
 + output
 + profiler
-+ repository
++ resources
 + session
 + smartobjects
-+ string
++ [string](string.md)
 + time
 + unittest
 + validation
++ zmodels

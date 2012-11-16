@@ -11,6 +11,7 @@
 
 ## Metodlar ## {#methods}
 [flat](#flat)
+[getFirst](#getFirst)
 [get](#get)
 [getArray](#getArray)
 [getRandom](#getRandom)
@@ -20,8 +21,10 @@
 [assignKeys](#assignKeys)
 [column](#column)
 [getRow](#getRow)
+[getRowKey](#getRowKey)
 [getRows](#getRows)
 [combine](#combine)
+[combine2](#combine2)
 [sortByPriority](#sortByPriority)
 
 ### flat ### {#flat}
@@ -61,6 +64,33 @@ array(5) {
 	[3] = string('qwerwqe')
 	[4] = string('asdasds')
 }
+
+~~~
+
+### getFirst ### {#getFirst}
+{mixed} arrays::getFirst($array[, $default = null])
+
+> Array'e ait ilk element'i döndürür.
+
+~~~
+
+// Önce:
+array(3) {
+	[0] = string('test')
+	[1] = string('test2')
+	[3] = string('test3')
+}
+
+// Komut:
+$arrays = array(
+	'test',
+	'test2',
+	'test3'
+);
+arrays::getFirst($arrays)
+
+// Sonra:
+string('test')
 
 ~~~
 
@@ -380,9 +410,11 @@ array(4) {
 ~~~
 
 ### column ### {#column}
-{array} arrays::column($array, $key[, $skipEmpties = false])
+{array} arrays::column($array, $key[, $skipEmpties = false, $distinct = false])
 
-> İç içe bir array yapısında yalnızca iç array'de yer alan belirtilen key'e ait değerlerden oluşacak yeni bir array oluşturur. $skipEmpties parametresi true olarak belirtildiyse bu key'e sahip olmayan array'ler dönen array'de yer almaz.
+> İç içe bir array yapısında yalnızca iç array'de yer alan belirtilen key'e ait değerlerden oluşacak yeni bir array oluşturur.
+> $skipEmpties parametresi true olarak belirtildiyse bu key'e sahip olmayan array'ler dönen array'de yer almaz.
+> $distinct parametresi array içerisinde aynı element'in birden fazla kez yer almasını engeller.
 
 ~~~
 
@@ -469,6 +501,47 @@ array(2) {
 
 ~~~
 
+### getRowKey ### {#getRowKey}
+{mixed} arrays::getRowKey($array, $key, $value)
+
+> İç içe bir array yapısında belirtilen key'in iç array'deki değere eşit olduğu ilk iç array'e ait key'i döndürür.
+
+~~~
+
+// Önce:
+array(4) {
+	[0] = array(2) {
+		[name] = string('eser')
+		[dep] = string('IT')
+	}
+	[1] = array(2) {
+		[name] = string('cengiz')
+		[dep] = string('IT')
+	}
+	[2] = array(2) {
+		[name] = string('baris')
+		[dep] = string('MIS')
+	}
+	[3] = array(2) {
+		[name] = string('hasan')
+		[dep] = string('MIS')
+	}
+}
+
+// Komut:
+$arrays2 = array(
+	array('name' => 'eser', 'dep' => 'IT'),
+	array('name' => 'cengiz', 'dep' => 'IT'),
+	array('name' => 'baris', 'dep' => 'MIS'),
+	array('name' => 'hasan', 'dep' => 'MIS')
+);
+arrays::getRowKey($arrays2, 'name', 'eser')
+
+// Sonra:
+integer(0)
+
+~~~
+
 ### getRows ### {#getRows}
 {array} arrays::getRows($array, $key, $value)
 
@@ -551,6 +624,21 @@ array(4) {
 	[c] = string('C')
 	[d] = null
 }
+
+~~~
+
+### combine2 ### {#combine2}
+{array} arrays::combine2()
+
+> Şu an için bir bilgi bulunmamakta.
+
+~~~
+
+// Önce:
+
+// Komut:
+
+// Sonra:
 
 ~~~
 
