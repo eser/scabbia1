@@ -274,6 +274,8 @@ window.laroux = window.$l = (function() {
 		cloneTemplate: function(element, model, type, container) {
 			var newElement = laroux.dom.clone(element, type, container);
 			laroux.dom.applyTemplate(newElement, model);
+
+			return newElement;
 		},
 
 		applyDefaultTexts: function() {
