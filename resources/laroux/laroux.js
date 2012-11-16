@@ -214,81 +214,96 @@ window.laroux = window.$l = (function() {
 			else if(type == laroux.dom.cloneInsertAfter) {
 				container.insertBefore(newElement, element.nextSibling);
 			}
-			else { // type == 2
+			else { // type == laroux.dom.cloneInsertBefore
 				container.insertBefore(newElement, element);
 			}
 
 			return newElement;
 		},
 
-		// $l.dom.applyTemplate($('*[data-bindings]').get(0), { test: 'ok', content: 'nok' });
 		applyTemplate: function(element, model) {
 			var domElements = Array.prototype.slice.call(element.querySelectorAll('*[data-bindings]'));
 			domElements.push(element);
 
 			for(var i = domElements.length - 1; i >= 0; i--) {
-				var operations = eval('(' + domElements[i].getAttribute('data-bindings') + ')');
+				var currentElement = domElements[i];
+				var operations = eval('(' + currentElement.getAttribute('data-bindings') + ')');
 
-				for(operation in operations) {
-					for(binding in operations[operation]) {
-						var value = operations[operation][binding];
-						
-						switch(operation) {
-						case 'setprop':
-							if(binding.substring(0, 1) == '_') {
-								domElements[i].setAttribute(binding.substring(1), value);
-								continue;
-							}
-
-							if(binding == 'content') {
-								domElements[i].innerText = value;
-								continue;
-							}
-							break;
-						case 'addprop':
-							if(binding.substring(0, 1) == '_') {
-								domElements[i].setAttribute(binding.substring(1), domElements[i].getAttribute(binding.substring(1)) + value);
-								continue;
-							}
-
-							if(binding == 'content') {
-								domElements[i].innerText += value;
-								continue;
-							}
-							break;
-						case 'removeprop':
-							if(value.substring(0, 1) == '_') {
-								domElements[i].removeAttribute(value.substring(1));
-								continue;
-							}
-							
-							if(value == 'content') {
-								domElements[i].innerText = '';
-								continue;
-							}
-							break;
-						case 'addclass':
-							laroux.css.addClass(domElements[i], value);
-							continue;
-							break;
-						case 'removeclass':
-							laroux.css.removeClass(domElements[i], value);
-							break;
-						case 'addstyle':
-							laroux.css.setProperty(domElements[i], binding, value);
-							continue;
-							break;
-						case 'removestyle':
-							laroux.css.setProperty(domElements[i], value, 'inherit !important');
-							break;
-						default:
-							console.log(operation);
-						}
+				if(typeof operations['repeat'] != 'undefined') {
+					for(key in operations['repeat']) {
+						var item = operations['repeat'][key];
+						var newElement = laroux.dom.clone(currentElement, laroux.dom.cloneInsertAfter, currentElement.parentNode);
+						laroux.dom.applyOperations(newElement, operations);
 					}
 				}
+				else {
+					laroux.dom.applyOperations(currentElement, operations);
+				}
 
-				domElements[i].removeAttribute('id');
-				domElements[i].removeAttribute('data-bindings');
+				currentElement.removeAttribute('id');
+				currentElement.removeAttribute('data-bindings');
+			}
+		},
+
+		applyOperations: function(element, operations) {
+			for(operation in operations) {
+				for(binding in operations[operation]) {
+					var value = operations[operation][binding];
+					
+					switch(operation) {
+					case 'setprop':
+						if(binding.substring(0, 1) == '_') {
+							element.setAttribute(binding.substring(1), value);
+							continue;
+						}
+
+						if(binding == 'content') {
+							element.innerText = value;
+							continue;
+						}
+						break;
+					case 'addprop':
+						if(binding.substring(0, 1) == '_') {
+							element.setAttribute(binding.substring(1), element.getAttribute(binding.substring(1)) + value);
+							continue;
+						}
+
+						if(binding == 'content') {
+							element.innerText += value;
+							continue;
+						}
+						break;
+					case 'removeprop':
+						if(value.substring(0, 1) == '_') {
+							element.removeAttribute(value.substring(1));
+							continue;
+						}
+						
+						if(value == 'content') {
+							element.innerText = '';
+							continue;
+						}
+						break;
+					case 'addclass':
+						laroux.css.addClass(element, value);
+						continue;
+						break;
+					case 'removeclass':
+						laroux.css.removeClass(element, value);
+						break;
+					case 'addstyle':
+						laroux.css.setProperty(element, binding, value);
+						continue;
+						break;
+					case 'removestyle':
+						laroux.css.setProperty(element, value, 'inherit !important');
+						break;
+					case 'repeat':
+						break;
+					default:
+						console.log(operation);
+					}
+				}
 			}
 		},
 
