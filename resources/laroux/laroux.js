@@ -252,22 +252,58 @@ window.laroux = window.$l = (function() {
 
 		// $l.dom.applyTemplate($('*[data-bindings]').get(0), { test: 'ok', content: 'nok' });
 		applyTemplate: function(element, model) {
-			var domElements = element.querySelectorAll('*[data-bindings]');
+			var domElements = Array.prototype.slice.call(element.querySelectorAll('*[data-bindings]'));
+			domElements.push(element);
 
 			for(var i = domElements.length - 1; i >= 0; i--) {
-				var bindings = eval('(' + domElements[i].getAttribute('data-bindings') + ')');
+				var operations = eval('(' + domElements[i].getAttribute('data-bindings') + ')');
 
-				for(binding in bindings) {
-					if(binding.substring(0, 1) == '_') {
-						domElements[i].setAttribute(binding.substring(1), bindings[binding]);
-						continue;
-					}
+				for(operation in operations) {
+					for(binding in operations[operation]) {
+						var value = operations[operation][binding];
+						
+						switch(operation) {
+						case 'prop':
+							if(binding.substring(0, 1) == '_') {
+								domElements[i].setAttribute(binding.substring(1), value);
+								continue;
+							}
 
-					if(binding == 'content') {
-						domElements[i].innerText = bindings[binding];
-						continue;
+							if(binding == 'content') {
+								domElements[i].innerText = value;
+								continue;
+							}
+							break;
+						case 'addprop':
+							if(binding.substring(0, 1) == '_') {
+								domElements[i].setAttribute(binding.substring(1), domElements[i].getAttribute(binding.substring(1)) + value);
+								continue;
+							}
+
+							if(binding == 'content') {
+								domElements[i].innerText += value;
+								continue;
+							}
+							break;
+						case 'removeprop':
+							if(value.substring(0, 1) == '_') {
+								domElements[i].removeAttribute(value.substring(1));
+								continue;
+							}
+							
+							if(value == 'content') {
+								domElements[i].innerText = '';
+								continue;
+							}
+							break;
+						default:
+							console.log(operation);
+						}
 					}
 				}
+
+				domElements[i].removeAttribute('id');
+				domElements[i].removeAttribute('data-bindings');
 			}
 		},
 
