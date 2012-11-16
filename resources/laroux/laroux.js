@@ -198,35 +198,6 @@ window.laroux = window.$l = (function() {
 			head.appendChild(elem);
 		},
 
-		hasClass: function(element, className) {
-			return element.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
-		},
-
-		addClass: function(element, className) {
-			if(laroux.dom.hasClass(element, className)) {
-				return;
-			}
-
-			element.className += ' ' + className;
-		},
-
-		removeClass: function(element, className) {
-			if(!laroux.dom.hasClass(element, className)) {
-				return;
-			}
-
-			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
-		},
-
-		toggleClass: function(element, className) {
-			if(!laroux.dom.hasClass(element, className)) {
-				element.className += ' ' + className;
-				return;
-			}
-
-			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
-		},
-
 		cloneAppend: 0,
 		cloneInsertAfter: 1,
 		cloneInsertBefore: 2,
@@ -263,7 +234,7 @@ window.laroux = window.$l = (function() {
 						var value = operations[operation][binding];
 						
 						switch(operation) {
-						case 'prop':
+						case 'setprop':
 							if(binding.substring(0, 1) == '_') {
 								domElements[i].setAttribute(binding.substring(1), value);
 								continue;
@@ -295,6 +266,20 @@ window.laroux = window.$l = (function() {
 								domElements[i].innerText = '';
 								continue;
 							}
+							break;
+						case 'addclass':
+							laroux.css.addClass(domElements[i], value);
+							continue;
+							break;
+						case 'removeclass':
+							laroux.css.removeClass(domElements[i], value);
+							break;
+						case 'addstyle':
+							laroux.css.setProperty(domElements[i], binding, value);
+							continue;
+							break;
+						case 'removestyle':
+							laroux.css.setProperty(domElements[i], value, 'inherit !important');
 							break;
 						default:
 							console.log(operation);
@@ -336,6 +321,61 @@ window.laroux = window.$l = (function() {
 				domElements[i].addEventListener('focus', focusFunc, false);
 				domElements[i].addEventListener('blur', blurFunc, false);
 			}
+		}
+	};
+
+	// css
+	laroux.css = {
+		hasClass: function(element, className) {
+			return element.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+		},
+
+		addClass: function(element, className) {
+			if(laroux.css.hasClass(element, className)) {
+				return;
+			}
+
+			element.className += ' ' + className;
+		},
+
+		removeClass: function(element, className) {
+			if(!laroux.css.hasClass(element, className)) {
+				return;
+			}
+
+			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
+		},
+
+		toggleClass: function(element, className) {
+			if(!laroux.css.hasClass(element, className)) {
+				element.className += ' ' + className;
+				return;
+			}
+
+			element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
+		},
+
+		getProperty: function(element, styleName) {
+			var style = window.getComputedStyle(element);
+
+			return style.getPropertyValue(styleName);
+		},
+
+		setProperty: function(element, styleName, value) {
+			var flag = false;
+			var newStyleName = '';
+
+			for(i = 0; i < styleName.length; i++) {
+				if(styleName.charAt(i) == '-') {
+					flag = true;
+					continue;
+				}
+
+				newStyleName += (!flag) ? styleName.charAt(i) : styleName.charAt(i).toUpperCase();
+				flag = false;
+			}
+
+			element.style[newStyleName] = value;
 		}
 	};
 
