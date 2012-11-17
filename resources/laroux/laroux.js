@@ -222,26 +222,35 @@ window.laroux = window.$l = (function() {
 		},
 
 		applyTemplate: function(element, model) {
-			var domElements = Array.prototype.slice.call(element.querySelectorAll('*[data-bindings]'));
+			var domElements = Array.prototype.slice.call(element.querySelectorAll('*[data-repeat], *[data-bindings]'));
 			domElements.push(element);
 
 			for(var i = domElements.length - 1; i >= 0; i--) {
 				var currentElement = domElements[i];
-				var operations = eval('(' + currentElement.getAttribute('data-bindings') + ')');
+				var dataBindings = currentElement.getAttribute('data-bindings');
+				var dataRepeat = currentElement.getAttribute('data-repeat');
 
-				if(typeof operations['repeat'] != 'undefined') {
-					for(key in operations['repeat']) {
-						var item = operations['repeat'][key];
+				if(dataRepeat != null) {
+					var repeatEval = eval('(' + dataRepeat + ')');
+					for(key in repeatEval) {
+						var item = repeatEval[key];
+						var operations = (dataBindings != null) ? eval('(' + dataBindings + ')') : {};
+
 						var newElement = laroux.dom.clone(currentElement, laroux.dom.cloneInsertAfter, currentElement.parentNode);
 						laroux.dom.applyOperations(newElement, operations);
+						newElement.removeAttribute('id');
+						newElement.removeAttribute('data-repeat');
+						if(dataBindings != null) {
+							newElement.removeAttribute('data-bindings');
+						}
 					}
 				}
 				else {
+					var operations = (dataBindings != null) ? eval('(' + dataBindings + ')') : {};
 					laroux.dom.applyOperations(currentElement, operations);
+					// newElement.removeAttribute('id');
+					currentElement.removeAttribute('data-bindings');
 				}
-
-				currentElement.removeAttribute('id');
-				currentElement.removeAttribute('data-bindings');
 			}
 		},
 
