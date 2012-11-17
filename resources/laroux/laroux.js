@@ -329,8 +329,8 @@ window.laroux = window.$l = (function() {
 			}
 		},
 
-		cloneTemplate: function(element, model, type, container) {
-			var newElement = laroux.dom.clone(element, type, container);
+		cloneTemplate: function(element, model, type, container, target) {
+			var newElement = laroux.dom.clone(element, type, container, target);
 			laroux.dom.applyTemplate(newElement, model);
 
 			return newElement;
@@ -341,11 +341,13 @@ window.laroux = window.$l = (function() {
 				if(this.value == this.getAttribute('data-defaulttext')) {
 					this.value = '';
 				}
+				// this.style['content'] = 'none';
 			};
 			
 			var blurFunc = function() {
 				if(this.value == '') {
 					this.value = this.getAttribute('data-defaulttext');
+					// this.style['content'] = 'attr(\'data-defaulttext\')';
 				}
 			};
 			
@@ -353,6 +355,7 @@ window.laroux = window.$l = (function() {
 			for(var i = domElements.length - 1; i >= 0; i--) {
 				if(domElements[i].value == '') {
 					domElements[i].value = domElements[i].getAttribute('data-defaulttext');
+					// domElements[i].style['content'] = 'attr(\'data-defaulttext\')';
 				}
 
 				domElements[i].addEventListener('focus', focusFunc, false);
