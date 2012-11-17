@@ -202,20 +202,24 @@ window.laroux = window.$l = (function() {
 		cloneInsertAfter: 1,
 		cloneInsertBefore: 2,
 
-		clone: function(element, type, container) {
+		clone: function(element, type, container, target) {
+			var newElement = element.cloneNode(true);
+
 			if(typeof container == 'undefined') {
 				container = element.parentNode;
 			}
+			if(typeof target == 'undefined') {
+				target = element;
+			}
 
-			var newElement = element.cloneNode(true);
 			if(typeof type == 'undefined' || type == laroux.dom.cloneAppend) {
 				container.appendChild(newElement);
 			}
 			else if(type == laroux.dom.cloneInsertAfter) {
-				container.insertBefore(newElement, element.nextSibling);
+				container.insertBefore(newElement, target.nextSibling);
 			}
 			else { // type == laroux.dom.cloneInsertBefore
-				container.insertBefore(newElement, element);
+				container.insertBefore(newElement, target);
 			}
 
 			return newElement;
@@ -232,11 +236,20 @@ window.laroux = window.$l = (function() {
 
 				if(dataRepeat != null) {
 					var repeatEval = eval('(' + dataRepeat + ')');
-					for(key in repeatEval) {
-						var item = repeatEval[key];
+					var lastElement = null;
+					var container = (typeof repeatEval['container'] != 'undefined') ? laroux.dom.selectSingle(repeatEval['container']) : currentElement.parentNode;
+
+					if(typeof repeatEval['clearFirst'] != 'undefined' && repeatEval['clearFirst'] == true) {
+						container.innerHTML = '';
+					}
+
+					for(key in repeatEval['items']) {
+						var item = repeatEval['items'][key];
 						var operations = (dataBindings != null) ? eval('(' + dataBindings + ')') : {};
 
-						var newElement = laroux.dom.clone(currentElement, laroux.dom.cloneInsertAfter, currentElement.parentNode);
+						var newElement = laroux.dom.clone(currentElement, (lastElement == null) ? laroux.dom.cloneAppend : laroux.dom.cloneInsertAfter, container, lastElement);
+						lastElement = newElement;
+
 						laroux.dom.applyOperations(newElement, operations);
 						newElement.removeAttribute('id');
 						newElement.removeAttribute('data-repeat');
