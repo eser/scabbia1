@@ -330,6 +330,34 @@
 
 			return new contractObject(true);
 		}
+
+		/**
+		 * @ignore
+		 */
+		public static function getEmail($uValue) {
+			// if(filter_var($uValue, FILTER_VALIDATE_EMAIL) === false) {
+			//	return new contractObject(false);
+			// }
+
+			$tParts = explode('@', $uValue);
+			if(count($tPart) != 2) {
+				return new contractObject(false);
+			}
+
+			$tPart[1] = strtolower($tPart[1]);
+			switch($tPart[1]) {
+			case 'gmail.com':
+			case 'googlemail.com':
+				$tPlusEnabled = true;
+				break;
+			}
+
+			if(isset($tPlusEnabled)) {
+				// strpos('+', $tPart[0]);
+			}
+
+			return new contractObject(true, $tPart[0] . '@' . $tPart[1]);
+		}
 	}
 
 	/**
@@ -342,20 +370,25 @@
 		/**
 		 * @ignore
 		 */
-		public $value;
+		public $status;
+		/**
+		 * @ignore
+		 */
+		public $newValue;
 
 		/**
 		 * @ignore
 		 */
-		public function __construct($uValue) {
-			$this->value = $uValue;
+		public function __construct($uStatus, $uNewValue = null) {
+			$this->status = $uStatus;
+			$this->newValue = $uNewValue;
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function error(&$uController, $uErrorMessage) {
-			if(!$this->value) {
+			if(!$this->status) {
 				return;
 			}
 
@@ -366,7 +399,7 @@
 		 * @ignore
 		 */
 		public function exception($uErrorMessage) {
-			if(!$this->value) {
+			if(!$this->status) {
 				return;
 			}
 
@@ -377,7 +410,18 @@
 		 * @ignore
 		 */
 		public function &check() {
-			return $this->value;
+			return $this->status;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public function get() {
+			if(!$this->status) {
+				return false;
+			}
+
+			return $this->newValue;
 		}
 	}
 
