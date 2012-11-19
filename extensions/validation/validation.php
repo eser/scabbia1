@@ -55,30 +55,25 @@
 		 * @ignore
 		 */
 		public static function validate($uArray = null) {
-			foreach(self::$rules as &$tRule) {
-				if(!is_null($tRule->value)) {
-					if(!contracts::test($tRule->type, $tRule->value, $tRule->args)) {
-						self::addSummary($tRule);
-					}
-
-					continue;
-				}
-
-				if(!is_null($uArray)) {
+			if(!is_null($uArray)) {
+				foreach(self::$rules as &$tRule) {
 					if(!array_key_exists($tRule->field, $uArray)) {
-						if($tRule->type == contracts::isExist) {
+						if($tRule->type == 'isExist') {
 							self::addSummary($tRule);
 						}
 
 						continue;
 					}
 
-					if(!contracts::test($tRule->type, $uArray[$tRule->field], $tRule->args)) {
+					$tArgs = $tRule->args;
+					array_unshift($tArgs, $uArray[$tRule->field]);
+
+					if(!call_user_func_array('contracts::' . $tRule->type, $tArgs)->check()) {
 						self::addSummary($tRule);
 					}
 				}
 			}
-
+			
 			return (count(self::$summary) == 0);
 		}
 
@@ -109,7 +104,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
+		public static function &getErrorMessages($uFirsts = false, $uFilter = false) {
 			$tMessages = array();
 
 			foreach(self::$summary as $tKey => &$tField) {
@@ -132,6 +127,29 @@
 			return $tMessages;
 		}
 
+		/**
+		 * @ignore
+		 */
+		public static function &getErrorMessagesByFields() {
+			$tMessages = array();
+			
+			foreach(self::$summary as $tKey => &$tField) {
+				foreach($tField as &$tRule) {
+					if(is_null($tRule->errorMessage)) {
+						continue;
+					}
+
+					if(!isset($tMessages[$tField])) {
+						$tMessages[$tField] = array();
+					}
+
+					$tMessages[$tField][] = $tRule->errorMessage;
+				}
+			}
+			
+			return $tMessages;
+		}
+		
 		/**
 		 * @ignore
 		 */
@@ -158,10 +176,6 @@
 		/**
 		 * @ignore
 		 */
-		public $value = null;
-		/**
-		 * @ignore
-		 */
 		public $type;
 		/**
 		 * @ignore
@@ -183,7 +197,7 @@
 		 * @ignore
 		 */
 		public function __call($uName, $uArgs) {
-			$this->type = constant('contracts::' . $uName);
+			$this->type = $uName;
 			$this->args = & $uArgs;
 
 			return $this;
@@ -194,15 +208,6 @@
 		 */
 		public function &field($uField) {
 			$this->field = & $uField;
-
-			return $this;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function &value($uValue) {
-			$this->value = & $uValue;
 
 			return $this;
 		}
