@@ -764,7 +764,6 @@
 
 			return $_COOKIE[$uKey];
 		}
-
 	}
 
 ?>

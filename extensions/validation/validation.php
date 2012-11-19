@@ -43,12 +43,15 @@
 		/**
 		 * @ignore
 		 */
-		private static function addSummary($uRule) {
-			if(!isset(self::$summary[$uRule->field])) {
-				self::$summary[$uRule->field] = array();
+		private static function addSummary($uField, $uMessage) {
+			if(!isset(self::$summary[$uField])) {
+				self::$summary[$uField] = array();
 			}
 
-			self::$summary[$uRule->field][] = $uRule;
+			self::$summary[$uField][] = array(
+				'field' => &$uField,
+				'message' => &$uMessage
+			);
 		}
 
 		/**
@@ -59,7 +62,7 @@
 				foreach(self::$rules as &$tRule) {
 					if(!array_key_exists($tRule->field, $uArray)) {
 						if($tRule->type == 'isExist') {
-							self::addSummary($tRule);
+							self::addSummary($tRule->field, $tRule->errorMessage);
 						}
 
 						continue;
@@ -69,7 +72,7 @@
 					array_unshift($tArgs, $uArray[$tRule->field]);
 
 					if(!call_user_func_array('contracts::' . $tRule->type, $tArgs)->check()) {
-						self::addSummary($tRule);
+						self::addSummary($tRule->field, $tRule->errorMessage);
 					}
 				}
 			}
@@ -112,12 +115,12 @@
 					continue;
 				}
 
-				foreach($tField as &$tRule) {
-					if(is_null($tRule->errorMessage)) {
+				foreach($tField as &$tSummary) {
+					if(is_null($tSummary['message'])) {
 						continue;
 					}
 
-					$tMessages[] = $tRule->errorMessage;
+					$tMessages[] = $tSummary['message'];
 					if($uFirsts) {
 						break;
 					}
