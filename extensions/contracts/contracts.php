@@ -339,24 +339,30 @@
 			//	return new contractObject(false);
 			// }
 
-			$tParts = explode('@', $uValue);
-			if(count($tPart) != 2) {
+			$uValue = strtr($uValue, 'ABCDEFGHIJKLMNOPRQSTUVWXYZ', 'abcdefghijklmnoprqstuvwxyz');
+
+			$tValidated = array('', '');
+			$tIndex = 1;
+			for($i = strlen($uValue) - 1;$i >= 0;$i--) {
+				if($uValue[$i] == '@') {
+					if(--$tIndex <= 0) {
+						continue;
+					}
+
+					// direct termination
+					return new contractObject(false);
+				}
+
+				if(strpos('abcdefghijklmnoprqstuvwxyz0123456789.+-_', $uValue[$i]) !== false) {
+					$tValidated[$tIndex] = $uValue[$i] . $tValidated[$tIndex];
+				}
+			}
+
+			if($tIndex > 0) {
 				return new contractObject(false);
 			}
 
-			$tPart[1] = strtolower($tPart[1]);
-			switch($tPart[1]) {
-			case 'gmail.com':
-			case 'googlemail.com':
-				$tPlusEnabled = true;
-				break;
-			}
-
-			if(isset($tPlusEnabled)) {
-				// strpos('+', $tPart[0]);
-			}
-
-			return new contractObject(true, $tPart[0] . '@' . $tPart[1]);
+			return new contractObject(true, $tValidated[0] . '@' . $tValidated[1]);
 		}
 	}
 
