@@ -280,7 +280,7 @@ window.laroux = window.$l = (function() {
 						}
 
 						if(binding == 'content') {
-							element.innerText = value;
+							element.innerHTML = value;
 							continue;
 						}
 						break;
@@ -291,7 +291,7 @@ window.laroux = window.$l = (function() {
 						}
 
 						if(binding == 'content') {
-							element.innerText += value;
+							element.innerHTML += value;
 							continue;
 						}
 						break;
@@ -302,7 +302,7 @@ window.laroux = window.$l = (function() {
 						}
 						
 						if(value == 'content') {
-							element.innerText = '';
+							element.innerHTML = '';
 							continue;
 						}
 						break;
