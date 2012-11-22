@@ -198,6 +198,12 @@ window.laroux = window.$l = (function() {
 			head.appendChild(elem);
 		},
 
+		clear: function(element) {
+			while(element.hasChildNodes()) {
+				element.removeChild(element.firstChild);
+			}
+		},
+
 		cloneAppend: 0,
 		cloneInsertAfter: 1,
 		cloneInsertBefore: 2,
