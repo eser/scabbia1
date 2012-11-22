@@ -204,6 +204,19 @@ window.laroux = window.$l = (function() {
 			}
 		},
 
+		replace: function(element, content) {
+			laroux.dom.clear(element);
+			element.insertAdjacentHTML('afterbegin', content);
+		},
+
+		prepend: function(element, content) {
+			element.insertAdjacentHTML('afterbegin', content);
+		},
+		
+		append: function(element, content) {
+			element.insertAdjacentHTML('beforeend', content);
+		},
+		
 		cloneAppend: 0,
 		cloneInsertAfter: 1,
 		cloneInsertBefore: 2,
