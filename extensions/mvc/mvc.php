@@ -23,6 +23,14 @@
 		/**
 		 * @ignore
 		 */
+		const DONE = 0;
+		/**
+		 * @ignore
+		 */
+		const NOTFOUND = 1;
+		/**
+		 * @ignore
+		 */
 		public static $route = null;
 		/**
 		 * @ignore
@@ -104,7 +112,8 @@
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
-					if($tController->render(self::$actionActual, self::$route['parametersArray']) === false) {
+					$tReturn = $tController->render(self::$actionActual, self::$route['parametersArray']);
+					if($tReturn === false || $tReturn == mvc::NOTFOUND) {
 						mvc::notfound();
 						break;
 					}

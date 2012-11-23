@@ -22,7 +22,11 @@
 		public static function &load() {
 			$tExtensions = array();
 
-			foreach(framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE) as $tFile) {
+			$tFiles = array();
+			framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
+			framework::glob(framework::$applicationPath . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
+
+			foreach($tFiles as &$tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {
 					continue;
 				}
