@@ -53,17 +53,13 @@
 		 *
 		 */
 		public static function autoloader($uClass) {
-			if(!isset(self::$classmap[$uClass])) {
-				throw new Exception('class not found - ' . $uClass);
-			}
-
-			if(config::get('/options/autoload', '0') == '1') {
+			if(isset(self::$classmap[$uClass]) && config::get('/options/autoload', '0') == '1') {
 				self::loadExtension(self::$classmap[$uClass], true);
 
 				return;
 			}
 
-			// throw new Exception('class not found - ' . $uClass . ' but autoloading ' .  self::$classmap[$uClass] . ' extension is possible.');
+			// throw new Exception('class not found - ' . $uClass);
 		}
 
 		/**

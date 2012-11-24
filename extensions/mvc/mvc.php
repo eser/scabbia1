@@ -23,14 +23,6 @@
 		/**
 		 * @ignore
 		 */
-		const DONE = 0;
-		/**
-		 * @ignore
-		 */
-		const NOTFOUND = 1;
-		/**
-		 * @ignore
-		 */
 		public static $route = null;
 		/**
 		 * @ignore
@@ -100,21 +92,31 @@
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));
 			}
-
+			
 			while(true) {
 				if(strpos(self::$actionActual, '_') !== false) {
 					mvc::notfound();
 					break;
 				}
 
+				if(!class_exists(self::$controllerActual, true)) {
+					mvc::notfound();
+					break;
+				}
+				
 				$tController = new self::$controllerActual ();
 				self::$controllerStack[] = & $tController;
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-
+				
 				try {
 					$tReturn = $tController->render(self::$actionActual, self::$route['parametersArray']);
-					if($tReturn === false || $tReturn == mvc::NOTFOUND) {
+					if($tReturn === false) {
 						mvc::notfound();
+						break;
+					}
+
+					if($tReturn !== true && !is_null($tReturn)) {
+						call_user_func($tReturn);
 						break;
 					}
 				}
