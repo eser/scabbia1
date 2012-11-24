@@ -394,7 +394,7 @@
 		 * @ignore
 		 */
 		public function error(&$uController, $uErrorMessage) {
-			if(!$this->status) {
+			if($this->status) {
 				return;
 			}
 
@@ -405,7 +405,7 @@
 		 * @ignore
 		 */
 		public function exception($uErrorMessage) {
-			if(!$this->status) {
+			if($this->status) {
 				return;
 			}
 
