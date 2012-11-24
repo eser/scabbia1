@@ -393,17 +393,6 @@
 		/**
 		 * @ignore
 		 */
-		public function error(&$uController, $uErrorMessage) {
-			if($this->status) {
-				return;
-			}
-
-			$uController->error($uErrorMessage);
-		}
-
-		/**
-		 * @ignore
-		 */
 		public function exception($uErrorMessage) {
 			if($this->status) {
 				return;

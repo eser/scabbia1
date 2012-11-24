@@ -8,7 +8,7 @@
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends string, http
+	 * @scabbia-fwdepends string, http, resources, models, views
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 *
@@ -51,10 +51,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $viewEngines = array();
-		/**
-		 * @ignore
-		 */
 		public static $models = array();
 
 		/**
@@ -64,12 +60,6 @@
 			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
 			self::$errorPage = config::get('/mvc/view/errorPage', 'shared/error.php');
-
-			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
-				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
-			}
-
-			self::registerViewEngine('php', 'viewengine_php');
 		}
 
 		/**
@@ -134,17 +124,6 @@
 
 			// to interrupt event-chain execution
 			return false;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function registerViewEngine($uExtension, $uClassName) {
-			if(isset(self::$viewEngines[$uExtension])) {
-				return;
-			}
-
-			self::$viewEngines[$uExtension] = $uClassName;
 		}
 
 		/**
@@ -241,7 +220,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &loaddatabase($uDatabaseName, $uMemberName = null) {
+		public static function &loaddatabase($uDatabaseName) {
 			if(!extensions::isLoaded('database')) {
 				return false;
 			}
@@ -256,7 +235,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &load($uModelClass, $uMemberName = null, $uDatabase = null) {
+		public static function &load($uModelClass, $uDatabase = null) {
 			if(!isset(mvc::$models[$uModelClass])) {
 				mvc::$models[$uModelClass] = new $uModelClass ($uDatabase);
 			}
@@ -287,7 +266,7 @@
 
 			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
 			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(self::$viewEngines[$tViewExtension])) {
+			if(!isset(views::$viewEngines[$tViewExtension])) {
 				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
@@ -313,7 +292,7 @@
 			);
 
 			call_user_func(
-				self::$viewEngines[$tViewExtension] . '::renderview',
+				views::$viewEngines[$tViewExtension] . '::renderview',
 				$tViewArray
 			);
 		}
@@ -335,7 +314,7 @@
 
 			$tViewFilePath = framework::translatePath($uView);
 			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(self::$viewEngines[$tViewExtension])) {
+			if(!isset(views::$viewEngines[$tViewExtension])) {
 				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
@@ -361,7 +340,7 @@
 			);
 
 			call_user_func(
-				self::$viewEngines[$tViewExtension] . '::renderview',
+				views::$viewEngines[$tViewExtension] . '::renderview',
 				$tViewArray
 			);
 		}
@@ -566,28 +545,6 @@ EOD;
 	}
 
 	/**
-	 * Model Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	abstract class model {
-		/**
-		 * @ignore
-		 */
-		public $db;
-
-		/**
-		 * @ignore
-		 */
-		public function __construct($uDatabase = null) {
-			if(extensions::isLoaded('database')) {
-				$this->db = database::get($uDatabase);
-			}
-		}
-	}
-
-	/**
 	 * Controller Class
 	 *
 	 * @package Scabbia
@@ -754,51 +711,10 @@ EOD;
 
 		/**
 		 * @ignore
-		 * @todo
-		 */
-		public function notfound() {
-			$uArgs = func_get_args();
-			call_user_func_array('mvc::notfound', $uArgs);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function error() {
-			$uArgs = func_get_args();
-			call_user_func_array('mvc::error', $uArgs);
-		}
-
-		/**
-		 * @ignore
 		 */
 		public function end() {
-			framework::end(0);
-		}
-	}
-
-	/**
-	 * ViewEngine: PHP
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class viewengine_php {
-		/**
-		 * @ignore
-		 */
-		public static function renderview($uObject) {
-			// variable extraction
-			$model = & $uObject['model'];
-			if(is_array($model)) {
-				extract($model, EXTR_SKIP | EXTR_REFS);
-			}
-
-			if(isset($uObject['extra'])) {
-				extract($uObject['extra'], EXTR_SKIP | EXTR_REFS);
-			}
-
-			require($uObject['templatePath'] . $uObject['templateFile']);
+			$uArgs = func_get_args();
+			call_user_func_array('framework::end', $uArgs);
 		}
 	}
 

@@ -27,7 +27,7 @@
 		 */
 		public static function extension_load() {
 			self::$compiledAge = intval(config::get('/razor/templates/compiledAge', '120'));
-			mvc::registerViewEngine('cshtml', 'viewengine_razor');
+			views::registerViewEngine('cshtml', 'viewengine_razor');
 		}
 
 		/**

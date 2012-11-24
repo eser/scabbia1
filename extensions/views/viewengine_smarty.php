@@ -22,7 +22,7 @@
 		 * @ignore
 		 */
 		public static function extension_load() {
-			mvc::registerViewEngine('tpl', 'viewengine_smarty');
+			views::registerViewEngine('tpl', 'viewengine_smarty');
 		}
 
 		/**

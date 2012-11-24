@@ -12,28 +12,16 @@
 			<fwdepend>string</fwdepend>
 			<fwdepend>http</fwdepend>
 			<fwdepend>resources</fwdepend>
+			<fwdepend>models</fwdepend>
+			<fwdepend>views</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
 		<include>mvc.php</include>
-		<include>viewengine_markdown.php</include>
-		<include>viewengine_phptal.php</include>
-		<include>viewengine_raintpl.php</include>
-		<include>viewengine_razor.php</include>
-		<include>viewengine_smarty.php</include>
-		<include>viewengine_twig.php</include>
 	</includeList>
 	<classList>
 		<class>mvc</class>
-		<class>model</class>
 		<class>controller</class>
-		<class>viewengine_php</class>
-		<class>viewengine_markdown</class>
-		<class>viewengine_phptal</class>
-		<class>viewengine_raintpl</class>
-		<class>viewengine_razor</class>
-		<class>viewengine_smarty</class>
-		<class>viewengine_twig</class>
 	</classList>
 	<eventList>
 		<event>
@@ -43,30 +31,6 @@
 		<event>
 			<name>http_route</name>
 			<callback>mvc::http_route</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_markdown::extension_load</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_phptal::extension_load</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_raintpl::extension_load</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_razor::extension_load</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_smarty::extension_load</callback>
-		</event>
-		<event>
-			<name>load</name>
-			<callback>viewengine_twig::extension_load</callback>
 		</event>
 	</eventList>
 </scabbia>

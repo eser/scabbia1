@@ -26,7 +26,7 @@
 		 * @ignore
 		 */
 		public static function extension_load() {
-			mvc::registerViewEngine('twig', 'viewengine_twig');
+			views::registerViewEngine('twig', 'viewengine_twig');
 		}
 
 		/**

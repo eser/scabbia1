@@ -22,7 +22,7 @@
 		 * @ignore
 		 */
 		public static function extension_load() {
-			mvc::registerViewEngine('zpt', 'viewengine_phptal');
+			views::registerViewEngine('zpt', 'viewengine_phptal');
 		}
 
 		/**

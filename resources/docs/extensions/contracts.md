@@ -408,14 +408,8 @@ boolean(true)
 ~~~
 
 ## Metodlar: contractObject ## {#methodsContractObject}
-[error](#error)
 [exception](#exception)
 [check](#check)
-
-### error ### {#error}
-{void} contractObject->error($controller, $errorMessage)
-
-> Eğer belirtilen şart gerçekleşmezse parametre olarak verilen mvc controller'ına hatayı gönderir.
 
 ### exception ### {#exception}
 {void} contractObject->exception($errorMessage)

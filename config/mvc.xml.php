@@ -3,14 +3,20 @@
 <scabbia>
 	<mvc>
 		<routes>
-			<notfoundController>home</notfoundController>
-			<notfoundAction>notfound</notfoundAction>
 			<controllerUrlKey>0</controllerUrlKey>
 			<defaultController>home</defaultController>
 			<actionUrlKeys>1</actionUrlKeys>
 			<defaultAction>index</defaultAction>
 			<link>{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}</link>
 		</routes>
+
+		<errorPages>
+			<notfound>shared/notfound</notfound>
+			<restriction>shared/restriction</restriction>
+			<maintenance>shared/maintenance</maintenance>
+			<ipban>shared/ipban</ipban>
+			<error>shared/error</error>
+		</errorPages>
 
 		<!-- _{@device}_{@language} -->
 		<view>

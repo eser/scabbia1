@@ -22,7 +22,7 @@
 		 * @ignore
 		 */
 		public static function extension_load() {
-			mvc::registerViewEngine('rain', 'viewengine_raintpl');
+			views::registerViewEngine('rain', 'viewengine_raintpl');
 		}
 
 		/**
