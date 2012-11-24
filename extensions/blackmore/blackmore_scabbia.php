@@ -44,7 +44,7 @@
 		public static function index() {
 			auth::checkRedirect('user');
 
-			mvc::viewFile('{core}views/blackmore/scabbia/index.php');
+			views::viewFile('{core}views/blackmore/scabbia/index.php');
 		}
 
 		/**
@@ -53,7 +53,7 @@
 		public static function debug() {
 			auth::checkRedirect('admin');
 
-			mvc::viewFile('{core}views/blackmore/scabbia/debug.php');
+			views::viewFile('{core}views/blackmore/scabbia/debug.php');
 		}
 
 		/**

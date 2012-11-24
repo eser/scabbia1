@@ -31,10 +31,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $controllerStack = array();
-		/**
-		 * @ignore
-		 */
 		public static $actionActual = null;
 		/**
 		 * @ignore
@@ -95,7 +91,6 @@
 				}
 				
 				$tController = new self::$controllerActual ();
-				self::$controllerStack[] = & $tController;
 				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 				
 				try {
@@ -114,7 +109,6 @@
 					mvc::error($ex->getMessage());
 				}
 
-				array_pop(self::$controllerStack);
 				break;
 			}
 
@@ -246,117 +240,9 @@
 		/**
 		 * @ignore
 		 */
-		public static function view() {
-			$uArgs = func_get_args();
-
-			if(count(self::$controllerStack) > 0) {
-				$uController = end(self::$controllerStack);
-				$uView = (isset($uArgs[0])) ? $uArgs[0] : $uController->view;
-				$uModel = (isset($uArgs[1])) ? $uArgs[1] : $uController->vars;
-			}
-			else {
-				$uController = 'shared';
-				$uView = (isset($uArgs[0])) ? $uArgs[0] : null;
-				$uModel = (isset($uArgs[1])) ? $uArgs[1] : null;
-			}
-
-			if(is_null($uView)) {
-				throw new Exception('no view file specified.');
-			}
-
-			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
-			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(views::$viewEngines[$tViewExtension])) {
-				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
-			}
-
-			$tExtra = array(
-				'controller' => &$uController,
-				'root' => framework::$siteroot
-			);
-
-			if(extensions::isLoaded('i8n')) {
-				$tExtra['lang'] = i8n::$language['key'];
-			}
-
-			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
-
-			$tViewArray = array(
-				'templatePath' => &$tTemplatePath,
-				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => crc32($tViewFilePath),
-				'model' => &$uModel,
-				'extra' => &$tExtra
-			);
-
-			call_user_func(
-				views::$viewEngines[$tViewExtension] . '::renderview',
-				$tViewArray
-			);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function viewFile($uView) {
-			$uArgs = func_get_args();
-
-			if(count(self::$controllerStack) > 0) {
-				$uController = end(self::$controllerStack);
-				$uModel = (isset($uArgs[1])) ? $uArgs[1] : $uController->vars;
-			}
-			else {
-				$uController = 'shared';
-				$uModel = (isset($uArgs[1])) ? $uArgs[1] : null;
-			}
-
-			$tViewFilePath = framework::translatePath($uView);
-			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(views::$viewEngines[$tViewExtension])) {
-				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
-			}
-
-			$tExtra = array(
-				'controller' => &$uController,
-				'root' => framework::$siteroot
-			);
-
-			if(extensions::isLoaded('i8n')) {
-				$tExtra['lang'] = i8n::$language['key'];
-			}
-
-			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
-
-			$tViewArray = array(
-				'templatePath' => &$tTemplatePath,
-				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => crc32($uView),
-				'model' => &$uModel,
-				'extra' => &$tExtra
-			);
-
-			call_user_func(
-				views::$viewEngines[$tViewExtension] . '::renderview',
-				$tViewArray
-			);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function json() {
-			$uArgs = func_get_args();
-
-			$uController = end(self::$controllerStack);
-			if(count($uArgs) >= 1) {
-				$uModel = & $uArgs[0];
-			}
-			else {
-				$uModel = & $uController->vars;
+		public static function json($uModel = null) {
+			if(is_null($uModel)) {
+				$uModel = &views::$vars;
 			}
 
 			http::sendHeader('Content-Type', 'application/json', true);
@@ -371,7 +257,7 @@
 		 */
 		public static function error($uMessage) {
 			if(!http::$isAjax) {
-				self::view(self::$errorPage, array(
+				views::view(self::$errorPage, array(
 				                                  'title' => 'Error',
 				                                  'message' => $uMessage
 				                             ));
@@ -384,7 +270,7 @@
 		 * @ignore
 		 */
 		public static function notfound() {
-			self::view(self::$errorPage, array(
+			views::view(self::$errorPage, array(
 			                                  'title' => 'Error',
 			                                  'message' => '404 Not Found'
 			                             ));
@@ -627,28 +513,28 @@ EOD;
 		 * @ignore
 		 */
 		public function get($uKey) {
-			return $this->vars[$uKey];
+			return views::get($uKey);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function set($uKey, $uValue) {
-			$this->vars[$uKey] = $uValue;
+			views::set($uKey, $uValue);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function setRef($uKey, &$uValue) {
-			$this->vars[$uKey] = & $uValue;
+			views::setRef($uKey, $uValue);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function remove($uKey) {
-			unset($this->vars[$uKey]);
+			views::remove($uKey, $uValue);
 		}
 
 		/**
@@ -680,17 +566,15 @@ EOD;
 		/**
 		 * @ignore
 		 */
-		public function view() {
-			$uArgs = func_get_args();
-			call_user_func_array('mvc::view', $uArgs);
+		public function view($uView = null, $uModel = null) {
+			views::view(!is_null($uView) ? $uView : $this->view, $uModel);
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function viewFile() {
-			$uArgs = func_get_args();
-			call_user_func_array('mvc::viewFile', $uArgs);
+		public function viewFile($uView = null, $uModel = null) {
+			views::viewFile(!is_null($uView) ? $uView : $this->view, $uModel);
 		}
 
 		/**

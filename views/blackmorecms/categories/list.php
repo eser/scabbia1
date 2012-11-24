@@ -1,4 +1,4 @@
-<?php mvc::viewFile('{core}views/blackmore/header.php'); ?>
+<?php views::viewFile('{core}views/blackmore/header.php'); ?>
 				<table id="pageMiddleTable">
 					<tr>
 						<td id="pageMiddleSidebar">
@@ -84,4 +84,4 @@
 						</td>
 					</tr>
 				</table>
-<?php mvc::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php views::viewFile('{core}views/blackmore/footer.php'); ?>

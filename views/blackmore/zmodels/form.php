@@ -1,4 +1,4 @@
-<?php mvc::viewFile('{core}views/blackmore/header.php'); ?>
+<?php views::viewFile('{core}views/blackmore/header.php'); ?>
 			<form method="POST" action="@mvc::url('editor/category')">
 				<table id="pageMiddleTable">
 					<tr>
@@ -49,4 +49,4 @@
 					</tr>
 				</table>
 			</form>
-<?php mvc::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php views::viewFile('{core}views/blackmore/footer.php'); ?>

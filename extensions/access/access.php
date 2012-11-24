@@ -50,7 +50,7 @@
 
 				$tMvcPage = config::get('/access/maintenance/mvcpage', null);
 				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
-					mvc::view($tMvcPage);
+					views::view($tMvcPage);
 				}
 				else {
 					$tFile = framework::translatePath(config::get('/access/maintenance/page'));
@@ -66,7 +66,7 @@
 
 				$tMvcPage = config::get('/access/ipFilter/mvcpage', null);
 				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
-					mvc::view($tMvcPage);
+					views::view($tMvcPage);
 				}
 				else {
 					$tFile = framework::translatePath(config::get('/access/ipFilter/page'));

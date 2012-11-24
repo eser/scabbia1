@@ -69,7 +69,7 @@
 
 			$tSql = zmodels::generateCreateSql('categories');
 
-			mvc::viewFile('{core}views/blackmore/zmodels/sql.php', array(
+			views::viewFile('{core}views/blackmore/zmodels/sql.php', array(
 				'sql' => &$tSql
 			));
 		}
@@ -85,7 +85,7 @@
 			
 			$tRows = $tModel->getAll($tModule['name']);
 
-			mvc::viewFile('{core}views/blackmore/zmodels/list.php', array(
+			views::viewFile('{core}views/blackmore/zmodels/list.php', array(
 				'module' => &$tModule,
 				'rows' => &$tRows
 			));
@@ -178,7 +178,7 @@
 				);
 			}
 
-			mvc::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+			views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 		}
 
 		/**
@@ -267,7 +267,7 @@
 					);
 				}
 
-				mvc::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+				views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 				return;
 			}
 
@@ -320,7 +320,7 @@
 				);
 			}
 
-			mvc::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+			views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 		}
 
 		/**
