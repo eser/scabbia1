@@ -62,15 +62,15 @@
 		 * @ignore
 		 */
 		public static function extension_load() {
-			/*
 			// session trans sid
 			ini_set('session.use_trans_sid', '0');
 
 			// required for IE in iframe facebook environments if sessions are to work.
-			header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+			// header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
 			// replace missing environment variables
 			static $aEnvNames = array(
+/*
 				'HTTP_ACCEPT',
 				'HTTP_ACCEPT_LANGUAGE',
 				'HTTP_HOST',
@@ -84,17 +84,17 @@
 				'SERVER_NAME',
 				'SERVER_PORT',
 				'SERVER_PROTOCOL',
+*/
 				'HTTPS'
 			);
 
 			foreach($aEnvNames as &$tEnv) {
-				if(isset($_SERVER[$tEnv]) && strlen($_SERVER[$tEnv]) > 0) {
+				if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
 					continue;
 				}
 
 				$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
 			}
-			*/
 
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
