@@ -41,26 +41,51 @@
 				self::$directories = config::get('/resources/directoryList', array());
 			}
 
-			if(strlen($uParms['queryString']) > 0) {
+			if(count($uParms['get']['_segments']) > 0) {
+				$tPath = implode('/', $uParms['get']['_segments']);
+
 				foreach(self::$directories as $tDirectory) {
 					$tLen = strlen($tDirectory['name']);
 
-					if(substr($uParms['queryString'], 0, $tLen) == $tDirectory['name']) {
-						if(self::getDirectory($tDirectory, substr($uParms['queryString'], $tLen)) === true) {
+					if(substr($tPath, 0, $tLen) == $tDirectory['name']) {
+						if(self::getDirectory($tDirectory, substr($tPath, $tLen)) === true) {
 							// to interrupt event-chain execution
 							return false;
 						}
 					}
 				}
 
-				$tParts = explode('?', $uParms['queryString'], 2);
-				$tSubParts = (count($tParts) > 1) ? explode(',', $tParts[1]) : array();
+				$tSubParts = array();
+				foreach($uParms['get'] as $tKey => &$tSubPart) {
+					if($tKey[0] == '_') {
+						continue;
+					}
 
-				if(self::getPack($tParts[0], $tSubParts) === true) {
+					$tSubParts[] = $tKey;
+				}
+
+				if(self::getPack($tPath, $tSubParts) === true) {
 					// to interrupt event-chain execution
 					return false;
 				}
 			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function url($uPath) {
+			$tArray = array(
+				'siteroot' => framework::$siteroot,
+				'device' => http::$crawlerType,
+				'path' => $uPath
+			);
+
+			if(extensions::isLoaded('i8n')) {
+				$tArray['language'] = i8n::$language['key'];
+			}
+
+			return string::format(config::get('/resources/link', '{@siteroot}/{@path}'), $tArray);
 		}
 
 		/**

@@ -36,6 +36,14 @@
 		/**
 		 * @ignore
 		 */
+		public static $urlType;
+		/**
+		 * @ignore
+		 */
+		public static $queryString;
+		/**
+		 * @ignore
+		 */
 		public static $method;
 		/**
 		 * @ignore
@@ -69,8 +77,8 @@
 			// header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
 			// replace missing environment variables
-			static $aEnvNames = array(
 /*
+			static $aEnvNames = array(
 				'HTTP_ACCEPT',
 				'HTTP_ACCEPT_LANGUAGE',
 				'HTTP_HOST',
@@ -84,7 +92,6 @@
 				'SERVER_NAME',
 				'SERVER_PORT',
 				'SERVER_PROTOCOL',
-*/
 				'HTTPS'
 			);
 
@@ -95,6 +102,7 @@
 
 				$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
 			}
+*/
 
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -109,22 +117,18 @@
 			}
 
 			// request handling
+			// $tRestOfRequest = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']));
+
+			self::$queryString = $_SERVER['QUERY_STRING'];
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				$tReturn = preg_replace('|^' . framework::$siteroot . '/' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], $_SERVER['REQUEST_URI'], -1, $tCount);
+				$tReturn = preg_replace('|^' . framework::$siteroot . '/' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], self::$queryString, -1, $tCount);
 				if($tCount > 0) {
-					$_SERVER['REQUEST_URI'] = framework::$siteroot . '/' . $tReturn;
+					self::$queryString = framework::$siteroot . '/' . $tReturn;
 					break;
 				}
 			}
 
-			$_SERVER['REQUEST_STRING'] = substr($_SERVER['REQUEST_URI'], strlen(framework::$siteroot) + 1);
-
-			$tPos = strpos($_SERVER['REQUEST_STRING'], '?');
-			if($tPos !== false) {
-				$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_STRING'], $tPos + 1);
-			}
-
-			if($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on') {
+			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on')) {
 				self::$isSecure = true;
 			}
 
@@ -150,7 +154,7 @@
 			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true);
 			self::$contentTypes = self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true);
 
-			$_GET = self::parseGet($_SERVER['REQUEST_STRING']);
+			$_GET = self::parseGet(self::$queryString);
 
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
 
@@ -172,7 +176,7 @@
 			}
 
 			events::invoke('http_route', array(
-			                                  'queryString' => &$_SERVER['REQUEST_STRING'],
+			                                  'queryString' => &self::$queryString,
 			                                  'get' => &$_GET
 			                             ));
 
@@ -609,8 +613,15 @@
 		/**
 		 * @ignore
 		 */
-		public static function parseGet($uQueryString) {
+		public static function &parseGet($uQueryString) {
 			$tParsingType = config::get('/http/request/parsingType', '0');
+
+			if($tParsingType == '0') {
+				$uArray = array();
+				parse_str($uQueryString, $uArray);
+				return $uArray;
+			}
+
 			$tDefaultParameter = config::get('/http/request/getParameters', '?&');
 			$tDefaultKey = config::get('/http/request/getKeys', '=');
 			$tDefaultSeperator = config::get('/http/request/getSeperator', '/');

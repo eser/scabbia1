@@ -663,7 +663,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
+		public static function &parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
 			$tParts = explode('#', $uString, 2);
 
 			$tParsed = array(

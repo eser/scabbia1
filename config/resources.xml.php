@@ -2,6 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<resources>
+		<link>{@siteroot}/{@path}</link>
 		<directoryList>
 			<directory>
 				<name>scabbia/</name>
