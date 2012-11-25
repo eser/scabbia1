@@ -5,11 +5,11 @@
 
 		<title><?php echo _(config::get('/blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
-		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,blackmore" rel="stylesheet" media="all" />
-		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
+		<link type="text/css" href="<?php echo resources::url('scabbia.css?reset,jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,blackmore'); ?>" rel="stylesheet" media="all" />
+		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo mvc::url('/home/rss'); ?>" />
 		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
 
-		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore"></script>
+		<script type="text/javascript" src="<?php echo resources::url('scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore'); ?>"></script>
 	</head>
 	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
