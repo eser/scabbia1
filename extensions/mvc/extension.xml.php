@@ -32,5 +32,9 @@
 			<name>http_route</name>
 			<callback>mvc::http_route</callback>
 		</event>
+		<event>
+			<name>http_url</name>
+			<callback>mvc::http_url</callback>
+		</event>
 	</eventList>
 </scabbia>

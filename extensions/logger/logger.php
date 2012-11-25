@@ -89,13 +89,14 @@
 			}
 
 			$tIgnoreError = false;
-			events::invoke('reportError', array(
-			                                   'type' => &$tType,
-			                                   'message' => $uMessage,
-			                                   'file' => $uFile,
-			                                   'line' => $uLine,
-			                                   'ignore' => &$tIgnoreError
-			                              ));
+			$tParms = array(
+						   'type' => &$tType,
+						   'message' => $uMessage,
+						   'file' => $uFile,
+						   'line' => $uLine,
+						   'ignore' => &$tIgnoreError
+					  );
+			events::invoke('reportError', $tParms);
 
 			if(!$tIgnoreError) {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);

@@ -136,7 +136,8 @@
 
 			// run extensions
 			if($uRunExtensions) {
-				events::invoke('run', array());
+				$tParms = array();
+				events::invoke('run', $tParms);
 				self::$milestones[] = array('extensionsRun', microtime(true));
 			}
 		}

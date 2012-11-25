@@ -175,14 +175,30 @@
 				profiler::start('http', array('action' => 'routing'));
 			}
 
-			events::invoke('http_route', array(
-			                                  'queryString' => &self::$queryString,
-			                                  'get' => &$_GET
-			                             ));
+			$tParms = array(
+						  'queryString' => &self::$queryString,
+						  'get' => &$_GET
+					);
+			events::invoke('http_route', $tParms);
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function url($uPath) {
+			$tParms = array(
+				'siteroot' => framework::$siteroot,
+				'device' => self::$crawlerType,
+				'path' => $uPath
+			);
+
+			events::invoke('http_url', $tParms);
+
+			return string::format(config::get('/http/link', '{@siteroot}/{@path}'), $tParms);
 		}
 
 		/**

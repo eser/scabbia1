@@ -27,7 +27,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function http_route($uParms) {
+		public static function http_route(&$uParms) {
 			if(is_null(self::$packs)) {
 				self::$packs = config::get('/resources/packList', array());
 				foreach(config::get('/resources/fileList', array()) as $tFile) {
@@ -69,23 +69,6 @@
 					return false;
 				}
 			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function url($uPath) {
-			$tArray = array(
-				'siteroot' => framework::$siteroot,
-				'device' => http::$crawlerType,
-				'path' => $uPath
-			);
-
-			if(extensions::isLoaded('i8n')) {
-				$tArray['language'] = i8n::$language['key'];
-			}
-
-			return string::format(config::get('/resources/link', '{@siteroot}/{@path}'), $tArray);
 		}
 
 		/**

@@ -61,19 +61,20 @@
 		/**
 		 * @ignore
 		 */
-		public static function http_route($uParms) {
+		public static function http_route(&$uParms) {
 			self::$route = self::findRoute($uParms['get']);
 			self::$controllerActual = self::$route['controller'];
 			self::$actionActual = self::$route['action'];
 
 			$tParameterSegments = null;
-			events::invoke('routing', array(
-			                               'controller' => &self::$route['controller'],
-			                               'action' => &self::$route['action'],
-			                               'controllerActual' => &self::$controllerActual,
-			                               'actionActual' => &self::$actionActual,
-			                               'parameterSegments' => &$tParameterSegments
-			                          ));
+			$tParms = array(
+						   'controller' => &self::$route['controller'],
+						   'action' => &self::$route['action'],
+						   'controllerActual' => &self::$controllerActual,
+						   'actionActual' => &self::$actionActual,
+						   'parameterSegments' => &$tParameterSegments
+					  );
+			events::invoke('routing', $tParms);
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));
@@ -118,6 +119,18 @@
 
 			// to interrupt event-chain execution
 			return false;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function http_url(&$uParms) {
+			$tSegments = self::findRoute($uParms['path']);
+
+			$uParms['controller'] = $tSegments['controller'];
+			$uParms['action'] = $tSegments['action'];
+			$uParms['parameters'] = $tSegments['parameters'];
+			$uParms['queryString'] = $tSegments['queryString'];
 		}
 
 		/**
@@ -281,59 +294,18 @@
 		/**
 		 * @ignore
 		 */
-		private static function url_internal($uArgs) {
-			$tSegments = self::findRoute(
-				string::format(
-					$uArgs,
-					self::$route
-				)
-			);
-
-			$tArray = array(
+		private static function url_internal($uPath) {
+			$tParms = array(
 				'siteroot' => framework::$siteroot,
 				'device' => http::$crawlerType,
-				'controller' => $tSegments['controller'],
-				'action' => $tSegments['action'],
-				'parameters' => $tSegments['parameters'],
-				'queryString' => $tSegments['queryString']
+				'path' => $uPath
 			);
 
-			if(extensions::isLoaded('i8n')) {
-				$tArray['language'] = i8n::$language['key'];
-			}
+			events::invoke('http_url', $tParms);
 
-			$tControllerData = self::getControllerData($tArray['controller']);
+			$tControllerData = self::getControllerData($tParms['controller']);
 
-			return string::format($tControllerData['link'], $tArray);
-			/*
-						if(count($uArgs) == 1) {
-							if(!is_array($uArgs[0])) {
-								return $uArgs[0];
-							}
-
-							$tQueryParameters = array();
-							$tQueryParameters['siteroot'] = string::coalesce(array($uArgs[0], 'siteroot'), framework::$siteroot);
-							$tQueryParameters['controller'] = string::coalesce(array($uArgs[0], 'controller'), self::$route['controller'], self::$defaultController);
-							$tQueryParameters['action'] = string::coalesce(array($uArgs[0], 'action'), self::$defaultAction);
-							$tQueryParameters['device'] = string::coalesce(array($uArgs[0], 'device'), http::$crawlerType);
-							$tQueryParameters['language'] = string::coalesce(array($uArgs[0], 'language'), i8n::$language['key']);
-							$tQueryParameters['queryString'] = string::coalesce(array($uArgs[0], 'queryString'), '');
-						}
-						else {
-							$tQueryParameters = array();
-							$tQueryParameters['siteroot'] = framework::$siteroot;
-							$tQueryParameters['controller'] = $uArgs[0];
-
-							$tControllerData = self::getControllerData($tQueryParameters['controller']);
-
-							$tQueryParameters['action'] = string::coalesce(array($uArgs, 1), self::$defaultAction);
-							$tQueryParameters['device'] = string::coalesce(array($uArgs, 2), http::$crawlerType);
-							$tQueryParameters['language'] = string::coalesce(array($uArgs, 3), i8n::$language['key']);
-							$tQueryParameters['queryString'] = string::coalesce(array($uArgs, 4), '');
-						}
-
-						return string::format($tControllerData['link'], $tQueryParameters);
-			*/
+			return string::format($tControllerData['link'], $tParms);
 		}
 
 		/**

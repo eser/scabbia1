@@ -40,6 +40,13 @@
 		/**
 		 * @ignore
 		 */
+		public static function http_url(&$uParms) {
+			$uParms['language'] = self::$language['key'];
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function setLanguage($uLanguage, $uLastChoice = false) {
 			if(is_null(self::$languages)) {
 				self::$languages = array();

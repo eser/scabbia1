@@ -46,7 +46,7 @@
 		 * @param string $uEventName the event
 		 * @param array $uEventArgs arguments for the event
 		 */
-		public static function invoke($uEventName, $uEventArgs = array()) {
+		public static function invoke($uEventName, &$uEventArgs = array()) {
 			if(self::$disabled) {
 				return;
 			}
@@ -65,7 +65,7 @@
 
 				$tKey = $tCallname[0] . '::' . $tCallname[1];
 				array_push(self::$eventDepth, $tKey . '()');
-				if(call_user_func($tCallback, $uEventArgs) === false) {
+				if(call_user_func_array($tCallback, array(&$uEventArgs)) === false) {
 					break;
 				}
 				array_pop(self::$eventDepth);

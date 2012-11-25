@@ -18,4 +18,10 @@
 	<classList>
 		<class>i8n</class>
 	</classList>
+	<eventList>
+		<event>
+			<name>http_url</name>
+			<callback>i8n::http_url</callback>
+		</event>
+	</eventList>
 </scabbia>

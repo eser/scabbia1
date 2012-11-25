@@ -3,6 +3,7 @@
 <scabbia>
 	<http>
 		<autorun>1</autorun>
+		<link>{@siteroot}/{@path}</link>
 
 		<userAgents>
 			<autoCheck>0</autoCheck>

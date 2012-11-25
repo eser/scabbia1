@@ -35,9 +35,10 @@
 				'callback' => array(&$this, 'index')
 			);
 
-			events::invoke('blackmore_registerModules', array(
-			                                                 'modules' => &self::$modules
-			                                            ));
+			$tParms = array(
+							 'modules' => &self::$modules
+						);
+			events::invoke('blackmore_registerModules', $tParms);
 
 			self::$modules['login'] = array(
 				'title' => 'Logout',
