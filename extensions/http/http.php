@@ -713,9 +713,13 @@
 				return $uDefault;
 			}
 
+			if($uFilter === false) {
+				return $_GET[$uKey];
+			}
+
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, self::xss($_GET[$uKey]));
+				array_unshift($tArgs, $_GET[$uKey]);
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
@@ -731,9 +735,13 @@
 				return $uDefault;
 			}
 
+			if($uFilter === false) {
+				return $_POST[$uKey];
+			}
+
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, self::xss($_POST[$uKey]));
+				array_unshift($tArgs, $_POST[$uKey]);
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
@@ -749,9 +757,13 @@
 				return $uDefault;
 			}
 
+			if($uFilter === false) {
+				return $_COOKIE[$uKey];
+			}
+
 			if(!is_null($uFilter)) {
 				$tArgs = array_slice(func_get_args(), 2);
-				array_unshift($tArgs, self::xss($_COOKIE[$uKey]));
+				array_unshift($tArgs, $_COOKIE[$uKey]);
 
 				return call_user_func_array('string::filter', $tArgs);
 			}
@@ -759,37 +771,104 @@
 			return self::xss($_COOKIE[$uKey]);
 		}
 
+
 		/**
 		 * @ignore
 		 */
-		public static function getDirect($uKey, $uDefault = null) {
-			if(!array_key_exists($uKey, $_GET)) {
-				return $uDefault;
+		public static function &getArray($uKeys, $uFilter = null) {
+			$tValues = array();
+			if(!is_null($uFilter)) {
+				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			return $_GET[$uKey];
+			foreach($uKeys as &$tKey) {
+				if(!array_key_exists($uKey, $_GET)) {
+					continue;
+				}
+
+				if($uFilter === false) {
+					$tValues[$tKey] = $_GET[$uKey];
+					continue;
+				}
+
+				if(isset($tArgs)) {
+					$tNewArgs = $tArgs;
+					array_unshift($tNewArgs, $_GET[$uKey]);
+
+					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
+					continue;
+				}
+
+				$tValues[$tKey] = self::xss($_GET[$uKey]);
+			}
+
+			return $tValues;
 		}
 
 		/**
 		 * @ignore
 		 */
-		public static function postDirect($uKey, $uDefault = null) {
-			if(!array_key_exists($uKey, $_POST)) {
-				return $uDefault;
+		public static function postArray($uKeys, $uFilter = null) {
+			$tValues = array();
+			if(!is_null($uFilter)) {
+				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			return $_POST[$uKey];
+			foreach($uKeys as &$tKey) {
+				if(!array_key_exists($uKey, $_POST)) {
+					continue;
+				}
+
+				if($uFilter === false) {
+					$tValues[$tKey] = $_POST[$uKey];
+					continue;
+				}
+
+				if(isset($tArgs)) {
+					$tNewArgs = $tArgs;
+					array_unshift($tNewArgs, $_POST[$uKey]);
+
+					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
+					continue;
+				}
+
+				$tValues[$tKey] = self::xss($_POST[$uKey]);
+			}
+
+			return $tValues;
 		}
 
 		/**
 		 * @ignore
 		 */
-		public static function cookieDirect($uKey, $uDefault = null) {
-			if(!array_key_exists($uKey, $_COOKIE)) {
-				return $uDefault;
+		public static function cookieArray($uKeys, $uFilter = null) {
+			$tValues = array();
+			if(!is_null($uFilter)) {
+				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			return $_COOKIE[$uKey];
+			foreach($uKeys as &$tKey) {
+				if(!array_key_exists($uKey, $_COOKIE)) {
+					continue;
+				}
+
+				if($uFilter === false) {
+					$tValues[$tKey] = $_COOKIE[$uKey];
+					continue;
+				}
+
+				if(isset($tArgs)) {
+					$tNewArgs = $tArgs;
+					array_unshift($tNewArgs, $_COOKIE[$uKey]);
+
+					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
+					continue;
+				}
+
+				$tValues[$tKey] = self::xss($_COOKIE[$uKey]);
+			}
+
+			return $tValues;
 		}
 	}
 
