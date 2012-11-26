@@ -495,6 +495,10 @@
 		 * @ignore
 		 */
 		public $caching;
+		/**
+		 * @ignore
+		 */
+		public $debug;
 
 		/**
 		 * @ignore
@@ -540,6 +544,7 @@
 			$this->sequence = '';
 			$this->returning = '';
 			$this->caching = database::CACHE_NONE;
+			$this->debug = false;
 		}
 
 		/**
@@ -825,9 +830,21 @@
 		/**
 		 * @ignore
 		 */
+		public function &setDebug($uDebug) {
+			$this->debug = $uDebug;
+
+			return $this;
+		}
+		/**
+		 * @ignore
+		 */
 		public function &insert() {
+			$tQuery = $this->database->provider->sqlInsert($this->table, $this->fields, $this->returning);
+			if($this->debug) {
+				echo 'Insert Query: ', $tQuery;
+			}
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlInsert($this->table, $this->fields, $this->returning),
+				$tQuery,
 				$this->parameters,
 				$this->caching
 			);
@@ -848,8 +865,12 @@
 		 * @ignore
 		 */
 		public function &update() {
+			$tQuery = $this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit));
+			if($this->debug) {
+				echo 'Update Query: ', $tQuery;
+			}
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit)),
+				$tQuery,
 				$this->parameters,
 				$this->caching
 			);
@@ -863,8 +884,12 @@
 		 * @ignore
 		 */
 		public function &delete() {
+			$tQuery = $this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit));
+			if($this->debug) {
+				echo 'Delete Query: ', $tQuery;
+			}
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit)),
+				$tQuery,
 				$this->parameters,
 				$this->caching
 			);
@@ -877,16 +902,13 @@
 		/**
 		 * @ignore
 		 */
-		public function getQuery() {
-			return $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
-		}
-
-		/**
-		 * @ignore
-		 */
 		public function &get() {
+			$tQuery = $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
+			if($this->debug) {
+				echo 'Get Query: ', $tQuery;
+			}
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset)),
+				$tQuery,
 				$this->parameters,
 				$this->caching
 			);
@@ -900,8 +922,12 @@
 		 * @ignore
 		 */
 		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
+			$tQuery = $this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null);
+			if($this->debug) {
+				echo 'Calculate Query: ', $tQuery;
+			}
 			$tReturn = $this->database->query(
-				$this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null),
+				$tQuery,
 				array(),
 				$this->caching
 			);

@@ -782,24 +782,24 @@
 			}
 
 			foreach($uKeys as &$tKey) {
-				if(!array_key_exists($uKey, $_GET)) {
+				if(!array_key_exists($tKey, $_GET)) {
 					continue;
 				}
 
 				if($uFilter === false) {
-					$tValues[$tKey] = $_GET[$uKey];
+					$tValues[$tKey] = $_GET[$tKey];
 					continue;
 				}
 
 				if(isset($tArgs)) {
 					$tNewArgs = $tArgs;
-					array_unshift($tNewArgs, $_GET[$uKey]);
+					array_unshift($tNewArgs, $_GET[$tKey]);
 
 					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
 					continue;
 				}
 
-				$tValues[$tKey] = self::xss($_GET[$uKey]);
+				$tValues[$tKey] = self::xss($_GET[$tKey]);
 			}
 
 			return $tValues;
@@ -815,24 +815,24 @@
 			}
 
 			foreach($uKeys as &$tKey) {
-				if(!array_key_exists($uKey, $_POST)) {
+				if(!array_key_exists($tKey, $_POST)) {
 					continue;
 				}
 
 				if($uFilter === false) {
-					$tValues[$tKey] = $_POST[$uKey];
+					$tValues[$tKey] = $_POST[$tKey];
 					continue;
 				}
 
 				if(isset($tArgs)) {
 					$tNewArgs = $tArgs;
-					array_unshift($tNewArgs, $_POST[$uKey]);
+					array_unshift($tNewArgs, $_POST[$tKey]);
 
 					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
 					continue;
 				}
 
-				$tValues[$tKey] = self::xss($_POST[$uKey]);
+				$tValues[$tKey] = self::xss($_POST[$tKey]);
 			}
 
 			return $tValues;
@@ -848,24 +848,24 @@
 			}
 
 			foreach($uKeys as &$tKey) {
-				if(!array_key_exists($uKey, $_COOKIE)) {
+				if(!array_key_exists($tKey, $_COOKIE)) {
 					continue;
 				}
 
 				if($uFilter === false) {
-					$tValues[$tKey] = $_COOKIE[$uKey];
+					$tValues[$tKey] = $_COOKIE[$tKey];
 					continue;
 				}
 
 				if(isset($tArgs)) {
 					$tNewArgs = $tArgs;
-					array_unshift($tNewArgs, $_COOKIE[$uKey]);
+					array_unshift($tNewArgs, $_COOKIE[$tKey]);
 
 					$tValues[$tKey] = call_user_func_array('string::filter', $tNewArgs);
 					continue;
 				}
 
-				$tValues[$tKey] = self::xss($_COOKIE[$uKey]);
+				$tValues[$tKey] = self::xss($_COOKIE[$tKey]);
 			}
 
 			return $tValues;
