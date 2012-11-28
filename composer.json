@@ -13,5 +13,5 @@
     },
 	"suggest": {
         "ext-intl": "ext/intl for i18n features"
-    },
+    }
 }
