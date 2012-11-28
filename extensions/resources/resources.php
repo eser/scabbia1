@@ -30,6 +30,7 @@
 		public static function http_route(&$uParms) {
 			if(is_null(self::$packs)) {
 				self::$packs = config::get('/resources/packList', array());
+
 				foreach(config::get('/resources/fileList', array()) as $tFile) {
 					self::$packs[] = array(
 						'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
@@ -45,9 +46,10 @@
 				$tPath = implode('/', $uParms['get']['_segments']);
 
 				foreach(self::$directories as $tDirectory) {
-					$tLen = strlen($tDirectory['name']);
+					$tDirectoryName = rtrim($tDirectory['name'], '/');
+					$tLen = strlen($tDirectoryName);
 
-					if(substr($tPath, 0, $tLen) == $tDirectory['name']) {
+					if(substr($tPath, 0, $tLen) == $tDirectoryName) {
 						if(self::getDirectory($tDirectory, substr($tPath, $tLen)) === true) {
 							// to interrupt event-chain execution
 							return false;
@@ -167,7 +169,7 @@
 		public static function getDirectory(&$uSelectedDirectory, $uSubPath) {
 			$tPath = rtrim(framework::translatePath($uSelectedDirectory['path']), '/');
 
-			foreach(explode('/', $uSubPath) as $tSubDirectory) {
+			foreach(explode('/', ltrim($uSubPath, '/')) as $tSubDirectory) {
 				if(strlen($tSubDirectory) == 0 || $tSubDirectory[0] == '.') {
 					break;
 				}

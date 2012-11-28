@@ -86,7 +86,8 @@
 					break;
 				}
 
-				if(!class_exists(self::$controllerActual, true)) {
+				//! todo ensure autoload behaviour.
+				if(!is_subclass_of(self::$controllerActual, 'controller')) {
 					mvc::notfound();
 					break;
 				}

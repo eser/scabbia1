@@ -5,11 +5,11 @@
 
 		<title><?php echo _('Scabbia: Docs'); ?></title>
 
-		<link type="text/css" href="<?php echo $root; ?>/scabbia.css?reset,docs" rel="stylesheet" media="all" />
-		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
-		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
+		<link type="text/css" href="<?php echo http::url('scabbia.css?reset,docs'); ?>" rel="stylesheet" media="all" />
+		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo http::url('rss'); ?>" />
+		<link rel="pingback" href="<?php echo http::url('xmlrpc'); ?>" />
 
-		<script type="text/javascript" src="<?php echo $root; ?>/scabbia.js?docs"></script>
+		<script type="text/javascript" src="<?php echo http::url('scabbia.js?docs'); ?>"></script>
 	</head>
 	<body>
 		<script type="text/javascript">
