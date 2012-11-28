@@ -169,6 +169,22 @@
 		/**
 		 * @ignore
 		 */
+		public static function currentUrl() {
+			$tControllerData = self::getControllerData(self::$route['controller']);
+
+			return string::format($tControllerData['link'], array(
+				'siteroot' => framework::$siteroot,
+				'device' => http::$crawlerType,
+				'controller' => self::$route['controller'],
+				'action' => self::$route['action'],
+				'parameters' => self::$route['parameters'],
+				'queryString' => self::$route['queryString']
+			));
+		}
+
+		 /**
+		 * @ignore
+		 */
 		public static function findRoute($uArgs) {
 			if(!is_array($uArgs)) {
 				$uArgs = http::parseGet($uArgs);
