@@ -183,14 +183,15 @@
 					continue;
 				}
 
-				if(preg_match('|^' . $tCallback[0] . '$|', self::$queryString)) {
+				if(preg_match('|^' . $tCallback[0] . '$|', self::$queryString, $tMatches)) {
 					$tCallbackToCall = $tCallback[1];
 					break;
 				}
 			}
 
 			if(isset($tCallbackToCall)) {
-				call_user_func($tCallbackToCall);
+				array_shift($tMatches);
+				call_user_func_array($tCallbackToCall, $tMatches);
 			}
 			else {
 				events::invoke('http_route', $tParms);
