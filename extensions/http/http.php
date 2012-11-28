@@ -36,10 +36,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $urlType;
-		/**
-		 * @ignore
-		 */
 		public static $queryString;
 		/**
 		 * @ignore
@@ -65,6 +61,10 @@
 		 * @ignore
 		 */
 		public static $contentTypes = array();
+		/**
+		 * @ignore
+		 */
+		public static $callbacks = array();
 
 		/**
 		 * @ignore
@@ -119,15 +119,6 @@
 			// request handling
 			// $tRestOfRequest = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']));
 
-			self::$queryString = $_SERVER['QUERY_STRING'];
-			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				$tReturn = preg_replace('|^' . framework::$siteroot . '/' . $tRewriteList['match'] . '$|', $tRewriteList['forward'], self::$queryString, -1, $tCount);
-				if($tCount > 0) {
-					self::$queryString = framework::$siteroot . '/' . $tReturn;
-					break;
-				}
-			}
-
 			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on')) {
 				self::$isSecure = true;
 			}
@@ -154,6 +145,13 @@
 			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true);
 			self::$contentTypes = self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true);
 
+			self::$queryString = $_SERVER['QUERY_STRING'];
+			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
+				if(self::rewrite($tRewriteList['match'], $tRewriteList['forward'], (isset($tRewriteList['limitMethods']) ? array_keys($tRewriteList['limitMethods']) : null))) {
+					break;
+				}
+			}
+
 			$_GET = self::parseGet(self::$queryString);
 
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
@@ -179,11 +177,52 @@
 						  'queryString' => &self::$queryString,
 						  'get' => &$_GET
 					);
-			events::invoke('http_route', $tParms);
+
+			foreach(self::$callbacks as &$tCallback) {
+				if(!is_null($tCallback[2]) && !in_array(self::$method, $tCallback[2])) {
+					continue;
+				}
+
+				if(preg_match('|^' . $tCallback[0] . '$|', self::$queryString)) {
+					$tCallbackToCall = $tCallback[1];
+					break;
+				}
+			}
+
+			if(isset($tCallbackToCall)) {
+				call_user_func($tCallbackToCall);
+			}
+			else {
+				events::invoke('http_route', $tParms);
+			}
 
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function addCallback($uMatch, $uCallback, $uLimitMethods = null) {
+			self::$callbacks[] = array($uMatch, $uCallback, $uLimitMethods);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function rewrite($uMatch, $uForward, $uLimitMethods = null) {
+			if(!is_null($uLimitMethods) && !in_array(self::$method, $uLimitMethods)) {
+				return false;
+			}
+
+			$tReturn = preg_replace('|^' . $uMatch . '$|', $uForward, self::$queryString, -1, $tCount);
+			if($tCount > 0) {
+				self::$queryString = $tReturn;
+				return true;
+			}
+
+			return false;
 		}
 
 		/**

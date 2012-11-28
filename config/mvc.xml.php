@@ -10,6 +10,7 @@
 			<link>{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}</link>
 		</routes>
 
+		<!--
 		<errorPages>
 			<notfound>shared/notfound</notfound>
 			<restriction>shared/restriction</restriction>
@@ -17,6 +18,9 @@
 			<ipban>shared/ipban</ipban>
 			<error>shared/error</error>
 		</errorPages>
+
+		<controllerList />
+		-->
 
 		<!-- _{@device}_{@language} -->
 		<view>

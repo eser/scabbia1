@@ -136,10 +136,17 @@
 
 			// run extensions
 			if($uRunExtensions) {
-				$tParms = array();
-				events::invoke('run', $tParms);
-				self::$milestones[] = array('extensionsRun', microtime(true));
+				self::run();
 			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function run() {
+			$tParms = array();
+			events::invoke('run', $tParms);
+			self::$milestones[] = array('extensionsRun', microtime(true));
 		}
 
 		/**
