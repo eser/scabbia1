@@ -100,6 +100,19 @@
 		}
 
 		/**
+		 * @ignore
+		 */
+		public static function &getPath($uArray, $uPath, $uDivider = '.') {
+			$tVariable = $uArray;
+
+			foreach(explode($uDivider, $uPath) as $tKey) {
+				$tVariable = $tVariable[$tKey];
+			}
+
+			return $tVariable;
+		}
+
+		/**
 		 * Returns an array filled with the elements in specified range.
 		 *
 		 * @param int $uMinimum minumum number
