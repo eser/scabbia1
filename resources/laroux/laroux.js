@@ -973,12 +973,24 @@ window.laroux = window.$l = (function() {
 	};
 
 	// initialization
-	var asyncScripts = laroux.dom.select('script[data-async-src]');
+	var asyncScripts = laroux.dom.select('script[data-async-js], script[data-async-css]');
 	for(var i = 0; i < asyncScripts.length; ++i) {
-		var sources = eval(asyncScripts[i].getAttribute('data-async-src'));
+		var jsSourcesNode = asyncScripts[i].getAttribute('data-async-js');
+		if(jsSourcesNode != null) {
+			var jsSources = eval(jsSourcesNode);
 
-		for(item in sources) {
-			laroux.dom.loadScript(sources[item]);
+			for(item in jsSources) {
+				laroux.dom.loadScript(jsSources[item]);
+			}
+		}
+
+		var cssSourcesNode = asyncScripts[i].getAttribute('data-async-css');
+		if(cssSourcesNode != null) {
+			var cssSources = eval(cssSourcesNode);
+
+			for(item in cssSources) {
+				laroux.dom.loadStyle(cssSources[item]);
+			}
 		}
 	}
 
