@@ -51,7 +51,7 @@
 			self::$sessionName = config::get('/session/cookie/name', 'sessid');
 
 			if(config::get('/session/cookie/nameIp', true)) {
-				self::$sessionName .= crc32($_SERVER['REMOTE_ADDR']);
+				self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
 			}
 
 			self::$sessionLife = intval(config::get('/session/cookie/life', '0'));

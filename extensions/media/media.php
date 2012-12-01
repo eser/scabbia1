@@ -349,8 +349,7 @@
 		 * @ignore
 		 */
 		public function output() {
-			http::sendHeaderExpires(0);
-			http::sendHeaderNoCache();
+			http::sendHeaderCache(-1);
 			http::sendHeader('Content-Type', $this->mime, true);
 			http::sendHeader('Content-Length', $this->size, true);
 			http::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);

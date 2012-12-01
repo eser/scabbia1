@@ -123,6 +123,10 @@
 				self::$isSecure = true;
 			}
 
+			if(!isset($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') {
+				$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.0';
+			}
+
 			if(!isset($_SERVER['HTTP_HOST']) || strlen($_SERVER['HTTP_HOST']) == 0) {
 				$_SERVER['HTTP_HOST'] = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
 
@@ -580,8 +584,7 @@
 				$tType = 'application/octet-stream';
 			}
 
-			self::sendHeaderExpires(0); // 1970
-			self::sendHeaderNoCache();
+			self::sendHeaderCache(-1);
 			self::sendHeader('Accept-Ranges', 'bytes', true);
 			self::sendHeader('Content-Type', $tType, true);
 			if($uAttachment) {
@@ -604,13 +607,6 @@
 			if($uNotModified) {
 				self::sendStatus(304);
 			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function sendHeaderExpires($uTime) {
-			self::sendHeader('Expires', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 		}
 
 		/**
@@ -646,10 +642,36 @@
 		/**
 		 * @ignore
 		 */
-		public static function sendHeaderNoCache() {
-			self::sendHeader('Pragma', 'public', true);
-			self::sendHeader('Cache-Control', 'no-store, no-cache, must-revalidate', true);
-			self::sendHeader('Cache-Control', 'pre-check=0, post-check=0, max-age=0');
+		public static function sendHeaderCache($uTtl = -1, $uPublic = true, $uMustRevalidate = false) {
+			if($uTtl < 0) {
+				if($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
+					self::sendHeader('Pragma', 'no-cache', true);
+					self::sendHeader('Expires', 'Thu, 01 Jan 1970 00:00:00 GMT', true);
+					return;
+				}
+
+				self::sendHeader('Cache-Control', (($uMustRevalidate) ? 'no-store, no-cache, must-revalidate' : 'no-store, no-cache'), true);
+				return;
+			}
+
+			if($uPublic) {
+				$tPublicity = 'public';
+			}
+			else {
+				$tPublicity = 'private';
+			}
+
+			if($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
+				self::sendHeader('Pragma', $tPublicity, true);
+				self::sendHeader('Expires', gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
+				return;
+			}
+
+			if($uMustRevalidate) {
+				$tPublicity .= ', must-revalidate';
+			}
+
+			self::sendHeader('Cache-Control', 'max-age=' . $uTtl . ', ' . $tPublicity, true);
 		}
 
 		/**

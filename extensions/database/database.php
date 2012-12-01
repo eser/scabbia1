@@ -264,7 +264,7 @@
 
 			$tFolder = 'database/' . $this->id . '/';
 
-			$uPropsSerialized = crc32($uQuery);
+			$uPropsSerialized = hash('adler32', $uQuery);
 			foreach($uParameters as &$tProp) {
 				$uPropsSerialized .= '_' . $tProp;
 			}

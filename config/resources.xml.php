@@ -25,6 +25,7 @@
 			<pack>
 				<name>scabbia.js</name>
 				<type>js</type>
+				<cacheTtl>86400</cacheTtl>
 				<partList>
 					<part>
 						<type>file</type>
@@ -169,6 +170,7 @@
 			<pack>
 				<name>scabbia.css</name>
 				<type>css</type>
+				<cacheTtl>86400</cacheTtl>
 				<partList>
 					<part>
 						<type>file</type>

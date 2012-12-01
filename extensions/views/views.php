@@ -110,7 +110,7 @@
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
 				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => crc32($tViewFilePath),
+				'compiledFile' => hash('adler32', $tViewFilePath),
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			);
@@ -150,7 +150,7 @@
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
 				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => crc32($uView),
+				'compiledFile' => hash('adler32', $uView),
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			);

@@ -35,7 +35,8 @@
 					self::$packs[] = array(
 						'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
 						'name' => $tFile['name'],
-						'type' => $tFile['type']
+						'type' => $tFile['type'],
+						'cacheTtl' => isset($tFile['cacheTtl']) ? $tFile['cacheTtl'] : 0
 					);
 				}
 
@@ -91,6 +92,7 @@
 			}
 
 			$tType = $tSelectedPack['type'];
+			$tCacheTtl = isset($tSelectedPack['cacheTtl']) ? $tSelectedPack['cacheTtl'] : 0;
 			$tFilename = $uName;
 			foreach($uClasses as &$tClassName) {
 				$tFilename .= '_' . $tClassName;
@@ -137,6 +139,8 @@
 						}
 					}
 				}
+
+				http::sendHeaderCache($tCacheTtl);
 
 				switch($tMimetype) {
 				case 'application/x-javascript':
