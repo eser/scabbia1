@@ -10,6 +10,15 @@ window.laroux = window.$l = (function() {
 		contentBegin: function(masterName, locationUrl) {
 			laroux.baseLocation = locationUrl;
 			laroux.selectedMaster = masterName;
+
+			var asyncScripts = laroux.dom.select('script[data-async-src]');
+			for(var i = 0; i < asyncScripts.length; ++i) {
+				var sources = eval(asyncScripts[i].getAttribute('data-async-src'));
+
+				for(item in sources) {
+					laroux.dom.loadScript(sources[item]);
+				}
+			}
 		},
 
 		contentEnd: function() {
@@ -102,8 +111,8 @@ window.laroux = window.$l = (function() {
 			});
 		},
 
-		ontrigger: function(eventName, eventArgs) {
-			var eventIdx = laroux.triggers.list.indexOf(eventName);
+		ontrigger: function(triggerName, eventArgs) {
+			var eventIdx = laroux.triggers.list.indexOf(triggerName);
 			if(eventIdx != -1) {
 				laroux.triggers.list.splice(eventIdx, 1);
 			}
@@ -132,7 +141,7 @@ window.laroux = window.$l = (function() {
 				laroux.triggers.delegates.splice(removeKeys[key], 1);
 			}
 
-			console.log('event name: ' + eventName);
+			console.log('trigger name: ' + triggerName);
 		}
 	};
 
@@ -175,10 +184,10 @@ window.laroux = window.$l = (function() {
 			}
 		},
 
-		loadScript: function(path, eventName) {
+		loadScript: function(path, triggerName, async) {
 			var elem = document.createElement('script');
 			elem.type = 'text/javascript';
-			elem.async = true;
+			elem.async = (typeof async != 'undefined') ? async : true;
 			elem.src = path;
 
 			var loaded = false;
@@ -189,8 +198,8 @@ window.laroux = window.$l = (function() {
 
 				elem.onload = elem.onreadystatechange = null;
 				loaded = true;
-				if(typeof eventName != 'undefined') {
-					laroux.triggers.ontrigger(eventName);
+				if(typeof triggerName != 'undefined' && triggerName != null) {
+					laroux.triggers.ontrigger(triggerName);
 				}
 			};
 

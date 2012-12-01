@@ -275,7 +275,7 @@
 				$uModel = &views::$vars;
 			}
 
-			http::sendHeader('Content-Type', 'application/json', true);
+			header('Content-Type: application/json', true);
 
 			echo json_encode(
 				$uModel
@@ -286,6 +286,9 @@
 		 * @ignore
 		 */
 		public static function error($uMessage) {
+			header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+
+			//! todo internalization.
 			if(!http::$isAjax) {
 				views::view(self::$errorPage, array(
 				                                  'title' => 'Error',
@@ -300,6 +303,9 @@
 		 * @ignore
 		 */
 		public static function notfound() {
+			header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+
+			//! todo internalization.
 			views::view(self::$errorPage, array(
 			                                  'title' => 'Error',
 			                                  'message' => '404 Not Found'

@@ -29,7 +29,13 @@
 				<partList>
 					<part>
 						<type>file</type>
+						<class>core</class>
 						<path>{core}resources/laroux/laroux.js</path>
+					</part>
+					<part>
+						<type>function</type>
+						<class>core</class>
+						<name>mvc::exportAjaxJs</name>
 					</part>
 					<part>
 						<type>file</type>
@@ -160,10 +166,6 @@
 						<type>file</type>
 						<class>blackmore</class>
 						<path>{core}resources/blackmore/blackmore.js</path>
-					</part>
-					<part>
-						<type>function</type>
-						<name>mvc::exportAjaxJs</name>
 					</part>
 				</partList>
 			</pack>
