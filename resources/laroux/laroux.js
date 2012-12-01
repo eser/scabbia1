@@ -10,15 +10,6 @@ window.laroux = window.$l = (function() {
 		contentBegin: function(masterName, locationUrl) {
 			laroux.baseLocation = locationUrl;
 			laroux.selectedMaster = masterName;
-
-			var asyncScripts = laroux.dom.select('script[data-async-src]');
-			for(var i = 0; i < asyncScripts.length; ++i) {
-				var sources = eval(asyncScripts[i].getAttribute('data-async-src'));
-
-				for(item in sources) {
-					laroux.dom.loadScript(sources[item]);
-				}
-			}
 		},
 
 		contentEnd: function() {
@@ -207,6 +198,30 @@ window.laroux = window.$l = (function() {
 			head.appendChild(elem);
 		},
 
+		loadStyle: function(path, triggerName, async) {
+			var elem = document.createElement('link');
+			elem.type = 'text/css';
+			elem.async = (typeof async != 'undefined') ? async : true;
+			elem.href = path;
+			elem.rel = 'stylesheet';
+			
+			var loaded = false;
+			elem.onload = elem.onreadystatechange = function() {
+				if((elem.readyState && elem.readyState !== 'complete' && elem.readyState !== 'loaded') || loaded) {
+					return false;
+				}
+				
+				elem.onload = elem.onreadystatechange = null;
+				loaded = true;
+				if(typeof triggerName != 'undefined' && triggerName != null) {
+					laroux.triggers.ontrigger(triggerName);
+				}
+			};
+			
+			var head = document.getElementsByTagName('head')[0];
+			head.appendChild(elem);
+		},
+		
 		clear: function(element) {
 			while(element.hasChildNodes()) {
 				element.removeChild(element.firstChild);
@@ -957,6 +972,17 @@ window.laroux = window.$l = (function() {
 		}
 	};
 
+	// initialization
+	var asyncScripts = laroux.dom.select('script[data-async-src]');
+	for(var i = 0; i < asyncScripts.length; ++i) {
+		var sources = eval(asyncScripts[i].getAttribute('data-async-src'));
+
+		for(item in sources) {
+			laroux.dom.loadScript(sources[item]);
+		}
+	}
+
 	laroux.ready(laroux.dom.applyDefaultTexts);
+
 	return laroux;
 })();
