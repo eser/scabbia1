@@ -164,6 +164,11 @@
 					</part>
 					<part>
 						<type>file</type>
+						<class>maskedinput</class>
+						<path>{core}resources/maskedinput/jquery.maskedinput-1.3.js</path>
+					</part>
+					<part>
+						<type>file</type>
 						<class>blackmore</class>
 						<path>{core}resources/blackmore/blackmore.js</path>
 					</part>
