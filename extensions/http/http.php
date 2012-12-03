@@ -216,11 +216,17 @@
 		 * @ignore
 		 */
 		public static function addCallback($uMatch, $uCallback) {
-			$tParts = explode(' ', $uMatch, 2);
+			if(!is_array($uMatch)) {
+				$uMatch = array($uMatch);
+			}
 
-			$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+			foreach($uMatch as $tMatch) {
+				$tParts = explode(' ', $tMatch, 2);
 
-			self::$callbacks[] = array($tParts[0], $uCallback, $tLimitMethods);
+				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+
+				self::$callbacks[] = array($tParts[0], $uCallback, $tLimitMethods);
+			}
 		}
 
 		/**
