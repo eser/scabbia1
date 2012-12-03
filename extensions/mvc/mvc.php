@@ -367,7 +367,7 @@
 						continue;
 					}
 
-					$tPos = strpos($tMethod->name, 'Ajax_');
+					$tPos = strpos($tMethod->name, 'ajax_');
 					if($uAjaxOnly && $tPos === false) {
 						continue;
 					}
@@ -407,7 +407,7 @@ EOD;
 
 				foreach($tClass as &$tMethod) {
 					$tMethods = explode('_', $tMethod, 2);
-					if(count($tMethods) < 2 || strpos($tMethods[0], 'Ajax') === false) {
+					if(count($tMethods) < 2 || strpos($tMethods[0], 'ajax') === false) {
 						continue;
 					}
 
@@ -481,13 +481,12 @@ EOD;
 			$tMe = new ReflectionClass($this);
 
 			while(true) {
-				if(http::$isAjax) {
-					$tMethod = http::$method . 'Ajax_' . $tActionMethodName;
-					if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-						break;
-					}
+				$tMethod = http::$methodext . '_' . $tActionMethodName;
+				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
+					break;
 				}
 
+				// fallback
 				$tMethod = http::$method . '_' . $tActionMethodName;
 				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
 					break;

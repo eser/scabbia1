@@ -44,6 +44,10 @@
 		/**
 		 * @ignore
 		 */
+		public static $methodext;
+		/**
+		 * @ignore
+		 */
 		public static $isBrowser = false;
 		/**
 		 * @ignore
@@ -135,11 +139,13 @@
 				}
 			}
 
+			self::$method = strtolower($_SERVER['REQUEST_METHOD']);
+			self::$methodext = self::$method;
+
 			if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 				self::$isAjax = true;
+				self::$methodext .= 'ajax';
 			}
-
-			self::$method = strtolower($_SERVER['REQUEST_METHOD']);
 
 			if(config::get('/http/userAgents/autoCheck', '1') == '1') {
 				self::checkUserAgent();
@@ -183,11 +189,11 @@
 					);
 
 			foreach(self::$callbacks as &$tCallback) {
-				if(!is_null($tCallback[2]) && !in_array(self::$method, $tCallback[2])) {
+				if(!is_null($tCallback[2]) && !in_array(self::$methodext, $tCallback[2])) {
 					continue;
 				}
 
-				if(preg_match('|^' . $tCallback[0] . '$|', self::$queryString, $tMatches)) {
+				if(preg_match('|^' . ltrim($tCallback[0], '/') . '$|', self::$queryString, $tMatches)) {
 					$tCallbackToCall = $tCallback[1];
 					break;
 				}
@@ -209,15 +215,19 @@
 		/**
 		 * @ignore
 		 */
-		public static function addCallback($uMatch, $uCallback, $uLimitMethods = null) {
-			self::$callbacks[] = array($uMatch, $uCallback, $uLimitMethods);
+		public static function addCallback($uMatch, $uCallback) {
+			$tParts = explode(' ', $uMatch, 2);
+
+			$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+
+			self::$callbacks[] = array($tParts[0], $uCallback, $tLimitMethods);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public static function rewrite($uMatch, $uForward, $uLimitMethods = null) {
-			if(!is_null($uLimitMethods) && !in_array(self::$method, $uLimitMethods)) {
+			if(!is_null($uLimitMethods) && !in_array(self::$methodext, $uLimitMethods)) {
 				return false;
 			}
 
