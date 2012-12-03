@@ -21,7 +21,7 @@
 		 * @return string generated captcha code
 		 */
 		public static function generate($uCookieName = 'captcha') {
-			$tFontFile = framework::translatePath(config::get('/captcha/fontFile', '{base}res/fonts/KabobExtrabold.ttf'));
+			$tFontFile = framework::translatePath(config::get('/captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
 			$tFontSize = intval(config::get('/captcha/fontSize', '45'));
 			$tLength = intval(config::get('/captcha/length', '8'));
 
