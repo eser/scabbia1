@@ -28,7 +28,7 @@ window.laroux = window.$l = (function() {
 		},
 
 		ready: function(fnc) {
-			if(!readyPassed) {
+			if(!laroux.readyPassed) {
 				laroux.events.add('contentEnd', fnc);
 				return;
 			}
