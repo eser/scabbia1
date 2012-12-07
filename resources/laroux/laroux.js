@@ -6,6 +6,7 @@ window.laroux = window.$l = (function() {
 		baseLocation: '',
 		selectedMaster: '',
 		popupFunc: alert,
+		readyPassed: false,
 
 		contentBegin: function(masterName, locationUrl) {
 			laroux.baseLocation = locationUrl;
@@ -17,6 +18,8 @@ window.laroux = window.$l = (function() {
 
 		contentEnd: function() {
 			laroux.events.invoke('contentEnd');
+			laroux.readyPassed = true;
+
 			window.setInterval(laroux.timers.ontick, 500);
 		},
 
@@ -25,7 +28,12 @@ window.laroux = window.$l = (function() {
 		},
 
 		ready: function(fnc) {
-			laroux.events.add('contentEnd', fnc);
+			if(!readyPassed) {
+				laroux.events.add('contentEnd', fnc);
+				return;
+			}
+
+			fnc();
 		},
 
 		extend: function(obj) {
@@ -818,7 +826,9 @@ window.laroux = window.$l = (function() {
 		formData: function(o) {
 			var kvps = [], regEx = /%20/g;
 			for(var k in o) {
-				kvps.push(encodeURIComponent(k).replace(regEx, '+') + '=' + encodeURIComponent(o[k].toString()).replace(regEx, '+'));
+				if(typeof o[k] != 'undefined') {
+					kvps.push(encodeURIComponent(k).replace(regEx, '+') + '=' + encodeURIComponent(o[k].toString()).replace(regEx, '+'));
+				}
 			}
 
 			return kvps.join('&');

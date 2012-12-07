@@ -9,7 +9,7 @@
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo mvc::url('/home/rss'); ?>" />
 		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
 
-		<script type="text/javascript" src="<?php echo http::url('scabbia.js?jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore'); ?>"></script>
+		<script type="text/javascript" src="<?php echo http::url('scabbia.js?core,jquery,jqueryui,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore'); ?>"></script>
 	</head>
 	<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
