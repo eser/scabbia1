@@ -161,6 +161,26 @@ window.laroux = window.$l = (function() {
 			return document.querySelector.apply(document, arguments);
 		},
 
+		setEvent: function(element, eventname, fnc) {
+			var fncWrapper = function(e) {
+				if(fnc(e, element) === false) {
+					if(e.preventDefault) {
+						e.preventDefault();
+					}
+					else if(window.event) {
+						window.event.returnValue = false;
+					}
+				}
+			};
+
+			if(element.addEventListener) {
+				element.addEventListener(eventname, fncWrapper, false);
+			}
+			else if(element.attachEvent) {
+				element.attachEvent('on' + eventname, fncWrapper);
+			}
+		},
+
 		createElement: function(element, attributes, children) {
 			var elem = document.createElement(element);
 
@@ -549,14 +569,14 @@ window.laroux = window.$l = (function() {
 	// forms
 	laroux.forms = {
 		ajaxForm: function(formobj, fnc) {
-			formobj.addEventListener('submit', function(e) {
+			laroux.dom.setEvent(formobj, 'submit', function() {
 				laroux.ajax.post(
 					formobj.getAttribute('action'),
 					laroux.forms.serialize(formobj),
 					fnc
 				);
 
-				e.preventDefault();
+				return false;
 			});
 		},
 
@@ -875,7 +895,7 @@ window.laroux = window.$l = (function() {
 							laroux.events.invoke('ajaxError', [xhr, xhr.statusText, o]);
 						}
 
-						if(o['success'] && decode && (dt.indexOf('json')>=0 || !!res)) {
+						if(o['success'] && decode && (dt.indexOf('json') >= 0 || !!res)) {
 							o['success'](res);
 						}
 
@@ -977,6 +997,9 @@ window.laroux = window.$l = (function() {
 					if(fnc != null) {
 						fnc(data.object);
 					}
+				},
+				error: function(data) {
+					console.log(data);
 				}
 			});
 		},
