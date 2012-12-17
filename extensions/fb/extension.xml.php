@@ -13,7 +13,7 @@
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>facebook-php-sdk-3.1.1/src/base_facebook.php</include>
+		<include>facebook-php-sdk/src/base_facebook.php</include>
 		<include>fb.php</include>
 	</includeList>
 	<classList>
