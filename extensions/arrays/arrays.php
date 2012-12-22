@@ -180,14 +180,23 @@
 		 */
 		public static function &categorize($uArray, $uKey) {
 			$tReturn = array();
+			if(!is_array($uKey)) {
+				$uKey = array($uKey);
+			}
 
 			foreach($uArray as &$tRow) {
-				$tKey = $tRow[$uKey];
-				if(!isset($tReturn[$tKey])) {
-					$tReturn[$tKey] = array();
+				$tRef = &$tReturn;
+				foreach($uKey as &$tKey) {
+					$tValue = $tRow[$tKey];
+					if(!isset($tRef[$tValue])) {
+						$tRef[$tValue] = array();
+					}
+					$tNewRef = &$tRef[$tValue];
+					unset($tRef);
+					$tRef = &$tNewRef;
 				}
 
-				$tReturn[$tKey][] = $tRow;
+				$tRef[] = $tRow;
 			}
 
 			return $tReturn;

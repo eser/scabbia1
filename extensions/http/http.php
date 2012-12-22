@@ -593,8 +593,8 @@
 		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
-			if($uFindMimeType && extensions::isLoaded('io')) {
-				$tType = io::getMimeType($tExtension);
+			if($uFindMimeType && extensions::isLoaded('mime')) {
+				$tType = mime::getType($tExtension);
 			}
 			else {
 				$tType = 'application/octet-stream';

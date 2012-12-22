@@ -14,6 +14,7 @@
 
 	<extensionList>
 		<extension>string</extension>
+		<extension>mime</extension>
 		<extension>io</extension>
 		<extension>http</extension>
 		<extension>arrays</extension>

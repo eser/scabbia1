@@ -2,29 +2,20 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>resources</name>
+		<name>mime</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList>
-			<fwdepend>mime</fwdepend>
-			<fwdepend>io</fwdepend>
-			<fwdepend>cache</fwdepend>
-			<fwdepend>http</fwdepend>
+			<fwdepend>string</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>resources.php</include>
+		<include>mime.php</include>
 	</includeList>
 	<classList>
-		<class>resources</class>
+		<class>mime</class>
 	</classList>
-	<eventList>
-		<event>
-			<name>http_route</name>
-			<callback>resources::http_route</callback>
-		</event>
-	</eventList>
 </scabbia>

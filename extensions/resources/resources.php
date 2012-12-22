@@ -8,7 +8,7 @@
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends io, cache, http
+	 * @scabbia-fwdepends mime, io, cache, http
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 *
@@ -100,7 +100,12 @@
 			$tFilename .= '.' . $tType;
 
 			$tCompileAge = isset($tSelectedPack['compiledAge']) ? $tSelectedPack['compiledAge'] : 120;
-			$tMimetype = io::getMimeType($tType);
+			if(extensions::isLoaded('mime')) {
+				$tMimetype = mime::getType($tType);
+			}
+			else {
+				$tMimetype = 'application/octet-stream';
+			}
 			header('Content-Type: ' . $tMimetype, true);
 
 			$tOutputFile = cache::filePath('resources/', $tFilename, $tCompileAge);
@@ -207,7 +212,12 @@
 				return false;
 			}
 
-			header('Content-Type: ' . io::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
+			if(extensions::isLoaded('mime')) {
+				header('Content-Type: ' . io::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
+			}
+			else {
+				header('Content-Type: application/octet-stream', true);
+			}
 			header('Content-Transfer-Encoding: binary', true);
 			// header('ETag: "' . md5_file($tPath) . '"', true);
 

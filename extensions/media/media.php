@@ -135,8 +135,11 @@
 				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
 				$this->extension = pathinfo($this->source, PATHINFO_EXTENSION);
 
-				if(extensions::isLoaded('io')) {
-					$this->mime = io::getMimeType($this->extension);
+				if(extensions::isLoaded('mime')) {
+					$this->mime = mime::getType($this->extension);
+				}
+				else {
+					$this->mime = 'application/octet-stream';
 				}
 
 				$this->size = filesize($this->source);
