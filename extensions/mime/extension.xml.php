@@ -14,8 +14,11 @@
 	</info>
 	<includeList>
 		<include>mime.php</include>
+		<include>mimeparts.php</include>
 	</includeList>
 	<classList>
 		<class>mime</class>
+		<class>multipart</class>
+		<class>mimepart</class>
 	</classList>
 </scabbia>
