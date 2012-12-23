@@ -86,7 +86,15 @@
 					$tMain->parts[] = $tPart;
 				}
 
-				return $tMain->compile();
+				return if(!array_key_exists('From', $tMain->headers)) {
+					$tMain->headers['From'] = $this->from;
+				}
+				if(!array_key_exists('To', $tMain->headers)) {
+					$tMain->headers['To'] = $this->to;
+				}
+				if(!array_key_exists('Subject', $tMain->headers)) {
+					$tMain->headers['Subject'] = $this->subject;
+				}	return $tMain->compile();
 			}
 
 			return $this->content;
@@ -97,6 +105,10 @@
 		 */
 		public function send() {
 			smtp::send($this->from, $this->to, $this->subject, $this->getContent());
+		}
+	}
+
+?>getContent());
 		}
 	}
 

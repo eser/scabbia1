@@ -49,51 +49,45 @@
 		/**
 		 * @ignore
 		 */
-		public static function &send($uFrom, $uTo, $uSubject, $uContent) {
+		public static function &send($uFrom, $uTo, $uData) {
 			$tResult = array();
 
 			self::$host = config::get('/smtp/host', 'localhost');
 			self::$port = config::get('/smtp/port', '25');
 			self::$username = config::get('/smtp/username');
 			self::$password = config::get('/smtp/password');
-			// self::$from = config::get('/smtp/from');
+			// self::$from =;
 
 			$tSmtp = fsockopen(self::$host, intval(self::$port));
 			if($tSmtp !== false) {
 				self::sockwait($tSmtp, '220');
 
-				fputs($tSmtp, 'EHLO ' . self::$host . "\r\n");
+				fputs($tSmtp, 'EHLO ' . self::$host . "\n");
 				self::sockwait($tSmtp, '250');
 
-				fputs($tSmtp, 'AUTH LOGIN' . "\r\n");
+				fputs($tSmtp, 'AUTH LOGIN' . "\n");
 				self::sockwait($tSmtp, '334');
 				
-				fputs($tSmtp, base64_encode(self::$username) . "\r\n");
+				fputs($tSmtp, base64_encode(self::$username) . "\n");
 				self::sockwait($tSmtp, '334');
 				
-				fputs($tSmtp, base64_encode(self::$password) . "\r\n");
+				fputs($tSmtp, base64_encode(self::$password) . "\n");
 				self::sockwait($tSmtp, '235');
 				
-				fputs($tSmtp, 'MAIL FROM: ' . $uFrom . "\r\n");
+				fputs($tSmtp, 'MAIL FROM: ' . $uFrom . "\n");
 				self::sockwait($tSmtp, '250');
 
-				fputs($tSmtp, 'RCPT TO: ' . $uTo . "\r\n");
+				// todo: to+cc+bcc parsing
+				fputs($tSmtp, 'RCPT TO: ' . $uTo . "\n");
 				self::sockwait($tSmtp, '250');
 				
-				fputs($tSmtp, 'DATA' . "\r\n");
+				fputs($tSmtp, 'DATA' . "\n");
 				self::sockwait($tSmtp, '354');
 
-				fputs($tSmtp,
-					'MIME-Version: 1.0' . "\r\n" .
-					'Content-Type: text/html; charset=utf-8' . "\r\n" .
-					'From: ' . $uFrom . "\r\n" .
-					'To: ' . $uTo . "\r\n" .
-					'Subject: ' . $uSubject . "\r\n\r\n" .
-					$uContent . "\r\n.\r\n"
-				);
+				fputs($tSmtp, $uData . "\n.\n");
 				self::sockwait($tSmtp, '250');
 
-				fputs($tSmtp, 'QUIT' . "\r\n");
+				fputs($tSmtp, 'QUIT' . "\n");
 				fclose($tSmtp);
 			}
 

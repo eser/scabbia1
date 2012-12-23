@@ -44,7 +44,7 @@
 			$tString = '';
 
 			foreach($this->parts as &$tPart) {
-				$tString .= '--' . $this->boundaryName . "\n" . $tPart->compile(true, true) . "\n";
+				$tString .= '--' . $this->boundaryName . "\n" . $tPart->compile(true) . "\n";
 			}
 
 			$tString .= '--' . $this->boundaryName . '--';
@@ -55,12 +55,15 @@
 		/**
 		 * @ignore
 		 */
-		public function &compile($uHeaders = true, $uContent = true) {
+		public function &compile($uHeaders = true) {
 			$tString = '';
 			$tBody = $this->compileBody();
 
 			if($uHeaders) {
 				$tHeaders = &$this->headers;
+				if(!array_key_exists('MIME-Version', $tHeaders)) {
+					$tHeaders['MIME-Version'] = '1.0';
+				}
 
 				if(count($this->parts) > 0) {
 					$tPart = $this->parts[0];
@@ -162,7 +165,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &compile($uHeaders = true, $uContent = true) {
+		public function &compile($uHeaders = true) {
 			$tString = '';
 			$tBody = $this->compileBody();
 
