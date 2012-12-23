@@ -17,6 +17,9 @@
 		 * @ignore
 		 */
 		public static $markers = array();
+		/**
+		 * @ignore
+		 */
 		public static $stack = array();
 
 		/**
@@ -118,11 +121,29 @@
 		 * @ignore
 		 */
 		public $name;
+		/**
+		 * @ignore
+		 */
 		public $parameters;
+		/**
+		 * @ignore
+		 */
 		public $source;
+		/**
+		 * @ignore
+		 */
 		public $startTime;
+		/**
+		 * @ignore
+		 */
 		public $startMemory;
+		/**
+		 * @ignore
+		 */
 		public $consumedTime;
+		/**
+		 * @ignore
+		 */
 		public $consumedMemory;
 
 		/**

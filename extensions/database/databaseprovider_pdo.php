@@ -1,16 +1,10 @@
 <?php
 
 	/**
-	 * Database Provider PDO Extension
+	 * DatabaseProvider PDO Class
 	 *
 	 * @package Scabbia
-	 * @subpackage databaseprovider_pdo
-	 * @version 1.0.2
-	 *
-	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends database
-	 * @scabbia-phpversion 5.2.0
-	 * @scabbia-phpdepends pdo
+	 * @subpackage LayerExtensions
 	 */
 	class databaseprovider_pdo {
 		/**

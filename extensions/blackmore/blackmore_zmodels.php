@@ -1,16 +1,7 @@
 <?php
 
 	/**
-	 * Blackmore Extension: ZModels Section
-	 *
-	 * @package Scabbia
-	 * @subpackage blackmore_zmodels
-	 * @version 1.0.2
-	 *
-	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
-	 * @scabbia-phpversion 5.2.0
-	 * @scabbia-phpdepends
+	 * @ignore
 	 */
 	class blackmore_zmodels {
 		/**

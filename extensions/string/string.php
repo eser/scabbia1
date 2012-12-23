@@ -1,8 +1,14 @@
 <?php
 
+	/**
+	 * @ignore
+	 */
 	define('FILTER_VALIDATE_BOOLEAN_FIX', 'filterValidateBooleanFix');
 
 	if(!defined('ENT_HTML5')) {
+		/**
+		 * @ignore
+		 */
 		define('ENT_HTML5', (16 | 32));
 	}
 

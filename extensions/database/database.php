@@ -1,12 +1,36 @@
 <?php
 
+	/**
+	 * @ignore
+	 */
 	define('_and', ' AND ');
+	/**
+	 * @ignore
+	 */
 	define('_or', ' OR ');
+	/**
+	 * @ignore
+	 */
 	define('_in', ' IN ');
+	/**
+	 * @ignore
+	 */
 	define('_notin', ' NOT IN ');
+	/**
+	 * @ignore
+	 */
 	define('_like', ' LIKE ');
+	/**
+	 * @ignore
+	 */
 	define('_notlike', ' NOT LIKE ');
+	/**
+	 * @ignore
+	 */
 	define('_ilike', ' ILIKE ');
+	/**
+	 * @ignore
+	 */
 	define('_notilike', ' NOT ILIKE ');
 
 	/**

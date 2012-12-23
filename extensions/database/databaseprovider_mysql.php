@@ -1,16 +1,10 @@
 <?php
 
 	/**
-	 * Database Provider Mysql Extension
+	 * DatabaseProvider Mysql Class
 	 *
 	 * @package Scabbia
-	 * @subpackage databaseprovider_mysql
-	 * @version 1.0.2
-	 *
-	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends database
-	 * @scabbia-phpversion 5.2.0
-	 * @scabbia-phpdepends mysqli
+	 * @subpackage LayerExtensions
 	 */
 	class databaseprovider_mysql {
 		/**

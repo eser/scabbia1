@@ -1,25 +1,40 @@
 <?php
 
 	/**
-	 * Mime Extension: Mimeparts
+	 * Multipart Class
 	 *
 	 * @package Scabbia
-	 * @subpackage mime
-	 * @version 1.0.2
-	 *
-	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends string
-	 * @scabbia-phpversion 5.2.0
-	 * @scabbia-phpdepends
+	 * @subpackage LayerExtensions
 	 */
 	class multipart {
+		/**
+		 * @ignore
+		 */
 		const NONE = 0;
+		/**
+		 * @ignore
+		 */
 		const RELATED = 1;
 
+		/**
+		 * @ignore
+		 */
 		public $headers = array();
+		/**
+		 * @ignore
+		 */
 		public $linesAfterHeaders = 1;
+		/**
+		 * @ignore
+		 */
 		public $boundaryName;
+		/**
+		 * @ignore
+		 */
 		public $parts = array();
+		/**
+		 * @ignore
+		 */
 		public $filename;
 
 		/**
@@ -45,7 +60,7 @@
 			$tBody = $this->compileBody();
 
 			if($uHeaders) {
-				$tHeaders = $this->headers;
+				$tHeaders = &$this->headers;
 
 				if(count($this->parts) > 0) {
 					$tPart = $this->parts[0];
@@ -96,11 +111,36 @@
 		}
 	}
 
+	/**
+	 * Mimepart Class
+	 *
+	 * @package Scabbia
+	 * @subpackage LayerExtensions
+	 */
 	class mimepart {
+		/**
+		 * @ignore
+		 */
 		public $headers = array();
+		/**
+		 * @ignore
+		 */
 		public $linesAfterHeaders = 1;
+		/**
+		 * @ignore
+		 */
+		public $type = 'text/plain';
+		/**
+		 * @ignore
+		 */
 		public $transferEncoding = 'base64';
+		/**
+		 * @ignore
+		 */
 		public $filename;
+		/**
+		 * @ignore
+		 */
 		public $content;
 
 		/**
@@ -127,9 +167,13 @@
 			$tBody = $this->compileBody();
 
 			if($uHeaders) {
-				$tHeaders = $this->headers;
+				$tHeaders = &$this->headers;
 				if(!array_key_exists('Content-Id', $tHeaders)) {
 					$tHeaders['Content-Id'] = '<' . string::generate(15) . '>';
+				}
+
+				if(!array_key_exists('Content-Type', $tHeaders)) {
+					$tHeaders['Content-Type'] = $this->type;
 				}
 
 				if(!array_key_exists('Content-Transfer-Encoding', $tHeaders)) {

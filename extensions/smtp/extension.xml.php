@@ -12,8 +12,10 @@
 	</info>
 	<includeList>
 		<include>smtp.php</include>
+		<include>mail.php</include>
 	</includeList>
 	<classList>
 		<class>smtp</class>
+		<class>mail</class>
 	</classList>
 </scabbia>
