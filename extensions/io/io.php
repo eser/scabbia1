@@ -362,7 +362,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &sanitize($uFilename, $uIncludeAll = false) {
+		public static function &sanitize($uFilename, $uIncludeAll = false, $uSlug = false) {
 			static $aReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
 
 			if($uIncludeAll) {
@@ -372,7 +372,12 @@
 			}
 
 			$tPathInfo = pathinfo($uFilename);
-			$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
+			if($uSlug) {
+				$tPathInfo['filename'] = string::slug(strtr($tPathInfo['filename'], $aReplaceChars));
+			}
+			else {
+				$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
+			}
 
 			$uFilename = '';
 			if(isset($tPathInfo['dirname'])) {
