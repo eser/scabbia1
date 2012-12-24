@@ -161,6 +161,7 @@ window.laroux = window.$l = (function() {
 			return document.querySelector.apply(document, arguments);
 		},
 
+		eventHistory: { },
 		setEvent: function(element, eventname, fnc) {
 			var fncWrapper = function(e) {
 				if(fnc(e, element) === false) {
@@ -172,6 +173,19 @@ window.laroux = window.$l = (function() {
 					}
 				}
 			};
+
+			if(typeof laroux.dom.eventHistory[element] == 'undefined') {
+				laroux.dom.eventHistory[element] = { };
+			}
+			if(typeof laroux.dom.eventHistory[element][eventname] != 'undefined') {
+				if(element.removeEventListener) {
+					element.removeEventListener(eventname, laroux.dom.eventHistory[element][eventname], false);
+				}
+				else if(element.detachEvent) {
+					element.detachEvent('on' + eventname, laroux.dom.eventHistory[element][eventname]);
+				}
+			}
+			laroux.dom.eventHistory[element][eventname] = fncWrapper;
 
 			if(element.addEventListener) {
 				element.addEventListener(eventname, fncWrapper, false);
