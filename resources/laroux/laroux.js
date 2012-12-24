@@ -346,6 +346,12 @@ window.laroux = window.$l = (function() {
 		append: function(element, content) {
 			element.insertAdjacentHTML('beforeend', content);
 		},
+
+		remove: function(element) {
+			if(element.parentElement != null) {
+				element.parentElement.removeChild(element);
+			}
+		},
 		
 		cloneAppend: 0,
 		cloneInsertAfter: 1,
