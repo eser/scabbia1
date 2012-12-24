@@ -153,12 +153,22 @@ window.laroux = window.$l = (function() {
 
 	// dom
 	laroux.dom = {
-		select: function() {
-			return document.querySelectorAll.apply(document, arguments);
+		select: function(selector, parent) {
+			if(typeof parent == 'undefined') {
+				return document.querySelectorAll(selector);
+			}
+
+			return parent.querySelectorAll(selector);
+			// return document.querySelectorAll.apply(document, arguments);
 		},
 
-		selectSingle: function() {
-			return document.querySelector.apply(document, arguments);
+		selectSingle: function(selector, parent) {
+			if(typeof parent == 'undefined') {
+				return document.querySelector(selector);
+			}
+
+			return parent.querySelector(selector);
+			// return document.querySelector.apply(document, arguments);
 		},
 
 		eventHistory: { },
