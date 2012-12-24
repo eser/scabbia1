@@ -195,6 +195,21 @@ window.laroux = window.$l = (function() {
 			}
 		},
 
+		unsetEvent: function(element, eventname) {
+			if(typeof laroux.dom.eventHistory[element] == 'undefined') {
+				return;
+			}
+			if(typeof laroux.dom.eventHistory[element][eventname] != 'undefined') {
+				if(element.removeEventListener) {
+					element.removeEventListener(eventname, laroux.dom.eventHistory[element][eventname], false);
+				}
+				else if(element.detachEvent) {
+					element.detachEvent('on' + eventname, laroux.dom.eventHistory[element][eventname]);
+				}
+			}
+			delete laroux.dom.eventHistory[element][eventname];
+		},
+
 		createElement: function(element, attributes, children) {
 			var elem = document.createElement(element);
 
