@@ -945,18 +945,20 @@
 		/**
 		 * @ignore
 		 */
-		public function &calculate($uTable, $uOperation = 'COUNT', $uField = '*', $uWhere = null) {
-			$tQuery = $this->database->provider->sqlSelect($uTable, array($uOperation . '(' . $uField . ')'), $uWhere, null, null);
+		public function calculate($uOperation = 'COUNT') {
+			$tQuery = $this->database->provider->sqlSelect($this->table, array($uOperation . '(' . $this->fields[0] . ')'), $this->where, null, $this->groupby);
 			if($this->debug) {
 				echo 'Calculate Query: ', $tQuery;
 			}
 			$tReturn = $this->database->query(
 				$tQuery,
-				array(),
+				$this->parameters,
 				$this->caching
 			);
 
-			return $tReturn;
+			$this->clear();
+
+			return $tReturn->scalar();
 		}
 
 		/**
