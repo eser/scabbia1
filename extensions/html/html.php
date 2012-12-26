@@ -70,7 +70,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function selectOptions($uOptions, $uDefault = null, $uField = null) {
+		public static function &selectOptions($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
 			foreach($uOptions as $tKey => &$tVal) {
@@ -88,7 +88,26 @@
 		/**
 		 * @ignore
 		 */
-		public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
+		public static function &selectOptionsArray($uOptions, $uDefault = null, $uField = null) {
+			$tOutput = array();
+
+			foreach($uOptions as $tKey => &$tVal) {
+				$tItem = '<option value="' . string::dquote($tKey) . '"';
+				if($uDefault == $tKey) {
+					$tItem .= ' selected="selected"';
+				}
+
+				$tItem .= '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
+				$tOutput[] = $tItem;
+			}
+
+			return $tOutput;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function &radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
 			foreach($uOptions as $tKey => &$tVal) {
@@ -105,6 +124,32 @@
 				}
 
 				$tOutput .= ' />' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</label>';
+			}
+
+			return $tOutput;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function &radioOptionsArray($uName, $uOptions, $uDefault = null, $uField = null) {
+			$tOutput = array();
+
+			foreach($uOptions as $tKey => &$tVal) {
+				$tItem = '<label';
+
+				if($uDefault == $tKey) {
+					$tItem .= ' class="selected"';
+				}
+
+				$tItem .= '><input type="radio" name="' . string::dquote($uName) . '" value="' . string::dquote($tKey) . '"';
+
+				if($uDefault == $tKey) {
+					$tItem .= ' checked="checked"';
+				}
+
+				$tItem .= ' />' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</label>';
+				$tOutput[] = $tItem;
 			}
 
 			return $tOutput;
