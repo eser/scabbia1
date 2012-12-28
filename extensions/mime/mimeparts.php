@@ -10,11 +10,11 @@
 		/**
 		 * @ignore
 		 */
-		const NONE = 0;
+		const RELATED = 0;
 		/**
 		 * @ignore
 		 */
-		const RELATED = 1;
+		const ALTERNATIVE = 1;
 
 		/**
 		 * @ignore
@@ -28,6 +28,10 @@
 		 * @ignore
 		 */
 		public $boundaryName;
+		/**
+		 * @ignore
+		 */
+		public $boundaryType = self::RELATED;
 		/**
 		 * @ignore
 		 */
@@ -69,7 +73,13 @@
 					$tPart = $this->parts[0];
 
 					if(!array_key_exists('Content-Type', $tHeaders)) {
-						$tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;
+						if($this->boundaryType == self::ALTERNATIVE) {
+							$tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
+						}
+						else {
+							$tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;
+						}
+
 						if(array_key_exists('Content-Id', $tPart->headers)) {
 							$tHeaders['Content-Type'] .= '; start="' . $tPart->headers['Content-Id'] . '"';
 						}
