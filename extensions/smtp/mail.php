@@ -81,21 +81,23 @@
 		 * @ignore
 		 */
 		public function getContent() {
-			if(count($this->parts) > 0) {
-				$tMain = new multipart();
-				$tMain->boundaryName = 'mail';
-				$tMain->filename = 'mail.eml';
-				$tMain->headers = $this->headers;
+			$tHeaders = $this->headers;
 
-				if(!array_key_exists('From', $tMain->headers)) {
-					$tMain->headers['From'] = $this->from;
-				}
-				if(!array_key_exists('To', $tMain->headers)) {
-					$tMain->headers['To'] = $this->to;
-				}
-				if(!array_key_exists('Subject', $tMain->headers)) {
-					$tMain->headers['Subject'] = $this->subject;
-				}
+			if(!array_key_exists('From', $tHeaders)) {
+				$tHeaders['From'] = $this->from;
+			}
+			if(!array_key_exists('To', $tHeaders)) {
+				$tHeaders['To'] = $this->to;
+			}
+			if(!array_key_exists('Subject', $tHeaders)) {
+				$tHeaders['Subject'] = $this->subject;
+			}
+
+			if(count($this->parts) > 0) {
+				$tMain = new multipart('mail', multipart::ALTERNATIVE);
+				$tMain->filename = 'mail.eml';
+				$tMain->content = $this->content;
+				$tMain->headers = $tHeaders;
 
 				foreach($this->parts as &$tPart) {
 					$tMain->parts[] = $tPart;
@@ -104,7 +106,13 @@
 				return $tMain->compile();
 			}
 
-			return $this->content;
+			$tString = '';
+			foreach($tHeaders as $tKey => &$tValue) {
+				$tString .= $tKey . ': ' . $tValue . "\n";
+			}
+			$tString .= "\n" . $this->content;
+			
+			return $tString;
 		}
 
 		/**
