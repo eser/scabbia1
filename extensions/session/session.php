@@ -47,7 +47,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function open() {
+		public static function open() {
 			self::$sessionName = config::get('/session/cookie/name', 'sessid');
 
 			if(config::get('/session/cookie/nameIp', true)) {
