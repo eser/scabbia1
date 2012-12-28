@@ -65,14 +65,16 @@
 				fputs($tSmtp, 'EHLO ' . self::$host . "\n");
 				self::sockwait($tSmtp, '250');
 
-				fputs($tSmtp, 'AUTH LOGIN' . "\n");
-				self::sockwait($tSmtp, '334');
-				
-				fputs($tSmtp, base64_encode(self::$username) . "\n");
-				self::sockwait($tSmtp, '334');
-				
-				fputs($tSmtp, base64_encode(self::$password) . "\n");
-				self::sockwait($tSmtp, '235');
+				if(strlen(self::$username) > 0) {
+					fputs($tSmtp, 'AUTH LOGIN' . "\n");
+					self::sockwait($tSmtp, '334');
+
+					fputs($tSmtp, base64_encode(self::$username) . "\n");
+					self::sockwait($tSmtp, '334');
+					
+					fputs($tSmtp, base64_encode(self::$password) . "\n");
+					self::sockwait($tSmtp, '235');
+				}
 				
 				fputs($tSmtp, 'MAIL FROM: ' . $uFrom . "\n");
 				self::sockwait($tSmtp, '250');
