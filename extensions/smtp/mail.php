@@ -22,6 +22,10 @@
 		/**
 		 * @ignore
 		 */
+		public $headers = array();
+		/**
+		 * @ignore
+		 */
 		public $content;
 		/**
 		 * @ignore
@@ -81,6 +85,7 @@
 				$tMain = new multipart();
 				$tMain->boundaryName = 'mail';
 				$tMain->filename = 'mail.eml';
+				$tMain->headers = $this->headers;
 
 				if(!array_key_exists('From', $tMain->headers)) {
 					$tMain->headers['From'] = $this->from;
