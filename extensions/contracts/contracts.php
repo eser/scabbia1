@@ -278,6 +278,17 @@
 		/**
 		 * @ignore
 		 */
+		public static function inKeys($uKey, $uArray) {
+			if(!array_key_exists($uKey, $uArray)) {
+				return new contractObject(false);
+			}
+
+			return new contractObject(true);
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function regExp($uValue, $uExpression) {
 			if(!preg_match($uExpression, $uValue)) {
 				return new contractObject(false);
@@ -291,6 +302,17 @@
 		 */
 		public static function custom($uValue, $uFunction) {
 			if(!call_user_func($uFunction, $uValue)) {
+				return new contractObject(false);
+			}
+
+			return new contractObject(true);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function isNotFalse($uValue) {
+			if($uValue === false) {
 				return new contractObject(false);
 			}
 
