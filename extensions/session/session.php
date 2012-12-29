@@ -230,6 +230,7 @@
 				self::open();
 			}
 
+			self::$flashdata_loaded[$uKey] = $uValue;
 			self::$flashdata_next[$uKey] = $uValue;
 			self::$isModified = true;
 		}
