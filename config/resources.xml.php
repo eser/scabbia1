@@ -117,6 +117,16 @@
 					</part>
 					<part>
 						<type>file</type>
+						<class>validation</class>
+						<path>{core}resources/jquery/jquery.validate.js</path>
+					</part>
+					<part>
+						<type>file</type>
+						<class>validation</class>
+						<path>{core}resources/jquery/jquery.validate.additional-methods.js</path>
+					</part>
+					<part>
+						<type>file</type>
 						<class>map</class>
 						<path>{core}resources/mapbox/mapbox-0.6.5.js</path>
 					</part>
