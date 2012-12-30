@@ -37,8 +37,8 @@
 		/**
 		 * @ignore
 		 */
-		public static function open($uSource) {
-			return new mediaFile($uSource);
+		public static function open($uSource, $uOriginalFilename = null) {
+			return new mediaFile($uSource, $uOriginalFilename);
 		}
 
 		/**
@@ -118,7 +118,7 @@
 		/**
 		 * @ignore
 		 */
-		public function __construct($uSource = null) {
+		public function __construct($uSource = null, $uOriginalFilename = null) {
 			$this->source = $uSource;
 			$this->background = array(255, 255, 255, 0);
 
@@ -132,8 +132,11 @@
 				$this->sa = $this->sw / $this->sh;
 
 				// get the source file extension
+				if(is_null($uOriginalFilename)) {
+					$uOriginalFilename = $this->source;
+				}
 				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
-				$this->extension = pathinfo($this->source, PATHINFO_EXTENSION);
+				$this->extension = pathinfo($uOriginalFilename, PATHINFO_EXTENSION);
 
 				if(extensions::isLoaded('mime')) {
 					$this->mime = mime::getType($this->extension);
@@ -313,7 +316,10 @@
 				break;
 			}
 
-			imagedestroy($this->image);
+			if(!is_null($this->image)) {
+				imagedestroy($this->image);
+			}
+
 			$this->image = & $tImage;
 			// $this->size = filesize($this->source);
 
