@@ -613,8 +613,12 @@ window.laroux = window.$l = (function() {
 
 	// forms
 	laroux.forms = {
-		ajaxForm: function(formobj, fnc) {
+		ajaxForm: function(formobj, fnc, fncBegin) {
 			laroux.dom.setEvent(formobj, 'submit', function() {
+				if(typeof fncBegin != 'undefined') {
+					fncBegin();
+				}
+
 				laroux.ajax.post(
 					formobj.getAttribute('action'),
 					laroux.forms.serialize(formobj),
