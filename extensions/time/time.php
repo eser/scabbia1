@@ -51,13 +51,17 @@
 		/**
 		 * @ignore
 		 */
-		public static function humanize($uTimestamp, $uTime = null, $uCalculateAgo = true) {
+		public static function humanize($uTimestamp, $uTime = null, $uCalculateAgo = true, $uShowHours = true) {
 			if(is_null($uTime)) {
 				$uTime = time();
 			}
 
 			if(version_compare(PHP_VERSION, '5.3.0', '<')) {
-				return date('d-m-Y H:i', $uTimestamp);
+				if($uShowHours) {
+					return date('d-m-Y H:i', $uTimestamp);
+				}
+
+				return date('d-m-Y', $uTimestamp);
 			}
 
 			$tDifference = $uTime - $uTimestamp;
@@ -71,18 +75,34 @@
 			}
 
 			if(date('d-m-Y', $uTime - (24 * 60 * 60)) == date('d-m-Y', $uTimestamp)) {
-				return 'Yesterday, ' . date('H:i', $uTimestamp);
+				if($uShowHours) {
+					return 'Yesterday, ' . date('H:i', $uTimestamp);
+				}
+
+				return 'Yesterday';
 			}
 
 			if(date('d-m-Y', $uTime) == date('d-m-Y', $uTimestamp)) {
-				return 'Today, ' . date('H:i', $uTimestamp);
+				if($uShowHours) {
+					return 'Today, ' . date('H:i', $uTimestamp);
+				}
+
+				return 'Today';
 			}
 
 			if(date('d-m-Y', $uTime + (24 * 60 * 60)) == date('d-m-Y', $uTimestamp)) {
-				return 'Tomorrow, ' . date('H:i', $uTimestamp);
+				if($uShowHours) {
+					return 'Tomorrow, ' . date('H:i', $uTimestamp);
+				}
+
+				return 'Tomorrow';
 			}
 
-			return date('d-m-Y H:i', $uTimestamp);
+			if($uShowHours) {
+				return date('d-m-Y H:i', $uTimestamp);
+			}
+
+			return date('d-m-Y', $uTimestamp);
 		}
 
 		/**
