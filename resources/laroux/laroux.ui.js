@@ -86,7 +86,9 @@
 		datepicker: function(obj, settings) {
 			settings.changeMonth = true;
 			settings.changeYear = true;
-			settings.dateFormat = 'dd/mm/yy';
+			if(typeof settings.dateFormat == 'undefined') {
+				settings.dateFormat = 'dd/mm/yy';
+			}
 			
 			obj.datepicker(settings);
 		}
