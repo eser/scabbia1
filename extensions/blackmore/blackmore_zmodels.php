@@ -58,7 +58,8 @@
 		public static function generateSql() {
 			auth::checkRedirect('admin');
 
-			$tSql = zmodels::generateCreateSql('categories');
+			$tZmodel = new zmodel('categories');
+			$tSql = $tZmodel->generateCreateSql();
 
 			views::viewFile('{core}views/blackmore/zmodels/sql.php', array(
 				'sql' => $tSql
