@@ -99,7 +99,7 @@
 				'HTTPS'
 			);
 
-			foreach($aEnvNames as &$tEnv) {
+			foreach($aEnvNames as $tEnv) {
 				if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
 					continue;
 				}
@@ -188,7 +188,7 @@
 						  'get' => &$_GET
 					);
 
-			foreach(self::$callbacks as &$tCallback) {
+			foreach(self::$callbacks as $tCallback) {
 				if(!is_null($tCallback[2]) && !in_array(self::$methodext, $tCallback[2])) {
 					continue;
 				}
@@ -353,7 +353,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function xss(&$uString) {
+		public static function xss($uString) {
 			if(is_string($uString)) {
 				$tString = str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
 				return $tString;
@@ -382,7 +382,7 @@
 		public static function encodeArray($uArray) {
 			$tReturn = array();
 
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				$tReturn[] = urlencode($tKey) . '=' . urlencode($tValue);
 			}
 
@@ -767,7 +767,7 @@
 			*/
 			$tString = '?';
 
-			foreach($uArray as $tKey => &$tItem) {
+			foreach($uArray as $tKey => $tItem) {
 				if($tKey == '_segments' || $tKey == '_hash') {
 					continue;
 				}
@@ -859,7 +859,7 @@
 				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			foreach($uKeys as &$tKey) {
+			foreach($uKeys as $tKey) {
 				if(!array_key_exists($tKey, $_GET)) {
 					continue;
 				}
@@ -892,7 +892,7 @@
 				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			foreach($uKeys as &$tKey) {
+			foreach($uKeys as $tKey) {
 				if(!array_key_exists($tKey, $_POST)) {
 					continue;
 				}
@@ -925,7 +925,7 @@
 				$tArgs = array_slice(func_get_args(), 2);
 			}
 
-			foreach($uKeys as &$tKey) {
+			foreach($uKeys as $tKey) {
 				if(!array_key_exists($tKey, $_COOKIE)) {
 					continue;
 				}

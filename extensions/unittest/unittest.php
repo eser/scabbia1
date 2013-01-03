@@ -29,7 +29,7 @@
 			$tMethods = get_class_methods($uClass);
 
 			$tInstance = new $uClass ();
-			foreach($tMethods as &$tMethod) {
+			foreach($tMethods as $tMethod) {
 				self::begin($uClass . '->' . $tMethod . '()', array(&$tInstance, $tMethod));
 			}
 		}

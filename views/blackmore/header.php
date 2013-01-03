@@ -36,7 +36,7 @@
 					<div class="containerBox inner">
 						<nav>
 							<ul class="noMargin">
-								<?php foreach(blackmore::$modules as $tKey => &$tModule) { ?>
+								<?php foreach(blackmore::$modules as $tKey => $tModule) { ?>
 									<li class="memu-root floatLeft"><a class="memu-caption memu-item" href="<?php echo mvc::url('blackmore/' . $tKey); ?>"><?php echo _($tModule['title']); ?></a>
 									<?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
 									<ul class="memu-submenu noMargin">

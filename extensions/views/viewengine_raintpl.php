@@ -50,13 +50,13 @@
 
 			self::$engine->assign('model', $uObject['model']);
 			if(is_array($uObject['model'])) {
-				foreach($uObject['model'] as $tKey => &$tValue) {
+				foreach($uObject['model'] as $tKey => $tValue) {
 					self::$engine->assign($tKey, $tValue);
 				}
 			}
 
 			if(isset($uObject['extra'])) {
-				foreach($uObject['extra'] as $tKey => &$tValue) {
+				foreach($uObject['extra'] as $tKey => $tValue) {
 					self::$engine->assign($tKey, $tValue);
 				}
 			}

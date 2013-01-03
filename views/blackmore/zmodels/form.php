@@ -20,7 +20,7 @@
 									<div class="menuDiv">
 										<div class="menuDivHeader"><a class="boxed" href="#"><?php echo _($module['singularTitle']); ?></a></div>
 										<?php
-											foreach($fields as &$tField) {
+											foreach($fields as $tField) {
 												echo $tField['html'];
 											}
 										?>

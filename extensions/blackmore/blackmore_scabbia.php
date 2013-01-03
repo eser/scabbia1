@@ -135,7 +135,7 @@
 
 			// download files
 			if(isset($tConfig['/downloadList'])) {
-				foreach($tConfig['/downloadList'] as &$tUrl) {
+				foreach($tConfig['/downloadList'] as $tUrl) {
 					framework::downloadFile($tUrl['filename'], $tUrl['url']);
 				}
 			}
@@ -144,11 +144,11 @@
 			$tIncludedFiles = array();
 
 			//! autoloaded extensions?
-			foreach($tConfig['/extensionList'] as &$tExtensionName) {
+			foreach($tConfig['/extensionList'] as $tExtensionName) {
 				$tExtension = $tExtensions[$tExtensionName];
 
 				if(isset($tExtension['config']['/includeList'])) {
-					foreach($tExtension['config']['/includeList'] as &$tFile) {
+					foreach($tExtension['config']['/includeList'] as $tFile) {
 						$tFilename = $tExtension['path'] . $tFile;
 
 						if(!in_array($tFilename, $tIncludedFiles, true)) {
@@ -161,7 +161,7 @@
 
 			// include files
 			if(isset($tConfig['/includeList'])) {
-				foreach($tConfig['/includeList'] as &$tInclude) {
+				foreach($tConfig['/includeList'] as $tInclude) {
 					$tIncludePath = pathinfo(framework::translatePath($tInclude));
 
 					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
@@ -213,7 +213,7 @@
 				return;
 			}
 
-			foreach($tDirectory as &$tFilename) {
+			foreach($tDirectory as $tFilename) {
 				if(substr($tFilename, -1) == '/') {
 					continue;
 				}

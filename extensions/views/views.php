@@ -69,7 +69,7 @@
 		 * @ignore
 		 */
 		public static function setRange($uArray) {
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				self::$vars[$tKey] = $tValue;
 			}
 		}
@@ -182,7 +182,7 @@
 		 * @ignore
 		 */
 		public function __construct($uPath) {
-			$this->path = &$uPath;
+			$this->path = $uPath;
 		}
 
 		/**
@@ -210,7 +210,7 @@
 		 * @ignore
 		 */
 		public function setRange($uArray) {
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				$this->vars[$tKey] = $tValue;
 			}
 		}

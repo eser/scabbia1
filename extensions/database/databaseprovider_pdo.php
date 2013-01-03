@@ -130,7 +130,7 @@
 		/**
 		 * @ignore
 		 */
-		public function itSeek(&$uObject, $uRow) {
+		public function itSeek($uObject, $uRow) {
 			// return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_ABS, $uRow);
 			for($i = 0; $i < $uRow; $i++) {
 				$uObject->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
@@ -142,21 +142,21 @@
 		/**
 		 * @ignore
 		 */
-		public function itNext(&$uObject) {
+		public function itNext($uObject) {
 			return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function itCount(&$uObject) {
+		public function itCount($uObject) {
 			return $uObject->rowCount();
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function itClose(&$uObject) {
+		public function itClose($uObject) {
 			return $uObject->closeCursor();
 		}
 
@@ -197,7 +197,7 @@
 		 */
 		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
 			$tPairs = array();
-			foreach($uObject as $tKey => &$tValue) {
+			foreach($uObject as $tKey => $tValue) {
 				$tPairs[] = $tKey . '=' . $tValue;
 			}
 

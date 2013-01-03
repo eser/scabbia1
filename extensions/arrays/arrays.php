@@ -152,7 +152,7 @@
 			}
 
 			$tValues = array();
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				$tValues[$tKey] = $tValue[$uField];
 			}
 
@@ -186,7 +186,7 @@
 
 			foreach($uArray as &$tRow) {
 				$tRef = &$tReturn;
-				foreach($uKey as &$tKey) {
+				foreach($uKey as $tKey) {
 					$tValue = $tRow[$tKey];
 					if(!isset($tRef[$tValue])) {
 						$tRef[$tValue] = array();
@@ -213,7 +213,7 @@
 		public static function assignKeys($uArray, $uKey) {
 			$tReturn = array();
 
-			foreach($uArray as &$tRow) {
+			foreach($uArray as $tRow) {
 				$tReturn[$tRow[$uKey]] = $tRow;
 			}
 
@@ -233,7 +233,7 @@
 		public static function column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false) {
 			$tReturn = array();
 
-			foreach($uArray as &$tRow) {
+			foreach($uArray as $tRow) {
 				if(isset($tRow[$uKey])) {
 					if(!$uDistinct || !in_array($tRow[$uKey], $tReturn)) {
 						$tReturn[] = $tRow[$uKey];
@@ -259,7 +259,7 @@
 		 * @return bool
 		 */
 		public static function getRow($uArray, $uKey, $uValue) {
-			foreach($uArray as &$tRow) {
+			foreach($uArray as $tRow) {
 				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
 					return $tRow;
 				}
@@ -278,7 +278,7 @@
 		 * @return bool|int|string
 		 */
 		public static function getRowKey($uArray, $uKey, $uValue) {
-			foreach($uArray as $tKey => &$tRow) {
+			foreach($uArray as $tKey => $tRow) {
 				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
 					return $tKey;
 				}
@@ -299,7 +299,7 @@
 		public static function getRows($uArray, $uKey, $uValue) {
 			$tReturn = array();
 
-			foreach($uArray as $tKey => &$tRow) {
+			foreach($uArray as $tKey => $tRow) {
 				if(isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
 					$tReturn[$tKey] = $tRow;
 				}

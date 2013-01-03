@@ -12,9 +12,11 @@
 	</info>
 	<includeList>
 		<include>zmodels.php</include>
+		<include>zmodel.php</include>
 	</includeList>
 	<classList>
 		<class>zmodels</class>
+		<class>zmodel</class>
 	</classList>
 	<eventList>
 		<event>

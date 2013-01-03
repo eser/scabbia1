@@ -133,7 +133,7 @@
 		public function listItems() {
 			echo '<h2>Items</h2>';
 
-			foreach($this->data as $tDataKey => &$tDataValue) {
+			foreach($this->data as $tDataKey => $tDataValue) {
 				if(!is_array($tDataValue->fields)) {
 					continue;
 				}

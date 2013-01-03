@@ -73,7 +73,7 @@
 		public static function selectOptions($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
-			foreach($uOptions as $tKey => &$tVal) {
+			foreach($uOptions as $tKey => $tVal) {
 				$tOutput .= '<option value="' . string::dquote($tKey) . '"';
 				if($uDefault == $tKey) {
 					$tOutput .= ' selected="selected"';
@@ -91,7 +91,7 @@
 		public static function selectOptionsArray($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = array();
 
-			foreach($uOptions as $tKey => &$tVal) {
+			foreach($uOptions as $tKey => $tVal) {
 				$tItem = '<option value="' . string::dquote($tKey) . '"';
 				if($uDefault == $tKey) {
 					$tItem .= ' selected="selected"';
@@ -110,7 +110,7 @@
 		public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
-			foreach($uOptions as $tKey => &$tVal) {
+			foreach($uOptions as $tKey => $tVal) {
 				$tOutput .= '<label';
 
 				if($uDefault == $tKey) {
@@ -135,7 +135,7 @@
 		public static function radioOptionsArray($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = array();
 
-			foreach($uOptions as $tKey => &$tVal) {
+			foreach($uOptions as $tKey => $tVal) {
 				$tItem = '<label';
 
 				if($uDefault == $tKey) {
@@ -371,14 +371,14 @@
 
 			if(isset($uOptions['headers'])) {
 				$tResult .= '<tr>';
-				foreach($uOptions['headers'] as &$tColumn) {
+				foreach($uOptions['headers'] as $tColumn) {
 					$tResult .= string::format($uOptions['header'], array('value' => $tColumn));
 				}
 				$tResult .= '</tr>';
 			}
 
 			$tCount = 0;
-			foreach($uOptions['data'] as &$tRow) {
+			foreach($uOptions['data'] as $tRow) {
 				if(isset($uOptions['rowFunc'])) {
 					$tResult .= call_user_func($uOptions['rowFunc'], $tRow, $tCount++);
 				}
@@ -389,7 +389,7 @@
 					else {
 						$tResult .= '<tr>';
 
-						foreach($tRow as &$tColumn) {
+						foreach($tRow as $tColumn) {
 							$tResult .= string::format($uOptions['cell'], array('value' => $tColumn));
 						}
 

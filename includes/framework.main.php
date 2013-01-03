@@ -64,7 +64,7 @@
 
 			// endpoints
 			if(count(self::$endpoints) > 0) {
-				foreach(self::$endpoints as &$tEndpoint) {
+				foreach(self::$endpoints as $tEndpoint) {
 					$tParsed = parse_url($tEndpoint);
 					if(!isset($tParsed['port'])) {
 						$tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
@@ -233,7 +233,7 @@
 		public static function output($uValue, $uSecond) {
 			$tParms = array(
 				'error' => &self::$error,
-				'content' => &$uValue
+				'content' => $uValue
 			);
 
 			events::invoke('output', $tParms);
@@ -506,7 +506,7 @@
 			}
 
 			if(!$uOnlyContent) {
-				$tArray = array(&$tReturn, &$tDocComments);
+				$tArray = array(&$tReturn, $tDocComments);
 
 				return $tArray;
 			}

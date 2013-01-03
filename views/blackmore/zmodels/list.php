@@ -34,7 +34,7 @@
 									<thead>
 										<tr>
 											<?php
-												foreach($module['fieldList'] as &$field) {
+												foreach($module['fieldList'] as $field) {
 													if(!array_key_exists('list', $field['methods'])) {
 														continue;
 													}
@@ -45,10 +45,10 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach($rows as &$row) { ?>
+										<?php foreach($rows as $row) { ?>
 											<tr class="row" id="row-<?php echo $row['slug']; ?>">
 												<?php
-													foreach($module['fieldList'] as &$field) {
+													foreach($module['fieldList'] as $field) {
 														if(!array_key_exists('list', $field['methods'])) {
 															continue;
 														}

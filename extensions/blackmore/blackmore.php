@@ -29,7 +29,7 @@
 		/**
 		 * @ignore
 		 */
-		public function render(&$uAction, &$uArgs) {
+		public function render($uAction, $uArgs) {
 			self::$modules['index'] = array(
 				'title' => 'Dashboard',
 				'callback' => array(&$this, 'index')
@@ -52,7 +52,7 @@
 			self::$module = $uAction;
 
 			if(count($uArgs) > 0) {
-				foreach(self::$modules[$uAction]['actions'] as &$tAction) {
+				foreach(self::$modules[$uAction]['actions'] as $tAction) {
 					if($uArgs[0] != $tAction['action']) {
 						continue;
 					}

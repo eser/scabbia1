@@ -15,6 +15,10 @@
 	</info>
 	<includeList>
 		<include>database.php</include>
+		<include>databaseConnection.php</include>
+		<include>databaseDataset.php</include>
+		<include>databaseQuery.php</include>
+		<include>databaseQueryResult.php</include>
 		<scope phpextension="pdo">
 			<include>databaseprovider_pdo.php</include>
 		</scope>

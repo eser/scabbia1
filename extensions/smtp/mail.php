@@ -51,7 +51,7 @@
 			$tMimepart->transferEncoding = $uEncoding;
 			$tMimepart->content = $uContent;
 
-			$this->parts[] = &$tMimepart;
+			$this->parts[] = $tMimepart;
 			return $tMimepart;
 		}
 
@@ -73,7 +73,7 @@
 			$tMimepart->transferEncoding = $uEncoding;
 			$tMimepart->load($uPath);
 
-			$this->parts[] = &$tMimepart;
+			$this->parts[] = $tMimepart;
 			return $tMimepart;
 		}
 
@@ -99,7 +99,7 @@
 				$tMain->content = $this->content;
 				$tMain->headers = $tHeaders;
 
-				foreach($this->parts as &$tPart) {
+				foreach($this->parts as $tPart) {
 					$tMain->parts[] = $tPart;
 				}
 
@@ -107,7 +107,7 @@
 			}
 
 			$tString = '';
-			foreach($tHeaders as $tKey => &$tValue) {
+			foreach($tHeaders as $tKey => $tValue) {
 				$tString .= $tKey . ': ' . $tValue . "\n";
 			}
 			$tString .= "\n" . $this->content;

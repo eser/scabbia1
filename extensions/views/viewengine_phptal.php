@@ -45,13 +45,13 @@
 
 			self::$engine->set('model', $uObject['model']);
 			if(is_array($uObject['model'])) {
-				foreach($uObject['model'] as $tKey => &$tValue) {
+				foreach($uObject['model'] as $tKey => $tValue) {
 					self::$engine->set($tKey, $tValue);
 				}
 			}
 
 			if(isset($uObject['extra'])) {
-				foreach($uObject['extra'] as $tKey => &$tValue) {
+				foreach($uObject['extra'] as $tKey => $tValue) {
 					self::$engine->set($tKey, $tValue);
 				}
 			}

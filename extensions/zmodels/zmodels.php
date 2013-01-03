@@ -45,7 +45,7 @@
 	updatedate DATETIME NOT NULL,
 	deletedate DATETIME,';
 
-			foreach($tModule['fieldList'] as &$tField) {
+			foreach($tModule['fieldList'] as $tField) {
 				$tSql .= '
 	' . $tField['name'] . ' ' . strtoupper($tField['type']) . ' NOT NULL,';
 			}

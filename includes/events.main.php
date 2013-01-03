@@ -55,7 +55,7 @@
 				return;
 			}
 
-			foreach(self::$callbacks[$uEventName] as &$tCallback) {
+			foreach(self::$callbacks[$uEventName] as $tCallback) {
 				if(is_array($tCallback)) {
 					$tCallname = array(get_class($tCallback[0]), $tCallback[1]);
 				}

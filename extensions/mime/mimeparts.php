@@ -59,7 +59,7 @@
 		public function compileBody() {
 			$tString = $this->content . "\n\n";
 
-			foreach($this->parts as &$tPart) {
+			foreach($this->parts as $tPart) {
 				$tString .= '--' . $this->boundaryName . "\n" . $tPart->compile(true) . "\n";
 			}
 
@@ -111,7 +111,7 @@
 					$tHeaders['Content-Length'] = strlen($tBody);
 				}
 
-				foreach($tHeaders as $tKey => &$tValue) {
+				foreach($tHeaders as $tKey => $tValue) {
 					$tString .= $tKey . ': ' . $tValue . "\n";
 				}
 
@@ -213,7 +213,7 @@
 					$tHeaders['Content-Length'] = strlen($tBody);
 				}
 
-				foreach($tHeaders as $tKey => &$tValue) {
+				foreach($tHeaders as $tKey => $tValue) {
 					$tString .= $tKey . ': ' . $tValue . "\n";
 				}
 

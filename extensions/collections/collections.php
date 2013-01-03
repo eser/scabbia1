@@ -63,7 +63,7 @@
 		 * @ignore
 		 */
 		public function addRange($uItems) {
-			foreach($uItems as &$tItem) { //SPD (array)$uItems cast
+			foreach($uItems as $tItem) { //SPD (array)$uItems cast
 				$this->add($tItem);
 			}
 		}
@@ -72,7 +72,7 @@
 		 * @ignore
 		 */
 		public function addKeyRange($uItems) {
-			foreach($uItems as $tKey => &$tItem) { //SPD (array)$uItems cast
+			foreach($uItems as $tKey => $tItem) { //SPD (array)$uItems cast
 				$this->addKey($tKey, $tItem);
 			}
 		}
@@ -92,7 +92,7 @@
 		 * @ignore
 		 */
 		public function contains($uItem) {
-			foreach($this->tag['items'] as &$tItem) {
+			foreach($this->tag['items'] as $tItem) {
 				if($uItem == $tItem) {
 					return true;
 				}
@@ -110,7 +110,7 @@
 			}
 
 			$tCounted = 0;
-			foreach($this->tag['items'] as &$tItem) {
+			foreach($this->tag['items'] as $tItem) {
 				if($uItem != $tItem) {
 					continue;
 				}
@@ -127,7 +127,7 @@
 		public function countRange($uItems) {
 			$tCounted = 0;
 
-			foreach($uItems as &$tItem) { //SPD (array)$uItems cast
+			foreach($uItems as $tItem) { //SPD (array)$uItems cast
 				$tCounted += $this->count($tItem);
 			}
 
@@ -140,7 +140,7 @@
 		public function remove($uItem, $uLimit = null) {
 			$tRemoved = 0;
 
-			foreach($this->tag['items'] as $tKey => &$tVal) {
+			foreach($this->tag['items'] as $tKey => $tVal) {
 				if($uItem != $tVal) {
 					continue;
 				}
@@ -162,7 +162,7 @@
 		public function removeRange($uItems, $uLimitEach = null, $uLimitTotal = null) {
 			$tRemoved = 0;
 
-			foreach($uItems as &$tItem) { //SPD (array)$uItems cast
+			foreach($uItems as $tItem) { //SPD (array)$uItems cast
 				$tRemoved += $this->remove($tItem, $uLimitEach);
 
 				if(isset($uLimitTotal) && $uLimitTotal >= $tRemoved) {
@@ -549,7 +549,7 @@
 			}
 
 			$tTemp = new xmlCollection();
-			foreach($uFiles as &$tFile) {
+			foreach($uFiles as $tFile) {
 				$tTemp->add(simplexml_load_file($tFile));
 			}
 
@@ -646,7 +646,7 @@
 
 			$tTemp = new fileCollection();
 
-			foreach($uFiles as &$tFile) {
+			foreach($uFiles as $tFile) {
 				$tTemp->add($tFile);
 			}
 

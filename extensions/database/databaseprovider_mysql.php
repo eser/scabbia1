@@ -102,7 +102,7 @@
 		public function queryDirect($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 
-			foreach($uParameters as &$tParameter) {
+			foreach($uParameters as $tParameter) {
 				switch(gettype($tParameter)) {
 				case 'integer':
 					$tType = 'i';
@@ -126,7 +126,7 @@
 		/**
 		 * @ignore
 		 */
-		public function itSeek(&$uObject, $uRow) {
+		public function itSeek($uObject, $uRow) {
 			$uObject->data_seek($uRow);
 
 			return $this->itNext($uObject);
@@ -135,21 +135,21 @@
 		/**
 		 * @ignore
 		 */
-		public function itNext(&$uObject) {
+		public function itNext($uObject) {
 			return $uObject->fetch();
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function itCount(&$uObject) {
+		public function itCount($uObject) {
 			return $uObject->num_rows;
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function itClose(&$uObject) {
+		public function itClose($uObject) {
 			return $uObject->close();
 		}
 
@@ -190,7 +190,7 @@
 		 */
 		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
 			$tPairs = array();
-			foreach($uObject as $tKey => &$tValue) {
+			foreach($uObject as $tKey => $tValue) {
 				$tPairs[] = $tKey . '=' . $tValue;
 			}
 

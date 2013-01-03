@@ -49,8 +49,8 @@
 			}
 
 			self::$summary[$uField][] = array(
-				'field' => &$uField,
-				'message' => &$uMessage
+				'field' => $uField,
+				'message' => $uMessage
 			);
 		}
 
@@ -59,7 +59,7 @@
 		 */
 		public static function validate($uArray = null) {
 			if(!is_null($uArray)) {
-				foreach(self::$rules as &$tRule) {
+				foreach(self::$rules as $tRule) {
 					if(!array_key_exists($tRule->field, $uArray)) {
 						if($tRule->type == 'isExist') {
 							self::addSummary($tRule->field, $tRule->errorMessage);
@@ -110,12 +110,12 @@
 		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
 			$tMessages = array();
 
-			foreach(self::$summary as $tKey => &$tField) {
+			foreach(self::$summary as $tKey => $tField) {
 				if($uFilter !== false && $uFilter != $tKey) {
 					continue;
 				}
 
-				foreach($tField as &$tSummary) {
+				foreach($tField as $tSummary) {
 					if(is_null($tSummary['message'])) {
 						continue;
 					}
@@ -136,8 +136,8 @@
 		public static function getErrorMessagesByFields() {
 			$tMessages = array();
 			
-			foreach(self::$summary as $tKey => &$tField) {
-				foreach($tField as &$tRule) {
+			foreach(self::$summary as $tKey => $tField) {
+				foreach($tField as $tRule) {
 					if(is_null($tRule->errorMessage)) {
 						continue;
 					}
@@ -192,7 +192,7 @@
 		/**
 		 * @ignore
 		 */
-		public function __construct(&$uField) {
+		public function __construct($uField) {
 			$this->field = $uField;
 		}
 
@@ -201,7 +201,7 @@
 		 */
 		public function __call($uName, $uArgs) {
 			$this->type = $uName;
-			$this->args = & $uArgs;
+			$this->args = $uArgs;
 
 			return $this;
 		}
@@ -210,7 +210,7 @@
 		 * @ignore
 		 */
 		public function field($uField) {
-			$this->field = & $uField;
+			$this->field = $uField;
 
 			return $this;
 		}
@@ -219,7 +219,7 @@
 		 * @ignore
 		 */
 		public function errorMessage($uErrorMessage) {
-			$this->errorMessage = & $uErrorMessage;
+			$this->errorMessage = $uErrorMessage;
 		}
 	}
 

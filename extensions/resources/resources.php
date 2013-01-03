@@ -59,7 +59,7 @@
 				}
 
 				$tSubParts = array();
-				foreach($uParms['get'] as $tKey => &$tSubPart) {
+				foreach($uParms['get'] as $tKey => $tSubPart) {
 					if($tKey[0] == '_') {
 						continue;
 					}
@@ -94,7 +94,7 @@
 			$tType = $tSelectedPack['type'];
 			$tCacheTtl = isset($tSelectedPack['cacheTtl']) ? $tSelectedPack['cacheTtl'] : 0;
 			$tFilename = $uName;
-			foreach($uClasses as &$tClassName) {
+			foreach($uClasses as $tClassName) {
 				$tFilename .= '_' . $tClassName;
 			}
 			$tFilename .= '.' . $tType;
@@ -111,7 +111,7 @@
 			$tOutputFile = cache::filePath('resources/', $tFilename, $tCompileAge);
 			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				$tContent = '';
-				foreach($tSelectedPack['partList'] as &$tPart) {
+				foreach($tSelectedPack['partList'] as $tPart) {
 					$tType = isset($tPart['type']) ? $tPart['type'] : 'file';
 					$tClass = isset($tPart['class']) ? $tPart['class'] : null;
 
@@ -175,7 +175,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function getDirectory(&$uSelectedDirectory, $uSubPath) {
+		public static function getDirectory($uSelectedDirectory, $uSubPath) {
 			$tPath = rtrim(framework::translatePath($uSelectedDirectory['path']), '/');
 
 			foreach(explode('/', ltrim($uSubPath, '/')) as $tSubDirectory) {

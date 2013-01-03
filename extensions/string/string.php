@@ -68,7 +68,7 @@
 
 			$tOutput = $tLines[0] . $uLineEnding;
 			$tCount = 0;
-			foreach($tLines as &$tLine) {
+			foreach($tLines as $tLine) {
 				if($tCount++ == 0) {
 					continue;
 				}
@@ -259,7 +259,7 @@
 					$tOut .= ' {' . PHP_EOL;
 
 					$tTabs .= self::$tab;
-					foreach($tVariable as $tKey => &$tVal) {
+					foreach($tVariable as $tKey => $tVal) {
 						$tOut .= $tTabs . '[' . $tKey . '] = ';
 						$tOut .= self::vardump($tVal, false);
 					}
@@ -443,7 +443,7 @@
 		 */
 		public static function squoteArray($uArray, $uCover = false) {
 			$tArray = array();
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				if($uCover) {
 					$tArray[$tKey] = '\'' . strtr($tValue, array('\\' => '\\\\', '\'' => '\\\'')) . '\'';
 					continue;
@@ -460,7 +460,7 @@
 		 */
 		public static function dquoteArray($uArray, $uCover = false) {
 			$tArray = array();
-			foreach($uArray as $tKey => &$tValue) {
+			foreach($uArray as $tKey => $tValue) {
 				if($uCover) {
 					$tArray[$tKey] = '\'' . strtr($tValue, array('\\' => '\\\\', '"' => '\\"')) . '\'';
 					continue;

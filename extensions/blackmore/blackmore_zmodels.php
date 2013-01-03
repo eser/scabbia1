@@ -16,7 +16,7 @@
 				'action' => 'generateSql'
 			);
 
-			foreach(zmodels::$zmodels as $tKey => &$tZmodel) {
+			foreach(zmodels::$zmodels as $tKey => $tZmodel) {
 				$uParms['modules'][$tKey] = array(
 					'title' => $tZmodel['title'],
 					'callback' => 'blackmore_zmodels::all',
@@ -61,7 +61,7 @@
 			$tSql = zmodels::generateCreateSql('categories');
 
 			views::viewFile('{core}views/blackmore/zmodels/sql.php', array(
-				'sql' => &$tSql
+				'sql' => $tSql
 			));
 		}
 		
@@ -77,8 +77,8 @@
 			$tRows = $tModel->getAll($tModule['name']);
 
 			views::viewFile('{core}views/blackmore/zmodels/list.php', array(
-				'module' => &$tModule,
-				'rows' => &$tRows
+				'module' => $tModule,
+				'rows' => $tRows
 			));
 		}
 
@@ -90,7 +90,7 @@
 
 			$tModule = &zmodels::$zmodels[blackmore::$module];
 			$tViewbag = array(
-				'module' => &$tModule,
+				'module' => $tModule,
 				'fields' => array()
 			);
 
@@ -123,7 +123,7 @@
 				$tViewbag['error'] = implode('<br />', validation::getErrorMessages(true));
 			}
 
-			foreach($tModule['fieldList'] as &$tField) {
+			foreach($tModule['fieldList'] as $tField) {
 				$tIsView = array_key_exists('view', $tField['methods']);
 				$tIsEdit = array_key_exists('edit', $tField['methods']);
 
@@ -131,7 +131,7 @@
 					switch($tField['type']) {
 					case 'enum':
 						$tTypes = array();
-						foreach($tField['valueList'] as &$tValue) {
+						foreach($tField['valueList'] as $tValue) {
 							$tTypes[$tValue['name']] = $tValue['title'];
 						}
 
@@ -164,7 +164,7 @@
 				}
 
 				$tViewbag['fields'][] = array(
-					'data' => &$tField,
+					'data' => $tField,
 					'html' => $tTag
 				);
 			}
@@ -180,7 +180,7 @@
 
 			$tModule = &zmodels::$zmodels[blackmore::$module];
 			$tViewbag = array(
-				'module' => &$tModule,
+				'module' => $tModule,
 				'fields' => array()
 			);
 
@@ -212,7 +212,7 @@
 
 				$tViewbag['error'] = implode('<br />', validation::getErrorMessages(true));
 
-				foreach($tModule['fieldList'] as &$tField) {
+				foreach($tModule['fieldList'] as $tField) {
 					$tIsView = array_key_exists('view', $tField['methods']);
 					$tIsEdit = array_key_exists('edit', $tField['methods']);
 
@@ -220,7 +220,7 @@
 						switch($tField['type']) {
 						case 'enum':
 							$tTypes = array();
-							foreach($tField['valueList'] as &$tValue) {
+							foreach($tField['valueList'] as $tValue) {
 								$tTypes[$tValue['name']] = $tValue['title'];
 							}
 
@@ -253,7 +253,7 @@
 					}
 
 					$tViewbag['fields'][] = array(
-						'data' => &$tField,
+						'data' => $tField,
 						'html' => $tTag
 					);
 				}
@@ -265,7 +265,7 @@
 			$tModel = self::getModel();
 			$tCategory = $tModel->getBySlug($tModule['name'], $uSlug);
 
-			foreach($tModule['fieldList'] as &$tField) {
+			foreach($tModule['fieldList'] as $tField) {
 				$tIsView = array_key_exists('view', $tField['methods']);
 				$tIsEdit = array_key_exists('edit', $tField['methods']);
 
@@ -273,7 +273,7 @@
 					switch($tField['type']) {
 					case 'enum':
 						$tTypes = array();
-						foreach($tField['valueList'] as &$tValue) {
+						foreach($tField['valueList'] as $tValue) {
 							$tTypes[$tValue['name']] = $tValue['title'];
 						}
 
@@ -306,7 +306,7 @@
 				}
 
 				$tViewbag['fields'][] = array(
-					'data' => &$tField,
+					'data' => $tField,
 					'html' => $tTag
 				);
 			}

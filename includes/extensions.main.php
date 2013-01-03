@@ -26,7 +26,7 @@
 			framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
 			framework::glob(framework::$applicationPath . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
 
-			foreach($tFiles as &$tFile) {
+			foreach($tFiles as $tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {
 					continue;
 				}
@@ -37,7 +37,7 @@
 				$tName = $tSubconfig['/info/name'];
 
 				if(isset($tSubconfig['/classList'])) {
-					foreach($tSubconfig['/classList'] as &$tClass) {
+					foreach($tSubconfig['/classList'] as $tClass) {
 						self::$classmap[$tClass] = $tName;
 					}
 				}
@@ -97,7 +97,7 @@
 
 			if(!COMPILED) {
 				if(isset($tClassInfo['/includeList'])) {
-					foreach($tClassInfo['/includeList'] as &$tFile) {
+					foreach($tClassInfo['/includeList'] as $tFile) {
 						//! todo require_once?
 						include(self::$list[$uExtensionName]['path'] . $tFile);
 					}
@@ -108,7 +108,7 @@
 				}
 
 				if(isset($tClassInfo['/info/phpdependList'])) {
-					foreach($tClassInfo['/info/phpdependList'] as &$tExtension) {
+					foreach($tClassInfo['/info/phpdependList'] as $tExtension) {
 						if(!extension_loaded($tExtension)) {
 							throw new Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
@@ -120,7 +120,7 @@
 				}
 
 				if(isset($tClassInfo['/info/fwdependList'])) {
-					foreach($tClassInfo['/info/fwdependList'] as &$tExtension) {
+					foreach($tClassInfo['/info/fwdependList'] as $tExtension) {
 						// if(!self::add($tExtension)) {
 						if(!self::isLoaded($tExtension)) {
 							throw new Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
@@ -130,7 +130,7 @@
 			}
 
 			if(isset($tClassInfo['/eventList'])) {
-				foreach($tClassInfo['/eventList'] as &$tLoad) {
+				foreach($tClassInfo['/eventList'] as $tLoad) {
 					if($tLoad['name'] == 'load') {
 						call_user_func($tLoad['callback']);
 						continue;

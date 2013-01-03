@@ -18,6 +18,7 @@
 	</info>
 	<includeList>
 		<include>mvc.php</include>
+		<include>controller.php</include>
 	</includeList>
 	<classList>
 		<class>mvc</class>
