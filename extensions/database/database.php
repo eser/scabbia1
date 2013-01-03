@@ -95,7 +95,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &get($uDatabase = null) {
+		public static function get($uDatabase = null) {
 			if(is_null(self::$databases)) {
 				self::$databases = array();
 
@@ -239,7 +239,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &execute($uQuery) {
+		public function execute($uQuery) {
 			$this->open();
 
 			if(extensions::isLoaded('profiler')) {
@@ -294,7 +294,7 @@
 			}
 
 			if(($uCaching & database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
-				$tData = & $this->cache[$uPropsSerialized]->resume($this);
+				$tData = $this->cache[$uPropsSerialized]->resume($this);
 				$tLoadedFromCache = true;
 			}
 			else {
@@ -302,7 +302,7 @@
 					$tData = cache::fileGet($tFolder, $uPropsSerialized, -1, true);
 
 					if($tData !== false) {
-						$this->cache[$uPropsSerialized] = & $tData->resume($this);
+						$this->cache[$uPropsSerialized] = $tData->resume($this);
 						$tLoadedFromCache = true;
 					}
 					else {
@@ -315,7 +315,7 @@
 						$tData = cache::storageGet($tKey);
 
 						if($tData !== false) {
-							$this->cache[$uPropsSerialized] = & $tData->resume($this);
+							$this->cache[$uPropsSerialized] = $tData->resume($this);
 							$tLoadedFromCache = true;
 						}
 						else {
@@ -536,7 +536,7 @@
 		 */
 		public function setDatabase(&$uDatabase = null) {
 			if(!is_null($uDatabase)) {
-				$this->database = & $uDatabase;
+				$this->database = $uDatabase;
 			}
 			else {
 				$this->database = database::get(); // default
@@ -574,7 +574,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setTable($uTableName) {
+		public function setTable($uTableName) {
 			$this->table = $uTableName;
 
 			return $this;
@@ -583,7 +583,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
+		public function joinTable($uTableName, $uCondition, $uJoinType = 'INNER') {
 			$this->table .= ' ' . $uJoinType . ' JOIN ' . $uTableName . ' ON ' . $uCondition;
 
 			return $this;
@@ -592,7 +592,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setFields($uArray) {
+		public function setFields($uArray) {
 			foreach($uArray as $tField => &$tValue) {
 				// $this->fields[$tField] = string::squote($tValue, true);
 				if(is_null($tValue)) {
@@ -610,8 +610,8 @@
 		/**
 		 * @ignore
 		 */
-		public function &setFieldsDirect($uArray) {
-			$this->fields = & $uArray;
+		public function setFieldsDirect($uArray) {
+			$this->fields = $uArray;
 
 			return $this;
 		}
@@ -619,7 +619,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addField($uField, $uValue = null) {
+		public function addField($uField, $uValue = null) {
 			if(func_num_args() == 1) {
 				$this->fields[] = $uField;
 
@@ -641,7 +641,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addFieldDirect($uField, $uValue) {
+		public function addFieldDirect($uField, $uValue) {
 			$this->fields[$uField] = $uValue;
 
 			return $this;
@@ -650,7 +650,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addParameter($uParameter, $uValue) {
+		public function addParameter($uParameter, $uValue) {
 			$this->parameters[$uParameter] = $uValue;
 
 			return $this;
@@ -692,7 +692,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setWhere($uCondition, $uList = null) {
+		public function setWhere($uCondition, $uList = null) {
 			if(is_array($uCondition)) {
 				$this->where = self::constructWhere($uCondition);
 
@@ -711,7 +711,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &andWhere($uCondition, $uList = null, $uKeyword = 'OR') {
+		public function andWhere($uCondition, $uList = null, $uKeyword = 'OR') {
 			if(is_array($uCondition)) {
 				if(count($uCondition) > 0) {
 					if(strlen($this->where) > 0) {
@@ -739,7 +739,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &orWhere($uCondition, $uList = null, $uKeyword = 'AND') {
+		public function orWhere($uCondition, $uList = null, $uKeyword = 'AND') {
 			if(is_array($uCondition)) {
 				if(count($uCondition) > 0) {
 					if(strlen($this->where) > 0) {
@@ -767,7 +767,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setGroupBy($uGroupBy) {
+		public function setGroupBy($uGroupBy) {
 			$this->groupby = $uGroupBy;
 
 			return $this;
@@ -776,7 +776,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addGroupBy($uGroupBy) {
+		public function addGroupBy($uGroupBy) {
 			$this->groupby .= ', ' . $uGroupBy;
 
 			return $this;
@@ -785,7 +785,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setOrderBy($uOrderBy, $uOrder = null) {
+		public function setOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby = $uOrderBy;
 			if(!is_null($uOrder)) {
 				$this->orderby .= ' ' . $uOrder;
@@ -797,7 +797,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addOrderBy($uOrderBy, $uOrder = null) {
+		public function addOrderBy($uOrderBy, $uOrder = null) {
 			$this->orderby .= ', ' . $uOrderBy;
 			if(!is_null($uOrder)) {
 				$this->orderby .= ' ' . $uOrder;
@@ -809,7 +809,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setLimit($uLimit) {
+		public function setLimit($uLimit) {
 			$this->limit = $uLimit;
 
 			return $this;
@@ -818,7 +818,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setOffset($uOffset) {
+		public function setOffset($uOffset) {
 			$this->offset = $uOffset;
 
 			return $this;
@@ -827,7 +827,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setSequence($uSequence) {
+		public function setSequence($uSequence) {
 			$this->sequence = $uSequence;
 
 			return $this;
@@ -836,7 +836,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setReturning($uReturning) {
+		public function setReturning($uReturning) {
 			$this->returning = $uReturning;
 
 			return $this;
@@ -845,7 +845,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setCaching($uCaching) {
+		public function setCaching($uCaching) {
 			$this->caching = $uCaching;
 
 			return $this;
@@ -854,7 +854,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &setDebug($uDebug) {
+		public function setDebug($uDebug) {
 			$this->debug = $uDebug;
 
 			return $this;
@@ -862,7 +862,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &insert() {
+		public function insert() {
 			$tQuery = $this->database->provider->sqlInsert($this->table, $this->fields, $this->returning);
 			if($this->debug) {
 				echo 'Insert Query: ', $tQuery;
@@ -888,7 +888,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &update() {
+		public function update() {
 			$tQuery = $this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit));
 			if($this->debug) {
 				echo 'Update Query: ', $tQuery;
@@ -907,7 +907,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &delete() {
+		public function delete() {
 			$tQuery = $this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit));
 			if($this->debug) {
 				echo 'Delete Query: ', $tQuery;
@@ -926,7 +926,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &get() {
+		public function get() {
 			$tQuery = $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
 			if($this->debug) {
 				echo 'Get Query: ', $tQuery;
@@ -1029,12 +1029,12 @@
 		 * @ignore
 		 */
 		public function __construct($uQuery, $uParameters, &$uDatabase, $uCaching, $uDirectory, $uFilename) {
-			$this->_query = & $uQuery;
-			$this->_parameters = & $uParameters;
-			$this->_database = & $uDatabase;
-			$this->_caching = & $uCaching;
-			$this->_directory = & $uDirectory;
-			$this->_filename = & $uFilename;
+			$this->_query = $uQuery;
+			$this->_parameters = $uParameters;
+			$this->_database = $uDatabase;
+			$this->_caching = $uCaching;
+			$this->_directory = $uDirectory;
+			$this->_filename = $uFilename;
 		}
 
 		/**
@@ -1277,7 +1277,7 @@
 			$this->_cursor = 0;
 
 			if(($this->_caching & database::CACHE_MEMORY) > 0) {
-				$this->_database->cache[$this->_filename] = & $this;
+				$this->_database->cache[$this->_filename] = $this;
 			}
 
 			$this->_database = null;
@@ -1296,8 +1296,8 @@
 		/**
 		 * @ignore
 		 */
-		public function &resume($uDatabase) {
-			$this->_database = & $uDatabase;
+		public function resume($uDatabase) {
+			$this->_database = $uDatabase;
 
 			return $this;
 		}

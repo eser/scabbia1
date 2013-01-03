@@ -49,7 +49,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &send($uFrom, $uTo, $uData) {
+		public static function send($uFrom, $uTo, $uData) {
 			$tResult = array();
 
 			self::$host = config::get('/smtp/host', 'localhost');

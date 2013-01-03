@@ -56,7 +56,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &compileBody() {
+		public function compileBody() {
 			$tString = $this->content . "\n\n";
 
 			foreach($this->parts as &$tPart) {
@@ -71,7 +71,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &compile($uHeaders = true) {
+		public function compile($uHeaders = true) {
 			$tString = '';
 			$tBody = $this->compileBody();
 
@@ -128,7 +128,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addPart() {
+		public function addPart() {
 			$tNewPart = new mimepart();
 			$this->parts[] = $tNewPart;
 
@@ -171,7 +171,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &compileBody() {
+		public function compileBody() {
 			$tString = '';
 
 			if($this->transferEncoding == 'base64') {
@@ -187,7 +187,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &compile($uHeaders = true) {
+		public function compile($uHeaders = true) {
 			$tString = '';
 			$tBody = $this->compileBody();
 

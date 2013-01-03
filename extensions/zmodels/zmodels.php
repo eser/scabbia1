@@ -37,7 +37,7 @@
 				return false;
 			}
 
-			$tModule = & self::$zmodels[$uTable];
+			$tModule = self::$zmodels[$uTable];
 
 			$tSql = 'CREATE TABLE ' . $tModule['name'] . ' (
 	id UUID NOT NULL,

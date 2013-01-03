@@ -70,7 +70,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &selectOptions($uOptions, $uDefault = null, $uField = null) {
+		public static function selectOptions($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
 			foreach($uOptions as $tKey => &$tVal) {
@@ -88,7 +88,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &selectOptionsArray($uOptions, $uDefault = null, $uField = null) {
+		public static function selectOptionsArray($uOptions, $uDefault = null, $uField = null) {
 			$tOutput = array();
 
 			foreach($uOptions as $tKey => &$tVal) {
@@ -107,7 +107,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
+		public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = '';
 
 			foreach($uOptions as $tKey => &$tVal) {
@@ -132,7 +132,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &radioOptionsArray($uName, $uOptions, $uDefault = null, $uField = null) {
+		public static function radioOptionsArray($uName, $uOptions, $uDefault = null, $uField = null) {
 			$tOutput = array();
 
 			foreach($uOptions as $tKey => &$tVal) {

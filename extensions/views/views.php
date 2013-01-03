@@ -62,7 +62,7 @@
 		 * @ignore
 		 */
 		public static function setRef($uKey, &$uValue) {
-			self::$vars[$uKey] = & $uValue;
+			self::$vars[$uKey] = $uValue;
 		}
 
 		/**
@@ -203,7 +203,7 @@
 		 * @ignore
 		 */
 		public function setRef($uKey, &$uValue) {
-			$this->vars[$uKey] = & $uValue;
+			$this->vars[$uKey] = $uValue;
 		}
 
 		/**
@@ -249,7 +249,7 @@
 		 */
 		public static function renderview($uObject) {
 			// variable extraction
-			$model = & $uObject['model'];
+			$model = $uObject['model'];
 			if(is_array($model)) {
 				extract($model, EXTR_SKIP | EXTR_REFS);
 			}

@@ -19,7 +19,7 @@
 		 *
 		 * @uses loadFile()
 		 */
-		public static function &load() {
+		public static function load() {
 			$tConfig = array();
 
 			foreach(framework::glob(QPATH_CORE . 'config/', null, GLOB_RECURSIVE | GLOB_FILES) as $tFile) {
@@ -206,7 +206,7 @@
 		 * @param mixed $uDefault default value
 		 * @return mixed|null
 		 */
-		public static function &get($uKey, $uDefault = null) {
+		public static function get($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, self::$default)) {
 				return $uDefault;
 			}

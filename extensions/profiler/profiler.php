@@ -41,14 +41,14 @@
 
 			$tProfileData = new profilerData($uName, $uParameters, $uSource);
 
-			self::$stack[] = & $tProfileData;
+			self::$stack[] = $tProfileData;
 			$tProfileData->start();
 		}
 
 		/**
 		 * @ignore
 		 */
-		public static function &stop($uExtraParameters = null) {
+		public static function stop($uExtraParameters = null) {
 			$tProfileData = array_pop(self::$stack);
 
 			if(is_null($tProfileData)) {
@@ -83,7 +83,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &get($uName) {
+		public static function get($uName) {
 			return self::$markers[$uName];
 		}
 

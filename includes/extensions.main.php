@@ -19,7 +19,7 @@
 		/**
 		 * Loads the extensions module.
 		 */
-		public static function &load() {
+		public static function load() {
 			$tExtensions = array();
 
 			$tFiles = array();
@@ -93,7 +93,7 @@
 			}
 
 			self::$list[$uExtensionName]['loaded'] = ($uAutoload) ? 2 : 1;
-			$tClassInfo = & self::$list[$uExtensionName]['config'];
+			$tClassInfo = self::$list[$uExtensionName]['config'];
 
 			if(!COMPILED) {
 				if(isset($tClassInfo['/includeList'])) {

@@ -48,7 +48,7 @@
 			}
 
 			// variable extraction
-			$model = & $uObject['model'];
+			$model = $uObject['model'];
 			if(is_array($model)) {
 				extract($model, EXTR_SKIP | EXTR_REFS);
 			}

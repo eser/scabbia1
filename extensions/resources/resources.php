@@ -83,7 +83,7 @@
 					continue;
 				}
 
-				$tSelectedPack = & $tPack;
+				$tSelectedPack = $tPack;
 				break;
 			}
 

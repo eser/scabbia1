@@ -228,7 +228,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &mapFlatten($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false, &$uArray = null, $uPrefix = '') {
+		public static function mapFlatten($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false, &$uArray = null, $uPrefix = '') {
 			if(is_null($uArray)) {
 				$uArray = array();
 			}
@@ -362,7 +362,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &sanitize($uFilename, $uIncludeAll = false, $uSlug = false) {
+		public static function sanitize($uFilename, $uIncludeAll = false, $uSlug = false) {
 			static $aReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
 
 			if($uIncludeAll) {

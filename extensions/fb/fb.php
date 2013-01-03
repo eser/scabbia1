@@ -355,8 +355,8 @@
 		 * @param $uObject
 		 */
 		public function __construct($uObject) {
-			$this->object = & $uObject;
-			$this->data = & $this->object['data'];
+			$this->object = $uObject;
+			$this->data = $this->object['data'];
 			$this->hasPreviousPage = (isset($this->object['paging']) && isset($this->object['paging']['previous']));
 			$this->hasNextPage = (isset($this->object['paging']) && isset($this->object['paging']['next']));
 		}

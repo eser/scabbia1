@@ -120,7 +120,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &queryDirect($uQuery, $uParameters = array()) {
+		public function queryDirect($uQuery, $uParameters = array()) {
 			$tQuery = $this->connection->prepare($uQuery);
 			$tResult = $tQuery->execute($uParameters);
 

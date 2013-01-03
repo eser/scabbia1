@@ -320,7 +320,7 @@
 				imagedestroy($this->image);
 			}
 
-			$this->image = & $tImage;
+			$this->image = $tImage;
 			// $this->size = filesize($this->source);
 
 			$this->sw = $uWidth;

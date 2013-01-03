@@ -441,7 +441,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &squoteArray($uArray, $uCover = false) {
+		public static function squoteArray($uArray, $uCover = false) {
 			$tArray = array();
 			foreach($uArray as $tKey => &$tValue) {
 				if($uCover) {
@@ -458,7 +458,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &dquoteArray($uArray, $uCover = false) {
+		public static function dquoteArray($uArray, $uCover = false) {
 			$tArray = array();
 			foreach($uArray as $tKey => &$tValue) {
 				if($uCover) {
@@ -669,7 +669,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
+		public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null) {
 			$tParts = explode('#', $uString, 2);
 
 			$tParsed = array(

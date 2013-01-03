@@ -85,7 +85,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function &build_export($uModule, $uPseudo) {
+		private static function build_export($uModule, $uPseudo) {
 			if($uPseudo) { // framework::$development >= 1 ||
 				$tPseudoCompile = '<' . '?php require(' . var_export('framework.php', true) . '); ?' . '>';
 

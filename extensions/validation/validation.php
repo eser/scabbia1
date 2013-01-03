@@ -27,7 +27,7 @@
 		 */
 		public static function addRule($uKey = null) {
 			$tRule = new validationRule($uKey);
-			self::$rules[] = & $tRule;
+			self::$rules[] = $tRule;
 
 			return $tRule;
 		}
@@ -107,7 +107,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &getErrorMessages($uFirsts = false, $uFilter = false) {
+		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
 			$tMessages = array();
 
 			foreach(self::$summary as $tKey => &$tField) {
@@ -133,7 +133,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &getErrorMessagesByFields() {
+		public static function getErrorMessagesByFields() {
 			$tMessages = array();
 			
 			foreach(self::$summary as $tKey => &$tField) {
@@ -193,7 +193,7 @@
 		 * @ignore
 		 */
 		public function __construct(&$uField) {
-			$this->field = & $uField;
+			$this->field = $uField;
 		}
 
 		/**
@@ -209,7 +209,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &field($uField) {
+		public function field($uField) {
 			$this->field = & $uField;
 
 			return $this;

@@ -71,7 +71,7 @@
 					}
 
 					if($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-						self::$endpoint = & $tEndpoint;
+						self::$endpoint = $tEndpoint;
 						self::$issecure = ($tParsed['scheme'] == 'https');
 						break;
 					}
@@ -230,7 +230,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &output($uValue, $uSecond) {
+		public static function output($uValue, $uSecond) {
 			$tParms = array(
 				'error' => &self::$error,
 				'content' => &$uValue
@@ -335,7 +335,7 @@
 		 * @internal param string $uInput path of source file
 		 * @return array|bool
 		 */
-		public static function &glob($uPath, $uFilter = null, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
+		public static function glob($uPath, $uFilter = null, $uOptions = GLOB_FILES, $uRecursivePath = '', &$uArray = array()) {
 			$tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
 			$tRecursivePath = $tPath . $uRecursivePath;
 

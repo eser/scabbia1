@@ -147,7 +147,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &get($uKey, $uDefault = null) {
+		public static function get($uKey, $uDefault = null) {
 			if(is_null(self::$data)) {
 				self::open();
 			}

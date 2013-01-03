@@ -16,7 +16,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &flat() {
+		public static function flat() {
 			$tArray = array();
 
 			foreach(func_get_args() as $tValue) {
@@ -37,7 +37,7 @@
 		/**
 		 * Gets the first element in array, otherwise returns default value.
 		 */
-		public static function &getFirst($uArray, $uDefault = null) {
+		public static function getFirst($uArray, $uDefault = null) {
 			$tValue = current($uArray);
 			if($tValue === false) {
 				return $uDefault;
@@ -55,7 +55,7 @@
 		 *
 		 * @return mixed|null
 		 */
-		public static function &get($uArray, $uElement, $uDefault = null) {
+		public static function get($uArray, $uElement, $uDefault = null) {
 			if(!isset($uArray[$uElement])) {
 				return $uDefault;
 			}
@@ -71,7 +71,7 @@
 		 * @internal param mixed $uElement key
 		 * @return array
 		 */
-		public static function &getArray($uArray) {
+		public static function getArray($uArray) {
 			$tReturn = array();
 
 			foreach(array_slice(func_get_args(), 1) as $tKey) {
@@ -88,7 +88,7 @@
 		 *
 		 * @return null
 		 */
-		public static function &getRandom($uArray) {
+		public static function getRandom($uArray) {
 			$tCount = count($uArray);
 			if($tCount == 0) {
 				return null;
@@ -102,7 +102,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &getPath($uArray, $uPath, $uDivider = '.') {
+		public static function getPath($uArray, $uPath, $uDivider = '.') {
 			$tVariable = $uArray;
 
 			foreach(explode($uDivider, $uPath) as $tKey) {
@@ -145,7 +145,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &sortByKey($uArray, $uField, $uOrder = 'asc') {
+		public static function sortByKey($uArray, $uField, $uOrder = 'asc') {
 			$tReturn = array();
 			if(count($uArray) == 0) {
 				return $tReturn;
@@ -178,7 +178,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &categorize($uArray, $uKey) {
+		public static function categorize($uArray, $uKey) {
 			$tReturn = array();
 			if(!is_array($uKey)) {
 				$uKey = array($uKey);
@@ -210,7 +210,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &assignKeys($uArray, $uKey) {
+		public static function assignKeys($uArray, $uKey) {
 			$tReturn = array();
 
 			foreach($uArray as &$tRow) {
@@ -230,7 +230,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false) {
+		public static function column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false) {
 			$tReturn = array();
 
 			foreach($uArray as &$tRow) {
@@ -296,7 +296,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &getRows($uArray, $uKey, $uValue) {
+		public static function getRows($uArray, $uKey, $uValue) {
 			$tReturn = array();
 
 			foreach($uArray as $tKey => &$tRow) {
@@ -316,7 +316,7 @@
 		 *
 		 * @return array
 		 */
-		public static function &combine($uArray1, $uArray2) {
+		public static function combine($uArray1, $uArray2) {
 			$tArray = array();
 
 			for($i = 0, $tLen = count($uArray1); $i < $tLen; $i++) {
@@ -334,7 +334,7 @@
 		/**
 		 * Combines two array properly.
 		 */
-		public static function &combine2() {
+		public static function combine2() {
 			$uArgs = func_get_args();
 			$tArray = array();
 

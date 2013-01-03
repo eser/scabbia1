@@ -180,7 +180,7 @@
 		 * @ignore
 		 */
 		public static function write($uCategory, $uParams) {
-			$uParams['category'] = & $uCategory;
+			$uParams['category'] = $uCategory;
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
 			$uParams['message'] = string::prefixLines($uParams['message'], '- ', PHP_EOL);

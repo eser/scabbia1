@@ -137,7 +137,7 @@
 		/**
 		 * @ignore
 		 */
-		protected static function &getControllerData($uController) {
+		protected static function getControllerData($uController) {
 			$tControllerData = array(
 				'actionUrlKeys' => config::get('/mvc/routes/actionUrlKeys', '1'),
 				'defaultAction' => self::$defaultAction,
@@ -236,7 +236,7 @@
 			unset($uArgs['_hash']);
 
 			$tRoute['queryString'] = http::buildQueryString($uArgs);
-			$tRoute['queryStringArray'] = & $uArgs;
+			$tRoute['queryStringArray'] = $uArgs;
 
 			return $tRoute;
 		}
@@ -244,7 +244,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &loaddatabase($uDatabaseName) {
+		public static function loaddatabase($uDatabaseName) {
 			if(!extensions::isLoaded('database')) {
 				return false;
 			}
@@ -259,7 +259,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &load($uModelClass, $uDatabase = null) {
+		public static function load($uModelClass, $uDatabase = null) {
 			if(!isset(mvc::$models[$uModelClass])) {
 				mvc::$models[$uModelClass] = new $uModelClass ($uDatabase);
 			}
@@ -387,7 +387,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function &exportAjaxJs() {
+		public static function exportAjaxJs() {
 			$tArray = self::export(true);
 
 			$tReturn = <<<EOD

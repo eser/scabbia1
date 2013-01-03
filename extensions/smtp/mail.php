@@ -35,7 +35,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addPart($uFilename, $uContent, $uEncoding = '8bit', $uType = null) {
+		public function addPart($uFilename, $uContent, $uEncoding = '8bit', $uType = null) {
 			$tMimepart = new mimepart();
 			$tMimepart->filename = $uFilename;
 
@@ -58,7 +58,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &addAttachment($uFilename, $uPath, $uEncoding = 'base64', $uType = null) {
+		public function addAttachment($uFilename, $uPath, $uEncoding = 'base64', $uType = null) {
 			$tMimepart = new mimepart();
 			$tMimepart->filename = $uFilename;
 

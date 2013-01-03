@@ -426,7 +426,7 @@
 		/**
 		 * @ignore
 		 */
-		public function &check() {
+		public function check() {
 			return $this->status;
 		}
 
