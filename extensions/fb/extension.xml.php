@@ -15,6 +15,8 @@
 	<includeList>
 		<include>facebook-php-sdk/src/base_facebook.php</include>
 		<include>fb.php</include>
+		<include>FacebookQueryObject.php</include>
+		<include>Facebook.php</include>
 	</includeList>
 	<classList>
 		<class>fb</class>

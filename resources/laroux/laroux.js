@@ -1044,7 +1044,7 @@ window.laroux = window.$l = (function() {
 					}
 
 					if(fnc != null) {
-						fnc(data);
+						fnc(data.object);
 					}
 				},
 				error: function(data) {
