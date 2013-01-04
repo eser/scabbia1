@@ -36,6 +36,7 @@
 		<extension>models</extension>
 		<extension>views</extension>
 		<extension>mvc</extension>
+        <extension>fb</extension>
 		<scope mode="development">
 			<extension>docs</extension>
 			<extension>auth</extension>
