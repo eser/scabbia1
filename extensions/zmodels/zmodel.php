@@ -53,6 +53,10 @@
 		 * @ignore
 		 */
 		public function __set($uName, $uValue) {
+			if(!isset($this->entityDefinition['fields'][$uName])) {
+				return;
+			}
+
 			$this->fields[$uName] = $uValue;
 		}
 
