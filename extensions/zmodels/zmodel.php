@@ -39,7 +39,7 @@
 		 * @ignore
 		 */
 		public function __unset($uName) {
-			return unset($this->fields[$uName]);
+			unset($this->fields[$uName]);
 		}
 
 		/**
