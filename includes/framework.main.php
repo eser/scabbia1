@@ -233,7 +233,7 @@
 		public static function output($uValue, $uSecond) {
 			$tParms = array(
 				'error' => &self::$error,
-				'content' => $uValue
+				'content' => &$uValue
 			);
 
 			events::invoke('output', $tParms);
