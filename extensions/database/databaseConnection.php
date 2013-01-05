@@ -43,7 +43,9 @@
 			$this->id = $uConfig['id'];
 			$this->default = isset($uConfig['default']);
 
-			$tProvider = 'databaseprovider_' . (isset($uConfig['provider']) ? $Provider' . (isset($uConfig['provider']) ? ucfirst($uConfig['provider']) : 'PuConfig);
+			$tProvider = 'databaseProvider' . (isset($uConfig['provider']) ? ucfirst($uConfig['provider']) : 'Pdo');
+
+			$this->provider = new $tProvider ($uConfig);
 
 			if(isset($uConfig['initCommand'])) {
 				$this->initCommand = $uConfig['initCommand'];
