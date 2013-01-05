@@ -33,7 +33,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			self::$defaultAge = intval(config::get('/cache/defaultAge', '120'));
 			self::$keyphase = config::get('/cache/keyphase', '');
 

@@ -18,15 +18,15 @@
 		/**
 		 * @ignore
 		 */
-		const pregEmail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+		const REGEXP_EMAIL = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
 		/**
 		 * @ignore
 		 */
-		const pregUrl = '/^(https?|ftp):\/\/((?:[a-z0-9@:.-]|%[0-9A-F]{2}){3,})(?::(\d+))?((?:\/(?:[a-z0-9-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*)(?:\?((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?/i';
+		const REGEXP_URL = '/^(https?|ftp):\/\/((?:[a-z0-9@:.-]|%[0-9A-F]{2}){3,})(?::(\d+))?((?:\/(?:[a-z0-9-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*)(?:\?((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&\'()*+,;=:\/?@]|%[0-9A-F]{2})*))?/i';
 		/**
 		 * @ignore
 		 */
-		const pregIpAddress = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
+		const REGEXP_IPV4 = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
 
 		/**
 		 * @ignore
@@ -323,7 +323,7 @@
 		 * @ignore
 		 */
 		public static function isEmail($uValue) {
-			// if(!preg_match(self::pregEmail, $uValue)) {
+			// if(!preg_match(self::REGEXP_EMAIL, $uValue)) {
 			if(filter_var($uValue, FILTER_VALIDATE_EMAIL) === false) {
 				return new contractObject(false);
 			}
@@ -385,60 +385,6 @@
 			}
 
 			return new contractObject(true, $tValidated[0] . '@' . $tValidated[1]);
-		}
-	}
-
-	/**
-	 * Contract Object Class
-	 *
-	 * @package Scabbia
-	 * @subpackage ExtensibilityExtensions
-	 */
-	class contractObject {
-		/**
-		 * @ignore
-		 */
-		public $status;
-		/**
-		 * @ignore
-		 */
-		public $newValue;
-
-		/**
-		 * @ignore
-		 */
-		public function __construct($uStatus, $uNewValue = null) {
-			$this->status = $uStatus;
-			$this->newValue = $uNewValue;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function exception($uErrorMessage) {
-			if($this->status) {
-				return;
-			}
-
-			throw new Exception($uErrorMessage);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function check() {
-			return $this->status;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function get() {
-			if(!$this->status) {
-				return false;
-			}
-
-			return $this->newValue;
 		}
 	}
 

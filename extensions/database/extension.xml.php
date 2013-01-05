@@ -20,9 +20,9 @@
 		<include>databaseQuery.php</include>
 		<include>databaseQueryResult.php</include>
 		<scope phpextension="pdo">
-			<include>databaseprovider_pdo.php</include>
+			<include>databaseProviderPdo.php</include>
 		</scope>
-		<include>databaseprovider_mysql.php</include>
+		<include>databaseProviderMysql.php</include>
 	</includeList>
 	<classList>
 		<class>database</class>
@@ -31,8 +31,8 @@
 		<class>databaseQuery</class>
 		<class>databaseQueryResult</class>
 		<scope phpextension="pdo">
-			<class>databaseprovider_pdo</class>
+			<class>databaseProviderPdo</class>
 		</scope>
-		<class>databaseprovider_mysql</class>
+		<class>databaseProviderMysql</class>
 	</classList>
 </scabbia>

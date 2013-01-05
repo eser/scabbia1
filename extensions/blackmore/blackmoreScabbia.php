@@ -3,28 +3,28 @@
 	/**
 	 * @ignore
 	 */
-	class blackmore_scabbia {
+	class blackmoreScabbia {
 		/**
 		 * @ignore
 		 */
-		public static function blackmore_registerModules($uParms) {
+		public static function blackmoreRegisterModules($uParms) {
 			$uParms['modules']['index']['submenus'] = true;
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'debug',
-				'callback' => 'blackmore_scabbia::debug',
+				'callback' => 'blackmoreScabbia::debug',
 				'menutitle' => 'Debug Info'
 			);
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'build',
-				'callback' => 'blackmore_scabbia::build',
+				'callback' => 'blackmoreScabbia::build',
 				'menutitle' => 'Build'
 			);
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'purge',
-				'callback' => 'blackmore_scabbia::purge',
+				'callback' => 'blackmoreScabbia::purge',
 				'menutitle' => 'Purge'
 			);
 		}
@@ -68,7 +68,7 @@
 				$tFilename = 'compiled.php';
 			}
 
-			$tContents = self::build_export($uModule, false);
+			$tContents = self::buildExport($uModule, false);
 
 			header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
 			header('Pragma: public', true);
@@ -85,7 +85,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function build_export($uModule, $uPseudo) {
+		private static function buildExport($uModule, $uPseudo) {
 			if($uPseudo) { // framework::$development >= 1 ||
 				$tPseudoCompile = '<' . '?php require(' . var_export('framework.php', true) . '); ?' . '>';
 

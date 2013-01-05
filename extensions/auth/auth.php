@@ -21,7 +21,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			self::$sessionKey = config::get('/auth/sessionKey', 'authuser');
 		}
 

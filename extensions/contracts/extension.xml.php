@@ -12,6 +12,7 @@
 	</info>
 	<includeList>
 		<include>contracts.php</include>
+		<include>contractObject.php</include>
 	</includeList>
 	<classList>
 		<class>contracts</class>

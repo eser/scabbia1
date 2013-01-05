@@ -27,15 +27,15 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>mvc::extension_load</callback>
+			<callback>mvc::extensionLoad</callback>
 		</event>
 		<event>
-			<name>http_route</name>
-			<callback>mvc::http_route</callback>
+			<name>httpRoute</name>
+			<callback>mvc::httpRoute</callback>
 		</event>
 		<event>
-			<name>http_url</name>
-			<callback>mvc::http_url</callback>
+			<name>httpUrl</name>
+			<callback>mvc::httpUrl</callback>
 		</event>
 	</eventList>
 </scabbia>

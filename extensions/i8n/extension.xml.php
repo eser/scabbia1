@@ -20,8 +20,8 @@
 	</classList>
 	<eventList>
 		<event>
-			<name>http_url</name>
-			<callback>i8n::http_url</callback>
+			<name>httpUrl</name>
+			<callback>i8n::httpUrl</callback>
 		</event>
 	</eventList>
 </scabbia>

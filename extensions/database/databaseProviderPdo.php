@@ -6,7 +6,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class databaseprovider_pdo {
+	class databaseProviderPdo {
 		/**
 		 * @ignore
 		 */

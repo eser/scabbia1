@@ -4,7 +4,7 @@
 	 * ViewEngine: RainTpl Extension
 	 *
 	 * @package Scabbia
-	 * @subpackage viewengine_raintpl
+	 * @subpackage viewEngineRaintpl
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
@@ -12,7 +12,7 @@
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 */
-	class viewengine_raintpl {
+	class viewEngineRaintpl {
 		/**
 		 * @ignore
 		 */
@@ -21,8 +21,8 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
-			views::registerViewEngine('rain', 'viewengine_raintpl');
+		public static function extensionLoad() {
+			views::registerViewEngine('rain', 'viewEngineRaintpl');
 		}
 
 		/**

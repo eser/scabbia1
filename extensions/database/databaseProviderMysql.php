@@ -6,7 +6,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class databaseprovider_mysql {
+	class databaseProviderMysql {
 		/**
 		 * @ignore
 		 */

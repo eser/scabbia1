@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>auth::extension_load</callback>
+			<callback>auth::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

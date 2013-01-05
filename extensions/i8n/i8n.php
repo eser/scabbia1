@@ -29,7 +29,7 @@
 		 * @ignore
 		 */
 		/*
-		public static function extension_load() {
+		public static function extensionLoad() {
 			// Use the Universal Coordinated Time and most common English standards
 			date_default_timezone_set('UTC');
 
@@ -40,7 +40,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function http_url(&$uParms) {
+		public static function httpUrl(&$uParms) {
 			$uParms['language'] = self::$language['key'];
 		}
 

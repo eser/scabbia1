@@ -16,51 +16,61 @@
 	</info>
 	<includeList>
 		<include>views.php</include>
-		<include>viewengine_markdown.php</include>
-		<include>viewengine_phptal.php</include>
-		<include>viewengine_raintpl.php</include>
-		<include>viewengine_razor.php</include>
-		<include>viewengine_smarty.php</include>
-		<include>viewengine_twig.php</include>
+
+		<!-- markdown -->
+		<include>markdownExtra/markdownExtra.php</include>
+		<include>markdownExtra/markdownParser.php</include>
+		<include>markdownExtra/markdownExtraParser.php</include>
+		<include>viewEngineMarkdown.php</include>
+
+		<!-- razor -->
+		<include>razor/RazorViewRenderer.php</include>
+		<include>razor/RazorViewRendererException.php</include>
+		<include>viewEngineRazor.php</include>
+
+		<include>viewEnginePhptal.php</include>
+		<include>viewEngineRaintpl.php</include>
+		<include>viewEngineSmarty.php</include>
+		<include>viewEngineTwig.php</include>
 	</includeList>
 	<classList>
 		<class>views</class>
-		<class>viewengine_php</class>
-		<class>viewengine_markdown</class>
-		<class>viewengine_phptal</class>
-		<class>viewengine_raintpl</class>
-		<class>viewengine_razor</class>
-		<class>viewengine_smarty</class>
-		<class>viewengine_twig</class>
+		<class>viewEnginePhp</class>
+		<class>viewEngineMarkdown</class>
+		<class>viewEnginePhptal</class>
+		<class>viewEngineRaintpl</class>
+		<class>viewEngineRazor</class>
+		<class>viewEngineSmarty</class>
+		<class>viewEngineTwig</class>
 	</classList>
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>views::extension_load</callback>
+			<callback>views::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_markdown::extension_load</callback>
+			<callback>viewEngineMarkdown::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_phptal::extension_load</callback>
+			<callback>viewEnginePhptal::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_raintpl::extension_load</callback>
+			<callback>viewEngineRaintpl::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_razor::extension_load</callback>
+			<callback>viewEngineRazor::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_smarty::extension_load</callback>
+			<callback>viewEngineSmarty::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>viewengine_twig::extension_load</callback>
+			<callback>viewEngineTwig::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

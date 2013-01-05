@@ -599,7 +599,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function readset_gquote($uString, &$uPosition) {
+		private static function readsetGquote($uString, &$uPosition) {
 			$tInSlash = false;
 			$tInQuote = false;
 			$tOutput = '';
@@ -658,7 +658,7 @@
 				}
 
 				if($tChar == '"') {
-					$tBuffer = self::readset_gquote($uString, $tStart);
+					$tBuffer = self::readsetGquote($uString, $tStart);
 					continue;
 				}
 			}

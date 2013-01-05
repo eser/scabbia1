@@ -38,7 +38,7 @@
 			$tParms = array(
 							 'modules' => &self::$modules
 						);
-			events::invoke('blackmore_registerModules', $tParms);
+			events::invoke('blackmoreRegisterModules', $tParms);
 
 			self::$modules['login'] = array(
 				'title' => 'Logout',

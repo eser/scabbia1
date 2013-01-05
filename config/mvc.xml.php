@@ -30,7 +30,7 @@
 				<scope mode="development">
 					<viewEngine>
 						<extension>md</extension>
-						<class>viewengine_markdown</class>
+						<class>viewEngineMarkdown</class>
 					</viewEngine>
 				</scope>
 			</viewEngineList>

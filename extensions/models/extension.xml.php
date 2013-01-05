@@ -12,6 +12,7 @@
 	</info>
 	<includeList>
 		<include>models.php</include>
+		<include>model.php</include>
 	</includeList>
 	<classList>
 		<class>models</class>

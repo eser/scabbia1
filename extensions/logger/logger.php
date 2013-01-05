@@ -25,7 +25,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			self::$filename = config::get('/logger/filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get('/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 

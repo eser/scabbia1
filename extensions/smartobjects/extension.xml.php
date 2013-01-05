@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>smartobjects</name>
+		<name>smartObjects</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
@@ -11,10 +11,11 @@
 		<fwdependList />
 	</info>
 	<includeList>
-		<include>smartobjects.php</include>
+		<include>smartObjects.php</include>
+		<include>smartObject.php</include>
 	</includeList>
 	<classList>
-		<class>smartobjects</class>
+		<class>smartObjects</class>
 		<class>smartObject</class>
 	</classList>
 </scabbia>

@@ -14,6 +14,7 @@
 	</info>
 	<includeList>
 		<include>validation.php</include>
+		<include>validationRule.php</include>
 	</includeList>
 	<classList>
 		<class>validation</class>

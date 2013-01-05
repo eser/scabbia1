@@ -73,7 +73,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			// session trans sid
 			ini_set('session.use_trans_sid', '0');
 
@@ -204,7 +204,7 @@
 				call_user_func_array($tCallbackToCall, $tMatches);
 			}
 			else {
-				events::invoke('http_route', $tParms);
+				events::invoke('httpRoute', $tParms);
 			}
 
 			if(extensions::isLoaded('profiler')) {
@@ -256,7 +256,7 @@
 				'path' => $uPath
 			);
 
-			events::invoke('http_url', $tParms);
+			events::invoke('httpUrl', $tParms);
 
 			return string::format(config::get('/http/link', '{@siteroot}/{@path}'), $tParms);
 		}

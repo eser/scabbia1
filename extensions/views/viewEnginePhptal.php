@@ -4,7 +4,7 @@
 	 * ViewEngine: PHPTAL Extension
 	 *
 	 * @package Scabbia
-	 * @subpackage viewengine_phptal
+	 * @subpackage viewEnginePhptal
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
@@ -12,7 +12,7 @@
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 */
-	class viewengine_phptal {
+	class viewEnginePhptal {
 		/**
 		 * @ignore
 		 */
@@ -21,8 +21,8 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
-			views::registerViewEngine('zpt', 'viewengine_phptal');
+		public static function extensionLoad() {
+			views::registerViewEngine('zpt', 'viewEnginePhptal');
 		}
 
 		/**

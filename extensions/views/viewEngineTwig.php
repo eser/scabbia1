@@ -4,7 +4,7 @@
 	 * ViewEngine: Twig Extension
 	 *
 	 * @package Scabbia
-	 * @subpackage viewengine_twig
+	 * @subpackage viewEngineTwig
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
@@ -12,7 +12,7 @@
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 */
-	class viewengine_twig {
+	class viewEngineTwig {
 		/**
 		 * @ignore
 		 */
@@ -25,8 +25,8 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
-			views::registerViewEngine('twig', 'viewengine_twig');
+		public static function extensionLoad() {
+			views::registerViewEngine('twig', 'viewEngineTwig');
 		}
 
 		/**

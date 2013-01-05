@@ -17,14 +17,20 @@
 	</info>
 	<includeList>
 		<include>resources.php</include>
+		<include>JSMin.php</include>
+		<include>JSMinException.php</include>
+		<include>CssMin.php</include>
 	</includeList>
 	<classList>
 		<class>resources</class>
+		<class>JSMin</class>
+		<class>JSMinException</class>
+		<class>CssMin</class>
 	</classList>
 	<eventList>
 		<event>
-			<name>http_route</name>
-			<callback>resources::http_route</callback>
+			<name>httpRoute</name>
+			<callback>resources::httpRoute</callback>
 		</event>
 	</eventList>
 </scabbia>

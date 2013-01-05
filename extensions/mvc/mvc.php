@@ -52,7 +52,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
 			self::$errorPage = config::get('/mvc/view/errorPage', 'shared/error.php');
@@ -61,7 +61,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function http_route(&$uParms) {
+		public static function httpRoute(&$uParms) {
 			self::$route = self::findRoute($uParms['get']);
 			self::$controllerActual = self::$route['controller'];
 			self::$actionActual = self::$route['action'];
@@ -125,7 +125,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function http_url(&$uParms) {
+		public static function httpUrl(&$uParms) {
 			$tSegments = self::findRoute($uParms['path']);
 
 			$uParms['controller'] = $tSegments['controller'];
@@ -318,14 +318,14 @@
 		/**
 		 * @ignore
 		 */
-		private static function url_internal($uPath) {
+		private static function urlInternal($uPath) {
 			$tParms = array(
 				'siteroot' => framework::$siteroot,
 				'device' => http::$crawlerType,
 				'path' => $uPath
 			);
 
-			events::invoke('http_url', $tParms);
+			events::invoke('httpUrl', $tParms);
 
 			$tControllerData = self::getControllerData($tParms['controller']);
 
@@ -338,7 +338,7 @@
 		public static function url() {
 			$tArgs = func_get_args();
 
-			return call_user_func_array('mvc::url_internal', $tArgs);
+			return call_user_func_array('mvc::urlInternal', $tArgs);
 		}
 
 		/**
@@ -346,7 +346,7 @@
 		 */
 		public static function redirect() {
 			$tArgs = func_get_args();
-			$tQuery = call_user_func_array('mvc::url_internal', $tArgs);
+			$tQuery = call_user_func_array('mvc::urlInternal', $tArgs);
 
 			http::sendRedirect($tQuery, true);
 		}

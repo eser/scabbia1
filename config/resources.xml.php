@@ -16,7 +16,7 @@
 					<path>{core}resources/docs/</path>
 					<autoViewer>
 						<defaultPage>index.md</defaultPage>
-						<viewEngine>viewengine_markdown</viewEngine>
+						<viewEngine>viewEngineMarkdown</viewEngine>
 						<header>{core}views/docs/header.php</header>
 						<footer>{core}views/docs/footer.php</footer>
 					</autoViewer>

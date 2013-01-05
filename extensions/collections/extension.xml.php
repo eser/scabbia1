@@ -12,6 +12,9 @@
 	</info>
 	<includeList>
 		<include>collections.php</include>
+		<include>collection.php</include>
+		<include>xmlCollection.php</include>
+		<include>fileCollection.php</include>
 	</includeList>
 	<classList>
 		<class>collections</class>

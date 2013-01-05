@@ -12,6 +12,7 @@
 	</info>
 	<includeList>
 		<include>profiler.php</include>
+		<include>profilerData.php</include>
 	</includeList>
 	<classList>
 		<class>profiler</class>

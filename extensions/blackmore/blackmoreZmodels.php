@@ -3,15 +3,15 @@
 	/**
 	 * @ignore
 	 */
-	class blackmore_zmodels {
+	class blackmoreZmodels {
 		/**
 		 * @ignore
 		 */
-		public static function blackmore_registerModules($uParms) {
+		public static function blackmoreRegisterModules($uParms) {
 			$uParms['modules']['index']['submenus'] = true;
 
 			$uParms['modules']['index']['actions'][] = array(
-				'callback' => 'blackmore_zmodels::generateSql',
+				'callback' => 'blackmoreZmodels::generateSql',
 				'menutitle' => 'Generate Zmodel SQL',
 				'action' => 'generateSql'
 			);
@@ -19,24 +19,24 @@
 			foreach(zmodels::$zmodels as $tKey => $tZmodel) {
 				$uParms['modules'][$tKey] = array(
 					'title' => $tZmodel['title'],
-					'callback' => 'blackmore_zmodels::all',
+					'callback' => 'blackmoreZmodels::all',
 					'submenus' => true,
 					'actions' => array(
 						array(
-							'callback' => 'blackmore_zmodels::add',
+							'callback' => 'blackmoreZmodels::add',
 							'menutitle' => 'Add ' . $tZmodel['singularTitle'],
 							'action' => 'add'
 						),
 						array(
-							'callback' => 'blackmore_zmodels::edit',
+							'callback' => 'blackmoreZmodels::edit',
 							'action' => 'edit'
 						),
 						array(
-							'callback' => 'blackmore_zmodels::remove',
+							'callback' => 'blackmoreZmodels::remove',
 							'action' => 'remove'
 						),
 						array(
-							'callback' => 'blackmore_zmodels::all',
+							'callback' => 'blackmoreZmodels::all',
 							'menutitle' => 'All ' . $tZmodel['title'],
 							'action' => 'all'
 						)

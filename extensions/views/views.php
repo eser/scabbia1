@@ -25,12 +25,12 @@
 		/**
 		 * @ignore
 		 */
-		public static function extension_load() {
+		public static function extensionLoad() {
 			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
 				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
 			}
 
-			self::registerViewEngine('php', 'viewengine_php');
+			self::registerViewEngine('php', 'viewEnginePhp');
 		}
 
 		/**
@@ -243,7 +243,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class viewengine_php {
+	class viewEnginePhp {
 		/**
 		 * @ignore
 		 */

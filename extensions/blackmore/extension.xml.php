@@ -19,23 +19,24 @@
 	</info>
 	<includeList>
 		<include>blackmore.php</include>
-		<include>blackmore_scabbia.php</include>
-		<include>blackmore_zmodels.php</include>
-		<include>blackmore_zmodels_model.php</include>
+		<include>blackmoreScabbia.php</include>
+		<include>blackmoreZmodels.php</include>
+		<include>blackmoreZmodelsModel.php</include>
 	</includeList>
 	<classList>
 		<class>blackmore</class>
-		<class>blackmore_scabbia</class>
-		<class>blackmore_zmodels</class>
+		<class>blackmoreScabbia</class>
+		<class>blackmoreZmodels</class>
+		<class>blackmoreZmodelModel</class>
 	</classList>
 	<eventList>
 		<event>
-			<name>blackmore_registerModules</name>
-			<callback>blackmore_scabbia::blackmore_registerModules</callback>
+			<name>blackmoreRegisterModules</name>
+			<callback>blackmoreScabbia::blackmoreRegisterModules</callback>
 		</event>
 		<event>
-			<name>blackmore_registerModules</name>
-			<callback>blackmore_zmodels::blackmore_registerModules</callback>
+			<name>blackmoreRegisterModules</name>
+			<callback>blackmoreZmodels::blackmoreRegisterModules</callback>
 		</event>
 	</eventList>
 </scabbia>

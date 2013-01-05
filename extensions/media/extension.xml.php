@@ -12,6 +12,7 @@
 	</info>
 	<includeList>
 		<include>media.php</include>
+		<include>mediaFile.php</include>
 	</includeList>
 	<classList>
 		<class>media</class>
@@ -20,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>media::extension_load</callback>
+			<callback>media::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

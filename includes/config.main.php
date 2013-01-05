@@ -140,7 +140,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function processChildren_r(&$uArray, $uNode) {
+		private static function processChildrenRecursive(&$uArray, $uNode) {
 			static $uNodes = array();
 			$tNodeName = $uNode->getName();
 
@@ -170,7 +170,7 @@
 			}
 			else {
 				foreach($uNode->children() as $tNode) {
-					self::processChildren_r($uArray, $tNode);
+					self::processChildrenRecursive($uArray, $tNode);
 				}
 
 				if(!isset($tScope)) {
@@ -196,7 +196,7 @@
 		 */
 		public static function loadFile(&$uConfig, $uFile) {
 			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS | LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
-			self::processChildren_r($uConfig, $tXmlDom);
+			self::processChildrenRecursive($uConfig, $tXmlDom);
 		}
 
 		/**

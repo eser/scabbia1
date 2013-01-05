@@ -1,67 +1,6 @@
 <?php
 
 	/**
-	 * ViewEngine: Razor Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage viewengine_razor
-	 * @version 1.0.2
-	 *
-	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends mvc, cache
-	 * @scabbia-phpversion 5.2.0
-	 * @scabbia-phpdepends
-	 */
-	class viewengine_razor {
-		/**
-		 * @ignore
-		 */
-		public static $engine = null;
-		/**
-		 * @ignore
-		 */
-		public static $compiledAge;
-
-		/**
-		 * @ignore
-		 */
-		public static function extension_load() {
-			self::$compiledAge = intval(config::get('/razor/templates/compiledAge', '120'));
-			views::registerViewEngine('cshtml', 'viewengine_razor');
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function renderview($uObject) {
-			$tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
-
-			// cengiz: Render if file not exist
-			// or debug mode on
-			$tOutputFile = cache::filePath('cshtml/', $uObject['compiledFile'], self::$compiledAge);
-			if(framework::$development >= 1 || !$tOutputFile[0]) {
-				if(is_null(self::$engine)) {
-					self::$engine = new RazorViewRenderer();
-				}
-
-				self::$engine->generateViewFile($tInputFile, $tOutputFile[1]);
-			}
-
-			// variable extraction
-			$model = $uObject['model'];
-			if(is_array($model)) {
-				extract($model, EXTR_SKIP | EXTR_REFS);
-			}
-
-			if(isset($uObject['extra'])) {
-				extract($uObject['extra'], EXTR_SKIP | EXTR_REFS);
-			}
-
-			require($tOutputFile[1]);
-		}
-	}
-
-	/**
 	 * RazorViewRenderer implements a view renderer that allows to use "Razor" template syntax.
 	 *
 	 * To use RazorViewRenderer, configure it as an application component named "viewRenderer" in the application configuration:
@@ -415,18 +354,6 @@
 
 		private function getLineNumber($currentPosition) {
 			return count(explode("\n", substr($this->_input, 0, $currentPosition)));
-		}
-	}
-
-	/**
-	 * RazorViewRendererException represents a generic exception for razor view render extension.
-	 *
-	 * @author Stepan Kravchenko <stepan.krab@gmail.com>
-	 * @version 1.0.0
-	 */
-	class RazorViewRendererException {
-		public function __construct($message, $templateFileName, $line) {
-			parent::__construct("Invalid view template: {$templateFileName}, at line {$line}. {$message}", null, null);
 		}
 	}
 
