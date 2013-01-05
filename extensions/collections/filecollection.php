@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * File Collection Class
 	 *
@@ -57,7 +59,7 @@
 			}
 
 			$tTemp = new fileCollection();
-			$tHandle = new DirectoryIterator($tPath);
+			$tHandle = new \DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
 			for(; $tHandle->valid(); $tHandle->next()) {

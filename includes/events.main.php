@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Event manager which handles communication between framework parts and extensions
 	 *

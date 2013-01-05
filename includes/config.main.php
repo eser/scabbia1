@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Configuration class which handles all configuration-based operations
 	 *

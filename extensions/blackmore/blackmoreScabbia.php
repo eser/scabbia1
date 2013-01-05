@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * @ignore
 	 */

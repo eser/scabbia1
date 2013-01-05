@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>output</name>
-			<callback>session::save</callback>
+			<callback>Scabbia\session::save</callback>
 		</event>
 	</eventList>
 </scabbia>

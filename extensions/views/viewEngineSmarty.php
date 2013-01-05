@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: Smarty Extension
 	 *
@@ -33,7 +35,7 @@
 				$tPath = framework::translatePath(config::get('/smarty/path', '{core}include/3rdparty/smarty/libs'));
 				require($tPath . '/Smarty.class.php');
 
-				self::$engine = new Smarty();
+				self::$engine = new \Smarty();
 
 				self::$engine->setTemplateDir($uObject['templatePath']);
 				self::$engine->setCompileDir($uObject['compiledPath']);

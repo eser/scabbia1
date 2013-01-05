@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * MVC Extension
 	 *
@@ -87,7 +89,7 @@
 				}
 
 				//! todo ensure autoload behaviour.
-				if(!is_subclass_of(self::$controllerActual, 'controller')) {
+				if(!is_subclass_of(self::$controllerActual, 'Scabbia\\controller')) {
 					mvc::notfound();
 					break;
 				}
@@ -107,7 +109,7 @@
 						break;
 					}
 				}
-				catch(Exception $ex) {
+				catch(\Exception $ex) {
 					mvc::error($ex->getMessage());
 				}
 
@@ -338,7 +340,7 @@
 		public static function url() {
 			$tArgs = func_get_args();
 
-			return call_user_func_array('mvc::urlInternal', $tArgs);
+			return call_user_func_array('Scabbia\\mvc::urlInternal', $tArgs);
 		}
 
 		/**
@@ -346,7 +348,7 @@
 		 */
 		public static function redirect() {
 			$tArgs = func_get_args();
-			$tQuery = call_user_func_array('mvc::urlInternal', $tArgs);
+			$tQuery = call_user_func_array('Scabbia\\mvc::urlInternal', $tArgs);
 
 			http::sendRedirect($tQuery, true);
 		}
@@ -358,12 +360,12 @@
 			$tArray = array();
 
 			foreach(get_declared_classes() as $tClass) {
-				if(!is_subclass_of($tClass, 'controller')) { // && $tClass != 'controller'
+				if(!is_subclass_of($tClass, 'Scabbia\\controller')) { // && $tClass != 'controller'
 					continue;
 				}
 
-				$tReflectedClass = new ReflectionClass($tClass);
-				foreach($tReflectedClass->getMethods(ReflectionMethod::IS_PUBLIC) as $tMethod) {
+				$tReflectedClass = new \ReflectionClass($tClass);
+				foreach($tReflectedClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethod) {
 					if($tMethod->class == 'controller') {
 						continue;
 					}

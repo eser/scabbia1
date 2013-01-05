@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Resources Extension
 	 *
@@ -187,7 +189,7 @@
 			}
 
 			if(!file_exists($tPath)) {
-				throw new Exception('resource not found.');
+				throw new \Exception('resource not found.');
 			}
 
 			if(isset($uSelectedDirectory['autoViewer'])) {

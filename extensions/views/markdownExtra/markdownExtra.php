@@ -121,7 +121,7 @@
 
 	### Standard Function Interface ###
 
-	@define('MARKDOWN_PARSER_CLASS', 'MarkdownExtra_Parser');
+	@define('MARKDOWN_PARSER_CLASS', '\\MarkdownExtra_Parser');
 
 	function Markdown($text) {
 		#

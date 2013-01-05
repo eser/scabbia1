@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Collection Class
 	 *
@@ -7,7 +9,7 @@
 	 * @package Scabbia
 	 * @subpackage UtilityExtensions
 	 */
-	class collection implements ArrayAccess, IteratorAggregate {
+	class collection implements \ArrayAccess, \IteratorAggregate {
 		/**
 		 * @ignore
 		 */

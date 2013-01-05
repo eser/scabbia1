@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Logger Extension
 	 *
@@ -29,8 +31,8 @@
 			self::$filename = config::get('/logger/filename', '{date|\'d-m-Y\'}.txt');
 			self::$line = config::get('/logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
 
-			set_exception_handler('logger::exceptionCallback');
-			set_error_handler('logger::errorCallback', E_ALL);
+			set_exception_handler('Scabbia\\logger::exceptionCallback');
+			set_error_handler('Scabbia\\logger::errorCallback', E_ALL);
 		}
 
 		/**

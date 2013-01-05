@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * IO Extension
 	 *
@@ -198,7 +200,7 @@
 		 */
 		public static function map($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false) {
 			$tArray = array('.' => array());
-			$tDir = new DirectoryIterator($uPath);
+			$tDir = new \DirectoryIterator($uPath);
 
 			foreach($tDir as $tFile) {
 				$tFileName = $tFile->getFilename();
@@ -233,7 +235,7 @@
 				$uArray = array();
 			}
 
-			$tDir = new DirectoryIterator($uPath);
+			$tDir = new \DirectoryIterator($uPath);
 
 			foreach($tDir as $tFile) {
 				$tFileName = $tFile->getFilename();

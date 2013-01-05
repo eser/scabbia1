@@ -30,7 +30,7 @@
 	<eventList>
 		<event>
 			<name>httpRoute</name>
-			<callback>resources::httpRoute</callback>
+			<callback>Scabbia\resources::httpRoute</callback>
 		</event>
 	</eventList>
 </scabbia>

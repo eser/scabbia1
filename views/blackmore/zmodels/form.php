@@ -1,4 +1,4 @@
-<?php views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Scabbia\views::viewFile('{core}views/blackmore/header.php'); ?>
 			<form method="POST" action="@mvc::url('editor/category')">
 				<table id="pageMiddleTable">
 					<tr>
@@ -49,4 +49,4 @@
 					</tr>
 				</table>
 			</form>
-<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Scabbia\views::viewFile('{core}views/blackmore/footer.php'); ?>

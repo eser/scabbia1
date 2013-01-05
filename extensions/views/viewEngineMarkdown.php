@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: MarkDown Extension
 	 *
@@ -39,7 +41,7 @@
 			$tOutputFile = cache::filePath('md/', $uObject['compiledFile'], self::$compiledAge);
 			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
-					self::$engine = new MarkdownExtra_Parser();
+					self::$engine = new \MarkdownExtra_Parser();
 				}
 
 				$tInput = io::read($tInputFile);

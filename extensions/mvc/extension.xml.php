@@ -27,15 +27,15 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>mvc::extensionLoad</callback>
+			<callback>Scabbia\mvc::extensionLoad</callback>
 		</event>
 		<event>
 			<name>httpRoute</name>
-			<callback>mvc::httpRoute</callback>
+			<callback>Scabbia\mvc::httpRoute</callback>
 		</event>
 		<event>
 			<name>httpUrl</name>
-			<callback>mvc::httpUrl</callback>
+			<callback>Scabbia\mvc::httpUrl</callback>
 		</event>
 	</eventList>
 </scabbia>

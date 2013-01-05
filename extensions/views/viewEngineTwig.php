@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: Twig Extension
 	 *
@@ -38,7 +40,7 @@
 				require($tPath . '/Autoloader.php');
 
 				Twig_Autoloader::register();
-				self::$loader = new Twig_Loader_Filesystem($uObject['templatePath']);
+				self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
 				$tOptions = array(
 					'cache' => $uObject['compiledPath']
@@ -48,7 +50,7 @@
 					$tOptions['auto_reload'] = true;
 				}
 
-				self::$engine = new Twig_Environment(self::$loader, $tOptions);
+				self::$engine = new \Twig_Environment(self::$loader, $tOptions);
 			}
 
 			$model = array('model' => &$uObject['model']);

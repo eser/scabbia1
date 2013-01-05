@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Xml Collection Class
 	 *
@@ -66,7 +68,7 @@
 			}
 
 			$tTemp = new xmlCollection();
-			$tHandle = new DirectoryIterator($tPath);
+			$tHandle = new \DirectoryIterator($tPath);
 			$tPatExists = (strlen($uPattern) > 0);
 
 			for(; $tHandle->valid(); $tHandle->next()) {

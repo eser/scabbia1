@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: PHPTAL Extension
 	 *
@@ -33,14 +35,14 @@
 				$tPath = framework::translatePath(config::get('/phptal/path', '{core}include/3rdparty/PHPTAL'));
 				require($tPath . '/PHPTAL.php');
 
-				self::$engine = new PHPTAL();
+				self::$engine = new \PHPTAL();
 			}
 			else {
 				unset(self::$engine);
 
 				// I just don't want to do it in this way,
 				// but phptal.org documentation says it so.
-				self::$engine = new PHPTAL();
+				self::$engine = new \PHPTAL();
 			}
 
 			self::$engine->set('model', $uObject['model']);

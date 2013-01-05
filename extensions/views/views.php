@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Views Extension
 	 *
@@ -41,7 +43,7 @@
 				return;
 			}
 
-			self::$viewEngines[$uExtension] = $uClassName;
+			self::$viewEngines[$uExtension] = 'Scabbia\\' . $uClassName;
 		}
 
 		/**

@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Cache Extension
 	 *
@@ -52,7 +54,7 @@
 			}
 
 			if(self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
-				self::$storageObject = new Memcache();
+				self::$storageObject = new \Memcache();
 				self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
 
 				return;
@@ -173,7 +175,7 @@
 		public static function fileGarbageCollect($uFolder, $uAge = -1) {
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder);
-			$tDirectory = new DirectoryIterator($tPath);
+			$tDirectory = new \DirectoryIterator($tPath);
 
 			// age
 			if($uAge == -1) {

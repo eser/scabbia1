@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * DatabaseProvider PDO Class
 	 *
@@ -49,7 +51,7 @@
 			}
 
 			$this->persistent = isset($uConfig['persistent']);
-			$this->fetchMode = PDO::FETCH_ASSOC;
+			$this->fetchMode = \PDO::FETCH_ASSOC;
 
 			$tConnectionString = explode(':', $this->pdoString, 2);
 			$this->standard = $tConnectionString[0];
@@ -61,26 +63,26 @@
 		public function open() {
 			$tParms = array();
 			if($this->persistent) {
-				$tParms[PDO::ATTR_PERSISTENT] = true;
+				$tParms[\PDO::ATTR_PERSISTENT] = true;
 			}
 
 			switch($this->overrideCase) {
 			case 'lower':
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_LOWER;
+				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_LOWER;
 				break;
 			case 'upper':
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_UPPER;
+				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_UPPER;
 				break;
 			default:
-				$tParms[PDO::ATTR_CASE] = PDO::CASE_NATURAL;
+				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_NATURAL;
 				break;
 			}
 
-			$tParms[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+			$tParms[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
 
-			$this->connection = new PDO($this->pdoString, $this->username, $this->password, $tParms);
+			$this->connection = new \PDO($this->pdoString, $this->username, $this->password, $tParms);
 
-			// $this->standard = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+			// $this->standard = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
 		}
 
 		/**
@@ -131,9 +133,9 @@
 		 * @ignore
 		 */
 		public function itSeek($uObject, $uRow) {
-			// return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_ABS, $uRow);
+			// return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_ABS, $uRow);
 			for($i = 0; $i < $uRow; $i++) {
-				$uObject->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT);
+				$uObject->fetch(\PDO::FETCH_NUM, \PDO::FETCH_ORI_NEXT);
 			}
 
 			return $this->itNext($uObject);
@@ -143,7 +145,7 @@
 		 * @ignore
 		 */
 		public function itNext($uObject) {
-			return $uObject->fetch($this->fetchMode, PDO::FETCH_ORI_NEXT);
+			return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_NEXT);
 		}
 
 		/**
@@ -171,7 +173,7 @@
 		 * @ignore
 		 */
 		public function serverInfo() {
-			return $this->connection->getAttribute(PDO::ATTR_SERVER_INFO);
+			return $this->connection->getAttribute(\PDO::ATTR_SERVER_INFO);
 		}
 
 		/**

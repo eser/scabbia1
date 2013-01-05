@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	// TODO: download garbage collector
 	// TODO: global event-based garbage collector
 	// TODO: download caching w/ aging
@@ -111,7 +113,7 @@
 			self::$milestones[] = array('siteRoot', microtime(true));
 
 			// extensions and autoload
-			spl_autoload_register('extensions::autoloader');
+			// spl_autoload_register('Scabbia\\extensions::autoloader');
 			extensions::loadExtensions();
 
 			if(!COMPILED) {
@@ -131,7 +133,7 @@
 			}
 
 			// output handling
-			ob_start('framework::output');
+			ob_start('Scabbia\\framework::output');
 			ob_implicit_flush(false);
 
 			// run extensions
@@ -190,7 +192,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function writablePath($uFile) {
+		public static function writablePath($uFile = '') {
 			$tPathConcat = self::$applicationPath . 'writable/' . $uFile;
 			$tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
 
@@ -340,7 +342,7 @@
 			$tRecursivePath = $tPath . $uRecursivePath;
 
 			try {
-				$tDir = new DirectoryIterator($tRecursivePath);
+				$tDir = new \DirectoryIterator($tRecursivePath);
 
 				foreach($tDir as $tFile) {
 					$tFileName = $tFile->getFilename();
@@ -380,7 +382,7 @@
 
 				return $uArray;
 			}
-			catch(Exception $tException) {
+			catch(\Exception $tException) {
 				// echo $tException->getMessage();
 			}
 

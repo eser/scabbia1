@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Extensions manager which extends the framework capabilities with extra routines
 	 *

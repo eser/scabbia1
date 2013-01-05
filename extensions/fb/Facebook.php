@@ -1,12 +1,14 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Extends the BaseFacebook class with the intent of using
 	 * PHP sessions to store user ids and access tokens.
 	 *
 	 * @ignore -- Scabbia
 	 */
-	class Facebook extends BaseFacebook {
+	class Facebook extends \BaseFacebook {
 		/**
 		 * Identical to the parent constructor, except that
 		 * we start a PHP session to store the user ID and

@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * DatabaseProvider Mysql Class
 	 *
@@ -52,12 +54,12 @@
 			// if($this->persistent) {
 			// }
 
-			mysqli_report(MYSQLI_REPORT_STRICT); // mysqli_sql_exception
-			$this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
+			\mysqli_report(\MYSQLI_REPORT_STRICT); // mysqli_sql_exception
+			$this->connection = new \mysqli($this->host, $this->username, $this->password, $this->database);
 
 			/*
 			if($this->connection->connect_errno > 0) {
-				throw new Exception('Mysql Exception: ' . $this->connection->connect_error);
+				throw new \Exception('Mysql Exception: ' . $this->connection->connect_error);
 			}
 			*/
 		}

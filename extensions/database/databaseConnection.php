@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Database Connection Class
 	 *
@@ -43,7 +45,7 @@
 			$this->id = $uConfig['id'];
 			$this->default = isset($uConfig['default']);
 
-			$tProvider = 'databaseProvider' . (isset($uConfig['provider']) ? ucfirst($uConfig['provider']) : 'Pdo');
+			$tProvider = 'Scabbia\\databaseProvider' . (isset($uConfig['provider']) ? ucfirst($uConfig['provider']) : 'Pdo');
 
 			$this->provider = new $tProvider ($uConfig);
 
@@ -71,7 +73,7 @@
 				try {
 					$this->provider->execute($this->initCommand);
 				}
-				catch(Exception $ex) {
+				catch(\Exception $ex) {
 					if(database::$errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}
@@ -133,7 +135,7 @@
 			try {
 				$tReturn = $this->provider->execute($uQuery);
 			}
-			catch(Exception $ex) {
+			catch(\Exception $ex) {
 				if(database::$errorHandling == database::ERROR_EXCEPTION) {
 					throw $ex;
 				}
@@ -268,7 +270,7 @@
 				try {
 					$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
 				}
-				catch(Exception $ex) {
+				catch(\Exception $ex) {
 					if(database::$errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}
@@ -280,7 +282,7 @@
 					$this->commit();
 				}
 			}
-			catch(Exception $ex) {
+			catch(\Exception $ex) {
 				if($this->inTransaction) {
 					$this->rollBack();
 				}

@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Controller Class
 	 *
@@ -53,7 +55,7 @@
 		public function render($uAction, $uArgs) {
 			$tActionMethodName = strtr($uAction, '/', '_');
 
-			$tMe = new ReflectionClass($this);
+			$tMe = new \ReflectionClass($this);
 
 			while(true) {
 				$tMethod = http::$methodext . '_' . $tActionMethodName;
@@ -116,7 +118,7 @@
 				$uMemberName = $uDatabaseName;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('mvc::loaddatabase', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\mvc::loaddatabase', $uArgs);
 		}
 
 		/**
@@ -129,7 +131,7 @@
 				$uMemberName = $uModelClass;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('mvc::load', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\mvc::load', $uArgs);
 		}
 
 		/**
@@ -151,7 +153,7 @@
 		 */
 		public function json() {
 			$uArgs = func_get_args();
-			call_user_func_array('mvc::json', $uArgs);
+			call_user_func_array('Scabbia\\mvc::json', $uArgs);
 		}
 
 		/**
@@ -159,7 +161,7 @@
 		 */
 		public function redirect() {
 			$uArgs = func_get_args();
-			call_user_func_array('mvc::redirect', $uArgs);
+			call_user_func_array('Scabbia\\mvc::redirect', $uArgs);
 		}
 
 		/**
@@ -167,7 +169,7 @@
 		 */
 		public function end() {
 			$uArgs = func_get_args();
-			call_user_func_array('framework::end', $uArgs);
+			call_user_func_array('Scabbia\\framework::end', $uArgs);
 		}
 	}
 

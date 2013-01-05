@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>logger::extensionLoad</callback>
+			<callback>Scabbia\logger::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

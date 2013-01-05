@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: Razor Extension
 	 *
@@ -41,7 +43,7 @@
 			$tOutputFile = cache::filePath('cshtml/', $uObject['compiledFile'], self::$compiledAge);
 			if(framework::$development >= 1 || !$tOutputFile[0]) {
 				if(is_null(self::$engine)) {
-					self::$engine = new RazorViewRenderer();
+					self::$engine = new \RazorViewRenderer();
 				}
 
 				self::$engine->generateViewFile($tInputFile, $tOutputFile[1]);

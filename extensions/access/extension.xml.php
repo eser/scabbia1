@@ -19,7 +19,7 @@
 	<eventList>
 		<event>
 			<name>run</name>
-			<callback>access::run</callback>
+			<callback>Scabbia\access::run</callback>
 		</event>
 	</eventList>
 </scabbia>

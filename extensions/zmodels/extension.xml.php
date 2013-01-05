@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>zmodels::extensionLoad</callback>
+			<callback>Scabbia\zmodels::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

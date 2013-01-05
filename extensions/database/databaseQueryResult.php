@@ -1,12 +1,14 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Database Query Result Class
 	 *
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class databaseQueryResult implements ArrayAccess, Countable, Iterator {
+	class databaseQueryResult implements \ArrayAccess, \Countable, \Iterator {
 		/**
 		 * @ignore
 		 */
@@ -163,7 +165,7 @@
 				$this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
 				$this->_count = $this->_database->provider->itCount($this->_object);
 			}
-			catch(Exception $ex) {
+			catch(\Exception $ex) {
 				if(database::$errorHandling == database::ERROR_EXCEPTION) {
 					throw $ex;
 				}
@@ -272,7 +274,7 @@
 
 					$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
 				}
-				catch(Exception $ex) {
+				catch(\Exception $ex) {
 					if(database::$errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}

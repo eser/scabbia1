@@ -77,7 +77,7 @@
 		 * @return string
 		 */
 		public static function minify($js) {
-			$jsmin = new JSMin($js);
+			$jsmin = new \JSMin($js);
 
 			return $jsmin->min();
 		}

@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Http Extension
 	 *
@@ -166,8 +168,8 @@
 
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
 
-			events::register('run', 'http::run');
-			events::register('output', 'http::output');
+			events::register('run', 'Scabbia\\http::run');
+			events::register('output', 'Scabbia\\http::output');
 		}
 
 		/**
@@ -728,7 +730,7 @@
 				return string::parseQueryString($uQueryString, $tDefaultParameter, $tDefaultKey, $tDefaultSeperator);
 			}
 
-			throw new Exception('request parsing error.');
+			throw new \Exception('request parsing error.');
 		}
 
 		/**

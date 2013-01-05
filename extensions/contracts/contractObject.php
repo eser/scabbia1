@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Contract Object Class
 	 *
@@ -32,7 +34,7 @@
 				return;
 			}
 
-			throw new Exception($uErrorMessage);
+			throw new \Exception($uErrorMessage);
 		}
 
 		/**

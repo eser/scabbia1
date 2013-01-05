@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * ViewEngine: RainTpl Extension
 	 *
@@ -42,10 +44,10 @@
 					raintpl::configure('check_template_update', true);
 				}
 
-				self::$engine = new RainTPL();
+				self::$engine = new \RainTPL();
 			}
 			else {
-				self::$engine = new RainTPL();
+				self::$engine = new \RainTPL();
 			}
 
 			self::$engine->assign('model', $uObject['model']);

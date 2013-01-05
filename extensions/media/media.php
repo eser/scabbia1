@@ -1,5 +1,7 @@
 <?php
 
+	namespace Scabbia;
+
 	/**
 	 * Media Extension
 	 *
@@ -54,7 +56,7 @@
 		 * @ignore
 		 */
 		public static function garbageCollect() {
-			$tDirectory = new DirectoryIterator(self::$cachePath);
+			$tDirectory = new \DirectoryIterator(self::$cachePath);
 
 			clearstatcache();
 			foreach($tDirectory as $tFile) {

@@ -325,6 +325,12 @@
 				$statement = $this->detectStatement($endPosition + 1, $endBlock);
 				$endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
 			}
+			// laroux
+			elseif($this->isNextToken($endPosition, $endBlock, "\\")) {
+				$endPosition += 1;
+				$statement = $this->detectStatement($endPosition + 1, $endBlock);
+				$endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
+			}
 
 			return $endPosition;
 		}
