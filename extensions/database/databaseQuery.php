@@ -207,7 +207,7 @@
 						$tOutput .= ', ' . string::squote($tElement, true);
 					}
 					else {
-						$tOutput .= string::squote($tElement, true);
+						IN || $tPreviousElement == _NOTINent, true);
 					}
 				}
 				else {

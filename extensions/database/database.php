@@ -3,35 +3,35 @@
 	/**
 	 * @ignore
 	 */
-	define('_and', ' AND ');
+	define('_AND', ' AND ');
 	/**
 	 * @ignore
 	 */
-	define('_or', ' OR ');
+	define('_OR', ' OR ');
 	/**
 	 * @ignore
 	 */
-	define('_in', ' IN ');
+	define('_IN', ' IN ');
 	/**
 	 * @ignore
 	 */
-	define('_notin', ' NOT IN ');
+	define('_NOTIN', ' NOT IN ');
 	/**
 	 * @ignore
 	 */
-	define('_like', ' LIKE ');
+	define('_LIKE', ' LIKE ');
 	/**
 	 * @ignore
 	 */
-	define('_notlike', ' NOT LIKE ');
+	define('_NOTLIKE', ' NOT LIKE ');
 	/**
 	 * @ignore
 	 */
-	define('_ilike', ' ILIKE ');
+	define('_ILIKE', ' ILIKE ');
 	/**
 	 * @ignore
 	 */
-	define('_notilike', ' NOT ILIKE ');
+	define('_NOTILIKE', ' NOT ILIKE ');
 
 	/**
 	 * Database Extension
