@@ -198,7 +198,7 @@
 
 			foreach($uArray as $tElement) {
 				if(is_array($tElement)) {
-					$tOutput .= self::constructWhere($tElement, ($tPreviousElement == _in || $tPreviousElement == _notin));
+					$tOutput .= self::constructWhere($tElement, ($tPreviousElement == _IN || $tPreviousElement == _NOTIN));
 					continue;
 				}
 
@@ -207,7 +207,7 @@
 						$tOutput .= ', ' . string::squote($tElement, true);
 					}
 					else {
-						IN || $tPreviousElement == _NOTINent, true);
+						$tOutput .= string::squote($tElement, true);
 					}
 				}
 				else {
