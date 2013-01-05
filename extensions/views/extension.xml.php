@@ -16,6 +16,8 @@
 	</info>
 	<includeList>
 		<include>views.php</include>
+		<include>view.php</include>
+		<include>viewEnginePhp.php</include>
 
 		<!-- markdown -->
 		<include>markdownExtra/markdownExtra.php</include>
@@ -35,6 +37,7 @@
 	</includeList>
 	<classList>
 		<class>views</class>
+		<class>view</class>
 		<class>viewEnginePhp</class>
 		<class>viewEngineMarkdown</class>
 		<class>viewEnginePhptal</class>
