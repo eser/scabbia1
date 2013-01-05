@@ -2,12 +2,19 @@
     "name": "larukedi/scabbia-framework",
 	"description": "Scabbia Framework",
 	"type": "library",
+	"minimum-stability": "dev",
 	"keywords": [
         "scabbia",
-        "php"
+		"framework"
     ],
 	"homepage": "http://eser.ozvataf.com/scabbia/",
-	"license": "GPLv3",
+	"license": "GPL-3.0+",
+	"authors": [
+		{
+			"name": "Eser Ozvataf",
+			"email": "eser@sent.com"
+		}
+    ],
     "require": {
         "php": ">=5.2.0"
     },
