@@ -7,7 +7,7 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage controllers
-	 * @version 1.0.2
+	 * @version 1.0.5
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends string, io, http, views
@@ -19,6 +19,10 @@
 		 * @ignore
 		 */
 		public static $models = array();
+		/**
+		 * @ignore
+		 */
+		public static $stack = array();
 
 		/**
 		 * @ignore

@@ -7,7 +7,7 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage mvc
-	 * @version 1.0.2
+	 * @version 1.0.5
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends string, http, models, views, controllers
@@ -25,15 +25,7 @@
 		/**
 		 * @ignore
 		 */
-		public static $route = null;
-		/**
-		 * @ignore
-		 */
-		public static $controllerActual = null;
-		/**
-		 * @ignore
-		 */
-		public static $actionActual = null;
+		public static $controllerStack = array();
 		/**
 		 * @ignore
 		 */
@@ -60,56 +52,13 @@
 		 * @ignore
 		 */
 		public static function httpRoute(&$uParms) {
-			self::$route = self::findRoute($uParms['get']);
-			self::$controllerActual = self::$route['controller'];
-			self::$actionActual = self::$route['action'];
-
-			$tParameterSegments = null;
-			$tParms = array(
-						   'controller' => &self::$route['controller'],
-						   'action' => &self::$route['action'],
-						   'controllerActual' => &self::$controllerActual,
-						   'actionActual' => &self::$actionActual,
-						   'parameterSegments' => &$tParameterSegments
-					  );
-			events::invoke('routing', $tParms);
-
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));
 			}
-			
-			while(true) {
-				if(strpos(self::$actionActual, '_') !== false) {
-					mvc::notfound();
-					break;
-				}
 
-				//! todo ensure autoload behaviour.
-				if(!is_subclass_of(self::$controllerActual, 'Scabbia\\controller')) {
-					mvc::notfound();
-					break;
-				}
-				
-				$tController = new self::$controllerActual ();
-				$tController->view = self::$route['controller'] . '/' . self::$route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-				
-				try {
-					$tReturn = $tController->render(self::$actionActual, self::$route['parametersArray']);
-					if($tReturn === false) {
-						mvc::notfound();
-						break;
-					}
-
-					if($tReturn !== true && !is_null($tReturn)) {
-						call_user_func($tReturn);
-						break;
-					}
-				}
-				catch(\Exception $ex) {
-					mvc::error($ex->getMessage());
-				}
-
-				break;
+			$tReturn = self::generate($uParms['get']);
+			if($tReturn === false) {
+				mvc::notfound();
 			}
 
 			if(extensions::isLoaded('profiler')) {
@@ -130,6 +79,70 @@
 			$uParms['action'] = $tSegments['action'];
 			$uParms['parameters'] = $tSegments['parameters'];
 			$uParms['queryString'] = $tSegments['queryString'];
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function generate($uPath) {
+			$tRoute = self::findRoute($uPath);
+			$tActualController = $tRoute['controller'];
+			$tActualAction = $tRoute['action'];
+
+			$tParameterSegments = null;
+			$tParms = array(
+						   'controller' => &$tRoute['controller'],
+						   'action' => &$tRoute['action'],
+						   'controllerActual' => &$tActualController,
+						   'actionActual' => &$tActualAction,
+						   'parameterSegments' => &$tParameterSegments
+					  );
+			events::invoke('routing', $tParms);
+
+			while(true) {
+				if(strpos($tActualAction, '_') !== false) {
+					$tReturn = false;
+					break;
+				}
+
+				//! todo ensure autoload behaviour.
+				if(!is_subclass_of($tActualController, 'Scabbia\\controller')) {
+					$tReturn = false;
+					break;
+				}
+				
+				$tController = new $tActualController ();
+				$tController->route = $tRoute;
+				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
+
+				array_push(self::$controllerStack, $tController);
+
+				try {
+					$tReturn = $tController->render($tActualAction, $tRoute['parametersArray']);
+					if($tReturn === false) {
+						array_pop(self::$controllerStack);
+						break;
+					}
+
+					if($tReturn !== true && !is_null($tReturn)) {
+						call_user_func($tReturn);
+						array_pop(self::$controllerStack);
+						break;
+					}
+
+					array_pop(self::$controllerStack);
+				}
+				catch(\Exception $ex) {
+					mvc::error($ex->getMessage());
+
+					array_pop(self::$controllerStack);
+					$tReturn = false;
+				}
+
+				break;
+			}
+
+			return $tReturn;
 		}
 
 		/**
@@ -165,19 +178,28 @@
 			return $tControllerData;
 		}
 
+		
+		/**
+		 * @ignore
+		 */
+		public static function current() {
+			return end(self::$controllerStack);
+		}
+
 		/**
 		 * @ignore
 		 */
 		public static function currentUrl() {
-			$tControllerData = self::getControllerData(self::$route['controller']);
+			$tCurrent = $this->current();
+			$tControllerData = self::getControllerData($tCurrent->route['controller']);
 
 			return string::format($tControllerData['link'], array(
 				'siteroot' => framework::$siteroot,
 				'device' => http::$crawlerType,
-				'controller' => self::$route['controller'],
-				'action' => self::$route['action'],
-				'parameters' => self::$route['parameters'],
-				'queryString' => self::$route['queryString']
+				'controller' => $tCurrent->route['controller'],
+				'action' => $tCurrent->route['action'],
+				'parameters' => $tCurrent->route['parameters'],
+				'queryString' => $tCurrent->route['queryString']
 			));
 		}
 

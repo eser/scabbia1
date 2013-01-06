@@ -12,6 +12,10 @@
 		/**
 		 * @ignore
 		 */
+		public $route = null;
+		/**
+		 * @ignore
+		 */
 		public $view = null;
 		/**
 		 * @ignore
@@ -99,6 +103,15 @@
 		 */
 		public function setRef($uKey, &$uValue) {
 			$this->vars[$uKey] = $uValue;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function setRange($uArray) {
+			foreach($uArray as $tKey => $tValue) {
+				$this->vars[$tKey] = $tValue;
+			}
 		}
 
 		/**

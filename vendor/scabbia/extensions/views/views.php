@@ -7,7 +7,7 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage views
-	 * @version 1.0.2
+	 * @version 1.0.5
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends string, http
@@ -105,6 +105,10 @@
 				$tExtra['lang'] = i8n::$language['key'];
 			}
 
+			if(extensions::isLoaded('mvc')) {
+				$tExtra['controller'] = mvc::current();
+			}
+
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
 			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
 
@@ -143,6 +147,10 @@
 
 			if(extensions::isLoaded('i8n')) {
 				$tExtra['lang'] = i8n::$language['key'];
+			}
+
+			if(extensions::isLoaded('mvc')) {
+				$tExtra['controller'] = mvc::current();
 			}
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
