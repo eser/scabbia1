@@ -10,7 +10,7 @@
 	 * @version 1.0.2
 	 *
 	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends string, http, resources, models, views
+	 * @scabbia-fwdepends string, http, models, views, controllers
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 *
@@ -46,10 +46,6 @@
 		 * @ignore
 		 */
 		public static $errorPage;
-		/**
-		 * @ignore
-		 */
-		public static $models = array();
 
 		/**
 		 * @ignore
@@ -241,47 +237,6 @@
 			$tRoute['queryStringArray'] = $uArgs;
 
 			return $tRoute;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function loaddatabase($uDatabaseName) {
-			if(!extensions::isLoaded('database')) {
-				return false;
-			}
-
-			if(!isset(mvc::$models[$uDatabaseName])) {
-				mvc::$models[$uDatabaseName] = database::get($uDatabaseName);
-			}
-
-			return mvc::$models[$uDatabaseName];
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function load($uModelClass, $uDatabase = null) {
-			if(!isset(mvc::$models[$uModelClass])) {
-				mvc::$models[$uModelClass] = new $uModelClass ($uDatabase);
-			}
-
-			return mvc::$models[$uModelClass];
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function json($uModel = null) {
-			if(is_null($uModel)) {
-				$uModel = &views::$vars;
-			}
-
-			header('Content-Type: application/json', true);
-
-			echo json_encode(
-				$uModel
-			);
 		}
 
 		/**

@@ -84,41 +84,41 @@
 		 * @ignore
 		 */
 		public function get($uKey) {
-			return views::get($uKey);
+			return $this->vars[$uKey];
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function set($uKey, $uValue) {
-			views::set($uKey, $uValue);
+			$this->vars[$uKey] = $uValue;
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function setRef($uKey, &$uValue) {
-			views::setRef($uKey, $uValue);
+			$this->vars[$uKey] = $uValue;
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function remove($uKey) {
-			views::remove($uKey, $uValue);
+			unset($this->vars[$uKey]);
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function loaddatabase($uDatabaseName, $uMemberName = null) {
+		public function loadDatabase($uDatabaseName, $uMemberName = null) {
 			$uArgs = func_get_args();
 
 			if(is_null($uMemberName)) {
 				$uMemberName = $uDatabaseName;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\mvc::loaddatabase', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::loadDatabase', $uArgs);
 		}
 
 		/**
@@ -131,29 +131,45 @@
 				$uMemberName = $uModelClass;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\mvc::load', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::load', $uArgs);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function view($uView = null, $uModel = null) {
-			views::view(!is_null($uView) ? $uView : $this->view, $uModel);
+			views::view(
+				!is_null($uView) ? $uView : $this->view,
+				!is_null($uModel) ? $uModel : $this->vars
+			);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function viewFile($uView = null, $uModel = null) {
-			views::viewFile(!is_null($uView) ? $uView : $this->view, $uModel);
+			views::viewFile(
+				!is_null($uView) ? $uView : $this->view,
+				!is_null($uModel) ? $uModel : $this->vars
+			);
 		}
 
 		/**
 		 * @ignore
 		 */
-		public function json() {
-			$uArgs = func_get_args();
-			call_user_func_array('Scabbia\\mvc::json', $uArgs);
+		public function json($uModel = null) {
+			views::json(
+				!is_null($uModel) ? $uModel : $this->vars
+			);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public function xml($uModel = null) {
+			views::xml(
+				!is_null($uModel) ? $uModel : $this->vars
+			);
 		}
 
 		/**

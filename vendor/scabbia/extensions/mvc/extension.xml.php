@@ -11,18 +11,16 @@
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>http</fwdepend>
-			<fwdepend>resources</fwdepend>
 			<fwdepend>models</fwdepend>
 			<fwdepend>views</fwdepend>
+			<fwdepend>controllers</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
 		<include>mvc.php</include>
-		<include>controller.php</include>
 	</includeList>
 	<classList>
 		<class>mvc</class>
-		<class>controller</class>
 	</classList>
 	<eventList>
 		<event>

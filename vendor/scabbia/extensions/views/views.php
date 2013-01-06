@@ -162,6 +162,61 @@
 				$tViewArray
 			);
 		}
+
+		/**
+		 * @ignore
+		 */
+		public static function json($uModel = null) {
+			if(is_null($uModel)) {
+				$uModel = &self::$vars;
+			}
+
+			header('Content-Type: application/json', true);
+
+			echo json_encode(
+				$uModel
+			);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function xml($uModel = null) {
+			if(is_null($uModel)) {
+				$uModel = &self::$vars;
+			}
+
+			header('Content-Type: application/xml', true);
+
+			echo '<?xml version="1.0" encoding="UTF-8" ?>';
+			echo '<xml>';
+			self::xml_recursive($uModel);
+			echo '</xml>';
+		}
+
+		/**
+		 * @ignore
+		 */
+		private static function xml_recursive($uObject) {
+			if(is_array($uObject) || is_object($uObject)) {
+				foreach($uObject as $tKey => $tValue) {
+					if(is_numeric($tKey)) {
+						echo '<item index="' . $tKey . '">';
+						$tKey = 'item';
+					}
+					else {
+						echo '<' . $tKey . '>';
+					}
+
+					echo self::xml_recursive($tValue);
+					echo '</' . $tKey . '>';
+				}
+
+				return;
+			}
+
+			echo htmlspecialchars($uObject, ENT_NOQUOTES);
+		}
 	}
 
 ?>

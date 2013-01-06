@@ -51,7 +51,7 @@
 		 * @ignore
 		 */
 		public static function getModel() {
-			return mvc::load('blackmoreZmodelModel', null, config::get('/blackmore/database', null));
+			return controllers::load('blackmoreZmodelModel', null, config::get('/blackmore/database', null));
 		}
 
 		/**
