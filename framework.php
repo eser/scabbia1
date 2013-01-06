@@ -29,6 +29,7 @@
 		define('QPATH_BASE', strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/');
 	}
 	define('QPATH_CORE', strtr(pathinfo(__FILE__, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/');
+	define('QPATH_SCABBIA', QPATH_CORE . 'vendor/scabbia/');
 	define('QTIME_INIT', microtime(true));
 
 	define('SCABBIA_VERSION', '1.0');
@@ -44,10 +45,10 @@
 	// ini_set('error_log', QPATH_BASE . 'error.log');
 
 // Include framework dependencies and load them
-	require(QPATH_CORE . 'includes/patches.main.php');
-	require(QPATH_CORE . 'includes/framework.main.php');
-	require(QPATH_CORE . 'includes/config.main.php');
-	require(QPATH_CORE . 'includes/events.main.php');
-	require(QPATH_CORE . 'includes/extensions.main.php');
+	require(QPATH_CORE . 'patches.php');
+	require(QPATH_SCABBIA . 'framework.php');
+	require(QPATH_SCABBIA . 'config.php');
+	require(QPATH_SCABBIA . 'events.php');
+	require(QPATH_SCABBIA . 'extensions.php');
 
 ?>

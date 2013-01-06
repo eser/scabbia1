@@ -96,8 +96,8 @@
 				mb_internal_encoding(self::$language['internalEncoding']);
 				mb_http_output(self::$language['internalEncoding']);
 
-				bindtextdomain('core', QPATH_CORE . 'locale');
-				bind_textdomain_codeset('core', self::$language['internalEncoding']);
+				// bindtextdomain('core', QPATH_CORE . 'locale');
+				// bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
 				bindtextdomain('application', framework::$applicationPath . 'locale');
 				bind_textdomain_codeset('application', self::$language['internalEncoding']);

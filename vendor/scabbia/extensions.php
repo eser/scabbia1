@@ -25,7 +25,7 @@
 			$tExtensions = array();
 
 			$tFiles = array();
-			framework::glob(QPATH_CORE . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
+			framework::glob(QPATH_SCABBIA . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
 			framework::glob(framework::$applicationPath . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
 
 			foreach($tFiles as $tFile) {
@@ -61,7 +61,7 @@
 				return;
 			}
 
-			// throw new Exception('class not found - ' . $uClass);
+			// throw new \Exception('class not found - ' . $uClass);
 		}
 
 		/**
@@ -82,7 +82,7 @@
 		 * @param string $uExtensionName the extension
 		 * @param bool $uAutoload
 		 *
-		 * @throws Exception
+		 * @throws \Exception
 		 * @return bool
 		 */
 		public static function loadExtension($uExtensionName, $uAutoload = false) {
@@ -112,7 +112,7 @@
 				if(isset($tClassInfo['/info/phpdependList'])) {
 					foreach($tClassInfo['/info/phpdependList'] as $tExtension) {
 						if(!extension_loaded($tExtension)) {
-							throw new Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
+							throw new \Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
 					}
 				}
@@ -125,7 +125,7 @@
 					foreach($tClassInfo['/info/fwdependList'] as $tExtension) {
 						// if(!self::add($tExtension)) {
 						if(!self::isLoaded($tExtension)) {
-							throw new Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
+							throw new \Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
 						}
 					}
 				}

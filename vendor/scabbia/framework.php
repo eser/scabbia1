@@ -80,7 +80,7 @@
 				}
 
 				if(is_null(self::$endpoint)) {
-					throw new Exception('no endpoints match.');
+					throw new \Exception('no endpoints match.');
 				}
 			}
 
@@ -198,7 +198,7 @@
 
 			if(!is_dir($tPathDirectory)) {
 				if(PHP_SAFEMODE) {
-					throw new Exception($tPathDirectory . ' does not exists.');
+					throw new \Exception($tPathDirectory . ' does not exists.');
 				}
 
 				mkdir($tPathDirectory, 0777, true);
