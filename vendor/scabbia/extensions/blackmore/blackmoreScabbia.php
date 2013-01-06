@@ -105,7 +105,7 @@
 		define(\'QPATH_BASE\', ' . var_export(QPATH_BASE, true) . ');
 	}
 	define(\'QPATH_CORE\', ' . var_export(framework::$applicationPath, true) . ');
-	define(\'QPATH_SCABBIA\', ' . var_export(framework::$applicationPath, true) . ');
+	define(\'QPATH_VENDOR\', ' . var_export(framework::$applicationPath, true) . ');
 	define(\'QTIME_INIT\', microtime(true));
 
 	define(\'SCABBIA_VERSION\', ' . var_export(SCABBIA_VERSION, true) . ');
@@ -121,10 +121,10 @@
 ?' . '>');
 
 			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_SCABBIA . 'framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_SCABBIA . 'config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_SCABBIA . 'events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_SCABBIA . 'extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;
