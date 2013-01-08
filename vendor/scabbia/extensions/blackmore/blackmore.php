@@ -38,8 +38,8 @@
 			);
 
 			$tParms = array(
-							 'modules' => &self::$modules
-						);
+				'modules' => &self::$modules
+			);
 			events::invoke('blackmoreRegisterModules', $tParms);
 
 			self::$modules['login'] = array(
@@ -115,4 +115,4 @@
 		}
 	}
 
-?>
+	?>

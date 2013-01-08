@@ -2,8 +2,9 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<captcha>
-        <fontFile>{core}resources/fonts/KabobExtrabold.ttf</fontFile>
+		<fontFile>{core}resources/fonts/KabobExtrabold.ttf</fontFile>
 	</captcha>
+
 	<resources>
 		<directoryList>
 			<directory>

@@ -46,9 +46,9 @@
 		 */
 		public static function isBoolean($uValue) {
 			if($uValue !== false && $uValue !== true &&
-				$uValue != 'false' && $uValue != 'true' &&
-				$uValue !== 0 && $uValue !== 1 &&
-				$uValue != '0' && $uValue != '1'
+					$uValue != 'false' && $uValue != 'true' &&
+					$uValue !== 0 && $uValue !== 1 &&
+					$uValue != '0' && $uValue != '1'
 			) {
 				return new contractObject(false);
 			}
@@ -85,7 +85,7 @@
 			if(filter_var($uValue, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX) === false) {
 				return new contractObject(false);
 			}
-			
+
 			return new contractObject(true);
 		}
 
@@ -96,7 +96,7 @@
 			if(filter_var($uValue, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_OCTAL) === false) {
 				return new contractObject(false);
 			}
-			
+
 			return new contractObject(true);
 		}
 
@@ -107,7 +107,7 @@
 			if(ctype_digit($uValue) === false) {
 				return new contractObject(false);
 			}
-			
+
 			return new contractObject(true);
 		}
 
@@ -122,10 +122,10 @@
 					return new contractObject(false);
 				}
 			}
-			
+
 			return new contractObject(true);
 		}
-		
+
 		/**
 		 * @ignore
 		 * PHP 5.3 only.
@@ -139,7 +139,7 @@
 			if(!checkdate($tArray['month'], $tArray['day'], $tArray['year'])) {
 				return new contractObject(false);
 			}
-			
+
 			return new contractObject(true);
 		}
 
@@ -232,7 +232,7 @@
 
 			return new contractObject(true);
 		}
-		
+
 		/**
 		 * @ignore
 		 */
@@ -240,7 +240,7 @@
 			if(strlen($uValue) != $uOtherValue) {
 				return new contractObject(false);
 			}
-			
+
 			return new contractObject(true);
 		}
 
@@ -254,7 +254,7 @@
 
 			return new contractObject(true);
 		}
-		
+
 		/**
 		 * @ignore
 		 */
@@ -367,7 +367,7 @@
 
 			$tValidated = array('', '');
 			$tIndex = 1;
-			for($i = strlen($uValue) - 1;$i >= 0;$i--) {
+			for($i = strlen($uValue) - 1; $i >= 0; $i--) {
 				if($uValue[$i] == '@') {
 					if(--$tIndex <= 0) {
 						continue;
@@ -390,4 +390,4 @@
 		}
 	}
 
-?>
+	?>

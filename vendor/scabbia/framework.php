@@ -293,6 +293,7 @@
 		 *
 		 * @param $uFile string filename in destination
 		 * @param $uUrl string url of source
+		 *
 		 * @return bool
 		 */
 		public static function downloadFile($uFile, $uUrl) {
@@ -396,24 +397,30 @@
 		 *
 		 * @param string $uPattern the pattern to search for, as a string
 		 * @param string $uSubject the input string
+		 * @param string $uModifiers the PCRE modifiers
 		 *
 		 * @return array
 		 */
-		public static function pregMatch($uPattern, $uSubject) {
+		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
 			static $sRegexpPresets = array(
-				'(:num)'	=> '([0-9]+)',
-				'(:num?)'	=> '([0-9]*)',
-				'(:alnum)'	=> '([a-zA-Z0-9]+)',
-				'(:alnum?)'	=> '([a-zA-Z0-9]*)',
-				'(:any)'	=> '([a-zA-Z0-9\.\-_%=]+)',
-				'(:any?)'	=> '([a-zA-Z0-9\.\-_%=]*)',
-				'(:all)'	=> '(.+)',
-				'(:all?)'	=> '(.*)'
+				'(:num)' => '([0-9]+)',
+				'(:num?)' => '([0-9]*)',
+				'(:alnum)' => '([a-zA-Z0-9]+)',
+				'(:alnum?)' => '([a-zA-Z0-9]*)',
+				'(:any)' => '([a-zA-Z0-9\.\-_%=]+)',
+				'(:any?)' => '([a-zA-Z0-9\.\-_%=]*)',
+				'(:all)' => '(.+)',
+				'(:all?)' => '(.*)'
 			);
 
-			$uPattern = str_replace(array_keys($sRegexpPresets), array_values($sRegexpPresets), $uPattern);
-
-			preg_match($uPattern, $uSubject, $tResult);
+			preg_match(
+				(strpos($uModifiers, '^') === 0) ? // at first position
+						'#^' . strtr($uPattern, $sRegexpPresets) . '$#' . substr($uModifiers, 1) :
+						'#' . strtr($uPattern, $sRegexpPresets) . '#' . $uModifiers
+				,
+				$uSubject,
+				$tResult
+			);
 
 			return $tResult;
 		}
@@ -495,10 +502,10 @@
 
 				case T_WHITESPACE:
 					if($tLastToken != T_WHITESPACE &&
-						$tLastToken != T_OPEN_TAG &&
-						$tLastToken != T_OPEN_TAG_WITH_ECHO &&
-						$tLastToken != T_COMMENT &&
-						$tLastToken != T_DOC_COMMENT
+							$tLastToken != T_OPEN_TAG &&
+							$tLastToken != T_OPEN_TAG_WITH_ECHO &&
+							$tLastToken != T_COMMENT &&
+							$tLastToken != T_DOC_COMMENT
 					) {
 						$tReturn .= ' ';
 					}
@@ -544,4 +551,4 @@
 		}
 	}
 
-?>
+	?>

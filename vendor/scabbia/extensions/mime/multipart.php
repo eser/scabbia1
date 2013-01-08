@@ -54,7 +54,7 @@
 			$this->boundaryName = $uBoundaryName;
 			$this->boundaryType = $uBoundaryType;
 		}
-		
+
 		/**
 		 * @ignore
 		 */
@@ -78,7 +78,7 @@
 			$tBody = $this->compileBody();
 
 			if($uHeaders) {
-				$tHeaders = &$this->headers;
+				$tHeaders = & $this->headers;
 				if(!array_key_exists('MIME-Version', $tHeaders)) {
 					$tHeaders['MIME-Version'] = '1.0';
 				}
@@ -138,4 +138,4 @@
 		}
 	}
 
-?>
+	?>

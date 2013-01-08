@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- <?php exit(); ?> -->
 <scabbia>
-	<!--
+<!--
 	<moduleList />
 
 	<downloadList />
-	-->
+-->
 
 	<includeList>
 		<!-- <include>{core}controllers/*.php</include> -->
@@ -61,7 +61,7 @@
 				<internalEncoding>UTF-8</internalEncoding>
 				<name>English</name>
 			</language>
-			<!--
+<!--
 			<language>
 				<id>tr</id>
 				<locale>tr_TR.UTF-8</locale>
@@ -69,7 +69,7 @@
 				<internalEncoding>UTF-8</internalEncoding>
 				<name>Turkish</name>
 			</language>
-			-->
+-->
 		</languageList>
 	</i8n>
 
@@ -78,7 +78,7 @@
 		<line>[{date|'d-m-Y H:i:s'}] {strtoupper|@category} | {@ip} | {@message}</line>
 	</logger>
 
-	<!--
+<!--
 	<cache>
 		<keyphase></keyphase>
 		<storage>memcache://192.168.2.4:11211</storage>
@@ -90,5 +90,5 @@
 		<username>eser@sent.com</username>
 		<password></password>
 	</smtp>
-	-->
+-->
 </scabbia>

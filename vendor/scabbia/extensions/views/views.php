@@ -88,7 +88,7 @@
 		 */
 		public static function view($uView, $uModel = null) {
 			if(is_null($uModel)) {
-				$uModel = &self::$vars;
+				$uModel = & self::$vars;
 			}
 
 			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
@@ -132,7 +132,7 @@
 		 */
 		public static function viewFile($uView, $uModel = null) {
 			if(is_null($uModel)) {
-				$uModel = &self::$vars;
+				$uModel = & self::$vars;
 			}
 
 			$tViewFilePath = framework::translatePath($uView);
@@ -176,7 +176,7 @@
 		 */
 		public static function json($uModel = null) {
 			if(is_null($uModel)) {
-				$uModel = &self::$vars;
+				$uModel = & self::$vars;
 			}
 
 			header('Content-Type: application/json', true);
@@ -191,7 +191,7 @@
 		 */
 		public static function xml($uModel = null) {
 			if(is_null($uModel)) {
-				$uModel = &self::$vars;
+				$uModel = & self::$vars;
 			}
 
 			header('Content-Type: application/xml', true);
@@ -227,4 +227,4 @@
 		}
 	}
 
-?>
+	?>

@@ -174,11 +174,11 @@
 		 */
 		public function sqlInsert($uTable, $uObject, $uReturning = '') {
 			$tSql =
-				'INSERT INTO ' . $uTable . ' ('
-					. implode(', ', array_keys($uObject))
-					. ') VALUES ('
-					. implode(', ', array_values($uObject))
-					. ')';
+					'INSERT INTO ' . $uTable . ' ('
+							. implode(', ', array_keys($uObject))
+							. ') VALUES ('
+							. implode(', ', array_values($uObject))
+							. ')';
 
 			// if(strlen($uReturning) > 0) {
 			// 	$tSql .= ' RETURNING ' . $uReturning;
@@ -197,7 +197,7 @@
 			}
 
 			$tSql = 'UPDATE ' . $uTable . ' SET '
-				. implode(', ', $tPairs);
+					. implode(', ', $tPairs);
 
 			if(strlen($uWhere) > 0) {
 				$tSql .= ' WHERE ' . $uWhere;
@@ -273,4 +273,4 @@
 		}
 	}
 
-?>
+	?>

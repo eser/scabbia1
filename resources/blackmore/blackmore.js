@@ -11,9 +11,9 @@ function insertImageToParent(src) {
 }
 
 $(document).ready(function() {
-	$('#pageMiddleSidebarToggle').click(function () {
+	$('#pageMiddleSidebarToggle').click(function() {
 		var element = $('#pageMiddleSidebar');
-		if (element.css('display') == 'none') {
+		if(element.css('display') == 'none') {
 			element.css('display', '');
 			$l.cookies.set('sidebar', 'true');
 		}
@@ -30,24 +30,24 @@ $(document).ready(function() {
 		$('#pageMiddleSidebar').css('display', 'none');
 	}
 
-	$('.cleditor').cleditor({ width: '98%', height: '500px' });
+	$('.cleditor').cleditor({ width : '98%', height : '500px' });
 	$.cleditor.buttons.image.buttonClick = function(e, data) {
 		window.cleditorData = data;
 
 		Shadowbox.open({
-			content:    location.origin + $l.baseLocation + '/editor/fileselect',
-			player:     'iframe',
-			title:      _fileselectTitle,
-			height:     350,
-			width:      900
+			content : location.origin + $l.baseLocation + '/editor/fileselect',
+			player : 'iframe',
+			title : _fileselectTitle,
+			height : 350,
+			width : 900
 		});
 
 		return false;
 	};
 
 	$('.tablesorter')
-		.tablesorter({ widgets: ['zebra'], disableSortingOnLastColumn: true })
-		.tablesorterPager({ size: 25, container: $('#tablepager') });
+			.tablesorter({ widgets : ['zebra'], disableSortingOnLastColumn : true })
+			.tablesorterPager({ size : 25, container : $('#tablepager') });
 
 	$('.file').change(function() {
 		var me = $(this);
@@ -60,14 +60,14 @@ $(document).ready(function() {
 			return false;
 		}
 	});
-		
+
 	Shadowbox.init({
 		// handleOversize: 'drag',
-		modal: true
+		modal : true
 	});
 
-	$('.tipsyFocus').tipsy({fade: true, gravity: 'w', trigger: 'focus'});
-	$('.tipsyHover').tipsy({fade: true, gravity: 'w', live: true});
+	$('.tipsyFocus').tipsy({fade : true, gravity : 'w', trigger : 'focus'});
+	$('.tipsyHover').tipsy({fade : true, gravity : 'w', live : true});
 
-    $l.ui.datepicker($('.input_datetime'), {})
+	$l.ui.datepicker($('.input_datetime'), {})
 });

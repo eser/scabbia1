@@ -83,32 +83,32 @@
 			// header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
 			// replace missing environment variables
-/*
-			static $sEnvNames = array(
-				'HTTP_ACCEPT',
-				'HTTP_ACCEPT_LANGUAGE',
-				'HTTP_HOST',
-				'HTTP_USER_AGENT',
-				'HTTP_REFERER',
-				'SCRIPT_FILENAME',
-				'PHP_SELF',
-				'QUERY_STRING',
-				'REQUEST_URI',
-				'SERVER_ADDR',
-				'SERVER_NAME',
-				'SERVER_PORT',
-				'SERVER_PROTOCOL',
-				'HTTPS'
-			);
+			/*
+						static $sEnvNames = array(
+							'HTTP_ACCEPT',
+							'HTTP_ACCEPT_LANGUAGE',
+							'HTTP_HOST',
+							'HTTP_USER_AGENT',
+							'HTTP_REFERER',
+							'SCRIPT_FILENAME',
+							'PHP_SELF',
+							'QUERY_STRING',
+							'REQUEST_URI',
+							'SERVER_ADDR',
+							'SERVER_NAME',
+							'SERVER_PORT',
+							'SERVER_PROTOCOL',
+							'HTTPS'
+						);
 
-			foreach($sEnvNames as $tEnv) {
-				if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
-					continue;
-				}
+						foreach($sEnvNames as $tEnv) {
+							if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
+								continue;
+							}
 
-				$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
-			}
-*/
+							$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
+						}
+			*/
 
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
 				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -186,9 +186,9 @@
 			}
 
 			$tParms = array(
-						  'queryString' => &self::$queryString,
-						  'get' => &$_GET
-					);
+				'queryString' => &self::$queryString,
+				'get' => &$_GET
+			);
 
 			foreach(self::$callbacks as $tCallback) {
 				if(!is_null($tCallback[2]) && !in_array(self::$methodext, $tCallback[2])) {
@@ -242,6 +242,7 @@
 			$tReturn = preg_replace('|^' . $uMatch . '$|', $uForward, self::$queryString, -1, $tCount);
 			if($tCount > 0) {
 				self::$queryString = $tReturn;
+
 				return true;
 			}
 
@@ -270,7 +271,7 @@
 			if(self::$isAjax) {
 				$tLastContentType = http::sentHeaderValue('Content-Type');
 				$tContent = '{ "isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true')
-					. ', "errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true));
+						. ', "errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true));
 
 				if($tLastContentType == false) {
 					self::sendHeader('Content-Type', 'application/json', true);
@@ -665,10 +666,12 @@
 				if($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
 					self::sendHeader('Pragma', 'no-cache', true);
 					self::sendHeader('Expires', 'Thu, 01 Jan 1970 00:00:00 GMT', true);
+
 					return;
 				}
 
 				self::sendHeader('Cache-Control', (($uMustRevalidate) ? 'no-store, no-cache, must-revalidate' : 'no-store, no-cache'), true);
+
 				return;
 			}
 
@@ -682,6 +685,7 @@
 			if($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
 				self::sendHeader('Pragma', $tPublicity, true);
 				self::sendHeader('Expires', gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
+
 				return;
 			}
 
@@ -715,6 +719,7 @@
 			if($tParsingType == '0') {
 				$uArray = array();
 				parse_str($uQueryString, $uArray);
+
 				return $uArray;
 			}
 
@@ -952,4 +957,4 @@
 		}
 	}
 
-?>
+	?>

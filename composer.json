@@ -1,12 +1,12 @@
 {
-    "name": "larukedi/scabbia-framework",
+	"name": "larukedi/scabbia-framework",
 	"description": "Scabbia Framework",
 	"type": "library",
 	"minimum-stability": "dev",
 	"keywords": [
-        "scabbia",
+		"scabbia",
 		"framework"
-    ],
+	],
 	"homepage": "http://eser.ozvataf.com/scabbia/",
 	"license": "GPL-3.0+",
 	"authors": [
@@ -14,11 +14,11 @@
 			"name": "Eser Ozvataf",
 			"email": "eser@sent.com"
 		}
-    ],
-    "require": {
-        "php": ">=5.2.0"
-    },
+	],
+	"require": {
+		"php": ">=5.2.0"
+	},
 	"suggest": {
-        "ext-intl": "ext/intl for i18n features"
-    }
+		"ext-intl": "ext/intl for i18n features"
+	}
 }

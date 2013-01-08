@@ -10,7 +10,7 @@
 			<link>{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}</link>
 		</routes>
 
-		<!--
+<!--
 		<errorPages>
 			<notfound>shared/notfound</notfound>
 			<restriction>shared/restriction</restriction>
@@ -20,7 +20,7 @@
 		</errorPages>
 
 		<controllerList />
-		-->
+-->
 
 		<!-- _{@device}_{@language} -->
 		<view>

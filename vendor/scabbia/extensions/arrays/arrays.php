@@ -187,15 +187,15 @@
 			}
 
 			foreach($uArray as &$tRow) {
-				$tRef = &$tReturn;
+				$tRef = & $tReturn;
 				foreach($uKey as $tKey) {
 					$tValue = $tRow[$tKey];
 					if(!isset($tRef[$tValue])) {
 						$tRef[$tValue] = array();
 					}
-					$tNewRef = &$tRef[$tValue];
+					$tNewRef = & $tRef[$tValue];
 					unset($tRef);
-					$tRef = &$tNewRef;
+					$tRef = & $tNewRef;
 				}
 
 				$tRef[] = $tRow;
@@ -388,4 +388,4 @@
 		}
 	}
 
-?>
+	?>

@@ -12,7 +12,7 @@
 	 */
 	class config {
 		/**
-		 * Defaul configuration
+		 * Default configuration
 		 */
 		public static $default;
 
@@ -206,6 +206,7 @@
 		 *
 		 * @param string $uKey path of the value
 		 * @param mixed $uDefault default value
+		 *
 		 * @return mixed|null
 		 */
 		public static function get($uKey, $uDefault = null) {
@@ -217,4 +218,4 @@
 		}
 	}
 
-?>
+	?>

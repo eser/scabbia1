@@ -64,10 +64,10 @@
 			$tSql = $tZmodel->generateCreateSql();
 
 			views::viewFile('{core}views/blackmore/zmodels/sql.php', array(
-				'sql' => $tSql
-			));
+			                                                              'sql' => $tSql
+			                                                         ));
 		}
-		
+
 		/**
 		 * @ignore
 		 */
@@ -75,14 +75,14 @@
 			auth::checkRedirect('editor');
 
 			$tModel = self::getModel();
-			$tModule = &zmodels::$zmodels[blackmore::$module];
-			
+			$tModule = & zmodels::$zmodels[blackmore::$module];
+
 			$tRows = $tModel->getAll($tModule['name']);
 
 			views::viewFile('{core}views/blackmore/zmodels/list.php', array(
-				'module' => $tModule,
-				'rows' => $tRows
-			));
+			                                                               'module' => $tModule,
+			                                                               'rows' => $tRows
+			                                                          ));
 		}
 
 		/**
@@ -91,7 +91,7 @@
 		public static function add($uAction) {
 			auth::checkRedirect('editor');
 
-			$tModule = &zmodels::$zmodels[blackmore::$module];
+			$tModule = & zmodels::$zmodels[blackmore::$module];
 			$tViewbag = array(
 				'module' => $tModule,
 				'fields' => array()
@@ -181,7 +181,7 @@
 		public static function edit($uAction, $uSlug) {
 			auth::checkRedirect('editor');
 
-			$tModule = &zmodels::$zmodels[blackmore::$module];
+			$tModule = & zmodels::$zmodels[blackmore::$module];
 			$tViewbag = array(
 				'module' => $tModule,
 				'fields' => array()
@@ -262,6 +262,7 @@
 				}
 
 				views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+
 				return;
 			}
 
@@ -328,4 +329,4 @@
 		}
 	}
 
-?>
+	?>

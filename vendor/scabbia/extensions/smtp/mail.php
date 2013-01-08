@@ -49,11 +49,12 @@
 				$tMimepart->type = mime::getType($tExtension, 'text/plain');
 			}
 
-			
+
 			$tMimepart->transferEncoding = $uEncoding;
 			$tMimepart->content = $uContent;
 
 			$this->parts[] = $tMimepart;
+
 			return $tMimepart;
 		}
 
@@ -76,6 +77,7 @@
 			$tMimepart->load($uPath);
 
 			$this->parts[] = $tMimepart;
+
 			return $tMimepart;
 		}
 
@@ -113,7 +115,7 @@
 				$tString .= $tKey . ': ' . $tValue . "\n";
 			}
 			$tString .= "\n" . $this->content;
-			
+
 			return $tString;
 		}
 
@@ -125,4 +127,4 @@
 		}
 	}
 
-?>
+	?>

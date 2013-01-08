@@ -91,12 +91,12 @@
 
 			$tParameterSegments = null;
 			$tParms = array(
-						   'controller' => &$tRoute['controller'],
-						   'action' => &$tRoute['action'],
-						   'controllerActual' => &$tActualController,
-						   'actionActual' => &$tActualAction,
-						   'parameterSegments' => &$tParameterSegments
-					  );
+				'controller' => &$tRoute['controller'],
+				'action' => &$tRoute['action'],
+				'controllerActual' => &$tActualController,
+				'actionActual' => &$tActualAction,
+				'parameterSegments' => &$tParameterSegments
+			);
 			events::invoke('routing', $tParms);
 
 			while(true) {
@@ -110,7 +110,7 @@
 					$tReturn = false;
 					break;
 				}
-				
+
 				$tController = new $tActualController ();
 				$tController->route = $tRoute;
 				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
@@ -178,7 +178,7 @@
 			return $tControllerData;
 		}
 
-		
+
 		/**
 		 * @ignore
 		 */
@@ -194,16 +194,16 @@
 			$tControllerData = self::getControllerData($tCurrent->route['controller']);
 
 			return string::format($tControllerData['link'], array(
-				'siteroot' => framework::$siteroot,
-				'device' => http::$crawlerType,
-				'controller' => $tCurrent->route['controller'],
-				'action' => $tCurrent->route['action'],
-				'parameters' => $tCurrent->route['parameters'],
-				'queryString' => $tCurrent->route['queryString']
-			));
+			                                                     'siteroot' => framework::$siteroot,
+			                                                     'device' => http::$crawlerType,
+			                                                     'controller' => $tCurrent->route['controller'],
+			                                                     'action' => $tCurrent->route['action'],
+			                                                     'parameters' => $tCurrent->route['parameters'],
+			                                                     'queryString' => $tCurrent->route['queryString']
+			                                                ));
 		}
 
-		 /**
+		/**
 		 * @ignore
 		 */
 		public static function findRoute($uArgs) {
@@ -271,9 +271,9 @@
 			//! todo internalization.
 			if(!http::$isAjax) {
 				views::view(self::$errorPage, array(
-				                                  'title' => 'Error',
-				                                  'message' => $uMessage
-				                             ));
+				                                   'title' => 'Error',
+				                                   'message' => $uMessage
+				                              ));
 			}
 
 			framework::end(1, $uMessage);
@@ -287,9 +287,9 @@
 
 			//! todo internalization.
 			views::view(self::$errorPage, array(
-			                                  'title' => 'Error',
-			                                  'message' => '404 Not Found'
-			                             ));
+			                                   'title' => 'Error',
+			                                   'message' => '404 Not Found'
+			                              ));
 
 			framework::end(1);
 		}
@@ -405,4 +405,4 @@ EOD;
 		}
 	}
 
-?>
+	?>

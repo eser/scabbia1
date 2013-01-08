@@ -47,7 +47,7 @@
 				throw new \Exception('expectation error - expected: ' . $uExpectation . ' response: ' . $tResponse);
 			}
 		}
- 
+
 		/**
 		 * @ignore
 		 */
@@ -73,18 +73,18 @@
 
 					fputs($tSmtp, base64_encode(self::$username) . "\n");
 					self::sockwait($tSmtp, '334');
-					
+
 					fputs($tSmtp, base64_encode(self::$password) . "\n");
 					self::sockwait($tSmtp, '235');
 				}
-				
+
 				fputs($tSmtp, 'MAIL FROM: ' . $uFrom . "\n");
 				self::sockwait($tSmtp, '250');
 
 				// todo: to+cc+bcc parsing
 				fputs($tSmtp, 'RCPT TO: ' . $uTo . "\n");
 				self::sockwait($tSmtp, '250');
-				
+
 				fputs($tSmtp, 'DATA' . "\n");
 				self::sockwait($tSmtp, '354');
 
@@ -99,4 +99,4 @@
 		}
 	}
 
-?>
+	?>

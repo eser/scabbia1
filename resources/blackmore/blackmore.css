@@ -1,9 +1,14 @@
 html, body {
-	height:100%; /* needed for container min-height */
+	height: 100%; /* needed for container min-height */
 }
 
-p { padding-bottom: 15px; }
-img, a img { border: 0px; }
+p {
+	padding-bottom: 15px;
+}
+
+img, a img {
+	border: 0px;
+}
 
 body {
 	background: #FFFFFF;
@@ -154,7 +159,7 @@ form input.text {
 	vertical-align: middle;
 }
 
-form textarea.cleditor  {
+form textarea.cleditor {
 	width: 98%;
 	height: 140px;
 	padding: 5px;
@@ -174,7 +179,7 @@ form input.checkbox {
 }
 
 form input.input_varchar, form input.input_uuid, form input.input_datetime {
-	width:280px;
+	width: 280px;
 	background: #FEFEFE;
 	border: 1px solid #BBBBBB;
 	box-shadow: inset 0px 2px 3px #CCCCCC, 0px 1px rgba(255, 255, 255, 0.898);
@@ -190,7 +195,7 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime {
 }
 
 form .input_enum {
-	width:300px;
+	width: 300px;
 	background: #FEFEFE;
 	border: 1px solid #BBBBBB;
 	box-shadow: inset 0px 2px 3px #CCCCCC, 0px 1px rgba(255, 255, 255, 0.898);
@@ -207,14 +212,15 @@ form .input_enum {
 
 form .fileupload {
 	position: relative;
-	height:30px;
+	height: 30px;
 }
 
-form .fileupload  {
-    background: url('scabbia/blackmore/images/upload_file.gif') right top no-repeat;
-    border:none;
-    overflow:hidden;
+form .fileupload {
+	background: url('scabbia/blackmore/images/upload_file.gif') right top no-repeat;
+	border: none;
+	overflow: hidden;
 }
+
 form .fileupload .file-text {
 	width: 209px !important;
 	height: 14px !important;
@@ -222,16 +228,16 @@ form .fileupload .file-text {
 	border-right: 0px;
 }
 
-form input.file{
-    margin-left:-145px;
-    opacity:0.0;
-	float:right;
+form input.file {
+	margin-left: -145px;
+	opacity: 0.0;
+	float: right;
 }
 
 form input.file {
 	width: 75px;
 	height: 30px;
-	margin-top:10px;
+	margin-top: 10px;
 	background: #fefefe;
 	border: 1px solid #bbb;
 	border-right: 0;
@@ -289,7 +295,7 @@ form input.submit:hover {
 
 .message.errormsg {
 	border: 1px solid #e9c59b;
-	background: #ffecce url('scabbia/blackmore/images/error.gif') 12px 12px no-repeat ;
+	background: #ffecce url('scabbia/blackmore/images/error.gif') 12px 12px no-repeat;
 	color: #e3302c;
 }
 
@@ -314,7 +320,7 @@ form input.submit:hover {
 /* MISC
 ----------------------------------------------------------*/
 .clear {
-    clear: both;
+	clear: both;
 }
 
 .floatLeft {
@@ -360,7 +366,7 @@ form input.submit:hover {
 	cursor: pointer;
 }
 
-.memu-root:hover > .memu-item, .memu-item:hover{
+.memu-root:hover > .memu-item, .memu-item:hover {
 	background-color: #F0F0F0;
 	border-color: #C0C0C0;
 	color: #56789A;
@@ -406,7 +412,7 @@ form input.submit:hover {
 .memu-submenu .memu-caption:after {
 	float: right;
 	margin: 0px 20px 0px 0px;
-	content: " »";
+	content: " ï¿½";
 }
 
 .memu-root:hover {
@@ -477,18 +483,18 @@ form input.submit:hover {
 }
 
 #pageTopMenu {
-  background: -webkit-linear-gradient(top, #FFFFFF, #C0C0C0);
+	background: -webkit-linear-gradient(top, #FFFFFF, #C0C0C0);
 
-  /* Firefox 3.6+ */
-  background: -moz-linear-gradient(top, #FFFFFF, #C0C0C0);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #FFFFFF, #C0C0C0);
 
-  /* IE 10 */
-  background: -ms-linear-gradient(top, #FFFFFF, #C0C0C0);
+	/* IE 10 */
+	background: -ms-linear-gradient(top, #FFFFFF, #C0C0C0);
 
-  /* Opera 11.10+ */
-  background: -o-linear-gradient(top, #FFFFFF, #C0C0C0);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(top, #FFFFFF, #C0C0C0);
 
-  background: linear-gradient(top, #FFFFFF, #C0C0C0);
+	background: linear-gradient(top, #FFFFFF, #C0C0C0);
 }
 
 #pageMiddle {
@@ -500,12 +506,14 @@ form input.submit:hover {
 	border-top: 1px solid #A0A0A0;
 }
 
-#pageMiddle table.tablesorter tr td{
-	padding:8px 4px 8px 4px;
+#pageMiddle table.tablesorter tr td {
+	padding: 8px 4px 8px 4px;
 }
-#pageMiddle table.tablesorter thead tr .header{
+
+#pageMiddle table.tablesorter thead tr .header {
 	min-width: 65px;
 }
+
 #pageMiddleTable {
 	table-layout: fixed;
 	width: 100%;
@@ -569,17 +577,20 @@ form input.submit:hover {
 }
 
 #pageMiddleSidebar ul {
-	margin:10px 0px;
+	margin: 10px 0px;
 }
-#pageMiddleSidebar ul li:first-of-type  {
-	border-top:1px solid #C0C0C0;
+
+#pageMiddleSidebar ul li:first-of-type {
+	border-top: 1px solid #C0C0C0;
 }
+
 #pageMiddleSidebar li {
 	padding: 5px 6px 5px 10px;
 	list-style-type: none;
-	border-bottom:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
 }
-#pageMiddleSidebar .memu-item:hover{
+
+#pageMiddleSidebar .memu-item:hover {
 	background-color: #F0F0F0;
 	color: #56789A;
 }
@@ -656,10 +667,10 @@ form input.submit:hover {
 }
 
 .ui {
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	-o-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 
 	background: #E0E0E0;
 	border: 1px solid #555555 !important;
@@ -679,48 +690,186 @@ form input.submit:hover {
 #tablepager img {
 	cursor: pointer;
 }
+
 #tablepager {
-	margin:20px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
 	position: relative !important;
 	top: 0px !important;
 }
 
 /* Icons */
-.iconcategory { background: transparent url('scabbia/blackmore/images/category.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconcategoryadd { background: transparent url('scabbia/blackmore/images/category_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconcategoryedit { background: transparent url('scabbia/blackmore/images/category_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconcategorydelete { background: transparent url('scabbia/blackmore/images/category_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategory {
+	background: transparent url('scabbia/blackmore/images/category.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconpost { background: transparent url('scabbia/blackmore/images/post.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpostadd { background: transparent url('scabbia/blackmore/images/post_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpostedit { background: transparent url('scabbia/blackmore/images/post_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpostdelete { background: transparent url('scabbia/blackmore/images/post_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategoryadd {
+	background: transparent url('scabbia/blackmore/images/category_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconpage { background: transparent url('scabbia/blackmore/images/page.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpageadd { background: transparent url('scabbia/blackmore/images/page_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpageedit { background: transparent url('scabbia/blackmore/images/page_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconpagedelete { background: transparent url('scabbia/blackmore/images/page_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategoryedit {
+	background: transparent url('scabbia/blackmore/images/category_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconlink { background: transparent url('scabbia/blackmore/images/link.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconlinkadd { background: transparent url('scabbia/blackmore/images/link_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconlinkedit { background: transparent url('scabbia/blackmore/images/link_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconlinkdelete { background: transparent url('scabbia/blackmore/images/link_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconcategorydelete {
+	background: transparent url('scabbia/blackmore/images/category_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconfile { background: transparent url('scabbia/blackmore/images/file.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconfileadd { background: transparent url('scabbia/blackmore/images/file_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconfileedit { background: transparent url('scabbia/blackmore/images/file_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconfiledelete { background: transparent url('scabbia/blackmore/images/file_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpost {
+	background: transparent url('scabbia/blackmore/images/post.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconuser { background: transparent url('scabbia/blackmore/images/user.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconuseradd { background: transparent url('scabbia/blackmore/images/user_add.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconuseredit { background: transparent url('scabbia/blackmore/images/user_edit.png') 0px 2px no-repeat; padding-left: 20px; }
-.iconuserdelete { background: transparent url('scabbia/blackmore/images/user_delete.png') 0px 2px no-repeat; padding-left: 20px; }
+.iconpostadd {
+	background: transparent url('scabbia/blackmore/images/post_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconxdashboard { background: transparent url('scabbia/blackmore/images/iconxdashboard.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
-.iconxcategories { background: transparent url('scabbia/blackmore/images/iconxcategories.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
-.iconxposts { background: transparent url('scabbia/blackmore/images/iconxposts.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
-.iconxpages { background: transparent url('scabbia/blackmore/images/iconxpages.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
-.iconxlinks { background: transparent url('scabbia/blackmore/images/iconxlinks.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
-.iconxfiles { background: transparent url('scabbia/blackmore/images/iconxfiles.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconpostedit {
+	background: transparent url('scabbia/blackmore/images/post_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
 
-.iconxcontent { background: transparent url('scabbia/blackmore/images/iconxcontent.png') 0px 0px no-repeat; padding: 6px 0px 0px 40px; height: 32px; border-bottom: 1px solid #E0E0E0; margin-bottom: 20px; }
+.iconpostdelete {
+	background: transparent url('scabbia/blackmore/images/post_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconpage {
+	background: transparent url('scabbia/blackmore/images/page.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconpageadd {
+	background: transparent url('scabbia/blackmore/images/page_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconpageedit {
+	background: transparent url('scabbia/blackmore/images/page_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconpagedelete {
+	background: transparent url('scabbia/blackmore/images/page_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconlink {
+	background: transparent url('scabbia/blackmore/images/link.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconlinkadd {
+	background: transparent url('scabbia/blackmore/images/link_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconlinkedit {
+	background: transparent url('scabbia/blackmore/images/link_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconlinkdelete {
+	background: transparent url('scabbia/blackmore/images/link_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconfile {
+	background: transparent url('scabbia/blackmore/images/file.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconfileadd {
+	background: transparent url('scabbia/blackmore/images/file_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconfileedit {
+	background: transparent url('scabbia/blackmore/images/file_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconfiledelete {
+	background: transparent url('scabbia/blackmore/images/file_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconuser {
+	background: transparent url('scabbia/blackmore/images/user.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconuseradd {
+	background: transparent url('scabbia/blackmore/images/user_add.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconuseredit {
+	background: transparent url('scabbia/blackmore/images/user_edit.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconuserdelete {
+	background: transparent url('scabbia/blackmore/images/user_delete.png') 0px 2px no-repeat;
+	padding-left: 20px;
+}
+
+.iconxdashboard {
+	background: transparent url('scabbia/blackmore/images/iconxdashboard.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxcategories {
+	background: transparent url('scabbia/blackmore/images/iconxcategories.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxposts {
+	background: transparent url('scabbia/blackmore/images/iconxposts.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxpages {
+	background: transparent url('scabbia/blackmore/images/iconxpages.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxlinks {
+	background: transparent url('scabbia/blackmore/images/iconxlinks.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxfiles {
+	background: transparent url('scabbia/blackmore/images/iconxfiles.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}
+
+.iconxcontent {
+	background: transparent url('scabbia/blackmore/images/iconxcontent.png') 0px 0px no-repeat;
+	padding: 6px 0px 0px 40px;
+	height: 32px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 20px;
+}

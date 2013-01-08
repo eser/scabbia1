@@ -78,7 +78,7 @@
 					}
 				}
 			}
-			
+
 			return (count(self::$summary) == 0);
 		}
 
@@ -137,7 +137,7 @@
 		 */
 		public static function getErrorMessagesByFields() {
 			$tMessages = array();
-			
+
 			foreach(self::$summary as $tKey => $tField) {
 				foreach($tField as $tRule) {
 					if(is_null($tRule->errorMessage)) {
@@ -151,10 +151,10 @@
 					$tMessages[$tField][] = $tRule->errorMessage;
 				}
 			}
-			
+
 			return $tMessages;
 		}
-		
+
 		/**
 		 * @ignore
 		 */
@@ -167,4 +167,4 @@
 		}
 	}
 
-?>
+	?>

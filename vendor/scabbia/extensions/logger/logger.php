@@ -92,12 +92,12 @@
 
 			$tIgnoreError = false;
 			$tParms = array(
-						   'type' => &$tType,
-						   'message' => $uMessage,
-						   'file' => $uFile,
-						   'line' => $uLine,
-						   'ignore' => &$tIgnoreError
-					  );
+				'type' => &$tType,
+				'message' => $uMessage,
+				'file' => $uFile,
+				'line' => $uLine,
+				'ignore' => &$tIgnoreError
+			);
 			events::invoke('reportError', $tParms);
 
 			if(!$tIgnoreError) {
@@ -194,4 +194,4 @@
 		}
 	}
 
-?>
+	?>

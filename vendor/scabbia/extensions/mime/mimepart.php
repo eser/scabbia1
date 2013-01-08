@@ -58,7 +58,7 @@
 			$tBody = $this->compileBody();
 
 			if($uHeaders) {
-				$tHeaders = &$this->headers;
+				$tHeaders = & $this->headers;
 				if(!array_key_exists('Content-Id', $tHeaders)) {
 					$tHeaders['Content-Id'] = '<' . string::generate(15) . '>';
 				}
@@ -101,4 +101,4 @@
 		}
 	}
 
-?>
+	?>

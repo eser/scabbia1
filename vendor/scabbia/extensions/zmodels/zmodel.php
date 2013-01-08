@@ -67,10 +67,10 @@
 		 */
 		public function insert() {
 			return $this->db->createQuery()
-				->setTable($this->entityName)
-				->setFields($this->fields)
-				->insert()
-				->execute();
+					->setTable($this->entityName)
+					->setFields($this->fields)
+					->insert()
+					->execute();
 		}
 
 		/**
@@ -78,12 +78,12 @@
 		 */
 		public function update() {
 			return $this->db->createQuery()
-				->setTable($this->entityName)
-				->setFields($this->fields)
-				// ->setWhere()
-				->setLimit(1)
-				->update()
-				->execute();
+					->setTable($this->entityName)
+					->setFields($this->fields)
+			// ->setWhere()
+					->setLimit(1)
+					->update()
+					->execute();
 		}
 
 		/**
@@ -91,11 +91,11 @@
 		 */
 		public function delete() {
 			return $this->db->createQuery()
-				->setTable($this->entityName)
-				// ->setWhere()
-				->setLimit(1)
-				->delete()
-				->execute();
+					->setTable($this->entityName)
+			// ->setWhere()
+					->setLimit(1)
+					->delete()
+					->execute();
 		}
 
 		/**
@@ -121,4 +121,4 @@
 		}
 	}
 
-?>
+	?>

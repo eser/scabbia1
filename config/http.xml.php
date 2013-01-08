@@ -5,7 +5,7 @@
 		<autorun>1</autorun>
 		<link>{@siteroot}/{@path}</link>
 
-		<!--
+<!--
 		<request>
 			<parsingType>2</parsingType>
 			<getParameters>?&amp;,</getParameters>
@@ -22,7 +22,7 @@
 				<forward>firms/$3</forward>
 			</rewrite>
 		</rewriteList>
-		-->
+-->
 
 		<userAgents>
 			<autoCheck>0</autoCheck>
@@ -176,7 +176,7 @@
 		</userAgents>
 	</http>
 
-	<!--
+<!--
 	<session>
 		<cookie>
 			<name>sessid</name>
@@ -211,5 +211,5 @@
 			</ipFilterList>
 		</ipFilter>
 	</access>
-	-->
+-->
 </scabbia>
