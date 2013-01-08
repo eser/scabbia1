@@ -394,8 +394,8 @@
 		/**
 		 * Searches subject for a match to the regular expression given in pattern.
 		 *
-		 * @param string $uPattern
-		 * @param string $uSubject
+		 * @param string $uPattern the pattern to search for, as a string
+		 * @param string $uSubject the input string
 		 *
 		 * @return array
 		 */
