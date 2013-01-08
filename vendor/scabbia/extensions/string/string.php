@@ -234,7 +234,7 @@
 			$tVariable = $uVariable;
 			$tType = gettype($tVariable);
 			$tOut = '';
-			static $tTabs = '';
+			static $sTabs = '';
 
 			switch($tType) {
 			case 'boolean':
@@ -260,14 +260,14 @@
 				if($tCount > 0) {
 					$tOut .= ' {' . PHP_EOL;
 
-					$tTabs .= self::$tab;
+					$sTabs .= self::$tab;
 					foreach($tVariable as $tKey => $tVal) {
-						$tOut .= $tTabs . '[' . $tKey . '] = ';
+						$tOut .= $sTabs . '[' . $tKey . '] = ';
 						$tOut .= self::vardump($tVal, false);
 					}
-					$tTabs = substr($tTabs, 0, -1);
+					$sTabs = substr($sTabs, 0, -1);
 
-					$tOut .= $tTabs . '}';
+					$tOut .= $sTabs . '}';
 				}
 
 				$tOut .= PHP_EOL;
@@ -306,13 +306,13 @@
 		public static function generatePassword($uLength) {
 			srand(microtime(true) * 1000000);
 
-			static $aVowels = array('a', 'e', 'i', 'o', 'u');
-			static $aCons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr', 'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
+			static $sVowels = array('a', 'e', 'i', 'o', 'u');
+			static $sCons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr', 'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
 
-			$tConsLen = count($aCons) - 1;
-			$tVowelsLen = count($aVowels) - 1;
+			$tConsLen = count($sCons) - 1;
+			$tVowelsLen = count($sVowels) - 1;
 			for($tOutput = ''; strlen($tOutput) < $uLength;) {
-				$tOutput .= $aCons[rand(0, $tConsLen)] . $aVowels[rand(0, $tVowelsLen)];
+				$tOutput .= $sCons[rand(0, $tConsLen)] . $sVowels[rand(0, $tVowelsLen)];
 			}
 
 			// prevent overflow of size
@@ -564,24 +564,24 @@
 		 * @ignore
 		 */
 		public static function sizeCalc($uSize, $uPrecision = 0) {
-			static $tSize = ' KMGT';
+			static $sSize = ' KMGT';
 			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++) {
 				;
 			}
 
-			return round($uSize, $uPrecision) . ' ' . $tSize[$tCount] . 'B';
+			return round($uSize, $uPrecision) . ' ' . $sSize[$tCount] . 'B';
 		}
 
 		/**
 		 * @ignore
 		 */
 		public static function quantityCalc($uSize, $uPrecision = 0) {
-			static $tSize = ' KMGT';
+			static $sSize = ' KMGT';
 			for($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++) {
 				;
 			}
 
-			return round($uSize, $uPrecision) . $tSize[$tCount];
+			return round($uSize, $uPrecision) . $sSize[$tCount];
 		}
 
 		/**

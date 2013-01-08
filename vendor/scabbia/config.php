@@ -143,7 +143,7 @@
 		 * @ignore
 		 */
 		private static function processChildrenRecursive(&$uArray, $uNode) {
-			static $uNodes = array();
+			static $sNodes = array();
 			$tNodeName = $uNode->getName();
 
 			if($tNodeName == 'scope') {
@@ -155,8 +155,8 @@
 			}
 
 			if(!isset($tScope)) {
-				array_push($uNodes, $tNodeName);
-				$tNodePath = '/' . implode('/', array_slice($uNodes, 1));
+				array_push($sNodes, $tNodeName);
+				$tNodePath = '/' . implode('/', array_slice($sNodes, 1));
 
 				if(substr($tNodeName, -4) == 'List') {
 					$tListName = substr($tNodeName, 0, -4);
@@ -184,7 +184,7 @@
 			}
 
 			if(!isset($tScope)) {
-				array_pop($uNodes);
+				array_pop($sNodes);
 			}
 		}
 

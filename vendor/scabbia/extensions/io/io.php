@@ -365,20 +365,20 @@
 		 * @ignore
 		 */
 		public static function sanitize($uFilename, $uIncludeAll = false, $uSlug = false) {
-			static $aReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
+			static $sReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
 
 			if($uIncludeAll) {
-				$uFilename = strtr($uFilename, $aReplaceChars);
+				$uFilename = strtr($uFilename, $sReplaceChars);
 
 				return $uFilename;
 			}
 
 			$tPathInfo = pathinfo($uFilename);
 			if($uSlug) {
-				$tPathInfo['filename'] = string::slug(strtr($tPathInfo['filename'], $aReplaceChars));
+				$tPathInfo['filename'] = string::slug(strtr($tPathInfo['filename'], $sReplaceChars));
 			}
 			else {
-				$tPathInfo['filename'] = strtr($tPathInfo['filename'], $aReplaceChars);
+				$tPathInfo['filename'] = strtr($tPathInfo['filename'], $sReplaceChars);
 			}
 
 			$uFilename = '';

@@ -84,7 +84,7 @@
 
 			// replace missing environment variables
 /*
-			static $aEnvNames = array(
+			static $sEnvNames = array(
 				'HTTP_ACCEPT',
 				'HTTP_ACCEPT_LANGUAGE',
 				'HTTP_HOST',
@@ -101,7 +101,7 @@
 				'HTTPS'
 			);
 
-			foreach($aEnvNames as $tEnv) {
+			foreach($sEnvNames as $tEnv) {
 				if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
 					continue;
 				}

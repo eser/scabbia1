@@ -392,6 +392,33 @@
 		}
 
 		/**
+		 * Searches subject for a match to the regular expression given in pattern.
+		 *
+		 * @param string $uPattern
+		 * @param string $uSubject
+		 *
+		 * @return array
+		 */
+		public static function pregMatch($uPattern, $uSubject) {
+			static $sRegexpPresets = array(
+				'(:num)'	=> '([0-9]+)',
+				'(:num?)'	=> '([0-9]*)',
+				'(:alnum)'	=> '([a-zA-Z0-9]+)',
+				'(:alnum?)'	=> '([a-zA-Z0-9]*)',
+				'(:any)'	=> '([a-zA-Z0-9\.\-_%=]+)',
+				'(:any?)'	=> '([a-zA-Z0-9\.\-_%=]*)',
+				'(:all)'	=> '(.+)',
+				'(:all?)'	=> '(.*)'
+			);
+
+			$uPattern = str_replace(array_keys($sRegexpPresets), array_values($sRegexpPresets), $uPattern);
+
+			preg_match($uPattern, $uSubject, $tResult);
+
+			return $tResult;
+		}
+
+		/**
 		 * Returns a php file source to view.
 		 *
 		 * @param $uInput string path of source file
