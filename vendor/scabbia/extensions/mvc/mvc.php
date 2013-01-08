@@ -190,7 +190,7 @@
 		 * @ignore
 		 */
 		public static function currentUrl() {
-			$tCurrent = $this->current();
+			$tCurrent = self::current();
 			$tControllerData = self::getControllerData($tCurrent->route['controller']);
 
 			return string::format($tControllerData['link'], array(
