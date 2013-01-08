@@ -195,7 +195,8 @@
 					continue;
 				}
 
-				if(preg_match('|^' . ltrim($tCallback[0], '/') . '$|', self::$queryString, $tMatches)) {
+				$tMatches = framework::pregMatch(ltrim($tCallback[0], '/'), self::$queryString);
+				if(count($tMatches) > 0) {
 					$tCallbackToCall = $tCallback[1];
 					break;
 				}
@@ -239,8 +240,8 @@
 				return false;
 			}
 
-			$tReturn = preg_replace('|^' . $uMatch . '$|', $uForward, self::$queryString, -1, $tCount);
-			if($tCount > 0) {
+			$tReturn = framework::pregReplace($uMatch, $uForward, self::$queryString);
+			if($tReturn !== false) {
 				self::$queryString = $tReturn;
 
 				return true;

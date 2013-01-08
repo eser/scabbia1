@@ -57,6 +57,20 @@
 		 * @ignore
 		 */
 		public static $error = null;
+		/**
+		 * @ignore
+		 */
+		public static $regexpPresets = array(
+			'(:num)' => '([0-9]+)',
+			'(:num?)' => '([0-9]*)',
+			'(:alnum)' => '([a-zA-Z0-9]+)',
+			'(:alnum?)' => '([a-zA-Z0-9]*)',
+			'(:any)' => '([a-zA-Z0-9\.\-_%=]+)',
+			'(:any?)' => '([a-zA-Z0-9\.\-_%=]*)',
+			'(:all)' => '(.+)',
+			'(:all?)' => '(.*)'
+		);
+
 
 		/**
 		 * @ignore
@@ -402,27 +416,39 @@
 		 * @return array
 		 */
 		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
-			static $sRegexpPresets = array(
-				'(:num)' => '([0-9]+)',
-				'(:num?)' => '([0-9]*)',
-				'(:alnum)' => '([a-zA-Z0-9]+)',
-				'(:alnum?)' => '([a-zA-Z0-9]*)',
-				'(:any)' => '([a-zA-Z0-9\.\-_%=]+)',
-				'(:any?)' => '([a-zA-Z0-9\.\-_%=]*)',
-				'(:all)' => '(.+)',
-				'(:all?)' => '(.*)'
-			);
-
-			preg_match(
-				(strpos($uModifiers, '^') === 0) ? // at first position
-						'#^' . strtr($uPattern, $sRegexpPresets) . '$#' . substr($uModifiers, 1) :
-						'#' . strtr($uPattern, $sRegexpPresets) . '#' . $uModifiers
-				,
-				$uSubject,
-				$tResult
-			);
+			if(strpos($uModifiers, '^') === 0) {
+				preg_match('#^' . strtr($uPattern, self::$regexpPresets) . '$#' . substr($uModifiers, 1), $uSubject, $tResult);
+			}
+			else {
+				preg_match('#' . strtr($uPattern, self::$regexpPresets) . '#' . $uModifiers, $uSubject, $tResult);
+			}
 
 			return $tResult;
+		}
+
+		/**
+		 * Replaces subject with the matches of the regular expression given in pattern.
+		 *
+		 * @param string $uPattern the pattern to search for, as a string
+		 * @param string $uReplacement the replacement string
+		 * @param string $uSubject the string or an array with strings to replace
+		 * @param string $uModifiers the PCRE modifiers
+		 *
+		 * @return array
+		 */
+		public static function pregReplace($uPattern, $uReplacement, $uSubject, $uModifiers = '^') {
+			if(strpos($uModifiers, '^') === 0) {
+				$tResult = preg_replace('#^' . strtr($uPattern, self::$regexpPresets) . '$#' . substr($uModifiers, 1), $uReplacement, $uSubject, -1, $tCount);
+			}
+			else {
+				$tResult = preg_replace('#' . strtr($uPattern, self::$regexpPresets) . '#' . $uModifiers, $uReplacement, $uSubject, -1, $tCount);
+			}
+
+			if($tCount > 0) {
+				return $tResult;
+			}
+
+			return false;
 		}
 
 		/**
