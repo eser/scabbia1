@@ -92,9 +92,9 @@
 			}
 
 			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
-			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(self::$viewEngines[$tViewExtension])) {
-				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
+			$tViewFileInfo = pathinfo($tViewFilePath);
+			if(!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
+				$tViewFileInfo['extension'] = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
 			$tExtra = array(
@@ -115,14 +115,14 @@
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => hash('adler32', $tViewFilePath),
+				'compiledPath' => framework::writablePath('cache/' . $tViewFileInfo['extension'] . '/'),
+				'compiledFile' => hash('adler32', $tViewFilePath) . '-' . $tViewFileInfo['basename'],
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			);
 
 			call_user_func(
-				views::$viewEngines[$tViewExtension] . '::renderview',
+				views::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
 				$tViewArray
 			);
 		}
@@ -136,9 +136,9 @@
 			}
 
 			$tViewFilePath = framework::translatePath($uView);
-			$tViewExtension = pathinfo($tViewFilePath, PATHINFO_EXTENSION);
-			if(!isset(views::$viewEngines[$tViewExtension])) {
-				$tViewExtension = config::get('/mvc/view/defaultViewExtension', 'php');
+			$tViewFileInfo = pathinfo($tViewFilePath);
+			if(!isset(views::$viewEngines[$tViewFileInfo['extension']])) {
+				$tViewFileInfo['extension'] = config::get('/mvc/view/defaultViewExtension', 'php');
 			}
 
 			$tExtra = array(
@@ -159,14 +159,14 @@
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewExtension . '/'),
-				'compiledFile' => hash('adler32', $uView),
+				'compiledPath' => framework::writablePath('cache/' . $tViewFileInfo['extension'] . '/'),
+				'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
 				'model' => &$uModel,
 				'extra' => &$tExtra
 			);
 
 			call_user_func(
-				views::$viewEngines[$tViewExtension] . '::renderview',
+				views::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
 				$tViewArray
 			);
 		}

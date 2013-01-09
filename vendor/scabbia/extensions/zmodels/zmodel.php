@@ -108,12 +108,14 @@
 	updatedate DATETIME NOT NULL,
 	deletedate DATETIME,';
 
-			foreach($this->entityDefinition['fieldList'] as $tField) {
-				$tSql .= '
+			if(isset($this->entityDefinition['fieldList'])) {
+				foreach($this->entityDefinition['fieldList'] as $tField) {
+					$tSql .= '
 	' . $tField['name'] . ' ' . strtoupper($tField['type']) . ' NOT NULL,';
+				}
 			}
 
-			$tSql .= '
+				$tSql .= '
 	PRIMARY KEY(id)
 )';
 

@@ -1,4 +1,8 @@
 <?php
+	use Scabbia\blackmore;
+	use Scabbia\mvc;
+?>
+<?php
 	$tModule = & blackmore::$modules[$model];
 ?>
 <div class="menuDiv">

@@ -13,7 +13,7 @@
 			$uParms['modules']['index']['submenus'] = true;
 
 			$uParms['modules']['index']['actions'][] = array(
-				'callback' => 'blackmoreZmodels::generateSql',
+				'callback' => 'Scabbia\\blackmoreZmodels::generateSql',
 				'menutitle' => 'Generate Zmodel SQL',
 				'action' => 'generateSql'
 			);
@@ -21,24 +21,24 @@
 			foreach(zmodels::$zmodels as $tKey => $tZmodel) {
 				$uParms['modules'][$tKey] = array(
 					'title' => $tZmodel['title'],
-					'callback' => 'blackmoreZmodels::all',
+					'callback' => 'Scabbia\\blackmoreZmodels::all',
 					'submenus' => true,
 					'actions' => array(
 						array(
-							'callback' => 'blackmoreZmodels::add',
+							'callback' => 'Scabbia\\blackmoreZmodels::add',
 							'menutitle' => 'Add ' . $tZmodel['singularTitle'],
 							'action' => 'add'
 						),
 						array(
-							'callback' => 'blackmoreZmodels::edit',
+							'callback' => 'Scabbia\\blackmoreZmodels::edit',
 							'action' => 'edit'
 						),
 						array(
-							'callback' => 'blackmoreZmodels::remove',
+							'callback' => 'Scabbia\\blackmoreZmodels::remove',
 							'action' => 'remove'
 						),
 						array(
-							'callback' => 'blackmoreZmodels::all',
+							'callback' => 'Scabbia\\blackmoreZmodels::all',
 							'menutitle' => 'All ' . $tZmodel['title'],
 							'action' => 'all'
 						)
@@ -61,7 +61,7 @@
 			auth::checkRedirect('admin');
 
 			$tZmodel = new zmodel('categories');
-			$tSql = $tZmodel->generateCreateSql();
+			$tSql = $tZmodel->ddlCreateSql();
 
 			views::viewFile('{core}views/blackmore/zmodels/sql.php', array(
 			                                                              'sql' => $tSql

@@ -29,6 +29,10 @@
 		/**
 		 * @ignore
 		 */
+		public static $controllerList = null;
+		/**
+		 * @ignore
+		 */
 		public static $defaultController;
 		/**
 		 * @ignore
@@ -85,6 +89,24 @@
 		 * @ignore
 		 */
 		public static function generate($uPath) {
+			if(is_null(self::$controllerList)) {
+				self::$controllerList = array();
+
+				foreach(get_declared_classes() as $tClass) {
+					if(!is_subclass_of($tClass, 'Scabbia\\controller')) {
+						continue;
+					}
+
+					$tPos = strpos($tClass, '\\');
+					if($tPos !== false) {
+						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
+						continue;
+					}
+
+					self::$controllerList[$tClass] = $tClass;
+				}
+			}
+
 			$tRoute = self::findRoute($uPath);
 			$tActualController = $tRoute['controller'];
 			$tActualAction = $tRoute['action'];
@@ -106,12 +128,12 @@
 				}
 
 				//! todo ensure autoload behaviour.
-				if(!is_subclass_of($tActualController, 'Scabbia\\controller')) {
+				if(!isset(self::$controllerList[$tActualController])) {
 					$tReturn = false;
 					break;
 				}
 
-				$tController = new $tActualController ();
+				$tController = new self::$controllerList[$tActualController] ();
 				$tController->route = $tRoute;
 				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
