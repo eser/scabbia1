@@ -28,8 +28,10 @@
 				self::loadFile($tConfig, $tFile);
 			}
 
-			foreach(framework::glob(framework::$applicationPath . 'config/', null, GLOB_RECURSIVE | GLOB_FILES) as $tFile) {
-				self::loadFile($tConfig, $tFile);
+			if(!is_null(framework::$applicationPath)) {
+				foreach(framework::glob(framework::$applicationPath . 'config/', null, GLOB_RECURSIVE | GLOB_FILES) as $tFile) {
+					self::loadFile($tConfig, $tFile);
+				}
 			}
 
 			return $tConfig;

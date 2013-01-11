@@ -200,6 +200,11 @@
 					</part>
 					<part>
 						<type>file</type>
+						<class>errorpages</class>
+						<path>{core}resources/errorpages/errorpages.css</path>
+					</part>
+					<part>
+						<type>file</type>
 						<class>jqueryui</class>
 						<path>{core}resources/jquery/jquery.ui.core.css</path>
 					</part>

@@ -1,0 +1,79 @@
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+AddCharset utf-8 .css .js
+Options +FollowSymLinks -Indexes
+
+<IfModule mod_php5.c>
+	php_flag magic_quotes_gpc                 off
+	php_flag magic_quotes_sybase              off
+	php_flag register_globals                 off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+
+	#AllowOverride All
+	#RewriteBase /~eser/kibristayim/
+
+	# SEO optimization for sites.
+	RewriteCond %{HTTPS} off
+	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+	RewriteCond %{HTTPS} on
+	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+	# Keep people out of framework directory
+	RedirectMatch 403 ^/(application).*$
+
+	# Keep people out of scc data
+	RewriteRule (^\.|/\.|^web.config|/web.config) - [NC,F]
+
+	# Send request via index.php (again, not if its a real file or folder)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	# RewriteCond %{URL} !^/favicon.ico$
+	RewriteRule ^(.*)$ index.php?$1 [QSA,L,PT,NE]
+</IfModule>
+Header unset ETag
+FileETag None
+
+<IfModule pagespeed_module>
+	ModPagespeed on
+</IfModule>
+
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml
+</IfModule>
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 5 seconds"
+	ExpiresByType image/x-icon "access plus 2592000 seconds"
+	ExpiresByType image/jpeg "access plus 2592000 seconds"
+	ExpiresByType image/png "access plus 2592000 seconds"
+	ExpiresByType image/gif "access plus 2592000 seconds"
+	ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+	ExpiresByType text/css "access plus 604800 seconds"
+	ExpiresByType text/javascript "access plus 216000 seconds"
+	ExpiresByType application/javascript "access plus 216000 seconds"
+	ExpiresByType application/x-javascript "access plus 216000 seconds"
+	ExpiresByType text/html "access plus 600 seconds"
+	ExpiresByType application/xhtml+xml "access plus 600 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <filesMatch "\.(ico|jpe?g|png|gif|swf)$">
+        Header set Cache-Control "public"
+    </filesMatch>
+    <filesMatch "\.(css)$">
+        Header set Cache-Control "public"
+    </filesMatch>
+    <filesMatch "\.(js)$">
+        Header set Cache-Control "private"
+    </filesMatch>
+    <filesMatch "\.(x?html?|php)$">
+        Header set Cache-Control "private, must-revalidate"
+    </filesMatch>
+</IfModule>

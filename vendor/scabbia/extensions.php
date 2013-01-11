@@ -26,7 +26,9 @@
 
 			$tFiles = array();
 			framework::glob(QPATH_VENDOR . 'scabbia/extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
-			framework::glob(framework::$applicationPath . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
+			if(!is_null(framework::$applicationPath)) {
+				framework::glob(framework::$applicationPath . 'extensions/', null, GLOB_DIRECTORIES | GLOB_RECURSIVE, '', $tFiles);
+			}
 
 			foreach($tFiles as $tFile) {
 				if(!is_file($tFile . 'extension.xml.php')) {

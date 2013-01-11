@@ -26,6 +26,10 @@
 		 */
 		public static $development = 0;
 		/**
+		 * Indicates framework is running in readonly mode or not.
+		 */
+		public static $readonly = false;
+		/**
 		 * Stores active module information.
 		 */
 		public static $module = null;
@@ -98,10 +102,6 @@
 				}
 			}
 
-			// application path
-			if(is_null(self::$applicationPath)) {
-				self::$applicationPath = QPATH_BASE . 'application/';
-			}
 			self::$milestones[] = array('endpoints', microtime(true));
 
 			if(!COMPILED) {

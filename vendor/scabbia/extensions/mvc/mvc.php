@@ -237,7 +237,7 @@
 
 			$tRoute = array();
 
-			if(array_key_exists($tControllerUrlKey, $uArgs['_segments']) && strlen($uArgs['_segments'][$tControllerUrlKey]) > 0) {
+			if(isset($uArgs['_segments']) && array_key_exists($tControllerUrlKey, $uArgs['_segments']) && strlen($uArgs['_segments'][$tControllerUrlKey]) > 0) {
 				$tRoute['controller'] = $uArgs['_segments'][$tControllerUrlKey];
 				unset($uArgs['_segments'][$tControllerUrlKey]);
 			}
@@ -250,17 +250,19 @@
 			$tActionKeys = explode(',', $tControllerData['actionUrlKeys']);
 			$tRoute['action'] = '';
 
-			foreach($tActionKeys as $tActionKey) {
-				if(!isset($uArgs['_segments'][$tActionKey])) {
-					break;
-				}
+			if(isset($uArgs['_segments'])) {
+				foreach($tActionKeys as $tActionKey) {
+					if(!isset($uArgs['_segments'][$tActionKey])) {
+						break;
+					}
 
-				if(strlen($tRoute['action']) > 0) {
-					$tRoute['action'] .= '/';
-				}
+					if(strlen($tRoute['action']) > 0) {
+						$tRoute['action'] .= '/';
+					}
 
-				$tRoute['action'] .= $uArgs['_segments'][$tActionKey];
-				unset($uArgs['_segments'][$tActionKey]);
+					$tRoute['action'] .= $uArgs['_segments'][$tActionKey];
+					unset($uArgs['_segments'][$tActionKey]);
+				}
 			}
 
 			if(strlen($tRoute['action']) == 0) {
@@ -269,12 +271,15 @@
 
 			$tRoute['parameters'] = '';
 			$tRoute['parametersArray'] = array();
-			foreach($uArgs['_segments'] as $tSegment) {
-				$tRoute['parameters'] .= '/' . $tSegment;
-				$tRoute['parametersArray'][] = $tSegment;
+			if(isset($uArgs['_segments'])) {
+				foreach($uArgs['_segments'] as $tSegment) {
+					$tRoute['parameters'] .= '/' . $tSegment;
+					$tRoute['parametersArray'][] = $tSegment;
+				}
+
+				unset($uArgs['_segments']);
 			}
 
-			unset($uArgs['_segments']);
 			unset($uArgs['_hash']);
 
 			$tRoute['queryString'] = http::buildQueryString($uArgs);

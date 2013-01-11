@@ -45,7 +45,7 @@
 				self::$directories = config::get('/resources/directoryList', array());
 			}
 
-			if(count($uParms['get']['_segments']) > 0) {
+			if(isset($uParms['get']['_segments']) && count($uParms['get']['_segments']) > 0) {
 				$tPath = implode('/', $uParms['get']['_segments']);
 
 				foreach(self::$directories as $tDirectory) {
