@@ -166,7 +166,7 @@
 				$this->_count = $this->_database->provider->itCount($this->_object);
 			}
 			catch(\Exception $ex) {
-				if(database::$errorHandling == database::ERROR_EXCEPTION) {
+				if($this->_database->errorHandling == database::ERROR_EXCEPTION) {
 					throw $ex;
 				}
 
@@ -275,7 +275,7 @@
 					$this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
 				}
 				catch(\Exception $ex) {
-					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+					if($this->_database->errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}
 

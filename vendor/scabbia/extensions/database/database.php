@@ -89,10 +89,6 @@
 		 * @ignore
 		 */
 		public static $default = null;
-		/**
-		 * @ignore
-		 */
-		public static $errorHandling = self::ERROR_NONE;
 
 		/**
 		 * @ignore

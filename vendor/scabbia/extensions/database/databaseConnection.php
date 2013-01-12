@@ -37,6 +37,10 @@
 		 * @ignore
 		 */
 		public $initCommand;
+		/**
+		 * @ignore
+		 */
+		public static $errorHandling = self::ERROR_NONE;
 
 		/**
 		 * @ignore
@@ -74,7 +78,7 @@
 					$this->provider->execute($this->initCommand);
 				}
 				catch(\Exception $ex) {
-					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+					if($this->errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}
 
@@ -136,7 +140,7 @@
 				$tReturn = $this->provider->execute($uQuery);
 			}
 			catch(\Exception $ex) {
-				if(database::$errorHandling == database::ERROR_EXCEPTION) {
+				if($this->errorHandling == database::ERROR_EXCEPTION) {
 					throw $ex;
 				}
 
@@ -271,7 +275,7 @@
 					$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
 				}
 				catch(\Exception $ex) {
-					if(database::$errorHandling == database::ERROR_EXCEPTION) {
+					if($this->errorHandling == database::ERROR_EXCEPTION) {
 						throw $ex;
 					}
 
