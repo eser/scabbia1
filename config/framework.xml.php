@@ -26,6 +26,7 @@
 		</scope>
 		<extension>cache</extension>
 		<scope mode="development">
+			<extension>datasources</extension>
 			<extension>database</extension>
 		</scope>
 		<extension>session</extension>
