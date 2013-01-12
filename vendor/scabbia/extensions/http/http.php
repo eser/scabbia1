@@ -63,10 +63,6 @@
 		 * @ignore
 		 */
 		public static $contentTypes = array();
-		/**
-		 * @ignore
-		 */
-		public static $callbacks = array();
 
 		/**
 		 * @ignore
@@ -166,69 +162,6 @@
 			$_GET = self::parseGet(self::$queryString);
 
 			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
-
-			events::register('run', 'Scabbia\\http::run');
-			events::register('output', 'Scabbia\\http::output');
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function run($uParms) {
-			$tAutoRun = intval(config::get('/http/autorun', '1'));
-			if(!$tAutoRun) {
-				return;
-			}
-
-			if(extensions::isLoaded('profiler')) {
-				profiler::start('http', array('action' => 'routing'));
-			}
-
-			$tParms = array(
-				'queryString' => &self::$queryString,
-				'get' => &$_GET
-			);
-
-			foreach(self::$callbacks as $tCallback) {
-				if(!is_null($tCallback[2]) && !in_array(self::$methodext, $tCallback[2])) {
-					continue;
-				}
-
-				$tMatches = framework::pregMatch(ltrim($tCallback[0], '/'), self::$queryString);
-				if(count($tMatches) > 0) {
-					$tCallbackToCall = $tCallback[1];
-					break;
-				}
-			}
-
-			if(isset($tCallbackToCall)) {
-				array_shift($tMatches);
-				call_user_func_array($tCallbackToCall, $tMatches);
-			}
-			else {
-				events::invoke('httpRoute', $tParms);
-			}
-
-			if(extensions::isLoaded('profiler')) {
-				profiler::stop();
-			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function addCallback($uMatch, $uCallback) {
-			if(!is_array($uMatch)) {
-				$uMatch = array($uMatch);
-			}
-
-			foreach($uMatch as $tMatch) {
-				$tParts = explode(' ', $tMatch, 2);
-
-				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
-
-				self::$callbacks[] = array($tParts[0], $uCallback, $tLimitMethods);
-			}
 		}
 
 		/**
@@ -408,17 +341,6 @@
 		 */
 		public static function baseUrl() {
 			return '//' . $_SERVER['HTTP_HOST'] . framework::$siteroot;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function secureUrl($uUrl) {
-//			if(http::$isSecure && substr($uUrl, 0, 7) == 'http://') {
-//				return 'https://' . substr($uUrl, 7);
-//			}
-
-			return $uUrl;
 		}
 
 		/**

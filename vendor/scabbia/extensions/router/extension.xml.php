@@ -2,7 +2,7 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<info>
-		<name>http</name>
+		<name>router</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
 		<phpversion>5.2.0</phpversion>
@@ -10,22 +10,19 @@
 		<fwversion>1.0</fwversion>
 		<fwdependList>
 			<fwdepend>string</fwdepend>
+			<fwdepend>http</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>
-		<include>http.php</include>
+		<include>router.php</include>
 	</includeList>
 	<classList>
-		<class>http</class>
+		<class>router</class>
 	</classList>
 	<eventList>
 		<event>
-			<name>load</name>
-			<callback>Scabbia\http::extensionLoad</callback>
-		</event>
-		<event>
-			<name>output</name>
-			<callback>Scabbia\http::output</callback>
+			<name>run</name>
+			<callback>Scabbia\router::run</callback>
 		</event>
 	</eventList>
 </scabbia>

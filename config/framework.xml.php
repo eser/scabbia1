@@ -17,6 +17,7 @@
 		<extension>mime</extension>
 		<extension>io</extension>
 		<extension>http</extension>
+		<extension>router</extension>
 		<extension>arrays</extension>
 		<extension>time</extension>
 		<extension>contracts</extension>
