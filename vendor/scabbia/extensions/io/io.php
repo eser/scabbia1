@@ -364,35 +364,30 @@
 		/**
 		 * @ignore
 		 */
-		public static function sanitize($uFilename, $uIncludeAll = false, $uSlug = false) {
-			static $sReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-');
-
-			if($uIncludeAll) {
-				$uFilename = strtr($uFilename, $sReplaceChars);
-
-				return $uFilename;
-			}
+		public static function sanitize($uFilename, $uRemoveAccent = false, $uRemoveSpaces = false) {
+			static $sReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-', '+' => '-');
 
 			$tPathInfo = pathinfo($uFilename);
-			if($uSlug) {
-				$tPathInfo['filename'] = string::slug(strtr($tPathInfo['filename'], $sReplaceChars));
-			}
-			else {
-				$tPathInfo['filename'] = strtr($tPathInfo['filename'], $sReplaceChars);
-			}
-
-			$uFilename = '';
-			if(isset($tPathInfo['dirname'])) {
-				$uFilename = $tPathInfo['dirname'] . '/';
-			}
-
-			$uFilename .= $tPathInfo['filename'];
+			$tFilename = strtr($tPathInfo['filename'], $sReplaceChars);
 
 			if(isset($tPathInfo['extension'])) {
-				$uFilename .= '.' . $tPathInfo['extension'];
+				$tFilename .= '.' . strtr($tPathInfo['extension'], $sReplaceChars);
 			}
 
-			return $uFilename;
+			$tFilename = string::removeInvisibles($tFilename);
+			if($uRemoveAccent) {
+				$tFilename = string::removeAccent($tFilename);
+			}
+
+			if($uRemoveSpaces) {
+				$tFilename = strtr($tFilename, ' ', '_');
+			}
+
+			if(isset($tPathInfo['dirname']) && $tPathInfo['dirname'] != '.') {
+				return rtrim(strtr($tPathInfo['dirname'], DIRECTORY_SEPARATOR, '/'), '/') . '/' . $tFilename;
+			}
+
+			return $tFilename;
 		}
 	}
 

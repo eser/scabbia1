@@ -96,9 +96,9 @@
 		/**
 		 * @ignore
 		 */
-		public static function filePath($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
+		public static function filePath($uFolder, $uFilename, $uAge = -1) {
 			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename, $uIncludeAll));
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
 
 			// age
 			if($uAge == -1) {
@@ -119,9 +119,9 @@
 		/**
 		 * @ignore
 		 */
-		public static function fileGet($uFolder, $uFilename, $uAge = -1, $uIncludeAll = false) {
+		public static function fileGet($uFolder, $uFilename, $uAge = -1) {
 			// path
-			$tPath = self::filePath($uFolder, $uFilename, $uAge, $uIncludeAll);
+			$tPath = self::filePath($uFolder, $uFilename, $uAge);
 
 			//! ambiguous return value
 			if(!$tPath[0]) {
@@ -136,7 +136,7 @@
 		 * @ignore
 		 */
 		public static function fileGetUrl($uKey, $uUrl, $uAge = -1) {
-			$tFile = self::filePath('url/', $uKey, $uAge, true);
+			$tFile = self::filePath('url/', $uKey, $uAge);
 
 			if(!$tFile[0]) {
 				$tContent = file_get_contents($uUrl);
