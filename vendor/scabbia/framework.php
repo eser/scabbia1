@@ -54,10 +54,6 @@
 		 */
 		public static $endpoint = null;
 		/**
-		 * Stores active ssl socket information.
-		 */
-		public static $issecure;
-		/**
 		 * @ignore
 		 */
 		public static $error = null;
@@ -92,7 +88,7 @@
 
 					if($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
 						self::$endpoint = $tEndpoint;
-						self::$issecure = ($tParsed['scheme'] == 'https');
+						// self::$issecure = ($tParsed['scheme'] == 'https');
 						break;
 					}
 				}

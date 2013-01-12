@@ -43,6 +43,9 @@
 			if($this->transferEncoding == 'base64') {
 				$tString .= chunk_split(base64_encode($this->content));
 			}
+			else if($this->transferEncoding == 'quoted-printable') {
+				$tString .= quoted_printable_encode($this->content);
+			}
 			else {
 				$tString .= $this->content;
 			}

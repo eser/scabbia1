@@ -30,10 +30,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $isSecure = false;
-		/**
-		 * @ignore
-		 */
 		public static $isAjax = false;
 		/**
 		 * @ignore
@@ -125,8 +121,11 @@
 			// request handling
 			// $tRestOfRequest = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']));
 
-			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || $_SERVER['HTTPS'] == 'on')) {
-				self::$isSecure = true;
+			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || strcasecmp($_SERVER['HTTPS'], 'on') == 0)) {
+				$_SERVER['HTTPS'] = 'on';
+			}
+			else {
+				$_SERVER['HTTPS'] = 'off';
 			}
 
 			if(!isset($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') {
@@ -408,11 +407,7 @@
 		 * @ignore
 		 */
 		public static function baseUrl() {
-			if(http::$isSecure) {
-				return 'https://' . $_SERVER['HTTP_HOST'];
-			}
-
-			return 'http://' . $_SERVER['HTTP_HOST'] . framework::$siteroot;
+			return '//' . $_SERVER['HTTP_HOST'] . framework::$siteroot;
 		}
 
 		/**
