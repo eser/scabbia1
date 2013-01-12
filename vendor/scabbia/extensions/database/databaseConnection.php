@@ -8,27 +8,11 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class databaseConnection {
-		/**
-		 * @ignore
-		 */
-		public $id;
+	class databaseConnection extends datasource {
 		/**
 		 * @ignore
 		 */
 		public $default;
-		/**
-		 * @ignore
-		 */
-		public $provider;
-		/**
-		 * @ignore
-		 */
-		public $cache = array();
-		/**
-		 * @ignore
-		 */
-		public $stats = array('cache' => 0, 'query' => 0);
 		/**
 		 * @ignore
 		 */
@@ -40,18 +24,15 @@
 		/**
 		 * @ignore
 		 */
-		public static $errorHandling = self::ERROR_NONE;
+		public static $errorHandling = database::ERROR_NONE;
 
 		/**
 		 * @ignore
 		 */
 		public function __construct($uConfig) {
-			$this->id = $uConfig['id'];
+			parent::__construct($uConfig);
+
 			$this->default = isset($uConfig['default']);
-
-			$tProvider = 'Scabbia\\databaseProvider' . (isset($uConfig['provider']) ? ucfirst($uConfig['provider']) : 'Pdo');
-
-			$this->provider = new $tProvider ($uConfig);
 
 			if(isset($uConfig['initCommand'])) {
 				$this->initCommand = $uConfig['initCommand'];
@@ -62,14 +43,14 @@
 		 * @ignore
 		 */
 		public function __destruct() {
-			$this->close();
+			parent::__destruct();
 		}
 
 		/**
 		 * @ignore
 		 */
 		public function open() {
-			$this->provider->open();
+			parent::open();
 
 			if(strlen($this->initCommand) > 0) {
 				// $this->execute($this->initCommand); // occurs recursive loop
@@ -91,8 +72,7 @@
 		 * @ignore
 		 */
 		public function close() {
-			$this->provider->close();
-			$this->provider = null;
+			parent::close();
 		}
 
 		/**
@@ -245,9 +225,7 @@
 		 * @ignore
 		 */
 		public function serverInfo() {
-			$this->open();
-
-			return $this->provider->serverInfo();
+			return parent::serverInfo();
 		}
 
 		/**
@@ -257,7 +235,7 @@
 			$this->open();
 
 			$uProps = func_get_args();
-			$uDataset = database::$datasets[array_shift($uProps)];
+			$uDataset = datasets::get(array_shift($uProps));
 
 			if($uDataset->transaction) {
 				$this->beginTransaction();

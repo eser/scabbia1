@@ -10,6 +10,7 @@
 		<fwversion>1.0</fwversion>
 		<fwdependList>
 			<fwdepend>string</fwdepend>
+			<fwdepend>datasources</fwdepend>
 			<fwdepend>cache</fwdepend>
 		</fwdependList>
 	</info>
@@ -23,6 +24,7 @@
 			<include>databaseProviderPdo.php</include>
 		</scope>
 		<include>databaseProviderMysql.php</include>
+		<include>datasets.php</include>
 	</includeList>
 	<classList>
 		<class>database</class>
@@ -34,5 +36,12 @@
 			<class>databaseProviderPdo</class>
 		</scope>
 		<class>databaseProviderMysql</class>
+		<class>datasets</class>
 	</classList>
+	<eventList>
+		<event>
+			<name>load</name>
+			<callback>Scabbia\database::extensionLoad</callback>
+		</event>
+	</eventList>
 </scabbia>

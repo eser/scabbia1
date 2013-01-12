@@ -8,7 +8,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class datasource {
+	abstract class datasource {
 		/**
 		 * @ignore
 		 */
@@ -32,8 +32,7 @@
 		public function __construct($uConfig) {
 			$this->id = $uConfig['id'];
 
-			$tProvider = $uConfig['provider'];
-			$this->provider = new $tProvider ($uConfig);
+			$this->provider = new datasources::$types[$uConfig['type']]['provider'] ($uConfig);
 		}
 
 		/**

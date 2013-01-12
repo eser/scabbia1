@@ -17,9 +17,9 @@
 		/**
 		 * @ignore
 		 */
-		public function __construct($uDatabase = null) {
-			if(extensions::isLoaded('database')) {
-				$this->db = database::get($uDatabase);
+		public function __construct($uDatasource = null) {
+			if(extensions::isLoaded('datasources')) {
+				$this->db = datasources::get($uDatasource);
 			}
 		}
 	}

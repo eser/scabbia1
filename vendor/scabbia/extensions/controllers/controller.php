@@ -30,8 +30,8 @@
 		 * @ignore
 		 */
 		public function __construct() {
-			if(extensions::isLoaded('database')) {
-				$this->db = database::get(); // default database to member 'db'
+			if(extensions::isLoaded('datasources')) {
+				$this->db = datasources::get(); // default datasource to member 'db'
 			}
 		}
 
@@ -124,14 +124,14 @@
 		/**
 		 * @ignore
 		 */
-		public function loadDatabase($uDatabaseName, $uMemberName = null) {
+		public function loadDatasource($uDatasourceName, $uMemberName = null) {
 			$uArgs = func_get_args();
 
 			if(is_null($uMemberName)) {
-				$uMemberName = $uDatabaseName;
+				$uMemberName = $uDatasourceName;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::loadDatabase', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::loadDatasource', $uArgs);
 		}
 
 		/**

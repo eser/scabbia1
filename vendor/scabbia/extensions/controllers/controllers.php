@@ -27,24 +27,24 @@
 		/**
 		 * @ignore
 		 */
-		public static function loadDatabase($uDatabaseName) {
-			if(!extensions::isLoaded('database')) {
+		public static function loadDatasource($uDatasourceName) {
+			if(!extensions::isLoaded('datasources')) {
 				return false;
 			}
 
-			if(!isset(controllers::$models[$uDatabaseName])) {
-				controllers::$models[$uDatabaseName] = database::get($uDatabaseName);
+			if(!isset(controllers::$models[$uDatasourceName])) {
+				controllers::$models[$uDatasourceName] = datasources::get($uDatasourceName);
 			}
 
-			return controllers::$models[$uDatabaseName];
+			return controllers::$models[$uDatasourceName];
 		}
 
 		/**
 		 * @ignore
 		 */
-		public static function load($uModelClass, $uDatabase = null) {
+		public static function load($uModelClass, $uDatasource = null) {
 			if(!isset(controllers::$models[$uModelClass])) {
-				controllers::$models[$uModelClass] = new $uModelClass ($uDatabase);
+				controllers::$models[$uModelClass] = new $uModelClass ($uDatasource);
 			}
 
 			return controllers::$models[$uModelClass];

@@ -74,7 +74,7 @@
 				$this->database = $uDatabase;
 			}
 			else {
-				$this->database = database::get(); // default
+				$this->database = datasources::get(); // default
 			}
 
 			$this->clear();
@@ -84,7 +84,7 @@
 		 * @ignore
 		 */
 		public function setDatabaseName($uDatabaseName) {
-			$this->database = database::get($uDatabaseName);
+			$this->database = datasources::get($uDatabaseName);
 			$this->clear();
 		}
 
