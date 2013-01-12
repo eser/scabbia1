@@ -104,6 +104,10 @@
 
 			self::$milestones[] = array('endpoints', microtime(true));
 
+			if(!self::$readonly && is_null(self::$applicationPath)) {
+				self::$applicationPath = QPATH_BASE . '/application/';
+			}
+
 			if(!COMPILED) {
 				// load config
 				config::$default = config::load();
