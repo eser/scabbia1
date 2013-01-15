@@ -60,7 +60,7 @@
 
 			self::$engine->setForceReparse(false);
 			self::$engine->setTemplateRepository($uObject['templatePath']);
-			self::$engine->setPhpCodeDestination($uObject['compiledPath']);
+			self::$engine->setPhpCodeDestination(framework::writablePath('cache/phptal/'));
 			self::$engine->setOutputMode(PHPTAL::HTML5);
 			self::$engine->setEncoding('UTF-8');
 			self::$engine->setTemplate($uObject['templateFile']);

@@ -12,6 +12,7 @@
 			<fwdepend>string</fwdepend>
 			<fwdepend>http</fwdepend>
 			<fwdepend>resources</fwdepend>
+			<fwdepend>cache</fwdepend>
 		</fwdependList>
 	</info>
 	<includeList>

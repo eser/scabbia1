@@ -206,16 +206,19 @@
 		/**
 		 * @ignore
 		 */
-		public static function writablePath($uFile = '') {
+		public static function writablePath($uFile = '', $uCreateFolder = false) {
 			$tPathConcat = self::$applicationPath . 'writable/' . $uFile;
-			$tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
 
-			if(!is_dir($tPathDirectory)) {
-				if(PHP_SAFEMODE) {
-					throw new \Exception($tPathDirectory . ' does not exists.');
+			if($uCreateFolder) {
+				$tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
+
+				if(!is_dir($tPathDirectory)) {
+					if(self::$readonly || PHP_SAFEMODE) {
+						throw new \Exception($tPathDirectory . ' does not exists.');
+					}
+
+					mkdir($tPathDirectory, 0777, true);
 				}
-
-				mkdir($tPathDirectory, 0777, true);
 			}
 
 			return $tPathConcat;

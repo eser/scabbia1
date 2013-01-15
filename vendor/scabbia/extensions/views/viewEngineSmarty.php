@@ -38,7 +38,7 @@
 				self::$engine = new \Smarty();
 
 				self::$engine->setTemplateDir($uObject['templatePath']);
-				self::$engine->setCompileDir($uObject['compiledPath']);
+				self::$engine->setCompileDir(framework::writablePath('cache/smarty/'));
 
 				if(framework::$development >= 1) {
 					self::$engine->force_compile = true;

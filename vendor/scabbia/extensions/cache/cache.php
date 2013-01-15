@@ -98,7 +98,7 @@
 		 */
 		public static function filePath($uFolder, $uFilename, $uAge = -1) {
 			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename), true);
 
 			// age
 			if($uAge == -1) {
@@ -153,7 +153,7 @@
 		 */
 		public static function fileSet($uFolder, $uFilename, $uObject) {
 			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename));
+			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename), true);
 
 			// content
 			io::writeSerialize($tPath, $uObject, self::$keyphase);
@@ -165,7 +165,7 @@
 		 * @ignore
 		 */
 		public static function fileDestroy($uFolder, $uFilename) {
-			$tPath = framework::writablePath('cache/' . $uFolder);
+			$tPath = framework::writablePath('cache/' . $uFolder, true);
 			io::destroy($tPath . io::sanitize($uFilename));
 		}
 
@@ -174,7 +174,7 @@
 		 */
 		public static function fileGarbageCollect($uFolder, $uAge = -1) {
 			// path
-			$tPath = framework::writablePath('cache/' . $uFolder);
+			$tPath = framework::writablePath('cache/' . $uFolder, true);
 			$tDirectory = new \DirectoryIterator($tPath);
 
 			// age

@@ -43,7 +43,7 @@
 				self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
 				$tOptions = array(
-					'cache' => $uObject['compiledPath']
+					'cache' => framework::writablePath('cache/twig/')
 				);
 
 				if(framework::$development >= 1) {

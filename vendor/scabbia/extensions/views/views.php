@@ -10,7 +10,7 @@
 	 * @version 1.0.5
 	 *
 	 * @scabbia-fwversion 1.0
-	 * @scabbia-fwdepends string, http
+	 * @scabbia-fwdepends string, http, resources, cache
 	 * @scabbia-phpversion 5.2.0
 	 * @scabbia-phpdepends
 	 */
@@ -115,7 +115,6 @@
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewFileInfo['extension'] . '/'),
 				'compiledFile' => hash('adler32', $tViewFilePath) . '-' . $tViewFileInfo['basename'],
 				'model' => &$uModel,
 				'extra' => &$tExtra
@@ -159,7 +158,6 @@
 			$tViewArray = array(
 				'templatePath' => &$tTemplatePath,
 				'templateFile' => &$tViewFile,
-				'compiledPath' => framework::writablePath('cache/' . $tViewFileInfo['extension'] . '/'),
 				'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
 				'model' => &$uModel,
 				'extra' => &$tExtra

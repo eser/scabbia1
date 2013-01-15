@@ -186,11 +186,12 @@
 			$uParams['ip'] = $_SERVER['REMOTE_ADDR'];
 
 			$uParams['message'] = string::prefixLines($uParams['message'], '- ', PHP_EOL);
-
-			$tFilename = framework::writablePath('logs/' . string::format(self::$filename, $uParams));
 			$tContent = '+ ' . string::format(self::$line, $uParams);
 
-			file_put_contents($tFilename, $tContent, FILE_APPEND);
+			if(!framework::$readonly) {
+				$tFilename = framework::writablePath('logs/' . string::format(self::$filename, $uParams), true);
+				file_put_contents($tFilename, $tContent, FILE_APPEND);
+			}
 		}
 	}
 

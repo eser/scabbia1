@@ -32,7 +32,7 @@
 		 * @ignore
 		 */
 		public static function extensionLoad() {
-			self::$cachePath = framework::writablePath('cache/media/');
+			self::$cachePath = framework::writablePath('cache/media/', true);
 			self::$cacheAge = intval(config::get('/media/cacheAge', '120'));
 		}
 
