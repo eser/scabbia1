@@ -61,14 +61,14 @@
 		 * @ignore
 		 */
 		public static $regexpPresets = array(
-			':num:' => '[0-9]+',
-			':?num:' => '[0-9]*',
-			':alnum:' => '[a-zA-Z0-9]+',
-			':?alnum:' => '[a-zA-Z0-9]*',
-			':any:' => '[a-zA-Z0-9\.\-_%=]+',
-			':?any:' => '[a-zA-Z0-9\.\-_%=]*',
-			':all:' => '.+',
-			':?all:' => '.*'
+			'num' => '[0-9]+',
+			'?num' => '[0-9]*',
+			'alnum' => '[a-zA-Z0-9]+',
+			'?alnum' => '[a-zA-Z0-9]*',
+			'any' => '[a-zA-Z0-9\.\-_%=]+',
+			'?any' => '[a-zA-Z0-9\.\-_%=]*',
+			'all' => '.+',
+			'?all' => '.*'
 		);
 
 
@@ -416,11 +416,58 @@
 		 * @return array
 		 */
 		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
+			$tPattern = '';
+			$tBuffer = '';
+			$tQuoteChar = false;
+
+			for($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
+				$tChar = substr($uPattern, $tPos, 1);
+
+				if($tChar == '\\') {
+					$tPattern .= substr($uPattern, ++$tPos, 1);
+					continue;
+				}
+
+				if($tQuoteChar !== false) {
+					if($tQuoteChar == $tChar) {
+						switch($tQuoteChar) {
+						case '#':
+							$tPattern .= '?P<' . $tBuffer . '>';
+							break;
+						case ':':
+							$tPattern .= self::$regexpPresets[$tBuffer];
+							break;
+						}
+
+						$tQuoteChar = false;
+						$tBuffer = '';
+
+						continue;
+					}
+
+					$tBuffer .= $tChar;
+					continue;
+				}
+
+				if($tChar == '#' || $tChar == ':') {
+					$tQuoteChar = $tChar;
+					continue;
+				}
+
+				$tPattern .= $tChar;
+			}
+
+			if(strlen($tBuffer) > 0) {
+				$tPattern .= $tQuoteChar . $tBuffer;
+				// $tQuoteChar = false;
+				// $tBuffer = '';
+			}
+
 			if(strpos($uModifiers, '^') === 0) {
-				preg_match('#^' . strtr($uPattern, self::$regexpPresets) . '$#' . substr($uModifiers, 1), $uSubject, $tResult);
+				preg_match('#^' . $tPattern . '$#' . substr($uModifiers, 1), $uSubject, $tResult);
 			}
 			else {
-				preg_match('#' . strtr($uPattern, self::$regexpPresets) . '#' . $uModifiers, $uSubject, $tResult);
+				preg_match('#' . $tPattern . '#' . $uModifiers, $uSubject, $tResult);
 			}
 
 			return $tResult;
