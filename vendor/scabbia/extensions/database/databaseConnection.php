@@ -24,7 +24,7 @@
 		/**
 		 * @ignore
 		 */
-		public static $errorHandling = database::ERROR_NONE;
+		public $errorHandling = database::ERROR_NONE;
 
 		/**
 		 * @ignore
