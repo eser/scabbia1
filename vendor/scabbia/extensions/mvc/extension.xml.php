@@ -11,6 +11,7 @@
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>http</fwdepend>
+			<fwdepend>router</fwdepend>
 			<fwdepend>models</fwdepend>
 			<fwdepend>views</fwdepend>
 			<fwdepend>controllers</fwdepend>

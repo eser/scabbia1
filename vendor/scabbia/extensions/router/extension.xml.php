@@ -9,7 +9,6 @@
 		<phpdependList />
 		<fwversion>1.0</fwversion>
 		<fwdependList>
-			<fwdepend>string</fwdepend>
 			<fwdepend>http</fwdepend>
 		</fwdependList>
 	</info>
