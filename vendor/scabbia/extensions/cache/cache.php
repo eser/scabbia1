@@ -97,6 +97,10 @@
 		 * @ignore
 		 */
 		public static function filePath($uFolder, $uFilename, $uAge = -1) {
+			if(framework::$readonly) {
+				return array(false, null);
+			}
+
 			// path
 			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename), true);
 

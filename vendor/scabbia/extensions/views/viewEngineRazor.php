@@ -46,6 +46,10 @@
 					self::$engine = new \RazorViewRenderer();
 				}
 
+				if(is_null($tOutputFile[1])) {
+					throw new \Exception('Framework runs in read only mode.');
+				}
+
 				self::$engine->generateViewFile($tInputFile, $tOutputFile[1]);
 			}
 

@@ -152,16 +152,22 @@
 				switch($tMimetype) {
 				case 'application/x-javascript':
 					// $tContent = JSMin::minify($tContent);
-					io::write($tOutputFile[1], $tContent);
+					if(!is_null($tOutputFile[1])) {
+						io::write($tOutputFile[1], $tContent);
+					}
 					echo $tContent;
 					break;
 				case 'text/css':
 					// $tContent = CssMin::minify($tContent);
-					io::write($tOutputFile[1], $tContent);
+					if(!is_null($tOutputFile[1])) {
+						io::write($tOutputFile[1], $tContent);
+					}
 					echo $tContent;
 					break;
 				default:
-					io::write($tOutputFile[1], $tContent);
+					if(!is_null($tOutputFile[1])) {
+						io::write($tOutputFile[1], $tContent);
+					}
 					echo $tContent;
 					break;
 				}

@@ -46,10 +46,15 @@
 
 				$tInput = io::read($tInputFile);
 				$tOutput = self::$engine->transform($tInput);
-				io::write($tOutputFile[1], $tOutput);
-			}
 
-			require($tOutputFile[1]);
+				if(!is_null($tOutputFile[1])) {
+					io::write($tOutputFile[1], $tOutput);
+				}
+				echo $tOutput;
+			}
+			else {
+				require($tOutputFile[1]);
+			}
 		}
 	}
 

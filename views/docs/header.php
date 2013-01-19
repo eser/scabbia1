@@ -1,3 +1,8 @@
+<?php
+	use Scabbia\html;
+	use Scabbia\http;
+	use Scabbia\framework;
+?>
 <?php echo html::doctype('html5'); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>

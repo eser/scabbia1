@@ -426,12 +426,12 @@
 			for($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
 				$tChar = substr($uPattern, $tPos, 1);
 
-				if($tChar == '\\') {
-					$tPattern .= substr($uPattern, ++$tPos, 1);
-					continue;
-				}
-
 				if($tQuoteChar !== false) {
+					if($tChar == '\\') {
+						$tBuffer .= substr($uPattern, ++$tPos, 1);
+						continue;
+					}
+
 					if($tQuoteChar == $tChar) {
 						switch($tQuoteChar) {
 						case '#':
@@ -449,6 +449,11 @@
 					}
 
 					$tBuffer .= $tChar;
+					continue;
+				}
+
+				if($tChar == '\\') {
+					$tPattern .= substr($uPattern, ++$tPos, 1);
 					continue;
 				}
 

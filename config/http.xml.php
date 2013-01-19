@@ -5,13 +5,14 @@
 		<autorun>1</autorun>
 		<link>{@siteroot}/{@path}</link>
 
-<!--
 		<request>
 			<parsingType>2</parsingType>
 			<getParameters>?&amp;,</getParameters>
 			<getKeys>=:</getKeys>
 			<getSeperator>/</getSeperator>
 		</request>
+
+<!--
 
 		<rewriteList>
 			<rewrite>
