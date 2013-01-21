@@ -421,54 +421,66 @@
 		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
 			$tPattern = '';
 			$tBuffer = '';
-			$tQuoteChar = false;
+			$tNameBuffer = false;
+			$tBrackets = 0;
 
 			for($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
 				$tChar = substr($uPattern, $tPos, 1);
 
-				if($tQuoteChar !== false) {
-					if($tChar == '\\') {
-						$tBuffer .= substr($uPattern, ++$tPos, 1);
-						continue;
-					}
+				if($tChar == '\\') {
+					$tBuffer .= substr($uPattern, ++$tPos, 1);
+					continue;
+				}
 
-					if($tQuoteChar == $tChar) {
-						switch($tQuoteChar) {
-						case '#':
-							$tPattern .= '?P<' . $tBuffer . '>';
-							break;
-						case ':':
-							$tPattern .= self::$regexpPresets[$tBuffer];
-							break;
-						}
-
-						$tQuoteChar = false;
+				if($tBrackets > 0) {
+					if($tChar == ':') {
+						$tNameBuffer = $tBuffer;
 						$tBuffer = '';
 
 						continue;
 					}
 
-					$tBuffer .= $tChar;
-					continue;
+					if($tChar == ')') {
+						--$tBrackets;
+						if($tNameBuffer !== false) {
+							$tPattern .= '(?P<' . $tNameBuffer . '>';
+						}
+						else {
+							$tPattern .= '(';
+						}
+
+						if(array_key_exists($tBuffer, self::$regexpPresets)) {
+							$tPattern .= self::$regexpPresets[$tBuffer] . ')';
+						}
+						else {
+							$tPattern .= $tBuffer . ')';
+						}
+						
+						$tBuffer = '';
+						$tNameBuffer = false;
+
+						continue;
+					}
+				}
+				else {
+					if($tChar == '(') {
+						++$tBrackets;
+						$tPattern .= preg_quote($tBuffer);
+						$tBuffer = '';
+
+						continue;
+					}
 				}
 
-				if($tChar == '\\') {
-					$tPattern .= substr($uPattern, ++$tPos, 1);
-					continue;
-				}
-
-				if($tChar == '#' || $tChar == ':') {
-					$tQuoteChar = $tChar;
-					continue;
-				}
-
-				$tPattern .= $tChar;
+				$tBuffer .= $tChar;
 			}
 
 			if(strlen($tBuffer) > 0) {
-				$tPattern .= $tQuoteChar . $tBuffer;
-				// $tQuoteChar = false;
-				// $tBuffer = '';
+				for($i = $tBrackets;$i > 0;$i--) {
+					$tPattern .= '\\(';
+				}
+
+				$tPattern .= preg_quote($tBuffer);
 			}
 
 			if(strpos($uModifiers, '^') === 0) {
