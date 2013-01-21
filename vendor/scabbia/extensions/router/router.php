@@ -23,6 +23,15 @@
 		/**
 		 * @ignore
 		 */
+		public static function extensionLoad() {
+			foreach(config::get('/router/routeList', array()) as $tRouteList) {
+				self::add($tRouteList['match'], $tRouteList['callback']);
+			}
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function run($uParms) {
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('http', array('action' => 'routing'));
@@ -60,7 +69,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function add($uMatch, $uRoute) {
+		public static function add($uMatch, $uMethod) {
 			if(!is_array($uMatch)) {
 				$uMatch = array($uMatch);
 			}
@@ -70,7 +79,7 @@
 
 				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-				self::$routes[] = array($tParts[0], $uRoute, $tLimitMethods);
+				self::$routes[] = array($tParts[0], $uMethod, $tLimitMethods);
 			}
 		}
 	}

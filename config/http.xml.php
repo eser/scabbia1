@@ -178,10 +178,12 @@
 
 	<router>
 		<routeList>
+		<!--
 			<route>
-				<match>(controller:alnum)/(action:alnum)(params:?(.*))</match>
+				<match><![CDATA[(controller:alnum)/(action:alnum)(params:[&?].+)*]]></match>
 				<callback>Scabbia\mvc::route</callback>
 			</route>
+		-->
 		</routeList>
 	</router>
 

@@ -55,6 +55,69 @@
 		/**
 		 * @ignore
 		 */
+		public static function route($uParams) {
+			$tActualController = $uParams['controller'];
+			$tActualAction = $uParams['action'];
+
+			$tParameterSegments = null;
+			$tParms = array(
+				'controller' => &$uParams['controller'],
+				'action' => &$uParams['action'],
+				'controllerActual' => &$tActualController,
+				'actionActual' => &$tActualAction,
+				'parameterSegments' => &$tParameterSegments
+			);
+			events::invoke('routing', $tParms);
+
+			while(true) {
+				if(strpos($tActualAction, '_') !== false) {
+					$tReturn = false;
+					break;
+				}
+
+				//! todo ensure autoload behaviour.
+				if(!isset(self::$controllerList[$tActualController])) {
+					$tReturn = false;
+					break;
+				}
+
+				$tController = new self::$controllerList[$tActualController] ();
+				$tController->route = $uParams;
+				$tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
+
+				array_push(self::$controllerStack, $tController);
+
+				try {
+					$tReturn = $tController->render($tActualAction, $uParams['parametersArray']);
+					if($tReturn === false) {
+						array_pop(self::$controllerStack);
+						break;
+					}
+
+					if($tReturn !== true && !is_null($tReturn)) {
+						call_user_func($tReturn);
+						array_pop(self::$controllerStack);
+						break;
+					}
+
+					array_pop(self::$controllerStack);
+				}
+				catch(\Exception $ex) {
+					mvc::error($ex->getMessage());
+
+					array_pop(self::$controllerStack);
+					$tReturn = false;
+				}
+
+				break;
+			}
+
+			return $tReturn;
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function httpRoute(&$uParms) {
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('mvc', array('action' => 'rendering'));

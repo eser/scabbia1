@@ -20,6 +20,10 @@
 	</classList>
 	<eventList>
 		<event>
+			<name>load</name>
+			<callback>Scabbia\router::extensionLoad</callback>
+		</event>
+		<event>
 			<name>run</name>
 			<callback>Scabbia\router::run</callback>
 		</event>
