@@ -40,7 +40,7 @@
 		/**
 		 * @ignore
 		 */
-		private static function passScope(&$uNode) {
+		private static function xmlPassScope(&$uNode) {
 			if(isset($uNode['endpoint']) && (string)$uNode['endpoint'] != framework::$endpoint) {
 				return false;
 			}
@@ -89,19 +89,19 @@
 		/**
 		 * @ignore
 		 */
-		private static function processChildrenAsArray($uNode, $uListElement, &$uContents) {
+		private static function xmlProcessChildrenAsArray($uNode, $uListElement, &$uContents) {
 			foreach($uNode->children() as $tKey => $tNode) {
 				if($tKey == 'scope') {
-					if(!self::passScope($tNode)) {
+					if(!self::xmlPassScope($tNode)) {
 						continue; // skip
 					}
 
-					self::processChildrenAsArray($tNode, $uListElement, $uContents);
+					self::xmlProcessChildrenAsArray($tNode, $uListElement, $uContents);
 					continue;
 				}
 
 				if(!is_null($uListElement) && $uListElement == $tKey) {
-					self::processChildrenAsArray($tNode, null, $uContents[]);
+					self::xmlProcessChildrenAsArray($tNode, null, $uContents[]);
 				}
 				else {
 					if(substr($tKey, -4) == 'List') {
@@ -109,7 +109,7 @@
 							$uContents[$tKey] = array();
 						}
 
-						self::processChildrenAsArray($tNode, substr($tKey, 0, -4), $uContents[$tKey]);
+						self::xmlProcessChildrenAsArray($tNode, substr($tKey, 0, -4), $uContents[$tKey]);
 					}
 					else {
 						if(!isset($uContents[$tKey])) {
@@ -121,7 +121,7 @@
 							}
 						}
 
-						self::processChildrenAsArray($tNode, null, $uContents[$tKey]);
+						self::xmlProcessChildrenAsArray($tNode, null, $uContents[$tKey]);
 					}
 				}
 			}
@@ -144,14 +144,14 @@
 		/**
 		 * @ignore
 		 */
-		private static function processChildrenRecursive(&$uArray, $uNode) {
+		private static function xmlProcessChildrenRecursive(&$uArray, $uNode) {
 			static $sNodes = array();
 			$tNodeName = $uNode->getName();
 
 			if($tNodeName == 'scope') {
 				$tScope = true;
 
-				if(!self::passScope($uNode)) {
+				if(!self::xmlPassScope($uNode)) {
 					return; // skip
 				}
 			}
@@ -170,11 +170,11 @@
 					$uArray[$tNodePath] = array();
 				}
 
-				self::processChildrenAsArray($uNode, $tListName, $uArray[$tNodePath]);
+				self::xmlProcessChildrenAsArray($uNode, $tListName, $uArray[$tNodePath]);
 			}
 			else {
 				foreach($uNode->children() as $tNode) {
-					self::processChildrenRecursive($uArray, $tNode);
+					self::xmlProcessChildrenRecursive($uArray, $tNode);
 				}
 
 				if(!isset($tScope)) {
@@ -200,7 +200,7 @@
 		 */
 		public static function loadFile(&$uConfig, $uFile) {
 			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS | LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
-			self::processChildrenRecursive($uConfig, $tXmlDom);
+			self::xmlProcessChildrenRecursive($uConfig, $tXmlDom);
 		}
 
 		/**
