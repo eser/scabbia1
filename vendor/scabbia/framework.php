@@ -62,13 +62,13 @@
 		 */
 		public static $regexpPresets = array(
 			'num' => '[0-9]+',
-			'?num' => '[0-9]*',
+			'num?' => '[0-9]*',
 			'alnum' => '[a-zA-Z0-9]+',
-			'?alnum' => '[a-zA-Z0-9]*',
-			'any' => '[a-zA-Z0-9\.\-_%=]+',
-			'?any' => '[a-zA-Z0-9\.\-_%=]*',
+			'alnum?' => '[a-zA-Z0-9]*',
+			'any' => '[a-zA-Z0-9\.\-_%=]+', // ~
+			'any?' => '[a-zA-Z0-9\.\-_%=]*',
 			'all' => '.+',
-			'?all' => '.*'
+			'all?' => '.*'
 		);
 
 
@@ -410,15 +410,13 @@
 		}
 
 		/**
-		 * Searches subject for a match to the regular expression given in pattern.
+		 * @ignore
 		 *
 		 * @param string $uPattern the pattern to search for, as a string
-		 * @param string $uSubject the input string
-		 * @param string $uModifiers the PCRE modifiers
 		 *
-		 * @return array
+		 * @return string
 		 */
-		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
+		 private static function pregFormat($uPattern) {
 			$tPattern = '';
 			$tBuffer = '';
 			$tNameBuffer = false;
@@ -427,10 +425,10 @@
 			for($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
 				$tChar = substr($uPattern, $tPos, 1);
 
-				if($tChar == '\\') {
-					$tBuffer .= substr($uPattern, ++$tPos, 1);
-					continue;
-				}
+				// if($tChar == '\\') {
+				// 	$tBuffer .= substr($uPattern, ++$tPos, 1);
+				// 	continue;
+				// }
 
 				if($tBrackets > 0) {
 					if($tChar == ':') {
@@ -465,7 +463,7 @@
 				else {
 					if($tChar == '(') {
 						++$tBrackets;
-						$tPattern .= preg_quote($tBuffer);
+						$tPattern .= $tBuffer; // preg_quote($tBuffer);
 						$tBuffer = '';
 
 						continue;
@@ -480,8 +478,23 @@
 					$tPattern .= '\\(';
 				}
 
-				$tPattern .= preg_quote($tBuffer);
+				$tPattern .= $tBuffer; // preg_quote($tBuffer);
 			}
+
+			return $tPattern;
+		}
+
+		/**
+		 * Searches subject for a match to the regular expression given in pattern.
+		 *
+		 * @param string $uPattern the pattern to search for, as a string
+		 * @param string $uSubject the input string
+		 * @param string $uModifiers the PCRE modifiers
+		 *
+		 * @return array
+		 */
+		public static function pregMatch($uPattern, $uSubject, $uModifiers = '^') {
+			$tPattern = self::pregFormat($uPattern);
 
 			if(strpos($uModifiers, '^') === 0) {
 				preg_match('#^' . $tPattern . '$#' . substr($uModifiers, 1), $uSubject, $tResult);
@@ -489,6 +502,12 @@
 			else {
 				preg_match('#' . $tPattern . '#' . $uModifiers, $uSubject, $tResult);
 			}
+
+			// if(count($tResult) > 0) {
+			//	return $tResult;
+			// }
+			//
+			// return false;
 
 			return $tResult;
 		}
@@ -504,11 +523,13 @@
 		 * @return array
 		 */
 		public static function pregReplace($uPattern, $uReplacement, $uSubject, $uModifiers = '^') {
+			$tPattern = self::pregFormat($uPattern);
+
 			if(strpos($uModifiers, '^') === 0) {
-				$tResult = preg_replace('#^' . strtr($uPattern, self::$regexpPresets) . '$#' . substr($uModifiers, 1), $uReplacement, $uSubject, -1, $tCount);
+				$tResult = preg_replace('#^' . $tPattern . '$#' . substr($uModifiers, 1), $uReplacement, $uSubject, -1, $tCount);
 			}
 			else {
-				$tResult = preg_replace('#' . strtr($uPattern, self::$regexpPresets) . '#' . $uModifiers, $uReplacement, $uSubject, -1, $tCount);
+				$tResult = preg_replace('#' . $tPattern . '#' . $uModifiers, $uReplacement, $uSubject, -1, $tCount);
 			}
 
 			if($tCount > 0) {
