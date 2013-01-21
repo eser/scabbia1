@@ -2,7 +2,6 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<http>
-		<autorun>1</autorun>
 		<link>{@siteroot}/{@path}</link>
 
 		<request>
@@ -176,6 +175,15 @@
 			</crawlerList>
 		</userAgents>
 	</http>
+
+	<router>
+		<routeList>
+			<route>
+				<match>(controller:alnum)/(action:alnum)(params:?(.*))</match>
+				<callback>Scabbia\mvc::route</callback>
+			</route>
+		</routeList>
+	</router>
 
 <!--
 	<session>

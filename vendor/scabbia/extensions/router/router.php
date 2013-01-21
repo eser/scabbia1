@@ -18,17 +18,12 @@
 		/**
 		 * @ignore
 		 */
-		public static $callbacks = array();
+		public static $routes = array();
 
 		/**
 		 * @ignore
 		 */
 		public static function run($uParms) {
-			$tAutoRun = intval(config::get('/http/autorun', '1'));
-			if(!$tAutoRun) {
-				return;
-			}
-
 			if(extensions::isLoaded('profiler')) {
 				profiler::start('http', array('action' => 'routing'));
 			}
@@ -38,21 +33,20 @@
 				'get' => &$_GET
 			);
 
-			foreach(self::$callbacks as $tCallback) {
-				if(!is_null($tCallback[2]) && !in_array(http::$methodext, $tCallback[2])) {
+			foreach(self::$routes as $tRoute) {
+				if(!is_null($tRoute[2]) && !in_array(http::$methodext, $tRoute[2])) {
 					continue;
 				}
 
-				$tMatches = framework::pregMatch(ltrim($tCallback[0], '/'), http::$queryString);
+				$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), http::$queryString);
 				if(count($tMatches) > 0) {
-					$tCallbackToCall = $tCallback[1];
+					$tRouteToCall = $tRoute[1];
 					break;
 				}
 			}
 
-			if(isset($tCallbackToCall)) {
-				array_shift($tMatches);
-				call_user_func_array($tCallbackToCall, $tMatches);
+			if(isset($tRouteToCall)) {
+				call_user_func($tRouteToCall, $tMatches);
 			}
 			else {
 				events::invoke('httpRoute', $tParms);
@@ -66,7 +60,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function addCallback($uMatch, $uCallback) {
+		public static function add($uMatch, $uRoute) {
 			if(!is_array($uMatch)) {
 				$uMatch = array($uMatch);
 			}
@@ -76,7 +70,7 @@
 
 				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-				self::$callbacks[] = array($tParts[0], $uCallback, $tLimitMethods);
+				self::$routes[] = array($tParts[0], $uRoute, $tLimitMethods);
 			}
 		}
 	}
