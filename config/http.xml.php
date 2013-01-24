@@ -12,7 +12,6 @@
 		</request>
 
 <!--
-
 		<rewriteList>
 			<rewrite>
 				<limitMethods>
@@ -178,12 +177,18 @@
 
 	<router>
 		<routeList>
-		<!--
 			<route>
 				<match><![CDATA[(controller:alnum)/(action:alnum)(params:[&?].+)*]]></match>
 				<callback>Scabbia\mvc::route</callback>
 			</route>
-		-->
+			<route>
+				<match><![CDATA[(controller:alnum)(params:[&?].+)*]]></match>
+				<callback>Scabbia\mvc::route</callback>
+			</route>
+			<route>
+				<match><![CDATA[(params:[&?].+)*]]></match>
+				<callback>Scabbia\mvc::route</callback>
+			</route>
 		</routeList>
 	</router>
 

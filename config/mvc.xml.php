@@ -4,8 +4,8 @@
 	<mvc>
 		<routes>
 			<controllerUrlKey>0</controllerUrlKey>
-			<defaultController>home</defaultController>
 			<actionUrlKeys>1</actionUrlKeys>
+			<defaultController>home</defaultController>
 			<defaultAction>index</defaultAction>
 			<link>{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}</link>
 		</routes>

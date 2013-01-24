@@ -29,10 +29,6 @@
 			<callback>Scabbia\mvc::extensionLoad</callback>
 		</event>
 		<event>
-			<name>httpRoute</name>
-			<callback>Scabbia\mvc::httpRoute</callback>
-		</event>
-		<event>
 			<name>httpUrl</name>
 			<callback>Scabbia\mvc::httpUrl</callback>
 		</event>

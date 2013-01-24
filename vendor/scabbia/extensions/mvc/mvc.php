@@ -38,10 +38,6 @@
 		 * @ignore
 		 */
 		public static $defaultAction;
-		/**
-		 * @ignore
-		 */
-		public static $errorPage;
 
 		/**
 		 * @ignore
@@ -49,13 +45,42 @@
 		public static function extensionLoad() {
 			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
-			self::$errorPage = config::get('/mvc/view/errorPage', 'shared/error.php');
+		}
+
+		/*
+		 * @ignore
+		 */
+		private static function getControllers() {
+			if(is_null(self::$controllerList)) {
+				self::$controllerList = array();
+
+				foreach(get_declared_classes() as $tClass) {
+					if(!is_subclass_of($tClass, 'Scabbia\\controller')) {
+						continue;
+					}
+
+					$tPos = strpos($tClass, '\\');
+					if($tPos !== false) {
+						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
+						continue;
+					}
+
+					self::$controllerList[$tClass] = $tClass;
+				}
+			}
 		}
 
 		/**
 		 * @ignore
 		 */
 		public static function route($uParams) {
+			if(!isset($uParams['controller']) || strlen($uParams['controller']) <= 0) {
+				$uParams['controller'] = self::$defaultController;
+			}
+			if(!isset($uParams['action']) || strlen($uParams['action']) <= 0) {
+				$uParams['action'] = self::$defaultAction;
+			}
+
 			$tActualController = $uParams['controller'];
 			$tActualAction = $uParams['action'];
 
@@ -69,15 +94,17 @@
 			);
 			events::invoke('routing', $tParms);
 
+			self::getControllers();
+
 			while(true) {
 				if(strpos($tActualAction, '_') !== false) {
-					$tReturn = false;
+					$tReturn = null;
 					break;
 				}
 
 				//! todo ensure autoload behaviour.
 				if(!isset(self::$controllerList[$tActualController])) {
-					$tReturn = false;
+					$tReturn = null;
 					break;
 				}
 
@@ -88,12 +115,13 @@
 				array_push(self::$controllerStack, $tController);
 
 				try {
-					$tReturn = $tController->render($tActualAction, $uParams['parametersArray']);
+					$tReturn = $tController->render($tActualAction, array()); // $uParams['parametersArray']
 					if($tReturn === false) {
 						array_pop(self::$controllerStack);
 						break;
 					}
 
+					// call callback/closure returned by render
 					if($tReturn !== true && !is_null($tReturn)) {
 						call_user_func($tReturn);
 						array_pop(self::$controllerStack);
@@ -118,27 +146,6 @@
 		/**
 		 * @ignore
 		 */
-		public static function httpRoute(&$uParms) {
-			if(extensions::isLoaded('profiler')) {
-				profiler::start('mvc', array('action' => 'rendering'));
-			}
-
-			$tReturn = self::generate($uParms['get']);
-			if($tReturn === false) {
-				mvc::notfound();
-			}
-
-			if(extensions::isLoaded('profiler')) {
-				profiler::stop();
-			}
-
-			// to interrupt event-chain execution
-			return false;
-		}
-
-		/**
-		 * @ignore
-		 */
 		public static function httpUrl(&$uParms) {
 			$tSegments = self::findRoute($uParms['path']);
 
@@ -152,23 +159,7 @@
 		 * @ignore
 		 */
 		public static function generate($uPath) {
-			if(is_null(self::$controllerList)) {
-				self::$controllerList = array();
-
-				foreach(get_declared_classes() as $tClass) {
-					if(!is_subclass_of($tClass, 'Scabbia\\controller')) {
-						continue;
-					}
-
-					$tPos = strpos($tClass, '\\');
-					if($tPos !== false) {
-						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
-						continue;
-					}
-
-					self::$controllerList[$tClass] = $tClass;
-				}
-			}
+			self::getControllers();
 
 			$tRoute = self::findRoute($uPath);
 			$tActualController = $tRoute['controller'];
@@ -349,39 +340,6 @@
 			$tRoute['queryStringArray'] = $uArgs;
 
 			return $tRoute;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function error($uMessage) {
-			// header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-			header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
-
-			//! todo internalization.
-			if(!http::$isAjax) {
-				views::view(self::$errorPage, array(
-				                                   'title' => 'Error',
-				                                   'message' => $uMessage
-				                              ));
-			}
-
-			framework::end(1, $uMessage);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function notfound() {
-			header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
-
-			//! todo internalization.
-			views::view(self::$errorPage, array(
-			                                   'title' => 'Error',
-			                                   'message' => '404 Not Found'
-			                              ));
-
-			framework::end(1);
 		}
 
 		/**
