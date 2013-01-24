@@ -56,6 +56,7 @@
 					}
 
 					$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), http::$queryString);
+
 					if(count($tMatches) > 0) {
 						$tRouteToCall = $tRoute[1];
 						break;

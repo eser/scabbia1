@@ -38,6 +38,22 @@
 		/**
 		 * @ignore
 		 */
+		public static $remoteIp;
+		/**
+		 * @ignore
+		 */
+		public static $https;
+		/**
+		 * @ignore
+		 */
+		public static $host;
+		/**
+		 * @ignore
+		 */
+		public static $protocol;
+		/**
+		 * @ignore
+		 */
 		public static $method;
 		/**
 		 * @ignore
@@ -68,71 +84,30 @@
 		 * @ignore
 		 */
 		public static function extensionLoad() {
-			// session trans sid
-			ini_set('session.use_trans_sid', '0');
-
-			// required for IE in iframe facebook environments if sessions are to work.
-			// header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
-
-			// replace missing environment variables
-			/*
-						static $sEnvNames = array(
-							'HTTP_ACCEPT',
-							'HTTP_ACCEPT_LANGUAGE',
-							'HTTP_HOST',
-							'HTTP_USER_AGENT',
-							'HTTP_REFERER',
-							'SCRIPT_FILENAME',
-							'PHP_SELF',
-							'QUERY_STRING',
-							'REQUEST_URI',
-							'SERVER_ADDR',
-							'SERVER_NAME',
-							'SERVER_PORT',
-							'SERVER_PROTOCOL',
-							'HTTPS'
-						);
-
-						foreach($sEnvNames as $tEnv) {
-							if(isset($_SERVER[$tEnv])) { // && strlen($_SERVER[$tEnv]) > 0
-								continue;
-							}
-
-							$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
-						}
-			*/
-
 			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
-				$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
+				self::$remoteIp = $_SERVER['HTTP_CLIENT_IP'];
+			}
+			else if(!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				self::$remoteIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
 			else {
-				if(!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-					$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-				}
-				else {
-					$_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or $_SERVER['REMOTE_ADDR'] = '0.0.0.0';
-				}
+				self::$remoteIp = $_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or self::$remoteIp = '0.0.0.0';
 			}
 
-			// request handling
-			// $tRestOfRequest = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']));
+			self::$https = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || strcasecmp($_SERVER['HTTPS'], 'on') == 0));
 
-			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || strcasecmp($_SERVER['HTTPS'], 'on') == 0)) {
-				$_SERVER['HTTPS'] = 'on';
+			if(isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0') {
+				self::$protocol = 'HTTP/1.0';
 			}
 			else {
-				$_SERVER['HTTPS'] = 'off';
-			}
-
-			if(!isset($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') {
-				$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.0';
+				self::$protocol = 'HTTP/1.1';
 			}
 
 			if(!isset($_SERVER['HTTP_HOST']) || strlen($_SERVER['HTTP_HOST']) == 0) {
-				$_SERVER['HTTP_HOST'] = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
+				self::$host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
 
 				if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') {
-					$_SERVER['HTTP_HOST'] .= $_SERVER['SERVER_PORT'];
+					self::$host .= $_SERVER['SERVER_PORT'];
 				}
 			}
 
@@ -158,10 +133,6 @@
 					break;
 				}
 			}
-
-			$_GET = self::parseGet(self::$queryString);
-
-			$_REQUEST = array_merge($_GET, $_POST, $_COOKIE); // GPC Order w/o session vars.
 		}
 
 		/**
@@ -626,34 +597,6 @@
 		 */
 		public static function removeCookie($uCookie) {
 			setrawcookie($uCookie, '', time() - 3600);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function parseGet($uQueryString) {
-			$tParsingType = config::get('/http/request/parsingType', '0');
-
-			if($tParsingType == '0') {
-				$uArray = array();
-				parse_str($uQueryString, $uArray);
-
-				return $uArray;
-			}
-
-			$tDefaultParameter = config::get('/http/request/getParameters', '?&');
-			$tDefaultKey = config::get('/http/request/getKeys', '=');
-			$tDefaultSeperator = config::get('/http/request/getSeperator', '/');
-
-			if($tParsingType == '1') {
-				return string::parseQueryString($uQueryString, $tDefaultParameter, $tDefaultKey);
-			}
-
-			if($tParsingType == '2') {
-				return string::parseQueryString($uQueryString, $tDefaultParameter, $tDefaultKey, $tDefaultSeperator);
-			}
-
-			throw new \Exception('request parsing error.');
 		}
 
 		/**

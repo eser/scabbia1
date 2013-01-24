@@ -284,7 +284,7 @@
 		 */
 		public static function findRoute($uArgs) {
 			if(!is_array($uArgs)) {
-				$uArgs = http::parseGet($uArgs);
+				$uArgs = string::parseQueryString($uArgs);
 			}
 
 			$tControllerUrlKey = config::get('/mvc/routes/controllerUrlKey', '0');
