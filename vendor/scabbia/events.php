@@ -50,11 +50,11 @@
 		 */
 		public static function invoke($uEventName, &$uEventArgs = array()) {
 			if(self::$disabled) {
-				return;
+				return null;
 			}
 
 			if(!array_key_exists($uEventName, self::$callbacks)) {
-				return;
+				return null;
 			}
 
 			foreach(self::$callbacks[$uEventName] as $tCallback) {
@@ -67,11 +67,15 @@
 
 				$tKey = $tCallname[0] . '::' . $tCallname[1];
 				array_push(self::$eventDepth, $tKey . '()');
-				if(call_user_func_array($tCallback, array(&$uEventArgs)) === false) {
-					break;
-				}
+				$tReturn = call_user_func_array($tCallback, array(&$uEventArgs));
 				array_pop(self::$eventDepth);
+
+				if($tReturn === false) {
+					return false;
+				}
 			}
+
+			return true;
 		}
 	}
 
