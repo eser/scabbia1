@@ -47,23 +47,12 @@
 				'queryString' => &http::$queryString,
 				'get' => &$_GET
 			);
+
 			$tEventReturn = events::invoke('httpRoute', $tParms);
 
 			if(!is_null($tEventReturn) && $tEventReturn !== false) {
-				foreach(self::$routes as $tRoute) {
-					if(!is_null($tRoute[2]) && !in_array(http::$methodext, $tRoute[2])) {
-						continue;
-					}
-
-					$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), http::$queryString);
-
-					if(count($tMatches) > 0) {
-						$tRouteToCall = $tRoute[1];
-						break;
-					}
-				}
-
-				if(!isset($tRouteToCall) || call_user_func($tRouteToCall, $tMatches) === false) {
+				$tResolved = self::resolve(http::$queryString);
+				if(is_null($tResolved) || call_user_func($tResolved[0], $tResolved[1]) === false) {
 					self::notfound();
 				}
 			}
@@ -71,6 +60,25 @@
 			if(extensions::isLoaded('profiler')) {
 				profiler::stop();
 			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function resolve($uQueryString) {
+			foreach(self::$routes as $tRoute) {
+				if(!is_null($tRoute[2]) && !in_array(http::$methodext, $tRoute[2])) { //! todo methodex
+					continue;
+				}
+
+				$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), $uQueryString);
+
+				if(count($tMatches) > 0) {
+					return array($tRoute[1], $tMatches);
+				}
+			}
+
+			return null;
 		}
 
 		/**

@@ -2,25 +2,9 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
 	<mvc>
-		<routes>
-			<controllerUrlKey>0</controllerUrlKey>
-			<actionUrlKeys>1</actionUrlKeys>
-			<defaultController>home</defaultController>
-			<defaultAction>index</defaultAction>
-			<link>{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}</link>
-		</routes>
-
-<!--
-		<errorPages>
-			<notfound>shared/notfound</notfound>
-			<restriction>shared/restriction</restriction>
-			<maintenance>shared/maintenance</maintenance>
-			<ipban>shared/ipban</ipban>
-			<error>shared/error</error>
-		</errorPages>
-
-		<controllerList />
--->
+		<defaultController>home</defaultController>
+		<defaultAction>index</defaultAction>
+		<link>{@siteroot}/{@controller}/{@action}{@params}{@query}</link>
 
 		<!-- _{@device}_{@language} -->
 		<view>

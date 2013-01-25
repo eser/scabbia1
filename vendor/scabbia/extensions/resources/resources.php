@@ -45,31 +45,23 @@
 				self::$directories = config::get('/resources/directoryList', array());
 			}
 
-			if(isset($uParms['get']['_segments']) && count($uParms['get']['_segments']) > 0) {
-				$tPath = implode('/', $uParms['get']['_segments']);
+			if(strlen($uParms['queryString']) > 0) {
+				$tPath = explode('&', $uParms['queryString'], 2);
 
 				foreach(self::$directories as $tDirectory) {
 					$tDirectoryName = rtrim($tDirectory['name'], '/');
 					$tLen = strlen($tDirectoryName);
 
-					if(substr($tPath, 0, $tLen) == $tDirectoryName) {
-						if(self::getDirectory($tDirectory, substr($tPath, $tLen)) === true) {
+					if(substr($tPath[0], 0, $tLen) == $tDirectoryName) {
+						if(self::getDirectory($tDirectory, substr($tPath[0], $tLen)) === true) {
 							// to interrupt event-chain execution
 							return false;
 						}
 					}
 				}
 
-				$tSubParts = array();
-				foreach($uParms['get'] as $tKey => $tSubPart) {
-					if($tKey[0] == '_') {
-						continue;
-					}
-
-					$tSubParts[] = $tKey;
-				}
-
-				if(self::getPack($tPath, $tSubParts) === true) {
+				$tSubParts = (count($tPath) >= 2) ? explode(',', $tPath[1]) : array();
+				if(self::getPack($tPath[0], $tSubParts) === true) {
 					// to interrupt event-chain execution
 					return false;
 				}

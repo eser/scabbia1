@@ -38,13 +38,18 @@
 		 * @ignore
 		 */
 		public static $defaultAction;
+		/**
+		 * @ignore
+		 */
+		public static $link;
 
 		/**
 		 * @ignore
 		 */
 		public static function extensionLoad() {
-			self::$defaultController = config::get('/mvc/routes/defaultController', 'home');
-			self::$defaultAction = config::get('/mvc/routes/defaultAction', 'index');
+			self::$defaultController = config::get('/mvc/defaultController', 'home');
+			self::$defaultAction = config::get('/mvc/defaultAction', 'index');
+			self::$link = config::get('/mvc/link', '{@siteroot}/{@controller}/{@action}{@params}{@query}');
 		}
 
 		/*
@@ -147,12 +152,16 @@
 		 * @ignore
 		 */
 		public static function httpUrl(&$uParms) {
-			$tSegments = self::findRoute($uParms['path']);
+			$tResolved = router::resolve($uParms['path']);
 
-			$uParms['controller'] = $tSegments['controller'];
-			$uParms['action'] = $tSegments['action'];
-			$uParms['parameters'] = $tSegments['parameters'];
-			$uParms['queryString'] = $tSegments['queryString'];
+			if(is_null($tResolved)) {
+				return;
+			}
+
+			$uParms['controller'] = isset($tResolved[1]['controller']) ? $tResolved[1]['controller'] : '';
+			$uParms['action'] = isset($tResolved[1]['action']) ? $tResolved[1]['action'] : '';
+			$uParms['params'] = isset($tResolved[1]['params']) ? $tResolved[1]['params'] : '';
+			$uParms['query'] = isset($tResolved[1]['query']) ? $tResolved[1]['query'] : '';
 		}
 
 		/**
@@ -161,7 +170,12 @@
 		public static function generate($uPath) {
 			self::getControllers();
 
-			$tRoute = self::findRoute($uPath);
+			$tResolved = router::resolve($uPath);
+			if(is_null($tResolved)) {
+				return false;
+			}
+
+			$tRoute = $tResolved[1];
 			$tActualController = $tRoute['controller'];
 			$tActualAction = $tRoute['action'];
 
@@ -224,40 +238,6 @@
 		/**
 		 * @ignore
 		 */
-		protected static function getControllerData($uController) {
-			$tControllerData = array(
-				'actionUrlKeys' => config::get('/mvc/routes/actionUrlKeys', '1'),
-				'defaultAction' => self::$defaultAction,
-				'link' => config::get('/mvc/routes/link', '{@siteroot}/{@controller}/{@action}{@parameters}{@queryString}')
-			);
-
-			foreach(config::get('/mvc/controllerList', array()) as $tController) {
-				if($uController != $tController['name']) {
-					continue;
-				}
-
-				if(isset($tController['actionUrlKeys'])) {
-					$tControllerData['actionUrlKeys'] = $tController['actionUrlKeys'];
-				}
-
-				if(isset($tController['defaultAction'])) {
-					$tControllerData['defaultAction'] = $tController['defaultAction'];
-				}
-
-				if(isset($tController['link'])) {
-					$tControllerData['link'] = $tController['link'];
-				}
-
-				break;
-			}
-
-			return $tControllerData;
-		}
-
-
-		/**
-		 * @ignore
-		 */
 		public static function current() {
 			return end(self::$controllerStack);
 		}
@@ -267,9 +247,8 @@
 		 */
 		public static function currentUrl() {
 			$tCurrent = self::current();
-			$tControllerData = self::getControllerData($tCurrent->route['controller']);
 
-			return string::format($tControllerData['link'], array(
+			return string::format(self::$link, array(
 			                                                     'siteroot' => framework::$siteroot,
 			                                                     'device' => http::$crawlerType,
 			                                                     'controller' => $tCurrent->route['controller'],
@@ -277,69 +256,6 @@
 			                                                     'parameters' => $tCurrent->route['parameters'],
 			                                                     'queryString' => $tCurrent->route['queryString']
 			                                                ));
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function findRoute($uArgs) {
-			if(!is_array($uArgs)) {
-				$uArgs = string::parseQueryString($uArgs);
-			}
-
-			$tControllerUrlKey = config::get('/mvc/routes/controllerUrlKey', '0');
-
-			$tRoute = array();
-
-			if(isset($uArgs['_segments']) && array_key_exists($tControllerUrlKey, $uArgs['_segments']) && strlen($uArgs['_segments'][$tControllerUrlKey]) > 0) {
-				$tRoute['controller'] = $uArgs['_segments'][$tControllerUrlKey];
-				unset($uArgs['_segments'][$tControllerUrlKey]);
-			}
-			else {
-				$tRoute['controller'] = self::$defaultController;
-			}
-
-			$tControllerData = self::getControllerData($tRoute['controller']);
-
-			$tActionKeys = explode(',', $tControllerData['actionUrlKeys']);
-			$tRoute['action'] = '';
-
-			if(isset($uArgs['_segments'])) {
-				foreach($tActionKeys as $tActionKey) {
-					if(!isset($uArgs['_segments'][$tActionKey])) {
-						break;
-					}
-
-					if(strlen($tRoute['action']) > 0) {
-						$tRoute['action'] .= '/';
-					}
-
-					$tRoute['action'] .= $uArgs['_segments'][$tActionKey];
-					unset($uArgs['_segments'][$tActionKey]);
-				}
-			}
-
-			if(strlen($tRoute['action']) == 0) {
-				$tRoute['action'] = $tControllerData['defaultAction'];
-			}
-
-			$tRoute['parameters'] = '';
-			$tRoute['parametersArray'] = array();
-			if(isset($uArgs['_segments'])) {
-				foreach($uArgs['_segments'] as $tSegment) {
-					$tRoute['parameters'] .= '/' . $tSegment;
-					$tRoute['parametersArray'][] = $tSegment;
-				}
-
-				unset($uArgs['_segments']);
-			}
-
-			unset($uArgs['_hash']);
-
-			$tRoute['queryString'] = http::buildQueryString($uArgs);
-			$tRoute['queryStringArray'] = $uArgs;
-
-			return $tRoute;
 		}
 
 		/**
@@ -354,9 +270,7 @@
 
 			events::invoke('httpUrl', $tParms);
 
-			$tControllerData = self::getControllerData($tParms['controller']);
-
-			return string::format($tControllerData['link'], $tParms);
+			return string::format(self::$link, $tParms);
 		}
 
 		/**

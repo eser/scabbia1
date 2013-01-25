@@ -111,7 +111,6 @@
 [removeCookie](#removeCookie)
 [parseGet](#parseGet)
 [parseHeaderString](#parseHeaderString)
-[buildQueryString](#buildQueryString)
 [get](#get)
 [post](#post)
 [cookie](#cookie)

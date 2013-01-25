@@ -623,37 +623,6 @@
 		/**
 		 * @ignore
 		 */
-		public static function buildQueryString($uArray) {
-			//! $tDefaultKey = config::get('/http/request/getKeys', '=');
-			/*
-			if(isset($uArray['_segments'])) {
-				$tString = '/' . implode('/', $uArray['_segments']) . '?';
-			}
-			else {
-				$tString = '?';
-			}
-			*/
-			$tString = '?';
-
-			foreach($uArray as $tKey => $tItem) {
-				if($tKey == '_segments' || $tKey == '_hash') {
-					continue;
-				}
-
-				if(is_null($tItem)) {
-					$tString .= $tKey . '&';
-					continue;
-				}
-
-				$tString .= $tKey . '=' . $tItem . '&';
-			}
-
-			return substr($tString, 0, -1);
-		}
-
-		/**
-		 * @ignore
-		 */
 		public static function get($uKey, $uDefault = null, $uFilter = null) {
 			if(!array_key_exists($uKey, $_GET)) {
 				return $uDefault;
