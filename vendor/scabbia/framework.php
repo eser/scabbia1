@@ -417,71 +417,67 @@
 		 * @return string
 		 */
 		 private static function pregFormat($uPattern) {
-			$tPattern = '';
-			$tBuffer = '';
-			$tNameBuffer = false;
+			$tBuffer = array(array(false, ''));
 			$tBrackets = 0;
 
 			for($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
 				$tChar = substr($uPattern, $tPos, 1);
 
-				// if($tChar == '\\') {
-				// 	$tBuffer .= substr($uPattern, ++$tPos, 1);
-				// 	continue;
-				// }
+				if($tChar == '\\') {
+				 	$tBuffer[$tBrackets][1] .= substr($uPattern, ++$tPos, 1);
+				 	continue;
+				}
+
+				if($tChar == '(') {
+					$tBuffer[++$tBrackets] = array(false, '');
+					continue;
+				}
 
 				if($tBrackets > 0) {
-					if($tChar == ':') {
-						$tNameBuffer = $tBuffer;
-						$tBuffer = '';
+					if($tChar == ':' && $tBuffer[$tBrackets][0] === false) {
+						$tBuffer[$tBrackets][0] = $tBuffer[$tBrackets][1];
+						$tBuffer[$tBrackets][1] = '';
 
 						continue;
 					}
 
 					if($tChar == ')') {
 						--$tBrackets;
-						if($tNameBuffer !== false) {
-							$tPattern .= '(?P<' . $tNameBuffer . '>';
+						$tLast = array_pop($tBuffer);
+
+						if($tLast[0] === false) {
+							$tBuffer[$tBrackets][1] .= '(?:';
 						}
 						else {
-							$tPattern .= '(';
+							$tBuffer[$tBrackets][1] .= '(?P<' . $tLast[0] . '>';
 						}
 
-						if(array_key_exists($tBuffer, self::$regexpPresets)) {
-							$tPattern .= self::$regexpPresets[$tBuffer] . ')';
+						if(array_key_exists($tLast[1], self::$regexpPresets)) {
+							$tBuffer[$tBrackets][1] .= self::$regexpPresets[$tLast[1]] . ')';
 						}
 						else {
-							$tPattern .= $tBuffer . ')';
+							$tBuffer[$tBrackets][1] .= $tLast[1] . ')';
 						}
-						
-						$tBuffer = '';
-						$tNameBuffer = false;
-
-						continue;
-					}
-				}
-				else {
-					if($tChar == '(') {
-						++$tBrackets;
-						$tPattern .= $tBuffer; // preg_quote($tBuffer);
-						$tBuffer = '';
 
 						continue;
 					}
 				}
 
-				$tBuffer .= $tChar;
-			}
-
-			if(strlen($tBuffer) > 0) {
-				for($i = $tBrackets;$i > 0;$i--) {
-					$tPattern .= '\\(';
+				if($tChar == ')') {
+					$tBuffer[$tBrackets][1] .= '\\)';
+					continue;
 				}
 
-				$tPattern .= $tBuffer; // preg_quote($tBuffer);
+				$tBuffer[$tBrackets][1] .= $tChar;
 			}
 
-			return $tPattern;
+			while($tBrackets > 0) {
+				--$tBrackets;
+				$tLast = array_pop($tBuffer);
+				$tBuffer[0][1] .= '\\(' . $tLast[1];
+			}
+
+			return $tBuffer[0][1];
 		}
 
 		/**

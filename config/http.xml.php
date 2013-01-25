@@ -178,15 +178,8 @@
 	<router>
 		<routeList>
 			<route>
-				<match><![CDATA[(controller:alnum)/(action:alnum)(params:[&?].+)*]]></match>
-				<callback>Scabbia\mvc::route</callback>
-			</route>
-			<route>
-				<match><![CDATA[(controller:alnum)(params:[&?].+)*]]></match>
-				<callback>Scabbia\mvc::route</callback>
-			</route>
-			<route>
-				<match><![CDATA[(params:[&?].+)*]]></match>
+				<!-- <match><![CDATA[(?P<controller>[a-zA-Z0-9]+)(?:/(?P<action>[a-zA-Z0-9]+))?(?P<params>(?:/(?:[a-zA-Z0-9]+)*))(?:[?&](?P<query>.+)*)]]></match> -->
+				<match><![CDATA[(controller:alnum)/?(action:alnum)?(params:(/(alnum))*)?([?&](query:all)*)?]]></match>
 				<callback>Scabbia\mvc::route</callback>
 			</route>
 		</routeList>
