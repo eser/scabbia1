@@ -82,6 +82,7 @@
 			if(!isset($uParams['controller']) || strlen($uParams['controller']) <= 0) {
 				$uParams['controller'] = self::$defaultController;
 			}
+
 			if(!isset($uParams['action']) || strlen($uParams['action']) <= 0) {
 				$uParams['action'] = self::$defaultAction;
 			}
@@ -89,15 +90,20 @@
 			$tActualController = $uParams['controller'];
 			$tActualAction = $uParams['action'];
 
-			$tParameterSegments = null;
+			if(isset($uParams['params']) && strlen($uParams['params']) > 0) {
+				$tSegments = explode('/', ltrim($uParams['params'], '/'));
+			}
+			else {
+				$tSegments = array();
+			}
+
 			$tParms = array(
 				'controller' => &$uParams['controller'],
 				'action' => &$uParams['action'],
 				'controllerActual' => &$tActualController,
 				'actionActual' => &$tActualAction,
-				'parameterSegments' => &$tParameterSegments
+				'parameterSegments' => &$tSegments
 			);
-			events::invoke('routing', $tParms);
 
 			self::getControllers();
 
@@ -120,7 +126,7 @@
 				array_push(self::$controllerStack, $tController);
 
 				try {
-					$tReturn = $tController->render($tActualAction, array()); // $uParams['parametersArray']
+					$tReturn = $tController->render($tActualAction, $tSegments);
 					if($tReturn === false) {
 						array_pop(self::$controllerStack);
 						break;
@@ -249,13 +255,13 @@
 			$tCurrent = self::current();
 
 			return string::format(self::$link, array(
-			                                                     'siteroot' => framework::$siteroot,
-			                                                     'device' => http::$crawlerType,
-			                                                     'controller' => $tCurrent->route['controller'],
-			                                                     'action' => $tCurrent->route['action'],
-			                                                     'parameters' => $tCurrent->route['parameters'],
-			                                                     'queryString' => $tCurrent->route['queryString']
-			                                                ));
+													 'siteroot' => framework::$siteroot,
+													 'device' => http::$crawlerType,
+													 'controller' => $tCurrent->route['controller'],
+													 'action' => $tCurrent->route['action'],
+													 'parameters' => $tCurrent->route['parameters'],
+													 'queryString' => $tCurrent->route['queryString']
+												));
 		}
 
 		/**
