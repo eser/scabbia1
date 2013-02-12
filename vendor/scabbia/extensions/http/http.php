@@ -124,8 +124,8 @@
 			}
 
 			// self::$browser = get_browser(null, true);
-			self::$languages = self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true);
-			self::$contentTypes = self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true);
+			self::$languages = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true) : array();
+			self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ? self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) : array();
 
 			self::$queryString = $_SERVER['QUERY_STRING'];
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
