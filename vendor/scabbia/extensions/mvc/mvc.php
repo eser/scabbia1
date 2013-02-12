@@ -255,7 +255,7 @@
 			$tCurrent = self::current();
 
 			return string::format(self::$link, array(
-													 'siteroot' => framework::$siteroot,
+													 'siteroot' => rtrim(framework::$siteroot, '/'),
 													 'device' => http::$crawlerType,
 													 'controller' => $tCurrent->route['controller'],
 													 'action' => $tCurrent->route['action'],
@@ -269,7 +269,7 @@
 		 */
 		private static function urlInternal($uPath) {
 			$tParms = array(
-				'siteroot' => framework::$siteroot,
+				'siteroot' => rtrim(framework::$siteroot, '/'),
 				'device' => http::$crawlerType,
 				'path' => $uPath
 			);

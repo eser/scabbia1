@@ -158,7 +158,7 @@
 		 */
 		public static function url($uPath) {
 			$tParms = array(
-				'siteroot' => framework::$siteroot,
+				'siteroot' => rtrim(framework::$siteroot, '/'),
 				'device' => self::$crawlerType,
 				'path' => $uPath
 			);

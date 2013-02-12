@@ -98,7 +98,7 @@
 			}
 
 			$tExtra = array(
-				'root' => framework::$siteroot
+				'root' => rtrim(framework::$siteroot, '/')
 			);
 
 			if(extensions::isLoaded('i8n')) {
