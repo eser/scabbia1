@@ -158,7 +158,7 @@
 		 * @ignore
 		 */
 		public static function httpUrl(&$uParms) {
-			$tResolved = router::resolve($uParms['path']);
+			$tResolved = http::routeResolve($uParms['path']);
 
 			if(is_null($tResolved)) {
 				return;
@@ -176,7 +176,7 @@
 		public static function generate($uPath) {
 			self::getControllers();
 
-			$tResolved = router::resolve($uPath);
+			$tResolved = http::routeResolve($uPath);
 			if(is_null($tResolved)) {
 				return false;
 			}

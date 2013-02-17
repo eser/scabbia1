@@ -75,7 +75,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function load($uRunExtensions = true) {
+		public static function load() {
 			self::$milestones[] = array('begin', microtime(true));
 
 			// endpoints
@@ -151,15 +151,6 @@
 			ob_implicit_flush(false);
 
 			// run extensions
-			if($uRunExtensions) {
-				self::run();
-			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function run() {
 			$tParms = array();
 			events::invoke('run', $tParms);
 			self::$milestones[] = array('extensionsRun', microtime(true));

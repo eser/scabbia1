@@ -8,9 +8,7 @@
 		<phpversion>5.2.0</phpversion>
 		<phpdependList />
 		<fwversion>1.0</fwversion>
-		<fwdependList>
-			<fwdepend>http</fwdepend>
-		</fwdependList>
+		<fwdependList />
 	</info>
 	<includeList>
 		<include>router.php</include>
@@ -18,14 +16,5 @@
 	<classList>
 		<class>router</class>
 	</classList>
-	<eventList>
-		<event>
-			<name>load</name>
-			<callback>Scabbia\router::extensionLoad</callback>
-		</event>
-		<event>
-			<name>run</name>
-			<callback>Scabbia\router::run</callback>
-		</event>
-	</eventList>
+	<eventList />
 </scabbia>

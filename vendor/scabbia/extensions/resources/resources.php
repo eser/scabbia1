@@ -29,7 +29,7 @@
 		/**
 		 * @ignore
 		 */
-		public static function httpRoute(&$uParms) {
+		public static function routing() {
 			if(is_null(self::$packs)) {
 				self::$packs = config::get('/resources/packList', array());
 
@@ -45,8 +45,8 @@
 				self::$directories = config::get('/resources/directoryList', array());
 			}
 
-			if(strlen($uParms['queryString']) > 0) {
-				$tPath = explode('&', $uParms['queryString'], 2);
+			if(strlen(http::$queryString) > 0) {
+				$tPath = explode('&', http::$queryString, 2);
 
 				foreach(self::$directories as $tDirectory) {
 					$tDirectoryName = rtrim($tDirectory['name'], '/');

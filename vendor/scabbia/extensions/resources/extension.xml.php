@@ -27,10 +27,5 @@
 		<class>JSMinException</class>
 		<class>CssMin</class>
 	</classList>
-	<eventList>
-		<event>
-			<name>httpRoute</name>
-			<callback>Scabbia\resources::httpRoute</callback>
-		</event>
-	</eventList>
+	<eventList />
 </scabbia>

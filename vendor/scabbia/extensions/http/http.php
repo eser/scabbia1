@@ -79,6 +79,14 @@
 		 * @ignore
 		 */
 		public static $contentTypes = array();
+		/**
+		 * @ignore
+		 */
+		public static $routes = array();
+		/**
+		 * @ignore
+		 */
+		public static $notfoundPage;
 
 		/**
 		 * @ignore
@@ -133,6 +141,12 @@
 					break;
 				}
 			}
+
+			self::$notfoundPage = config::get('/http/errorPages/notfound', 'shared/error.php');
+
+			foreach(config::get('/http/routeList', array()) as $tRouteList) {
+				self::routeAdd($tRouteList['match'], $tRouteList['callback']);
+			}
 		}
 
 		/**
@@ -156,6 +170,53 @@
 		/**
 		 * @ignore
 		 */
+		public static function routing() {
+			$tResolution = self::routeResolve(self::$queryString);
+
+			if(!is_null($tResolution) && call_user_func($tResolution[0], $tResolution[1]) !== false) {
+				return true;
+			}
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function routeResolve($uQueryString) {
+			foreach(self::$routes as $tRoute) {
+				if(!is_null($tRoute[2]) && !in_array(self::$methodext, $tRoute[2])) { //! todo methodex
+					continue;
+				}
+
+				$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), $uQueryString);
+
+				if(count($tMatches) > 0) {
+					return array($tRoute[1], $tMatches);
+				}
+			}
+
+			return null;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function routeAdd($uMatch, $uMethod) {
+			if(!is_array($uMatch)) {
+				$uMatch = array($uMatch);
+			}
+
+			foreach($uMatch as $tMatch) {
+				$tParts = explode(' ', $tMatch, 2);
+
+				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+
+				self::$routes[] = array($tParts[0], $uMethod, $tLimitMethods);
+			}
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function url($uPath) {
 			$tParms = array(
 				'siteroot' => rtrim(framework::$siteroot, '/'),
@@ -171,9 +232,25 @@
 		/**
 		 * @ignore
 		 */
+		public static function notfound() {
+			header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+
+			//! todo internalization.
+			// maybe just include?
+			views::view(self::$notfoundPage, array(
+			                                   'title' => 'Error',
+			                                   'message' => '404 Not Found'
+			                              ));
+
+			framework::end(1);
+		}
+
+		/**
+		 * @ignore
+		 */
 		public static function output($uParms) {
 			if(self::$isAjax) {
-				$tLastContentType = http::sentHeaderValue('Content-Type');
+				$tLastContentType = self::sentHeaderValue('Content-Type');
 				$tContent = '{ "isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true')
 						. ', "errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true));
 

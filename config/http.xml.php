@@ -16,6 +16,21 @@
 		</rewriteList>
 -->
 
+		<routeList>
+			<route>
+				<match><![CDATA[(controller:alnum)?/?(action:alnum)?(params:[^?&]*)?(query:[?&].*)?]]></match>
+				<callback>Scabbia\mvc::route</callback>
+			</route>
+		</routeList>
+
+		<errorPages>
+			<notfound>shared/error.php</notfound>
+			<restriction>shared/error.php</restriction>
+			<maintenance>shared/error.php</maintenance>
+			<ipban>shared/error.php</ipban>
+			<error>shared/error.php</error>
+		</errorPages>
+
 		<userAgents>
 			<autoCheck>0</autoCheck>
 			<platformList>
@@ -167,25 +182,6 @@
 			</crawlerList>
 		</userAgents>
 	</http>
-
-	<router>
-		<routeList>
-			<route>
-				<match><![CDATA[(controller:alnum)/?(action:alnum)?(params:[^?&]*)?(query:[?&].*)?]]></match>
-				<callback>Scabbia\mvc::route</callback>
-			</route>
-		</routeList>
-
-<!--
-		<errorPages>
-			<notfound>shared/notfound</notfound>
-			<restriction>shared/restriction</restriction>
-			<maintenance>shared/maintenance</maintenance>
-			<ipban>shared/ipban</ipban>
-			<error>shared/error</error>
-		</errorPages>
--->
-	</router>
 
 <!--
 	<session>
