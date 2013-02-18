@@ -8,19 +8,19 @@ Installation
 On *nix:
 ``` bash
 curl -s http://getcomposer.org/installer | php
-php composer.phar require larukedi/scabbia-framework:dev-development
+php composer.phar require scabbia/scabbia:dev-development
 ```
 
 On Windows:
 ``` bat
-composer require larukedi/scabbia-framework:dev-development
+composer require scabbia/scabbia:dev-development
 ```
 
 Usage
 -----
 ``` php
 require('vendor/autoload.php');
-require('vendor/larukedi/scabbia-framework/loader.php');
+require('vendor/scabbia/scabbia/framework.php');
 ```
 
 Requirements

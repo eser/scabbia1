@@ -20,5 +20,11 @@
 	},
 	"suggest": {
 		"ext-intl": "ext/intl for i18n features"
+	},
+	"autoload": {
+		"psr-0": {
+			"Scabbia\\": "library/",
+			"Scabbia\\Extensions\\": "library/extensions/"
+		}
 	}
 }

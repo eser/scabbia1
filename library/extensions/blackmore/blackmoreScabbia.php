@@ -120,10 +120,10 @@
 ?' . '>');
 
 			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;
