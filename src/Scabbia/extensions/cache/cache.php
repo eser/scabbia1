@@ -4,7 +4,7 @@
 
 	use Scabbia\config;
 	use Scabbia\framework;
-	use Scabbia\Extensions\Io;
+	use Scabbia\Extensions\Io\io;
 
 	/**
 	 * Cache Extension

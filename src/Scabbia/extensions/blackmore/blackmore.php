@@ -6,7 +6,6 @@
 	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Auth\auth;
 	use Scabbia\Extensions\Validation\validation;
-	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Controllers\controller;
 
 	/**

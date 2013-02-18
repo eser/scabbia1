@@ -7,7 +7,7 @@
 	use Scabbia\Extensions\Profiler\profiler;
 	use Scabbia\Extensions\Cache\cache;
 	use Scabbia\Extensions\Database\datasets;
-	use Scabbia\Extensions\Database\datasource;
+	use Scabbia\Extensions\Datasources\datasource;
 	use Scabbia\Extensions\Database\databaseQueryResult;
 	use Scabbia\Extensions\Database\databaseQuery;
 
