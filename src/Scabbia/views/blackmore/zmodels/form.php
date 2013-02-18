@@ -1,6 +1,6 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\Extensions\Session\session;
 ?>
 <?php views::viewFile('{core}views/blackmore/header.php'); ?>
 <form method="POST" action="@mvc::url('editor/category')">

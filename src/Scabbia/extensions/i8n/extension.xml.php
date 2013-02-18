@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>httpUrl</name>
-			<callback>Scabbia\i8n::httpUrl</callback>
+			<callback>Scabbia\Extensions\I8n\i8n::httpUrl</callback>
 		</event>
 	</eventList>
 </scabbia>

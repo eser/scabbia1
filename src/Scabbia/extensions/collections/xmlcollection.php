@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia;
+	namespace Scabbia\Extensions\Collections;
 
 	/**
 	 * Xml Collection Class

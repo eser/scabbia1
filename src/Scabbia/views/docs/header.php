@@ -1,6 +1,6 @@
 <?php
-	use Scabbia\html;
-	use Scabbia\http;
+	use Scabbia\Extensions\Html\html;
+	use Scabbia\Extensions\Http\http;
 	use Scabbia\framework;
 ?>
 <?php echo html::doctype('html5'); ?>

@@ -32,11 +32,11 @@
 	<eventList>
 		<event>
 			<name>blackmoreRegisterModules</name>
-			<callback>Scabbia\blackmoreScabbia::blackmoreRegisterModules</callback>
+			<callback>Scabbia\Extensions\Blackmore\blackmoreScabbia::blackmoreRegisterModules</callback>
 		</event>
 		<event>
 			<name>blackmoreRegisterModules</name>
-			<callback>Scabbia\blackmoreZmodels::blackmoreRegisterModules</callback>
+			<callback>Scabbia\Extensions\Blackmore\blackmoreZmodels::blackmoreRegisterModules</callback>
 		</event>
 	</eventList>
 </scabbia>

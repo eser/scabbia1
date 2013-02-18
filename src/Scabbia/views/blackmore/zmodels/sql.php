@@ -1,7 +1,7 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
-	use Scabbia\blackmore;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\Extensions\Session\session;
+	use Scabbia\Extensions\Blackmore\blackmore;
 ?>
 <?php views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">

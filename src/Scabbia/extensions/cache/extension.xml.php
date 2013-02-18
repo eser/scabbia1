@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\cache::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Cache\cache::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

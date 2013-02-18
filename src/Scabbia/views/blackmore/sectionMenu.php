@@ -1,6 +1,6 @@
 <?php
-	use Scabbia\blackmore;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Blackmore\blackmore;
+	use Scabbia\Extensions\Mvc\mvc;
 ?>
 <?php
 	$tModule = & blackmore::$modules[$model];

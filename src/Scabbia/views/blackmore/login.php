@@ -1,8 +1,8 @@
 <?php
 	use Scabbia\config;
 	use Scabbia\framework;
-	use Scabbia\html;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Html\html;
+	use Scabbia\Extensions\Mvc\mvc;
 ?>
 <?php echo html::doctype('html5'); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">

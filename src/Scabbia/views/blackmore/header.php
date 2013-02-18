@@ -1,10 +1,10 @@
 <?php
-	use Scabbia\blackmore;
+	use Scabbia\Extensions\Blackmore\blackmore;
 	use Scabbia\config;
 	use Scabbia\framework;
-	use Scabbia\html;
-	use Scabbia\http;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Html\html;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Mvc\mvc;
 ?>
 <?php echo html::doctype('html5'); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">

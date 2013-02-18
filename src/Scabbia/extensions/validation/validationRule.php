@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia;
+	namespace Scabbia\Extensions\Validation;
 
 	/**
 	 * Validation Rule Class

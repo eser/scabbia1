@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia;
+	namespace Scabbia\Extensions\Fb;
 
 	/**
 	 * Extends the BaseFacebook class with the intent of using

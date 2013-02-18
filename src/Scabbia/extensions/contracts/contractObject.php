@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia;
+	namespace Scabbia\Extensions\Contracts;
 
 	/**
 	 * Contract Object Class

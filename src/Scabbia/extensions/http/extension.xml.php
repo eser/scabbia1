@@ -21,11 +21,11 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\http::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Http\http::extensionLoad</callback>
 		</event>
 		<event>
 			<name>output</name>
-			<callback>Scabbia\http::output</callback>
+			<callback>Scabbia\Extensions\Http\http::output</callback>
 		</event>
 	</eventList>
 </scabbia>

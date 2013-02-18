@@ -41,7 +41,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\database::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Database\database::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

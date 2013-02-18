@@ -50,31 +50,31 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\views::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\views::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEngineMarkdown::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEngineMarkdown::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEnginePhptal::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEnginePhptal::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEngineRaintpl::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEngineRaintpl::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEngineRazor::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEngineRazor::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEngineSmarty::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEngineSmarty::extensionLoad</callback>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\viewEngineTwig::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Views\viewEngineTwig::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>

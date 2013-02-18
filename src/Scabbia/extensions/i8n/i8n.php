@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia;
+	namespace Scabbia\Extensions\I8n;
 
 	/**
 	 * I8N Extension

@@ -21,7 +21,7 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\auth::extensionLoad</callback>
+			<callback>Scabbia\Extensions\Auth\auth::extensionLoad</callback>
 		</event>
 	</eventList>
 </scabbia>
