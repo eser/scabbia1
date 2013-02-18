@@ -2,6 +2,10 @@
 
 	namespace Scabbia\Extensions\Html;
 
+	use Scabbia\Extensions\Arrays\arrays;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\framework;
+
 	/**
 	 * Html Extension
 	 *

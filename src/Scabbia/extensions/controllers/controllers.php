@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Controllers;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Datasources\datasources;
+
 	/**
 	 * Controllers Extension
 	 *
@@ -32,22 +35,22 @@
 				return false;
 			}
 
-			if(!isset(controllers::$models[$uDatasourceName])) {
-				controllers::$models[$uDatasourceName] = datasources::get($uDatasourceName);
+			if(!isset(self::$models[$uDatasourceName])) {
+				self::$models[$uDatasourceName] = datasources::get($uDatasourceName);
 			}
 
-			return controllers::$models[$uDatasourceName];
+			return self::$models[$uDatasourceName];
 		}
 
 		/**
 		 * @ignore
 		 */
 		public static function load($uModelClass, $uDatasource = null) {
-			if(!isset(controllers::$models[$uModelClass])) {
-				controllers::$models[$uModelClass] = new $uModelClass ($uDatasource);
+			if(!isset(self::$models[$uModelClass])) {
+				self::$models[$uModelClass] = new $uModelClass ($uDatasource);
 			}
 
-			return controllers::$models[$uModelClass];
+			return self::$models[$uModelClass];
 		}
 	}
 

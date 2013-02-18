@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Media;
 
+	use Scabbia\framework;
+	use Scabbia\config;
+
 	/**
 	 * Media Extension
 	 *

@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Router;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Profiler\profiler;
+
 	/**
 	 * Router Extension
 	 *

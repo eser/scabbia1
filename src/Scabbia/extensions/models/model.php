@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Models;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Datasources\datasources;
+
 	/**
 	 * Model Class
 	 *

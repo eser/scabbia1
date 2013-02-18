@@ -2,6 +2,10 @@
 
 	namespace Scabbia\Extensions\Smtp;
 
+	use Scabbia\Extensions\Mime\mime;
+	use Scabbia\Extensions\Mime\multipart;
+	use Scabbia\Extensions\Smtp\smtp;
+
 	/**
 	 * SMTP Mail Class
 	 *

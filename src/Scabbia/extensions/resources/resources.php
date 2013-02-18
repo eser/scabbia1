@@ -2,6 +2,15 @@
 
 	namespace Scabbia\Extensions\Resources;
 
+	use Scabbia\config;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Mime\mime;
+	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\framework;
+	use Scabbia\Extensions\Io\io;
+	use Scabbia\Extensions\Views\views;
+
 	/**
 	 * Resources Extension
 	 *

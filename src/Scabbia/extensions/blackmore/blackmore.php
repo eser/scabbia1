@@ -2,6 +2,12 @@
 
 	namespace Scabbia\Extensions\Blackmore;
 
+	use Scabbia\events;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Auth\auth;
+	use Scabbia\Extensions\Validation\validation;
+	use Scabbia\Extensions\Http\http;
+
 	/**
 	 * Blackmore Extension
 	 *

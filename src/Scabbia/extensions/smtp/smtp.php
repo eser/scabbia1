@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Smtp;
 
+	use Scabbia\config;
+
 	/**
 	 * SMTP Extension
 	 *

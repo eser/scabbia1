@@ -2,6 +2,13 @@
 
 	namespace Scabbia\Extensions\Logger;
 
+	use Scabbia\config;
+	use Scabbia\events;
+	use Scabbia\framework;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Profiler\profiler;
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * Logger Extension
 	 *

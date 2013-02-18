@@ -2,6 +2,13 @@
 
 	namespace Scabbia\Extensions\Mvc;
 
+	use Scabbia\config;
+	use Scabbia\Extensions\Mvc\mvc;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\events;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\framework;
+
 	/**
 	 * MVC Extension
 	 *

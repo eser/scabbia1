@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Validation;
 
+	use Scabbia\extensions;
+
 	/**
 	 * Validation Extension
 	 *

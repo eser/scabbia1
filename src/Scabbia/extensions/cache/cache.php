@@ -2,6 +2,10 @@
 
 	namespace Scabbia\Extensions\Cache;
 
+	use Scabbia\config;
+	use Scabbia\framework;
+	use Scabbia\Extensions\Io;
+
 	/**
 	 * Cache Extension
 	 *

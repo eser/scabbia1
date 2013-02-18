@@ -2,6 +2,10 @@
 
 	namespace Scabbia\Extensions\Views;
 
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\framework;
+	use Scabbia\config;
+
 	/**
 	 * ViewEngine: Smarty Extension
 	 *

@@ -2,6 +2,8 @@
 
 	namespace Scabbia;
 
+	use Scabbia\framework;
+
 	/**
 	 * Configuration class which handles all configuration-based operations
 	 *

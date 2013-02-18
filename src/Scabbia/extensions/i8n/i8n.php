@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\I8n;
 
+	use Scabbia\config;
+	use Scabbia\framework;
+
 	/**
 	 * I8N Extension
 	 *

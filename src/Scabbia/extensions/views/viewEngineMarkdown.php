@@ -2,6 +2,12 @@
 
 	namespace Scabbia\Extensions\Views;
 
+	use Scabbia\config;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\framework;
+	use Scabbia\Extensions\Io\io;
+
 	/**
 	 * ViewEngine: MarkDown Extension
 	 *

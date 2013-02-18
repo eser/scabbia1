@@ -2,6 +2,10 @@
 
 	namespace Scabbia\Extensions\Database;
 
+	use Scabbia\Extensions\Database\datasources;
+	use Scabbia\Extensions\Database\database;
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * Database Query Class
 	 *

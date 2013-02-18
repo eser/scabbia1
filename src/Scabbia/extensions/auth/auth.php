@@ -2,6 +2,12 @@
 
 	namespace Scabbia\Extensions\Auth;
 
+	use Scabbia\config;
+	use Scabbia\Extensions\Session\session;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Mvc\mvc;
+	use Scabbia\framework;
+
 	/**
 	 * Auth Extension
 	 *

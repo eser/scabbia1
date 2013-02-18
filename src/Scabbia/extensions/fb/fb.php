@@ -2,6 +2,11 @@
 
 	namespace Scabbia\Extensions\Fb;
 
+	use Scabbia\config;
+	use Scabbia\Extensions\Session\session;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\framework;
+
 	/**
 	 * Facebook (FB) Extension
 	 *

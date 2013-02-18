@@ -2,6 +2,10 @@
 
 	namespace Scabbia;
 
+	use Scabbia\framework;
+	use Scabbia\config;
+	use Scabbia\events;
+	
 	/**
 	 * Extensions manager which extends the framework capabilities with extra routines
 	 *

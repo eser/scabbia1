@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Zmodels;
 
+	use Scabbia\Extensions\Zmodels\zmodels;
+
 	/**
 	 * Zmodel Class
 	 *

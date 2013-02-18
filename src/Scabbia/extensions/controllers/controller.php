@@ -2,6 +2,13 @@
 
 	namespace Scabbia\Extensions\Controllers;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Datasources\datasources;
+	use Scabbia\Extensions\Io\io;
+	use Scabbia\framework;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Views\views;
+
 	/**
 	 * Controller Class
 	 *

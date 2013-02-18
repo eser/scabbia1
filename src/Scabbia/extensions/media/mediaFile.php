@@ -2,6 +2,11 @@
 
 	namespace Scabbia\Extensions\Media;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Mime\mime;
+	use Scabbia\Extensions\Media\media;
+	use Scabbia\Extensions\Http\http;
+
 	/**
 	 * Media File Class
 	 *

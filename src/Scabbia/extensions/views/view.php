@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Views;
 
+	use Scabbia\Extensions\views\views;
+
 	/**
 	 * View Class
 	 *

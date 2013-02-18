@@ -2,6 +2,11 @@
 
 	namespace Scabbia\Extensions\Session;
 
+	use Scabbia\config;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * Session Extension
 	 *

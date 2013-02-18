@@ -2,6 +2,13 @@
 
 	namespace Scabbia\Extensions\Views;
 
+	use Scabbia\config;
+	use Scabbia\framework;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\I8n\i8n;
+	use Scabbia\Extensions\Mvc\mvc;
+	use Scabbia\Extensions\Views\views;
+
 	/**
 	 * Views Extension
 	 *

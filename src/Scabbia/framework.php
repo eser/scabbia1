@@ -2,6 +2,10 @@
 
 	namespace Scabbia;
 
+	use Scabbia\config;
+	use Scabbia\extensions;
+	use Scabbia\events;
+
 	// TODO: download garbage collector
 	// TODO: global event-based garbage collector
 	// TODO: download caching w/ aging

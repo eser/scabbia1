@@ -2,6 +2,11 @@
 
 	namespace Scabbia\Extensions\Access;
 
+	use Scabbia\config;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\framework;
+
 	/**
 	 * Access Extension
 	 *

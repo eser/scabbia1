@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Profiler;
 
+	use Scabbia\extensions;
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * Profiler Extension
 	 *

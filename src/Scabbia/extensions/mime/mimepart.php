@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Mime;
 
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * Mimepart Class
 	 *

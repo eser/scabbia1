@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Datasources;
 
+	use Scabbia\config;
+
 	/**
 	 * Datasources Extension
 	 *

@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Unittest;
 
+	use Scabbia\extensions;
+
 	/**
 	 * UnitTest Extension
 	 *

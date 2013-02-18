@@ -2,6 +2,12 @@
 
 	namespace Scabbia\Extensions\Blackmore;
 
+	use Scabbia\Extensions\Auth\auth;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\framework;
+	use Scabbia\config;
+	use Scabbia\extensions;
+
 	/**
 	 * @ignore
 	 */

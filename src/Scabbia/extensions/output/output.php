@@ -24,7 +24,7 @@
 		 * @ignore
 		 */
 		public static function begin() {
-			ob_start('output::flushOutput');
+			ob_start('Scabbia\\Extensions\\Output\\output::flushOutput');
 			ob_implicit_flush(false);
 
 			$tArgs = func_get_args();

@@ -2,6 +2,9 @@
 
 	namespace Scabbia\Extensions\Database;
 
+	use Scabbia\Extensions\Database\database;
+	use Scabbia\Extensions\Cache\cache;
+
 	/**
 	 * Database Query Result Class
 	 *

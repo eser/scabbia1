@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Io;
 
+	use Scabbia\Extensions\String\string;
+
 	/**
 	 * IO Extension
 	 *

@@ -2,6 +2,14 @@
 
 	namespace Scabbia\Extensions\Http;
 
+	use Scabbia\config;
+	use Scabbia\framework;
+	use Scabbia\events;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Mime\mime;
+
 	/**
 	 * Http Extension
 	 *

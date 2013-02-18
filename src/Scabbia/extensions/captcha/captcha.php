@@ -2,6 +2,11 @@
 
 	namespace Scabbia\Extensions\Captcha;
 
+	use Scabbia\framework;
+	use Scabbia\config;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\Extensions\Session\session;
+
 	/**
 	 * Captcha Extension
 	 *

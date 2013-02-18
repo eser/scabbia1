@@ -2,6 +2,12 @@
 
 	namespace Scabbia\Extensions\Database;
 
+	use Scabbia\Extensions\Database\database;
+	use Scabbia\extensions;
+	use Scabbia\Extensions\Profiler\profiler;
+	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\Extensions\Database\datasets;
+
 	/**
 	 * Database Connection Class
 	 *
