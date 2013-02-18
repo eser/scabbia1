@@ -23,8 +23,8 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Scabbia\\": "library/",
-			"Scabbia\\Extensions\\": "library/extensions/"
+			"Scabbia": "library",
+			"Scabbia\\Extensions": "library/extensions"
 		}
 	}
 }
