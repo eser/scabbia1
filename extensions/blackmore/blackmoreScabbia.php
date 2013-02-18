@@ -105,7 +105,6 @@
 		define(\'QPATH_BASE\', ' . var_export(QPATH_BASE, true) . ');
 	}
 	define(\'QPATH_CORE\', ' . var_export(framework::$applicationPath, true) . ');
-	define(\'QPATH_VENDOR\', ' . var_export(framework::$applicationPath, true) . ');
 	define(\'QTIME_INIT\', microtime(true));
 
 	define(\'SCABBIA_VERSION\', ' . var_export(SCABBIA_VERSION, true) . ');
@@ -121,10 +120,10 @@
 ?' . '>');
 
 			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_VENDOR . 'scabbia/extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;
@@ -167,7 +166,7 @@
 				foreach($tConfig['/includeList'] as $tInclude) {
 					$tIncludePath = pathinfo(framework::translatePath($tInclude));
 
-					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], GLOB_FILES);
+					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], framework::GLOB_FILES);
 					if($tFiles !== false) {
 						foreach($tFiles as $tFilename) {
 							if(substr($tFilename, -1) == '/') {
@@ -210,7 +209,7 @@
 		 * @ignore
 		 */
 		private static function purgeFolder($uFolder) {
-			$tDirectory = framework::glob($uFolder, null, GLOB_RECURSIVE | GLOB_FILES);
+			$tDirectory = framework::glob($uFolder, null, framework::GLOB_RECURSIVE | framework::GLOB_FILES);
 
 			if($tDirectory === false) {
 				return;

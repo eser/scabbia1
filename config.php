@@ -24,12 +24,12 @@
 		public static function load() {
 			$tConfig = array();
 
-			foreach(framework::glob(QPATH_CORE . 'config/', null, GLOB_RECURSIVE | GLOB_FILES) as $tFile) {
+			foreach(framework::glob(QPATH_CORE . 'config/', null, framework::GLOB_RECURSIVE | framework::GLOB_FILES) as $tFile) {
 				self::loadFile($tConfig, $tFile);
 			}
 
 			if(!is_null(framework::$applicationPath)) {
-				foreach(framework::glob(framework::$applicationPath . 'config/', null, GLOB_RECURSIVE | GLOB_FILES) as $tFile) {
+				foreach(framework::glob(framework::$applicationPath . 'config/', null, framework::GLOB_RECURSIVE | framework::GLOB_FILES) as $tFile) {
 					self::loadFile($tConfig, $tFile);
 				}
 			}

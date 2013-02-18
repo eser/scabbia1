@@ -72,4 +72,5 @@
 					$_SERVER[$tEnv] = getenv($tEnv) or $_SERVER[$tEnv] = '';
 				}
 	*/
-?>
+
+	?>
