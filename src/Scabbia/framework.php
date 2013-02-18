@@ -114,7 +114,7 @@
 
 			// Include framework dependencies and load them
 			require(framework::$corepath . 'patches.php');
-			require(framework::$corepath . 'framework.php');
+			// require(framework::$corepath . 'framework.php');
 			require(framework::$corepath . 'config.php');
 			require(framework::$corepath . 'events.php');
 			require(framework::$corepath . 'extensions.php');
