@@ -73,7 +73,7 @@
 					$tArgs = $tRule->args;
 					array_unshift($tArgs, $uArray[$tRule->field]);
 
-					if(!call_user_func_array('Scabbia\\contracts::' . $tRule->type, $tArgs)->check()) {
+					if(!call_user_func_array('Scabbia\\Extensions\\Contracts\\contracts::' . $tRule->type, $tArgs)->check()) {
 						self::addSummary($tRule->field, $tRule->errorMessage);
 					}
 				}

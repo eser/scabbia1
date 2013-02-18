@@ -39,7 +39,7 @@
 					<part>
 						<type>function</type>
 						<class>core</class>
-						<name>Scabbia\mvc::exportAjaxJs</name>
+						<name>Scabbia\Extensions\Mvc\mvc::exportAjaxJs</name>
 					</part>
 					<part>
 						<type>file</type>

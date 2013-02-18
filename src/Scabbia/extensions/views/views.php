@@ -43,7 +43,7 @@
 				return;
 			}
 
-			self::$viewEngines[$uExtension] = 'Scabbia\\' . $uClassName;
+			self::$viewEngines[$uExtension] = 'Scabbia\\Extensions\\Views\\' . $uClassName;
 		}
 
 		/**

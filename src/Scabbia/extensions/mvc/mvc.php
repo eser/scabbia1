@@ -60,7 +60,7 @@
 				self::$controllerList = array();
 
 				foreach(get_declared_classes() as $tClass) {
-					if(!is_subclass_of($tClass, 'Scabbia\\controller')) {
+					if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Controllers\\controller')) {
 						continue;
 					}
 
@@ -285,7 +285,7 @@
 		public static function url() {
 			$tArgs = func_get_args();
 
-			return call_user_func_array('Scabbia\\mvc::urlInternal', $tArgs);
+			return call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::urlInternal', $tArgs);
 		}
 
 		/**
@@ -293,7 +293,7 @@
 		 */
 		public static function redirect() {
 			$tArgs = func_get_args();
-			$tQuery = call_user_func_array('Scabbia\\mvc::urlInternal', $tArgs);
+			$tQuery = call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::urlInternal', $tArgs);
 
 			http::sendRedirect($tQuery, true);
 		}
@@ -305,7 +305,7 @@
 			$tArray = array();
 
 			foreach(get_declared_classes() as $tClass) {
-				if(!is_subclass_of($tClass, 'Scabbia\\controller')) { // && $tClass != 'controller'
+				if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Controllers\\controller')) { // && $tClass != 'controller'
 					continue;
 				}
 

@@ -13,7 +13,7 @@
 			$uParms['modules']['index']['submenus'] = true;
 
 			$uParms['modules']['index']['actions'][] = array(
-				'callback' => 'Scabbia\\blackmoreZmodels::generateSql',
+				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::generateSql',
 				'menutitle' => 'Generate Zmodel SQL',
 				'action' => 'generateSql'
 			);
@@ -21,24 +21,24 @@
 			foreach(zmodels::$zmodels as $tKey => $tZmodel) {
 				$uParms['modules'][$tKey] = array(
 					'title' => $tZmodel['title'],
-					'callback' => 'Scabbia\\blackmoreZmodels::all',
+					'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::all',
 					'submenus' => true,
 					'actions' => array(
 						array(
-							'callback' => 'Scabbia\\blackmoreZmodels::add',
+							'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::add',
 							'menutitle' => 'Add ' . $tZmodel['singularTitle'],
 							'action' => 'add'
 						),
 						array(
-							'callback' => 'Scabbia\\blackmoreZmodels::edit',
+							'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::edit',
 							'action' => 'edit'
 						),
 						array(
-							'callback' => 'Scabbia\\blackmoreZmodels::remove',
+							'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::remove',
 							'action' => 'remove'
 						),
 						array(
-							'callback' => 'Scabbia\\blackmoreZmodels::all',
+							'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreZmodels::all',
 							'menutitle' => 'All ' . $tZmodel['title'],
 							'action' => 'all'
 						)

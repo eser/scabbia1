@@ -81,8 +81,8 @@
 		 * @ignore
 		 */
 		public static function extensionLoad() {
-			datasources::registerType('pdo', 'Scabbia\\databaseConnection', 'Scabbia\\databaseProviderPdo');
-			datasources::registerType('mysql', 'Scabbia\\databaseConnection', 'Scabbia\\databaseProviderMysql');
+			datasources::registerType('pdo', 'Scabbia\\Extensions\\Database\\databaseConnection', 'Scabbia\\Extensions\\Database\\databaseProviderPdo');
+			datasources::registerType('mysql', 'Scabbia\\Extensions\\Database\\databaseConnection', 'Scabbia\\Extensions\\Database\\databaseProviderMysql');
 		}
 	}
 

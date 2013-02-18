@@ -131,7 +131,7 @@
 				$uMemberName = $uDatasourceName;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::loadDatasource', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Controllers\\controllers::loadDatasource', $uArgs);
 		}
 
 		/**
@@ -144,7 +144,7 @@
 				$uMemberName = $uModelClass;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\controllers::load', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Controllers\\controllers::load', $uArgs);
 		}
 
 		/**
@@ -190,7 +190,7 @@
 		 */
 		public function redirect() {
 			$uArgs = func_get_args();
-			call_user_func_array('Scabbia\\mvc::redirect', $uArgs);
+			call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::redirect', $uArgs);
 		}
 
 		/**

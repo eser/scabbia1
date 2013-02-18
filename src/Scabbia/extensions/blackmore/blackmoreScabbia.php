@@ -14,19 +14,19 @@
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'debug',
-				'callback' => 'Scabbia\\blackmoreScabbia::debug',
+				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::debug',
 				'menutitle' => 'Debug Info'
 			);
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'build',
-				'callback' => 'Scabbia\\blackmoreScabbia::build',
+				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::build',
 				'menutitle' => 'Build'
 			);
 
 			$uParms['modules']['index']['actions'][] = array(
 				'action' => 'purge',
-				'callback' => 'Scabbia\\blackmoreScabbia::purge',
+				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::purge',
 				'menutitle' => 'Purge'
 			);
 		}
