@@ -45,12 +45,12 @@
 							<div id="placeholder">
 
 								<?php
-								$tPrevious = QTIME_INIT;
+								$tPrevious = framework::$timestamp;
 								foreach(framework::$milestones as $tMilestone) {
 									echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
 									$tPrevious = $tMilestone[1];
 								}
-								echo '<b>total</b> = ', number_format($tPrevious - QTIME_INIT, 5), ' ms.<br />';
+								echo '<b>total</b> = ', number_format($tPrevious - framework::$timestamp, 5), ' ms.<br />';
 								?>
 
 							</div>

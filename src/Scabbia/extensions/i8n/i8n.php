@@ -88,7 +88,7 @@
 				$tLocale['all'] = implode('.', $tLocale);
 
 				// putenv('LC_ALL=' . $tLocale[0]);
-				if(!PHP_SAFEMODE) {
+				if(!framework::$readonly) {
 					putenv('LANG=' . $tLocale[0]);
 				}
 				setlocale(LC_ALL, $tLocale[0]);
@@ -96,7 +96,7 @@
 				mb_internal_encoding(self::$language['internalEncoding']);
 				mb_http_output(self::$language['internalEncoding']);
 
-				// bindtextdomain('core', QPATH_CORE . 'locale');
+				// bindtextdomain('core', framework::$corepath . 'locale');
 				// bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
 				bindtextdomain('application', framework::$applicationPath . 'locale');

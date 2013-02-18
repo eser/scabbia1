@@ -25,7 +25,7 @@
 			$tExtensions = array();
 
 			$tFiles = array();
-			framework::glob(QPATH_CORE . 'library/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
+			framework::glob(framework::$corepath . 'library/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			if(!is_null(framework::$applicationPath)) {
 				framework::glob(framework::$applicationPath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			}
@@ -99,7 +99,7 @@
 			self::$list[$uExtensionName]['loaded'] = ($uAutoload) ? 2 : 1;
 			$tClassInfo = self::$list[$uExtensionName]['config'];
 
-			if(!COMPILED) {
+			if(!framework::$compiled) {
 				if(isset($tClassInfo['/includeList'])) {
 					foreach($tClassInfo['/includeList'] as $tFile) {
 						//! todo require_once?

@@ -15,12 +15,22 @@
 	 * @todo serialize/unserialize data (example: resources)
 	 */
 	class framework {
+		const VERSION = '1.0';
+
 		const GLOB_NONE = 0;
 		const GLOB_RECURSIVE = 1;
 		const GLOB_FILES = 2;
 		const GLOB_DIRECTORIES = 4;
 		const GLOB_JUSTNAMES = 8;
 
+		/**
+		 * Indicates the base directory which framework runs in.
+		 */
+		public static $basepath = null;
+		/**
+		 * Indicates the core directory which framework runs in.
+		 */
+		public static $corepath = null;
 		/**
 		 * Indicates framework is running in production, development or debug mode.
 		 */
@@ -29,6 +39,14 @@
 		 * Indicates framework is running in readonly mode or not.
 		 */
 		public static $readonly = false;
+		/**
+		 * Indicates framework is running in compiled mode or not.
+		 */
+		public static $compiled = false;
+		/**
+		 * @ignore
+		 */
+		public static $timestamp = false;
 		/**
 		 * Stores active module information.
 		 */
@@ -76,7 +94,30 @@
 		 * @ignore
 		 */
 		public static function load() {
+			self::$timestamp = microtime(true);
 			self::$milestones[] = array('begin', microtime(true));
+
+			if(version_compare(PHP_VERSION, '5.3.0', '<') && ini_get('safe_mode')) {
+				self::$readonly = true;
+			}
+
+			if(is_null(self::$basepath)) {
+				self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
+			}
+			self::$corepath = strtr(pathinfo(__FILE__, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
+
+			// Set error reporting occasions
+			error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
+			// ini_set('display_errors', '1');
+			// ini_set('log_errors', '0');
+			// ini_set('error_log', framework::$basepath . 'error.log');
+
+			// Include framework dependencies and load them
+			require(framework::$corepath . 'patches.php');
+			require(framework::$corepath . 'library/framework.php');
+			require(framework::$corepath . 'library/config.php');
+			require(framework::$corepath . 'library/events.php');
+			require(framework::$corepath . 'library/extensions.php');
 
 			// endpoints
 			if(count(self::$endpoints) > 0) {
@@ -101,10 +142,10 @@
 			self::$milestones[] = array('endpoints', microtime(true));
 
 			if(!self::$readonly && is_null(self::$applicationPath)) {
-				self::$applicationPath = QPATH_BASE . '/application/';
+				self::$applicationPath = framework::$basepath . '/application/';
 			}
 
-			if(!COMPILED) {
+			if(!self::$compiled) {
 				// load config
 				config::$default = config::load();
 				self::$milestones[] = array('configLoad', microtime(true));
@@ -130,7 +171,7 @@
 			// spl_autoload_register('Scabbia\\extensions::autoloader');
 			extensions::loadExtensions();
 
-			if(!COMPILED) {
+			if(!self::$compiled) {
 				// include files
 				foreach(config::get('/includeList', array()) as $tInclude) {
 					$tIncludePath = pathinfo(self::translatePath($tInclude));
@@ -176,11 +217,11 @@
 		 */
 		public static function translatePath($uPath, $uBasePath = null) {
 			if(substr($uPath, 0, 6) == '{base}') {
-				return QPATH_BASE . substr($uPath, 6);
+				return framework::$basepath . substr($uPath, 6);
 			}
 
 			if(substr($uPath, 0, 6) == '{core}') {
-				return QPATH_CORE . substr($uPath, 6);
+				return framework::$corepath . substr($uPath, 6);
 			}
 
 			if(substr($uPath, 0, 5) == '{app}') {
@@ -204,7 +245,7 @@
 				$tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
 
 				if(!is_dir($tPathDirectory)) {
-					if(self::$readonly || PHP_SAFEMODE) {
+					if(self::$readonly) {
 						throw new \Exception($tPathDirectory . ' does not exists.');
 					}
 
@@ -234,7 +275,7 @@
 		 * @return bool running framework version is greater than parameter.
 		 */
 		public static function version($uVersion) {
-			return version_compare(SCABBIA_VERSION, $uVersion, '>=');
+			return version_compare(self::VERSION, $uVersion, '>=');
 		}
 
 		/**
@@ -249,12 +290,12 @@
 			events::invoke('output', $tParms);
 
 			//! check invoke order
-			if(OUTPUT_NOHANDLER) {
+			if(ini_get('output_handler') == '') {
 				$tParms['content'] = mb_output_handler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
-			}
 
-			if(OUTPUT_GZIP && !PHP_SAPI_CLI && config::get('/options/gzip', '1') != '0') {
-				$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+				if(!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && config::get('/options/gzip', '1') != '0') {
+					$tParms['content'] = ob_gzhandler($tParms['content'], $uSecond); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+				}
 			}
 
 			return $tParms['content'];

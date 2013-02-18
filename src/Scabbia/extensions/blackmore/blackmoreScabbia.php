@@ -95,35 +95,25 @@
 			}
 
 			/* BEGIN */
+			/*
 			$tCompiled = framework::printFile('<' . '?php
 
 	ignore_user_abort();
 
-	define(\'PHP_SAPI_CLI\', (PHP_SAPI == \'cli\'));
-	define(\'PHP_SAFEMODE\', ' . var_export(PHP_SAFEMODE, true) . ');
-	if(!defined(\'QPATH_BASE\')) {
-		define(\'QPATH_BASE\', ' . var_export(QPATH_BASE, true) . ');
-	}
-	define(\'QPATH_CORE\', ' . var_export(framework::$applicationPath, true) . ');
-	define(\'QTIME_INIT\', microtime(true));
-
-	define(\'SCABBIA_VERSION\', ' . var_export(SCABBIA_VERSION, true) . ');
-	define(\'COMPILED\', true);
-
-	define(\'OUTPUT_NOHANDLER\', ' . var_export(OUTPUT_NOHANDLER, true) . ');
-	define(\'OUTPUT_GZIP\', ' . var_export(OUTPUT_GZIP, true) . ');
+	// todo dump framework variables here.
 
 	error_reporting(' . var_export(error_reporting(), true) . ');
 	ini_set(\'display_errors\', ' . var_export(ini_get('display_errors'), true) . ');
 	ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 
 ?' . '>');
+			*/
 
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(QPATH_CORE . 'library/extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'patches.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;
