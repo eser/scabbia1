@@ -20,7 +20,7 @@
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends mime, io, cache, http
-	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 *
 	 * @todo integrate with cache extension

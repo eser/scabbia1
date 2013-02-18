@@ -11,7 +11,7 @@
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends
-	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 */
 	class arrays {

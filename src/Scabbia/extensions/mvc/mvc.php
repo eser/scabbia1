@@ -18,7 +18,7 @@
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends string, http, router, models, views, controllers
-	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 *
 	 * @todo remove underscore '_' in controller, action names

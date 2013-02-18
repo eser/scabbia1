@@ -17,7 +17,7 @@
 	 *
 	 * @scabbia-fwversion 1.0
 	 * @scabbia-fwdepends session
-	 * @scabbia-phpversion 5.2.0
+	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 */
 	class auth {

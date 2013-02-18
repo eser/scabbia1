@@ -5,7 +5,7 @@
 		<name>string</name>
 		<version>1.0.2</version>
 		<license>GPLv3</license>
-		<phpversion>5.2.0</phpversion>
+		<phpversion>5.3.0</phpversion>
 		<phpdependList>
 			<phpdepend>mbstring</phpdepend>
 		</phpdependList>

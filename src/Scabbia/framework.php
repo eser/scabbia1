@@ -101,10 +101,6 @@
 			self::$timestamp = microtime(true);
 			self::$milestones[] = array('begin', microtime(true));
 
-			if(version_compare(PHP_VERSION, '5.3.0', '<') && ini_get('safe_mode')) {
-				self::$readonly = true;
-			}
-
 			if(is_null(self::$basepath)) {
 				self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
 			}

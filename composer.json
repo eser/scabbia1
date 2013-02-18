@@ -16,7 +16,7 @@
 		}
 	],
 	"require": {
-		"php": ">=5.2.0"
+		"php": ">=5.3.0"
 	},
 	"suggest": {
 		"ext-intl": "ext/intl for i18n features"
