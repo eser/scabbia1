@@ -109,7 +109,7 @@
 ?' . '>');
 			*/
 
-			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'patches.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$basepath . 'patches.php'));
 			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/framework.php'));
 			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/config.php'));
 			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/events.php'));

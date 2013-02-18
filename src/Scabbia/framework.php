@@ -113,7 +113,7 @@
 			// ini_set('error_log', framework::$basepath . 'error.log');
 
 			// Include framework dependencies and load them
-			require(framework::$corepath . 'patches.php');
+			require(framework::$basepath . 'patches.php');
 			require(framework::$corepath . 'library/framework.php');
 			require(framework::$corepath . 'library/config.php');
 			require(framework::$corepath . 'library/events.php');
