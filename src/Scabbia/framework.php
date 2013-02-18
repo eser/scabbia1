@@ -113,11 +113,11 @@
 			// ini_set('error_log', framework::$basepath . 'error.log');
 
 			// Include framework dependencies and load them
-			require(framework::$basepath . 'patches.php');
-			require(framework::$corepath . 'library/framework.php');
-			require(framework::$corepath . 'library/config.php');
-			require(framework::$corepath . 'library/events.php');
-			require(framework::$corepath . 'library/extensions.php');
+			require(framework::$corepath . 'patches.php');
+			require(framework::$corepath . 'framework.php');
+			require(framework::$corepath . 'config.php');
+			require(framework::$corepath . 'events.php');
+			require(framework::$corepath . 'extensions.php');
 
 			// endpoints
 			if(count(self::$endpoints) > 0) {

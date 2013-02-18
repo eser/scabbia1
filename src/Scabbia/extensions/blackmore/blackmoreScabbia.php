@@ -109,11 +109,11 @@
 ?' . '>');
 			*/
 
-			$tCompiled .= framework::printFile(file_get_contents(framework::$basepath . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'library/extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'patches.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$corepath . 'extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;

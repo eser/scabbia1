@@ -25,7 +25,7 @@
 			$tExtensions = array();
 
 			$tFiles = array();
-			framework::glob(framework::$corepath . 'library/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
+			framework::glob(framework::$corepath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			if(!is_null(framework::$applicationPath)) {
 				framework::glob(framework::$applicationPath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			}
