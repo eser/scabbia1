@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Oauth;
 
+	use Scabbia\Extensions\Controllers\controller;
+
 	/**
 	 * Docs Extension
 	 *

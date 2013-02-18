@@ -3,6 +3,7 @@
 	namespace Scabbia\Extensions\Database;
 
 	use Scabbia\config;
+	use Scabbia\Extensions\Database\databaseDataset;
 
 	/**
 	 * Datasets Class

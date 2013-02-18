@@ -4,6 +4,7 @@
 
 	use Scabbia\extensions;
 	use Scabbia\Extensions\String\string;
+	use Scabbia\Extensions\Profiler\profilerData;
 
 	/**
 	 * Profiler Extension

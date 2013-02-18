@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Contracts;
 
+	use Scabbia\Extensions\Contracts\contractObject;
+
 	/**
 	 * Contracts Extension
 	 *

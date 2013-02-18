@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Collections;
 
+	use Scabbia\Extensions\Collections\collection;
+
 	/**
 	 * File Collection Class
 	 *

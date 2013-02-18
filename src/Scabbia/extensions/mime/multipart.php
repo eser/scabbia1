@@ -2,6 +2,8 @@
 
 	namespace Scabbia\Extensions\Mime;
 
+	use Scabbia\Extensions\Mime\mimepart;
+
 	/**
 	 * Multipart Class
 	 *

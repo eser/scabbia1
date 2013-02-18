@@ -3,6 +3,7 @@
 	namespace Scabbia\Extensions\Validation;
 
 	use Scabbia\extensions;
+	use Scabbia\Extensions\Validation\validationRule;
 
 	/**
 	 * Validation Extension

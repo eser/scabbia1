@@ -12,6 +12,7 @@
 	use Scabbia\Extensions\Session\session;
 	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\Html\html;
+	use Scabbia\Extensions\Zmodels\zmodel;
 
 	/**
 	 * @ignore

@@ -3,6 +3,7 @@
 	namespace Scabbia\Extensions\Zmodels;
 
 	use Scabbia\config;
+	use Scabbia\Extensions\Zmodels\zmodel;
 
 	/**
 	 * ZModels Extension

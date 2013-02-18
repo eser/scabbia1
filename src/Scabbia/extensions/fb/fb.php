@@ -6,6 +6,8 @@
 	use Scabbia\Extensions\Session\session;
 	use Scabbia\Extensions\String\string;
 	use Scabbia\framework;
+	use Scabbia\Extensions\Fb\Facebook;
+	use Scabbia\Extensions\Fb\FacebookQueryObject;
 
 	/**
 	 * Facebook (FB) Extension

@@ -4,6 +4,7 @@
 
 	use Scabbia\framework;
 	use Scabbia\config;
+	use Scabbia\Extensions\Media\mediaFile;
 
 	/**
 	 * Media Extension
