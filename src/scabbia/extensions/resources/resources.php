@@ -64,7 +64,7 @@
 					if(substr($tPath[0], 0, $tLen) == $tDirectoryName) {
 						if(self::getDirectory($tDirectory, substr($tPath[0], $tLen)) === true) {
 							// to interrupt event-chain execution
-							return false;
+							return true;
 						}
 					}
 				}
@@ -72,7 +72,7 @@
 				$tSubParts = (count($tPath) >= 2) ? explode(',', $tPath[1]) : array();
 				if(self::getPack($tPath[0], $tSubParts) === true) {
 					// to interrupt event-chain execution
-					return false;
+					return true;
 				}
 			}
 		}

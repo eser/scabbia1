@@ -182,6 +182,7 @@
 			$tResolution = self::routeResolve(self::$queryString);
 
 			if(!is_null($tResolution) && call_user_func($tResolution[0], $tResolution[1]) !== false) {
+				// to interrupt event-chain execution
 				return true;
 			}
 		}
