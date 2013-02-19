@@ -1,0 +1,74 @@
+<?php
+
+	namespace Scabbia\Extensions\Views;
+
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\framework;
+	use Scabbia\config;
+
+	/**
+	 * ViewEngine: RainTpl Extension
+	 *
+	 * @package Scabbia
+	 * @subpackage viewEngineRaintpl
+	 * @version 1.0.5
+	 *
+	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwdepends mvc
+	 * @scabbia-phpversion 5.3.0
+	 * @scabbia-phpdepends
+	 */
+	class viewEngineRaintpl {
+		/**
+		 * @ignore
+		 */
+		public static $engine = null;
+
+		/**
+		 * @ignore
+		 */
+		public static function extensionLoad() {
+			views::registerViewEngine('rain', 'viewEngineRaintpl');
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function renderview($uObject) {
+			if(is_null(self::$engine)) {
+				$tPath = framework::translatePath(config::get('/raintpl/path', '{vendor}include/3rdparty/raintpl/inc'));
+				require($tPath . '/rain.tpl.class.php');
+
+				raintpl::configure('base_url', null);
+				raintpl::configure('tpl_dir', $uObject['templatePath']);
+				raintpl::configure('tpl_ext', '.rain');
+				raintpl::configure('cache_dir', framework::writablePath('cache/raintpl/'));
+
+				if(framework::$development >= 1) {
+					raintpl::configure('check_template_update', true);
+				}
+
+				self::$engine = new \RainTPL();
+			}
+			else {
+				self::$engine = new \RainTPL();
+			}
+
+			self::$engine->assign('model', $uObject['model']);
+			if(is_array($uObject['model'])) {
+				foreach($uObject['model'] as $tKey => $tValue) {
+					self::$engine->assign($tKey, $tValue);
+				}
+			}
+
+			if(isset($uObject['extra'])) {
+				foreach($uObject['extra'] as $tKey => $tValue) {
+					self::$engine->assign($tKey, $tValue);
+				}
+			}
+
+			self::$engine->draw($uObject['templateFile']);
+		}
+	}
+
+	?>
