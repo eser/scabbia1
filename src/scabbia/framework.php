@@ -167,8 +167,7 @@
 			}
 			self::$milestones[] = array('siteRoot', microtime(true));
 
-			// extensions and autoload
-			// spl_autoload_register('Scabbia\\extensions::autoloader');
+			// extensions
 			extensions::loadExtensions();
 
 			if(!self::$compiled) {

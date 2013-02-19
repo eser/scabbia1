@@ -1,3 +1,6 @@
+<?php
+	use Scabbia\framework;
+?>
 					</div>
 				</div>
 			</section>

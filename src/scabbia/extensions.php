@@ -57,20 +57,6 @@
 		}
 
 		/**
-		 * Autoloader method.
-		 *
-		 */
-		public static function autoloader($uClass) {
-			if(isset(self::$classmap[$uClass]) && config::get('/options/autoload', '0') == '1') {
-				self::loadExtension(self::$classmap[$uClass], true);
-
-				return;
-			}
-
-			// throw new \Exception('class not found - ' . $uClass);
-		}
-
-		/**
 		 * Loads the selected extensions.
 		 *
 		 * @uses loadExtension()

@@ -71,7 +71,7 @@
 						continue;
 					}
 
-					$tPos = strpos($tClass, '\\');
+					$tPos = strrpos($tClass, '\\');
 					if($tPos !== false) {
 						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
 						continue;
@@ -116,13 +116,13 @@
 
 			while(true) {
 				if(strpos($tActualAction, '_') !== false) {
-					$tReturn = null;
+					$tReturn = false;
 					break;
 				}
 
 				//! todo ensure autoload behaviour.
 				if(!isset(self::$controllerList[$tActualController])) {
-					$tReturn = null;
+					$tReturn = false;
 					break;
 				}
 
