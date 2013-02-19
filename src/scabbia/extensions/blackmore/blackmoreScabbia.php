@@ -115,11 +115,11 @@
 ?' . '>');
 			*/
 
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'extensions.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/patches.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/framework.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/config.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/events.php'));
+			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/extensions.php'));
 
 			$tDevelopment = framework::$development;
 			framework::$development = 0;

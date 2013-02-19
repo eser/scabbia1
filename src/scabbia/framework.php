@@ -104,7 +104,7 @@
 			if(is_null(self::$basepath)) {
 				self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
 			}
-			self::$vendorpath = strtr(pathinfo(__FILE__, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
+			self::$vendorpath = strtr(pathinfo(__FILE__, PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/../../';
 
 			// Set error reporting occasions
 			error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
@@ -113,11 +113,11 @@
 			// ini_set('error_log', framework::$basepath . 'error.log');
 
 			// Include framework dependencies and load them
-			require(framework::$vendorpath . 'patches.php');
-			// require(framework::$vendorpath . 'framework.php');
-			require(framework::$vendorpath . 'config.php');
-			require(framework::$vendorpath . 'events.php');
-			require(framework::$vendorpath . 'extensions.php');
+			require(framework::$vendorpath . 'src/patches.php');
+			// require(framework::$vendorpath . 'src/scabbia/framework.php');
+			require(framework::$vendorpath . 'src/scabbia/config.php');
+			require(framework::$vendorpath . 'src/scabbia/events.php');
+			require(framework::$vendorpath . 'src/scabbia/extensions.php');
 
 			// endpoints
 			if(count(self::$endpoints) > 0) {

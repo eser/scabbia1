@@ -1,3 +1,3 @@
-[submodule "src/Scabbia/resources/laroux"]
-	path = src/Scabbia/resources/laroux
+[submodule "resources/laroux"]
+	path = resources/laroux
 	url = https://github.com/larukedi/laroux.js

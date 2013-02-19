@@ -1,9 +1,10 @@
 {
-	"name": "scabbia/scabbia",
+	"name": "larukedi/scabbia-framework",
 	"description": "Scabbia Framework",
 	"type": "library",
 	"minimum-stability": "dev",
 	"keywords": [
+		"larukedi",
 		"scabbia",
 		"framework"
 	],
@@ -23,7 +24,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Scabbia": "."
+			"Scabbia": "src"
 		}
 	}
 }

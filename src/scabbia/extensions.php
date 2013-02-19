@@ -29,7 +29,7 @@
 			$tExtensions = array();
 
 			$tFiles = array();
-			framework::glob(framework::$vendorpath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
+			framework::glob(framework::$vendorpath . 'src/scabbia/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			if(!is_null(framework::$applicationPath)) {
 				framework::glob(framework::$applicationPath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
 			}
