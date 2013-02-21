@@ -2,17 +2,17 @@
 
 	namespace Scabbia\Extensions\Zmodels;
 
-	use Scabbia\config;
 	use Scabbia\Extensions\Zmodels\zmodel;
+	use Scabbia\config;
 
 	/**
 	 * ZModels Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage zmodels
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

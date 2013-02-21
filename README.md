@@ -19,7 +19,8 @@ composer require larukedi/scabbia-framework:dev-development
 Usage
 -----
 ``` php
-require('vendor/autoload.php');
+$loader = require('vendor/autoload.php');
+Scabbia\framework::load($loader);
 ```
 
 Requirements

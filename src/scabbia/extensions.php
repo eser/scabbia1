@@ -2,31 +2,29 @@
 
 	namespace Scabbia;
 
-	use Scabbia\framework;
 	use Scabbia\config;
 	use Scabbia\events;
+	use Scabbia\framework;
 	
 	/**
 	 * Extensions manager which extends the framework capabilities with extra routines
 	 *
 	 * @package Scabbia
-	 * @subpackage Core
+	 *
+	 * @todo cache the extensions.xml.php array
 	 */
 	class extensions {
 		/**
-		 * @ignore
+		 * The array of extensions' config files.
 		 */
-		public static $classmap = array();
-		/**
-		 * @ignore
-		 */
-		public static $list;
+		public static $configFiles = null;
+
 
 		/**
 		 * Loads the extensions module.
 		 */
 		public static function load() {
-			$tExtensions = array();
+			self::$configFiles = array();
 
 			$tFiles = array();
 			framework::glob(framework::$vendorpath . 'src/scabbia/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
@@ -41,111 +39,19 @@
 
 				$tSubconfig = array();
 				config::loadFile($tSubconfig, $tFile . 'extension.xml.php');
+				self::$configFiles[$tSubconfig['/info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
 
-				$tName = $tSubconfig['/info/name'];
-
-				if(isset($tSubconfig['/classList'])) {
-					foreach($tSubconfig['/classList'] as $tClass) {
-						self::$classmap[$tClass] = $tName;
-					}
-				}
-
-				$tExtensions[$tName] = array('path' => $tFile, 'loaded' => 0, 'config' => $tSubconfig);
-			}
-
-			return $tExtensions;
-		}
-
-		/**
-		 * Loads the selected extensions.
-		 *
-		 * @uses loadExtension()
-		 */
-		public static function loadExtensions() {
-			foreach(config::get('/extensionList', array()) as $tExtensionName) {
-				self::loadExtension($tExtensionName, false);
-				framework::$milestones[] = array('extension_' . $tExtensionName, microtime(true));
-			}
-		}
-
-		/**
-		 * Loads an extension.
-		 *
-		 * @param string $uExtensionName the extension
-		 * @param bool $uAutoload
-		 *
-		 * @throws \Exception
-		 * @return bool
-		 */
-		public static function loadExtension($uExtensionName, $uAutoload = false) {
-			if(!isset(self::$list[$uExtensionName])) {
-				return false;
-			}
-
-			if(self::$list[$uExtensionName]['loaded'] >= 1) {
-				return true;
-			}
-
-			self::$list[$uExtensionName]['loaded'] = ($uAutoload) ? 2 : 1;
-			$tClassInfo = self::$list[$uExtensionName]['config'];
-
-			if(!framework::$compiled) {
-				if(isset($tClassInfo['/includeList'])) {
-					foreach($tClassInfo['/includeList'] as $tFile) {
-						//! todo require_once?
-						include(self::$list[$uExtensionName]['path'] . $tFile);
-					}
-				}
-
-				if(isset($tClassInfo['/info/phpversion']) && !framework::phpVersion($tClassInfo['/info/phpversion'])) {
-					return false;
-				}
-
-				if(isset($tClassInfo['/info/phpdependList'])) {
-					foreach($tClassInfo['/info/phpdependList'] as $tExtension) {
-						if(!extension_loaded($tExtension)) {
-							throw new \Exception('php extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
+				if(isset($tSubconfig['/eventList'])) {
+					foreach($tSubconfig['/eventList'] as $tLoad) {
+						if($tLoad['name'] == 'load') {
+							call_user_func($tLoad['callback']);
+							continue;
 						}
-					}
-				}
 
-				if(isset($tClassInfo['/info/fwversion']) && !framework::version($tClassInfo['/info/fwversion'])) {
-					return false;
-				}
-
-				if(isset($tClassInfo['/info/fwdependList'])) {
-					foreach($tClassInfo['/info/fwdependList'] as $tExtension) {
-						// if(!self::add($tExtension)) {
-						if(!self::isLoaded($tExtension)) {
-							throw new \Exception('framework extension is required - dependency: ' . $tExtension . ' for: ' . $uExtensionName);
-						}
+						events::register($tLoad['name'], $tLoad['callback']);
 					}
 				}
 			}
-
-			if(isset($tClassInfo['/eventList'])) {
-				foreach($tClassInfo['/eventList'] as $tLoad) {
-					if($tLoad['name'] == 'load') {
-						call_user_func($tLoad['callback']);
-						continue;
-					}
-
-					events::register($tLoad['name'], $tLoad['callback']);
-				}
-			}
-
-			return true;
-		}
-
-		/**
-		 * Checks weather an extension is loaded or not.
-		 *
-		 * @param $uExtensionName
-		 *
-		 * @return bool load status.
-		 */
-		public static function isLoaded($uExtensionName) {
-			return (isset(self::$list[$uExtensionName]) && self::$list[$uExtensionName]['loaded'] >= 1);
 		}
 	}
 

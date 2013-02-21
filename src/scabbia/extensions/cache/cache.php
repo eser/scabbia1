@@ -2,18 +2,18 @@
 
 	namespace Scabbia\Extensions\Cache;
 
+	use Scabbia\Extensions\Io\io;
 	use Scabbia\config;
 	use Scabbia\framework;
-	use Scabbia\Extensions\Io\io;
 
 	/**
 	 * Cache Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage cache
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends io
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

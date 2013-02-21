@@ -2,14 +2,14 @@
 
 	namespace Scabbia\Extensions\Database;
 
-	use Scabbia\Extensions\Database\database;
-	use Scabbia\extensions;
-	use Scabbia\Extensions\Profiler\profiler;
 	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\Extensions\Database\database;
+	use Scabbia\Extensions\Database\databaseQuery;
+	use Scabbia\Extensions\Database\databaseQueryResult;
 	use Scabbia\Extensions\Database\datasets;
 	use Scabbia\Extensions\Datasources\datasource;
-	use Scabbia\Extensions\Database\databaseQueryResult;
-	use Scabbia\Extensions\Database\databaseQuery;
+	use Scabbia\Extensions\Profiler\profiler;
+	use Scabbia\extensions;
 
 	/**
 	 * Database Connection Class
@@ -115,15 +115,13 @@
 		public function execute($uQuery) {
 			$this->open();
 
-			if(extensions::isLoaded('profiler')) {
-				profiler::start(
-					'databaseQuery',
-					array(
-					     'query' => $uQuery,
-					     'parameters' => null
-					)
-				);
-			}
+			profiler::start(
+				'databaseQuery',
+				array(
+					 'query' => $uQuery,
+					 'parameters' => null
+				)
+			);
 
 			try {
 				$tReturn = $this->provider->execute($uQuery);
@@ -136,9 +134,7 @@
 				$tReturn = false;
 			}
 
-			if(extensions::isLoaded('profiler')) {
-				profiler::stop();
-			}
+			profiler::stop();
 
 			return $tReturn;
 		}
@@ -149,15 +145,13 @@
 		public function query($uQuery, $uParameters = array(), $uCaching = database::CACHE_MEMORY) {
 			$this->open();
 
-			if(extensions::isLoaded('profiler')) {
-				profiler::start(
-					'databaseQuery',
-					array(
-					     'query' => $uQuery,
-					     'parameters' => $uParameters
-					)
-				);
-			}
+			profiler::start(
+				'databaseQuery',
+				array(
+					 'query' => $uQuery,
+					 'parameters' => $uParameters
+				)
+			);
 
 			$tFolder = 'database/' . $this->id . '/';
 
@@ -210,15 +204,13 @@
 				++$this->stats['cache'];
 			}
 
-			if(extensions::isLoaded('profiler')) {
-				profiler::stop(
-				//! affected rows
-					array(
-					     'affectedRows' => $tData->count(),
-					     'fromCache' => $tLoadedFromCache
-					)
-				);
-			}
+			profiler::stop(
+			//! affected rows
+				array(
+					 'affectedRows' => $tData->count(),
+					 'fromCache' => $tLoadedFromCache
+				)
+			);
 
 			return $tData;
 		}

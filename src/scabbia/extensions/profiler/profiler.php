@@ -2,18 +2,18 @@
 
 	namespace Scabbia\Extensions\Profiler;
 
-	use Scabbia\extensions;
-	use Scabbia\Extensions\String\string;
 	use Scabbia\Extensions\Profiler\profilerData;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\extensions;
 
 	/**
 	 * Profiler Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage profiler
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -97,22 +97,14 @@
 		 * @ignore
 		 */
 		public static function export($tOutput = true) {
-			if(extensions::isLoaded('string')) {
-				return string::vardump(self::$markers, $tOutput);
-			}
-
-			return print_r(self::$markers, $tOutput);
+			return string::vardump(self::$markers, $tOutput);
 		}
 
 		/**
 		 * @ignore
 		 */
 		public static function exportStack($tOutput = true) {
-			if(extensions::isLoaded('string')) {
-				return string::vardump(self::$stack, $tOutput);
-			}
-
-			return print_r(self::$stack, $tOutput);
+			return string::vardump(self::$stack, $tOutput);
 		}
 	}
 

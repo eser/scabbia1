@@ -2,10 +2,10 @@
 
 	namespace Scabbia\Extensions\Media;
 
-	use Scabbia\extensions;
-	use Scabbia\Extensions\Mime\mime;
-	use Scabbia\Extensions\Media\media;
 	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Media\media;
+	use Scabbia\Extensions\Mime\mime;
+	use Scabbia\extensions;
 
 	/**
 	 * Media File Class
@@ -74,13 +74,7 @@
 				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
 				$this->extension = pathinfo($uOriginalFilename, PATHINFO_EXTENSION);
 
-				if(extensions::isLoaded('mime')) {
-					$this->mime = mime::getType($this->extension);
-				}
-				else {
-					$this->mime = 'application/octet-stream';
-				}
-
+				$this->mime = mime::getType($this->extension);
 				$this->size = filesize($this->source);
 
 				// calculate a hash - used for cache files, etc

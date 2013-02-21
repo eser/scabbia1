@@ -8,7 +8,6 @@
 	 * Configuration class which handles all configuration-based operations
 	 *
 	 * @package Scabbia
-	 * @subpackage Core
 	 *
 	 * @todo _node parsing
 	 */
@@ -64,12 +63,6 @@
 							return false;
 						}
 					}
-				}
-			}
-
-			if(isset($uNode['module'])) {
-				if((string)$uNode['module'] != framework::$module) {
-					return false;
 				}
 			}
 
@@ -195,10 +188,10 @@
 		/**
 		 * Returns a configuration which is a compilation of a configuration file.
 		 *
-		 * @param $uConfig
+		 * @param array $uConfig the array which will contain read data
 		 * @param string $uFile path of configuration file
 		 *
-		 * @return array configuration
+		 * @return array the configuration
 		 */
 		public static function loadFile(&$uConfig, $uFile) {
 			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS | LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
@@ -211,7 +204,7 @@
 		 * @param string $uKey path of the value
 		 * @param mixed $uDefault default value
 		 *
-		 * @return mixed|null
+		 * @return mixed|null the value
 		 */
 		public static function get($uKey, $uDefault = null) {
 			if(!array_key_exists($uKey, self::$default)) {

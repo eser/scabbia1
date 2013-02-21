@@ -3,17 +3,17 @@
 	namespace Scabbia\Extensions\Views;
 
 	use Scabbia\Extensions\Views\views;
-	use Scabbia\framework;
 	use Scabbia\config;
+	use Scabbia\framework;
 
 	/**
 	 * ViewEngine: Twig Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage viewEngineTwig
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends mvc
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

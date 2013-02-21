@@ -2,20 +2,20 @@
 
 	namespace Scabbia\Extensions\Blackmore;
 
-	use Scabbia\events;
-	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Validation\validation;
 	use Scabbia\Extensions\Controllers\controller;
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Validation\validation;
+	use Scabbia\events;
 
 	/**
 	 * Blackmore Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage blackmore
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

@@ -2,9 +2,9 @@
 
 	namespace Scabbia\Extensions\Access;
 
+	use Scabbia\Extensions\Views\views;
 	use Scabbia\config;
 	use Scabbia\extensions;
-	use Scabbia\Extensions\Views\views;
 	use Scabbia\framework;
 
 	/**
@@ -12,9 +12,9 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage access
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -56,7 +56,7 @@
 				header('Retry-After: 600', true);
 
 				$tMvcPage = config::get('/access/maintenance/mvcpage', null);
-				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
+				if(!is_null($tMvcPage)) {
 					views::view($tMvcPage);
 				}
 				else {
@@ -72,7 +72,7 @@
 				header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 
 				$tMvcPage = config::get('/access/ipFilter/mvcpage', null);
-				if(!is_null($tMvcPage) && extensions::isLoaded('mvc')) {
+				if(!is_null($tMvcPage)) {
 					views::view($tMvcPage);
 				}
 				else {

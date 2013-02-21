@@ -2,10 +2,10 @@
 
 	namespace Scabbia\Extensions\Auth;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Session\session;
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Mvc\mvc;
+	use Scabbia\Extensions\Session\session;
+	use Scabbia\config;
+	use Scabbia\extensions;
 	use Scabbia\framework;
 
 	/**
@@ -13,9 +13,9 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage auth
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends session
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -87,7 +87,7 @@
 			}
 
 			$tMvcUrl = config::get('/auth/loginMvcUrl', null);
-			if(!is_null($tMvcUrl) && extensions::isLoaded('mvc')) {
+			if(!is_null($tMvcUrl)) {
 				//! todo: warning messages like insufficent privileges.
 				mvc::redirect($tMvcUrl);
 			}

@@ -2,23 +2,23 @@
 
 	namespace Scabbia\Extensions\Resources;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Http\http;
-	use Scabbia\extensions;
-	use Scabbia\Extensions\Mime\mime;
 	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\framework;
+	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Io\io;
+	use Scabbia\Extensions\Mime\mime;
 	use Scabbia\Extensions\Views\views;
+	use Scabbia\config;
+	use Scabbia\extensions;
+	use Scabbia\framework;
 
 	/**
 	 * Resources Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage resources
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends mime, io, cache, http
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -103,12 +103,7 @@
 			$tFilename .= '.' . $tType;
 
 			$tCompileAge = isset($tSelectedPack['compiledAge']) ? $tSelectedPack['compiledAge'] : 120;
-			if(extensions::isLoaded('mime')) {
-				$tMimetype = mime::getType($tType);
-			}
-			else {
-				$tMimetype = 'application/octet-stream';
-			}
+			$tMimetype = mime::getType($tType);
 			header('Content-Type: ' . $tMimetype, true);
 
 			$tOutputFile = cache::filePath('resources/', $tFilename, $tCompileAge);
@@ -221,12 +216,7 @@
 				return false;
 			}
 
-			if(extensions::isLoaded('mime')) {
-				header('Content-Type: ' . io::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
-			}
-			else {
-				header('Content-Type: application/octet-stream', true);
-			}
+			header('Content-Type: ' . io::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
 			header('Content-Transfer-Encoding: binary', true);
 			// header('ETag: "' . md5_file($tPath) . '"', true);
 

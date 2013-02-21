@@ -11,9 +11,9 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage html
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, arrays
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

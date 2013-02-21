@@ -9,9 +9,9 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage unittest
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -119,11 +119,7 @@
 		 * @ignore
 		 */
 		public static function export($tOutput = true) {
-			if(extensions::isLoaded('string')) {
-				return string::vardump(self::$report, $tOutput);
-			}
-
-			return print_r(self::$report, $tOutput);
+			return string::vardump(self::$report, $tOutput);
 		}
 	}
 

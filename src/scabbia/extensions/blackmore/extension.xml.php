@@ -3,11 +3,11 @@
 <scabbia>
 	<info>
 		<name>blackmore</name>
-		<version>1.0.2</version>
+		<version>1.1.0</version>
 		<license>GPLv3</license>
 		<phpversion>5.3.0</phpversion>
 		<phpdependList />
-		<fwversion>1.0</fwversion>
+		<fwversion>1.1</fwversion>
 		<fwdependList>
 			<fwdepend>string</fwdepend>
 			<fwdepend>resources</fwdepend>
@@ -17,18 +17,6 @@
 			<fwdepend>zmodels</fwdepend>
 		</fwdependList>
 	</info>
-	<includeList>
-		<include>blackmore.php</include>
-		<include>blackmoreScabbia.php</include>
-		<include>blackmoreZmodels.php</include>
-		<include>blackmoreZmodelsModel.php</include>
-	</includeList>
-	<classList>
-		<class>blackmore</class>
-		<class>blackmoreScabbia</class>
-		<class>blackmoreZmodels</class>
-		<class>blackmoreZmodelModel</class>
-	</classList>
 	<eventList>
 		<event>
 			<name>blackmoreRegisterModules</name>

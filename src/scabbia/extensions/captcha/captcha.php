@@ -2,19 +2,19 @@
 
 	namespace Scabbia\Extensions\Captcha;
 
-	use Scabbia\framework;
-	use Scabbia\config;
-	use Scabbia\Extensions\String\string;
 	use Scabbia\Extensions\Session\session;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\config;
+	use Scabbia\framework;
 
 	/**
 	 * Captcha Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage captcha
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, session
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

@@ -2,19 +2,19 @@
 
 	namespace Scabbia\Extensions\Session;
 
-	use Scabbia\config;
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Cache\cache;
 	use Scabbia\Extensions\String\string;
+	use Scabbia\config;
+	use Scabbia\extensions;
 
 	/**
 	 * Session Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage session
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends cache
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -99,12 +99,7 @@
 			}
 
 			if(is_null(self::$id)) {
-				if(extensions::isLoaded('string')) {
-					self::$id = string::generateUuid();
-				}
-				else {
-					self::$id = uniqid('', true);
-				}
+				self::$id = string::generateUuid();
 			}
 
 			if(self::$sessionLife > 0) {
@@ -302,11 +297,7 @@
 				self::open();
 			}
 
-			if(extensions::isLoaded('string')) {
-				return string::vardump(self::$data, $tOutput);
-			}
-
-			return print_r(self::$data, $tOutput);
+			return string::vardump(self::$data, $tOutput);
 		}
 	}
 

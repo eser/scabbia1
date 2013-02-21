@@ -2,8 +2,8 @@
 
 	namespace Scabbia\Extensions\Database;
 
-	use Scabbia\Extensions\Datasources\datasources;
 	use Scabbia\Extensions\Database\database;
+	use Scabbia\Extensions\Datasources\datasources;
 	use Scabbia\Extensions\String\string;
 
 	/**

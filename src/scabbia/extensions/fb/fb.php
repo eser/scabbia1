@@ -2,21 +2,21 @@
 
 	namespace Scabbia\Extensions\Fb;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Session\session;
-	use Scabbia\Extensions\String\string;
-	use Scabbia\framework;
 	use Scabbia\Extensions\Fb\Facebook;
 	use Scabbia\Extensions\Fb\FacebookQueryObject;
+	use Scabbia\Extensions\Session\session;
+	use Scabbia\Extensions\String\string;
+	use Scabbia\config;
+	use Scabbia\framework;
 
 	/**
 	 * Facebook (FB) Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage fb
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends session
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

@@ -2,20 +2,24 @@
 
 	namespace Scabbia\Extensions\Views;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Views\views;
 	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\framework;
 	use Scabbia\Extensions\Io\io;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\config;
+	use Scabbia\framework;
+
+	include 'markdownExtra/markdownExtra.php';
+	include 'markdownExtra/markdownParser.php';
+	include 'markdownExtra/markdownExtraParser.php';
 
 	/**
 	 * ViewEngine: MarkDown Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage viewEngineMarkdown
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends mvc, io, cache
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

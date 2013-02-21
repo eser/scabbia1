@@ -2,8 +2,8 @@
 
 	namespace Scabbia\Extensions\Models;
 
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Datasources\datasources;
+	use Scabbia\extensions;
 
 	/**
 	 * Model Class
@@ -21,9 +21,7 @@
 		 * @ignore
 		 */
 		public function __construct($uDatasource = null) {
-			if(extensions::isLoaded('datasources')) {
-				$this->db = datasources::get($uDatasource);
-			}
+			$this->db = datasources::get($uDatasource);
 		}
 	}
 

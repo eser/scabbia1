@@ -2,18 +2,18 @@
 
 	namespace Scabbia\Extensions\Media;
 
-	use Scabbia\framework;
-	use Scabbia\config;
 	use Scabbia\Extensions\Media\mediaFile;
+	use Scabbia\config;
+	use Scabbia\framework;
 
 	/**
 	 * Media Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage media
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

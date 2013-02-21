@@ -3,21 +3,15 @@
 <scabbia>
 	<info>
 		<name>i8n</name>
-		<version>1.0.2</version>
+		<version>1.1.0</version>
 		<license>GPLv3</license>
 		<phpversion>5.3.0</phpversion>
 		<phpdependList>
 			<phpdepend>mbstring</phpdepend>
 		</phpdependList>
-		<fwversion>1.0</fwversion>
+		<fwversion>1.1</fwversion>
 		<fwdependList />
 	</info>
-	<includeList>
-		<include>i8n.php</include>
-	</includeList>
-	<classList>
-		<class>i8n</class>
-	</classList>
 	<eventList>
 		<event>
 			<name>httpUrl</name>

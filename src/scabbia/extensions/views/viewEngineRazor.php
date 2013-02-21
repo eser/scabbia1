@@ -2,19 +2,22 @@
 
 	namespace Scabbia\Extensions\Views;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Views\views;
 	use Scabbia\Extensions\Cache\cache;
+	use Scabbia\Extensions\Views\views;
+	use Scabbia\config;
 	use Scabbia\framework;
+
+	include 'razor/RazorViewRenderer.php';
+	include 'razor/RazorViewRendererException.php';
 
 	/**
 	 * ViewEngine: Razor Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage viewEngineRazor
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends mvc, cache
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

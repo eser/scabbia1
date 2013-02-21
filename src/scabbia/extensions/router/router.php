@@ -2,17 +2,17 @@
 
 	namespace Scabbia\Extensions\Router;
 
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Profiler\profiler;
+	use Scabbia\extensions;
 
 	/**
 	 * Router Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage router
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -22,9 +22,7 @@
 		 * @ignore
 		 */
 		public static function route($uCallbacks, $uOtherwise = null) {
-			if(extensions::isLoaded('profiler')) {
-				profiler::start('router', array('action' => 'routing'));
-			}
+			profiler::start('router', array('action' => 'routing'));
 
 			foreach((array)$uCallbacks as $tCallback) {
 				$tReturn = call_user_func($tCallback);
@@ -38,9 +36,7 @@
 				call_user_func($uOtherwise);
 			}
 
-			if(extensions::isLoaded('profiler')) {
-				profiler::stop();
-			}
+			profiler::stop();
 		}
 	}
 

@@ -3,21 +3,13 @@
 <scabbia>
 	<info>
 		<name>zmodels</name>
-		<version>1.0.2</version>
+		<version>1.1.0</version>
 		<license>GPLv3</license>
 		<phpversion>5.3.0</phpversion>
 		<phpdependList />
-		<fwversion>1.0</fwversion>
+		<fwversion>1.1</fwversion>
 		<fwdependList />
 	</info>
-	<includeList>
-		<include>zmodels.php</include>
-		<include>zmodel.php</include>
-	</includeList>
-	<classList>
-		<class>zmodels</class>
-		<class>zmodel</class>
-	</classList>
 	<eventList>
 		<event>
 			<name>load</name>

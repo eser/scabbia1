@@ -6,7 +6,6 @@
 	 * Event manager which handles communication between framework parts and extensions
 	 *
 	 * @package Scabbia
-	 * @subpackage Core
 	 */
 	class events {
 		/**
@@ -22,11 +21,6 @@
 		 */
 		public static $disabled = false;
 
-		/**
-		 * @ignore
-		 */
-		// public static function load() {
-		// }
 
 		/**
 		 * Makes a callback method subscribed to specified event.
@@ -62,7 +56,7 @@
 					$tCallname = array(get_class($tCallback[0]), $tCallback[1]);
 				}
 				else {
-					$tCallname = array('GLOBALS', $tCallback);
+					$tCallname = array('\\', $tCallback);
 				}
 
 				$tKey = $tCallname[0] . '::' . $tCallname[1];

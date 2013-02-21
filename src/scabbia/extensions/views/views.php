@@ -2,21 +2,21 @@
 
 	namespace Scabbia\Extensions\Views;
 
-	use Scabbia\config;
-	use Scabbia\framework;
-	use Scabbia\extensions;
 	use Scabbia\Extensions\I8n\i8n;
 	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\Views\views;
+	use Scabbia\config;
+	use Scabbia\extensions;
+	use Scabbia\framework;
 
 	/**
 	 * Views Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage views
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, http, resources, cache
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -108,13 +108,8 @@
 				'root' => rtrim(framework::$siteroot, '/')
 			);
 
-			if(extensions::isLoaded('i8n')) {
-				$tExtra['lang'] = i8n::$language['key'];
-			}
-
-			if(extensions::isLoaded('mvc')) {
-				$tExtra['controller'] = mvc::current();
-			}
+			$tExtra['lang'] = i8n::$language['key'];
+			$tExtra['controller'] = mvc::current();
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
 			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
@@ -151,13 +146,8 @@
 				'root' => framework::$siteroot
 			);
 
-			if(extensions::isLoaded('i8n')) {
-				$tExtra['lang'] = i8n::$language['key'];
-			}
-
-			if(extensions::isLoaded('mvc')) {
-				$tExtra['controller'] = mvc::current();
-			}
+			$tExtra['lang'] = i8n::$language['key'];
+			$tExtra['controller'] = mvc::current();
 
 			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
 			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);

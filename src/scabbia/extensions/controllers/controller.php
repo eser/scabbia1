@@ -2,12 +2,12 @@
 
 	namespace Scabbia\Extensions\Controllers;
 
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Datasources\datasources;
-	use Scabbia\Extensions\Io\io;
-	use Scabbia\framework;
 	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Io\io;
 	use Scabbia\Extensions\Views\views;
+	use Scabbia\extensions;
+	use Scabbia\framework;
 
 	/**
 	 * Controller Class
@@ -37,9 +37,7 @@
 		 * @ignore
 		 */
 		public function __construct() {
-			if(extensions::isLoaded('datasources')) {
-				$this->db = datasources::get(); // default datasource to member 'db'
-			}
+			$this->db = datasources::get(); // default datasource to member 'db'
 		}
 
 		/**

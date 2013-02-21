@@ -2,21 +2,21 @@
 
 	namespace Scabbia\Extensions\Logger;
 
-	use Scabbia\config;
-	use Scabbia\events;
-	use Scabbia\framework;
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Profiler\profiler;
 	use Scabbia\Extensions\String\string;
+	use Scabbia\config;
+	use Scabbia\events;
+	use Scabbia\extensions;
+	use Scabbia\framework;
 
 	/**
 	 * Logger Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage logger
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -163,15 +163,13 @@
 
 					$tString .= '</div>' . PHP_EOL;
 
-					if(extensions::isLoaded('profiler')) {
-						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler stack:</b>' . PHP_EOL;
-						$tString .= profiler::exportStack(false);
-						$tString .= '</div>' . PHP_EOL;
+					$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler stack:</b>' . PHP_EOL;
+					$tString .= profiler::exportStack(false);
+					$tString .= '</div>' . PHP_EOL;
 
-						$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler output:</b>' . PHP_EOL;
-						$tString .= profiler::export(false);
-						$tString .= '</div>';
-					}
+					$tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler output:</b>' . PHP_EOL;
+					$tString .= profiler::export(false);
+					$tString .= '</div>';
 				}
 
 				$tString .= '</pre>';

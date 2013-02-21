@@ -2,11 +2,11 @@
 
 	namespace Scabbia\Extensions\Mvc;
 
-	use Scabbia\config;
-	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\Http\http;
-	use Scabbia\events;
+	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\String\string;
+	use Scabbia\config;
+	use Scabbia\events;
 	use Scabbia\framework;
 
 	/**
@@ -14,9 +14,9 @@
 	 *
 	 * @package Scabbia
 	 * @subpackage mvc
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, http, router, models, views, controllers
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends

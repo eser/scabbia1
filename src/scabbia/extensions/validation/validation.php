@@ -2,17 +2,17 @@
 
 	namespace Scabbia\Extensions\Validation;
 
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Validation\validationRule;
+	use Scabbia\extensions;
 
 	/**
 	 * Validation Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage validation
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends contracts
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -162,11 +162,7 @@
 		 * @ignore
 		 */
 		public static function export($tOutput = true) {
-			if(extensions::isLoaded('string')) {
-				return string::vardump(self::$summary, $tOutput);
-			}
-
-			return print_r(self::$summary, $tOutput);
+			return string::vardump(self::$summary, $tOutput);
 		}
 	}
 

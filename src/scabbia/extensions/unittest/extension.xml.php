@@ -3,17 +3,12 @@
 <scabbia>
 	<info>
 		<name>unittest</name>
-		<version>1.0.2</version>
+		<version>1.1.0</version>
 		<license>GPLv3</license>
 		<phpversion>5.3.0</phpversion>
 		<phpdependList />
-		<fwversion>1.0</fwversion>
+		<fwversion>1.1</fwversion>
 		<fwdependList />
 	</info>
-	<includeList>
-		<include>unittest.php</include>
-	</includeList>
-	<classList>
-		<class>unittest</class>
-	</classList>
+	<eventList />
 </scabbia>

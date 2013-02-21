@@ -2,22 +2,22 @@
 
 	namespace Scabbia\Extensions\Http;
 
-	use Scabbia\config;
-	use Scabbia\framework;
-	use Scabbia\events;
+	use Scabbia\Extensions\Mime\mime;
 	use Scabbia\Extensions\String\string;
 	use Scabbia\Extensions\Views\views;
+	use Scabbia\config;
+	use Scabbia\events;
 	use Scabbia\extensions;
-	use Scabbia\Extensions\Mime\mime;
+	use Scabbia\framework;
 
 	/**
 	 * Http Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage http
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -260,8 +260,8 @@
 		public static function output($uParms) {
 			if(self::$isAjax) {
 				$tLastContentType = self::sentHeaderValue('Content-Type');
-				$tContent = '{ "isSuccess": ' . (($uParms['error'][0] > 0) ? 'false' : 'true')
-						. ', "errorMessage": ' . (is_null($uParms['error']) ? 'null' : string::dquote($uParms['error'][1], true));
+				$tContent = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true')
+						. ', "errorMessage": ' . (is_null($uParms['exitStatus']) ? 'null' : string::dquote($uParms['exitStatus'][1], true));
 
 				if($tLastContentType == false) {
 					self::sendHeader('Content-Type', 'application/json', true);
@@ -571,7 +571,7 @@
 		public static function sendFile($uFilePath, $uAttachment = false, $uFindMimeType = true) {
 			$tExtension = pathinfo($uFilePath, PATHINFO_EXTENSION);
 
-			if($uFindMimeType && extensions::isLoaded('mime')) {
+			if($uFindMimeType) {
 				$tType = mime::getType($tExtension);
 			}
 			else {

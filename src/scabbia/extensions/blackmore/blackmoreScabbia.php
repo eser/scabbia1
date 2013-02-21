@@ -4,9 +4,9 @@
 
 	use Scabbia\Extensions\Auth\auth;
 	use Scabbia\Extensions\Views\views;
-	use Scabbia\framework;
 	use Scabbia\config;
 	use Scabbia\extensions;
+	use Scabbia\framework;
 
 	/**
 	 * @ignore
@@ -124,12 +124,9 @@
 			$tDevelopment = framework::$development;
 			framework::$development = 0;
 
-			$tModule = framework::$module;
-			framework::$module = (strlen($uModule) > 0) ? $uModule : null;
-
 			$tConfig = config::load();
-			$tExtensions = extensions::load();
-			$tCompiled .= framework::printFile('<' . '?php config::$default = ' . var_export($tConfig, true) . '; extensions::$list = ' . var_export($tExtensions, true) . '; ?' . '>');
+			extensions::load();
+			$tCompiled .= framework::printFile('<' . '?php config::$default = ' . var_export($tConfig, true) . '; extensions::$configFiles = ' . var_export(extensions::$configFiles, true) . '; ?' . '>');
 
 			// download files
 			if(isset($tConfig['/downloadList'])) {
@@ -180,7 +177,6 @@
 			/* END   */
 
 			framework::$development = $tDevelopment;
-			framework::$module = $tModule;
 
 			return $tCompiled;
 		}

@@ -2,17 +2,17 @@
 
 	namespace Scabbia\Extensions\Controllers;
 
-	use Scabbia\extensions;
 	use Scabbia\Extensions\Datasources\datasources;
+	use Scabbia\extensions;
 
 	/**
 	 * Controllers Extension
 	 *
 	 * @package Scabbia
 	 * @subpackage controllers
-	 * @version 1.0.5
+	 * @version 1.1.0
 	 *
-	 * @scabbia-fwversion 1.0
+	 * @scabbia-fwversion 1.1
 	 * @scabbia-fwdepends string, io, http, views
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
@@ -31,10 +31,6 @@
 		 * @ignore
 		 */
 		public static function loadDatasource($uDatasourceName) {
-			if(!extensions::isLoaded('datasources')) {
-				return false;
-			}
-
 			if(!isset(self::$models[$uDatasourceName])) {
 				self::$models[$uDatasourceName] = datasources::get($uDatasourceName);
 			}
