@@ -7,7 +7,7 @@
 	use Scabbia\extensions;
 
 	/**
-	 * Base framework functions
+	 * Base framework functions.
 	 *
 	 * @package Scabbia
 	 *
@@ -26,55 +26,55 @@
 		const GLOB_JUSTNAMES = 8;
 
 		/**
-		 * Composer's class loader.
+		 * Composer's class loader
 		 */
 		public static $classLoader = null;
 		/**
-		 * Indicates framework is running in production, development or debug mode.
+		 * Indicates framework is running in production, development or debug mode
 		 */
 		public static $development = 0;
 		/**
-		 * Indicates framework is running in readonly mode or not.
+		 * Indicates framework is running in readonly mode or not
 		 */
 		public static $readonly = false;
 		/**
-		 * The timestamp indicates when the request started.
+		 * The timestamp indicates when the request started
 		 */
 		public static $timestamp = null;
 		/**
-		 * Indicates the base directory which framework runs in.
+		 * Indicates the base directory which framework runs in
 		 */
 		public static $basepath = null;
 		/**
-		 * Indicates the vendor directory which framework runs in.
+		 * Indicates the vendor directory which framework runs in
 		 */
 		public static $vendorpath = null;
 		/**
-		 * Stores relative path of running application.
+		 * Stores relative path of running application
 		 */
 		public static $applicationPath = null;
 		/**
-		 * Stores relative path of framework root.
+		 * Stores relative path of framework root
 		 */
 		public static $siteroot = null;
 		/**
-		 * The milestones passed in code.
+		 * The milestones passed in code
 		 */
 		public static $milestones = array();
 		/**
-		 * Stores all available endpoints.
+		 * Stores all available endpoints
 		 */
 		public static $endpoints = array();
 		/**
-		 * Stores active endpoint information.
+		 * Stores active endpoint information
 		 */
 		public static $endpoint = null;
 		/**
-		 * The exit status.
+		 * The exit status
 		 */
 		public static $exitStatus = null;
 		/**
-		 * Presets which can be used in regular expression.
+		 * Presets which can be used in regular expression
 		 */
 		public static $regexpPresets = array(
 			'num' => '[0-9]+',
@@ -554,7 +554,7 @@
 		}
 
 		/**
-		 * Converts presets to the regular expressions
+		 * Converts presets to the regular expressions.
 		 *
 		 * @param string $uPattern the pattern to search for, as a string
 		 *

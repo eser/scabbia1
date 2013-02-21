@@ -5,6 +5,7 @@
 	use Scabbia\Extensions\Datasources\datasources;
 	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Io\io;
+	use Scabbia\Extensions\Mvc\controllerBase;
 	use Scabbia\Extensions\Views\views;
 	use Scabbia\extensions;
 	use Scabbia\framework;
@@ -15,7 +16,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	abstract class controller {
+	abstract class controller extends controllerBase {
 		/**
 		 * @ignore
 		 */
@@ -28,10 +29,6 @@
 		 * @ignore
 		 */
 		public $db;
-		/**
-		 * @ignore
-		 */
-		public $vars = array();
 
 		/**
 		 * @ignore
@@ -56,74 +53,6 @@
 			}
 
 			return false;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function render($uAction, $uArgs) {
-			$tActionMethodName = strtr($uAction, '/', '_');
-
-			$tMe = new \ReflectionClass($this);
-
-			while(true) {
-				$tMethod = http::$methodext . '_' . $tActionMethodName;
-				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-					break;
-				}
-
-				// fallback
-				$tMethod = http::$method . '_' . $tActionMethodName;
-				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-					break;
-				}
-
-				if($tMe->hasMethod($tActionMethodName) && $tMe->getMethod($tActionMethodName)->isPublic()) {
-					$tMethod = $tActionMethodName;
-					break;
-				}
-
-				return false;
-			}
-
-			return call_user_func_array(array(&$this, $tMethod), $uArgs);
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function get($uKey) {
-			return $this->vars[$uKey];
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function set($uKey, $uValue) {
-			$this->vars[$uKey] = $uValue;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function setRef($uKey, &$uValue) {
-			$this->vars[$uKey] = $uValue;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function setRange($uArray) {
-			foreach($uArray as $tKey => $tValue) {
-				$this->vars[$tKey] = $tValue;
-			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public function remove($uKey) {
-			unset($this->vars[$uKey]);
 		}
 
 		/**

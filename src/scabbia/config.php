@@ -5,7 +5,7 @@
 	use Scabbia\framework;
 
 	/**
-	 * Configuration class which handles all configuration-based operations
+	 * Configuration class which handles all configuration-based operations.
 	 *
 	 * @package Scabbia
 	 *

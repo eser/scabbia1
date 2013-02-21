@@ -16,7 +16,7 @@
 	 * @version 1.1.0
 	 *
 	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends string, http, router, models, views, controllers
+	 * @scabbia-fwdepends string, http, router, models, views
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 *
@@ -75,14 +75,6 @@
 			else {
 				$tSegments = array();
 			}
-
-			$tParms = array(
-				'controller' => &$uParams['controller'],
-				'action' => &$uParams['action'],
-				'controllerActual' => &$tActualController,
-				'actionActual' => &$tActualAction,
-				'parameterSegments' => &$tSegments
-			);
 
 			controllers::getControllers();
 
