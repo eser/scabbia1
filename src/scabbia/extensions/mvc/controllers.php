@@ -3,6 +3,7 @@
 	namespace Scabbia\Extensions\Mvc;
 
 	use Scabbia\Extensions\Datasources\datasources;
+	use Scabbia\Extensions\Mvc\subcontroller;
 	use Scabbia\events;
 	use Scabbia\extensions;
 
@@ -16,7 +17,7 @@
 		/**
 		 * @ignore
 		 */
-		public static $controllerList = null;
+		public static $root = null;
 		/**
 		 * @ignore
 		 */
@@ -31,12 +32,14 @@
 		 * @ignore
 		 */
 		public static function getControllers() {
-			if(is_null(self::$controllerList)) {
+			if(is_null(self::$root)) {
 				$tParms = array();
 				events::invoke('registerControllers', $tParms);
 
-				self::$controllerList = array();
+				self::$root = new subcontroller();
 
+				// if autoload is enabled
+				// todo: maybe split _ for children
 				foreach(get_declared_classes() as $tClass) {
 					if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\controller')) {
 						continue;
@@ -44,11 +47,11 @@
 
 					$tPos = strrpos($tClass, '\\');
 					if($tPos !== false) {
-						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
+						self::$root->addSubcontroller(substr($tClass, $tPos + 1), $tClass);
 						continue;
 					}
 
-					self::$controllerList[$tClass] = $tClass;
+					self::$root->addSubcontroller($tClass, $tClass);
 				}
 			}
 		}

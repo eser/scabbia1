@@ -3,21 +3,21 @@
 	namespace Scabbia;
 
 	/**
-	 * Event manager which handles communication between framework parts and extensions
+	 * Event manager which handles communication between framework parts and extensions.
 	 *
 	 * @package Scabbia
 	 */
 	class events {
 		/**
-		 * @ignore
+		 * The array of registered callbacks for the events
 		 */
 		public static $callbacks = array();
 		/**
-		 * @ignore
+		 * Event depth
 		 */
 		public static $eventDepth = array();
 		/**
-		 * Indicates the event manager is currently disabled or not.
+		 * Indicates the event manager is currently disabled or not
 		 */
 		public static $disabled = false;
 

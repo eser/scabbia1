@@ -37,7 +37,6 @@
 		<extension>resources</extension>
 		<extension>models</extension>
 		<extension>views</extension>
-		<extension>controllers</extension>
 		<extension>mvc</extension>
 		<scope mode="development">
 			<extension>docs</extension>

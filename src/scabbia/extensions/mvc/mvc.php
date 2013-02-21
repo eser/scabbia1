@@ -16,7 +16,7 @@
 	 * @version 1.1.0
 	 *
 	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends string, http, router, models, views, controllers
+	 * @scabbia-fwdepends string, http, router, models, views
 	 * @scabbia-phpversion 5.3.0
 	 * @scabbia-phpdepends
 	 *
@@ -28,10 +28,6 @@
 	 * @todo map controller to path (/docs/index/* => views/docs/*.md)
 	 */
 	class mvc {
-		/**
-		 * @ignore
-		 */
-		public static $controllerStack = array();
 		/**
 		 * @ignore
 		 */
@@ -76,14 +72,6 @@
 				$tSegments = array();
 			}
 
-			$tParms = array(
-				'controller' => &$uParams['controller'],
-				'action' => &$uParams['action'],
-				'controllerActual' => &$tActualController,
-				'actionActual' => &$tActualAction,
-				'parameterSegments' => &$tSegments
-			);
-
 			controllers::getControllers();
 
 			while(true) {
@@ -92,38 +80,24 @@
 					break;
 				}
 
-				//! todo ensure autoload behaviour.
-				if(!isset(controllers::$controllerList[$tActualController])) {
-					$tReturn = false;
-					break;
-				}
-
-				$tController = new controllers::$controllerList[$tActualController] ();
-				$tController->route = $uParams;
-				$tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-
-				array_push(self::$controllerStack, $tController);
+				// $tController = new controllers::$controllerList[$tActualController] ();
+				// $tController->route = $uParams;
+				// $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
-					$tReturn = $tController->render($tActualAction, $tSegments);
+					$tReturn = controllers::$root->render($tActualAction, $tSegments);
 					if($tReturn === false) {
-						array_pop(self::$controllerStack);
 						break;
 					}
 
 					// call callback/closure returned by render
 					if($tReturn !== true && !is_null($tReturn)) {
 						call_user_func($tReturn);
-						array_pop(self::$controllerStack);
 						break;
 					}
-
-					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
 					self::error($ex->getMessage());
-
-					array_pop(self::$controllerStack);
 					$tReturn = false;
 				}
 
@@ -172,7 +146,9 @@
 				'actionActual' => &$tActualAction,
 				'parameterSegments' => &$tParameterSegments
 			);
-			events::invoke('routing', $tParms);
+			// events::invoke('routing', $tParms);
+
+			controllers::getControllers();
 
 			while(true) {
 				if(strpos($tActualAction, '_') !== false) {
@@ -180,37 +156,23 @@
 					break;
 				}
 
-				//! todo ensure autoload behaviour.
-				if(!isset(controllers::$controllerList[$tActualController])) {
-					$tReturn = false;
-					break;
-				}
-
-				$tController = new controllers::$controllerList[$tActualController] ();
-				$tController->route = $tRoute;
-				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-
-				array_push(self::$controllerStack, $tController);
+				// $tController = new controllers::$controllerList[$tActualController] ();
+				// $tController->route = $uParams;
+				// $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
-					$tReturn = $tController->render($tActualAction, $tRoute['parametersArray']);
+					$tReturn = controllers::$root->render($tActualAction, $tRoute['parametersArray']);
 					if($tReturn === false) {
-						array_pop(self::$controllerStack);
 						break;
 					}
 
 					if($tReturn !== true && !is_null($tReturn)) {
 						call_user_func($tReturn);
-						array_pop(self::$controllerStack);
 						break;
 					}
-
-					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
 					self::error($ex->getMessage());
-
-					array_pop(self::$controllerStack);
 					$tReturn = false;
 				}
 
@@ -224,7 +186,7 @@
 		 * @ignore
 		 */
 		public static function current() {
-			return end(self::$controllerStack);
+			return end(controllers::$stack);
 		}
 
 		/**

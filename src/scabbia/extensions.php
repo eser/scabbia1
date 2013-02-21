@@ -7,7 +7,7 @@
 	use Scabbia\framework;
 	
 	/**
-	 * Extensions manager which extends the framework capabilities with extra routines
+	 * Extensions manager which extends the framework capabilities with extra routines.
 	 *
 	 * @package Scabbia
 	 *
@@ -15,7 +15,7 @@
 	 */
 	class extensions {
 		/**
-		 * The array of extensions' config files.
+		 * The array of extensions' config files
 		 */
 		public static $configFiles = null;
 
