@@ -48,7 +48,7 @@
 							continue;
 						}
 
-						events::register($tLoad['name'], $tLoad['callback']);
+						events::register($tLoad['name'], $tLoad['callback'], isset($tLoad['callbackType']) ? $tLoad['callbackType'] : 'method');
 					}
 				}
 			}

@@ -1,23 +1,22 @@
 <?php
 
-	namespace Scabbia\Extensions\Controllers;
+	namespace Scabbia\Extensions\Mvc;
 
 	use Scabbia\Extensions\Datasources\datasources;
+	use Scabbia\events;
 	use Scabbia\extensions;
 
 	/**
-	 * Controllers Extension
+	 * Controllers Class
 	 *
 	 * @package Scabbia
-	 * @subpackage controllers
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends string, io, http, views
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
+	 * @subpackage LayerExtensions
 	 */
 	class controllers {
+		/**
+		 * @ignore
+		 */
+		public static $controllerList = null;
 		/**
 		 * @ignore
 		 */
@@ -26,6 +25,33 @@
 		 * @ignore
 		 */
 		public static $stack = array();
+
+
+		/*
+		 * @ignore
+		 */
+		public static function getControllers() {
+			if(is_null(self::$controllerList)) {
+				$tParms = array();
+				events::invoke('registerControllers', $tParms);
+
+				self::$controllerList = array();
+
+				foreach(get_declared_classes() as $tClass) {
+					if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\controller')) {
+						continue;
+					}
+
+					$tPos = strrpos($tClass, '\\');
+					if($tPos !== false) {
+						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
+						continue;
+					}
+
+					self::$controllerList[$tClass] = $tClass;
+				}
+			}
+		}
 
 		/**
 		 * @ignore

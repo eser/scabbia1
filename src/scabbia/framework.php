@@ -140,7 +140,7 @@
 			self::$milestones[] = array('endpoints', microtime(true));
 
 			if(!self::$readonly && is_null(self::$applicationPath)) {
-				self::$applicationPath = framework::$basepath . '/application/';
+				self::$applicationPath = framework::$basepath . 'application/';
 			}
 
 			// load config

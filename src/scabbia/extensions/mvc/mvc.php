@@ -3,7 +3,6 @@
 	namespace Scabbia\Extensions\Mvc;
 
 	use Scabbia\Extensions\Http\http;
-	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\String\string;
 	use Scabbia\config;
 	use Scabbia\events;
@@ -36,10 +35,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $controllerList = null;
-		/**
-		 * @ignore
-		 */
 		public static $defaultController;
 		/**
 		 * @ignore
@@ -57,29 +52,6 @@
 			self::$defaultController = config::get('/mvc/defaultController', 'home');
 			self::$defaultAction = config::get('/mvc/defaultAction', 'index');
 			self::$link = config::get('/mvc/link', '{@siteroot}/{@controller}/{@action}{@params}{@query}');
-		}
-
-		/*
-		 * @ignore
-		 */
-		private static function getControllers() {
-			if(is_null(self::$controllerList)) {
-				self::$controllerList = array();
-
-				foreach(get_declared_classes() as $tClass) {
-					if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Controllers\\controller')) {
-						continue;
-					}
-
-					$tPos = strrpos($tClass, '\\');
-					if($tPos !== false) {
-						self::$controllerList[substr($tClass, $tPos + 1)] = $tClass;
-						continue;
-					}
-
-					self::$controllerList[$tClass] = $tClass;
-				}
-			}
 		}
 
 		/**
@@ -112,7 +84,7 @@
 				'parameterSegments' => &$tSegments
 			);
 
-			self::getControllers();
+			controllers::getControllers();
 
 			while(true) {
 				if(strpos($tActualAction, '_') !== false) {
@@ -121,12 +93,12 @@
 				}
 
 				//! todo ensure autoload behaviour.
-				if(!isset(self::$controllerList[$tActualController])) {
+				if(!isset(controllers::$controllerList[$tActualController])) {
 					$tReturn = false;
 					break;
 				}
 
-				$tController = new self::$controllerList[$tActualController] ();
+				$tController = new controllers::$controllerList[$tActualController] ();
 				$tController->route = $uParams;
 				$tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
@@ -149,7 +121,7 @@
 					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
-					mvc::error($ex->getMessage());
+					self::error($ex->getMessage());
 
 					array_pop(self::$controllerStack);
 					$tReturn = false;
@@ -181,7 +153,7 @@
 		 * @ignore
 		 */
 		public static function generate($uPath) {
-			self::getControllers();
+			controllers::getControllers();
 
 			$tResolved = http::routeResolve($uPath);
 			if(is_null($tResolved)) {
@@ -209,12 +181,12 @@
 				}
 
 				//! todo ensure autoload behaviour.
-				if(!isset(self::$controllerList[$tActualController])) {
+				if(!isset(controllers::$controllerList[$tActualController])) {
 					$tReturn = false;
 					break;
 				}
 
-				$tController = new self::$controllerList[$tActualController] ();
+				$tController = new controllers::$controllerList[$tActualController] ();
 				$tController->route = $tRoute;
 				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
@@ -236,7 +208,7 @@
 					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
-					mvc::error($ex->getMessage());
+					self::error($ex->getMessage());
 
 					array_pop(self::$controllerStack);
 					$tReturn = false;
@@ -312,7 +284,7 @@
 			$tArray = array();
 
 			foreach(get_declared_classes() as $tClass) {
-				if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Controllers\\controller')) { // && $tClass != 'controller'
+				if(!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\controller')) { // && $tClass != 'controller'
 					continue;
 				}
 

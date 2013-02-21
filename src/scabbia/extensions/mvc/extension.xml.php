@@ -14,7 +14,8 @@
 			<fwdepend>router</fwdepend>
 			<fwdepend>models</fwdepend>
 			<fwdepend>views</fwdepend>
-			<fwdepend>controllers</fwdepend>
+			<fwdepend>string</fwdepend>
+			<fwdepend>io</fwdepend>
 		</fwdependList>
 	</info>
 	<eventList>

@@ -150,7 +150,7 @@
 				}
 			}
 
-			self::$notfoundPage = config::get('/http/errorPages/notfound', 'shared/error.php');
+			self::$notfoundPage = config::get('/http/errorPages/notfound', '{app}views/shared/error.php');
 
 			foreach(config::get('/http/routeList', array()) as $tRouteList) {
 				self::routeAdd($tRouteList['match'], $tRouteList['callback']);
@@ -246,7 +246,7 @@
 
 			//! todo internalization.
 			// maybe just include?
-			views::view(self::$notfoundPage, array(
+			views::viewFile(self::$notfoundPage, array(
 			                                   'title' => 'Error',
 			                                   'message' => '404 Not Found'
 			                              ));

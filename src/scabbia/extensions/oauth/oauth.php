@@ -2,7 +2,7 @@
 
 	namespace Scabbia\Extensions\Oauth;
 
-	use Scabbia\Extensions\Controllers\controller;
+	use Scabbia\Extensions\Mvc\controller;
 
 	/**
 	 * Docs Extension

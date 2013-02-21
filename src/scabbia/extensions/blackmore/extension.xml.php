@@ -19,6 +19,11 @@
 	</info>
 	<eventList>
 		<event>
+			<name>registerControllers</name>
+			<callback>Scabbia\Extensions\Blackmore\blackmore</callback>
+			<callbackType>loadClass</callbackType>
+		</event>
+		<event>
 			<name>blackmoreRegisterModules</name>
 			<callback>Scabbia\Extensions\Blackmore\blackmoreScabbia::blackmoreRegisterModules</callback>
 		</event>

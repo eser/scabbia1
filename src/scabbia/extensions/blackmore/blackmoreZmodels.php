@@ -3,9 +3,9 @@
 	namespace Scabbia\Extensions\Blackmore;
 
 	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Controllers\controllers;
 	use Scabbia\Extensions\Html\html;
 	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Mvc\controllers;
 	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\Session\session;
 	use Scabbia\Extensions\String\string;

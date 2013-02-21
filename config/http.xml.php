@@ -24,11 +24,11 @@
 		</routeList>
 
 		<errorPages>
-			<notfound>shared/error.php</notfound>
-			<restriction>shared/error.php</restriction>
-			<maintenance>shared/error.php</maintenance>
-			<ipban>shared/error.php</ipban>
-			<error>shared/error.php</error>
+			<notfound>{app}views/shared/error.php</notfound>
+			<restriction>{app}views/shared/error.php</restriction>
+			<maintenance>{app}views/shared/error.php</maintenance>
+			<ipban>{app}views/shared/error.php</ipban>
+			<error>{app}views/shared/error.php</error>
 		</errorPages>
 
 		<userAgents>

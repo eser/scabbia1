@@ -3,8 +3,8 @@
 	namespace Scabbia\Extensions\Blackmore;
 
 	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Controllers\controller;
 	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Mvc\controller;
 	use Scabbia\Extensions\Validation\validation;
 	use Scabbia\events;
 

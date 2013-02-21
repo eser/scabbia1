@@ -17,6 +17,7 @@
 		 */
 		public static $default;
 
+
 		/**
 		 * Loads the default configuration for the current application.
 		 *

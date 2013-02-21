@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scabbia\Extensions\Controllers;
+	namespace Scabbia\Extensions\Mvc;
 
 	use Scabbia\Extensions\Datasources\datasources;
 	use Scabbia\Extensions\Http\http;
@@ -136,7 +136,7 @@
 				$uMemberName = $uDatasourceName;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Controllers\\controllers::loadDatasource', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Mvc\\controllers::loadDatasource', $uArgs);
 		}
 
 		/**
@@ -149,7 +149,7 @@
 				$uMemberName = $uModelClass;
 			}
 
-			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Controllers\\controllers::load', $uArgs);
+			$this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Mvc\\controllers::load', $uArgs);
 		}
 
 		/**

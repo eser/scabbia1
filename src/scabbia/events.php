@@ -28,12 +28,12 @@
 		 * @param string $uEventName the event
 		 * @param mixed $uCallback callback method
 		 */
-		public static function register($uEventName, $uCallback) {
+		public static function register($uEventName, $uCallback, $uType = 'method') {
 			if(!array_key_exists($uEventName, self::$callbacks)) {
 				self::$callbacks[$uEventName] = array();
 			}
 
-			self::$callbacks[$uEventName][] = $uCallback;
+			self::$callbacks[$uEventName][] = array($uCallback, $uType);
 		}
 
 		/**
@@ -52,20 +52,26 @@
 			}
 
 			foreach(self::$callbacks[$uEventName] as $tCallback) {
-				if(is_array($tCallback)) {
-					$tCallname = array(get_class($tCallback[0]), $tCallback[1]);
-				}
-				else {
-					$tCallname = array('\\', $tCallback);
-				}
+				switch($tCallback[1]) {
+				case 'loadClass':
+					class_exists($tCallback[0], true);
+					break;
 
-				$tKey = $tCallname[0] . '::' . $tCallname[1];
-				array_push(self::$eventDepth, $tKey . '()');
-				$tReturn = call_user_func_array($tCallback, array(&$uEventArgs));
-				array_pop(self::$eventDepth);
+				case 'method':
+					if(is_array($tCallback[0])) {
+						array_push(self::$eventDepth, get_class($tCallback[0][0]) . '::' . $tCallback[0][1] . '()');
+					}
+					else {
+						array_push(self::$eventDepth, '\\' . $tCallback[0] . '()');
+					}
 
-				if($tReturn === false) {
-					return false;
+					$tReturn = call_user_func_array($tCallback[0], array(&$uEventArgs));
+					array_pop(self::$eventDepth);
+
+					if($tReturn === false) {
+						return false;
+					}
+					break;
 				}
 			}
 
