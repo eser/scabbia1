@@ -2,21 +2,28 @@
 
 	namespace Scabbia\Extensions\Mvc;
 
+	use Scabbia\Extensions\Http\http;
+	use Scabbia\config;
+
 	/**
-	 * ControllerBase Class
+	 * Subcontroller Class
 	 *
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	class controllerBase {
+	class subcontroller {
 		/**
 		 * @ignore
 		 */
-		public static $subcontrollers = array();
+		public $subcontrollers = array();
 		/**
 		 * @ignore
 		 */
-		public static $defaultAction = 'index';
+		public $defaultAction = 'index';
+		/**
+		 * @ignore
+		 */
+		public $view = null;
 		/**
 		 * @ignore
 		 */
@@ -26,19 +33,19 @@
 		/**
 		 * @ignore
 		 */
-		public function render($uAction, $uParams) {
-			$tActionName = strtr($uAction, '/', '_');
+		public function render($uAction, $uParams, $uInput) {
+			$tActionName = $uAction; // strtr($uAction, '/', '_');
 
 			if(isset($this->subcontrollers[$tActionName])) {
 				if(count($uParams) > 0) {
-					$tSubaction = array_pop($uParams);
+					$tSubaction = array_shift($uParams);
 				}
 				else {
 					$tSubaction = $this->subcontrollers[$tActionName]->defaultAction;
 				}
 
-				$this->subcontrollers[$tActionName]->render($tSubaction, $uParams);
-				return;
+				$tInstance = new $this->subcontrollers[$tActionName] ();
+				return $tInstance->render($tSubaction, $uParams);
 			}
 
 			$tMe = new \ReflectionClass($this);
@@ -64,7 +71,13 @@
 				return false;
 			}
 
-			return call_user_func_array(array(&$this, $tMethod), $uParams);
+			array_push(controllers::$stack, $this);
+			$this->route = $uInput;
+			$this->view = get_class($this) . '/' . $tMethod . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
+			$tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
+			array_pop(controllers::$stack);
+
+			return $tReturn;
 		}
 
 		/**

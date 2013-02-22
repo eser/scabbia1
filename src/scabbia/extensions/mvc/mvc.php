@@ -31,10 +31,6 @@
 		/**
 		 * @ignore
 		 */
-		public static $controllerStack = array();
-		/**
-		 * @ignore
-		 */
 		public static $defaultController;
 		/**
 		 * @ignore
@@ -57,65 +53,45 @@
 		/**
 		 * @ignore
 		 */
-		public static function route($uParams) {
-			if(!isset($uParams['controller']) || strlen($uParams['controller']) <= 0) {
-				$uParams['controller'] = self::$defaultController;
-			}
-
-			if(!isset($uParams['action']) || strlen($uParams['action']) <= 0) {
-				$uParams['action'] = self::$defaultAction;
-			}
-
-			$tActualController = $uParams['controller'];
-			$tActualAction = $uParams['action'];
-
-			if(isset($uParams['params']) && strlen($uParams['params']) > 0) {
-				$tSegments = explode('/', ltrim($uParams['params'], '/'));
+		public static function route($uInput) {
+			if(isset($uInput['controller']) && strlen($uInput['controller']) > 0) {
+				$tActualController = $uInput['controller'];
 			}
 			else {
-				$tSegments = array();
+				$tActualController = self::$defaultController;
+			}
+
+			if(isset($uInput['params'])) {
+				$tActualParams = trim($uInput['params'], '/');
+			}
+			else {
+				$tActualParams = '';
+			}
+
+			if(strlen($tActualParams) > 0) {
+				$uParams = explode('/', $tActualParams);
+			}
+			else {
+				$uParams = array();
 			}
 
 			controllers::getControllers();
 
 			while(true) {
-				if(strpos($tActualAction, '_') !== false) {
-					$tReturn = false;
-					break;
-				}
-
-				//! todo ensure autoload behaviour.
-				if(!isset(controllers::$controllerList[$tActualController])) {
-					$tReturn = false;
-					break;
-				}
-
-				$tController = new controllers::$controllerList[$tActualController] ();
-				$tController->route = $uParams;
-				$tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-
-				array_push(self::$controllerStack, $tController);
-
 				try {
-					$tReturn = $tController->render($tActualAction, $tSegments);
+					$tReturn = controllers::$root->render($tActualController, $uParams, $uInput);
 					if($tReturn === false) {
-						array_pop(self::$controllerStack);
 						break;
 					}
 
 					// call callback/closure returned by render
 					if($tReturn !== true && !is_null($tReturn)) {
 						call_user_func($tReturn);
-						array_pop(self::$controllerStack);
 						break;
 					}
-
-					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
 					self::error($ex->getMessage());
-
-					array_pop(self::$controllerStack);
 					$tReturn = false;
 				}
 
@@ -164,7 +140,9 @@
 				'actionActual' => &$tActualAction,
 				'parameterSegments' => &$tParameterSegments
 			);
-			events::invoke('routing', $tParms);
+			// events::invoke('routing', $tParms);
+
+			controllers::getControllers();
 
 			while(true) {
 				if(strpos($tActualAction, '_') !== false) {
@@ -172,37 +150,23 @@
 					break;
 				}
 
-				//! todo ensure autoload behaviour.
-				if(!isset(controllers::$controllerList[$tActualController])) {
-					$tReturn = false;
-					break;
-				}
-
-				$tController = new controllers::$controllerList[$tActualController] ();
-				$tController->route = $tRoute;
-				$tController->view = $tRoute['controller'] . '/' . $tRoute['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
-
-				array_push(self::$controllerStack, $tController);
+				// $tController = new controllers::$controllerList[$tActualController] ();
+				// $tController->route = $uParams;
+				// $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
 
 				try {
-					$tReturn = $tController->render($tActualAction, $tRoute['parametersArray']);
+					$tReturn = controllers::$root->render($tActualAction, $tRoute['parametersArray']);
 					if($tReturn === false) {
-						array_pop(self::$controllerStack);
 						break;
 					}
 
 					if($tReturn !== true && !is_null($tReturn)) {
 						call_user_func($tReturn);
-						array_pop(self::$controllerStack);
 						break;
 					}
-
-					array_pop(self::$controllerStack);
 				}
 				catch(\Exception $ex) {
 					self::error($ex->getMessage());
-
-					array_pop(self::$controllerStack);
 					$tReturn = false;
 				}
 
@@ -216,7 +180,7 @@
 		 * @ignore
 		 */
 		public static function current() {
-			return end(self::$controllerStack);
+			return end(controllers::$stack);
 		}
 
 		/**

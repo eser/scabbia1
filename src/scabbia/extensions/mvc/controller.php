@@ -5,7 +5,7 @@
 	use Scabbia\Extensions\Datasources\datasources;
 	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\Io\io;
-	use Scabbia\Extensions\Mvc\controllerBase;
+	use Scabbia\Extensions\Mvc\subcontroller;
 	use Scabbia\Extensions\Views\views;
 	use Scabbia\extensions;
 	use Scabbia\framework;
@@ -16,7 +16,7 @@
 	 * @package Scabbia
 	 * @subpackage LayerExtensions
 	 */
-	abstract class controller extends controllerBase {
+	abstract class controller extends subcontroller {
 		/**
 		 * @ignore
 		 */
