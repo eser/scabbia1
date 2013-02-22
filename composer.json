@@ -28,10 +28,10 @@
 		}
 	},
 	"scripts": {
-		"post-install-cmd": [
+		"post-package-install": [
 			"cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
 		],
-		"post-update-cmd": [
+		"post-package-update": [
 			"cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
 		]
 	}
