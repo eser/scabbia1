@@ -28,12 +28,15 @@
 		 * @param string $uEventName the event
 		 * @param mixed $uCallback callback method
 		 */
-		public static function register($uEventName, $uCallback, $uType = 'method') {
+		public static function register($uEventName, $uType, $uValue, $uPriority = 10) {
 			if(!array_key_exists($uEventName, self::$callbacks)) {
 				self::$callbacks[$uEventName] = array();
 			}
 
-			self::$callbacks[$uEventName][] = array($uCallback, $uType);
+			self::$callbacks[$uEventName][] = array($uType, $uValue, $uPriority);
+			usort(self::$callbacks[$uEventName], function($uFirst, $uSecond) {
+				return strnatcmp($uFirst[2], $uSecond[2]);
+			});
 		}
 
 		/**
@@ -41,6 +44,8 @@
 		 *
 		 * @param string $uEventName the event
 		 * @param array $uEventArgs arguments for the event
+		 *
+		 * @uses invokeSingle()
 		 */
 		public static function invoke($uEventName, &$uEventArgs = array()) {
 			if(self::$disabled) {
@@ -52,30 +57,48 @@
 			}
 
 			foreach(self::$callbacks[$uEventName] as $tCallback) {
-				switch($tCallback[1]) {
-				case 'loadClass':
-					class_exists($tCallback[0], true);
-					break;
-
-				case 'method':
-					if(is_array($tCallback[0])) {
-						array_push(self::$eventDepth, get_class($tCallback[0][0]) . '::' . $tCallback[0][1] . '()');
-					}
-					else {
-						array_push(self::$eventDepth, '\\' . $tCallback[0] . '()');
-					}
-
-					$tReturn = call_user_func_array($tCallback[0], array(&$uEventArgs));
-					array_pop(self::$eventDepth);
-
-					if($tReturn === false) {
-						return false;
-					}
-					break;
-				}
+				self::invokeSingle($tCallback[0], $tCallback[1]);
 			}
 
 			return true;
+		}
+
+		/**
+		 * Executes a single event.
+		 *
+		 * @param string $uType the type of event
+		 * @param mixed $uValue the value of event
+		 */
+		public static function invokeSingle($uType, $uValue) {
+			if(self::$disabled) {
+				return null;
+			}
+
+			switch($uType) {
+			case 'loadClass':
+				class_exists($uValue, true);
+				break;
+
+			case 'include':
+				include(framework::translatePath($uValue));
+				break;
+
+			case 'callback':
+				if(is_array($uValue)) {
+					array_push(self::$eventDepth, get_class($uValue[0]) . '::' . $uValue[1] . '()');
+				}
+				else {
+					array_push(self::$eventDepth, '\\' . $uValue . '()');
+				}
+
+				$tReturn = call_user_func_array($uValue, array(&$uEventArgs));
+				array_pop(self::$eventDepth);
+
+				if($tReturn === false) {
+					return false;
+				}
+				break;
+			}
 		}
 	}
 

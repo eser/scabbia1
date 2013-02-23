@@ -21,11 +21,13 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Mvc\mvc::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Mvc\mvc::extensionLoad</value>
 		</event>
 		<event>
 			<name>httpUrl</name>
-			<callback>Scabbia\Extensions\Mvc\mvc::httpUrl</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Mvc\mvc::httpUrl</value>
 		</event>
 	</eventList>
 </scabbia>

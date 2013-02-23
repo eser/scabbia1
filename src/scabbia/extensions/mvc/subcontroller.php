@@ -35,17 +35,20 @@
 		 */
 		public function render($uAction, $uParams, $uInput) {
 			$tActionName = $uAction; // strtr($uAction, '/', '_');
+			if(is_null($tActionName)) {
+				$tActionName = $this->defaultAction;
+			}
 
 			if(isset($this->subcontrollers[$tActionName])) {
 				if(count($uParams) > 0) {
 					$tSubaction = array_shift($uParams);
 				}
 				else {
-					$tSubaction = $this->subcontrollers[$tActionName]->defaultAction;
+					$tSubaction = null;
 				}
 
 				$tInstance = new $this->subcontrollers[$tActionName] ();
-				return $tInstance->render($tSubaction, $uParams);
+				return $tInstance->render($tSubaction, $uParams, $uInput);
 			}
 
 			$tMe = new \ReflectionClass($this);
@@ -72,8 +75,15 @@
 			}
 
 			array_push(controllers::$stack, $this);
-			$this->route = $uInput;
-			$this->view = get_class($this) . '/' . $tMethod . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
+
+			$this->route = array(
+				'controller' => get_class($this),
+				'action' => $tMethod,
+				'params' => $uParams,
+				'query' => isset($uInput['query']) ? $uInput['query'] : ''
+			);
+			$this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . config::get('/mvc/view/defaultViewExtension', 'php');
+
 			$tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
 			array_pop(controllers::$stack);
 

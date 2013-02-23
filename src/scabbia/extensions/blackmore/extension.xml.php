@@ -20,16 +20,18 @@
 	<eventList>
 		<event>
 			<name>registerControllers</name>
-			<callback>Scabbia\Extensions\Blackmore\blackmore</callback>
-			<callbackType>loadClass</callbackType>
+			<type>loadClass</type>
+			<value>Scabbia\Extensions\Blackmore\blackmore</value>
 		</event>
 		<event>
 			<name>blackmoreRegisterModules</name>
-			<callback>Scabbia\Extensions\Blackmore\blackmoreScabbia::blackmoreRegisterModules</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Blackmore\blackmoreScabbia::blackmoreRegisterModules</value>
 		</event>
 		<event>
 			<name>blackmoreRegisterModules</name>
-			<callback>Scabbia\Extensions\Blackmore\blackmoreZmodels::blackmoreRegisterModules</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Blackmore\blackmoreZmodels::blackmoreRegisterModules</value>
 		</event>
 	</eventList>
 </scabbia>

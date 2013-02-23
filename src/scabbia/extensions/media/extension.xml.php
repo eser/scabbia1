@@ -13,7 +13,8 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Media\media::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Media\media::extensionLoad</value>
 		</event>
 	</eventList>
 </scabbia>

@@ -13,7 +13,8 @@
 	<eventList>
 		<event>
 			<name>run</name>
-			<callback>Scabbia\Extensions\Access\access::run</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Access\access::run</value>
 		</event>
 	</eventList>
 </scabbia>

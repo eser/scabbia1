@@ -37,7 +37,7 @@
 		/**
 		 * @ignore
 		 */
-		public function render($uAction, $uArgs) {
+		public function render($uAction, $uParams, $uInput) {
 			self::$modules['index'] = array(
 				'title' => 'Dashboard',
 				'callback' => array(&$this, 'index')
@@ -59,17 +59,17 @@
 
 			self::$module = $uAction;
 
-			if(count($uArgs) > 0) {
+			if(count($uParams) > 0) {
 				foreach(self::$modules[$uAction]['actions'] as $tAction) {
-					if($uArgs[0] != $tAction['action']) {
+					if($uParams[0] != $tAction['action']) {
 						continue;
 					}
 
-					return call_user_func_array($tAction['callback'], $uArgs);
+					return call_user_func_array($tAction['callback'], $uParams);
 				}
 			}
 
-			return call_user_func_array(self::$modules[$uAction]['callback'], $uArgs);
+			return call_user_func_array(self::$modules[$uAction]['callback'], $uParams);
 		}
 
 		/**

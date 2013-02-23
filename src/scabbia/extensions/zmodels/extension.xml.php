@@ -13,7 +13,8 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\ZModels\zmodels::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\ZModels\zmodels::extensionLoad</value>
 		</event>
 	</eventList>
 </scabbia>

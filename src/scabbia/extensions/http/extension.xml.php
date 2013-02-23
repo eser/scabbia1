@@ -15,11 +15,13 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Http\http::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Http\http::extensionLoad</value>
 		</event>
 		<event>
 			<name>output</name>
-			<callback>Scabbia\Extensions\Http\http::output</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Http\http::output</value>
 		</event>
 	</eventList>
 </scabbia>

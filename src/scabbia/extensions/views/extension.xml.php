@@ -18,31 +18,38 @@
 	<eventList>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\views::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\views::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEngineMarkdown::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEngineMarkdown::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEnginePhptal::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEnginePhptal::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEngineRaintpl::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEngineRaintpl::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEngineRazor::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEngineRazor::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEngineSmarty::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEngineSmarty::extensionLoad</value>
 		</event>
 		<event>
 			<name>load</name>
-			<callback>Scabbia\Extensions\Views\viewEngineTwig::extensionLoad</callback>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Views\viewEngineTwig::extensionLoad</value>
 		</event>
 	</eventList>
 </scabbia>

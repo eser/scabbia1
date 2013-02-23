@@ -44,11 +44,11 @@
 				if(isset($tSubconfig['/eventList'])) {
 					foreach($tSubconfig['/eventList'] as $tLoad) {
 						if($tLoad['name'] == 'load') {
-							call_user_func($tLoad['callback']);
+							events::invokeSingle($tLoad['type'], $tLoad['value']);
 							continue;
 						}
 
-						events::register($tLoad['name'], $tLoad['callback'], isset($tLoad['callbackType']) ? $tLoad['callbackType'] : 'method');
+						events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
 					}
 				}
 			}
