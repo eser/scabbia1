@@ -2,7 +2,7 @@
 
 	namespace Scabbia\Extensions\Media;
 
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\response;
 	use Scabbia\Extensions\Media\media;
 	use Scabbia\Extensions\Mime\mime;
 	use Scabbia\extensions;
@@ -288,10 +288,10 @@
 		 * @ignore
 		 */
 		public function output() {
-			http::sendHeaderCache(-1);
-			http::sendHeader('Content-Type', $this->mime, true);
-			http::sendHeader('Content-Length', $this->size, true);
-			http::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
+			response::sendHeaderCache(-1);
+			response::sendHeader('Content-Type', $this->mime, true);
+			response::sendHeader('Content-Length', $this->size, true);
+			response::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
 			// @readfile($this->source);
 
 			switch($this->mime) {

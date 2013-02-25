@@ -3,6 +3,8 @@
 	namespace Scabbia\Extensions\Mvc;
 
 	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\request;
+	use Scabbia\Extensions\Http\response;
 	use Scabbia\Extensions\String\string;
 	use Scabbia\config;
 	use Scabbia\events;
@@ -191,7 +193,7 @@
 
 			return string::format(self::$link, array(
 													 'siteroot' => rtrim(framework::$siteroot, '/'),
-													 'device' => http::$crawlerType,
+													 'device' => request::$crawlerType,
 													 'controller' => $tCurrent->route['controller'],
 													 'action' => $tCurrent->route['action'],
 													 'parameters' => $tCurrent->route['parameters'],
@@ -205,7 +207,7 @@
 		private static function urlInternal($uPath) {
 			$tParms = array(
 				'siteroot' => rtrim(framework::$siteroot, '/'),
-				'device' => http::$crawlerType,
+				'device' => request::$crawlerType,
 				'path' => $uPath
 			);
 
@@ -230,7 +232,7 @@
 			$tArgs = func_get_args();
 			$tQuery = call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::urlInternal', $tArgs);
 
-			http::sendRedirect($tQuery, true);
+			response::sendRedirect($tQuery, true);
 		}
 
 		/**

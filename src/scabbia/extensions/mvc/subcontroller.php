@@ -2,7 +2,7 @@
 
 	namespace Scabbia\Extensions\Mvc;
 
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\request;
 	use Scabbia\config;
 
 	/**
@@ -54,13 +54,13 @@
 			$tMe = new \ReflectionClass($this);
 
 			while(true) {
-				$tMethod = http::$methodext . '_' . $tActionName;
+				$tMethod = request::$methodext . '_' . $tActionName;
 				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
 					break;
 				}
 
 				// fallback
-				$tMethod = http::$method . '_' . $tActionName;
+				$tMethod = request::$method . '_' . $tActionName;
 				if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
 					break;
 				}

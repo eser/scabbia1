@@ -3,7 +3,7 @@
 	namespace Scabbia\Extensions\Blackmore;
 
 	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\request;
 	use Scabbia\Extensions\Mvc\controller;
 	use Scabbia\Extensions\Validation\validation;
 	use Scabbia\events;
@@ -76,7 +76,7 @@
 		 * @ignore
 		 */
 		public function login() {
-			if(http::$method != 'post') {
+			if(request::$method != 'post') {
 				auth::clear();
 
 				$this->viewFile('{vendor}views/blackmore/login.php');
@@ -97,8 +97,8 @@
 				return;
 			}
 
-			$username = http::post('username');
-			$password = http::post('password');
+			$username = request::post('username');
+			$password = request::post('password');
 
 			// user not found
 			if(!auth::login($username, $password)) {

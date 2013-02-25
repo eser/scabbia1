@@ -19,6 +19,11 @@
 			<value>Scabbia\Extensions\Http\http::extensionLoad</value>
 		</event>
 		<event>
+			<name>load</name>
+			<type>callback</type>
+			<value>Scabbia\Extensions\Http\request::extensionLoad</value>
+		</event>
+		<event>
 			<name>output</name>
 			<type>callback</type>
 			<value>Scabbia\Extensions\Http\http::output</value>

@@ -4,7 +4,7 @@
 
 	use Scabbia\Extensions\Auth\auth;
 	use Scabbia\Extensions\Html\html;
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\request;
 	use Scabbia\Extensions\Mvc\controllers;
 	use Scabbia\Extensions\Mvc\mvc;
 	use Scabbia\Extensions\Session\session;
@@ -109,20 +109,20 @@
 				'fields' => array()
 			);
 
-			if(http::$method == 'post') {
+			if(request::$method == 'post') {
 				// todo: validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
 				if(validation::validate($_POST)) {
-					$tSlug = http::post('slug', '');
+					$tSlug = request::post('slug', '');
 					if(strlen(rtrim($tSlug)) == 0) {
-						$tSlug = http::post('name', '');
+						$tSlug = request::post('name', '');
 					}
 
 					$tInput = array(
-						'type' => http::post('type'),
-						'name' => http::post('name'),
+						'type' => request::post('type'),
+						'name' => request::post('name'),
 						'slug' => string::slug(string::removeAccent($tSlug))
 					);
 
@@ -158,7 +158,7 @@
 						$tTag = '<p>' . _($tField['title']) . ': ' . html::tag(
 							'select',
 							$tAttributes,
-							html::selectOptions($tTypes, http::post($tField['name'], null))
+							html::selectOptions($tTypes, request::post($tField['name'], null))
 						) . '</p>';
 						break;
 
@@ -166,7 +166,7 @@
 						$tAttributes = array(
 							'type' => 'text',
 							'name' => $tField['name'],
-							'value' => http::post($tField['name'], ''),
+							'value' => request::post($tField['name'], ''),
 							'class' => 'input input_' . $tField['type']
 						);
 						if(!$tIsEdit) {
@@ -199,20 +199,20 @@
 				'fields' => array()
 			);
 
-			if(http::$method == 'post') {
+			if(request::$method == 'post') {
 				// todo: validations
 				validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
 				// validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
 				if(validation::validate($_POST)) {
-					$tSlug = http::post('slug', '');
+					$tSlug = request::post('slug', '');
 					if(strlen(rtrim($tSlug)) == 0) {
-						$tSlug = http::post('name', '');
+						$tSlug = request::post('name', '');
 					}
 
 					$tInput = array(
-						'type' => http::post('type'),
-						'name' => http::post('name'),
+						'type' => request::post('type'),
+						'name' => request::post('name'),
 						'slug' => string::slug(string::removeAccent($tSlug))
 					);
 
@@ -247,7 +247,7 @@
 							$tTag = '<p>' . _($tField['title']) . ': ' . html::tag(
 								'select',
 								$tAttributes,
-								html::selectOptions($tTypes, http::post($tField['name'], null))
+								html::selectOptions($tTypes, request::post($tField['name'], null))
 							) . '</p>';
 							break;
 
@@ -255,7 +255,7 @@
 							$tAttributes = array(
 								'type' => 'text',
 								'name' => $tField['name'],
-								'value' => http::post($tField['name'], ''),
+								'value' => request::post($tField['name'], ''),
 								'class' => 'input input_' . $tField['type']
 							);
 							if(!$tIsEdit) {

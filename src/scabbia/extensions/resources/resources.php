@@ -3,7 +3,8 @@
 	namespace Scabbia\Extensions\Resources;
 
 	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\request;
+	use Scabbia\Extensions\Http\response;
 	use Scabbia\Extensions\Io\io;
 	use Scabbia\Extensions\Mime\mime;
 	use Scabbia\Extensions\Views\views;
@@ -54,8 +55,8 @@
 				self::$directories = config::get('/resources/directoryList', array());
 			}
 
-			if(strlen(http::$queryString) > 0) {
-				$tPath = explode('&', http::$queryString, 2);
+			if(strlen(request::$queryString) > 0) {
+				$tPath = explode('&', request::$queryString, 2);
 
 				foreach(self::$directories as $tDirectory) {
 					$tDirectoryName = rtrim($tDirectory['name'], '/');
@@ -143,7 +144,7 @@
 					}
 				}
 
-				http::sendHeaderCache($tCacheTtl);
+				response::sendHeaderCache($tCacheTtl);
 
 				switch($tMimetype) {
 				case 'application/x-javascript':
