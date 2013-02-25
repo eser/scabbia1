@@ -194,9 +194,30 @@
 		 *
 		 * @return array the configuration
 		 */
-		public static function loadFile(&$uConfig, $uFile) {
-			$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS | LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
-			self::xmlProcessChildrenRecursive($uConfig, $tXmlDom);
+		public static function loadFile(&$uConfig, $uFile, $uFileType = 'xml') {
+			switch($uFileType) {
+			case 'xml':
+				$tXmlDom = simplexml_load_file($uFile, null, LIBXML_NOBLANKS | LIBXML_NOCDATA) or exit('Unable to read from config file - ' . $uFile);
+				self::xmlProcessChildrenRecursive($uConfig, $tXmlDom);
+				break;
+
+			case 'json':
+				// strip comments and load file
+				$tJsonData = preg_replace(
+					'#(//([^\n]*)|/\*([^\*/]*)\*/)#',
+					'',
+					file_get_contents($uFile)
+				);
+
+				$tJsonObject = json_decode($tJsonData);
+				// self::jsonProcessChildrenRecursive($uConfig, '', $tJsonObject);
+				break;
+
+			case 'php':
+				$tPhpObject = include($uFile);
+				// self::phpProcessChildrenRecursive($uConfig, '', $uPhpObject);
+				break;
+			}
 		}
 
 		/**
