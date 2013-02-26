@@ -1,208 +1,218 @@
 <?php
 
-	namespace Scabbia\Extensions\Cache;
+namespace Scabbia\Extensions\Cache;
 
-	use Scabbia\Extensions\Io\io;
-	use Scabbia\config;
-	use Scabbia\framework;
+use Scabbia\Extensions\Io\Io;
+use Scabbia\Config;
+use Scabbia\Framework;
 
-	/**
-	 * Cache Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage cache
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends io
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class cache {
-		/**
-		 * @ignore
-		 */
-		public static $defaultAge;
-		/**
-		 * @ignore
-		 */
-		public static $keyphase;
-		/**
-		 * @ignore
-		 */
-		public static $storage = null;
-		/**
-		 * @ignore
-		 */
-		public static $storageObject = null;
+/**
+ * Cache Extension
+ *
+ * @package Scabbia
+ * @subpackage cache
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends io
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Cache
+{
+    /**
+     * @ignore
+     */
+    public static $defaultAge;
+    /**
+     * @ignore
+     */
+    public static $keyphase;
+    /**
+     * @ignore
+     */
+    public static $storage = null;
+    /**
+     * @ignore
+     */
+    public static $storageObject = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			self::$defaultAge = intval(config::get('/cache/defaultAge', '120'));
-			self::$keyphase = config::get('/cache/keyphase', '');
 
-			$tStorage = config::get('/cache/storage', '');
-			if(strlen($tStorage) > 0) {
-				self::$storage = parse_url($tStorage);
-			}
-		}
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        self::$defaultAge = intval(Config::get('/cache/defaultAge', '120'));
+        self::$keyphase = Config::get('/cache/keyphase', '');
 
-		/**
-		 * @ignore
-		 */
-		public static function storageOpen() {
-			if(!is_null(self::$storageObject)) {
-				return;
-			}
+        $tStorage = Config::get('/cache/storage', '');
+        if (strlen($tStorage) > 0) {
+            self::$storage = parse_url($tStorage);
+        }
+    }
 
-			if(self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
-				self::$storageObject = new \Memcache();
-				self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
+    /**
+     * @ignore
+     */
+    public static function storageOpen()
+    {
+        if (!is_null(self::$storageObject)) {
+            return;
+        }
 
-				return;
-			}
-		}
+        if (self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
+            self::$storageObject = new \Memcache();
+            self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
 
-		/**
-		 * @ignore
-		 */
-		public static function storageGet($uKey) {
-			self::storageOpen();
+            return;
+        }
+    }
 
-			return self::$storageObject->get($uKey);
-		}
+    /**
+     * @ignore
+     */
+    public static function storageGet($uKey)
+    {
+        self::storageOpen();
 
-		/**
-		 * @ignore
-		 */
-		public static function storageSet($uKey, $uValue, $uAge = -1) {
-			self::storageOpen();
+        return self::$storageObject->get($uKey);
+    }
 
-			// age
-			if($uAge == -1) {
-				$uAge = self::$defaultAge;
-			}
+    /**
+     * @ignore
+     */
+    public static function storageSet($uKey, $uValue, $uAge = -1)
+    {
+        self::storageOpen();
 
-			self::$storageObject->set($uKey, $uValue, 0, $uAge);
-		}
+        // age
+        if ($uAge == -1) {
+            $uAge = self::$defaultAge;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function storageDestroy($uKey) {
-			self::storageOpen();
+        self::$storageObject->set($uKey, $uValue, 0, $uAge);
+    }
 
-			self::$storageObject->delete($uKey);
-		}
+    /**
+     * @ignore
+     */
+    public static function storageDestroy($uKey)
+    {
+        self::storageOpen();
 
-		/**
-		 * @ignore
-		 */
-		public static function filePath($uFolder, $uFilename, $uAge = -1) {
-			if(framework::$readonly) {
-				return array(false, null);
-			}
+        self::$storageObject->delete($uKey);
+    }
 
-			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename), true);
+    /**
+     * @ignore
+     */
+    public static function filePath($uFolder, $uFilename, $uAge = -1)
+    {
+        if (Framework::$readonly) {
+            return array(false, null);
+        }
 
-			// age
-			if($uAge == -1) {
-				$uAge = self::$defaultAge;
-			}
+        // path
+        $tPath = Framework::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
 
-			// check
-			if(
-				!file_exists($tPath) ||
-				($uAge != 0 && time() - filemtime($tPath) >= $uAge)
-			) {
-				return array(false, $tPath);
-			}
+        // age
+        if ($uAge == -1) {
+            $uAge = self::$defaultAge;
+        }
 
-			return array(true, $tPath);
-		}
+        // check
+        if (!file_exists($tPath) ||
+            ($uAge != 0 && time() - filemtime($tPath) >= $uAge)
+        ) {
+            return array(false, $tPath);
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function fileGet($uFolder, $uFilename, $uAge = -1) {
-			// path
-			$tPath = self::filePath($uFolder, $uFilename, $uAge);
+        return array(true, $tPath);
+    }
 
-			//! ambiguous return value
-			if(!$tPath[0]) {
-				return false;
-			}
+    /**
+     * @ignore
+     */
+    public static function fileGet($uFolder, $uFilename, $uAge = -1)
+    {
+        // path
+        $tPath = self::filePath($uFolder, $uFilename, $uAge);
 
-			// content
-			return io::readSerialize($tPath[1], self::$keyphase);
-		}
+        //! ambiguous return value
+        if (!$tPath[0]) {
+            return false;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function fileGetUrl($uKey, $uUrl, $uAge = -1) {
-			$tFile = self::filePath('url/', $uKey, $uAge);
+        // content
+        return Io::readSerialize($tPath[1], self::$keyphase);
+    }
 
-			if(!$tFile[0]) {
-				$tContent = file_get_contents($uUrl);
-				io::write($tFile[1], $tContent);
+    /**
+     * @ignore
+     */
+    public static function fileGetUrl($uKey, $uUrl, $uAge = -1)
+    {
+        $tFile = self::filePath('url/', $uKey, $uAge);
 
-				return $tContent;
-			}
+        if (!$tFile[0]) {
+            $tContent = file_get_contents($uUrl);
+            Io::write($tFile[1], $tContent);
 
-			return io::read($tFile[1]);
-		}
+            return $tContent;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function fileSet($uFolder, $uFilename, $uObject) {
-			// path
-			$tPath = framework::writablePath('cache/' . $uFolder . io::sanitize($uFilename), true);
+        return Io::read($tFile[1]);
+    }
 
-			// content
-			io::writeSerialize($tPath, $uObject, self::$keyphase);
+    /**
+     * @ignore
+     */
+    public static function fileSet($uFolder, $uFilename, $uObject)
+    {
+        // path
+        $tPath = Framework::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
 
-			return $tPath;
-		}
+        // content
+        Io::writeSerialize($tPath, $uObject, self::$keyphase);
 
-		/**
-		 * @ignore
-		 */
-		public static function fileDestroy($uFolder, $uFilename) {
-			$tPath = framework::writablePath('cache/' . $uFolder, true);
-			io::destroy($tPath . io::sanitize($uFilename));
-		}
+        return $tPath;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function fileGarbageCollect($uFolder, $uAge = -1) {
-			// path
-			$tPath = framework::writablePath('cache/' . $uFolder, true);
-			$tDirectory = new \DirectoryIterator($tPath);
+    /**
+     * @ignore
+     */
+    public static function fileDestroy($uFolder, $uFilename)
+    {
+        $tPath = Framework::writablePath('cache/' . $uFolder, true);
+        Io::destroy($tPath . Io::sanitize($uFilename));
+    }
 
-			// age
-			if($uAge == -1) {
-				$uAge = self::$defaultAge;
-			}
+    /**
+     * @ignore
+     */
+    public static function fileGarbageCollect($uFolder, $uAge = -1)
+    {
+        // path
+        $tPath = Framework::writablePath('cache/' . $uFolder, true);
+        $tDirectory = new \DirectoryIterator($tPath);
 
-			clearstatcache();
-			foreach($tDirectory as $tFile) {
-				if(!$tFile->isFile()) {
-					continue;
-				}
+        // age
+        if ($uAge == -1) {
+            $uAge = self::$defaultAge;
+        }
 
-				if(time() - $tFile->getMTime() < $uAge) {
-					continue;
-				}
+        clearstatcache();
+        foreach ($tDirectory as $tFile) {
+            if (!$tFile->isFile()) {
+                continue;
+            }
 
-				io::destroy($tFile->getPathname());
-			}
-		}
-	}
+            if (time() - $tFile->getMTime() < $uAge) {
+                continue;
+            }
 
-	?>
+            Io::destroy($tFile->getPathname());
+        }
+    }
+}

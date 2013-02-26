@@ -1,304 +1,317 @@
 <?php
 
-	namespace Scabbia\Extensions\Session;
+namespace Scabbia\Extensions\Session;
 
-	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\Extensions\String\string;
-	use Scabbia\config;
-	use Scabbia\extensions;
+use Scabbia\Extensions\Cache\Cache;
+use Scabbia\Extensions\String\String;
+use Scabbia\Config;
+use Scabbia\Extensions;
 
-	/**
-	 * Session Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage session
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends cache
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 *
-	 * @todo integrate with cache extension
-	 */
-	class session {
-		/**
-		 * @ignore
-		 */
-		public static $id = null;
-		/**
-		 * @ignore
-		 */
-		public static $data = null;
-		/**
-		 * @ignore
-		 */
-		public static $flashdata_loaded = null;
-		/**
-		 * @ignore
-		 */
-		public static $flashdata_next = array();
-		/**
-		 * @ignore
-		 */
-		public static $sessionName;
-		/**
-		 * @ignore
-		 */
-		public static $sessionLife;
-		/**
-		 * @ignore
-		 */
-		public static $isModified = false;
+/**
+ * Session Extension
+ *
+ * @package Scabbia
+ * @subpackage session
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends cache
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ *
+ * @todo integrate with cache extension
+ */
+class Session
+{
+    /**
+     * @ignore
+     */
+    public static $id = null;
+    /**
+     * @ignore
+     */
+    public static $data = null;
+    /**
+     * @ignore
+     */
+    public static $flashdata_loaded = null;
+    /**
+     * @ignore
+     */
+    public static $flashdata_next = array();
+    /**
+     * @ignore
+     */
+    public static $sessionName;
+    /**
+     * @ignore
+     */
+    public static $sessionLife;
+    /**
+     * @ignore
+     */
+    public static $isModified = false;
 
-		/**
-		 * @ignore
-		 */
-		public static function open() {
-			self::$sessionName = config::get('/session/cookie/name', 'sessid');
 
-			if(config::get('/session/cookie/nameIp', true)) {
-				self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
-			}
+    /**
+     * @ignore
+     */
+    public static function open()
+    {
+        self::$sessionName = Config::get('/session/cookie/name', 'sessid');
 
-			self::$sessionLife = intval(config::get('/session/cookie/life', '0'));
+        if (Config::get('/session/cookie/nameIp', true)) {
+            self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
+        }
 
-			if(array_key_exists(self::$sessionName, $_COOKIE)) {
-				self::$id = $_COOKIE[self::$sessionName];
-			}
+        self::$sessionLife = intval(Config::get('/session/cookie/life', '0'));
 
-			if(!is_null(self::$id)) {
-				$tIpCheck = (bool)config::get('/session/cookie/ipCheck', '0');
-				$tUACheck = (bool)config::get('/session/cookie/uaCheck', '1');
+        if (array_key_exists(self::$sessionName, $_COOKIE)) {
+            self::$id = $_COOKIE[self::$sessionName];
+        }
 
-				$tData = cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
-				if($tData !== false) {
-					if(
-						(!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
-						(!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])
-					) {
-						self::$data = $tData['data'];
-						self::$flashdata_loaded = $tData['flashdata'];
+        if (!is_null(self::$id)) {
+            $tIpCheck = (bool)Config::get('/session/cookie/ipCheck', '0');
+            $tUACheck = (bool)Config::get('/session/cookie/uaCheck', '1');
 
-						return;
-					}
-				}
-			}
+            $tData = Cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
+            if ($tData !== false) {
+                if (
+                    (!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
+                    (!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])
+                ) {
+                    self::$data = $tData['data'];
+                    self::$flashdata_loaded = $tData['flashdata'];
 
-			self::$data = array();
-			self::$flashdata_loaded = array();
-			self::$isModified = false;
-		}
+                    return;
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function save() {
-			if(!self::$isModified) {
-				return;
-			}
+        self::$data = array();
+        self::$flashdata_loaded = array();
+        self::$isModified = false;
+    }
 
-			if(is_null(self::$id)) {
-				self::$id = string::generateUuid();
-			}
+    /**
+     * @ignore
+     */
+    public static function save()
+    {
+        if (!self::$isModified) {
+            return;
+        }
 
-			if(self::$sessionLife > 0) {
-				$tCookieLife = time() + self::$sessionLife;
-			}
-			else {
-				$tCookieLife = 0;
-			}
+        if (is_null(self::$id)) {
+            self::$id = String::generateUuid();
+        }
 
-			setcookie(self::$sessionName, self::$id, $tCookieLife, '/');
+        if (self::$sessionLife > 0) {
+            $tCookieLife = time() + self::$sessionLife;
+        } else {
+            $tCookieLife = 0;
+        }
 
-			$tData = array(
-				'data' => self::$data,
-				'flashdata' => self::$flashdata_next,
-				'ip' => $_SERVER['REMOTE_ADDR'],
-				'ua' => $_SERVER['HTTP_USER_AGENT']
-			);
+        setcookie(self::$sessionName, self::$id, $tCookieLife, '/');
 
-			cache::fileSet('sessions/', self::$id, $tData);
+        $tData = array(
+            'data' => self::$data,
+            'flashdata' => self::$flashdata_next,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'ua' => $_SERVER['HTTP_USER_AGENT']
+        );
 
-			self::$isModified = false;
-		}
+        Cache::fileSet('sessions/', self::$id, $tData);
 
-		/**
-		 * @ignore
-		 */
-		public static function destroy() {
-			if(is_null(self::$data)) { // !is_null
-				self::open();
-			}
+        self::$isModified = false;
+    }
 
-			if(is_null(self::$id)) {
-				return;
-			}
+    /**
+     * @ignore
+     */
+    public static function destroy()
+    {
+        if (is_null(self::$data)) { // !is_null
+            self::open();
+        }
 
-			setcookie(self::$sessionName, '', time() - 3600, '/');
+        if (is_null(self::$id)) {
+            return;
+        }
 
-			cache::fileDestroy('sessions/', self::$id);
+        setcookie(self::$sessionName, '', time() - 3600, '/');
 
-			self::$id = null;
-			self::$data = null;
-			self::$flashdata_loaded = null;
+        Cache::fileDestroy('sessions/', self::$id);
 
-			self::$isModified = false;
-		}
+        self::$id = null;
+        self::$data = null;
+        self::$flashdata_loaded = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function get($uKey, $uDefault = null) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        self::$isModified = false;
+    }
 
-			if(!array_key_exists($uKey, self::$data)) {
-				return $uDefault;
-			}
+    /**
+     * @ignore
+     */
+    public static function get($uKey, $uDefault = null)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-			return self::$data[$uKey];
-		}
+        if (!array_key_exists($uKey, self::$data)) {
+            return $uDefault;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function set($uKey, $uValue) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return self::$data[$uKey];
+    }
 
-			self::$data[$uKey] = $uValue;
-			self::$isModified = true;
-		}
+    /**
+     * @ignore
+     */
+    public static function set($uKey, $uValue)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function remove($uKey) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        self::$data[$uKey] = $uValue;
+        self::$isModified = true;
+    }
 
-			unset(self::$data[$uKey]);
-			self::$isModified = true;
-		}
+    /**
+     * @ignore
+     */
+    public static function remove($uKey)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function exists($uKey) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        unset(self::$data[$uKey]);
+        self::$isModified = true;
+    }
 
-			return array_key_exists($uKey, self::$data);
-		}
+    /**
+     * @ignore
+     */
+    public static function exists($uKey)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getKeys() {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return array_key_exists($uKey, self::$data);
+    }
 
-			return array_keys(self::$data);
-		}
+    /**
+     * @ignore
+     */
+    public static function getKeys()
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getFlash($uKey, $uDefault = null) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return array_keys(self::$data);
+    }
 
-			if(!array_key_exists($uKey, self::$flashdata_loaded)) {
-				return $uDefault;
-			}
+    /**
+     * @ignore
+     */
+    public static function getFlash($uKey, $uDefault = null)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-			self::$isModified = true;
+        if (!array_key_exists($uKey, self::$flashdata_loaded)) {
+            return $uDefault;
+        }
 
-			return self::$flashdata_loaded[$uKey];
-		}
+        self::$isModified = true;
 
-		/**
-		 * @ignore
-		 */
-		public static function setFlash($uKey, $uValue) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return self::$flashdata_loaded[$uKey];
+    }
 
-			self::$flashdata_loaded[$uKey] = $uValue;
-			self::$flashdata_next[$uKey] = $uValue;
-			self::$isModified = true;
-		}
+    /**
+     * @ignore
+     */
+    public static function setFlash($uKey, $uValue)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function removeFlash($uKey, $uValue) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        self::$flashdata_loaded[$uKey] = $uValue;
+        self::$flashdata_next[$uKey] = $uValue;
+        self::$isModified = true;
+    }
 
-			unset(self::$flashdata_next[$uKey]);
-			self::$isModified = true;
-		}
+    /**
+     * @ignore
+     */
+    public static function removeFlash($uKey)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function keepFlash($uKey, $uDefault) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        unset(self::$flashdata_next[$uKey]);
+        self::$isModified = true;
+    }
 
-			if(!array_key_exists($uKey, self::$flashdata_loaded)) {
-				self::$flashdata_next[$uKey] = $uDefault;
-			}
-			else {
-				self::$flashdata_next[$uKey] = self::$flashdata_loaded[$uKey];
-			}
+    /**
+     * @ignore
+     */
+    public static function keepFlash($uKey, $uDefault)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-			self::$isModified = true;
-		}
+        if (!array_key_exists($uKey, self::$flashdata_loaded)) {
+            self::$flashdata_next[$uKey] = $uDefault;
+        } else {
+            self::$flashdata_next[$uKey] = self::$flashdata_loaded[$uKey];
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function existsFlash($uKey) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        self::$isModified = true;
+    }
 
-			return array_key_exists($uKey, self::$flashdata_loaded);
-		}
+    /**
+     * @ignore
+     */
+    public static function existsFlash($uKey)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getKeysFlash() {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return array_key_exists($uKey, self::$flashdata_loaded);
+    }
 
-			return array_keys(self::$flashdata_loaded);
-		}
+    /**
+     * @ignore
+     */
+    public static function getKeysFlash()
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function export($tOutput = true) {
-			if(is_null(self::$data)) {
-				self::open();
-			}
+        return array_keys(self::$flashdata_loaded);
+    }
 
-			return string::vardump(self::$data, $tOutput);
-		}
-	}
+    /**
+     * @ignore
+     */
+    public static function export($tOutput = true)
+    {
+        if (is_null(self::$data)) {
+            self::open();
+        }
 
-	?>
+        return String::vardump(self::$data, $tOutput);
+    }
+}

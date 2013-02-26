@@ -1,225 +1,235 @@
 <?php
 
-	namespace Scabbia\Extensions\Views;
+namespace Scabbia\Extensions\Views;
 
-	use Scabbia\Extensions\I8n\i8n;
-	use Scabbia\Extensions\Mvc\mvc;
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\config;
-	use Scabbia\extensions;
-	use Scabbia\framework;
+use Scabbia\Extensions\I8n\I8n;
+use Scabbia\Extensions\Mvc\Mvc;
+use Scabbia\Config;
+use Scabbia\Extensions;
+use Scabbia\Framework;
 
-	/**
-	 * Views Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage views
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends string, http, resources, cache
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class views {
-		/**
-		 * @ignore
-		 */
-		public static $viewEngines = array();
-		/**
-		 * @ignore
-		 */
-		public static $vars = array();
+/**
+ * Views Extension
+ *
+ * @package Scabbia
+ * @subpackage views
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends string, http, resources, cache
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class views
+{
+    /**
+     * @ignore
+     */
+    public static $viewEngines = array();
+    /**
+     * @ignore
+     */
+    public static $vars = array();
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			foreach(config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
-				self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
-			}
 
-			self::registerViewEngine('php', 'viewEnginePhp');
-		}
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        foreach (Config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
+            self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function registerViewEngine($uExtension, $uClassName) {
-			if(isset(self::$viewEngines[$uExtension])) {
-				return;
-			}
+        self::registerViewEngine('php', 'viewEnginePhp');
+    }
 
-			self::$viewEngines[$uExtension] = 'Scabbia\\Extensions\\Views\\' . $uClassName;
-		}
+    /**
+     * @ignore
+     */
+    public static function registerViewEngine($uExtension, $uClassName)
+    {
+        if (isset(self::$viewEngines[$uExtension])) {
+            return;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function get($uKey) {
-			return self::$vars[$uKey];
-		}
+        self::$viewEngines[$uExtension] = 'Scabbia\\Extensions\\Views\\' . $uClassName;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function set($uKey, $uValue) {
-			self::$vars[$uKey] = $uValue;
-		}
+    /**
+     * @ignore
+     */
+    public static function get($uKey)
+    {
+        return self::$vars[$uKey];
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function setRef($uKey, &$uValue) {
-			self::$vars[$uKey] = $uValue;
-		}
+    /**
+     * @ignore
+     */
+    public static function set($uKey, $uValue)
+    {
+        self::$vars[$uKey] = $uValue;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function setRange($uArray) {
-			foreach($uArray as $tKey => $tValue) {
-				self::$vars[$tKey] = $tValue;
-			}
-		}
+    /**
+     * @ignore
+     */
+    public static function setRef($uKey, &$uValue)
+    {
+        self::$vars[$uKey] = $uValue;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function remove($uKey) {
-			unset(self::$vars[$uKey]);
-		}
+    /**
+     * @ignore
+     */
+    public static function setRange($uArray)
+    {
+        foreach ($uArray as $tKey => $tValue) {
+            self::$vars[$tKey] = $tValue;
+        }
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function view($uView, $uModel = null) {
-			if(is_null($uModel)) {
-				$uModel = & self::$vars;
-			}
+    /**
+     * @ignore
+     */
+    public static function remove($uKey)
+    {
+        unset(self::$vars[$uKey]);
+    }
 
-			$tViewFilePath = framework::$applicationPath . 'views/' . $uView;
-			$tViewFileInfo = pathinfo($tViewFilePath);
-			if(!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
-				$tViewFileInfo['extension'] = config::get('/mvc/view/defaultViewExtension', 'php');
-			}
+    /**
+     * @ignore
+     */
+    public static function view($uView, $uModel = null)
+    {
+        if (is_null($uModel)) {
+            $uModel = & self::$vars;
+        }
 
-			$tExtra = array(
-				'root' => rtrim(framework::$siteroot, '/')
-			);
+        $tViewFilePath = Framework::$applicationPath . 'views/' . $uView;
+        $tViewFileInfo = pathinfo($tViewFilePath);
+        if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
+            $tViewFileInfo['extension'] = Config::get('/mvc/view/defaultViewExtension', 'php');
+        }
 
-			$tExtra['lang'] = i8n::$language['key'];
-			$tExtra['controller'] = mvc::current();
+        $tExtra = array(
+            'root' => rtrim(Framework::$siteroot, '/')
+        );
 
-			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+        $tExtra['lang'] = I8n::$language['key'];
+        $tExtra['controller'] = Mvc::current();
 
-			$tViewArray = array(
-				'templatePath' => &$tTemplatePath,
-				'templateFile' => &$tViewFile,
-				'compiledFile' => hash('adler32', $tViewFilePath) . '-' . $tViewFileInfo['basename'],
-				'model' => &$uModel,
-				'extra' => &$tExtra
-			);
+        $tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
+        $tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
 
-			call_user_func(
-				views::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
-				$tViewArray
-			);
-		}
+        $tViewArray = array(
+            'templatePath' => &$tTemplatePath,
+            'templateFile' => &$tViewFile,
+            'compiledFile' => hash('adler32', $tViewFilePath) . '-' . $tViewFileInfo['basename'],
+            'model' => &$uModel,
+            'extra' => &$tExtra
+        );
 
-		/**
-		 * @ignore
-		 */
-		public static function viewFile($uView, $uModel = null) {
-			if(is_null($uModel)) {
-				$uModel = & self::$vars;
-			}
+        call_user_func(
+            self::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
+            $tViewArray
+        );
+    }
 
-			$tViewFilePath = framework::translatePath($uView);
-			$tViewFileInfo = pathinfo($tViewFilePath);
-			if(!isset(views::$viewEngines[$tViewFileInfo['extension']])) {
-				$tViewFileInfo['extension'] = config::get('/mvc/view/defaultViewExtension', 'php');
-			}
+    /**
+     * @ignore
+     */
+    public static function viewFile($uView, $uModel = null)
+    {
+        if (is_null($uModel)) {
+            $uModel = & self::$vars;
+        }
 
-			$tExtra = array(
-				'root' => framework::$siteroot
-			);
+        $tViewFilePath = Framework::translatePath($uView);
+        $tViewFileInfo = pathinfo($tViewFilePath);
+        if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
+            $tViewFileInfo['extension'] = Config::get('/mvc/view/defaultViewExtension', 'php');
+        }
 
-			$tExtra['lang'] = i8n::$language['key'];
-			$tExtra['controller'] = mvc::current();
+        $tExtra = array(
+            'root' => Framework::$siteroot
+        );
 
-			$tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-			$tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+        $tExtra['lang'] = I8n::$language['key'];
+        $tExtra['controller'] = Mvc::current();
 
-			$tViewArray = array(
-				'templatePath' => &$tTemplatePath,
-				'templateFile' => &$tViewFile,
-				'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
-				'model' => &$uModel,
-				'extra' => &$tExtra
-			);
+        $tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
+        $tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
 
-			call_user_func(
-				views::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
-				$tViewArray
-			);
-		}
+        $tViewArray = array(
+            'templatePath' => &$tTemplatePath,
+            'templateFile' => &$tViewFile,
+            'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
+            'model' => &$uModel,
+            'extra' => &$tExtra
+        );
 
-		/**
-		 * @ignore
-		 */
-		public static function json($uModel = null) {
-			if(is_null($uModel)) {
-				$uModel = & self::$vars;
-			}
+        call_user_func(
+            self::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
+            $tViewArray
+        );
+    }
 
-			header('Content-Type: application/json', true);
+    /**
+     * @ignore
+     */
+    public static function json($uModel = null)
+    {
+        if (is_null($uModel)) {
+            $uModel = & self::$vars;
+        }
 
-			echo json_encode(
-				$uModel
-			);
-		}
+        header('Content-Type: application/json', true);
 
-		/**
-		 * @ignore
-		 */
-		public static function xml($uModel = null) {
-			if(is_null($uModel)) {
-				$uModel = & self::$vars;
-			}
+        echo json_encode(
+            $uModel
+        );
+    }
 
-			header('Content-Type: application/xml', true);
+    /**
+     * @ignore
+     */
+    public static function xml($uModel = null)
+    {
+        if (is_null($uModel)) {
+            $uModel = & self::$vars;
+        }
 
-			echo '<?xml version="1.0" encoding="UTF-8" ?>';
-			echo '<xml>';
-			self::xml_recursive($uModel);
-			echo '</xml>';
-		}
+        header('Content-Type: application/xml', true);
 
-		/**
-		 * @ignore
-		 */
-		private static function xml_recursive($uObject) {
-			if(is_array($uObject) || is_object($uObject)) {
-				foreach($uObject as $tKey => $tValue) {
-					if(is_numeric($tKey)) {
-						echo '<item index="' . $tKey . '">';
-						$tKey = 'item';
-					}
-					else {
-						echo '<' . $tKey . '>';
-					}
+        echo '<?xml version="1.0" encoding="UTF-8" ?>';
+        echo '<xml>';
+        self::xmlRecursive($uModel);
+        echo '</xml>';
+    }
 
-					echo self::xml_recursive($tValue);
-					echo '</' . $tKey . '>';
-				}
+    /**
+     * @ignore
+     */
+    private static function xmlRecursive($uObject)
+    {
+        if (is_array($uObject) || is_object($uObject)) {
+            foreach ($uObject as $tKey => $tValue) {
+                if (is_numeric($tKey)) {
+                    echo '<item index="' . $tKey . '">';
+                    $tKey = 'item';
+                } else {
+                    echo '<' . $tKey . '>';
+                }
 
-				return;
-			}
+                self::xmlRecursive($tValue);
+                echo '</' . $tKey . '>';
+            }
 
-			echo htmlspecialchars($uObject, ENT_NOQUOTES);
-		}
-	}
+            return;
+        }
 
-	?>
+        echo htmlspecialchars($uObject, ENT_NOQUOTES);
+    }
+}

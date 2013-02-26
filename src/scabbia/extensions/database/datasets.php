@@ -1,35 +1,36 @@
 <?php
 
-	namespace Scabbia\Extensions\Database;
+namespace Scabbia\Extensions\Database;
 
-	use Scabbia\Extensions\Database\databaseDataset;
-	use Scabbia\config;
+use Scabbia\Extensions\Database\DatabaseDataset;
+use Scabbia\Config;
 
-	/**
-	 * Datasets Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class datasets {
-		/**
-		 * @ignore
-		 */
-		public static $datasets = null;
+/**
+ * Datasets Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class Datasets
+{
+    /**
+     * @ignore
+     */
+    public static $datasets = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function get($uDataset = null) {
-			if(is_null(self::$datasets)) {
-				foreach(config::get('/datasetList', array()) as $tDatasetConfig) {
-					$tDataset = new databaseDataset($tDatasetConfig);
-					self::$datasets[$tDataset->id] = $tDataset;
-				}
-			}
 
-			return self::$datasets[$uDataset];
-		}
-	}
+    /**
+     * @ignore
+     */
+    public static function get($uDataset = null)
+    {
+        if (is_null(self::$datasets)) {
+            foreach (Config::get('/datasetList', array()) as $tDatasetConfig) {
+                $tDataset = new DatabaseDataset($tDatasetConfig);
+                self::$datasets[$tDataset->id] = $tDataset;
+            }
+        }
 
-	?>
+        return self::$datasets[$uDataset];
+    }
+}

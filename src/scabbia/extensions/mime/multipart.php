@@ -1,143 +1,147 @@
 <?php
 
-	namespace Scabbia\Extensions\Mime;
+namespace Scabbia\Extensions\Mime;
 
-	use Scabbia\Extensions\Mime\mimepart;
+use Scabbia\Extensions\Mime\Mimepart;
 
-	/**
-	 * Multipart Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class multipart {
-		/**
-		 * @ignore
-		 */
-		const RELATED = 0;
-		/**
-		 * @ignore
-		 */
-		const ALTERNATIVE = 1;
+/**
+ * Multipart Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class Multipart
+{
+    /**
+     * @ignore
+     */
+    const RELATED = 0;
+    /**
+     * @ignore
+     */
+    const ALTERNATIVE = 1;
 
-		/**
-		 * @ignore
-		 */
-		public $headers = array();
-		/**
-		 * @ignore
-		 */
-		public $linesAfterHeaders = 1;
-		/**
-		 * @ignore
-		 */
-		public $boundaryName;
-		/**
-		 * @ignore
-		 */
-		public $boundaryType;
-		/**
-		 * @ignore
-		 */
-		public $content = 'This is a multi-part message in MIME format.';
-		/**
-		 * @ignore
-		 */
-		public $parts = array();
-		/**
-		 * @ignore
-		 */
-		public $filename;
 
-		/**
-		 * @ignore
-		 */
-		public function multipart($uBoundaryName = 'mimeboundary', $uBoundaryType = self::ALTERNATIVE) {
-			$this->boundaryName = $uBoundaryName;
-			$this->boundaryType = $uBoundaryType;
-		}
+    /**
+     * @ignore
+     */
+    public $headers = array();
+    /**
+     * @ignore
+     */
+    public $linesAfterHeaders = 1;
+    /**
+     * @ignore
+     */
+    public $boundaryName;
+    /**
+     * @ignore
+     */
+    public $boundaryType;
+    /**
+     * @ignore
+     */
+    public $content = 'This is a multi-part message in MIME format.';
+    /**
+     * @ignore
+     */
+    public $parts = array();
+    /**
+     * @ignore
+     */
+    public $filename;
 
-		/**
-		 * @ignore
-		 */
-		public function compileBody() {
-			$tString = $this->content . "\n\n";
 
-			foreach($this->parts as $tPart) {
-				$tString .= '--' . $this->boundaryName . "\n" . $tPart->compile(true) . "\n";
-			}
+    /**
+     * @ignore
+     */
+    public function __construct($uBoundaryName = 'mimeboundary', $uBoundaryType = self::ALTERNATIVE)
+    {
+        $this->boundaryName = $uBoundaryName;
+        $this->boundaryType = $uBoundaryType;
+    }
 
-			$tString .= '--' . $this->boundaryName . '--';
+    /**
+     * @ignore
+     */
+    public function compileBody()
+    {
+        $tString = $this->content . "\n\n";
 
-			return $tString;
-		}
+        foreach ($this->parts as $tPart) {
+            $tString .= '--' . $this->boundaryName . "\n" . $tPart->compile(true) . "\n";
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function compile($uHeaders = true) {
-			$tString = '';
-			$tBody = $this->compileBody();
+        $tString .= '--' . $this->boundaryName . '--';
 
-			if($uHeaders) {
-				$tHeaders = & $this->headers;
-				if(!array_key_exists('MIME-Version', $tHeaders)) {
-					$tHeaders['MIME-Version'] = '1.0';
-				}
+        return $tString;
+    }
 
-				if(count($this->parts) > 0) {
-					$tPart = $this->parts[0];
+    /**
+     * @ignore
+     */
+    public function compile($uHeaders = true)
+    {
+        $tString = '';
+        $tBody = $this->compileBody();
 
-					if(!array_key_exists('Content-Type', $tHeaders)) {
-						if($this->boundaryType == self::ALTERNATIVE) {
-							$tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
-						}
-						else {
-							$tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;
+        if ($uHeaders) {
+            $tHeaders = & $this->headers;
+            if (!array_key_exists('MIME-Version', $tHeaders)) {
+                $tHeaders['MIME-Version'] = '1.0';
+            }
 
-							if(array_key_exists('Content-Id', $tPart->headers)) {
-								$tHeaders['Content-Type'] .= '; start="' . $tPart->headers['Content-Id'] . '"';
-							}
-						}
+            if (count($this->parts) > 0) {
+                $tPart = $this->parts[0];
 
-						if(array_key_exists('Content-Type', $tPart->headers)) {
-							$tContentType = explode(';', $tPart->headers['Content-Type'], 2);
-							$tHeaders['Content-Type'] .= '; type="' . $tContentType[0] . '"';
-						}
-					}
-				}
+                if (!array_key_exists('Content-Type', $tHeaders)) {
+                    if ($this->boundaryType == self::ALTERNATIVE) {
+                        $tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
+                    } else {
+                        $tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;
 
-				if(!array_key_exists('Content-Disposition', $tHeaders) && strlen($this->filename) > 0) {
-					$tHeaders['Content-Disposition'] = 'attachment; filename=' . $this->filename;
-				}
+                        if (array_key_exists('Content-Id', $tPart->headers)) {
+                            $tHeaders['Content-Type'] .= '; start="' . $tPart->headers['Content-Id'] . '"';
+                        }
+                    }
 
-				if(!array_key_exists('Content-Length', $tHeaders)) {
-					$tHeaders['Content-Length'] = strlen($tBody);
-				}
+                    if (array_key_exists('Content-Type', $tPart->headers)) {
+                        $tContentType = explode(';', $tPart->headers['Content-Type'], 2);
+                        $tHeaders['Content-Type'] .= '; type="' . $tContentType[0] . '"';
+                    }
+                }
+            }
 
-				foreach($tHeaders as $tKey => $tValue) {
-					$tString .= $tKey . ': ' . $tValue . "\n";
-				}
+            if (!array_key_exists('Content-Disposition', $tHeaders) && strlen($this->filename) > 0) {
+                $tHeaders['Content-Disposition'] = 'attachment; filename=' . $this->filename;
+            }
 
-				for($i = $this->linesAfterHeaders; $i > 0; $i--) {
-					$tString .= "\n";
-				}
-			}
+            if (!array_key_exists('Content-Length', $tHeaders)) {
+                $tHeaders['Content-Length'] = strlen($tBody);
+            }
 
-			$tString .= $tBody;
+            foreach ($tHeaders as $tKey => $tValue) {
+                $tString .= $tKey . ': ' . $tValue . "\n";
+            }
 
-			return $tString;
-		}
+            for ($i = $this->linesAfterHeaders; $i > 0; $i--) {
+                $tString .= "\n";
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function addPart() {
-			$tNewPart = new mimepart();
-			$this->parts[] = $tNewPart;
+        $tString .= $tBody;
 
-			return $tNewPart;
-		}
-	}
+        return $tString;
+    }
 
-	?>
+    /**
+     * @ignore
+     */
+    public function addPart()
+    {
+        $tNewPart = new Mimepart();
+        $this->parts[] = $tNewPart;
+
+        return $tNewPart;
+    }
+}

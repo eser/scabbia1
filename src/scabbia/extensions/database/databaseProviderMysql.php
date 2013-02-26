@@ -1,276 +1,291 @@
 <?php
 
-	namespace Scabbia\Extensions\Database;
+namespace Scabbia\Extensions\Database;
 
-	/**
-	 * DatabaseProvider Mysql Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class databaseProviderMysql {
-		/**
-		 * @ignore
-		 */
-		public $standard = null;
-		/**
-		 * @ignore
-		 */
-		public $host;
-		/**
-		 * @ignore
-		 */
-		public $database;
-		/**
-		 * @ignore
-		 */
-		public $username;
-		/**
-		 * @ignore
-		 */
-		public $password;
-		/**
-		 * @ignore
-		 */
-		public $persistent;
+/**
+ * DatabaseProvider Mysql Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class DatabaseProviderMysql
+{
+    /**
+     * @ignore
+     */
+    public $standard = null;
+    /**
+     * @ignore
+     */
+    public $host;
+    /**
+     * @ignore
+     */
+    public $database;
+    /**
+     * @ignore
+     */
+    public $username;
+    /**
+     * @ignore
+     */
+    public $password;
+    /**
+     * @ignore
+     */
+    public $persistent;
 
-		/**
-		 * @ignore
-		 */
-		public function __construct($uConfig) {
-			$this->host = $uConfig['host'];
-			$this->database = $uConfig['database'];
-			$this->username = $uConfig['username'];
-			$this->password = $uConfig['password'];
 
-			$this->persistent = isset($uConfig['persistent']);
-		}
+    /**
+     * @ignore
+     */
+    public function __construct($uConfig)
+    {
+        $this->host = $uConfig['host'];
+        $this->database = $uConfig['database'];
+        $this->username = $uConfig['username'];
+        $this->password = $uConfig['password'];
 
-		/**
-		 * @ignore
-		 */
-		public function open() {
-			$tParms = array();
-			// if($this->persistent) {
-			// }
+        $this->persistent = isset($uConfig['persistent']);
+    }
 
-			\mysqli_report(\MYSQLI_REPORT_STRICT); // mysqli_sql_exception
-			$this->connection = new \mysqli($this->host, $this->username, $this->password, $this->database);
+    /**
+     * @ignore
+     */
+    public function open()
+    {
+        // if ($this->persistent) {
+        // }
 
-			/*
-			if($this->connection->connect_errno > 0) {
-				throw new \Exception('Mysql Exception: ' . $this->connection->connect_error);
-			}
-			*/
-		}
+        \mysqli_report(\MYSQLI_REPORT_STRICT); // mysqli_sql_exception
+        $this->connection = new \mysqli($this->host, $this->username, $this->password, $this->database);
 
-		/**
-		 * @ignore
-		 */
-		public function close() {
-		}
+        /*
+        if ($this->connection->connect_errno > 0) {
+            throw new \Exception('Mysql Exception: ' . $this->connection->connect_error);
+        }
+        */
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function beginTransaction() {
-			$this->connection->autocommit(false);
-		}
+    /**
+     * @ignore
+     */
+    public function close()
+    {
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function commit() {
-			$this->connection->commit();
-		}
+    /**
+     * @ignore
+     */
+    public function beginTransaction()
+    {
+        $this->connection->autocommit(false);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function rollBack() {
-			$this->connection->rollback();
-		}
+    /**
+     * @ignore
+     */
+    public function commit()
+    {
+        $this->connection->commit();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function execute($uQuery) {
-			return $this->connection->query($uQuery);
-		}
+    /**
+     * @ignore
+     */
+    public function rollBack()
+    {
+        $this->connection->rollback();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function queryDirect($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
+    /**
+     * @ignore
+     */
+    public function execute($uQuery)
+    {
+        return $this->connection->query($uQuery);
+    }
 
-			foreach($uParameters as $tParameter) {
-				switch(gettype($tParameter)) {
-				case 'integer':
-					$tType = 'i';
-					break;
-				case 'double':
-					$tType = 'd';
-					break;
-				default:
-					$tType = 's';
-					break;
-				}
+    /**
+     * @ignore
+     */
+    public function queryDirect($uQuery, $uParameters = array())
+    {
+        $tQuery = $this->connection->prepare($uQuery);
 
-				$tQuery->bind_param($tType, $tParameter);
-			}
+        foreach ($uParameters as $tParameter) {
+            switch (gettype($tParameter)) {
+                case 'integer':
+                    $tType = 'i';
+                    break;
+                case 'double':
+                    $tType = 'd';
+                    break;
+                default:
+                    $tType = 's';
+                    break;
+            }
 
-			$tResult = $tQuery->execute();
+            $tQuery->bind_param($tType, $tParameter);
+        }
 
-			return $tQuery;
-		}
+        $tQuery->execute();
 
-		/**
-		 * @ignore
-		 */
-		public function itSeek($uObject, $uRow) {
-			$uObject->data_seek($uRow);
+        return $tQuery;
+    }
 
-			return $this->itNext($uObject);
-		}
+    /**
+     * @ignore
+     */
+    public function itSeek($uObject, $uRow)
+    {
+        $uObject->data_seek($uRow);
 
-		/**
-		 * @ignore
-		 */
-		public function itNext($uObject) {
-			return $uObject->fetch();
-		}
+        return $this->itNext($uObject);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function itCount($uObject) {
-			return $uObject->num_rows;
-		}
+    /**
+     * @ignore
+     */
+    public function itNext($uObject)
+    {
+        return $uObject->fetch();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function itClose($uObject) {
-			return $uObject->close();
-		}
+    /**
+     * @ignore
+     */
+    public function itCount($uObject)
+    {
+        return $uObject->num_rows;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function lastInsertId($uName = null) {
-			return $this->connection->insert_id;
-		}
+    /**
+     * @ignore
+     */
+    public function itClose($uObject)
+    {
+        return $uObject->close();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function serverInfo() {
-			return $this->connection->server_info;
-		}
+    /**
+     * @ignore
+     */
+    public function lastInsertId($uName = null)
+    {
+        return $this->connection->insert_id;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlInsert($uTable, $uObject, $uReturning = '') {
-			$tSql =
-					'INSERT INTO ' . $uTable . ' ('
-							. implode(', ', array_keys($uObject))
-							. ') VALUES ('
-							. implode(', ', array_values($uObject))
-							. ')';
+    /**
+     * @ignore
+     */
+    public function serverInfo()
+    {
+        return $this->connection->server_info;
+    }
 
-			// if(strlen($uReturning) > 0) {
-			// 	$tSql .= ' RETURNING ' . $uReturning;
-			// }
+    /**
+     * @ignore
+     */
+    public function sqlInsert($uTable, $uObject, $uReturning = '')
+    {
+        $tSql =
+                'INSERT INTO ' . $uTable . ' ('
+                        . implode(', ', array_keys($uObject))
+                        . ') VALUES ('
+                        . implode(', ', array_values($uObject))
+                        . ')';
 
-			return $tSql;
-		}
+        // if (strlen($uReturning) > 0) {
+        //     $tSql .= ' RETURNING ' . $uReturning;
+        // }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
-			$tPairs = array();
-			foreach($uObject as $tKey => $tValue) {
-				$tPairs[] = $tKey . '=' . $tValue;
-			}
+        return $tSql;
+    }
 
-			$tSql = 'UPDATE ' . $uTable . ' SET '
-					. implode(', ', $tPairs);
+    /**
+     * @ignore
+     */
+    public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null)
+    {
+        $tPairs = array();
+        foreach ($uObject as $tKey => $tValue) {
+            $tPairs[] = $tKey . '=' . $tValue;
+        }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+        $tSql = 'UPDATE ' . $uTable . ' SET '
+                . implode(', ', $tPairs);
 
-			if(!is_null($uExtra)) {
-				if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-					$tSql .= ' LIMIT ' . $uExtra['limit'];
-				}
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			return $tSql;
-		}
+        if (!is_null($uExtra)) {
+            if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                $tSql .= ' LIMIT ' . $uExtra['limit'];
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlDelete($uTable, $uWhere, $uExtra = null) {
-			$tSql = 'DELETE FROM ' . $uTable;
+        return $tSql;
+    }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+    /**
+     * @ignore
+     */
+    public function sqlDelete($uTable, $uWhere, $uExtra = null)
+    {
+        $tSql = 'DELETE FROM ' . $uTable;
 
-			if(!is_null($uExtra)) {
-				if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-					$tSql .= ' LIMIT ' . $uExtra['limit'];
-				}
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			return $tSql;
-		}
+        if (!is_null($uExtra)) {
+            if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                $tSql .= ' LIMIT ' . $uExtra['limit'];
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null) {
-			$tSql = 'SELECT ';
+        return $tSql;
+    }
 
-			if(count($uFields) > 0) {
-				$tSql .= implode(', ', $uFields);
-			}
-			else {
-				$tSql .= '*';
-			}
+    /**
+     * @ignore
+     */
+    public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null)
+    {
+        $tSql = 'SELECT ';
 
-			$tSql .= ' FROM ' . $uTable;
+        if (count($uFields) > 0) {
+            $tSql .= implode(', ', $uFields);
+        } else {
+            $tSql .= '*';
+        }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+        $tSql .= ' FROM ' . $uTable;
 
-			if(!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
-				$tSql .= ' GROUP BY ' . $uGroupBy;
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
-				$tSql .= ' ORDER BY ' . $uOrderBy;
-			}
+        if (!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
+            $tSql .= ' GROUP BY ' . $uGroupBy;
+        }
 
-			if(!is_null($uExtra)) {
-				if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-					if(isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
-						$tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];
-					}
-					else {
-						$tSql .= ' LIMIT ' . $uExtra['limit'];
-					}
-				}
-			}
+        if (!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+            $tSql .= ' ORDER BY ' . $uOrderBy;
+        }
 
-			return $tSql;
-		}
-	}
+        if (!is_null($uExtra)) {
+            if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                if (isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
+                    $tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];
+                } else {
+                    $tSql .= ' LIMIT ' . $uExtra['limit'];
+                }
+            }
+        }
 
-	?>
+        return $tSql;
+    }
+}

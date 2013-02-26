@@ -115,27 +115,27 @@
 		 *      ACTION_DELETE_A_B  Get the next B. (Delete B).
 		 */
 		protected function action($command) {
-			switch($command) {
+			switch ($command) {
 			case self::ACTION_KEEP_A:
 				$this->output .= $this->a;
 
 			case self::ACTION_DELETE_A:
 				$this->a = $this->b;
 
-				if($this->a === "'" || $this->a === '"') {
+				if ($this->a === "'" || $this->a === '"') {
 					for(; ;) {
 						$this->output .= $this->a;
 						$this->a = $this->get();
 
-						if($this->a === $this->b) {
+						if ($this->a === $this->b) {
 							break;
 						}
 
-						if(ord($this->a) <= self::ORD_LF) {
+						if (ord($this->a) <= self::ORD_LF) {
 							throw new JSMinException('Unterminated string literal.');
 						}
 
-						if($this->a === '\\') {
+						if ($this->a === '\\') {
 							$this->output .= $this->a;
 							$this->a = $this->get();
 						}
@@ -145,7 +145,7 @@
 			case self::ACTION_DELETE_A_B:
 				$this->b = $this->next();
 
-				if($this->b === '/' && (
+				if ($this->b === '/' && (
 					$this->a === '(' || $this->a === ',' || $this->a === '=' ||
 						$this->a === ':' || $this->a === '[' || $this->a === '!' ||
 						$this->a === '&' || $this->a === '|' || $this->a === '?' ||
@@ -158,7 +158,7 @@
 					for(; ;) {
 						$this->a = $this->get();
 
-						if($this->a === '[') {
+						if ($this->a === '[') {
 							/*
 								inside a regex [...] set, which MAY contain a '/' itself. Example: mootools Form.Validator near line 460:
 								  return Form.Validator.getValidator('IsEmpty').test(element) || (/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i).test(element.get('value'));
@@ -167,26 +167,26 @@
 								$this->output .= $this->a;
 								$this->a = $this->get();
 
-								if($this->a === ']') {
+								if ($this->a === ']') {
 									break;
 								}
-								elseif($this->a === '\\') {
+								elseif ($this->a === '\\') {
 									$this->output .= $this->a;
 									$this->a = $this->get();
 								}
-								elseif(ord($this->a) <= self::ORD_LF) {
+								elseif (ord($this->a) <= self::ORD_LF) {
 									throw new JSMinException('Unterminated regular expression set in regex literal.');
 								}
 							}
 						}
-						elseif($this->a === '/') {
+						elseif ($this->a === '/') {
 							break;
 						}
-						elseif($this->a === '\\') {
+						elseif ($this->a === '\\') {
 							$this->output .= $this->a;
 							$this->a = $this->get();
 						}
-						elseif(ord($this->a) <= self::ORD_LF) {
+						elseif (ord($this->a) <= self::ORD_LF) {
 							throw new JSMinException('Unterminated regular expression literal.');
 						}
 
@@ -207,8 +207,8 @@
 			$c = $this->lookAhead;
 			$this->lookAhead = null;
 
-			if($c === null) {
-				if($this->inputIndex < $this->inputLength) {
+			if ($c === null) {
+				if ($this->inputIndex < $this->inputLength) {
 					$c = substr($this->input, $this->inputIndex, 1);
 					$this->inputIndex += 1;
 				}
@@ -217,11 +217,11 @@
 				}
 			}
 
-			if($c === "\r") {
+			if ($c === "\r") {
 				return "\n";
 			}
 
-			if($c === null || $c === "\n" || ord($c) >= self::ORD_SPACE) {
+			if ($c === null || $c === "\n" || ord($c) >= self::ORD_SPACE) {
 				return $c;
 			}
 
@@ -247,7 +247,7 @@
 		 * @return string
 		 */
 		protected function min() {
-			if(0 == strncmp($this->peek(), "\xef", 1)) {
+			if (0 == strncmp($this->peek(), "\xef", 1)) {
 				$this->get();
 				$this->get();
 				$this->get();
@@ -257,9 +257,9 @@
 			$this->action(self::ACTION_DELETE_A_B);
 
 			while($this->a !== null) {
-				switch($this->a) {
+				switch ($this->a) {
 				case ' ':
-					if($this->isAlphaNum($this->b)) {
+					if ($this->isAlphaNum($this->b)) {
 						$this->action(self::ACTION_KEEP_A);
 					}
 					else {
@@ -268,7 +268,7 @@
 					break;
 
 				case "\n":
-					switch($this->b) {
+					switch ($this->b) {
 					case '{':
 					case '[':
 					case '(':
@@ -284,7 +284,7 @@
 						break;
 
 					default:
-						if($this->isAlphaNum($this->b)) {
+						if ($this->isAlphaNum($this->b)) {
 							$this->action(self::ACTION_KEEP_A);
 						}
 						else {
@@ -294,9 +294,9 @@
 					break;
 
 				default:
-					switch($this->b) {
+					switch ($this->b) {
 					case ' ':
-						if($this->isAlphaNum($this->a)) {
+						if ($this->isAlphaNum($this->a)) {
 							$this->action(self::ACTION_KEEP_A);
 							break;
 						}
@@ -305,7 +305,7 @@
 						break;
 
 					case "\n":
-						switch($this->a) {
+						switch ($this->a) {
 						case '}':
 						case ']':
 						case ')':
@@ -317,7 +317,7 @@
 							break;
 
 						default:
-							if($this->isAlphaNum($this->a)) {
+							if ($this->isAlphaNum($this->a)) {
 								$this->action(self::ACTION_KEEP_A);
 							}
 							else {
@@ -348,13 +348,13 @@
 		protected function next() {
 			$c = $this->get();
 
-			if($c === '/') {
-				switch($this->peek()) {
+			if ($c === '/') {
+				switch ($this->peek()) {
 				case '/':
 					for(; ;) {
 						$c = $this->get();
 
-						if(ord($c) <= self::ORD_LF) {
+						if (ord($c) <= self::ORD_LF) {
 							return $c;
 						}
 					}
@@ -363,9 +363,9 @@
 					$this->get();
 
 					for(; ;) {
-						switch($this->get()) {
+						switch ($this->get()) {
 						case '*':
-							if($this->peek() === '/') {
+							if ($this->peek() === '/') {
 								$this->get();
 
 								return ' ';

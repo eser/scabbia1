@@ -1,58 +1,58 @@
 <?php
 
-	namespace Scabbia;
+namespace Scabbia;
 
-	use Scabbia\config;
-	use Scabbia\events;
-	use Scabbia\framework;
-	
-	/**
-	 * Extensions manager which extends the framework capabilities with extra routines.
-	 *
-	 * @package Scabbia
-	 *
-	 * @todo cache the extensions.xml.php array
-	 */
-	class extensions {
-		/**
-		 * The array of extensions' config files
-		 */
-		public static $configFiles = null;
+use Scabbia\Config;
+use Scabbia\Events;
+use Scabbia\Framework;
+
+/**
+ * Extensions manager which extends the framework capabilities with extra routines.
+ *
+ * @package Scabbia
+ *
+ * @todo cache the extensions.xml.php array
+ */
+class Extensions
+{
+    /**
+     * The array of extensions' config files
+     */
+    public static $configFiles = null;
 
 
-		/**
-		 * Loads the extensions module.
-		 */
-		public static function load() {
-			self::$configFiles = array();
+    /**
+     * Loads the extensions module.
+     */
+    public static function load()
+    {
+        self::$configFiles = array();
 
-			$tFiles = array();
-			framework::glob(framework::$vendorpath . 'src/scabbia/extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
-			if(!is_null(framework::$applicationPath)) {
-				framework::glob(framework::$applicationPath . 'extensions/', null, framework::GLOB_DIRECTORIES | framework::GLOB_RECURSIVE, '', $tFiles);
-			}
+        $tFiles = array();
+        Framework::glob(Framework::$vendorpath . 'src/scabbia/extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
+        if (!is_null(Framework::$applicationPath)) {
+            Framework::glob(Framework::$applicationPath . 'extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
+        }
 
-			foreach($tFiles as $tFile) {
-				if(!is_file($tFile . 'extension.xml.php')) {
-					continue;
-				}
+        foreach ($tFiles as $tFile) {
+            if (!is_file($tFile . 'extension.xml.php')) {
+                continue;
+            }
 
-				$tSubconfig = array();
-				config::loadFile($tSubconfig, $tFile . 'extension.xml.php');
-				self::$configFiles[$tSubconfig['/info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
+            $tSubconfig = array();
+            Config::loadFile($tSubconfig, $tFile . 'extension.xml.php');
+            self::$configFiles[$tSubconfig['/info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
 
-				if(isset($tSubconfig['/eventList'])) {
-					foreach($tSubconfig['/eventList'] as $tLoad) {
-						if($tLoad['name'] == 'load') {
-							events::invokeSingle($tLoad['type'], $tLoad['value']);
-							continue;
-						}
+            if (isset($tSubconfig['/eventList'])) {
+                foreach ($tSubconfig['/eventList'] as $tLoad) {
+                    if ($tLoad['name'] == 'load') {
+                        Events::invokeSingle($tLoad['type'], $tLoad['value']);
+                        continue;
+                    }
 
-						events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
-					}
-				}
-			}
-		}
-	}
-
-	?>
+                    Events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
+                }
+            }
+        }
+    }
+}

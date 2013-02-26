@@ -1,74 +1,76 @@
 <?php
 
-	namespace Scabbia\Extensions\Views;
+namespace Scabbia\Extensions\Views;
 
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\config;
-	use Scabbia\framework;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Config;
+use Scabbia\Framework;
 
-	/**
-	 * ViewEngine: Twig Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage viewEngineTwig
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends mvc
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class viewEngineTwig {
-		/**
-		 * @ignore
-		 */
-		public static $loader = null;
-		/**
-		 * @ignore
-		 */
-		public static $engine = null;
+/**
+ * ViewEngine: Twig Extension
+ *
+ * @package Scabbia
+ * @subpackage viewEngineTwig
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends mvc
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class viewEngineTwig
+{
+    /**
+     * @ignore
+     */
+    public static $loader = null;
+    /**
+     * @ignore
+     */
+    public static $engine = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			views::registerViewEngine('twig', 'viewEngineTwig');
-		}
 
-		/**
-		 * @ignore
-		 */
-		public static function renderview($uObject) {
-			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get('/twig/path', '{vendor}include/3rdparty/twig/lib/Twig'));
-				require($tPath . '/Autoloader.php');
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        Views::registerViewEngine('twig', 'viewEngineTwig');
+    }
 
-				Twig_Autoloader::register();
-				self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
+    /**
+     * @ignore
+     */
+    public static function renderview($uObject)
+    {
+        if (is_null(self::$engine)) {
+            $tPath = Framework::translatePath(Config::get('/twig/path', '{vendor}include/3rdparty/twig/lib/Twig'));
+            require $tPath . '/Autoloader.php';
 
-				$tOptions = array(
-					'cache' => framework::writablePath('cache/twig/')
-				);
+            Twig_Autoloader::register();
+            self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
-				if(framework::$development >= 1) {
-					$tOptions['auto_reload'] = true;
-				}
+            $tOptions = array(
+                'cache' => Framework::writablePath('cache/twig/')
+            );
 
-				self::$engine = new \Twig_Environment(self::$loader, $tOptions);
-			}
+            if (Framework::$development >= 1) {
+                $tOptions['auto_reload'] = true;
+            }
 
-			$model = array('model' => &$uObject['model']);
+            self::$engine = new \Twig_Environment(self::$loader, $tOptions);
+        }
 
-			if(is_array($uObject['model'])) {
-				$model = array_merge($model, $uObject['model']);
-			}
+        $model = array('model' => &$uObject['model']);
 
-			if(isset($uObject['extra'])) {
-				$model = array_merge($model, $uObject['extra']);
-			}
+        if (is_array($uObject['model'])) {
+            $model = array_merge($model, $uObject['model']);
+        }
 
-			echo self::$engine->render($uObject['templateFile'], $model);
-		}
-	}
+        if (isset($uObject['extra'])) {
+            $model = array_merge($model, $uObject['extra']);
+        }
 
-	?>
+        echo self::$engine->render($uObject['templateFile'], $model);
+    }
+}

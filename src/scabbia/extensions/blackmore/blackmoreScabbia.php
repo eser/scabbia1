@@ -1,220 +1,213 @@
 <?php
 
-	namespace Scabbia\Extensions\Blackmore;
+namespace Scabbia\Extensions\Blackmore;
 
-	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\config;
-	use Scabbia\extensions;
-	use Scabbia\framework;
+use Scabbia\Extensions\Auth\Auth;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Config;
+use Scabbia\Extensions;
+use Scabbia\Framework;
 
-	/**
-	 * @ignore
-	 */
-	class blackmoreScabbia {
-		/**
-		 * @ignore
-		 */
-		public static function blackmoreRegisterModules($uParms) {
-			$uParms['modules']['index']['submenus'] = true;
+/**
+ * @ignore
+ */
+class BlackmoreScabbia
+{
+    /**
+     * @ignore
+     */
+    public static function blackmoreRegisterModules($uParms)
+    {
+        $uParms['modules']['index']['submenus'] = true;
 
-			$uParms['modules']['index']['actions'][] = array(
-				'action' => 'debug',
-				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::debug',
-				'menutitle' => 'Debug Info'
-			);
+        $uParms['modules']['index']['actions'][] = array(
+            'action' => 'debug',
+            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::debug',
+            'menutitle' => 'Debug Info'
+        );
 
-			$uParms['modules']['index']['actions'][] = array(
-				'action' => 'build',
-				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::build',
-				'menutitle' => 'Build'
-			);
+        $uParms['modules']['index']['actions'][] = array(
+            'action' => 'build',
+            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::build',
+            'menutitle' => 'Build'
+        );
 
-			$uParms['modules']['index']['actions'][] = array(
-				'action' => 'purge',
-				'callback' => 'Scabbia\\Extensions\\Blackmore\\blackmoreScabbia::purge',
-				'menutitle' => 'Purge'
-			);
-		}
+        $uParms['modules']['index']['actions'][] = array(
+            'action' => 'purge',
+            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::purge',
+            'menutitle' => 'Purge'
+        );
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function index() {
-			auth::checkRedirect('user');
+    /**
+     * @ignore
+     */
+    public static function index()
+    {
+        Auth::checkRedirect('user');
 
-			views::viewFile('{vendor}views/blackmore/scabbia/index.php');
-		}
+        Views::viewFile('{vendor}views/blackmore/scabbia/index.php');
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function debug() {
-			auth::checkRedirect('admin');
+    /**
+     * @ignore
+     */
+    public static function debug()
+    {
+        Auth::checkRedirect('admin');
 
-			views::viewFile('{vendor}views/blackmore/scabbia/debug.php');
-		}
+        Views::viewFile('{vendor}views/blackmore/scabbia/debug.php');
+    }
 
-		/**
-		 * Builds a framework compilation.
-		 *
-		 * @param $uAction
-		 * @param string $uModule
-		 *
-		 * @internal param string $uFilename output file
-		 * @internal param bool $uPseudo wheater file is an pseudo compilation or not
-		 */
-		public static function build($uAction, $uModule = '') {
-			auth::checkRedirect('admin');
+    /**
+     * Builds a framework compilation.
+     */
+    public static function build()
+    {
+        Auth::checkRedirect('admin');
 
-			// $tStart = microtime(true);
+        // $tStart = microtime(true);
+        $tFilename = 'compiled.php';
+        $tContents = self::buildExport(false);
 
-			if(strlen($uModule) > 0) {
-				$tFilename = 'compiled.' . $uModule . '.php';
-			}
-			else {
-				$tFilename = 'compiled.php';
-			}
+        header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
+        header('Pragma: public', true);
+        header('Cache-Control: no-store, no-cache, must-revalidate', true);
+        header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+        header('Content-Type: application/octet-stream', true);
+        header('Content-Disposition: attachment;filename=' . $tFilename, true);
 
-			$tContents = self::buildExport($uModule, false);
+        echo $tContents;
 
-			header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
-			header('Pragma: public', true);
-			header('Cache-Control: no-store, no-cache, must-revalidate', true);
-			header('Cache-Control: pre-check=0, post-check=0, max-age=0');
-			header('Content-Type: application/octet-stream', true);
-			header('Content-Disposition: attachment;filename=' . $tFilename, true);
+        // exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
+    }
 
-			echo $tContents;
+    /**
+     * @ignore
+     */
+    private static function buildExport($uPseudo)
+    {
+        if ($uPseudo) { // Framework::$development >= 1 ||
+            $tPseudoCompile = '<' . '?php require ' . var_export('framework.php', true) . '; ?' . '>';
 
-			// exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
-		}
+            return $tPseudoCompile;
+        }
 
-		/**
-		 * @ignore
-		 */
-		private static function buildExport($uModule, $uPseudo) {
-			if($uPseudo) { // framework::$development >= 1 ||
-				$tPseudoCompile = '<' . '?php require(' . var_export('framework.php', true) . '); ?' . '>';
+        /* BEGIN */
+        /*
+        $tCompiled = Framework::printFile('<' . '?php
 
-				return $tPseudoCompile;
-			}
+ignore_user_abort();
 
-			/* BEGIN */
-			/*
-			$tCompiled = framework::printFile('<' . '?php
+// todo dump framework variables here.
 
-	ignore_user_abort();
-
-	// todo dump framework variables here.
-
-	error_reporting(' . var_export(error_reporting(), true) . ');
-	ini_set(\'display_errors\', ' . var_export(ini_get('display_errors'), true) . ');
-	ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
+error_reporting(' . var_export(error_reporting(), true) . ');
+ini_set(\'display_errors\', ' . var_export(ini_get('display_errors'), true) . ');
+ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 
 ?' . '>');
-			*/
+        */
 
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/patches.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/framework.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/config.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/events.php'));
-			$tCompiled .= framework::printFile(file_get_contents(framework::$vendorpath . 'src/scabbia/extensions.php'));
+        $tCompiled  = Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/patches.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/framework.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/config.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/events.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/extensions.php'));
 
-			$tDevelopment = framework::$development;
-			framework::$development = 0;
+        $tDevelopment = Framework::$development;
+        Framework::$development = 0;
 
-			$tConfig = config::load();
-			extensions::load();
-			$tCompiled .= framework::printFile('<' . '?php config::$default = ' . var_export($tConfig, true) . '; extensions::$configFiles = ' . var_export(extensions::$configFiles, true) . '; ?' . '>');
+        $tConfig = Config::load();
+        Extensions::load();
+        $tCompiled .= Framework::printFile('<' . '?php Config::$default = ' . var_export($tConfig, true) . '; Extensions::$configFiles = ' . var_export(Extensions::$configFiles, true) . '; ?' . '>');
 
-			// download files
-			if(isset($tConfig['/downloadList'])) {
-				foreach($tConfig['/downloadList'] as $tUrl) {
-					framework::downloadFile($tUrl['filename'], $tUrl['url']);
-				}
-			}
+        // download files
+        if (isset($tConfig['/downloadList'])) {
+            foreach ($tConfig['/downloadList'] as $tUrl) {
+                Framework::downloadFile($tUrl['filename'], $tUrl['url']);
+            }
+        }
 
-			// include extensions
-			$tIncludedFiles = array();
+        // include extensions
+        $tIncludedFiles = array();
 
-			//! autoloaded extensions?
-			foreach($tConfig['/extensionList'] as $tExtensionName) {
-				$tExtension = $tExtensions[$tExtensionName];
+        //! autoloaded extensions?
+        foreach ($tConfig['/extensionList'] as $tExtensionName) {
+            $tExtension = $tExtensions[$tExtensionName];
 
-				if(isset($tExtension['config']['/includeList'])) {
-					foreach($tExtension['config']['/includeList'] as $tFile) {
-						$tFilename = $tExtension['path'] . $tFile;
+            if (isset($tExtension['config']['/includeList'])) {
+                foreach ($tExtension['config']['/includeList'] as $tFile) {
+                    $tFilename = $tExtension['path'] . $tFile;
 
-						if(!in_array($tFilename, $tIncludedFiles, true)) {
-							$tCompiled .= framework::printFile(file_get_contents($tFilename));
-							$tIncludedFiles[] = $tFilename;
-						}
-					}
-				}
-			}
+                    if (!in_array($tFilename, $tIncludedFiles, true)) {
+                        $tCompiled .= Framework::printFile(file_get_contents($tFilename));
+                        $tIncludedFiles[] = $tFilename;
+                    }
+                }
+            }
+        }
 
-			// include files
-			if(isset($tConfig['/includeList'])) {
-				foreach($tConfig['/includeList'] as $tInclude) {
-					$tIncludePath = pathinfo(framework::translatePath($tInclude));
+        // include files
+        if (isset($tConfig['/includeList'])) {
+            foreach ($tConfig['/includeList'] as $tInclude) {
+                $tIncludePath = pathinfo(Framework::translatePath($tInclude));
 
-					$tFiles = framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], framework::GLOB_FILES);
-					if($tFiles !== false) {
-						foreach($tFiles as $tFilename) {
-							if(substr($tFilename, -1) == '/') {
-								continue;
-							}
+                $tFiles = Framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Framework::GLOB_FILES);
+                if ($tFiles !== false) {
+                    foreach ($tFiles as $tFilename) {
+                        if (substr($tFilename, -1) == '/') {
+                            continue;
+                        }
 
-							if(!in_array($tFilename, $tIncludedFiles, true)) {
-								$tCompiled .= framework::printFile(file_get_contents($tFilename));
-								$tIncludedFiles[] = $tFilename;
-							}
-						}
-					}
-				}
-			}
-			/* END   */
+                        if (!in_array($tFilename, $tIncludedFiles, true)) {
+                            $tCompiled .= Framework::printFile(file_get_contents($tFilename));
+                            $tIncludedFiles[] = $tFilename;
+                        }
+                    }
+                }
+            }
+        }
+        /* END   */
 
-			framework::$development = $tDevelopment;
+        Framework::$development = $tDevelopment;
 
-			return $tCompiled;
-		}
+        return $tCompiled;
+    }
 
-		/**
-		 * Purges the files in given directory.
-		 *
-		 * @internal param string $uFolder destination directory
-		 */
-		public static function purge() {
-			auth::checkRedirect('admin');
+    /**
+     * Purges the files in given directory.
+     *
+     * @internal param string $uFolder destination directory
+     */
+    public static function purge()
+    {
+        Auth::checkRedirect('admin');
 
-			$tStart = microtime(true);
+        $tStart = microtime(true);
 
-			self::purgeFolder(framework::$applicationPath . 'writable/cache/');
-			self::purgeFolder(framework::$applicationPath . 'writable/logs/');
+        self::purgeFolder(Framework::$applicationPath . 'writable/cache/');
+        self::purgeFolder(Framework::$applicationPath . 'writable/logs/');
 
-			exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
-		}
+        exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
+    }
 
-		/**
-		 * @ignore
-		 */
-		private static function purgeFolder($uFolder) {
-			$tDirectory = framework::glob($uFolder, null, framework::GLOB_RECURSIVE | framework::GLOB_FILES);
+    /**
+     * @ignore
+     */
+    private static function purgeFolder($uFolder)
+    {
+        $tDirectory = Framework::glob($uFolder, null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES);
 
-			if($tDirectory === false) {
-				return;
-			}
+        if ($tDirectory === false) {
+            return;
+        }
 
-			foreach($tDirectory as $tFilename) {
-				if(substr($tFilename, -1) == '/') {
-					continue;
-				}
+        foreach ($tDirectory as $tFilename) {
+            if (substr($tFilename, -1) == '/') {
+                continue;
+            }
 
-				unlink($tFilename);
-			}
-		}
-	}
-
-	?>
+            unlink($tFilename);
+        }
+    }
+}

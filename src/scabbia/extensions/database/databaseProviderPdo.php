@@ -1,300 +1,315 @@
 <?php
 
-	namespace Scabbia\Extensions\Database;
+namespace Scabbia\Extensions\Database;
 
-	/**
-	 * DatabaseProvider PDO Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class databaseProviderPdo {
-		/**
-		 * @ignore
-		 */
-		public $standard = null;
-		/**
-		 * @ignore
-		 */
-		public $pdoString;
-		/**
-		 * @ignore
-		 */
-		public $username;
-		/**
-		 * @ignore
-		 */
-		public $password;
-		/**
-		 * @ignore
-		 */
-		public $overrideCase;
-		/**
-		 * @ignore
-		 */
-		public $persistent;
-		/**
-		 * @ignore
-		 */
-		public $fetchMode;
+/**
+ * DatabaseProvider PDO Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class DatabaseProviderPdo
+{
+    /**
+     * @ignore
+     */
+    public $standard = null;
+    /**
+     * @ignore
+     */
+    public $pdoString;
+    /**
+     * @ignore
+     */
+    public $username;
+    /**
+     * @ignore
+     */
+    public $password;
+    /**
+     * @ignore
+     */
+    public $overrideCase;
+    /**
+     * @ignore
+     */
+    public $persistent;
+    /**
+     * @ignore
+     */
+    public $fetchMode;
 
-		/**
-		 * @ignore
-		 */
-		public function __construct($uConfig) {
-			$this->pdoString = $uConfig['pdoString'];
-			$this->username = $uConfig['username'];
-			$this->password = $uConfig['password'];
 
-			if(isset($uConfig['overrideCase'])) {
-				$this->overrideCase = $uConfig['overrideCase'];
-			}
+    /**
+     * @ignore
+     */
+    public function __construct($uConfig)
+    {
+        $this->pdoString = $uConfig['pdoString'];
+        $this->username = $uConfig['username'];
+        $this->password = $uConfig['password'];
 
-			$this->persistent = isset($uConfig['persistent']);
-			$this->fetchMode = \PDO::FETCH_ASSOC;
+        if (isset($uConfig['overrideCase'])) {
+            $this->overrideCase = $uConfig['overrideCase'];
+        }
 
-			$tConnectionString = explode(':', $this->pdoString, 2);
-			$this->standard = $tConnectionString[0];
-		}
+        $this->persistent = isset($uConfig['persistent']);
+        $this->fetchMode = \PDO::FETCH_ASSOC;
 
-		/**
-		 * @ignore
-		 */
-		public function open() {
-			$tParms = array();
-			if($this->persistent) {
-				$tParms[\PDO::ATTR_PERSISTENT] = true;
-			}
+        $tConnectionString = explode(':', $this->pdoString, 2);
+        $this->standard = $tConnectionString[0];
+    }
 
-			switch($this->overrideCase) {
-			case 'lower':
-				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_LOWER;
-				break;
-			case 'upper':
-				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_UPPER;
-				break;
-			default:
-				$tParms[\PDO::ATTR_CASE] = \PDO::CASE_NATURAL;
-				break;
-			}
+    /**
+     * @ignore
+     */
+    public function open()
+    {
+        $tParms = array();
+        if ($this->persistent) {
+            $tParms[\PDO::ATTR_PERSISTENT] = true;
+        }
 
-			$tParms[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
+        switch ($this->overrideCase) {
+            case 'lower':
+                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_LOWER;
+                break;
+            case 'upper':
+                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_UPPER;
+                break;
+            default:
+                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_NATURAL;
+                break;
+        }
 
-			$this->connection = new \PDO($this->pdoString, $this->username, $this->password, $tParms);
+        $tParms[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
 
-			// $this->standard = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
-		}
+        $this->connection = new \PDO($this->pdoString, $this->username, $this->password, $tParms);
 
-		/**
-		 * @ignore
-		 */
-		public function close() {
-		}
+        // $this->standard = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function beginTransaction() {
-			$this->connection->beginTransaction();
-		}
+    /**
+     * @ignore
+     */
+    public function close()
+    {
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function commit() {
-			$this->connection->commit();
-		}
+    /**
+     * @ignore
+     */
+    public function beginTransaction()
+    {
+        $this->connection->beginTransaction();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function rollBack() {
-			$this->connection->rollBack();
-		}
+    /**
+     * @ignore
+     */
+    public function commit()
+    {
+        $this->connection->commit();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function execute($uQuery) {
-			return $this->connection->exec($uQuery);
-		}
+    /**
+     * @ignore
+     */
+    public function rollBack()
+    {
+        $this->connection->rollBack();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function queryDirect($uQuery, $uParameters = array()) {
-			$tQuery = $this->connection->prepare($uQuery);
-			$tResult = $tQuery->execute($uParameters);
+    /**
+     * @ignore
+     */
+    public function execute($uQuery)
+    {
+        return $this->connection->exec($uQuery);
+    }
 
-			return $tQuery;
-		}
+    /**
+     * @ignore
+     */
+    public function queryDirect($uQuery, $uParameters = array())
+    {
+        $tQuery = $this->connection->prepare($uQuery);
+        $tQuery->execute($uParameters);
 
-		/**
-		 * @ignore
-		 */
-		public function itSeek($uObject, $uRow) {
-			// return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_ABS, $uRow);
-			for($i = 0; $i < $uRow; $i++) {
-				$uObject->fetch(\PDO::FETCH_NUM, \PDO::FETCH_ORI_NEXT);
-			}
+        return $tQuery;
+    }
 
-			return $this->itNext($uObject);
-		}
+    /**
+     * @ignore
+     */
+    public function itSeek($uObject, $uRow)
+    {
+        // return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_ABS, $uRow);
+        for ($i = 0; $i < $uRow; $i++) {
+            $uObject->fetch(\PDO::FETCH_NUM, \PDO::FETCH_ORI_NEXT);
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function itNext($uObject) {
-			return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_NEXT);
-		}
+        return $this->itNext($uObject);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function itCount($uObject) {
-			return $uObject->rowCount();
-		}
+    /**
+     * @ignore
+     */
+    public function itNext($uObject)
+    {
+        return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_NEXT);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function itClose($uObject) {
-			return $uObject->closeCursor();
-		}
+    /**
+     * @ignore
+     */
+    public function itCount($uObject)
+    {
+        return $uObject->rowCount();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function lastInsertId($uName = null) {
-			return $this->connection->lastInsertId($uName);
-		}
+    /**
+     * @ignore
+     */
+    public function itClose($uObject)
+    {
+        return $uObject->closeCursor();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function serverInfo() {
-			return $this->connection->getAttribute(\PDO::ATTR_SERVER_INFO);
-		}
+    /**
+     * @ignore
+     */
+    public function lastInsertId($uName = null)
+    {
+        return $this->connection->lastInsertId($uName);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlInsert($uTable, $uObject, $uReturning = '') {
-			$tSql =
-					'INSERT INTO ' . $uTable . ' ('
-							. implode(', ', array_keys($uObject))
-							. ') VALUES ('
-							. implode(', ', array_values($uObject))
-							. ')';
+    /**
+     * @ignore
+     */
+    public function serverInfo()
+    {
+        return $this->connection->getAttribute(\PDO::ATTR_SERVER_INFO);
+    }
 
-			if(strlen($uReturning) > 0) {
-				$tSql .= ' RETURNING ' . $uReturning;
-			}
+    /**
+     * @ignore
+     */
+    public function sqlInsert($uTable, $uObject, $uReturning = '')
+    {
+        $tSql =
+                'INSERT INTO ' . $uTable . ' ('
+                        . implode(', ', array_keys($uObject))
+                        . ') VALUES ('
+                        . implode(', ', array_values($uObject))
+                        . ')';
 
-			return $tSql;
-		}
+        if (strlen($uReturning) > 0) {
+            $tSql .= ' RETURNING ' . $uReturning;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null) {
-			$tPairs = array();
-			foreach($uObject as $tKey => $tValue) {
-				$tPairs[] = $tKey . '=' . $tValue;
-			}
+        return $tSql;
+    }
 
-			$tSql = 'UPDATE ' . $uTable . ' SET '
-					. implode(', ', $tPairs);
+    /**
+     * @ignore
+     */
+    public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null)
+    {
+        $tPairs = array();
+        foreach ($uObject as $tKey => $tValue) {
+            $tPairs[] = $tKey . '=' . $tValue;
+        }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+        $tSql = 'UPDATE ' . $uTable . ' SET '
+                . implode(', ', $tPairs);
 
-			if(!is_null($uExtra)) {
-				if($this->standard == 'mysql') {
-					if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-						$tSql .= ' LIMIT ' . $uExtra['limit'];
-					}
-				}
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			return $tSql;
-		}
+        if (!is_null($uExtra)) {
+            if ($this->standard == 'mysql') {
+                if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                    $tSql .= ' LIMIT ' . $uExtra['limit'];
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlDelete($uTable, $uWhere, $uExtra = null) {
-			$tSql = 'DELETE FROM ' . $uTable;
+        return $tSql;
+    }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+    /**
+     * @ignore
+     */
+    public function sqlDelete($uTable, $uWhere, $uExtra = null)
+    {
+        $tSql = 'DELETE FROM ' . $uTable;
 
-			if(!is_null($uExtra)) {
-				if($this->standard == 'mysql') {
-					if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-						$tSql .= ' LIMIT ' . $uExtra['limit'];
-					}
-				}
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			return $tSql;
-		}
+        if (!is_null($uExtra)) {
+            if ($this->standard == 'mysql') {
+                if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                    $tSql .= ' LIMIT ' . $uExtra['limit'];
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null) {
-			$tSql = 'SELECT ';
+        return $tSql;
+    }
 
-			if(count($uFields) > 0) {
-				$tSql .= implode(', ', $uFields);
-			}
-			else {
-				$tSql .= '*';
-			}
+    /**
+     * @ignore
+     */
+    public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null)
+    {
+        $tSql = 'SELECT ';
 
-			$tSql .= ' FROM ' . $uTable;
+        if (count($uFields) > 0) {
+            $tSql .= implode(', ', $uFields);
+        } else {
+            $tSql .= '*';
+        }
 
-			if(strlen($uWhere) > 0) {
-				$tSql .= ' WHERE ' . $uWhere;
-			}
+        $tSql .= ' FROM ' . $uTable;
 
-			if(!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
-				$tSql .= ' GROUP BY ' . $uGroupBy;
-			}
+        if (strlen($uWhere) > 0) {
+            $tSql .= ' WHERE ' . $uWhere;
+        }
 
-			if(!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
-				$tSql .= ' ORDER BY ' . $uOrderBy;
-			}
+        if (!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
+            $tSql .= ' GROUP BY ' . $uGroupBy;
+        }
 
-			if(!is_null($uExtra)) {
-				if($this->standard == 'pgsql') {
-					if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-						$tSql .= ' LIMIT ' . $uExtra['limit'];
-					}
+        if (!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+            $tSql .= ' ORDER BY ' . $uOrderBy;
+        }
 
-					if(isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
-						$tSql .= ' OFFSET ' . $uExtra['offset'];
-					}
-				}
-				else {
-					if($this->standard == 'mysql') {
-						if(isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
-							if(isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
-								$tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];
-							}
-							else {
-								$tSql .= ' LIMIT ' . $uExtra['limit'];
-							}
-						}
-					}
-				}
-			}
+        if (!is_null($uExtra)) {
+            if ($this->standard == 'pgsql') {
+                if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                    $tSql .= ' LIMIT ' . $uExtra['limit'];
+                }
 
-			return $tSql;
-		}
-	}
+                if (isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
+                    $tSql .= ' OFFSET ' . $uExtra['offset'];
+                }
+            } else {
+                if ($this->standard == 'mysql') {
+                    if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
+                        if (isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
+                            $tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];
+                        } else {
+                            $tSql .= ' LIMIT ' . $uExtra['limit'];
+                        }
+                    }
+                }
+            }
+        }
 
-	?>
+        return $tSql;
+    }
+}

@@ -1,102 +1,106 @@
 <?php
 
-	namespace Scabbia\Extensions\Auth;
+namespace Scabbia\Extensions\Auth;
 
-	use Scabbia\Extensions\Mvc\mvc;
-	use Scabbia\Extensions\Session\session;
-	use Scabbia\config;
-	use Scabbia\extensions;
-	use Scabbia\framework;
+use Scabbia\Extensions\Mvc\Mvc;
+use Scabbia\Extensions\Session\Session;
+use Scabbia\Config;
+use Scabbia\Extensions;
+use Scabbia\Framework;
 
-	/**
-	 * Auth Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage auth
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends session
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class auth {
-		/**
-		 * @ignore
-		 */
-		public static $sessionKey;
+/**
+ * Auth Extension
+ *
+ * @package Scabbia
+ * @subpackage auth
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends session
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Auth
+{
+    /**
+     * @ignore
+     */
+    public static $sessionKey;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			self::$sessionKey = config::get('/auth/sessionKey', 'authuser');
-		}
 
-		/**
-		 * @ignore
-		 */
-		public static function login($uUsername, $uPassword) {
-			foreach(config::get('/auth/userList', array()) as $tUser) {
-				if($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
-					continue;
-				}
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        self::$sessionKey = Config::get('/auth/sessionKey', 'authuser');
+    }
 
-				session::set(self::$sessionKey, $tUser);
+    /**
+     * @ignore
+     */
+    public static function login($uUsername, $uPassword)
+    {
+        foreach (Config::get('/auth/userList', array()) as $tUser) {
+            if ($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
+                continue;
+            }
 
-				return true;
-			}
+            Session::set(self::$sessionKey, $tUser);
 
-			// session::remove(self::$sessionKey);
-			return false;
-		}
+            return true;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function clear() {
-			session::remove(self::$sessionKey);
-		}
+        // Session::remove(self::$sessionKey);
+        return false;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public static function check($uRequiredRoles = 'user') {
-			$tUser = session::get(self::$sessionKey);
-			if(is_null($tUser)) {
-				return false;
-			}
+    /**
+     * @ignore
+     */
+    public static function clear()
+    {
+        Session::remove(self::$sessionKey);
+    }
 
-			$tAvailableRoles = explode(',', $tUser['roles']);
+    /**
+     * @ignore
+     */
+    public static function check($uRequiredRoles = 'user')
+    {
+        $tUser = Session::get(self::$sessionKey);
+        if (is_null($tUser)) {
+            return false;
+        }
 
-			foreach(explode(',', $uRequiredRoles) as $tRequiredRole) {
-				if(!in_array($tRequiredRole, $tAvailableRoles, true)) {
-					return false;
-				}
-			}
+        $tAvailableRoles = explode(',', $tUser['roles']);
 
-			return true;
-		}
+        foreach (explode(',', $uRequiredRoles) as $tRequiredRole) {
+            if (!in_array($tRequiredRole, $tAvailableRoles, true)) {
+                return false;
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function checkRedirect($uRequiredRoles = 'user') {
-			if(self::check($uRequiredRoles)) {
-				return;
-			}
+        return true;
+    }
 
-			$tMvcUrl = config::get('/auth/loginMvcUrl', null);
-			if(!is_null($tMvcUrl)) {
-				//! todo: warning messages like insufficent privileges.
-				mvc::redirect($tMvcUrl);
-			}
-			else {
-				header('Location: ' . config::get('/auth/loginUrl'));
-			}
+    /**
+     * @ignore
+     */
+    public static function checkRedirect($uRequiredRoles = 'user')
+    {
+        if (self::check($uRequiredRoles)) {
+            return;
+        }
 
-			framework::end(0);
-		}
-	}
+        $tMvcUrl = Config::get('/auth/loginMvcUrl', null);
+        if (!is_null($tMvcUrl)) {
+            //! todo: warning messages like insufficent privileges.
+            Mvc::redirect($tMvcUrl);
+        } else {
+            header('Location: ' . Config::get('/auth/loginUrl'));
+        }
 
-	?>
+        Framework::end(0);
+    }
+}

@@ -58,7 +58,7 @@
 	 * }
 	 *
 	 * If-else examples:
-	 * @if($variable == "some value") {
+	 * @if ($variable == "some value") {
 	 *     Could be some &lt;p&gt;HTML&lt;/p&gt; here.
 	 *     Current date: @date("Y-m-d")
 	 * }
@@ -122,14 +122,14 @@
 			$offset = $beginBlock;
 			while(($p = strpos($this->_input, "@", $offset)) !== false && $p < $endBlock) {
 				// replace @@ -> @
-				if($this->isNextToken($p, $endBlock, "@")) {
+				if ($this->isNextToken($p, $endBlock, "@")) {
 					$this->_output .= substr($this->_input, $offset, $p - $offset + 1);
 					$offset = $p + 2;
 					continue;
 				}
 
 				// replace multi-token statements @(...)
-				if($this->isNextToken($p, $endBlock, "(")) {
+				if ($this->isNextToken($p, $endBlock, "(")) {
 					$end = $this->findClosingBracket($p + 1, $endBlock, "(", ")");
 					$this->_output .= substr($this->_input, $offset, $p - $offset);
 					$this->generatePHPOutput($p, $end);
@@ -138,7 +138,7 @@
 				}
 
 				// replace multi-line statements @{...}
-				if($this->isNextToken($p, $endBlock, "{")) {
+				if ($this->isNextToken($p, $endBlock, "{")) {
 					$end = $this->findClosingBracket($p + 1, $endBlock, "{", "}");
 					$this->_output .= substr($this->_input, $offset, $p - $offset);
 					$this->_output .= "<?php " . substr($this->_input, $p + 2, $end - $p - 2) . " ?>";
@@ -147,7 +147,7 @@
 				}
 
 				// replace HTML-encoded statements @:...
-				if($this->isNextToken($p, $endBlock, ":")) {
+				if ($this->isNextToken($p, $endBlock, ":")) {
 					$statement = $this->detectStatement($p + 2, $endBlock);
 					$end = $this->findEndStatement($p + 1 + strlen($statement), $endBlock);
 					$this->_output .= substr($this->_input, $offset, $p - $offset);
@@ -157,10 +157,10 @@
 				}
 
 				$statement = $this->detectStatement($p + 1, $endBlock);
-				if($statement == "foreach" || $statement == "for" || $statement == "while") {
+				if ($statement == "foreach" || $statement == "for" || $statement == "while") {
 					$offset = $this->processLoopStatement($p, $offset, $endBlock, $statement);
 				}
-				elseif($statement == "if") {
+				elseif ($statement == "if") {
 					$offset = $this->processIfStatement($p, $offset, $endBlock, $statement);
 				}
 				else {
@@ -183,7 +183,7 @@
 		}
 
 		private function processLoopStatement($currentPosition, $offset, $endBlock, $statement) {
-			if(($bracketPosition = $this->findOpenBracketAtLine($currentPosition + 1, $endBlock)) === false) {
+			if (($bracketPosition = $this->findOpenBracketAtLine($currentPosition + 1, $endBlock)) === false) {
 				throw new RazorViewRendererException("Cannot find open bracket for '{$statement}' statement.",
 					$this->_sourceFile, $this->getLineNumber($currentPosition));
 			}
@@ -201,7 +201,7 @@
 
 		private function processIfStatement($currentPosition, $offset, $endBlock, $statement) {
 			$bracketPosition = $this->findOpenBracketAtLine($currentPosition + 1, $endBlock);
-			if($bracketPosition === false) {
+			if ($bracketPosition === false) {
 				throw new RazorViewRendererException("Cannot find open bracket for '{$statement}' statement.",
 					$this->_sourceFile, $this->getLineNumber($currentPosition));
 			}
@@ -217,7 +217,7 @@
 				$offset = $end + 1;
 
 				$bracketPosition = $this->findOpenBracketAtLine($offset, $endBlock);
-				if($bracketPosition === false) {
+				if ($bracketPosition === false) {
 					$this->_output .= "<?php } ?>";
 					break;
 				}
@@ -233,18 +233,18 @@
 			$openSingleQuotes = false;
 
 			for($p = $currentPosition; $p < $endBlock; ++$p) {
-				if($this->_input[$p] == "\n") {
+				if ($this->_input[$p] == "\n") {
 					return false;
 				}
 
 				$quotesNotOpened = !$openDoubleQuotes && !$openSingleQuotes;
-				if($this->_input[$p] == '"') {
+				if ($this->_input[$p] == '"') {
 					$openDoubleQuotes = $this->getQuotesState($openDoubleQuotes, $quotesNotOpened, $p);
 				}
-				elseif($this->_input[$p] == "'") {
+				elseif ($this->_input[$p] == "'") {
 					$openSingleQuotes = $this->getQuotesState($openSingleQuotes, $quotesNotOpened, $p);
 				}
-				elseif($this->_input[$p] == "{" && $quotesNotOpened) {
+				elseif ($this->_input[$p] == "{" && $quotesNotOpened) {
 					return $p;
 				}
 			}
@@ -260,7 +260,7 @@
 		private function isEscaped($currentPosition) {
 			$cntBackSlashes = 0;
 			for($p = $currentPosition - 1; $p >= 0; --$p) {
-				if($this->_input[$p] != "\\") {
+				if ($this->_input[$p] != "\\") {
 					break;
 				}
 
@@ -271,7 +271,7 @@
 		}
 
 		private function getQuotesState($testedQuotes, $quotesNotOpened, $currentPosition) {
-			if($quotesNotOpened) {
+			if ($quotesNotOpened) {
 				return true;
 			}
 
@@ -286,17 +286,17 @@
 			for($p = $openBracketPosition; $p < $endBlock; ++$p) {
 				$quotesNotOpened = !$openDoubleQuotes && !$openSingleQuotes;
 
-				if($this->_input[$p] == '"') {
+				if ($this->_input[$p] == '"') {
 					$openDoubleQuotes = $this->getQuotesState($openDoubleQuotes, $quotesNotOpened, $p);
 				}
-				elseif($this->_input[$p] == "'") {
+				elseif ($this->_input[$p] == "'") {
 					$openSingleQuotes = $this->getQuotesState($openSingleQuotes, $quotesNotOpened, $p);
 				}
-				elseif($this->_input[$p] == $openBracket && $quotesNotOpened) {
+				elseif ($this->_input[$p] == $openBracket && $quotesNotOpened) {
 					$opened++;
 				}
-				elseif($this->_input[$p] == $closeBracket && $quotesNotOpened) {
-					if(--$opened == 0) {
+				elseif ($this->_input[$p] == $closeBracket && $quotesNotOpened) {
+					if (--$opened == 0) {
 						return $p;
 					}
 				}
@@ -307,26 +307,26 @@
 		}
 
 		private function findEndStatement($endPosition, $endBlock) {
-			if($this->isNextToken($endPosition, $endBlock, "(")) {
+			if ($this->isNextToken($endPosition, $endBlock, "(")) {
 				$endPosition = $this->findClosingBracket($endPosition + 1, $endBlock, "(", ")");
 				$endPosition = $this->findEndStatement($endPosition, $endBlock);
 			}
-			elseif($this->isNextToken($endPosition, $endBlock, "[")) {
+			elseif ($this->isNextToken($endPosition, $endBlock, "[")) {
 				$endPosition = $this->findClosingBracket($endPosition + 1, $endBlock, "[", "]");
 				$endPosition = $this->findEndStatement($endPosition, $endBlock);
 			}
-			elseif($this->isNextToken($endPosition, $endBlock, "->")) {
+			elseif ($this->isNextToken($endPosition, $endBlock, "->")) {
 				$endPosition += 2;
 				$statement = $this->detectStatement($endPosition + 1, $endBlock);
 				$endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
 			}
-			elseif($this->isNextToken($endPosition, $endBlock, "::")) {
+			elseif ($this->isNextToken($endPosition, $endBlock, "::")) {
 				$endPosition += 2;
 				$statement = $this->detectStatement($endPosition + 1, $endBlock);
 				$endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
 			}
 			// laroux
-			elseif($this->isNextToken($endPosition, $endBlock, "\\")) {
+			elseif ($this->isNextToken($endPosition, $endBlock, "\\")) {
 				$endPosition += 1;
 				$statement = $this->detectStatement($endPosition + 1, $endBlock);
 				$endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
@@ -338,11 +338,11 @@
 		private function detectStatement($currentPosition, $endBlock) {
 			$invalidCharPosition = $endBlock;
 			for($p = $currentPosition; $p < $invalidCharPosition; ++$p) {
-				if($this->_input[$p] == "$" && $p == $currentPosition) {
+				if ($this->_input[$p] == "$" && $p == $currentPosition) {
 					continue;
 				}
 
-				if(preg_match('/[a-zA-Z0-9_]/', $this->_input[$p])) {
+				if (preg_match('/[a-zA-Z0-9_]/', $this->_input[$p])) {
 					continue;
 				}
 
@@ -350,7 +350,7 @@
 				break;
 			}
 
-			if($currentPosition == $invalidCharPosition) {
+			if ($currentPosition == $invalidCharPosition) {
 				throw new RazorViewRendererException("Cannot detect statement.", $this->_sourceFile,
 					$this->getLineNumber($currentPosition));
 			}

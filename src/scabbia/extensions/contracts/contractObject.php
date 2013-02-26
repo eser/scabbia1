@@ -1,59 +1,63 @@
 <?php
 
-	namespace Scabbia\Extensions\Contracts;
+namespace Scabbia\Extensions\Contracts;
 
-	/**
-	 * Contract Object Class
-	 *
-	 * @package Scabbia
-	 * @subpackage ExtensibilityExtensions
-	 */
-	class contractObject {
-		/**
-		 * @ignore
-		 */
-		public $status;
-		/**
-		 * @ignore
-		 */
-		public $newValue;
+/**
+ * Contract Object Class
+ *
+ * @package Scabbia
+ * @subpackage ExtensibilityExtensions
+ */
+class ContractObject
+{
+    /**
+     * @ignore
+     */
+    public $status;
+    /**
+     * @ignore
+     */
+    public $newValue;
 
-		/**
-		 * @ignore
-		 */
-		public function __construct($uStatus, $uNewValue = null) {
-			$this->status = $uStatus;
-			$this->newValue = $uNewValue;
-		}
 
-		/**
-		 * @ignore
-		 */
-		public function exception($uErrorMessage) {
-			if($this->status) {
-				return;
-			}
+    /**
+     * @ignore
+     */
+    public function __construct($uStatus, $uNewValue = null)
+    {
+        $this->status = $uStatus;
+        $this->newValue = $uNewValue;
+    }
 
-			throw new \Exception($uErrorMessage);
-		}
+    /**
+     * @ignore
+     */
+    public function exception($uErrorMessage)
+    {
+        if ($this->status) {
+            return;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function check() {
-			return $this->status;
-		}
+        throw new \Exception($uErrorMessage);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function get() {
-			if(!$this->status) {
-				return false;
-			}
+    /**
+     * @ignore
+     */
+    public function check()
+    {
+        return $this->status;
+    }
 
-			return $this->newValue;
-		}
-	}
+    /**
+     * @ignore
+     */
+    public function get()
+    {
+        if (!$this->status) {
+            return false;
+        }
 
-	?>
+        return $this->newValue;
+    }
+}

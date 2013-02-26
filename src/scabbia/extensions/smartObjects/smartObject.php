@@ -1,141 +1,148 @@
 <?php
 
-	namespace Scabbia\Extensions\SmartObjects;
+namespace Scabbia\Extensions\SmartObjects;
 
-	/**
-	 * SmartObject Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class smartObject {
-		/**
-		 * @ignore
-		 */
-		public $obtained = array();
-		/**
-		 * @ignore
-		 */
-		public $data = array();
+/**
+ * SmartObject Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class SmartObject
+{
+    /**
+     * @ignore
+     */
+    public $obtained = array();
+    /**
+     * @ignore
+     */
+    public $data = array();
 
-		/**
-		 * @ignore
-		 */
-		public function __isset($uKey) {
-			if(array_key_exists($uKey, $this->obtained)) {
-				return true;
-			}
 
-			foreach($this->data as $tKey => $tValue) {
-				if(!is_array($tValue->fields)) {
-					// Smart Object fields should be arrays
-					continue;
-				}
+    /**
+     * @ignore
+     */
+    public function __isset($uKey)
+    {
+        if (array_key_exists($uKey, $this->obtained)) {
+            return true;
+        }
 
-				foreach($tValue->fields as $tFieldKey => $tFieldValue) {
-					if((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
-						return true;
-					}
-				}
-			}
+        foreach ($this->data as $tValue) {
+            if (!is_array($tValue->fields)) {
+                // Smart Object fields should be arrays
+                continue;
+            }
 
-			return false;
-		}
+            foreach ($tValue->fields as $tFieldKey => $tFieldValue) {
+                if ((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
+                    return true;
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function __get($uKey) {
-			if(array_key_exists($uKey, $this->obtained)) {
-				return $this->obtained[$uKey];
-			}
+        return false;
+    }
 
-			foreach($this->data as $tKey => $tValue) {
-				if(!is_array($tValue->fields)) {
-					// Smart Object fields should be arrays
-					continue;
-				}
+    /**
+     * @ignore
+     */
+    public function __get($uKey)
+    {
+        if (array_key_exists($uKey, $this->obtained)) {
+            return $this->obtained[$uKey];
+        }
 
-				foreach($tValue->fields as $tFieldKey => $tFieldValue) {
-					if((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
-						if(!is_object($this->data[$uKey]) || !method_exists($this->data[$uKey], 'runSmartObject')) {
-							continue;
-						}
+        foreach ($this->data as $tValue) {
+            if (!is_array($tValue->fields)) {
+                // Smart Object fields should be arrays
+                continue;
+            }
 
-						$this->data[$uKey]->runSmartObject($this);
+            foreach ($tValue->fields as $tFieldKey => $tFieldValue) {
+                if ((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
+                    if (!is_object($this->data[$uKey]) || !method_exists($this->data[$uKey], 'runSmartObject')) {
+                        continue;
+                    }
 
-						return $this->obtained[$uKey];
-					}
-				}
-			}
+                    $this->data[$uKey]->runSmartObject($this);
 
-			return false;
-		}
+                    return $this->obtained[$uKey];
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function __set($uKey, $uValue) {
-			if(array_key_exists($uKey, $this->obtained)) {
-				$this->obtained[$uKey] = $uValue;
+        return false;
+    }
 
-				return;
-			}
+    /**
+     * @ignore
+     */
+    public function __set($uKey, $uValue)
+    {
+        if (array_key_exists($uKey, $this->obtained)) {
+            $this->obtained[$uKey] = $uValue;
 
-			$this->{$uKey} = $uValue;
-		}
+            return;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function __unset($uKey) {
-			if(array_key_exists($uKey, $this->obtained)) {
-				unset($this->obtained[$uKey]);
+        $this->{$uKey} = $uValue;
+    }
 
-				return;
-			}
+    /**
+     * @ignore
+     */
+    public function __unset($uKey)
+    {
+        if (array_key_exists($uKey, $this->obtained)) {
+            unset($this->obtained[$uKey]);
 
-			unset($this->{$uKey});
-		}
+            return;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function removeReference($uOffset) {
-			unset($this->obtained[$uOffset]);
-		}
+        unset($this->{$uKey});
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function register($uOffset, $uValue) {
-			foreach((array)$uOffset as $uOffsetKey) {
-				$this->obtained[$uOffsetKey] = $uValue;
-			}
-		}
+    /**
+     * @ignore
+     */
+    public function removeReference($uOffset)
+    {
+        unset($this->obtained[$uOffset]);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function listItems() {
-			echo '<h2>Items</h2>';
+    /**
+     * @ignore
+     */
+    public function register($uOffset, $uValue)
+    {
+        foreach ((array)$uOffset as $uOffsetKey) {
+            $this->obtained[$uOffsetKey] = $uValue;
+        }
+    }
 
-			foreach($this->data as $tDataKey => $tDataValue) {
-				if(!is_array($tDataValue->fields)) {
-					continue;
-				}
+    /**
+     * @ignore
+     */
+    public function listItems()
+    {
+        echo '<h2>Items</h2>';
 
-				echo '<br /><b>', $tDataKey, ': </b><br />';
-				foreach($tDataValue->fields as $tFieldKey => $tFieldValue) {
-					if(is_numeric($tFieldKey)) {
-						echo '<pre>', $tFieldValue, ' </pre>';
-						continue;
-					}
+        foreach ($this->data as $tDataKey => $tDataValue) {
+            if (!is_array($tDataValue->fields)) {
+                continue;
+            }
 
-					echo '<pre>', $tFieldKey, ' </pre>';
-				}
-			}
-		}
-	}
+            echo '<br /><b>', $tDataKey, ': </b><br />';
+            foreach ($tDataValue->fields as $tFieldKey => $tFieldValue) {
+                if (is_numeric($tFieldKey)) {
+                    echo '<pre>', $tFieldValue, ' </pre>';
+                    continue;
+                }
 
-	?>
+                echo '<pre>', $tFieldKey, ' </pre>';
+            }
+        }
+    }
+}

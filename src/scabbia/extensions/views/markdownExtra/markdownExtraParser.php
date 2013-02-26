@@ -73,8 +73,8 @@
 			$this->abbr_word_re = '';
 			$this->footnote_counter = 1;
 
-			foreach($this->predef_abbr as $abbr_word => $abbr_desc) {
-				if($this->abbr_word_re)
+			foreach ($this->predef_abbr as $abbr_word => $abbr_desc) {
+				if ($this->abbr_word_re)
 					$this->abbr_word_re .= '|';
 				$this->abbr_word_re .= preg_quote($abbr_word);
 				$this->abbr_desciptions[$abbr_word] = trim($abbr_desc);
@@ -164,7 +164,7 @@
 			#
 			# Returns an array of that form: ( processed text , remaining text )
 			#
-			if($text === '')
+			if ($text === '')
 				return array('', '');
 
 			# Regex to check for the presense of newlines around a block tag.
@@ -241,7 +241,7 @@
 
 				# If in Markdown span mode, add a empty-string span-level hash
 				# after each newline to prevent triggering any block element.
-				if($span) {
+				if ($span) {
 					$void = $this->hashPart("", ':');
 					$newline = "$void\n";
 					$parts[0] = $void . str_replace("\n", $newline, $parts[0]) . $void;
@@ -250,7 +250,7 @@
 				$parsed .= $parts[0]; # Text before current tag.
 
 				# If end of $text has been reached. Stop loop.
-				if(count($parts) < 3) {
+				if (count($parts) < 3) {
 					$text = "";
 					break;
 				}
@@ -262,10 +262,10 @@
 				#
 				# Check for: Code span marker
 				#
-				if($tag{0} == "`") {
+				if ($tag{0} == "`") {
 					# Find corresponding end marker.
 					$tag_re = preg_quote($tag);
-					if(preg_match('{^(?>.+?|\n(?!\n))*?(?<!`)' . $tag_re . '(?!`)}',
+					if (preg_match('{^(?>.+?|\n(?!\n))*?(?<!`)' . $tag_re . '(?!`)}',
 						$text, $matches)
 					) {
 						# End marker found: pass text unchanged until marker.
@@ -280,10 +280,10 @@
 				#
 				# Check for: Fenced code block marker.
 				#
-				else if(preg_match('{^\n?[ ]{0,' . ($indent + 3) . '}~}', $tag)) {
+				else if (preg_match('{^\n?[ ]{0,' . ($indent + 3) . '}~}', $tag)) {
 					# Fenced code block marker: find matching end marker.
 					$tag_re = preg_quote(trim($tag));
-					if(preg_match('{^(?>.*\n)+?[ ]{0,' . ($indent) . '}' . $tag_re . '[ ]*\n}', $text,
+					if (preg_match('{^(?>.*\n)+?[ ]{0,' . ($indent) . '}' . $tag_re . '[ ]*\n}', $text,
 						$matches)
 					) {
 						# End marker found: pass text unchanged until marker.
@@ -298,7 +298,7 @@
 				#
 				# Check for: Indented code block.
 				#
-				else if($tag{0} == "\n" || $tag{0} == " ") {
+				else if ($tag{0} == "\n" || $tag{0} == " ") {
 					# Indented code block: pass it unchanged, will be handled
 					# later.
 					$parsed .= $tag;
@@ -308,7 +308,7 @@
 				#            Opening Context Block tag (like ins and del)
 				#               used as a block tag (tag is alone on it's line).
 				#
-				else if(preg_match('{^<(?:' . $this->block_tags_re . ')\b}', $tag) ||
+				else if (preg_match('{^<(?:' . $this->block_tags_re . ')\b}', $tag) ||
 					(preg_match('{^<(?:' . $this->context_block_tags_re . ')\b}', $tag) &&
 						preg_match($newline_before_re, $parsed) &&
 						preg_match($newline_after_re, $text))
@@ -324,7 +324,7 @@
 				# Check for: Clean tag (like script, math)
 				#            HTML Comments, processing instructions.
 				#
-				else if(preg_match('{^<(?:' . $this->clean_tags_re . ')\b}', $tag) ||
+				else if (preg_match('{^<(?:' . $this->clean_tags_re . ')\b}', $tag) ||
 					$tag{1} == '!' || $tag{1} == '?'
 				) {
 					# Need to parse tag and following text using the HTML parser.
@@ -337,19 +337,19 @@
 				#
 				# Check for: Tag with same name as enclosing tag.
 				#
-				else if($enclosing_tag_re !== '' &&
+				else if ($enclosing_tag_re !== '' &&
 					# Same name as enclosing tag.
 					preg_match('{^</?(?:' . $enclosing_tag_re . ')\b}', $tag)
 				) {
 					#
 					# Increase/decrease nested tag count.
 					#
-					if($tag{1} == '/')
+					if ($tag{1} == '/')
 						$depth--;
-					else if($tag{strlen($tag) - 2} != '/')
+					else if ($tag{strlen($tag) - 2} != '/')
 						$depth++;
 
-					if($depth < 0) {
+					if ($depth < 0) {
 						#
 						# Going out of parent element. Clean up and break so we
 						# return to the calling function.
@@ -380,7 +380,7 @@
 			#
 			# Returns an array of that form: ( processed text , remaining text )
 			#
-			if($text === '')
+			if ($text === '')
 				return array('', '');
 
 			# Regex to match `markdown` attribute inside of a tag.
@@ -432,7 +432,7 @@
 			# Get the name of the starting tag.
 			# (This pattern makes $base_tag_name_re safe without quoting.)
 			#
-			if(preg_match('/^<([\w:$]*)\b/', $text, $matches))
+			if (preg_match('/^<([\w:$]*)\b/', $text, $matches))
 				$base_tag_name_re = $matches[1];
 
 			#
@@ -447,7 +447,7 @@
 				#
 				$parts = preg_split($tag_re, $text, 2, PREG_SPLIT_DELIM_CAPTURE);
 
-				if(count($parts) < 3) {
+				if (count($parts) < 3) {
 					#
 					# End of $text reached with unbalenced tag(s).
 					# In that case, we return original text unchanged and pass the
@@ -465,7 +465,7 @@
 				# Check for: Auto-close tag (like <hr/>)
 				#			 Comments and Processing Instructions.
 				#
-				if(preg_match('{^</?(?:' . $this->auto_close_tags_re . ')\b}', $tag) ||
+				if (preg_match('{^</?(?:' . $this->auto_close_tags_re . ')\b}', $tag) ||
 					$tag{1} == '!' || $tag{1} == '?'
 				) {
 					# Just add the tag to the block as if it was text.
@@ -476,17 +476,17 @@
 					# Increase/decrease nested tag count. Only do so if
 					# the tag's name match base tag's.
 					#
-					if(preg_match('{^</?' . $base_tag_name_re . '\b}', $tag)) {
-						if($tag{1} == '/')
+					if (preg_match('{^</?' . $base_tag_name_re . '\b}', $tag)) {
+						if ($tag{1} == '/')
 							$depth--;
-						else if($tag{strlen($tag) - 2} != '/')
+						else if ($tag{strlen($tag) - 2} != '/')
 							$depth++;
 					}
 
 					#
 					# Check for `markdown="1"` attribute and handle it.
 					#
-					if($md_attr &&
+					if ($md_attr &&
 						preg_match($markdown_attr_re, $tag, $attr_m) &&
 						preg_match('/^1|block|span$/', $attr_m[2] . $attr_m[3])
 					) {
@@ -499,7 +499,7 @@
 							preg_match('{^<(?:' . $this->contain_span_tags_re . ')\b}', $tag);
 
 						# Calculate indent before tag.
-						if(preg_match('/(?:^|\n)( *?)(?! ).*?$/', $block_text, $matches)) {
+						if (preg_match('/(?:^|\n)( *?)(?! ).*?$/', $block_text, $matches)) {
 							$strlen = $this->utf8_strlen;
 							$indent = $strlen($matches[1], 'UTF-8');
 						}
@@ -522,13 +522,13 @@
 							$tag_name_re, $span_mode);
 
 						# Outdent markdown text.
-						if($indent > 0) {
+						if ($indent > 0) {
 							$block_text = preg_replace("/^[ ]{1,$indent}/m", "",
 								$block_text);
 						}
 
 						# Append tag content to parsed text.
-						if(!$span_mode)
+						if (!$span_mode)
 							$parsed .= "\n\n$block_text\n\n";
 						else                $parsed .= "$block_text";
 
@@ -602,14 +602,14 @@
 		}
 
 		function _doHeaders_attr($attr) {
-			if(empty($attr))
+			if (empty($attr))
 				return "";
 
 			return " id=\"$attr\"";
 		}
 
 		function _doHeaders_callback_setext($matches) {
-			if($matches[3] == '-' && preg_match('{^- }', $matches[1]))
+			if ($matches[3] == '-' && preg_match('{^- }', $matches[1]))
 				return $matches[0];
 			$level = $matches[3]{0} == '=' ? 1 : 2;
 			$attr = $this->_doHeaders_attr($id =& $matches[2]);
@@ -712,12 +712,12 @@
 
 			# Reading alignement from header underline.
 			$separators = preg_split('/ *[|] */', $underline);
-			foreach($separators as $n => $s) {
-				if(preg_match('/^ *-+: *$/', $s))
+			foreach ($separators as $n => $s) {
+				if (preg_match('/^ *-+: *$/', $s))
 					$attr[$n] = ' align="right"';
-				else if(preg_match('/^ *:-+: *$/', $s))
+				else if (preg_match('/^ *:-+: *$/', $s))
 					$attr[$n] = ' align="center"';
-				else if(preg_match('/^ *:-+ *$/', $s))
+				else if (preg_match('/^ *:-+ *$/', $s))
 					$attr[$n] = ' align="left"';
 				else                                    $attr[$n] = '';
 			}
@@ -732,7 +732,7 @@
 			$text = "<table>\n";
 			$text .= "<thead>\n";
 			$text .= "<tr>\n";
-			foreach($headers as $n => $header)
+			foreach ($headers as $n => $header)
 				$text .= "  <th$attr[$n]>" . $this->runSpanGamut(trim($header)) . "</th>\n";
 			$text .= "</tr>\n";
 			$text .= "</thead>\n";
@@ -741,7 +741,7 @@
 			$rows = explode("\n", trim($content, "\n"));
 
 			$text .= "<tbody>\n";
-			foreach($rows as $row) {
+			foreach ($rows as $row) {
 				# Parsing span elements, including code spans, character escapes,
 				# and inline HTML tags, so that pipes inside those gets ignored.
 				$row = $this->parseSpan($row);
@@ -751,7 +751,7 @@
 				$row_cells = array_pad($row_cells, $col_count, '');
 
 				$text .= "<tr>\n";
-				foreach($row_cells as $n => $cell)
+				foreach ($row_cells as $n => $cell)
 					$text .= "  <td$attr[$n]>" . $this->runSpanGamut(trim($cell)) . "</td>\n";
 				$text .= "</tr>\n";
 			}
@@ -865,7 +865,7 @@
 		function _processDefListItems_callback_dt($matches) {
 			$terms = explode("\n", trim($matches[1]));
 			$text = '';
-			foreach($terms as $term) {
+			foreach ($terms as $term) {
 				$term = $this->runSpanGamut(trim($term));
 				$text .= "\n<dt>" . $term . "</dt>";
 			}
@@ -878,7 +878,7 @@
 			$marker_space = $matches[2];
 			$def = $matches[3];
 
-			if($leading_line || preg_match('/\n{2,}/', $def)) {
+			if ($leading_line || preg_match('/\n{2,}/', $def)) {
 				# Replace marker with the appropriate whitespace indentation
 				$def = str_repeat(' ', strlen($marker_space)) . $def;
 				$def = $this->runBlockGamut($this->outdent($def . "\n\n"));
@@ -977,14 +977,14 @@
 			#
 			# Wrap <p> tags and unhashify HTML blocks
 			#
-			foreach($grafs as $key => $value) {
+			foreach ($grafs as $key => $value) {
 				$value = trim($this->runSpanGamut($value));
 
 				# Check if this should be enclosed in a paragraph.
 				# Clean tag hashes & block tag hashes are left alone.
 				$is_p = !preg_match('/^B\x1A[0-9]+B|^C\x1A[0-9]+C$/', $value);
 
-				if($is_p) {
+				if ($is_p) {
 					$value = "<p>$value</p>";
 				}
 				$grafs[$key] = $value;
@@ -1044,7 +1044,7 @@
 			# Replace footnote references in $text [^id] with a special text-token
 			# which will be replaced by the actual footnote marker in appendFootnotes.
 			#
-			if(!$this->in_anchor) {
+			if (!$this->in_anchor) {
 				$text = preg_replace('{\[\^(.+?)\]}', "F\x1Afn:\\1\x1A:", $text);
 			}
 
@@ -1059,19 +1059,19 @@
 			$text = preg_replace_callback('{F\x1Afn:(.*?)\x1A:}',
 				array(&$this, '_appendFootnotes_callback'), $text);
 
-			if(!empty($this->footnotes_ordered)) {
+			if (!empty($this->footnotes_ordered)) {
 				$text .= "\n\n";
 				$text .= "<div class=\"footnotes\">\n";
 				$text .= "<hr" . $this->empty_element_suffix . "\n";
 				$text .= "<ol>\n\n";
 
 				$attr = " rev=\"footnote\"";
-				if($this->fn_backlink_class != "") {
+				if ($this->fn_backlink_class != "") {
 					$class = $this->fn_backlink_class;
 					$class = $this->encodeAttribute($class);
 					$attr .= " class=\"$class\"";
 				}
-				if($this->fn_backlink_title != "") {
+				if ($this->fn_backlink_title != "") {
 					$title = $this->fn_backlink_title;
 					$title = $this->encodeAttribute($title);
 					$attr .= " title=\"$title\"";
@@ -1093,7 +1093,7 @@
 
 					# Add backlink to last paragraph; create new paragraph if needed.
 					$backlink = "<a href=\"#fnref:$note_id\"$attr>&#8617;</a>";
-					if(preg_match('{</p>$}', $footnote)) {
+					if (preg_match('{</p>$}', $footnote)) {
 						$footnote = substr($footnote, 0, -4) . "&#160;$backlink</p>";
 					}
 					else {
@@ -1117,19 +1117,19 @@
 
 			# Create footnote marker only if it has a corresponding footnote *and*
 			# the footnote hasn't been used by another marker.
-			if(isset($this->footnotes[$node_id])) {
+			if (isset($this->footnotes[$node_id])) {
 				# Transfert footnote content to the ordered list.
 				$this->footnotes_ordered[$node_id] = $this->footnotes[$node_id];
 				unset($this->footnotes[$node_id]);
 
 				$num = $this->footnote_counter++;
 				$attr = " rel=\"footnote\"";
-				if($this->fn_link_class != "") {
+				if ($this->fn_link_class != "") {
 					$class = $this->fn_link_class;
 					$class = $this->encodeAttribute($class);
 					$attr .= " class=\"$class\"";
 				}
-				if($this->fn_link_title != "") {
+				if ($this->fn_link_title != "") {
 					$title = $this->fn_link_title;
 					$title = $this->encodeAttribute($title);
 					$attr .= " title=\"$title\"";
@@ -1170,7 +1170,7 @@
 		function _stripAbbreviations_callback($matches) {
 			$abbr_word = $matches[1];
 			$abbr_desc = $matches[2];
-			if($this->abbr_word_re)
+			if ($this->abbr_word_re)
 				$this->abbr_word_re .= '|';
 			$this->abbr_word_re .= preg_quote($abbr_word);
 			$this->abbr_desciptions[$abbr_word] = trim($abbr_desc);
@@ -1183,7 +1183,7 @@
 			#
 			# Find defined abbreviations in text and wrap them in <abbr> elements.
 			#
-			if($this->abbr_word_re) {
+			if ($this->abbr_word_re) {
 				// cannot use the /x modifier because abbr_word_re may
 				// contain significant spaces:
 				$text = preg_replace_callback('{' .
@@ -1199,9 +1199,9 @@
 
 		function _doAbbreviations_callback($matches) {
 			$abbr = $matches[0];
-			if(isset($this->abbr_desciptions[$abbr])) {
+			if (isset($this->abbr_desciptions[$abbr])) {
 				$desc = $this->abbr_desciptions[$abbr];
-				if(empty($desc)) {
+				if (empty($desc)) {
 					return $this->hashPart("<abbr>$abbr</abbr>");
 				}
 				else {

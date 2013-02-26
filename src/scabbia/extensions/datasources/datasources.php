@@ -1,72 +1,74 @@
 <?php
 
-	namespace Scabbia\Extensions\Datasources;
+namespace Scabbia\Extensions\Datasources;
 
-	use Scabbia\config;
+use Scabbia\Config;
 
-	/**
-	 * Datasources Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage datasources
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class datasources {
-		/**
-		 * @ignore
-		 */
-		public static $datasources = null;
-		/**
-		 * @ignore
-		 */
-		public static $types = array();
-		/**
-		 * @ignore
-		 */
-		public static $default = null;
+/**
+ * Datasources Extension
+ *
+ * @package Scabbia
+ * @subpackage datasources
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Datasources
+{
+    /**
+     * @ignore
+     */
+    public static $datasources = null;
+    /**
+     * @ignore
+     */
+    public static $types = array();
+    /**
+     * @ignore
+     */
+    public static $default = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function get($uDatasource = null) {
-			if(is_null(self::$datasources)) {
-				self::$datasources = array();
 
-				foreach(config::get('/datasourceList', array()) as $tDatasourceConfig) {
-					$tDatasource = new self::$types[$tDatasourceConfig['type']]['datasource'] ($tDatasourceConfig);
-					self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
+    /**
+     * @ignore
+     */
+    public static function get($uDatasource = null)
+    {
+        if (is_null(self::$datasources)) {
+            self::$datasources = array();
 
-					if(is_null(self::$default) || $tDatasource->default) {
-						self::$default = self::$datasources[$tDatasourceConfig['id']];
-					}
-				}
-			}
+            foreach (Config::get('/datasourceList', array()) as $tDatasourceConfig) {
+                $tDatasource = new self::$types[$tDatasourceConfig['type']]['datasource'] ($tDatasourceConfig);
+                self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
 
-			if(is_null($uDatasource)) {
-				return self::$default;
-			}
+                if (is_null(self::$default) || $tDatasource->default) {
+                    self::$default = self::$datasources[$tDatasourceConfig['id']];
+                }
+            }
+        }
 
-			return self::$datasources[$uDatasource];
-		}
+        if (is_null($uDatasource)) {
+            return self::$default;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function registerType($uName, $uDatasourceClass, $uDataProviderClass) {
-			if(isset(self::$types[$uName])) {
-				return;
-			}
+        return self::$datasources[$uDatasource];
+    }
 
-			self::$types[$uName] = array(
-				'datasource' => $uDatasourceClass,
-				'provider' => $uDataProviderClass
-			);
-		}
-	}
+    /**
+     * @ignore
+     */
+    public static function registerType($uName, $uDatasourceClass, $uDataProviderClass)
+    {
+        if (isset(self::$types[$uName])) {
+            return;
+        }
 
-	?>
+        self::$types[$uName] = array(
+            'datasource' => $uDatasourceClass,
+            'provider' => $uDataProviderClass
+        );
+    }
+}

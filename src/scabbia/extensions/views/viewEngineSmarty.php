@@ -1,72 +1,73 @@
 <?php
 
-	namespace Scabbia\Extensions\Views;
+namespace Scabbia\Extensions\Views;
 
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\config;
-	use Scabbia\framework;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Config;
+use Scabbia\Framework;
 
-	/**
-	 * ViewEngine: Smarty Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage viewEngineSmarty
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends mvc
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class viewEngineSmarty {
-		/**
-		 * @ignore
-		 */
-		public static $engine = null;
+/**
+ * ViewEngine: Smarty Extension
+ *
+ * @package Scabbia
+ * @subpackage viewEngineSmarty
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends mvc
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class ViewEngineSmarty
+{
+    /**
+     * @ignore
+     */
+    public static $engine = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			views::registerViewEngine('tpl', 'viewEngineSmarty');
-		}
 
-		/**
-		 * @ignore
-		 */
-		public static function renderview($uObject) {
-			if(is_null(self::$engine)) {
-				$tPath = framework::translatePath(config::get('/smarty/path', '{vendor}include/3rdparty/smarty/libs'));
-				require($tPath . '/Smarty.class.php');
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        Views::registerViewEngine('tpl', 'viewEngineSmarty');
+    }
 
-				self::$engine = new \Smarty();
+    /**
+     * @ignore
+     */
+    public static function renderview($uObject)
+    {
+        if (is_null(self::$engine)) {
+            $tPath = Framework::translatePath(Config::get('/smarty/path', '{vendor}include/3rdparty/smarty/libs'));
+            require $tPath . '/Smarty.class.php';
 
-				self::$engine->setTemplateDir($uObject['templatePath']);
-				self::$engine->setCompileDir(framework::writablePath('cache/smarty/'));
+            self::$engine = new \Smarty();
 
-				if(framework::$development >= 1) {
-					self::$engine->force_compile = true;
-				}
-			}
-			else {
-				self::$engine->clearAllAssign();
-			}
+            self::$engine->setTemplateDir($uObject['templatePath']);
+            self::$engine->setCompileDir(Framework::writablePath('cache/smarty/'));
 
-			self::$engine->assignByRef('model', $uObject['model']);
-			if(is_array($uObject['model'])) {
-				foreach($uObject['model'] as $tKey => $tValue) {
-					self::$engine->assignByRef($tKey, $tValue);
-				}
-			}
+            if (Framework::$development >= 1) {
+                self::$engine->force_compile = true;
+            }
+        } else {
+            self::$engine->clearAllAssign();
+        }
 
-			if(isset($uObject['extra'])) {
-				foreach($uObject['extra'] as $tKey => $tValue) {
-					self::$engine->assignByRef($tKey, $tValue);
-				}
-			}
+        self::$engine->assignByRef('model', $uObject['model']);
+        if (is_array($uObject['model'])) {
+            foreach ($uObject['model'] as $tKey => $tValue) {
+                self::$engine->assignByRef($tKey, $tValue);
+            }
+        }
 
-			self::$engine->display($uObject['templateFile']);
-		}
-	}
+        if (isset($uObject['extra'])) {
+            foreach ($uObject['extra'] as $tKey => $tValue) {
+                self::$engine->assignByRef($tKey, $tValue);
+            }
+        }
 
-	?>
+        self::$engine->display($uObject['templateFile']);
+    }
+}

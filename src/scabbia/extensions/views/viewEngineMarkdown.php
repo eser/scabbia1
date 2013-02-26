@@ -1,71 +1,72 @@
 <?php
 
-	namespace Scabbia\Extensions\Views;
+namespace Scabbia\Extensions\Views;
 
-	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\Extensions\Io\io;
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\config;
-	use Scabbia\framework;
+use Scabbia\Extensions\Cache\Cache;
+use Scabbia\Extensions\Io\Io;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Config;
+use Scabbia\Framework;
 
-	include 'markdownExtra/markdownExtra.php';
-	include 'markdownExtra/markdownParser.php';
-	include 'markdownExtra/markdownExtraParser.php';
+require 'markdownExtra/markdownExtra.php';
+require 'markdownExtra/markdownParser.php';
+require 'markdownExtra/markdownExtraParser.php';
 
-	/**
-	 * ViewEngine: MarkDown Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage viewEngineMarkdown
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends mvc, io, cache
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class viewEngineMarkdown {
-		/**
-		 * @ignore
-		 */
-		public static $engine = null;
-		/**
-		 * @ignore
-		 */
-		public static $compiledAge;
+/**
+ * ViewEngine: MarkDown Extension
+ *
+ * @package Scabbia
+ * @subpackage viewEngineMarkdown
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends mvc, io, cache
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class ViewEngineMarkdown
+{
+    /**
+     * @ignore
+     */
+    public static $engine = null;
+    /**
+     * @ignore
+     */
+    public static $compiledAge;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			self::$compiledAge = intval(config::get('/razor/templates/compiledAge', '120'));
-			views::registerViewEngine('md', 'viewEngineMarkdown');
-		}
 
-		/**
-		 * @ignore
-		 */
-		public static function renderview($uObject) {
-			$tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        self::$compiledAge = intval(Config::get('/razor/templates/compiledAge', '120'));
+        Views::registerViewEngine('md', 'viewEngineMarkdown');
+    }
 
-			$tOutputFile = cache::filePath('md/', $uObject['compiledFile'], self::$compiledAge);
-			if(framework::$development >= 1 || !$tOutputFile[0]) {
-				if(is_null(self::$engine)) {
-					self::$engine = new \MarkdownExtra_Parser();
-				}
+    /**
+     * @ignore
+     */
+    public static function renderview($uObject)
+    {
+        $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
 
-				$tInput = io::read($tInputFile);
-				$tOutput = self::$engine->transform($tInput);
+        $tOutputFile = Cache::filePath('md/', $uObject['compiledFile'], self::$compiledAge);
+        if (Framework::$development >= 1 || !$tOutputFile[0]) {
+            if (is_null(self::$engine)) {
+                self::$engine = new \MarkdownExtra_Parser();
+            }
 
-				if(!is_null($tOutputFile[1])) {
-					io::write($tOutputFile[1], $tOutput);
-				}
-				echo $tOutput;
-			}
-			else {
-				require($tOutputFile[1]);
-			}
-		}
-	}
+            $tInput = Io::read($tInputFile);
+            $tOutput = self::$engine->transform($tInput);
 
-	?>
+            if (!is_null($tOutputFile[1])) {
+                Io::write($tOutputFile[1], $tOutput);
+            }
+            echo $tOutput;
+        } else {
+            require $tOutputFile[1];
+        }
+    }
+}

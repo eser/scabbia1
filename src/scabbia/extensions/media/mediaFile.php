@@ -1,314 +1,321 @@
 <?php
 
-	namespace Scabbia\Extensions\Media;
+namespace Scabbia\Extensions\Media;
 
-	use Scabbia\Extensions\Http\response;
-	use Scabbia\Extensions\Media\media;
-	use Scabbia\Extensions\Mime\mime;
-	use Scabbia\extensions;
+use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Media\Media;
+use Scabbia\Extensions\Mime\Mime;
+use Scabbia\Extensions;
 
-	/**
-	 * Media File Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class mediaFile {
-		/**
-		 * @ignore
-		 */
-		public $source;
-		/**
-		 * @ignore
-		 */
-		public $filename;
-		/**
-		 * @ignore
-		 */
-		public $extension;
-		/**
-		 * @ignore
-		 */
-		public $mime;
-		/**
-		 * @ignore
-		 */
-		public $hash;
-		/**
-		 * @ignore
-		 */
-		public $sw, $sh, $sa;
-		/**
-		 * @ignore
-		 */
-		public $size;
-		/**
-		 * @ignore
-		 */
-		public $image = null;
-		/**
-		 * @ignore
-		 */
-		public $background;
+/**
+ * Media File Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class MediaFile
+{
+    /**
+     * @ignore
+     */
+    public $source;
+    /**
+     * @ignore
+     */
+    public $filename;
+    /**
+     * @ignore
+     */
+    public $extension;
+    /**
+     * @ignore
+     */
+    public $mime;
+    /**
+     * @ignore
+     */
+    public $hash;
+    /**
+     * @ignore
+     */
+    public $sw, $sh, $sa;
+    /**
+     * @ignore
+     */
+    public $size;
+    /**
+     * @ignore
+     */
+    public $image = null;
+    /**
+     * @ignore
+     */
+    public $background;
 
-		/**
-		 * @ignore
-		 */
-		public function __construct($uSource = null, $uOriginalFilename = null) {
-			$this->source = $uSource;
-			$this->background = array(255, 255, 255, 0);
 
-			if(is_null($this->source)) {
-				$this->sa = 1;
-			}
-			else {
-				$tData = getimagesize($this->source);
-				$this->sw = $tData[0];
-				$this->sh = $tData[1];
-				$this->sa = $this->sw / $this->sh;
+    /**
+     * @ignore
+     */
+    public function __construct($uSource = null, $uOriginalFilename = null)
+    {
+        $this->source = $uSource;
+        $this->background = array(255, 255, 255, 0);
 
-				// get the source file extension
-				if(is_null($uOriginalFilename)) {
-					$uOriginalFilename = $this->source;
-				}
-				$this->filename = pathinfo($this->source, PATHINFO_FILENAME);
-				$this->extension = pathinfo($uOriginalFilename, PATHINFO_EXTENSION);
+        if (is_null($this->source)) {
+            $this->sa = 1;
+        } else {
+            $tData = getimagesize($this->source);
+            $this->sw = $tData[0];
+            $this->sh = $tData[1];
+            $this->sa = $this->sw / $this->sh;
 
-				$this->mime = mime::getType($this->extension);
-				$this->size = filesize($this->source);
+            // get the source file extension
+            if (is_null($uOriginalFilename)) {
+                $uOriginalFilename = $this->source;
+            }
+            $this->filename = pathinfo($this->source, PATHINFO_FILENAME);
+            $this->extension = pathinfo($uOriginalFilename, PATHINFO_EXTENSION);
 
-				// calculate a hash - used for cache files, etc
-				$this->hash = media::calculateHash($this->filename, $this->sw, $this->sh) . '.' . $this->extension;
+            $this->mime = Mime::getType($this->extension);
+            $this->size = filesize($this->source);
 
-				switch($this->extension) {
-				case 'jpeg':
-				case 'jpe':
-				case 'jpg':
-					$this->image = imagecreatefromjpeg($this->source);
-					break;
-				case 'gif':
-					$this->image = imagecreatefromgif($this->source);
-					break;
-				case 'png':
-					$this->image = imagecreatefrompng($this->source);
-					imagealphablending($this->image, true);
-					imagesavealpha($this->image, true);
-					break;
-				}
-			}
-		}
+            // calculate a hash - used for cache files, etc
+            $this->hash = Media::calculateHash($this->filename, $this->sw, $this->sh) . '.' . $this->extension;
 
-		/**
-		 * @ignore
-		 */
-		public function __destruct() {
-			if(!is_null($this->image)) {
-				imagedestroy($this->image);
-			}
-		}
+            switch ($this->extension) {
+                case 'jpeg':
+                case 'jpe':
+                case 'jpg':
+                    $this->image = imagecreatefromjpeg($this->source);
+                    break;
+                case 'gif':
+                    $this->image = imagecreatefromgif ($this->source);
+                    break;
+                case 'png':
+                    $this->image = imagecreatefrompng($this->source);
+                    imagealphablending($this->image, true);
+                    imagesavealpha($this->image, true);
+                    break;
+            }
+        }
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function background() {
-			$this->background = func_get_args();
+    /**
+     * @ignore
+     */
+    public function __destruct()
+    {
+        if (!is_null($this->image)) {
+            imagedestroy($this->image);
+        }
+    }
 
-			return $this;
-		}
+    /**
+     * @ignore
+     */
+    public function background()
+    {
+        $this->background = func_get_args();
 
-		/**
-		 * @ignore
-		 */
-		public function write($uX, $uY, $uSize, $uColor, $uText) {
-			return $this;
-		}
+        return $this;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function rotate($uDegree, $uBackground = 0) {
-			$this->image = imagerotate($this->image, $uDegree, $uBackground);
-			$this->sw = imagesx($this->image);
-			$this->sh = imagesy($this->image);
-			$this->sa = $this->sw / $this->sh;
+    /**
+     * @ignore
+     */
+    public function write($uX, $uY, $uSize, $uColor, $uText)
+    {
+        return $this;
+    }
 
-			return $this;
-		}
+    /**
+     * @ignore
+     */
+    public function rotate($uDegree, $uBackground = 0)
+    {
+        $this->image = imagerotate($this->image, $uDegree, $uBackground);
+        $this->sw = imagesx($this->image);
+        $this->sh = imagesy($this->image);
+        $this->sa = $this->sw / $this->sh;
 
-		/**
-		 * @ignore
-		 */
-		public function getCache($uTag) {
-			$tCachePath = media::$cachePath . '/' . $uTag;
+        return $this;
+    }
 
-			if(file_exists($tCachePath)) {
-				$tAge = time() - filemtime($tCachePath);
+    /**
+     * @ignore
+     */
+    public function getCache($uTag)
+    {
+        $tCachePath = Media::$cachePath . '/' . $uTag;
 
-				if($tAge < media::$cacheAge) {
-					return new mediaFile($tCachePath);
-				}
-			}
-		}
+        if (file_exists($tCachePath)) {
+            $tAge = time() - filemtime($tCachePath);
 
-		/**
-		 * @ignore
-		 */
-		public function resize($uWidth, $uHeight, $uMode = 'fit') {
-			$tAspectRatio = $uWidth / $uHeight;
+            if ($tAge < Media::$cacheAge) {
+                return new mediaFile($tCachePath);
+            }
+        }
 
-			switch($uMode) {
-			case 'fit':
-				$tSourceX = 0;
-				$tSourceY = 0;
-				$tSourceW = $this->sw;
-				$tSourceH = $this->sh;
+        return null;
+    }
 
-				if($uWidth == null && $uHeight != null) {
-					$uWidth = ceil($uHeight * $this->sa);
-				}
-				else {
-					if($uWidth != null && $uHeight == null) {
-						$uHeight = ceil($uWidth / $this->sa);
-					}
-					else {
-						if($this->sa > $tAspectRatio) {
-							$uHeight = $uWidth / $this->sa;
-						}
-						else {
-							if($this->sa < $tAspectRatio) {
-								$uWidth = $uHeight * $this->sa;
-							}
-						}
-					}
-				}
+    /**
+     * @ignore
+     */
+    public function resize($uWidth, $uHeight, $uMode = 'fit')
+    {
+        $tAspectRatio = $uWidth / $uHeight;
 
-				$tTargetX = 0;
-				$tTargetY = 0;
-				$tTargetW = $uWidth;
-				$tTargetH = $uHeight;
-				break;
-			case 'crop':
-				$tSourceX = ($this->sw - $uWidth) / 2;
-				if($tSourceX < 0) {
-					$tSourceX = 0;
-				}
+        switch ($uMode) {
+            case 'fit':
+                $tSourceX = 0;
+                $tSourceY = 0;
+                $tSourceW = $this->sw;
+                $tSourceH = $this->sh;
 
-				$tSourceY = ($this->sh - $uHeight) / 2;
-				if($tSourceY < 0) {
-					$tSourceY = 0;
-				}
+                if ($uWidth == null && $uHeight != null) {
+                    $uWidth = ceil($uHeight * $this->sa);
+                } else {
+                    if ($uWidth != null && $uHeight == null) {
+                        $uHeight = ceil($uWidth / $this->sa);
+                    } else {
+                        if ($this->sa > $tAspectRatio) {
+                            $uHeight = $uWidth / $this->sa;
+                        } else {
+                            if ($this->sa < $tAspectRatio) {
+                                $uWidth = $uHeight * $this->sa;
+                            }
+                        }
+                    }
+                }
 
-				$tSourceW = $this->sw;
-				$tSourceH = $this->sh;
+                $tTargetX = 0;
+                $tTargetY = 0;
+                $tTargetW = $uWidth;
+                $tTargetH = $uHeight;
+                break;
+            case 'crop':
+                $tSourceX = ($this->sw - $uWidth) / 2;
+                if ($tSourceX < 0) {
+                    $tSourceX = 0;
+                }
 
-				$tTargetX = 0;
-				$tTargetY = 0;
-				$tTargetW = $this->sw;
-				$tTargetH = $this->sh;
-				break;
-			case 'stretch':
-				$tSourceX = 0;
-				$tSourceY = 0;
-				$tSourceW = $this->sw;
-				$tSourceH = $this->sh;
+                $tSourceY = ($this->sh - $uHeight) / 2;
+                if ($tSourceY < 0) {
+                    $tSourceY = 0;
+                }
 
-				$tTargetX = 0;
-				$tTargetY = 0;
-				$tTargetW = $uWidth;
-				$tTargetH = $uHeight;
-				break;
-			}
+                $tSourceW = $this->sw;
+                $tSourceH = $this->sh;
 
-			switch($this->mime) {
-			case 'image/jpeg':
-			case 'image/jpg':
-				$tImage = imagecreatetruecolor($uWidth, $uHeight);
-				$tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
-				imagefill($tImage, 0, 0, $tBackground);
+                $tTargetX = 0;
+                $tTargetY = 0;
+                $tTargetW = $this->sw;
+                $tTargetH = $this->sh;
+                break;
+            case 'stretch':
+                $tSourceX = 0;
+                $tSourceY = 0;
+                $tSourceW = $this->sw;
+                $tSourceH = $this->sh;
 
-				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
-				break;
-			case 'image/gif':
-				$tImage = imagecreate($uWidth, $uHeight);
-				$tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
-				imagefill($tImage, 0, 0, $tBackground);
+                $tTargetX = 0;
+                $tTargetY = 0;
+                $tTargetW = $uWidth;
+                $tTargetH = $uHeight;
+                break;
+        }
 
-				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
-				break;
-			case 'image/png':
-				$tImage = imagecreatetruecolor($uWidth, $uHeight);
-				$tBackground = imagecolorallocatealpha($tImage, $this->background[0], $this->background[1], $this->background[2], $this->background[3]);
-				imagefill($tImage, 0, 0, $tBackground);
+        switch ($this->mime) {
+            case 'image/jpeg':
+            case 'image/jpg':
+                $tImage = imagecreatetruecolor($uWidth, $uHeight);
+                $tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+                imagefill($tImage, 0, 0, $tBackground);
 
-				imagealphablending($tImage, true);
-				imagesavealpha($tImage, true);
-				imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
-				break;
-			}
+                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                break;
+            case 'image/gif':
+                $tImage = imagecreate($uWidth, $uHeight);
+                $tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+                imagefill($tImage, 0, 0, $tBackground);
 
-			if(!is_null($this->image)) {
-				imagedestroy($this->image);
-			}
+                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                break;
+            case 'image/png':
+                $tImage = imagecreatetruecolor($uWidth, $uHeight);
+                $tBackground = imagecolorallocatealpha($tImage, $this->background[0], $this->background[1], $this->background[2], $this->background[3]);
+                imagefill($tImage, 0, 0, $tBackground);
 
-			$this->image = $tImage;
-			// $this->size = filesize($this->source);
+                imagealphablending($tImage, true);
+                imagesavealpha($tImage, true);
+                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                break;
+        }
 
-			$this->sw = $uWidth;
-			$this->sh = $uHeight;
-			$this->sa = $tAspectRatio;
+        if (!is_null($this->image)) {
+            imagedestroy($this->image);
+        }
 
-			return $this;
-		}
+        $this->image = $tImage;
+        // $this->size = filesize($this->source);
 
-		/**
-		 * @ignore
-		 */
-		public function save($uPath = null) {
-			if(!is_null($uPath)) {
-				$this->source = $uPath;
-			}
+        $this->sw = $uWidth;
+        $this->sh = $uHeight;
+        $this->sa = $tAspectRatio;
 
-			switch($this->mime) {
-			case 'image/jpeg':
-			case 'image/jpg':
-				imagejpeg($this->image, $this->source);
-				break;
-			case 'image/gif':
-				imagegif($this->image, $this->source);
-				break;
-			case 'image/png':
-				imagepng($this->image, $this->source);
-				break;
-			}
+        return $this;
+    }
 
-			return $this;
-		}
+    /**
+     * @ignore
+     */
+    public function save($uPath = null)
+    {
+        if (!is_null($uPath)) {
+            $this->source = $uPath;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function output() {
-			response::sendHeaderCache(-1);
-			response::sendHeader('Content-Type', $this->mime, true);
-			response::sendHeader('Content-Length', $this->size, true);
-			response::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
-			// @readfile($this->source);
+        switch ($this->mime) {
+            case 'image/jpeg':
+            case 'image/jpg':
+                imagejpeg($this->image, $this->source);
+                break;
+            case 'image/gif':
+                imagegif($this->image, $this->source);
+                break;
+            case 'image/png':
+                imagepng($this->image, $this->source);
+                break;
+        }
 
-			switch($this->mime) {
-			case 'image/jpeg':
-			case 'image/jpg':
-				imagejpeg($this->image);
-				break;
-			case 'image/gif':
-				imagegif($this->image);
-				break;
-			case 'image/png':
-				imagepng($this->image);
-				break;
-			}
+        return $this;
+    }
 
-			return $this;
-		}
-	}
+    /**
+     * @ignore
+     */
+    public function output()
+    {
+        Response::sendHeaderCache(-1);
+        Response::sendHeader('Content-Type', $this->mime, true);
+        Response::sendHeader('Content-Length', $this->size, true);
+        Response::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
+        // @readfile($this->source);
 
-	?>
+        switch ($this->mime) {
+        case 'image/jpeg':
+        case 'image/jpg':
+            imagejpeg($this->image);
+            break;
+        case 'image/gif':
+            imagegif ($this->image);
+            break;
+        case 'image/png':
+            imagepng($this->image);
+            break;
+        }
+
+        return $this;
+    }
+}

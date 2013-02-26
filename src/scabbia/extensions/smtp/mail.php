@@ -1,135 +1,137 @@
 <?php
 
-	namespace Scabbia\Extensions\Smtp;
+namespace Scabbia\Extensions\Smtp;
 
-	use Scabbia\Extensions\Mime\mime;
-	use Scabbia\Extensions\Mime\mimepart;
-	use Scabbia\Extensions\Mime\multipart;
-	use Scabbia\Extensions\Smtp\smtp;
+use Scabbia\Extensions\Mime\Mime;
+use Scabbia\Extensions\Mime\Mimepart;
+use Scabbia\Extensions\Mime\Multipart;
+use Scabbia\Extensions\Smtp\Smtp;
 
-	/**
-	 * SMTP Mail Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class mail {
-		/**
-		 * @ignore
-		 */
-		public $from;
-		/**
-		 * @ignore
-		 */
-		public $to;
-		/**
-		 * @ignore
-		 */
-		public $subject;
-		/**
-		 * @ignore
-		 */
-		public $headers = array();
-		/**
-		 * @ignore
-		 */
-		public $content;
-		/**
-		 * @ignore
-		 */
-		public $parts = array();
-
-		/**
-		 * @ignore
-		 */
-		public function addPart($uFilename, $uContent, $uEncoding = '8bit', $uType = null) {
-			$tMimepart = new mimepart();
-			$tMimepart->filename = $uFilename;
-
-			if(!is_null($uType)) {
-				$tMimepart->type = $uType;
-			}
-			else {
-				$tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);
-				$tMimepart->type = mime::getType($tExtension, 'text/plain');
-			}
+/**
+ * SMTP Mail Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class Mail
+{
+    /**
+     * @ignore
+     */
+    public $from;
+    /**
+     * @ignore
+     */
+    public $to;
+    /**
+     * @ignore
+     */
+    public $subject;
+    /**
+     * @ignore
+     */
+    public $headers = array();
+    /**
+     * @ignore
+     */
+    public $content;
+    /**
+     * @ignore
+     */
+    public $parts = array();
 
 
-			$tMimepart->transferEncoding = $uEncoding;
-			$tMimepart->content = $uContent;
+    /**
+     * @ignore
+     */
+    public function addPart($uFilename, $uContent, $uEncoding = '8bit', $uType = null)
+    {
+        $tMimepart = new Mimepart();
+        $tMimepart->filename = $uFilename;
 
-			$this->parts[] = $tMimepart;
+        if (!is_null($uType)) {
+            $tMimepart->type = $uType;
+        } else {
+            $tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);
+            $tMimepart->type = Mime::getType($tExtension, 'text/plain');
+        }
 
-			return $tMimepart;
-		}
 
-		/**
-		 * @ignore
-		 */
-		public function addAttachment($uFilename, $uPath, $uEncoding = 'base64', $uType = null) {
-			$tMimepart = new mimepart();
-			$tMimepart->filename = $uFilename;
+        $tMimepart->transferEncoding = $uEncoding;
+        $tMimepart->content = $uContent;
 
-			if(!is_null($uType)) {
-				$tMimepart->type = $uType;
-			}
-			else {
-				$tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);
-				$tMimepart->type = mime::getType($tExtension, 'application/octet-stream');
-			}
+        $this->parts[] = $tMimepart;
 
-			$tMimepart->transferEncoding = $uEncoding;
-			$tMimepart->load($uPath);
+        return $tMimepart;
+    }
 
-			$this->parts[] = $tMimepart;
+    /**
+     * @ignore
+     */
+    public function addAttachment($uFilename, $uPath, $uEncoding = 'base64', $uType = null)
+    {
+        $tMimepart = new Mimepart();
+        $tMimepart->filename = $uFilename;
 
-			return $tMimepart;
-		}
+        if (!is_null($uType)) {
+            $tMimepart->type = $uType;
+        } else {
+            $tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);
+            $tMimepart->type = Mime::getType($tExtension, 'application/octet-stream');
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function getContent() {
-			$tHeaders = $this->headers;
+        $tMimepart->transferEncoding = $uEncoding;
+        $tMimepart->load($uPath);
 
-			if(!array_key_exists('From', $tHeaders)) {
-				$tHeaders['From'] = $this->from;
-			}
-			if(!array_key_exists('To', $tHeaders)) {
-				$tHeaders['To'] = $this->to;
-			}
-			if(!array_key_exists('Subject', $tHeaders)) {
-				$tHeaders['Subject'] = $this->subject;
-			}
+        $this->parts[] = $tMimepart;
 
-			if(count($this->parts) > 0) {
-				$tMain = new multipart('mail', multipart::ALTERNATIVE);
-				$tMain->filename = 'mail.eml';
-				$tMain->content = $this->content;
-				$tMain->headers = $tHeaders;
+        return $tMimepart;
+    }
 
-				foreach($this->parts as $tPart) {
-					$tMain->parts[] = $tPart;
-				}
+    /**
+     * @ignore
+     */
+    public function getContent()
+    {
+        $tHeaders = $this->headers;
 
-				return $tMain->compile();
-			}
+        if (!array_key_exists('From', $tHeaders)) {
+            $tHeaders['From'] = $this->from;
+        }
+        if (!array_key_exists('To', $tHeaders)) {
+            $tHeaders['To'] = $this->to;
+        }
+        if (!array_key_exists('Subject', $tHeaders)) {
+            $tHeaders['Subject'] = $this->subject;
+        }
 
-			$tString = '';
-			foreach($tHeaders as $tKey => $tValue) {
-				$tString .= $tKey . ': ' . $tValue . "\n";
-			}
-			$tString .= "\n" . $this->content;
+        if (count($this->parts) > 0) {
+            $tMain = new Multipart('mail', Multipart::ALTERNATIVE);
+            $tMain->filename = 'mail.eml';
+            $tMain->content = $this->content;
+            $tMain->headers = $tHeaders;
 
-			return $tString;
-		}
+            foreach ($this->parts as $tPart) {
+                $tMain->parts[] = $tPart;
+            }
 
-		/**
-		 * @ignore
-		 */
-		public function send() {
-			smtp::send($this->from, $this->to, $this->getContent());
-		}
-	}
+            return $tMain->compile();
+        }
 
-	?>
+        $tString = '';
+        foreach ($tHeaders as $tKey => $tValue) {
+            $tString .= $tKey . ': ' . $tValue . "\n";
+        }
+        $tString .= "\n" . $this->content;
+
+        return $tString;
+    }
+
+    /**
+     * @ignore
+     */
+    public function send()
+    {
+        Smtp::send($this->from, $this->to, $this->getContent());
+    }
+}

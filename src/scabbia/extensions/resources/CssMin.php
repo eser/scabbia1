@@ -233,20 +233,20 @@
 			$sEmulateCcss3Variables = $config["emulate-css3-variables"];
 			$sRemoveTokens = array(self::T_COMMENT);
 			// Remove tokens
-			if(!$sEmulateCcss3Variables) {
+			if (!$sEmulateCcss3Variables) {
 				$sRemoveTokens = array_merge($sRemoveTokens, array(self::T_AT_VARIABLES_START, self::T_VARIABLE_DECLARATION, self::T_AT_VARIABLES_END));
 			}
 			for($i = 0, $l = count($tokens); $i < $l; $i++) {
-				if(in_array($tokens[$i][0], $sRemoveTokens)) {
+				if (in_array($tokens[$i][0], $sRemoveTokens)) {
 					unset($tokens[$i]);
 				}
 			}
 			$tokens = array_values($tokens);
 			// Remove empty rulesets
-			if($sRemoveEmptyRulesets) {
+			if ($sRemoveEmptyRulesets) {
 				for($i = 0, $l = count($tokens); $i < $l; $i++) {
 					// Remove empty rulesets
-					if($tokens[$i][0] == self::T_RULESET_START && $tokens[$i + 4][0] == self::T_RULESET_END) {
+					if ($tokens[$i][0] == self::T_RULESET_START && $tokens[$i + 4][0] == self::T_RULESET_END) {
 						unset($tokens[$i]); // T_RULESET_START
 						unset($tokens[++$i]); // T_SELECTORS
 						unset($tokens[++$i]); // T_DECLARATIONS_START
@@ -257,10 +257,10 @@
 				$tokens = array_values($tokens);
 			}
 			// Remove empty @media, @font-face or @page blocks
-			if($sRemoveEmptyBlocks) {
+			if ($sRemoveEmptyBlocks) {
 				for($i = 0, $l = count($tokens); $i < $l; $i++) {
 					// Remove empty @media, @font-face or @page blocks
-					if(($tokens[$i][0] == self::T_AT_MEDIA_START && $tokens[$i + 1][0] == self::T_AT_MEDIA_END)
+					if (($tokens[$i][0] == self::T_AT_MEDIA_START && $tokens[$i + 1][0] == self::T_AT_MEDIA_END)
 						|| ($tokens[$i][0] == self::T_AT_FONT_FACE_START && $tokens[$i + 1][0] == self::T_AT_FONT_FACE_END)
 						|| ($tokens[$i][0] == self::T_AT_PAGE_START && $tokens[$i + 1][0] == self::T_AT_PAGE_END)
 					) {
@@ -271,13 +271,13 @@
 				$tokens = array_values($tokens);
 			}
 			// CSS Level 3 variables: parse variables
-			if($sEmulateCcss3Variables) {
+			if ($sEmulateCcss3Variables) {
 				// Parse variables
 				$variables = array();
 				for($i = 0, $l = count($tokens); $i < $l; $i++) {
-					if($tokens[$i][0] == self::T_VARIABLE_DECLARATION) {
+					if ($tokens[$i][0] == self::T_VARIABLE_DECLARATION) {
 						for($i2 = 0, $l2 = count($tokens[$i][3]); $i2 < $l2; $i2++) {
-							if(!isset($variables[$tokens[$i][3][$i2]])) {
+							if (!isset($variables[$tokens[$i][3][$i2]])) {
 								$variables[$tokens[$i][3][$i2]] = array();
 							}
 							$variables[$tokens[$i][3][$i2]][$tokens[$i][1]] = $tokens[$i][2];
@@ -287,14 +287,14 @@
 			}
 			// Conversion and compression
 			for($i = 0, $l = count($tokens); $i < $l; $i++) {
-				if($tokens[$i][0] == self::T_DECLARATION) {
+				if ($tokens[$i][0] == self::T_DECLARATION) {
 					// CSS Level 3 variables
-					if($sEmulateCcss3Variables) {
-						if(substr($tokens[$i][2], 0, 4) == "var(" && substr($tokens[$i][2], -1, 1) == ")") {
+					if ($sEmulateCcss3Variables) {
+						if (substr($tokens[$i][2], 0, 4) == "var(" && substr($tokens[$i][2], -1, 1) == ")") {
 							$tokens[$i][3][] = "all";
 							$variable = trim(substr($tokens[$i][2], 4, -1));
 							for($i2 = 0, $l2 = count($tokens[$i][3]); $i2 < $l2; $i2++) {
-								if(isset($variables[$tokens[$i][3][$i2]][$variable])) {
+								if (isset($variables[$tokens[$i][3][$i2]][$variable])) {
 									$tokens[$i][2] = $variables[$tokens[$i][3][$i2]][$variable];
 									break;
 								}
@@ -302,20 +302,20 @@
 						}
 					}
 					// Compress unit values
-					if($sCompressUnitValues) {
+					if ($sCompressUnitValues) {
 						// Compress "0.5px" to ".5px"
 						$tokens[$i][2] = preg_replace("/(^| |-)0\.([0-9]+)(%|em|ex|px|in|cm|mm|pt|pc)/iS", "\${1}.\${2}\${3}", $tokens[$i][2]);
 						// Compress "0px" to "0"
 						$tokens[$i][2] = preg_replace("/(^| )-?(\.?)0(%|em|ex|px|in|cm|mm|pt|pc)/iS", "\${1}0", $tokens[$i][2]);
 						// Compress "0 0 0 0" to "0"
-						if($tokens[$i][2] == "0 0 0 0") {
+						if ($tokens[$i][2] == "0 0 0 0") {
 							$tokens[$i][2] = "0";
 						}
 					}
 					// Convert RGB color values to hex ("rgb(200,60%,5)" => "#c89905")
-					if($sConvertColorValues && preg_match("/rgb\s*\(\s*([0-9%]+)\s*,\s*([0-9%]+)\s*,\s*([0-9%]+)\s*\)/iS", $tokens[$i][2], $m)) {
+					if ($sConvertColorValues && preg_match("/rgb\s*\(\s*([0-9%]+)\s*,\s*([0-9%]+)\s*,\s*([0-9%]+)\s*\)/iS", $tokens[$i][2], $m)) {
 						for($i2 = 1, $l2 = count($m); $i2 < $l2; $i2++) {
-							if(strpos("%", $m[$i2]) !== false) {
+							if (strpos("%", $m[$i2]) !== false) {
 								$m[$i2] = substr($m[$i2], 0, -1);
 								$m[$i2] = (int)(256 * ($m[$i2] / 100));
 							}
@@ -324,9 +324,9 @@
 						$tokens[$i][2] = str_replace($m[0], "#" . $m[1] . $m[2] . $m[3], $tokens[$i][2]);
 					}
 					// Compress color values ("#aabbcc" to "#abc")
-					if($sCompressColorValues && preg_match("/\#([0-9a-f]{6})/iS", $tokens[$i][2], $m)) {
+					if ($sCompressColorValues && preg_match("/\#([0-9a-f]{6})/iS", $tokens[$i][2], $m)) {
 						$m[1] = strtolower($m[1]);
-						if(substr($m[1], 0, 1) == substr($m[1], 1, 1) && substr($m[1], 2, 1) == substr($m[1], 3, 1) && substr($m[1], 4, 1) == substr($m[1], 5, 1)) {
+						if (substr($m[1], 0, 1) == substr($m[1], 1, 1) && substr($m[1], 2, 1) == substr($m[1], 3, 1) && substr($m[1], 4, 1) == substr($m[1], 5, 1)) {
 							$tokens[$i][2] = str_replace($m[0], "#" . substr($m[1], 0, 1) . substr($m[1], 2, 1) . substr($m[1], 4, 1), $tokens[$i][2]);
 						}
 					}
@@ -336,12 +336,12 @@
 			$r = "";
 			for($i = 0, $l = count($tokens); $i < $l; $i++) {
 				// T_AT_RULE
-				if($tokens[$i][0] == self::T_AT_RULE) {
+				if ($tokens[$i][0] == self::T_AT_RULE) {
 					$r .= "@" . $tokens[$i][1] . " " . $tokens[$i][2] . ";";
 				}
 				// T_AT_MEDIA_START
-				elseif($tokens[$i][0] == self::T_AT_MEDIA_START) {
-					if(count($tokens[$i][1]) == 1 && $tokens[$i][1][0] == "all") {
+				elseif ($tokens[$i][0] == self::T_AT_MEDIA_START) {
+					if (count($tokens[$i][1]) == 1 && $tokens[$i][1][0] == "all") {
 						$r .= "@media{";
 					}
 					else {
@@ -349,37 +349,37 @@
 					}
 				}
 				// T_AT_FONT_FACE_START
-				elseif($tokens[$i][0] == self::T_AT_FONT_FACE_START) {
+				elseif ($tokens[$i][0] == self::T_AT_FONT_FACE_START) {
 					$r .= "@font-face{";
 				}
 				// T_FONT_FACE_DECLARATION
-				elseif($tokens[$i][0] == self::T_FONT_FACE_DECLARATION) {
+				elseif ($tokens[$i][0] == self::T_FONT_FACE_DECLARATION) {
 					$r .= $tokens[$i][1] . ":" . $tokens[$i][2] . ($sRemoveLastSemicolon && $tokens[$i + 1][0] == self::T_AT_FONT_FACE_END ? "" : ";");
 				}
 				// T_AT_PAGE_START
-				elseif($tokens[$i][0] == self::T_AT_PAGE_START) {
+				elseif ($tokens[$i][0] == self::T_AT_PAGE_START) {
 					$r .= "@page{";
 				}
 				// T_PAGE_DECLARATION
-				elseif($tokens[$i][0] == self::T_PAGE_DECLARATION) {
+				elseif ($tokens[$i][0] == self::T_PAGE_DECLARATION) {
 					$r .= $tokens[$i][1] . ":" . $tokens[$i][2] . ($sRemoveLastSemicolon && $tokens[$i + 1][0] == self::T_AT_PAGE_END ? "" : ";");
 				}
 				// T_SELECTORS
-				elseif($tokens[$i][0] == self::T_SELECTORS) {
+				elseif ($tokens[$i][0] == self::T_SELECTORS) {
 					$r .= implode(",", $tokens[$i][1]);
 				}
 				// Start of declarations
-				elseif($tokens[$i][0] == self::T_DECLARATIONS_START) {
+				elseif ($tokens[$i][0] == self::T_DECLARATIONS_START) {
 					$r .= "{";
 				}
 				// T_DECLARATION
-				elseif($tokens[$i][0] == self::T_DECLARATION) {
-					if($sConvertCss3Properties && isset(self::$transformations[$tokens[$i][1]])) {
-						foreach(self::$transformations[$tokens[$i][1]] as $value) {
-							if(!is_array($value)) {
+				elseif ($tokens[$i][0] == self::T_DECLARATION) {
+					if ($sConvertCss3Properties && isset(self::$transformations[$tokens[$i][1]])) {
+						foreach (self::$transformations[$tokens[$i][1]] as $value) {
+							if (!is_array($value)) {
 								$r .= $value . ":" . $tokens[$i][2] . ";";
 							}
-							elseif(is_array($value) && is_callable($value)) {
+							elseif (is_array($value) && is_callable($value)) {
 								$r .= call_user_func_array($value, array($tokens[$i][1], $tokens[$i][2]));
 
 							}
@@ -388,7 +388,7 @@
 					$r .= $tokens[$i][1] . ":" . $tokens[$i][2] . ($sRemoveLastSemicolon && $tokens[$i + 1][0] == self::T_DECLARATIONS_END ? "" : ";");
 				}
 				// T_DECLARATIONS_END, T_AT_MEDIA_END, T_AT_FONT_FACE_END, T_AT_PAGE_END
-				elseif(in_array($tokens[$i][0], array(self::T_DECLARATIONS_END, self::T_AT_MEDIA_END, self::T_AT_FONT_FACE_END, self::T_AT_PAGE_END))) {
+				elseif (in_array($tokens[$i][0], array(self::T_DECLARATIONS_END, self::T_AT_MEDIA_END, self::T_AT_FONT_FACE_END, self::T_AT_PAGE_END))) {
 					$r .= "}";
 				}
 				else {
@@ -439,17 +439,17 @@
 			for($i = 0, $l = strlen($css); $i < $l; $i++) {
 				$c = substr($css, $i, 1);
 				// Filter out double spaces
-				if($isFilterWs && $c == " " && $c == $p) {
+				if ($isFilterWs && $c == " " && $c == $p) {
 					continue;
 				}
 				$buffer .= $c;
-				if(strpos($sTokenChars, $c) !== false) {
+				if (strpos($sTokenChars, $c) !== false) {
 					//
 					$currentState = $state[count($state) - 1];
 					/*
 					 * Start of comment
 					 */
-					if($p == "/" && $c == "*" && $currentState != self::T_STRING && $currentState != self::T_COMMENT) {
+					if ($p == "/" && $c == "*" && $currentState != self::T_STRING && $currentState != self::T_COMMENT) {
 						$saveBuffer = substr($buffer, 0, -2); // save the buffer (will get restored with comment ending)
 						$buffer = $c;
 						$isFilterWs = false;
@@ -458,7 +458,7 @@
 					/*
 					 * End of comment
 					 */
-					elseif($p == "*" && $c == "/" && $currentState == self::T_COMMENT) {
+					elseif ($p == "*" && $c == "/" && $currentState == self::T_COMMENT) {
 						$r[] = array(self::T_COMMENT, trim($buffer));
 						$buffer = $saveBuffer;
 						$isFilterWs = true;
@@ -467,7 +467,7 @@
 					/*
 					 * Start of string
 					 */
-					elseif(($c == "\"" || $c == "'") && $currentState != self::T_STRING && $currentState != self::T_COMMENT && $currentState != self::T_STRING_URL) {
+					elseif (($c == "\"" || $c == "'") && $currentState != self::T_STRING && $currentState != self::T_COMMENT && $currentState != self::T_STRING_URL) {
 						$stringChar = $c;
 						$isFilterWs = false;
 						array_push($state, self::T_STRING);
@@ -475,14 +475,14 @@
 					/**
 					 * Escaped LF in string => remove escape backslash and LF
 					 */
-					elseif($c == "\n" && $p == "\\" && $currentState == self::T_STRING) {
+					elseif ($c == "\n" && $p == "\\" && $currentState == self::T_STRING) {
 						$buffer = substr($buffer, 0, -2);
 					}
 					/*
 					 * End of string
 					 */
-					elseif($c === $stringChar && $currentState == self::T_STRING) {
-						if($p == "\\") // Previous char is a escape char
+					elseif ($c === $stringChar && $currentState == self::T_STRING) {
+						if ($p == "\\") // Previous char is a escape char
 						{
 							$count = 1;
 							$i2 = $i - 2;
@@ -491,7 +491,7 @@
 								$i2--;
 							}
 							// if count of escape chars is uneven => continue with string...
-							if($count % 2) {
+							if ($count % 2) {
 								continue;
 							}
 						}
@@ -503,7 +503,7 @@
 					/**
 					 * Start of url string property
 					 */
-					elseif($c == "(" && ($currentState != self::T_COMMENT && $currentState != self::T_STRING) && strtolower(substr($css, $i - 3, 3) == "url")
+					elseif ($c == "(" && ($currentState != self::T_COMMENT && $currentState != self::T_STRING) && strtolower(substr($css, $i - 3, 3) == "url")
 						&& ($currentState == self::T_DECLARATION || $currentState == self::T_FONT_FACE_DECLARATION || $currentState == self::T_PAGE_DECLARATION || $currentState == self::T_VARIABLE_DECLARATION)
 					) {
 						array_push($state, self::T_STRING_URL);
@@ -511,8 +511,8 @@
 					/**
 					 * End of url string property
 					 */
-					elseif(($c == ")" || $c == "\n") && ($currentState != self::T_COMMENT && $currentState != self::T_STRING) && $currentState == self::T_STRING_URL) {
-						if($p == "\\") {
+					elseif (($c == ")" || $c == "\n") && ($currentState != self::T_COMMENT && $currentState != self::T_STRING) && $currentState == self::T_STRING_URL) {
+						if ($p == "\\") {
 							continue;
 						}
 						array_pop($state);
@@ -520,7 +520,7 @@
 					/*
 					 * Start of at-rule @media block
 					 */
-					elseif($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 6)) == "@media") {
+					elseif ($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 6)) == "@media") {
 						$i = $i + 6;
 						$buffer = "";
 						array_push($state, self::T_AT_MEDIA_START);
@@ -528,7 +528,7 @@
 					/*
 					 * At-rule @media block media types
 					 */
-					elseif($c == "{" && $currentState == self::T_AT_MEDIA_START) {
+					elseif ($c == "{" && $currentState == self::T_AT_MEDIA_START) {
 						$buffer = strtolower(trim($buffer, $sDefaultTrim . "{"));
 						$scope = $buffer != "" ? array_filter(array_map("trim", explode(",", $buffer))) : $sDefaultScope;
 						$r[] = array(self::T_AT_MEDIA_START, $scope);
@@ -540,7 +540,7 @@
 					/*
 					 * End of at-rule @media block
 					 */
-					elseif($currentState == self::T_AT_MEDIA && $c == "}") {
+					elseif ($currentState == self::T_AT_MEDIA && $c == "}") {
 						$r[] = array(self::T_AT_MEDIA_END);
 						$scope = $sDefaultScope;
 						$buffer = "";
@@ -549,7 +549,7 @@
 					/*
 					 * Start of at-rule @font-face block
 					 */
-					elseif($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 10)) == "@font-face") {
+					elseif ($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 10)) == "@font-face") {
 						$r[] = array(self::T_AT_FONT_FACE_START);
 						$i = $i + 10;
 						$buffer = "";
@@ -558,7 +558,7 @@
 					/*
 					 * @font-face declaration: Property
 					 */
-					elseif($c == ":" && $currentState == self::T_AT_FONT_FACE) {
+					elseif ($c == ":" && $currentState == self::T_AT_FONT_FACE) {
 						$property = trim($buffer, $sDefaultTrim . ":{");
 						$buffer = "";
 						array_push($state, self::T_FONT_FACE_DECLARATION);
@@ -566,12 +566,12 @@
 					/*
 					 * @font-face declaration: Value
 					 */
-					elseif(($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_FONT_FACE_DECLARATION) {
+					elseif (($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_FONT_FACE_DECLARATION) {
 						$value = trim($buffer, $sDefaultTrim . ";}");
 						$r[] = array(self::T_FONT_FACE_DECLARATION, $property, $value, $scope);
 						$buffer = "";
 						array_pop($state);
-						if($c == "}") // @font-face declaration closed with a right curly brace => closes @font-face block
+						if ($c == "}") // @font-face declaration closed with a right curly brace => closes @font-face block
 						{
 							array_pop($state);
 							$r[] = array(self::T_AT_FONT_FACE_END);
@@ -580,7 +580,7 @@
 					/*
 					 * End of at-rule @font-face block
 					 */
-					elseif($c == "}" && $currentState == self::T_AT_FONT_FACE) {
+					elseif ($c == "}" && $currentState == self::T_AT_FONT_FACE) {
 						$r[] = array(self::T_AT_FONT_FACE_END);
 						$buffer = "";
 						array_pop($state);
@@ -588,7 +588,7 @@
 					/*
 					 * Start of at-rule @page block
 					 */
-					elseif($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 5)) == "@page") {
+					elseif ($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 5)) == "@page") {
 						$r[] = array(self::T_AT_PAGE_START);
 						$i = $i + 5;
 						$buffer = "";
@@ -597,7 +597,7 @@
 					/*
 					 * @page declaration: Property
 					 */
-					elseif($c == ":" && $currentState == self::T_AT_PAGE) {
+					elseif ($c == ":" && $currentState == self::T_AT_PAGE) {
 						$property = trim($buffer, $sDefaultTrim . ":{");
 						$buffer = "";
 						array_push($state, self::T_PAGE_DECLARATION);
@@ -605,12 +605,12 @@
 					/*
 					 * @page declaration: Value
 					 */
-					elseif(($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_PAGE_DECLARATION) {
+					elseif (($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_PAGE_DECLARATION) {
 						$value = trim($buffer, $sDefaultTrim . ";}");
 						$r[] = array(self::T_PAGE_DECLARATION, $property, $value, $scope);
 						$buffer = "";
 						array_pop($state);
-						if($c == "}") // @page declaration closed with a right curly brace => closes @font-face block
+						if ($c == "}") // @page declaration closed with a right curly brace => closes @font-face block
 						{
 							array_pop($state);
 							$r[] = array(self::T_AT_PAGE_END);
@@ -619,7 +619,7 @@
 					/*
 					 * End of at-rule @page block
 					 */
-					elseif($c == "}" && $currentState == self::T_AT_PAGE) {
+					elseif ($c == "}" && $currentState == self::T_AT_PAGE) {
 						$r[] = array(self::T_AT_PAGE_END);
 						$buffer = "";
 						array_pop($state);
@@ -627,7 +627,7 @@
 					/*
 					 * Start of at-rule @variables block
 					 */
-					elseif($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 10)) == "@variables") {
+					elseif ($c == "@" && $currentState == self::T_DOCUMENT && strtolower(substr($css, $i, 10)) == "@variables") {
 						$i = $i + 10;
 						$buffer = "";
 						array_push($state, self::T_AT_VARIABLES_START);
@@ -635,7 +635,7 @@
 					/*
 					 * @variables media types
 					 */
-					elseif($c == "{" && $currentState == self::T_AT_VARIABLES_START) {
+					elseif ($c == "{" && $currentState == self::T_AT_VARIABLES_START) {
 						$buffer = strtolower(trim($buffer, $sDefaultTrim . "{"));
 						$r[] = array(self::T_AT_VARIABLES_START, $scope);
 						$scope = $buffer != "" ? array_filter(array_map("trim", explode(",", $buffer))) : $sDefaultScope;
@@ -647,7 +647,7 @@
 					/*
 					 * @variables declaration: Property
 					 */
-					elseif($c == ":" && $currentState == self::T_AT_VARIABLES) {
+					elseif ($c == ":" && $currentState == self::T_AT_VARIABLES) {
 						$property = trim($buffer, $sDefaultTrim . ":");
 						$buffer = "";
 						array_push($state, self::T_VARIABLE_DECLARATION);
@@ -655,12 +655,12 @@
 					/*
 					 * @variables declaration: Value
 					 */
-					elseif(($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_VARIABLE_DECLARATION) {
+					elseif (($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_VARIABLE_DECLARATION) {
 						$value = trim($buffer, $sDefaultTrim . ";}");
 						$r[] = array(self::T_VARIABLE_DECLARATION, $property, $value, $scope);
 						$buffer = "";
 						array_pop($state);
-						if($c == "}") // @variable declaration closed with a right curly brace => closes @variables block
+						if ($c == "}") // @variable declaration closed with a right curly brace => closes @variables block
 						{
 							array_pop($state);
 							$r[] = array(self::T_AT_VARIABLES_END);
@@ -670,7 +670,7 @@
 					/*
 					 * End of at-rule @variables block
 					 */
-					elseif($c == "}" && $currentState == self::T_AT_VARIABLES) {
+					elseif ($c == "}" && $currentState == self::T_AT_VARIABLES) {
 						$r[] = array(self::T_AT_VARIABLES_END);
 						$scope = $sDefaultScope;
 						$buffer = "";
@@ -679,14 +679,14 @@
 					/*
 					 * Start of document level at-rule
 					 */
-					elseif($c == "@" && $currentState == self::T_DOCUMENT) {
+					elseif ($c == "@" && $currentState == self::T_DOCUMENT) {
 						$buffer = "";
 						array_push($state, self::T_AT_RULE);
 					}
 					/*
 					 * End of document level at-rule
 					 */
-					elseif($c == ";" && $currentState == self::T_AT_RULE) {
+					elseif ($c == ";" && $currentState == self::T_AT_RULE) {
 						$pos = strpos($buffer, " ");
 						$rule = substr($buffer, 0, $pos);
 						$value = trim(substr($buffer, $pos), $sDefaultTrim . ";");
@@ -697,14 +697,14 @@
 					/**
 					 * Selector
 					 */
-					elseif($c == "," && ($currentState == self::T_AT_MEDIA || $currentState == self::T_DOCUMENT)) {
+					elseif ($c == "," && ($currentState == self::T_AT_MEDIA || $currentState == self::T_DOCUMENT)) {
 						$selectors[] = trim($buffer, $sDefaultTrim . ",");
 						$buffer = "";
 					}
 					/*
 					 * Start of ruleset
 					 */
-					elseif($c == "{" && ($currentState == self::T_AT_MEDIA || $currentState == self::T_DOCUMENT)) {
+					elseif ($c == "{" && ($currentState == self::T_AT_MEDIA || $currentState == self::T_DOCUMENT)) {
 						$selectors[] = trim($buffer, $sDefaultTrim . "{");
 						$selectors = array_filter(array_map("trim", $selectors));
 						$r[] = array(self::T_RULESET_START);
@@ -717,7 +717,7 @@
 					/*
 					 * Declaration: Property
 					 */
-					elseif($c == ":" && $currentState == self::T_DECLARATIONS) {
+					elseif ($c == ":" && $currentState == self::T_DECLARATIONS) {
 						$property = trim($buffer, $sDefaultTrim . ":;");
 						$buffer = "";
 						array_push($state, self::T_DECLARATION);
@@ -725,12 +725,12 @@
 					/*
 					 * Declaration: Value
 					 */
-					elseif(($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_DECLARATION) {
+					elseif (($c == ";" || $c == "}" || $c == "\n") && $currentState == self::T_DECLARATION) {
 						$value = trim($buffer, $sDefaultTrim . ";}");
 						$r[] = array(self::T_DECLARATION, $property, $value, $scope);
 						$buffer = "";
 						array_pop($state);
-						if($c == "}") // declaration closed with a right curly brace => close ruleset
+						if ($c == "}") // declaration closed with a right curly brace => close ruleset
 						{
 							array_pop($state);
 							$r[] = array(self::T_DECLARATIONS_END);
@@ -740,7 +740,7 @@
 					/*
 					 * End of ruleset
 					 */
-					elseif($c == "}" && $currentState == self::T_DECLARATIONS) {
+					elseif ($c == "}" && $currentState == self::T_DECLARATIONS) {
 						$r[] = array(self::T_DECLARATIONS_END);
 						$r[] = array(self::T_RULESET_END);
 						$buffer = "";
@@ -780,7 +780,7 @@
 		 * @return string
 		 */
 		private static function _tWhiteSpacePreWrap($property, $value) {
-			if(strtolower($value) == "pre-wrap") {
+			if (strtolower($value) == "pre-wrap") {
 				$r = "white-space:-moz-pre-wrap;"; // Mozilla
 				$r .= "white-space:-webkit-pre-wrap;"; // Webkit
 				$r .= "white-space:-khtml-pre-wrap;"; // khtml

@@ -1,4 +1,4 @@
-﻿/**
+/**
  @preserve CLEditor Advanced Table Plugin v1.0.0
  http://premiumsoftware.net/cleditor
  requires CLEditor v1.2.2 or later

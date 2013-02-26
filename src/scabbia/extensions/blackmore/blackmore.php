@@ -1,124 +1,127 @@
 <?php
 
-	namespace Scabbia\Extensions\Blackmore;
+namespace Scabbia\Extensions\Blackmore;
 
-	use Scabbia\Extensions\Auth\auth;
-	use Scabbia\Extensions\Http\request;
-	use Scabbia\Extensions\Mvc\controller;
-	use Scabbia\Extensions\Validation\validation;
-	use Scabbia\events;
+use Scabbia\Extensions\Auth\Auth;
+use Scabbia\Extensions\Http\Request;
+use Scabbia\Extensions\Mvc\Controller;
+use Scabbia\Extensions\Validation\Validation;
+use Scabbia\Events;
 
-	/**
-	 * Blackmore Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage blackmore
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class blackmore extends controller {
-		/**
-		 * @ignore
-		 */
-		public static $menuItems = array();
-		/**
-		 * @ignore
-		 */
-		public static $modules = array();
-		/**
-		 * @ignore
-		 */
-		public static $module;
+/**
+ * Blackmore Extension
+ *
+ * @package Scabbia
+ * @subpackage blackmore
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Blackmore extends Controller
+{
+    /**
+     * @ignore
+     */
+    public static $menuItems = array();
+    /**
+     * @ignore
+     */
+    public static $modules = array();
+    /**
+     * @ignore
+     */
+    public static $module;
 
-		/**
-		 * @ignore
-		 */
-		public function render($uAction, $uParams, $uInput) {
-			self::$modules['index'] = array(
-				'title' => 'Dashboard',
-				'callback' => array(&$this, 'index')
-			);
 
-			$tParms = array(
-				'modules' => &self::$modules
-			);
-			events::invoke('blackmoreRegisterModules', $tParms);
+    /**
+     * @ignore
+     */
+    public function render($uAction, $uParams, $uInput)
+    {
+        self::$modules['index'] = array(
+            'title' => 'Dashboard',
+            'callback' => array(&$this, 'index')
+        );
 
-			self::$modules['login'] = array(
-				'title' => 'Logout',
-				'callback' => array(&$this, 'login')
-			);
+        $tParms = array(
+            'modules' => &self::$modules
+        );
+        Events::invoke('blackmoreRegisterModules', $tParms);
 
-			if(!isset(self::$modules[$uAction])) {
-				return false;
-			}
+        self::$modules['login'] = array(
+            'title' => 'Logout',
+            'callback' => array(&$this, 'login')
+        );
 
-			self::$module = $uAction;
+        if (!isset(self::$modules[$uAction])) {
+            return false;
+        }
 
-			if(count($uParams) > 0) {
-				foreach(self::$modules[$uAction]['actions'] as $tAction) {
-					if($uParams[0] != $tAction['action']) {
-						continue;
-					}
+        self::$module = $uAction;
 
-					return call_user_func_array($tAction['callback'], $uParams);
-				}
-			}
+        if (count($uParams) > 0) {
+            foreach (self::$modules[$uAction]['actions'] as $tAction) {
+                if ($uParams[0] != $tAction['action']) {
+                    continue;
+                }
 
-			return call_user_func_array(self::$modules[$uAction]['callback'], $uParams);
-		}
+                return call_user_func_array($tAction['callback'], $uParams);
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function login() {
-			if(request::$method != 'post') {
-				auth::clear();
+        return call_user_func_array(self::$modules[$uAction]['callback'], $uParams);
+    }
 
-				$this->viewFile('{vendor}views/blackmore/login.php');
+    /**
+     * @ignore
+     */
+    public function login()
+    {
+        if (Request::$method != 'post') {
+            Auth::clear();
 
-				return;
-			}
+            $this->viewFile('{vendor}views/blackmore/login.php');
 
-			// validations
-			validation::addRule('username')->isRequired()->errorMessage('Username shouldn\'t be blank.');
-			// validation::addRule('username')->isEmail()->errorMessage('Please consider your e-mail address once again.');
-			validation::addRule('password')->isRequired()->errorMessage('Password shouldn\'t be blank.');
-			validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
+            return;
+        }
 
-			if(!validation::validate($_POST)) {
-				$this->set('error', implode('<br />', validation::getErrorMessages(true)));
-				$this->viewFile('{vendor}views/blackmore/login.php');
+        // validations
+        Validation::addRule('username')->isRequired()->errorMessage('Username shouldn\'t be blank.');
+        // Validation::addRule('username')->isEmail()->errorMessage('Please consider your e-mail address once again.');
+        Validation::addRule('password')->isRequired()->errorMessage('Password shouldn\'t be blank.');
+        Validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
 
-				return;
-			}
+        if (!Validation::validate($_POST)) {
+            $this->set('error', implode('<br />', Validation::getErrorMessages(true)));
+            $this->viewFile('{vendor}views/blackmore/login.php');
 
-			$username = request::post('username');
-			$password = request::post('password');
+            return;
+        }
 
-			// user not found
-			if(!auth::login($username, $password)) {
-				$this->set('error', 'User not found');
-				$this->viewFile('{vendor}views/blackmore/login.php');
+        $username = Request::post('username');
+        $password = Request::post('password');
 
-				return;
-			}
+        // user not found
+        if (!Auth::login($username, $password)) {
+            $this->set('error', 'User not found');
+            $this->viewFile('{vendor}views/blackmore/login.php');
 
-			$this->redirect('blackmore/index');
-		}
+            return;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function index() {
-			auth::checkRedirect('user');
+        $this->redirect('blackmore/index');
+    }
 
-			$this->viewFile('{vendor}views/blackmore/index.php');
-		}
-	}
+    /**
+     * @ignore
+     */
+    public function index()
+    {
+        Auth::checkRedirect('user');
 
-	?>
+        $this->viewFile('{vendor}views/blackmore/index.php');
+    }
+}

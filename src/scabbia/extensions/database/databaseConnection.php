@@ -1,293 +1,297 @@
 <?php
 
-	namespace Scabbia\Extensions\Database;
+namespace Scabbia\Extensions\Database;
 
-	use Scabbia\Extensions\Cache\cache;
-	use Scabbia\Extensions\Database\database;
-	use Scabbia\Extensions\Database\databaseQuery;
-	use Scabbia\Extensions\Database\databaseQueryResult;
-	use Scabbia\Extensions\Database\datasets;
-	use Scabbia\Extensions\Datasources\datasource;
-	use Scabbia\Extensions\Profiler\profiler;
-	use Scabbia\extensions;
+use Scabbia\Extensions\Cache\Cache;
+use Scabbia\Extensions\Database\Database;
+use Scabbia\Extensions\Database\DatabaseQuery;
+use Scabbia\Extensions\Database\DatabaseQueryResult;
+use Scabbia\Extensions\Database\Datasets;
+use Scabbia\Extensions\Datasources\Datasource;
+use Scabbia\Extensions\Profiler\Profiler;
+use Scabbia\Extensions;
 
-	/**
-	 * Database Connection Class
-	 *
-	 * @package Scabbia
-	 * @subpackage LayerExtensions
-	 */
-	class databaseConnection extends datasource {
-		/**
-		 * @ignore
-		 */
-		public $default;
-		/**
-		 * @ignore
-		 */
-		public $inTransaction = false;
-		/**
-		 * @ignore
-		 */
-		public $initCommand;
-		/**
-		 * @ignore
-		 */
-		public $errorHandling = database::ERROR_NONE;
+/**
+ * Database Connection Class
+ *
+ * @package Scabbia
+ * @subpackage LayerExtensions
+ */
+class DatabaseConnection extends Datasource
+{
+    /**
+     * @ignore
+     */
+    public $default;
+    /**
+     * @ignore
+     */
+    public $inTransaction = false;
+    /**
+     * @ignore
+     */
+    public $initCommand;
+    /**
+     * @ignore
+     */
+    public $errorHandling = Database::ERROR_NONE;
 
-		/**
-		 * @ignore
-		 */
-		public function __construct($uConfig) {
-			parent::__construct($uConfig);
+    /**
+     * @ignore
+     */
+    public function __construct($uConfig)
+    {
+        parent::__construct($uConfig);
 
-			$this->default = isset($uConfig['default']);
+        $this->default = isset($uConfig['default']);
 
-			if(isset($uConfig['initCommand'])) {
-				$this->initCommand = $uConfig['initCommand'];
-			}
-		}
+        if (isset($uConfig['initCommand'])) {
+            $this->initCommand = $uConfig['initCommand'];
+        }
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function __destruct() {
-			parent::__destruct();
-		}
+    /**
+     * @ignore
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function open() {
-			parent::open();
+    /**
+     * @ignore
+     */
+    public function open()
+    {
+        parent::open();
 
-			if(strlen($this->initCommand) > 0) {
-				// $this->execute($this->initCommand); // occurs recursive loop
-				//! may need pass the initial command to the profiler extension
-				try {
-					$this->provider->execute($this->initCommand);
-				}
-				catch(\Exception $ex) {
-					if($this->errorHandling == database::ERROR_EXCEPTION) {
-						throw $ex;
-					}
+        if (strlen($this->initCommand) > 0) {
+            // $this->execute($this->initCommand); // occurs recursive loop
+            //! may need pass the initial command to the profiler extension
+            try {
+                $this->provider->execute($this->initCommand);
+            } catch (\Exception $ex) {
+                if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+                    throw $ex;
+                }
 
-					return false;
-				}
-			}
-		}
+                return false;
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function close() {
-			parent::close();
-		}
+        return null;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function beginTransaction() {
-			$this->open();
-			$this->provider->beginTransaction();
-			$this->inTransaction = true;
-		}
+    /**
+     * @ignore
+     */
+    public function close()
+    {
+        parent::close();
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function commit() {
-			$this->provider->commit();
-			$this->inTransaction = false;
-		}
+    /**
+     * @ignore
+     */
+    public function beginTransaction()
+    {
+        $this->open();
+        $this->provider->beginTransaction();
+        $this->inTransaction = true;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function rollBack() {
-			$this->provider->rollBack();
-			$this->inTransaction = false;
-		}
+    /**
+     * @ignore
+     */
+    public function commit()
+    {
+        $this->provider->commit();
+        $this->inTransaction = false;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function execute($uQuery) {
-			$this->open();
+    /**
+     * @ignore
+     */
+    public function rollBack()
+    {
+        $this->provider->rollBack();
+        $this->inTransaction = false;
+    }
 
-			profiler::start(
-				'databaseQuery',
-				array(
-					 'query' => $uQuery,
-					 'parameters' => null
-				)
-			);
+    /**
+     * @ignore
+     */
+    public function execute($uQuery)
+    {
+        $this->open();
 
-			try {
-				$tReturn = $this->provider->execute($uQuery);
-			}
-			catch(\Exception $ex) {
-				if($this->errorHandling == database::ERROR_EXCEPTION) {
-					throw $ex;
-				}
+        Profiler::start(
+            'databaseQuery',
+            array(
+                 'query' => $uQuery,
+                 'parameters' => null
+            )
+        );
 
-				$tReturn = false;
-			}
+        try {
+            $tReturn = $this->provider->execute($uQuery);
+        } catch (\Exception $ex) {
+            if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+                throw $ex;
+            }
 
-			profiler::stop();
+            $tReturn = false;
+        }
 
-			return $tReturn;
-		}
+        Profiler::stop();
 
-		/**
-		 * @ignore
-		 */
-		public function query($uQuery, $uParameters = array(), $uCaching = database::CACHE_MEMORY) {
-			$this->open();
+        return $tReturn;
+    }
 
-			profiler::start(
-				'databaseQuery',
-				array(
-					 'query' => $uQuery,
-					 'parameters' => $uParameters
-				)
-			);
+    /**
+     * @ignore
+     */
+    public function query($uQuery, $uParameters = array(), $uCaching = Database::CACHE_MEMORY)
+    {
+        $this->open();
 
-			$tFolder = 'database/' . $this->id . '/';
+        Profiler::start(
+            'databaseQuery',
+            array(
+                 'query' => $uQuery,
+                 'parameters' => $uParameters
+            )
+        );
 
-			$uPropsSerialized = hash('adler32', $uQuery);
-			foreach($uParameters as $tProp) {
-				$uPropsSerialized .= '_' . $tProp;
-			}
+        $tFolder = 'database/' . $this->id . '/';
 
-			if(($uCaching & database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
-				$tData = $this->cache[$uPropsSerialized]->resume($this);
-				$tLoadedFromCache = true;
-			}
-			else {
-				if(($uCaching & database::CACHE_FILE) > 0) { //  && framework::$development <= 0
-					$tData = cache::fileGet($tFolder, $uPropsSerialized, -1, true);
+        $uPropsSerialized = hash('adler32', $uQuery);
+        foreach ($uParameters as $tProp) {
+            $uPropsSerialized .= '_' . $tProp;
+        }
 
-					if($tData !== false) {
-						$this->cache[$uPropsSerialized] = $tData->resume($this);
-						$tLoadedFromCache = true;
-					}
-					else {
-						$tLoadedFromCache = false;
-					}
-				}
-				else {
-					if(($uCaching & database::CACHE_STORAGE) > 0) { //  && framework::$development <= 0
-						$tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
-						$tData = cache::storageGet($tKey);
+        if (($uCaching & Database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
+            $tData = $this->cache[$uPropsSerialized]->resume($this);
+            $tLoadedFromCache = true;
+        } else {
+            if (($uCaching & Database::CACHE_FILE) > 0) { //  && Framework::$development <= 0
+                $tData = Cache::fileGet($tFolder, $uPropsSerialized, -1, true);
 
-						if($tData !== false) {
-							$this->cache[$uPropsSerialized] = $tData->resume($this);
-							$tLoadedFromCache = true;
-						}
-						else {
-							$tLoadedFromCache = false;
-						}
-					}
-					else {
-						$tData = false;
-						$tLoadedFromCache = false;
-					}
-				}
-			}
+                if ($tData !== false) {
+                    $this->cache[$uPropsSerialized] = $tData->resume($this);
+                    $tLoadedFromCache = true;
+                } else {
+                    $tLoadedFromCache = false;
+                }
+            } else {
+                if (($uCaching & Database::CACHE_STORAGE) > 0) { //  && Framework::$development <= 0
+                    $tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
+                    $tData = Cache::storageGet($tKey);
 
-			if($tData === false) {
-				$tData = new databaseQueryResult($uQuery, $uParameters, $this, $uCaching, $tFolder, $uPropsSerialized);
-				++$this->stats['query'];
-			}
-			else {
-				++$this->stats['cache'];
-			}
+                    if ($tData !== false) {
+                        $this->cache[$uPropsSerialized] = $tData->resume($this);
+                        $tLoadedFromCache = true;
+                    } else {
+                        $tLoadedFromCache = false;
+                    }
+                } else {
+                    $tData = false;
+                    $tLoadedFromCache = false;
+                }
+            }
+        }
 
-			profiler::stop(
-			//! affected rows
-				array(
-					 'affectedRows' => $tData->count(),
-					 'fromCache' => $tLoadedFromCache
-				)
-			);
+        if ($tData === false) {
+            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $uCaching, $tFolder, $uPropsSerialized);
+            ++$this->stats['query'];
+        } else {
+            ++$this->stats['cache'];
+        }
 
-			return $tData;
-		}
+        //! affected rows
+        Profiler::stop(
+            array(
+                 'affectedRows' => $tData->count(),
+                 'fromCache' => $tLoadedFromCache
+            )
+        );
 
-		/**
-		 * @ignore
-		 */
-		public function lastInsertId($uName = null) {
-			return $this->provider->lastInsertId($uName);
-		}
+        return $tData;
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function serverInfo() {
-			return parent::serverInfo();
-		}
+    /**
+     * @ignore
+     */
+    public function lastInsertId($uName = null)
+    {
+        return $this->provider->lastInsertId($uName);
+    }
 
-		/**
-		 * @ignore
-		 */
-		public function dataset() {
-			$this->open();
+    /**
+     * @ignore
+     */
+    public function serverInfo()
+    {
+        return parent::serverInfo();
+    }
 
-			$uProps = func_get_args();
-			$uDataset = datasets::get(array_shift($uProps));
+    /**
+     * @ignore
+     */
+    public function dataset()
+    {
+        $this->open();
 
-			if($uDataset->transaction) {
-				$this->beginTransaction();
-			}
+        $uProps = func_get_args();
+        $uDataset = Datasets::get(array_shift($uProps));
 
-			try {
-				$tCount = 0;
-				$tArray = array();
+        if ($uDataset->transaction) {
+            $this->beginTransaction();
+        }
 
-				foreach($uDataset->parameters as $tParam) {
-					$tArray[$tParam] = $uProps[$tCount++];
-				}
+        try {
+            $tCount = 0;
+            $tArray = array();
 
-				try {
-					$tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
-				}
-				catch(\Exception $ex) {
-					if($this->errorHandling == database::ERROR_EXCEPTION) {
-						throw $ex;
-					}
+            foreach ($uDataset->parameters as $tParam) {
+                $tArray[$tParam] = $uProps[$tCount++];
+            }
 
-					$tReturn = false;
-				}
+            try {
+                $tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
+            } catch (\Exception $ex) {
+                if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+                    throw $ex;
+                }
 
-				if($this->inTransaction) {
-					$this->commit();
-				}
-			}
-			catch(\Exception $ex) {
-				if($this->inTransaction) {
-					$this->rollBack();
-				}
+                $tResult = false;
+            }
 
-				throw $ex;
-			}
+            if ($this->inTransaction) {
+                $this->commit();
+            }
+        } catch (\Exception $ex) {
+            if ($this->inTransaction) {
+                $this->rollBack();
+            }
 
-			++$this->stats['query'];
+            throw $ex;
+        }
 
-			if(isset($tResult)) {
-				return $tResult;
-			}
+        ++$this->stats['query'];
 
-			return false;
-		}
+        if (isset($tResult)) {
+            return $tResult;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public function createQuery() {
-			return new databaseQuery($this);
-		}
-	}
+        return false;
+    }
 
-	?>
+    /**
+     * @ignore
+     */
+    public function createQuery()
+    {
+        return new DatabaseQuery($this);
+    }
+}

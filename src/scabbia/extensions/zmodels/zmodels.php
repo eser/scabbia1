@@ -1,45 +1,47 @@
 <?php
 
-	namespace Scabbia\Extensions\Zmodels;
+namespace Scabbia\Extensions\Zmodels;
 
-	use Scabbia\Extensions\Zmodels\zmodel;
-	use Scabbia\config;
+use Scabbia\Extensions\Zmodels\Zmodel;
+use Scabbia\Config;
 
-	/**
-	 * ZModels Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage zmodels
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class zmodels {
-		/**
-		 * @ignore
-		 */
-		public static $zmodels = null;
+/**
+ * ZModels Extension
+ *
+ * @package Scabbia
+ * @subpackage zmodels
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Zmodels
+{
+    /**
+     * @ignore
+     */
+    public static $zmodels = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			self::$zmodels = array();
 
-			foreach(config::get('/zmodelList', array()) as $tZmodel) {
-				self::$zmodels[$tZmodel['name']] = $tZmodel;
-			}
-		}
+    /**
+     * @ignore
+     */
+    public static function extensionLoad()
+    {
+        self::$zmodels = array();
 
-		/**
-		 * @ignore
-		 */
-		public static function get($uEntityName) {
-			return new zmodel($uEntityName);
-		}
-	}
+        foreach (Config::get('/zmodelList', array()) as $tZmodel) {
+            self::$zmodels[$tZmodel['name']] = $tZmodel;
+        }
+    }
 
-	?>
+    /**
+     * @ignore
+     */
+    public static function get($uEntityName)
+    {
+        return new Zmodel($uEntityName);
+    }
+}

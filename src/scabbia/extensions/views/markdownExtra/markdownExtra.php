@@ -129,7 +129,7 @@
 		#
 		# Setup static parser variable.
 		static $parser;
-		if(!isset($parser)) {
+		if (!isset($parser)) {
 			$parser_class = MARKDOWN_PARSER_CLASS;
 			$parser = new $parser_class;
 		}
@@ -150,7 +150,7 @@
 	Author URI: http://michelf.com/
 	*/
 
-	if(isset($wp_version)) {
+	if (isset($wp_version)) {
 		# More details about how it works here:
 		# <http://michelf.com/weblog/2005/wordpress-text-flow-vs-markdown/>
 
@@ -158,7 +158,7 @@
 		# - Remove WordPress paragraph generator.
 		# - Run Markdown on excerpt, then remove all tags.
 		# - Add paragraph tag around the excerpt, but remove it for the excerpt rss.
-		if(MARKDOWN_WP_POSTS) {
+		if (MARKDOWN_WP_POSTS) {
 			remove_filter('the_content', 'wpautop');
 			remove_filter('the_content_rss', 'wpautop');
 			remove_filter('the_excerpt', 'wpautop');
@@ -178,11 +178,11 @@
 		# Add a footnote id prefix to posts when inside a loop.
 		function mdwp_MarkdownPost($text) {
 			static $parser;
-			if(!$parser) {
+			if (!$parser) {
 				$parser_class = MARKDOWN_PARSER_CLASS;
 				$parser = new $parser_class;
 			}
-			if(is_single() || is_page() || is_feed()) {
+			if (is_single() || is_page() || is_feed()) {
 				$parser->fn_id_prefix = "";
 			}
 			else {
@@ -197,7 +197,7 @@
 		# - Remove WordPress auto-link generator.
 		# - Scramble important tags before passing them to the kses filter.
 		# - Run Markdown on excerpt then remove paragraph tags.
-		if(MARKDOWN_WP_COMMENTS) {
+		if (MARKDOWN_WP_COMMENTS) {
 			remove_filter('comment_text', 'wpautop', 30);
 			remove_filter('comment_text', 'make_clickable');
 			add_filter('pre_comment_content', 'Markdown', 6);
@@ -216,7 +216,7 @@
 		}
 
 		function mdwp_add_p($text) {
-			if(!preg_match('{^$|^<(p|ul|ol|dl|pre|blockquote)>}i', $text)) {
+			if (!preg_match('{^$|^<(p|ul|ol|dl|pre|blockquote)>}i', $text)) {
 				$text = '<p>' . $text . '</p>';
 				$text = preg_replace('{\n{2,}}', "</p>\n\n<p>", $text);
 			}
@@ -269,16 +269,16 @@
 
 	# Rename this file to "classTextile.php" and it can replace Textile everywhere.
 
-	if(strcasecmp(substr(__FILE__, -16), "classTextile.php") == 0) {
+	if (strcasecmp(substr(__FILE__, -16), "classTextile.php") == 0) {
 		# Try to include PHP SmartyPants. Should be in the same directory.
 		@include_once 'smartypants.php';
 		# Fake Textile class. It calls Markdown instead.
 		class Textile {
 			function TextileThis($text, $lite = '', $encode = '') {
-				if($lite == '' && $encode == '') {
+				if ($lite == '' && $encode == '') {
 					$text = Markdown($text);
 				}
-				if(function_exists('SmartyPants')) {
+				if (function_exists('SmartyPants')) {
 					$text = SmartyPants($text);
 				}
 

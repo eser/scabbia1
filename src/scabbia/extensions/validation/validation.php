@@ -1,169 +1,179 @@
 <?php
 
-	namespace Scabbia\Extensions\Validation;
+namespace Scabbia\Extensions\Validation;
 
-	use Scabbia\Extensions\Validation\validationRule;
-	use Scabbia\extensions;
+use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Validation\ValidationRule;
+use Scabbia\Extensions;
 
-	/**
-	 * Validation Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage validation
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends contracts
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class validation {
-		/**
-		 * @ignore
-		 */
-		public static $rules = array();
-		/**
-		 * @ignore
-		 */
-		public static $summary = array();
+/**
+ * Validation Extension
+ *
+ * @package Scabbia
+ * @subpackage validation
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends contracts
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Validation
+{
+    /**
+     * @ignore
+     */
+    public static $rules = array();
+    /**
+     * @ignore
+     */
+    public static $summary = array();
 
-		/**
-		 * @ignore
-		 */
-		public static function addRule($uKey = null) {
-			$tRule = new validationRule($uKey);
-			self::$rules[] = $tRule;
 
-			return $tRule;
-		}
+    /**
+     * @ignore
+     */
+    public static function addRule($uKey = null)
+    {
+        $tRule = new ValidationRule($uKey);
+        self::$rules[] = $tRule;
 
-		/**
-		 * @ignore
-		 */
-		public static function clear() {
-			self::$rules = array();
-			self::$summary = array();
-		}
+        return $tRule;
+    }
 
-		/**
-		 * @ignore
-		 */
-		private static function addSummary($uField, $uMessage) {
-			if(!isset(self::$summary[$uField])) {
-				self::$summary[$uField] = array();
-			}
+    /**
+     * @ignore
+     */
+    public static function clear()
+    {
+        self::$rules = array();
+        self::$summary = array();
+    }
 
-			self::$summary[$uField][] = array(
-				'field' => $uField,
-				'message' => $uMessage
-			);
-		}
+    /**
+     * @ignore
+     */
+    private static function addSummary($uField, $uMessage)
+    {
+        if (!isset(self::$summary[$uField])) {
+            self::$summary[$uField] = array();
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function validate($uArray = null) {
-			if(!is_null($uArray)) {
-				foreach(self::$rules as $tRule) {
-					if(!array_key_exists($tRule->field, $uArray)) {
-						if($tRule->type == 'isExist') {
-							self::addSummary($tRule->field, $tRule->errorMessage);
-						}
+        self::$summary[$uField][] = array(
+            'field' => $uField,
+            'message' => $uMessage
+        );
+    }
 
-						continue;
-					}
+    /**
+     * @ignore
+     */
+    public static function validate(Array $uArray = null)
+    {
+        if (!is_null($uArray)) {
+            foreach (self::$rules as $tRule) {
+                if (!array_key_exists($tRule->field, $uArray)) {
+                    if ($tRule->type == 'isExist') {
+                        self::addSummary($tRule->field, $tRule->errorMessage);
+                    }
 
-					$tArgs = $tRule->args;
-					array_unshift($tArgs, $uArray[$tRule->field]);
+                    continue;
+                }
 
-					if(!call_user_func_array('Scabbia\\Extensions\\Contracts\\contracts::' . $tRule->type, $tArgs)->check()) {
-						self::addSummary($tRule->field, $tRule->errorMessage);
-					}
-				}
-			}
+                $tArgs = $tRule->args;
+                array_unshift($tArgs, $uArray[$tRule->field]);
 
-			return (count(self::$summary) == 0);
-		}
+                if (!call_user_func_array('Scabbia\\Extensions\\Contracts\\contracts::' . $tRule->type, $tArgs)->check()) {
+                    self::addSummary($tRule->field, $tRule->errorMessage);
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function hasErrors() {
-			$uArgs = func_get_args();
+        return (count(self::$summary) == 0);
+    }
 
-			if(count($uArgs) > 0) {
-				return array_key_exists($uArgs[0], self::$summary);
-			}
+    /**
+     * @ignore
+     */
+    public static function hasErrors()
+    {
+        $uArgs = func_get_args();
 
-			return (count(self::$summary) > 0);
-		}
+        if (count($uArgs) > 0) {
+            return array_key_exists($uArgs[0], self::$summary);
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getErrors($uKey) {
-			if(!array_key_exists($uKey, self::$summary)) {
-				return false;
-			}
+        return (count(self::$summary) > 0);
+    }
 
-			return self::$summary[$uKey];
-		}
+    /**
+     * @ignore
+     */
+    public static function getErrors($uKey)
+    {
+        if (!array_key_exists($uKey, self::$summary)) {
+            return false;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getErrorMessages($uFirsts = false, $uFilter = false) {
-			$tMessages = array();
+        return self::$summary[$uKey];
+    }
 
-			foreach(self::$summary as $tKey => $tField) {
-				if($uFilter !== false && $uFilter != $tKey) {
-					continue;
-				}
+    /**
+     * @ignore
+     */
+    public static function getErrorMessages($uFirsts = false, $uFilter = false)
+    {
+        $tMessages = array();
 
-				foreach($tField as $tSummary) {
-					if(is_null($tSummary['message'])) {
-						continue;
-					}
+        foreach (self::$summary as $tKey => $tField) {
+            if ($uFilter !== false && $uFilter != $tKey) {
+                continue;
+            }
 
-					$tMessages[] = $tSummary['message'];
-					if($uFirsts) {
-						break;
-					}
-				}
-			}
+            foreach ($tField as $tSummary) {
+                if (is_null($tSummary['message'])) {
+                    continue;
+                }
 
-			return $tMessages;
-		}
+                $tMessages[] = $tSummary['message'];
+                if ($uFirsts) {
+                    break;
+                }
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function getErrorMessagesByFields() {
-			$tMessages = array();
+        return $tMessages;
+    }
 
-			foreach(self::$summary as $tKey => $tField) {
-				foreach($tField as $tRule) {
-					if(is_null($tRule->errorMessage)) {
-						continue;
-					}
+    /**
+     * @ignore
+     */
+    public static function getErrorMessagesByFields()
+    {
+        $tMessages = array();
 
-					if(!isset($tMessages[$tField])) {
-						$tMessages[$tField] = array();
-					}
+        foreach (self::$summary as $tField) {
+            foreach ($tField as $tRule) {
+                if (is_null($tRule->errorMessage)) {
+                    continue;
+                }
 
-					$tMessages[$tField][] = $tRule->errorMessage;
-				}
-			}
+                if (!isset($tMessages[$tField])) {
+                    $tMessages[$tField] = array();
+                }
 
-			return $tMessages;
-		}
+                $tMessages[$tField][] = $tRule->errorMessage;
+            }
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function export($tOutput = true) {
-			return string::vardump(self::$summary, $tOutput);
-		}
-	}
+        return $tMessages;
+    }
 
-	?>
+    /**
+     * @ignore
+     */
+    public static function export($tOutput = true)
+    {
+        return String::vardump(self::$summary, $tOutput);
+    }
+}

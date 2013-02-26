@@ -1,59 +1,62 @@
 <?php
 
-	namespace Scabbia\Extensions\Output;
+namespace Scabbia\Extensions\Output;
 
-	/**
-	 * Output Extension
-	 *
-	 * @package Scabbia
-	 * @subpackage output
-	 * @version 1.1.0
-	 *
-	 * @scabbia-fwversion 1.1
-	 * @scabbia-fwdepends
-	 * @scabbia-phpversion 5.3.0
-	 * @scabbia-phpdepends
-	 */
-	class output {
-		/**
-		 * @ignore
-		 */
-		public static $effectList = array();
+/**
+ * Output Extension
+ *
+ * @package Scabbia
+ * @subpackage output
+ * @version 1.1.0
+ *
+ * @scabbia-fwversion 1.1
+ * @scabbia-fwdepends
+ * @scabbia-phpversion 5.3.0
+ * @scabbia-phpdepends
+ */
+class Output
+{
+    /**
+     * @ignore
+     */
+    public static $effectList = array();
 
-		/**
-		 * @ignore
-		 */
-		public static function begin() {
-			ob_start('Scabbia\\Extensions\\Output\\output::flushOutput');
-			ob_implicit_flush(false);
 
-			$tArgs = func_get_args();
-			array_push(self::$effectList, $tArgs);
-		}
+    /**
+     * @ignore
+     */
+    public static function begin()
+    {
+        ob_start('Scabbia\\Extensions\\Output\\Output::flushOutput');
+        ob_implicit_flush(false);
 
-		/**
-		 * @ignore
-		 */
-		public static function end($uFlush = true) {
-			$tContent = ob_get_clean();
+        $tArgs = func_get_args();
+        array_push(self::$effectList, $tArgs);
+    }
 
-			foreach(array_pop(self::$effectList) as $tEffect) {
-				$tContent = call_user_func($tEffect, $tContent);
-			}
+    /**
+     * @ignore
+     */
+    public static function end($uFlush = true)
+    {
+        $tContent = ob_get_clean();
 
-			if($uFlush) {
-				echo $tContent;
-			}
+        foreach (array_pop(self::$effectList) as $tEffect) {
+            $tContent = call_user_func($tEffect, $tContent);
+        }
 
-			return $tContent;
-		}
+        if ($uFlush) {
+            echo $tContent;
+        }
 
-		/**
-		 * @ignore
-		 */
-		public static function flushOutput($uContent) {
-			return '';
-		}
-	}
+        return $tContent;
+    }
 
-	?>
+    /**
+     * @ignore
+     */
+    public static function flushOutput($uContent)
+    {
+        return '';
+    }
+}
