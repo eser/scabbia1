@@ -1,38 +1,39 @@
 {
-	"name": "larukedi/scabbia-framework",
-	"description": "Scabbia Framework",
-	"type": "library",
-	"minimum-stability": "dev",
-	"keywords": [
-		"larukedi",
-		"scabbia",
-		"framework"
-	],
-	"homepage": "http://eser.ozvataf.com/scabbia/",
-	"license": "GPL-3.0+",
-	"authors": [
-		{
-			"name": "Eser Ozvataf",
-			"email": "eser@sent.com"
-		}
-	],
-	"require": {
-		"php": ">=5.3.0"
-	},
-	"suggest": {
-		"ext-intl": "ext/intl for i18n features"
-	},
-	"autoload": {
-		"psr-0": {
-			"Scabbia": "src"
-		}
-	},
-	"scripts": {
-		"post-install-cmd": [
-			"cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
-		],
-		"post-update-cmd": [
-			"cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
-		]
-	}
+    "name": "larukedi/scabbia-framework",
+    "description": "Scabbia Framework",
+    "type": "library",
+    "minimum-stability": "dev",
+    "keywords": [
+        "larukedi",
+        "scabbia",
+        "framework"
+    ],
+    "homepage": "http://eser.ozvataf.com/scabbia/",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Eser Ozvataf",
+            "email": "eser@sent.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "psr/log": "1.0.0"
+    },
+    "suggest": {
+        "ext-intl": "ext/intl for i18n features"
+    },
+    "autoload": {
+        "psr-0": {
+            "Scabbia": "src"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
+        ],
+        "post-update-cmd": [
+            "cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
+        ]
+    }
 }

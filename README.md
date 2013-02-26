@@ -1,7 +1,10 @@
 README
 ======
 
-Nothing yet.
+Scabbia Framework is an open source PHP framework which is still under development.
+
+Scabbia follows the accepted standards of PHP Framework Interop Group (http://www.php-fig.org/).
+
 
 Installation
 ------------
@@ -16,6 +19,7 @@ On Windows:
 composer require larukedi/scabbia-framework:dev-development
 ```
 
+
 Usage
 -----
 ``` php
@@ -23,13 +27,22 @@ $loader = require 'vendor/autoload.php';
 Scabbia\Framework::load($loader);
 ```
 
+
 Requirements
 ------------
-* PHP 5.3.0+
+* PHP 5.3.0+ (http://www.php.net/)
+* Composer Dependency Manager (http://getcomposer.org/)
+
+
+Includes
+------------
+* psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
+
 
 License
 -------
 See [license.txt](license.txt)
+
 
 Contributing
 ------------
