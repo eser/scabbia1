@@ -18,7 +18,7 @@
 
 		<routeList>
 			<route>
-				<match><![CDATA[(controller:alnum)?(params:/+[^?&]*)?(query:[?&].*)?]]></match>
+				<match><![CDATA[(controller:alnum)?(params:/+[^?&.]*)?(format:\.[^?&]*)?(query:[?&].*)?]]></match>
 				<callback>Scabbia\Extensions\Mvc\mvc::route</callback>
 			</route>
 		</routeList>

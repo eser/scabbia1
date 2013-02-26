@@ -5,6 +5,7 @@
 	use Scabbia\Extensions\Http\http;
 	use Scabbia\Extensions\String\string;
 	use Scabbia\config;
+	use Scabbia\framework;
 
 	/**
 	 * Request Class
@@ -134,12 +135,38 @@
 			self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ? http::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) : array();
 
 			// $queryString
-			self::$queryString = $_SERVER['QUERY_STRING'];
+			self::$queryString = self::rewrite($_SERVER['QUERY_STRING'], self::$methodext);
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function rewrite($uUrl, $uMethodext = null) {
 			foreach(config::get('/http/rewriteList', array()) as $tRewriteList) {
-				if(http::rewrite(self::$queryString, $tRewriteList['match'], $tRewriteList['forward'], (isset($tRewriteList['limitMethods']) ? array_keys($tRewriteList['limitMethods']) : null))) {
+				if(isset($tRewriteList['limitMethods']) && !is_null($uMethodext) && !in_array($uMethodext, array_keys($tRewriteList['limitMethods']))) {
+					continue;
+				}
+
+				if(self::rewriteUrl($uUrl, $tRewriteList['match'], $tRewriteList['forward'])) {
 					break;
 				}
 			}
+
+			return $uUrl;
+		}
+
+		/**
+		 * @ignore
+		 */
+		public static function rewriteUrl(&$uUrl, $uMatch, $uForward) {
+			$tReturn = framework::pregReplace($uMatch, $uForward, $uUrl);
+			if($tReturn !== false) {
+				$uUrl = $tReturn;
+
+				return true;
+			}
+
+			return false;
 		}
 
 		/**

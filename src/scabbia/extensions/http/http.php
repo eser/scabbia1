@@ -26,90 +26,8 @@
 		/**
 		 * @ignore
 		 */
-		public static $routes = array();
-		/**
-		 * @ignore
-		 */
-		public static $notfoundPage;
+		public static $notfoundPage = null;
 
-		/**
-		 * @ignore
-		 */
-		public static function extensionLoad() {
-			// $notfoundPage
-			self::$notfoundPage = config::get('/http/errorPages/notfound', '{app}views/shared/error.php');
-
-			// routes
-			foreach(config::get('/http/routeList', array()) as $tRouteList) {
-				self::routeAdd($tRouteList['match'], $tRouteList['callback']);
-			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function rewrite(&$uUrl, $uMatch, $uForward, $uLimitMethods = null) {
-			if(!is_null($uLimitMethods) && !in_array(request::$methodext, $uLimitMethods)) {
-				return false;
-			}
-
-			$tReturn = framework::pregReplace($uMatch, $uForward, $uUrl);
-			if($tReturn !== false) {
-				$uUrl = $tReturn;
-
-				return true;
-			}
-
-			return false;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function routing() {
-			$tResolution = self::routeResolve(request::$queryString);
-
-			if(!is_null($tResolution) && call_user_func($tResolution[0], $tResolution[1]) !== false) {
-				// to interrupt event-chain execution
-				return true;
-			}
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function routeResolve($uQueryString) {
-			foreach(self::$routes as $tRoute) {
-				if(!is_null($tRoute[2]) && !in_array(request::$methodext, $tRoute[2])) { //! todo methodex
-					continue;
-				}
-
-				$tMatches = framework::pregMatch(ltrim($tRoute[0], '/'), $uQueryString);
-
-				if(count($tMatches) > 0) {
-					return array($tRoute[1], $tMatches);
-				}
-			}
-
-			return null;
-		}
-
-		/**
-		 * @ignore
-		 */
-		public static function routeAdd($uMatch, $uMethod) {
-			if(!is_array($uMatch)) {
-				$uMatch = array($uMatch);
-			}
-
-			foreach($uMatch as $tMatch) {
-				$tParts = explode(' ', $tMatch, 2);
-
-				$tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
-
-				self::$routes[] = array($tParts[0], $uMethod, $tLimitMethods);
-			}
-		}
 
 		/**
 		 * @ignore
@@ -131,6 +49,11 @@
 		 */
 		public static function notfound() {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+
+			// $notfoundPage
+			if(is_null(self::$notfoundPage)) {
+				self::$notfoundPage = config::get('/http/errorPages/notfound', '{app}views/shared/error.php');
+			}
 
 			//! todo internalization.
 			// maybe just include?

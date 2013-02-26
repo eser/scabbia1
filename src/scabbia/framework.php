@@ -102,7 +102,7 @@
 			if(is_null(self::$basepath)) {
 				self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
 			}
-			self::$vendorpath = strtr(realpath(pathinfo(__FILE__, PATHINFO_DIRNAME) . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
+			self::$vendorpath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
 
 			// Set error reporting occasions
 			error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
