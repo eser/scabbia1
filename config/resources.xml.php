@@ -2,24 +2,24 @@
 <!-- <?php exit(); ?> -->
 <scabbia>
     <captcha>
-        <fontFile>{vendor}resources/fonts/KabobExtrabold.ttf</fontFile>
+        <fontFile>{core}resources/fonts/KabobExtrabold.ttf</fontFile>
     </captcha>
 
     <resources>
         <directoryList>
             <directory>
                 <name>scabbia/</name>
-                <path>{vendor}resources/</path>
+                <path>{core}resources/</path>
             </directory>
             <scope mode="development">
                 <directory>
                     <name>docs/</name>
-                    <path>{vendor}resources/docs/</path>
+                    <path>{core}resources/docs/</path>
                     <autoViewer>
                         <defaultPage>index.md</defaultPage>
                         <viewEngine>viewEngineMarkdown</viewEngine>
-                        <header>{vendor}views/docs/header.php</header>
-                        <footer>{vendor}views/docs/footer.php</footer>
+                        <header>{core}views/docs/header.php</header>
+                        <footer>{core}views/docs/footer.php</footer>
                     </autoViewer>
                 </directory>
             </scope>
@@ -34,7 +34,7 @@
                     <part>
                         <type>file</type>
                         <class>core</class>
-                        <path>{vendor}resources/laroux/laroux.js</path>
+                        <path>{core}resources/laroux/laroux.js</path>
                     </part>
                     <part>
                         <type>function</type>
@@ -44,147 +44,147 @@
                     <part>
                         <type>file</type>
                         <class>jquery</class>
-                        <path>{vendor}resources/jquery/sizzle.js</path>
+                        <path>{core}resources/jquery/sizzle.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jquery</class>
-                        <path>{vendor}resources/jquery/jquery-1.8.1-custom.js</path>
+                        <path>{core}resources/jquery/jquery-1.8.1-custom.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jquery</class>
-                        <path>{vendor}resources/jquery/jquery.fix.js</path>
+                        <path>{core}resources/jquery/jquery.fix.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.core.js</path>
+                        <path>{core}resources/jquery/jquery.ui.core.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.widget.js</path>
+                        <path>{core}resources/jquery/jquery.ui.widget.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.mouse.js</path>
+                        <path>{core}resources/jquery/jquery.ui.mouse.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.position.js</path>
+                        <path>{core}resources/jquery/jquery.ui.position.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.sortable.js</path>
+                        <path>{core}resources/jquery/jquery.ui.sortable.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.tabs.js</path>
+                        <path>{core}resources/jquery/jquery.ui.tabs.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.autocomplete.js</path>
+                        <path>{core}resources/jquery/jquery.ui.autocomplete.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.datepicker.js</path>
+                        <path>{core}resources/jquery/jquery.ui.datepicker.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/laroux/laroux.ui.js</path>
+                        <path>{core}resources/laroux/laroux.ui.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryuifx</class>
-                        <path>{vendor}resources/jquery/jquery.effects.core.js</path>
+                        <path>{core}resources/jquery/jquery.effects.core.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryuifx</class>
-                        <path>{vendor}resources/jquery/jquery.effects.highlight.js</path>
+                        <path>{core}resources/jquery/jquery.effects.highlight.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryuifx</class>
-                        <path>{vendor}resources/jquery/jquery.effects.shake.js</path>
+                        <path>{core}resources/jquery/jquery.effects.shake.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>validation</class>
-                        <path>{vendor}resources/jquery/jquery.validate.js</path>
+                        <path>{core}resources/jquery/jquery.validate.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>validation</class>
-                        <path>{vendor}resources/jquery/jquery.validate.additional-methods.js</path>
+                        <path>{core}resources/jquery/jquery.validate.additional-methods.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>map</class>
-                        <path>{vendor}resources/mapbox/mapbox-0.6.5.js</path>
+                        <path>{core}resources/mapbox/mapbox-0.6.5.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>cleditor</class>
-                        <path>{vendor}resources/cleditor/jquery.cleditor.js</path>
+                        <path>{core}resources/cleditor/jquery.cleditor.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>cleditor</class>
-                        <path>{vendor}resources/cleditor/jquery.cleditor.xhtml.js</path>
+                        <path>{core}resources/cleditor/jquery.cleditor.xhtml.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>shadowbox</class>
-                        <path>{vendor}resources/shadowbox/shadowbox.js</path>
+                        <path>{core}resources/shadowbox/shadowbox.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>tablesorter</class>
-                        <path>{vendor}resources/tablesorter/jquery.tablesorter.js</path>
+                        <path>{core}resources/tablesorter/jquery.tablesorter.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>tablesorter</class>
-                        <path>{vendor}resources/tablesorter/jquery.tablesorter.pager.js</path>
+                        <path>{core}resources/tablesorter/jquery.tablesorter.pager.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>snippet</class>
-                        <path>{vendor}resources/snippet/jquery.snippet.js</path>
+                        <path>{core}resources/snippet/jquery.snippet.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>flot</class>
-                        <path>{vendor}resources/flot/jquery.flot.js</path>
+                        <path>{core}resources/flot/jquery.flot.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>flot</class>
-                        <path>{vendor}resources/flot/jquery.flot.pie.js</path>
+                        <path>{core}resources/flot/jquery.flot.pie.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>tipsy</class>
-                        <path>{vendor}resources/tipsy/jquery.tipsy.js</path>
+                        <path>{core}resources/tipsy/jquery.tipsy.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>maskedinput</class>
-                        <path>{vendor}resources/maskedinput/jquery.maskedinput-1.3.js</path>
+                        <path>{core}resources/maskedinput/jquery.maskedinput-1.3.js</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>blackmore</class>
-                        <path>{vendor}resources/blackmore/blackmore.js</path>
+                        <path>{core}resources/blackmore/blackmore.js</path>
                     </part>
                 </partList>
             </pack>
@@ -196,82 +196,82 @@
                     <part>
                         <type>file</type>
                         <class>reset</class>
-                        <path>{vendor}resources/reset/reset.css</path>
+                        <path>{core}resources/reset/reset.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>errorpages</class>
-                        <path>{vendor}resources/errorpages/errorpages.css</path>
+                        <path>{core}resources/errorpages/errorpages.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.core.css</path>
+                        <path>{core}resources/jquery/jquery.ui.core.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.autocomplete.css</path>
+                        <path>{core}resources/jquery/jquery.ui.autocomplete.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.tabs.css</path>
+                        <path>{core}resources/jquery/jquery.ui.tabs.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.datepicker.css</path>
+                        <path>{core}resources/jquery/jquery.ui.datepicker.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/jquery/jquery.ui.theme.css</path>
+                        <path>{core}resources/jquery/jquery.ui.theme.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>jqueryui</class>
-                        <path>{vendor}resources/laroux/laroux.ui.css</path>
+                        <path>{core}resources/laroux/laroux.ui.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>map</class>
-                        <path>{vendor}resources/mapbox/mapbox.0.6.5.css</path>
+                        <path>{core}resources/mapbox/mapbox.0.6.5.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>cleditor</class>
-                        <path>{vendor}resources/cleditor/jquery.cleditor.css</path>
+                        <path>{core}resources/cleditor/jquery.cleditor.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>shadowbox</class>
-                        <path>{vendor}resources/shadowbox/shadowbox.css</path>
+                        <path>{core}resources/shadowbox/shadowbox.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>tablesorter</class>
-                        <path>{vendor}resources/tablesorter/style.css</path>
+                        <path>{core}resources/tablesorter/style.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>snippet</class>
-                        <path>{vendor}resources/snippet/jquery.snippet.css</path>
+                        <path>{core}resources/snippet/jquery.snippet.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>tipsy</class>
-                        <path>{vendor}resources/tipsy/tipsy.css</path>
+                        <path>{core}resources/tipsy/tipsy.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>blackmore</class>
-                        <path>{vendor}resources/blackmore/blackmore.css</path>
+                        <path>{core}resources/blackmore/blackmore.css</path>
                     </part>
                     <part>
                         <type>file</type>
                         <class>docs</class>
-                        <path>{vendor}resources/docs/markdown.css</path>
+                        <path>{core}resources/docs/markdown.css</path>
                     </part>
                 </partList>
             </pack>

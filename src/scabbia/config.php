@@ -28,7 +28,7 @@ class Config
     {
         $tConfig = array();
 
-        foreach (Framework::glob(Framework::$vendorpath . 'config/', null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES) as $tFile) {
+        foreach (Framework::glob(Framework::$corepath . 'config/', null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES) as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 

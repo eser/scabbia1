@@ -81,7 +81,7 @@ class BlackmoreZmodels
         $tSql = $tZmodel->ddlCreateSql();
 
         Views::viewFile(
-            '{vendor}views/blackmore/zmodels/sql.php',
+            '{core}views/blackmore/zmodels/sql.php',
             array(
                 'sql' => $tSql
             )
@@ -101,7 +101,7 @@ class BlackmoreZmodels
         $tRows = $tModel->getAll($tModule['name']);
 
         Views::viewFile(
-            '{vendor}views/blackmore/zmodels/list.php',
+            '{core}views/blackmore/zmodels/list.php',
             array(
                 'module' => $tModule,
                 'rows' => $tRows
@@ -197,7 +197,7 @@ class BlackmoreZmodels
             );
         }
 
-        Views::viewFile('{vendor}views/blackmore/zmodels/form.php', $tViewbag);
+        Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
     }
 
     /**
@@ -286,7 +286,7 @@ class BlackmoreZmodels
                 );
             }
 
-            Views::viewFile('{vendor}views/blackmore/zmodels/form.php', $tViewbag);
+            Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
 
             return;
         }
@@ -339,7 +339,7 @@ class BlackmoreZmodels
             );
         }
 
-        Views::viewFile('{vendor}views/blackmore/zmodels/form.php', $tViewbag);
+        Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
     }
 
     /**

@@ -30,7 +30,7 @@ class Captcha
      */
     public static function generate($uCookieName = 'captcha')
     {
-        $tFontFile = Framework::translatePath(Config::get('/captcha/fontFile', '{vendor}resources/fonts/KabobExtrabold.ttf'));
+        $tFontFile = Framework::translatePath(Config::get('/captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
         $tFontSize = intval(Config::get('/captcha/fontSize', '45'));
         $tLength = intval(Config::get('/captcha/length', '8'));
 

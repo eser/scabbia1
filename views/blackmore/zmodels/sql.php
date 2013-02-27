@@ -3,7 +3,7 @@
 	use Scabbia\Extensions\Session\session;
 	use Scabbia\Extensions\Blackmore\blackmore;
 ?>
-<?php views::viewFile('{vendor}views/blackmore/header.php'); ?>
+<?php views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
@@ -21,7 +21,7 @@
 				<?php } ?>
 
 				<div class="menuDivContainer">
-					<?php views::viewFile('{vendor}views/blackmore/sectionMenu.php', blackmore::$module); ?>
+					<?php views::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -66,4 +66,4 @@
 		</td>
 	</tr>
 </table>
-<?php views::viewFile('{vendor}views/blackmore/footer.php'); ?>
+<?php views::viewFile('{core}views/blackmore/footer.php'); ?>

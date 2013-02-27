@@ -83,7 +83,7 @@ class Blackmore extends Controller
         if (Request::$method != 'post') {
             Auth::clear();
 
-            $this->viewFile('{vendor}views/blackmore/login.php');
+            $this->viewFile('{core}views/blackmore/login.php');
 
             return;
         }
@@ -96,7 +96,7 @@ class Blackmore extends Controller
 
         if (!Validation::validate($_POST)) {
             $this->set('error', implode('<br />', Validation::getErrorMessages(true)));
-            $this->viewFile('{vendor}views/blackmore/login.php');
+            $this->viewFile('{core}views/blackmore/login.php');
 
             return;
         }
@@ -107,7 +107,7 @@ class Blackmore extends Controller
         // user not found
         if (!Auth::login($username, $password)) {
             $this->set('error', 'User not found');
-            $this->viewFile('{vendor}views/blackmore/login.php');
+            $this->viewFile('{core}views/blackmore/login.php');
 
             return;
         }
@@ -122,6 +122,6 @@ class Blackmore extends Controller
     {
         Auth::checkRedirect('user');
 
-        $this->viewFile('{vendor}views/blackmore/index.php');
+        $this->viewFile('{core}views/blackmore/index.php');
     }
 }

@@ -46,7 +46,7 @@ class BlackmoreScabbia
     {
         Auth::checkRedirect('user');
 
-        Views::viewFile('{vendor}views/blackmore/scabbia/index.php');
+        Views::viewFile('{core}views/blackmore/scabbia/index.php');
     }
 
     /**
@@ -56,7 +56,7 @@ class BlackmoreScabbia
     {
         Auth::checkRedirect('admin');
 
-        Views::viewFile('{vendor}views/blackmore/scabbia/debug.php');
+        Views::viewFile('{core}views/blackmore/scabbia/debug.php');
     }
 
     /**
@@ -108,11 +108,11 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 ?' . '>');
         */
 
-        $tCompiled  = Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/patches.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/framework.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/config.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/events.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$vendorpath . 'src/scabbia/extensions.php'));
+        $tCompiled  = Framework::printFile(file_get_contents(Framework::$corepath . 'src/patches.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/framework.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/config.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/events.php'));
+        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/extensions.php'));
 
         $tDevelopment = Framework::$development;
         Framework::$development = 0;

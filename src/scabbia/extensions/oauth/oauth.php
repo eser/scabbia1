@@ -23,6 +23,6 @@ class Oauth extends Controller
      */
     public function index()
     {
-        $this->view('{vendor}views/oauth/index.php');
+        $this->view('{core}views/oauth/index.php');
     }
 }

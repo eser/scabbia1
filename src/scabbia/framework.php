@@ -48,9 +48,9 @@ class Framework
      */
     public static $basepath = null;
     /**
-     * Indicates the vendor directory which framework runs in
+     * Indicates the core directory which framework runs in
      */
-    public static $vendorpath = null;
+    public static $corepath = null;
     /**
      * Stores relative path of running application
      */
@@ -107,7 +107,7 @@ class Framework
         if (is_null(self::$basepath)) {
             self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
         }
-        self::$vendorpath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
+        self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
 
         // Set error reporting occasions
         error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
@@ -116,11 +116,11 @@ class Framework
         // ini_set('error_log', self::$basepath . 'error.log');
 
         // Include framework dependencies and load them
-        require self::$vendorpath . 'src/patches.php';
-        // require self::$vendorpath . 'src/scabbia/framework.php';
-        require self::$vendorpath . 'src/scabbia/config.php';
-        require self::$vendorpath . 'src/scabbia/events.php';
-        require self::$vendorpath . 'src/scabbia/extensions.php';
+        require self::$corepath . 'src/patches.php';
+        // require self::$corepath . 'src/scabbia/framework.php';
+        require self::$corepath . 'src/scabbia/config.php';
+        require self::$corepath . 'src/scabbia/events.php';
+        require self::$corepath . 'src/scabbia/extensions.php';
 
         // endpoints
         if (count(self::$endpoints) > 0) {
@@ -274,8 +274,8 @@ class Framework
             return self::$basepath . substr($uPath, 6);
         }
 
-        if (substr($uPath, 0, 8) == '{vendor}') {
-            return self::$vendorpath . substr($uPath, 8);
+        if (substr($uPath, 0, 6) == '{core}') {
+            return self::$corepath . substr($uPath, 8);
         }
 
         if (substr($uPath, 0, 5) == '{app}') {

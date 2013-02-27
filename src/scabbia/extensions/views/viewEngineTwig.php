@@ -44,7 +44,7 @@ class viewEngineTwig
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('/twig/path', '{vendor}include/3rdparty/twig/lib/Twig'));
+            $tPath = Framework::translatePath(Config::get('/twig/path', '{core}include/3rdparty/twig/lib/Twig'));
             require $tPath . '/Autoloader.php';
 
             Twig_Autoloader::register();

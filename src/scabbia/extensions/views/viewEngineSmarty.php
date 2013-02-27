@@ -40,7 +40,7 @@ class ViewEngineSmarty
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('/smarty/path', '{vendor}include/3rdparty/smarty/libs'));
+            $tPath = Framework::translatePath(Config::get('/smarty/path', '{core}include/3rdparty/smarty/libs'));
             require $tPath . '/Smarty.class.php';
 
             self::$engine = new \Smarty();

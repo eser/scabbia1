@@ -40,7 +40,7 @@ class ViewEnginePhptal
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('/phptal/path', '{vendor}include/3rdparty/PHPTAL'));
+            $tPath = Framework::translatePath(Config::get('/phptal/path', '{core}include/3rdparty/PHPTAL'));
             require $tPath . '/PHPTAL.php';
 
             self::$engine = new \PHPTAL();

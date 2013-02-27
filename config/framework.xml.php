@@ -8,8 +8,8 @@
 -->
 
     <includeList>
-        <!-- <include>{vendor}controllers/*.php</include> -->
-        <!-- <include>{vendor}models/*.php</include> -->
+        <!-- <include>{core}controllers/*.php</include> -->
+        <!-- <include>{core}models/*.php</include> -->
     </includeList>
 
     <extensionList>

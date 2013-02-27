@@ -103,7 +103,7 @@ class I8n
             mb_internal_encoding(self::$language['internalEncoding']);
             mb_http_output(self::$language['internalEncoding']);
 
-            // bindtextdomain('core', Framework::$vendorpath . 'locale');
+            // bindtextdomain('core', Framework::$corepath . 'locale');
             // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
             bindtextdomain('application', Framework::$applicationPath . 'locale');

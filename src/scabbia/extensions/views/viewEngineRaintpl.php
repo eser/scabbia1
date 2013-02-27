@@ -40,7 +40,7 @@ class ViewEngineRaintpl
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('/raintpl/path', '{vendor}include/3rdparty/raintpl/inc'));
+            $tPath = Framework::translatePath(Config::get('/raintpl/path', '{core}include/3rdparty/raintpl/inc'));
             require $tPath . '/rain.tpl.class.php';
 
             raintpl::configure('base_url', null);

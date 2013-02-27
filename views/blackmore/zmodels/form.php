@@ -2,7 +2,7 @@
 	use Scabbia\Extensions\Views\views;
 	use Scabbia\Extensions\Session\session;
 ?>
-<?php views::viewFile('{vendor}views/blackmore/header.php'); ?>
+<?php views::viewFile('{core}views/blackmore/header.php'); ?>
 <form method="POST" action="@mvc::url('editor/category')">
 	<table id="pageMiddleTable">
 		<tr>
@@ -54,4 +54,4 @@
 		</tr>
 	</table>
 </form>
-<?php views::viewFile('{vendor}views/blackmore/footer.php'); ?>
+<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
