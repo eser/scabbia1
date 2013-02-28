@@ -58,21 +58,21 @@ class Session
      */
     public static function open()
     {
-        self::$sessionName = Config::get('/session/cookie/name', 'sessid');
+        self::$sessionName = Config::get('session/cookie/name', 'sessid');
 
-        if (Config::get('/session/cookie/nameIp', true)) {
+        if (Config::get('session/cookie/nameIp', true)) {
             self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
         }
 
-        self::$sessionLife = intval(Config::get('/session/cookie/life', '0'));
+        self::$sessionLife = intval(Config::get('session/cookie/life', '0'));
 
         if (array_key_exists(self::$sessionName, $_COOKIE)) {
             self::$id = $_COOKIE[self::$sessionName];
         }
 
         if (!is_null(self::$id)) {
-            $tIpCheck = (bool)Config::get('/session/cookie/ipCheck', '0');
-            $tUACheck = (bool)Config::get('/session/cookie/uaCheck', '1');
+            $tIpCheck = (bool)Config::get('session/cookie/ipCheck', '0');
+            $tUACheck = (bool)Config::get('session/cookie/uaCheck', '1');
 
             $tData = Cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
             if ($tData !== false) {

@@ -84,7 +84,7 @@ class Subcontroller
             'params' => $uParams,
             'query' => isset($uInput['query']) ? $uInput['query'] : ''
         );
-        $this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . Config::get('/mvc/view/defaultViewExtension', 'php');
+        $this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
 
         $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
         array_pop(Controllers::$stack);

@@ -61,7 +61,7 @@ class I8n
         if (is_null(self::$languages)) {
             self::$languages = array();
 
-            foreach (Config::get('/i8n/languageList', array()) as $tLanguage) {
+            foreach (Config::get('i8n/languageList', array()) as $tLanguage) {
                 self::$languages[$tLanguage['id']] = array(
                     'key' => $tLanguage['id'],
                     'locale' => $tLanguage['locale'],
@@ -106,7 +106,7 @@ class I8n
             // bindtextdomain('core', Framework::$corepath . 'locale');
             // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
-            bindtextdomain('application', Framework::$applicationPath . 'locale');
+            bindtextdomain('application', Framework::$apppath . 'locale');
             bind_textdomain_codeset('application', self::$language['internalEncoding']);
 
             textdomain('application');

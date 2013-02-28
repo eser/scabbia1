@@ -37,7 +37,7 @@ class views
      */
     public static function extensionLoad()
     {
-        foreach (Config::get('/mvc/view/viewEngineList', array()) as $tViewEngine) {
+        foreach (Config::get('mvc/view/viewEngineList', array()) as $tViewEngine) {
             self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
         }
 
@@ -107,10 +107,10 @@ class views
             $uModel = & self::$vars;
         }
 
-        $tViewFilePath = Framework::$applicationPath . 'views/' . $uView;
+        $tViewFilePath = Framework::$apppath . 'views/' . $uView;
         $tViewFileInfo = pathinfo($tViewFilePath);
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
-            $tViewFileInfo['extension'] = Config::get('/mvc/view/defaultViewExtension', 'php');
+            $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
         }
 
         $tExtra = array(
@@ -149,7 +149,7 @@ class views
         $tViewFilePath = Framework::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
-            $tViewFileInfo['extension'] = Config::get('/mvc/view/defaultViewExtension', 'php');
+            $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
         }
 
         $tExtra = array(

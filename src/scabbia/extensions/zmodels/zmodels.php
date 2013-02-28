@@ -32,7 +32,7 @@ class Zmodels
     {
         self::$zmodels = array();
 
-        foreach (Config::get('/zmodelList', array()) as $tZmodel) {
+        foreach (Config::get('zmodelList', array()) as $tZmodel) {
             self::$zmodels[$tZmodel['name']] = $tZmodel;
         }
     }

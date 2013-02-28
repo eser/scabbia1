@@ -67,7 +67,7 @@ class BlackmoreZmodels
      */
     public static function getModel()
     {
-        return Controllers::load('BlackmoreZmodelModel', null, Config::get('/blackmore/database', null));
+        return Controllers::load('BlackmoreZmodelModel', null, Config::get('blackmore/database', null));
     }
 
     /**

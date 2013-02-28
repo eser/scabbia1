@@ -43,10 +43,10 @@ class Cache
      */
     public static function extensionLoad()
     {
-        self::$defaultAge = intval(Config::get('/cache/defaultAge', '120'));
-        self::$keyphase = Config::get('/cache/keyphase', '');
+        self::$defaultAge = intval(Config::get('cache/defaultAge', '120'));
+        self::$keyphase = Config::get('cache/keyphase', '');
 
-        $tStorage = Config::get('/cache/storage', '');
+        $tStorage = Config::get('cache/storage', '');
         if (strlen($tStorage) > 0) {
             self::$storage = parse_url($tStorage);
         }

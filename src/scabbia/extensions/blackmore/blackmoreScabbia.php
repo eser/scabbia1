@@ -185,8 +185,8 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 
         $tStart = microtime(true);
 
-        self::purgeFolder(Framework::$applicationPath . 'writable/cache/');
-        self::purgeFolder(Framework::$applicationPath . 'writable/logs/');
+        self::purgeFolder(Framework::$apppath . 'writable/cache/');
+        self::purgeFolder(Framework::$apppath . 'writable/logs/');
 
         exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
     }

@@ -40,7 +40,7 @@ class Datasources
         if (is_null(self::$datasources)) {
             self::$datasources = array();
 
-            foreach (Config::get('/datasourceList', array()) as $tDatasourceConfig) {
+            foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
                 $tDatasource = new self::$types[$tDatasourceConfig['type']]['datasource'] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
 

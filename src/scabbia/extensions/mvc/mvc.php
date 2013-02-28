@@ -50,9 +50,9 @@ class Mvc
      */
     public static function extensionLoad()
     {
-        self::$defaultController = Config::get('/mvc/defaultController', 'home');
-        self::$defaultAction = Config::get('/mvc/defaultAction', 'index');
-        self::$link = Config::get('/mvc/link', '{@siteroot}/{@controller}/{@action}{@params}{@query}');
+        self::$defaultController = Config::get('mvc/defaultController', 'home');
+        self::$defaultAction = Config::get('mvc/defaultAction', 'index');
+        self::$link = Config::get('mvc/link', '{@siteroot}/{@controller}/{@action}{@params}{@query}');
     }
 
     /**
@@ -156,7 +156,7 @@ class Mvc
 
             // $tController = new controllers::$controllerList[$tActualController] ();
             // $tController->route = $uParams;
-            // $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . Config::get('/mvc/view/defaultViewExtension', 'php');
+            // $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
 
             try {
                 $tReturn = controllers::$root->render($tActualAction, $tRoute['parametersArray']);

@@ -42,12 +42,12 @@ class router
         }
 
         self::$rewrites = array();
-        foreach (Config::get('/http/rewriteList', array()) as $tRewriteList) {
+        foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
             self::addRewrite($tRewriteList['match'], $tRewriteList['forward'], !isset($tRewriteList['limitMethods']) ? array_keys($tRewriteList['limitMethods']) : null);
         }
 
         self::$routes = array();
-        foreach (Config::get('/http/routeList', array()) as $tRouteList) {
+        foreach (Config::get('http/routeList', array()) as $tRouteList) {
             self::addRoute($tRouteList['match'], $tRouteList['callback']);
         }
     }

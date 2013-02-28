@@ -25,7 +25,7 @@ class Datasets
     public static function get($uDataset = null)
     {
         if (is_null(self::$datasets)) {
-            foreach (Config::get('/datasetList', array()) as $tDatasetConfig) {
+            foreach (Config::get('datasetList', array()) as $tDatasetConfig) {
                 $tDataset = new DatabaseDataset($tDatasetConfig);
                 self::$datasets[$tDataset->id] = $tDataset;
             }

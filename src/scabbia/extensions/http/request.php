@@ -124,7 +124,7 @@ class Request
         }
 
         // $userAgent
-        if (Config::get('/http/userAgents/autoCheck', '1') == '1') {
+        if (Config::get('http/userAgents/autoCheck', '1') == '1') {
             self::checkUserAgent();
         }
 
@@ -143,7 +143,7 @@ class Request
      */
     public static function rewrite($uUrl, $uMethodext = null)
     {
-        foreach (Config::get('/http/rewriteList', array()) as $tRewriteList) {
+        foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
             if (isset($tRewriteList['limitMethods']) && !is_null($uMethodext) && !in_array($uMethodext, array_keys($tRewriteList['limitMethods']))) {
                 continue;
             }
@@ -176,14 +176,14 @@ class Request
      */
     public static function checkUserAgent()
     {
-        foreach (Config::get('/http/userAgents/platformList', array()) as $tPlatformList) {
+        foreach (Config::get('http/userAgents/platformList', array()) as $tPlatformList) {
             if (preg_match('/' . $tPlatformList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
                 self::$platform = $tPlatformList['name'];
                 break;
             }
         }
 
-        foreach (Config::get('/http/userAgents/crawlerList', array()) as $tCrawlerList) {
+        foreach (Config::get('http/userAgents/crawlerList', array()) as $tCrawlerList) {
             if (preg_match('/' . $tCrawlerList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
                 self::$crawler = $tCrawlerList['name'];
                 self::$crawlerType = $tCrawlerList['type'];

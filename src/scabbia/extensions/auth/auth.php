@@ -33,7 +33,7 @@ class Auth
      */
     public static function extensionLoad()
     {
-        self::$sessionKey = Config::get('/auth/sessionKey', 'authuser');
+        self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
     }
 
     /**
@@ -41,7 +41,7 @@ class Auth
      */
     public static function login($uUsername, $uPassword)
     {
-        foreach (Config::get('/auth/userList', array()) as $tUser) {
+        foreach (Config::get('auth/userList', array()) as $tUser) {
             if ($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
                 continue;
             }
@@ -93,12 +93,12 @@ class Auth
             return;
         }
 
-        $tMvcUrl = Config::get('/auth/loginMvcUrl', null);
+        $tMvcUrl = Config::get('auth/loginMvcUrl', null);
         if (!is_null($tMvcUrl)) {
             //! todo: warning messages like insufficent privileges.
             Mvc::redirect($tMvcUrl);
         } else {
-            header('Location: ' . Config::get('/auth/loginUrl'));
+            header('Location: ' . Config::get('auth/loginUrl'));
         }
 
         Framework::end(0);

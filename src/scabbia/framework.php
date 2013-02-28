@@ -54,7 +54,7 @@ class Framework
     /**
      * Stores relative path of running application
      */
-    public static $applicationPath = null;
+    public static $apppath = null;
     /**
      * Stores relative path of framework root
      */
@@ -144,8 +144,8 @@ class Framework
 
         self::$milestones[] = array('endpoints', microtime(true));
 
-        if (!self::$readonly && is_null(self::$applicationPath)) {
-            self::$applicationPath = self::$basepath . 'application/';
+        if (!self::$readonly && is_null(self::$apppath)) {
+            self::$apppath = self::$basepath . 'application/';
         }
 
         // load config
@@ -153,7 +153,7 @@ class Framework
         self::$milestones[] = array('configLoad', microtime(true));
 
         // download files
-        foreach (Config::get('/downloadList', array()) as $tUrl) {
+        foreach (Config::get('downloadList', array()) as $tUrl) {
             self::downloadFile($tUrl['filename'], $tUrl['url']);
         }
         self::$milestones[] = array('downloads', microtime(true));
@@ -164,12 +164,12 @@ class Framework
 
         // siteroot
         if (is_null(self::$siteroot)) {
-            self::$siteroot = Config::get('/options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+            self::$siteroot = Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
         }
         self::$milestones[] = array('siteRoot', microtime(true));
 
         // include files
-        foreach (Config::get('/includeList', array()) as $tInclude) {
+        foreach (Config::get('includeList', array()) as $tInclude) {
             $tIncludePath = pathinfo(self::translatePath($tInclude));
 
             $tFiles = self::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], self::GLOB_FILES);
@@ -214,7 +214,7 @@ class Framework
         if (ini_get('output_handler') == '') {
             $tParms['content'] = mb_output_handler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 
-            if (!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && Config::get('/options/gzip', '1') != '0') {
+            if (!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && Config::get('options/gzip', '1') != '0') {
                 $tParms['content'] = ob_gzhandler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
             }
         }
@@ -279,7 +279,7 @@ class Framework
         }
 
         if (substr($uPath, 0, 5) == '{app}') {
-            return self::$applicationPath . substr($uPath, 5);
+            return self::$apppath . substr($uPath, 5);
         }
 
         if (is_null($uBasePath)) {
@@ -321,7 +321,7 @@ class Framework
      */
     public static function writablePath($uFile = '', $uCreateFolder = false)
     {
-        $tPathConcat = self::$applicationPath . 'writable/' . $uFile;
+        $tPathConcat = self::$apppath . 'writable/' . $uFile;
 
         if ($uCreateFolder) {
             $tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);

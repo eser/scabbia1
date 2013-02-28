@@ -40,7 +40,7 @@ class Media
     public static function extensionLoad()
     {
         self::$cachePath = Framework::writablePath('cache/media/', true);
-        self::$cacheAge = intval(Config::get('/media/cacheAge', '120'));
+        self::$cacheAge = intval(Config::get('media/cacheAge', '120'));
     }
 
     /**

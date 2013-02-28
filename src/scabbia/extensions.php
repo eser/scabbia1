@@ -30,21 +30,21 @@ class Extensions
 
         $tFiles = array();
         Framework::glob(Framework::$corepath . 'src/scabbia/extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
-        if (!is_null(Framework::$applicationPath)) {
-            Framework::glob(Framework::$applicationPath . 'extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
+        if (!is_null(Framework::$apppath)) {
+            Framework::glob(Framework::$apppath . 'extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
         }
 
         foreach ($tFiles as $tFile) {
-            if (!is_file($tFile . 'extension.xml.php')) {
+            if (!file_exists($tFile . 'extension.json.php')) {
                 continue;
             }
 
             $tSubconfig = array();
-            Config::loadFile($tSubconfig, $tFile . 'extension.xml.php');
-            self::$configFiles[$tSubconfig['/info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
+            Config::loadFile($tSubconfig, $tFile . 'extension.json.php');
+            self::$configFiles[$tSubconfig['info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
 
-            if (isset($tSubconfig['/eventList'])) {
-                foreach ($tSubconfig['/eventList'] as $tLoad) {
+            if (isset($tSubconfig['eventList'])) {
+                foreach ($tSubconfig['eventList'] as $tLoad) {
                     if ($tLoad['name'] == 'load') {
                         Events::invokeSingle($tLoad['type'], $tLoad['value']);
                         continue;

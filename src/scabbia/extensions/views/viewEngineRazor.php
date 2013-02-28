@@ -39,7 +39,7 @@ class ViewEngineRazor
      */
     public static function extensionLoad()
     {
-        self::$compiledAge = intval(Config::get('/razor/templates/compiledAge', '120'));
+        self::$compiledAge = intval(Config::get('razor/templates/compiledAge', '120'));
         Views::registerViewEngine('cshtml', 'viewEngineRazor');
     }
 

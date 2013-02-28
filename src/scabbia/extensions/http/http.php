@@ -43,7 +43,7 @@ class Http
 
         Events::invoke('httpUrl', $tParms);
 
-        return String::format(Config::get('/http/link', '{@siteroot}/{@path}'), $tParms);
+        return String::format(Config::get('http/link', '{@siteroot}/{@path}'), $tParms);
     }
 
     /**
@@ -55,7 +55,7 @@ class Http
 
         // $notfoundPage
         if (is_null(self::$notfoundPage)) {
-            self::$notfoundPage = Config::get('/http/errorPages/notfound', '{app}views/shared/error.php');
+            self::$notfoundPage = Config::get('http/errorPages/notfound', '{app}views/shared/error.php');
         }
 
         //! todo internalization.

@@ -64,12 +64,12 @@ class fb
      */
     public static function loadApi()
     {
-        self::$appId = Config::get('/facebook/APP_ID');
-        self::$appSecret = Config::get('/facebook/APP_SECRET');
-        self::$appFileUpload = Config::get('/facebook/APP_FILEUPLOAD');
-        self::$appUrl = Config::get('/facebook/APP_URL');
-        self::$appPageId = Config::get('/facebook/APP_PAGE_ID');
-        self::$appRedirectUri = Config::get('/facebook/APP_REDIRECT_URI');
+        self::$appId = Config::get('facebook/APP_ID');
+        self::$appSecret = Config::get('facebook/APP_SECRET');
+        self::$appFileUpload = Config::get('facebook/APP_FILEUPLOAD');
+        self::$appUrl = Config::get('facebook/APP_URL');
+        self::$appPageId = Config::get('facebook/APP_PAGE_ID');
+        self::$appRedirectUri = Config::get('facebook/APP_REDIRECT_URI');
 
         if (is_null(self::$api)) {
             self::$api = new Facebook(array(

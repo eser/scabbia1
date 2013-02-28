@@ -44,9 +44,9 @@ class Resources
     public static function routing()
     {
         if (is_null(self::$packs)) {
-            self::$packs = Config::get('/resources/packList', array());
+            self::$packs = Config::get('resources/packList', array());
 
-            foreach (Config::get('/resources/fileList', array()) as $tFile) {
+            foreach (Config::get('resources/fileList', array()) as $tFile) {
                 self::$packs[] = array(
                     'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
                     'name' => $tFile['name'],
@@ -55,7 +55,7 @@ class Resources
                 );
             }
 
-            self::$directories = Config::get('/resources/directoryList', array());
+            self::$directories = Config::get('resources/directoryList', array());
         }
 
         if (strlen(Request::$queryString) > 0) {
