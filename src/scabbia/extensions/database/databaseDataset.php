@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Database;
 
 /**
- * Database Dataset Class
+ * Database Extension: DatabaseDataset Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class DatabaseDataset
 {

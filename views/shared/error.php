@@ -1,22 +1,22 @@
 <?php
-	use Scabbia\Extensions\Views\views;
-	use Scabbia\Extensions\Html\html;
-	use Scabbia\Extensions\Http\http;
-	use Scabbia\framework;
+	use Scabbia\Extensions\Views\Views;
+	use Scabbia\Extensions\Html\Html;
+	use Scabbia\Extensions\Http\Http;
+	use Scabbia\Framework;
 
-	echo html::doctype('html5');
+	echo Html::doctype('html5');
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
 <head>
 	<title>Scabbia Framework</title>
 	<meta charset="utf-8" />
 
-	<link type="text/css" href="<?php echo http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />
-	<script type="text/javascript" src="<?php echo http::url('scabbia.js?core'); ?>"></script>
+	<link type="text/css" href="<?php echo Http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />
+	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core'); ?>"></script>
 </head>
 <body>
 	<script type="text/javascript">
-			$l.contentBegin('main', '<?php echo framework::$siteroot; ?>');
+			$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
 	</script>
 
 	<div class="ppopup">

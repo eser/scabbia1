@@ -14,6 +14,7 @@ use Scabbia\Utils;
  * Configuration class which handles all configuration-based operations.
  *
  * @package Scabbia
+ * @version 1.1.0
  *
  * @todo _node parsing
  * @todo caching
@@ -35,12 +36,12 @@ class Config
     {
         $tConfig = array();
 
-        foreach (Utils::glob(Framework::$corepath . 'config/', null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
+        foreach (Utils::glob(Framework::$corepath . 'config/', '*.json', Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 
         if (!is_null(Framework::$apppath)) {
-            foreach (Utils::glob(Framework::$apppath . 'config/', null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
+            foreach (Utils::glob(Framework::$apppath . 'config/', '*.json', Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
                 self::loadFile($tConfig, $tFile);
             }
         }

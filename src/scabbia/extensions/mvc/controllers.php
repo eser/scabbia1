@@ -13,10 +13,11 @@ use Scabbia\Events;
 use Scabbia\Extensions;
 
 /**
- * Controllers Class
+ * Mvc Extension: Controllers Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Mvc
+ * @version 1.1.0
  */
 class Controllers
 {

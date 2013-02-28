@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\SmartObjects;
 
 /**
- * SmartObject Class
+ * SmartObjects Extension: SmartObject Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage SmartObjects
+ * @version 1.1.0
  */
 class SmartObject
 {

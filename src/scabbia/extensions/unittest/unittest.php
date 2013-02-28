@@ -11,16 +11,11 @@ use Scabbia\Extensions\String\String;
 use Scabbia\Extensions;
 
 /**
- * UnitTest Extension
+ * Unittest Extension
  *
  * @package Scabbia
- * @subpackage unittest
+ * @subpackage Unittest
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Unittest
 {

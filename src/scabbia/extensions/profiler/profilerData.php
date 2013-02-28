@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Profiler;
 
 /**
- * Profiler Data Class
+ * Profiler Extension: ProfilerData Class
  *
  * @package Scabbia
- * @subpackage UtilityExtensions
+ * @subpackage Profiler
+ * @version 1.1.0
  */
 class ProfilerData
 {

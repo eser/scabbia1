@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Datasources;
 use Scabbia\Extensions\Datasources\Datasources;
 
 /**
- * Datasource Class
+ * Datasources Extension: Datasource Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Datasources
+ * @version 1.1.0
  */
 abstract class Datasource
 {

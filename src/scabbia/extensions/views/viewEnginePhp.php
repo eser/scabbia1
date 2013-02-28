@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Views;
 
 /**
- * ViewEngine: PHP
+ * Views Extension: ViewEnginePhp Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Views
+ * @version 1.1.0
  */
 class ViewEnginePhp
 {

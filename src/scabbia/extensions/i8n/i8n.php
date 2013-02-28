@@ -11,16 +11,11 @@ use Scabbia\Config;
 use Scabbia\Framework;
 
 /**
- * I8N Extension
+ * I8n Extension
  *
  * @package Scabbia
- * @subpackage i8n
+ * @subpackage I8n
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends mbstring
  *
  * @todo translitIt
  * @todo intl extension methods
@@ -49,14 +44,6 @@ class I8n
         //! todo: determine language by browser's language priorities.
     }
     */
-
-    /**
-     * @ignore
-     */
-    public static function httpUrl(&$uParms)
-    {
-        $uParms['language'] = self::$language['key'];
-    }
 
     /**
      * @ignore

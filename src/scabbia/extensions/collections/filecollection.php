@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Collections;
 use Scabbia\Extensions\Collections\Collection;
 
 /**
- * File Collection Class
+ * Collections Extension: FileCollection Class
  *
  * @package Scabbia
- * @subpackage UtilityExtensions
+ * @subpackage Collections
+ * @version 1.1.0
  */
 class FileCollection extends Collection
 {

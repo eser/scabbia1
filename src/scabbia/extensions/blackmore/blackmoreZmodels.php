@@ -21,7 +21,11 @@ use Scabbia\Extensions\Zmodels\Zmodels;
 use Scabbia\Config;
 
 /**
- * @ignore
+ * Blackmore Extension: Zmodels Section
+ *
+ * @package Scabbia
+ * @subpackage Blackmore
+ * @version 1.1.0
  */
 class BlackmoreZmodels
 {
@@ -148,7 +152,7 @@ class BlackmoreZmodels
                 $tModel->insert($tInput);
 
                 Session::setFlash('notification', 'Record added.');
-                Mvc::redirect('blackmore/categories');
+                Http::redirect('blackmore/categories');
 
                 return;
             }
@@ -239,7 +243,7 @@ class BlackmoreZmodels
                 $tModel->update($uSlug, $tInput);
 
                 Session::setFlash('notification', 'Record modified.');
-                Mvc::redirect('blackmore/categories');
+                Http::redirect('blackmore/categories');
 
                 return;
             }
@@ -355,6 +359,6 @@ class BlackmoreZmodels
         Auth::checkRedirect('editor');
 
         Session::setFlash('notification', 'Category removed.');
-        Mvc::redirect('blackmore/categories');
+        Http::redirect('blackmore/categories');
     }
 }

@@ -8,11 +8,11 @@
 namespace Scabbia\Extensions\Collections;
 
 /**
- * Collection Class
+ * Collections Extension: Collection Class
  *
- * @property mixed count
  * @package Scabbia
- * @subpackage UtilityExtensions
+ * @subpackage Collections
+ * @version 1.1.0
  */
 class Collection implements \ArrayAccess, \IteratorAggregate
 {

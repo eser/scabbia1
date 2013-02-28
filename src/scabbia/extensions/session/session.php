@@ -16,13 +16,8 @@ use Scabbia\Extensions;
  * Session Extension
  *
  * @package Scabbia
- * @subpackage session
+ * @subpackage Session
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends cache
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo integrate with cache extension
  */

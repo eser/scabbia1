@@ -1,28 +1,34 @@
 {
     "http": {
-        "link":         "{@siteroot}/{@path}",
+        "link":                     "{@siteroot}/{@path}",
 
-        "rewriteList": [
+        "rewriteList": [],
+        "rewriteList:disabled": [
             {
-                "limitMethods":     [ "get" ],
-                "match":            "regions/([a-z_]+)/([a-z_]+)/([a-z0-9\\-]+)",
+                "match":            "GET,POST regions/(alnum)/(alnum)/(any)",
                 "forward":          "firms/$3"
             }
         ],
 
         "routeList": [
             {
-                "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\.[^?&]*)?(query:[?&].*)?",
-                "callback":         "Scabbia\\Extensions\\Mvc\\mvc::route"
+                "match":            "GET (controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
+                "callback":         "Scabbia\\Extensions\\Mvc\\Mvc::route",
+                "defaults": {
+                    "controller":   "home",
+                    "params":       "/index",
+                    "format":       ".html",
+                    "query":        ""
+                }
             }
         ],
 
         "errorPages": {
-            "notfound":     "{app}views/shared/error.php",
-            "restriction":  "{app}views/shared/error.php",
-            "maintenance":  "{app}views/shared/error.php",
-            "ipban":        "{app}views/shared/error.php",
-            "error":        "{app}views/shared/error.php"
+            "notfound":             "{core}views/shared/error.php",
+            "restriction":          "{core}views/shared/error.php",
+            "maintenance":          "{core}views/shared/error.php",
+            "ipban":                "{core}views/shared/error.php",
+            "error":                "{core}views/shared/error.php"
         },
 
         "userAgents": {

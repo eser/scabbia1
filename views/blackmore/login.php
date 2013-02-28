@@ -1,10 +1,10 @@
 <?php
-	use Scabbia\config;
-	use Scabbia\framework;
-	use Scabbia\Extensions\Html\html;
-	use Scabbia\Extensions\Mvc\mvc;
+	use Scabbia\Config;
+	use Scabbia\Framework;
+	use Scabbia\Extensions\Html\Html;
+	use Scabbia\Extensions\Http\Http;
 ?>
-<?php echo html::doctype('html5'); ?>
+<?php echo Html::doctype('html5'); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
 	<meta charset="utf-8" />
@@ -22,7 +22,7 @@
 </head>
 <body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?> login">
 <script type="text/javascript">
-	$l.contentBegin('main', '<?php echo framework::$siteroot; ?>');
+	$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
 </script>
 
 <div id="page">
@@ -41,7 +41,7 @@
 			<div class="error"><?php echo $error; ?></div>
 			<?php } ?>
 
-			<form method="POST" action="<?php echo mvc::url('blackmore/login'); ?>">
+			<form method="POST" action="<?php echo Http::url('blackmore/login'); ?>">
 				<p>
 					<label><?php echo _('Username:'); ?></label> <br />
 					<input type="text" class="text tipsyFocus" name="username" title="Enter username" />

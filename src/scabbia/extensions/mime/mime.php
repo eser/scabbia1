@@ -13,13 +13,8 @@ use Scabbia\Extensions\String\String;
  * Mime Extension
  *
  * @package Scabbia
- * @subpackage mime
+ * @subpackage Media
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Mime
 {

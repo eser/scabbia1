@@ -18,16 +18,11 @@ require 'markdownExtra/markdownParser.php';
 require 'markdownExtra/markdownExtraParser.php';
 
 /**
- * ViewEngine: MarkDown Extension
+ * Views Extension: ViewEngineMarkdown Class
  *
  * @package Scabbia
- * @subpackage viewEngineMarkdown
+ * @subpackage Views
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends mvc, io, cache
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class ViewEngineMarkdown
 {

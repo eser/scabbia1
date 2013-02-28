@@ -15,13 +15,8 @@ use Scabbia\Utils;
  * Media Extension
  *
  * @package Scabbia
- * @subpackage media
+ * @subpackage Media
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo add watermark
  * @todo write text w/ truetype fonts

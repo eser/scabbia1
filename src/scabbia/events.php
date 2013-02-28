@@ -13,6 +13,7 @@ use Scabbia\Utils;
  * Event manager which handles communication between framework parts and extensions.
  *
  * @package Scabbia
+ * @version 1.1.0
  */
 class Events
 {

@@ -15,13 +15,8 @@ use Scabbia\Framework;
  * Html Extension
  *
  * @package Scabbia
- * @subpackage html
+ * @subpackage Html
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, arrays
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo form open
  * @todo form fields

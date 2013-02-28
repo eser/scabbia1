@@ -16,13 +16,8 @@ use Scabbia\Utils;
  * Captcha Extension
  *
  * @package Scabbia
- * @subpackage captcha
+ * @subpackage Captcha
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, session
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Captcha
 {

@@ -9,6 +9,7 @@ namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\String\String;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
@@ -19,13 +20,8 @@ use Scabbia\Framework;
  * Http Extension
  *
  * @package Scabbia
- * @subpackage http
+ * @subpackage Http
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Http
 {
@@ -38,8 +34,24 @@ class Http
     /**
      * @ignore
      */
+    public static function routing()
+    {
+        $tResolution = Router::resolve(Request::$queryString, Request::$methodext);
+
+        if (!is_null($tResolution) && call_user_func($tResolution[1], $tResolution[2]) !== false) {
+            // to interrupt event-chain execution
+            return true;
+        }
+
+        return null;
+    }
+
+    /**
+     * @ignore
+     */
     public static function url($uPath)
     {
+        /*
         $tParms = array(
             'siteroot' => rtrim(Framework::$siteroot, '/'),
             'device' => Request::$crawlerType,
@@ -49,6 +61,17 @@ class Http
         Events::invoke('httpUrl', $tParms);
 
         return String::format(Config::get('http/link', '{@siteroot}/{@path}'), $tParms);
+        */
+        $tResolved = Router::resolve($uPath);
+        return Framework::$siteroot . '/' . $tResolved[0];
+    }
+
+    /**
+     * @ignore
+     */
+    public static function redirect($uPath)
+    {
+        Response::sendRedirect(self::url($uPath));
     }
 
     /**

@@ -46,13 +46,8 @@ define('_NOTILIKE', ' NOT ILIKE ');
  * Database Extension
  *
  * @package Scabbia
- * @subpackage database
+ * @subpackage Database
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, datasources, cache
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo caching for databaseQuery (get hash of given parameters)
  * @todo databaseQuery inTransaction(true)

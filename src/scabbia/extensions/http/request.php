@@ -8,15 +8,17 @@
 namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Utils;
 
 /**
- * Request Class
+ * Http Extension: Request Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Http
+ * @version 1.1.0
  */
 class Request
 {
@@ -40,6 +42,10 @@ class Request
      * @ignore
      */
     public static $queryString;
+    /**
+     * @ignore
+     */
+    public static $route;
     /**
      * @ignore
      */
@@ -140,25 +146,8 @@ class Request
         self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ? Http::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) : array();
 
         // $queryString
-        self::$queryString = self::rewrite($_SERVER['QUERY_STRING'], self::$methodext);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function rewrite($uUrl, $uMethodext = null)
-    {
-        foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
-            if (isset($tRewriteList['limitMethods']) && !is_null($uMethodext) && !in_array($uMethodext, array_keys($tRewriteList['limitMethods']))) {
-                continue;
-            }
-
-            if (self::rewriteUrl($uUrl, $tRewriteList['match'], $tRewriteList['forward'])) {
-                break;
-            }
-        }
-
-        return $uUrl;
+        self::$queryString = $_SERVER['QUERY_STRING'];
+        self::$route = Router::resolve(self::$queryString, self::$methodext);
     }
 
     /**

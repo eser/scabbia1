@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Database;
 
 /**
- * DatabaseProvider PDO Class
+ * Database Extension: DatabaseProviderPdo Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class DatabaseProviderPdo
 {

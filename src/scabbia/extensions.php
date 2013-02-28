@@ -15,6 +15,7 @@ use Scabbia\Framework;
  * Extensions manager which extends the framework capabilities with extra routines.
  *
  * @package Scabbia
+ * @version 1.1.0
  *
  * @todo cache the extensions.xml.php array
  */
@@ -40,12 +41,12 @@ class Extensions
         }
 
         foreach ($tFiles as $tFile) {
-            if (!file_exists($tFile . 'extension.json.php')) {
+            if (!file_exists($tFile . 'extension.json')) {
                 continue;
             }
 
             $tSubconfig = array();
-            Config::loadFile($tSubconfig, $tFile . 'extension.json.php');
+            Config::loadFile($tSubconfig, $tFile . 'extension.json');
             self::$configFiles[$tSubconfig['info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
 
             if (isset($tSubconfig['eventList'])) {

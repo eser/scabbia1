@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Validation;
 
 /**
- * Validation Rule Class
+ * Validation Extension: ValidationRule Class
  *
  * @package Scabbia
- * @subpackage ExtensibilityExtensions
+ * @subpackage Validation
+ * @version 1.1.0
  */
 class ValidationRule
 {

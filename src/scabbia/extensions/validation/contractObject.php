@@ -5,13 +5,14 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Contracts;
+namespace Scabbia\Extensions\Validation;
 
 /**
- * Contract Object Class
+ * Validation Extension: ContractObject Class
  *
  * @package Scabbia
- * @subpackage ExtensibilityExtensions
+ * @subpackage Validation
+ * @version 1.1.0
  */
 class ContractObject
 {

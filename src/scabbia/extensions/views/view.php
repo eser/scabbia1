@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Views;
 use Scabbia\Extensions\Views\Views;
 
 /**
- * View Class
+ * Views Extension: View Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Views
+ * @version 1.1.0
  */
 class View
 {

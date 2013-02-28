@@ -11,10 +11,11 @@ use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions;
 
 /**
- * Model Class
+ * Models Extension: Model Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Models
+ * @version 1.1.0
  */
 abstract class Model
 {

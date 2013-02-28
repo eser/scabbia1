@@ -10,16 +10,11 @@ namespace Scabbia\Extensions\Io;
 use Scabbia\Extensions\String\String;
 
 /**
- * IO Extension
+ * Io Extension
  *
  * @package Scabbia
- * @subpackage io
+ * @subpackage Io
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Io
 {

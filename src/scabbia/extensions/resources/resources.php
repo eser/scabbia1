@@ -22,13 +22,8 @@ use Scabbia\Utils;
  * Resources Extension
  *
  * @package Scabbia
- * @subpackage resources
+ * @subpackage Resources
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends mime, io, cache, http
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo integrate with cache extension
  */

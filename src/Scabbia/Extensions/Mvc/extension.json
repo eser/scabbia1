@@ -20,12 +20,6 @@
             "name":         "load",
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Mvc\\Mvc::extensionLoad"
-        },
-        {
-            "name":         "httpUrl",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Mvc\\mvc::httpUrl"
         }
-
     ]
 }

@@ -17,13 +17,8 @@ use Scabbia\Framework;
  * Auth Extension
  *
  * @package Scabbia
- * @subpackage auth
+ * @subpackage Auth
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends session
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Auth
 {
@@ -101,7 +96,7 @@ class Auth
         $tMvcUrl = Config::get('auth/loginMvcUrl', null);
         if (!is_null($tMvcUrl)) {
             //! todo: warning messages like insufficent privileges.
-            Mvc::redirect($tMvcUrl);
+            Http::redirect($tMvcUrl);
         } else {
             header('Location: ' . Config::get('auth/loginUrl'));
         }

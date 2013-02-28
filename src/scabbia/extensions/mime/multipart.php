@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Mime;
 use Scabbia\Extensions\Mime\Mimepart;
 
 /**
- * Multipart Class
+ * Mime Extension: Multipart Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Media
+ * @version 1.1.0
  */
 class Multipart
 {

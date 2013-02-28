@@ -11,10 +11,11 @@ use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Database\Database;
 
 /**
- * Database Query Result Class
+ * Database Extension: DatabaseQueryResult Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
 {

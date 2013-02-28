@@ -13,10 +13,11 @@ use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions;
 
 /**
- * Media File Class
+ * Media Extension: MediaFile Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Media
+ * @version 1.1.0
  */
 class MediaFile
 {

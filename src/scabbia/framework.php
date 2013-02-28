@@ -13,9 +13,10 @@ use Scabbia\Extensions;
 use Scabbia\Utils;
 
 /**
- * Base framework functions.
+ * Methods for essential framework functionality.
  *
  * @package Scabbia
+ * @version 1.1.0
  */
 class Framework
 {
@@ -166,29 +167,33 @@ class Framework
         // output handling
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);
+    }
 
+    /**
+     * Calls
+     *
+     *
+     */
+    public static function run($uCallbacks = null, $uOtherwise = null)
+    {
         // run extensions
         $tParms = array();
         Events::invoke('run', $tParms);
         self::$milestones[] = array('extensionsRun', microtime(true));
-    }
 
-    /**
-     * Runs a framework extension
-     */
-    public static function run($uCallbacks, $uOtherwise = null)
-    {
-        foreach ((array)$uCallbacks as $tCallback) {
-            $tReturn = call_user_func($tCallback);
+        if(!is_null($uCallbacks)) {
+            foreach ((array)$uCallbacks as $tCallback) {
+                $tReturn = call_user_func($tCallback);
 
-            if (!is_null($tReturn) && $tReturn === true) {
-                break;
+                if (!is_null($tReturn) && $tReturn === true) {
+                    break;
+                }
             }
-        }
 
-        if (!is_null($uOtherwise) && !isset($tReturn) || $tReturn !== true) {
-            call_user_func($uOtherwise);
-            return false;
+            if (!is_null($uOtherwise) && !isset($tReturn) || $tReturn !== true) {
+                call_user_func($uOtherwise);
+                return false;
+            }
         }
 
         return true;

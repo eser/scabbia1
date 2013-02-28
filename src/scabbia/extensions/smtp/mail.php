@@ -13,10 +13,11 @@ use Scabbia\Extensions\Mime\Multipart;
 use Scabbia\Extensions\Smtp\Smtp;
 
 /**
- * SMTP Mail Class
+ * Smtp Extension: Mail Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Smtp
+ * @version 1.1.0
  */
 class Mail
 {

@@ -23,13 +23,8 @@ if (!defined('ENT_HTML5')) {
  * String Extension
  *
  * @package Scabbia
- * @subpackage string
+ * @subpackage String
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends mbstring
  *
  * @todo pluralize, singularize
  */

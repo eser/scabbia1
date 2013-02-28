@@ -13,16 +13,11 @@ use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
- * ViewEngine: RainTpl Extension
+ * Views Extension: ViewEngineRaintpl Class
  *
  * @package Scabbia
- * @subpackage viewEngineRaintpl
+ * @subpackage Views
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends mvc
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class ViewEngineRaintpl
 {

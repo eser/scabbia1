@@ -15,16 +15,11 @@ use Scabbia\Config;
 use Scabbia\Framework;
 
 /**
- * Facebook (FB) Extension
+ * Fb Extension
  *
  * @package Scabbia
- * @subpackage fb
+ * @subpackage Fb
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends session
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo direct api query like /me/home
  */

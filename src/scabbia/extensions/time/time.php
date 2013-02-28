@@ -11,13 +11,8 @@ namespace Scabbia\Extensions\Time;
  * Time Extension
  *
  * @package Scabbia
- * @subpackage time
+ * @subpackage Time
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Time
 {

@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Mime;
 use Scabbia\Extensions\String\String;
 
 /**
- * Mimepart Class
+ * Mime Extension: Mimepart Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Media
+ * @version 1.1.0
  */
 class Mimepart
 {

@@ -10,16 +10,11 @@ namespace Scabbia\Extensions\Smtp;
 use Scabbia\Config;
 
 /**
- * SMTP Extension
+ * Smtp Extension
  *
  * @package Scabbia
- * @subpackage smtp
+ * @subpackage Smtp
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Smtp
 {

@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Collections;
 use Scabbia\Extensions\Collections\Collection;
 
 /**
- * Xml Collection Class
+ * Collections Extension: XmlCollection Class
  *
  * @package Scabbia
- * @subpackage UtilityExtensions
+ * @subpackage Collections
+ * @version 1.1.0
  */
 class XmlCollection extends Collection
 {

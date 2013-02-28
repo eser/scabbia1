@@ -17,13 +17,8 @@ use Scabbia\Events;
  * Blackmore Extension
  *
  * @package Scabbia
- * @subpackage blackmore
+ * @subpackage Blackmore
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, resources, validation, http, auth, zmodels
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Blackmore extends Controller
 {

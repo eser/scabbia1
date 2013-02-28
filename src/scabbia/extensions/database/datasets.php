@@ -11,10 +11,11 @@ use Scabbia\Extensions\Database\DatabaseDataset;
 use Scabbia\Config;
 
 /**
- * Datasets Class
+ * Database Extension: Datasets Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class Datasets
 {

@@ -16,10 +16,11 @@ use Scabbia\Extensions;
 use Scabbia\Utils;
 
 /**
- * Controller Class
+ * Mvc Extension: Controller Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Mvc
+ * @version 1.1.0
  */
 abstract class Controller extends Subcontroller
 {
@@ -140,7 +141,7 @@ abstract class Controller extends Subcontroller
     public function redirect()
     {
         $uArgs = func_get_args();
-        call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::redirect', $uArgs);
+        call_user_func_array('Scabbia\\Extensions\\Http\\Http::redirect', $uArgs);
     }
 
     /**

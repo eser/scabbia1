@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Zmodels;
 use Scabbia\Extensions\Zmodels\Zmodels;
 
 /**
- * Zmodel Class
+ * Zmodels Extension: Zmodel Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Zmodels
+ * @version 1.1.0
  */
 class zmodel
 {

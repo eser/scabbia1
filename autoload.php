@@ -6,6 +6,8 @@
  */
 
 /**
+ * A basic implementation of PSR-0 autoloader
+ *
  * @param string $uClassName the classname we are looking for
  */
 function autoload($uClassName)
@@ -21,7 +23,10 @@ function autoload($uClassName)
     }
 
     $tFilename .= str_replace('_', '/', $tClassName) . '.php';
+
     require $tBasePath . $tFilename;
 }
 
 spl_autoload_register('autoload');
+
+return null;

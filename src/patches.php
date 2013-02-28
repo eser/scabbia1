@@ -6,10 +6,6 @@
  */
 
 if (!function_exists('fnmatch')) {
-    /**
-     * @package Scabbia
-     * @subpackage Core
-     */
     function fnmatch($uPattern, $uString)
     {
         for ($tBrackets = 0, $tPregPattern = '', $tCount = 0, $tLen = strlen($uPattern); $tCount < $tLen; $tCount++) {

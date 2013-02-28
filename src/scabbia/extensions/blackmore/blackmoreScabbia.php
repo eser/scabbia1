@@ -15,7 +15,11 @@ use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
- * @ignore
+ * Blackmore Extension: Scabbia Section
+ *
+ * @package Scabbia
+ * @subpackage Blackmore
+ * @version 1.1.0
  */
 class BlackmoreScabbia
 {

@@ -18,13 +18,8 @@ use Scabbia\Utils;
  * Views Extension
  *
  * @package Scabbia
- * @subpackage views
+ * @subpackage Views
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, http, resources, cache
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class views
 {

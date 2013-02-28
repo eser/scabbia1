@@ -12,10 +12,11 @@ use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Framework;
 
 /**
- * Response Class
+ * Http Extension: Response Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Http
+ * @version 1.1.0
  */
 class Response
 {

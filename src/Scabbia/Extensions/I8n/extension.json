@@ -9,12 +9,5 @@
         ],
         "fwversion":        "1.1",
         "fwdependList":     []
-    },
-    "eventList": [
-        {
-            "name":         "httpUrl",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\I8n\\I8n::httpUrl"
-        }
-    ]
+    }
 }

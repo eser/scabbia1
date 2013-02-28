@@ -15,13 +15,8 @@ use Scabbia\Extensions;
  * Validation Extension
  *
  * @package Scabbia
- * @subpackage validation
+ * @subpackage Validation
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends contracts
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Validation
 {
@@ -88,7 +83,7 @@ class Validation
                 $tArgs = $tRule->args;
                 array_unshift($tArgs, $uArray[$tRule->field]);
 
-                if (!call_user_func_array('Scabbia\\Extensions\\Contracts\\contracts::' . $tRule->type, $tArgs)->check()) {
+                if (!call_user_func_array('Scabbia\\Extensions\\Validation\\Contracts::' . $tRule->type, $tArgs)->check()) {
                     self::addSummary($tRule->field, $tRule->errorMessage);
                 }
             }

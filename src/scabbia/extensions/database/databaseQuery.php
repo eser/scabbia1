@@ -12,10 +12,11 @@ use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\String\String;
 
 /**
- * Database Query Class
+ * Database Extension: DatabaseQuery Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class DatabaseQuery
 {

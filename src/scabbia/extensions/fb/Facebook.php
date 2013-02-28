@@ -10,10 +10,14 @@ namespace Scabbia\Extensions\Fb;
 use Scabbia\Extensions\Session\Session;
 
 /**
+ * Fb Extension: Facebook Class
+ *
  * Extends the BaseFacebook class with the intent of using
  * PHP sessions to store user ids and access tokens.
  *
- * @ignore -- Scabbia
+ * @package Scabbia
+ * @subpackage Fb
+ * @version 1.1.0
  */
 class Facebook extends \BaseFacebook
 {

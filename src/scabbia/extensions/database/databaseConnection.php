@@ -17,10 +17,11 @@ use Scabbia\Extensions\Profiler\Profiler;
 use Scabbia\Extensions;
 
 /**
- * Database Connection Class
+ * Database Extension: DatabaseConnection Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Database
+ * @version 1.1.0
  */
 class DatabaseConnection extends Datasource
 {

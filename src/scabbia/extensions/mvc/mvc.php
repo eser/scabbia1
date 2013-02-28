@@ -7,25 +7,21 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Framework;
 
 /**
- * MVC Extension
+ * Mvc Extension
  *
  * @package Scabbia
- * @subpackage mvc
+ * @subpackage Mvc
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string, http, router, models, views
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo remove underscore '_' in controller, action names
  * @todo forbid 'shared' for controller names
@@ -65,29 +61,15 @@ class Mvc
      */
     public static function route($uInput)
     {
-        if (isset($uInput['controller']) && strlen($uInput['controller']) > 0) {
-            $tActualController = $uInput['controller'];
-        } else {
-            $tActualController = self::$defaultController;
-        }
+        $tActualController = $uInput['controller'];
+        $tActualParams = trim($uInput['params'], '/');
+        $uParams = explode('/', $tActualParams);
 
-        if (isset($uInput['params'])) {
-            $tActualParams = trim($uInput['params'], '/');
-        } else {
-            $tActualParams = '';
-        }
-
-        if (strlen($tActualParams) > 0) {
-            $uParams = explode('/', $tActualParams);
-        } else {
-            $uParams = array();
-        }
-
-        controllers::getControllers();
+        Controllers::getControllers();
 
         while (true) {
             try {
-                $tReturn = controllers::$root->render($tActualController, $uParams, $uInput);
+                $tReturn = Controllers::$root->render($tActualController, $uParams, $uInput);
                 if ($tReturn === false) {
                     break;
                 }
@@ -111,85 +93,9 @@ class Mvc
     /**
      * @ignore
      */
-    public static function httpUrl(&$uParms)
-    {
-        $tResolved = Http::routeResolve($uParms['path']);
-
-        if (is_null($tResolved)) {
-            return;
-        }
-
-        $uParms['controller'] = isset($tResolved[1]['controller']) ? $tResolved[1]['controller'] : '';
-        $uParms['action'] = isset($tResolved[1]['action']) ? $tResolved[1]['action'] : '';
-        $uParms['params'] = isset($tResolved[1]['params']) ? $tResolved[1]['params'] : '';
-        $uParms['query'] = isset($tResolved[1]['query']) ? $tResolved[1]['query'] : '';
-    }
-
-    /**
-     * @ignore
-     */
-    public static function generate($uPath)
-    {
-        controllers::getControllers();
-
-        $tResolved = Http::routeResolve($uPath);
-        if (is_null($tResolved)) {
-            return false;
-        }
-
-        $tRoute = $tResolved[1];
-        $tActualController = $tRoute['controller'];
-        $tActualAction = $tRoute['action'];
-
-        $tParameterSegments = null;
-        $tParms = array(
-            'controller' => &$tRoute['controller'],
-            'action' => &$tRoute['action'],
-            'controllerActual' => &$tActualController,
-            'actionActual' => &$tActualAction,
-            'parameterSegments' => &$tParameterSegments
-        );
-        // Events::invoke('routing', $tParms);
-
-        controllers::getControllers();
-
-        while (true) {
-            if (strpos($tActualAction, '_') !== false) {
-                $tReturn = false;
-                break;
-            }
-
-            // $tController = new controllers::$controllerList[$tActualController] ();
-            // $tController->route = $uParams;
-            // $tController->view = $uParams['controller'] . '/' . $uParams['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
-
-            try {
-                $tReturn = controllers::$root->render($tActualAction, $tRoute['parametersArray']);
-                if ($tReturn === false) {
-                    break;
-                }
-
-                if ($tReturn !== true && !is_null($tReturn)) {
-                    call_user_func($tReturn);
-                    break;
-                }
-            } catch (\Exception $ex) {
-                self::error($ex->getMessage());
-                $tReturn = false;
-            }
-
-            break;
-        }
-
-        return $tReturn;
-    }
-
-    /**
-     * @ignore
-     */
     public static function current()
     {
-        return end(controllers::$stack);
+        return end(Controllers::$stack);
     }
 
     /**
@@ -210,43 +116,6 @@ class Mvc
                  'queryString' => $tCurrent->route['queryString']
             )
         );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function urlInternal($uPath)
-    {
-        $tParms = array(
-            'siteroot' => rtrim(Framework::$siteroot, '/'),
-            'device' => Request::$crawlerType,
-            'path' => $uPath
-        );
-
-        Events::invoke('httpUrl', $tParms);
-
-        return String::format(self::$link, $tParms);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function url()
-    {
-        $tArgs = func_get_args();
-
-        return call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::urlInternal', $tArgs);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function redirect()
-    {
-        $tArgs = func_get_args();
-        $tQuery = call_user_func_array('Scabbia\\Extensions\\Mvc\\mvc::urlInternal', $tArgs);
-
-        Response::sendRedirect($tQuery, true);
     }
 
     /**

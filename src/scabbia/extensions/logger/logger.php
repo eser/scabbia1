@@ -19,13 +19,10 @@ use Scabbia\Utils;
  * Logger Extension
  *
  * @package Scabbia
- * @subpackage logger
+ * @subpackage Logger
  * @version 1.1.0
  *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends string
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
+ * @todo PSR-3 Logger Interface Compability
  */
 class Logger
 {

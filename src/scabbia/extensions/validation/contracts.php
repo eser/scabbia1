@@ -5,21 +5,16 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Contracts;
+namespace Scabbia\Extensions\Validation;
 
-use Scabbia\Extensions\Contracts\ContractObject;
+use Scabbia\Extensions\Validation\ContractObject;
 
 /**
- * Contracts Extension
+ * Validation Extension: Contracts Class
  *
  * @package Scabbia
- * @subpackage contracts
+ * @subpackage Validation
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  *
  * @todo add more validators such as phone, hex, octal, digit, isUnique, etc.
  */

@@ -13,6 +13,7 @@ use Scabbia\Framework;
  * Global utility functions which helps framework execution.
  *
  * @package Scabbia
+ * @version 1.1.0
  *
  * @todo serialize/unserialize data (example: resources)
  * @todo download garbage collection
@@ -60,6 +61,7 @@ class Utils
      *
      * @param string $uVersion php version
      *
+     * @example ../../examples/scabbia/utils/phpVersion.php How to use this function
      * @return bool running php version is greater than parameter
      */
     public static function phpVersion($uVersion)
@@ -82,7 +84,7 @@ class Utils
         }
 
         if (substr($uPath, 0, 6) == '{core}') {
-            return Framework::$corepath . substr($uPath, 8);
+            return Framework::$corepath . substr($uPath, 6);
         }
 
         if (substr($uPath, 0, 5) == '{app}') {

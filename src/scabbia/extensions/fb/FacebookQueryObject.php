@@ -8,10 +8,11 @@
 namespace Scabbia\Extensions\Fb;
 
 /**
- * Facebook Query Object Class
+ * Fb Extension: FacebookQueryObject Class
  *
  * @package Scabbia
- * @subpackage ExtensibilityExtensions
+ * @subpackage Fb
+ * @version 1.1.0
  */
 class FacebookQueryObject
 {

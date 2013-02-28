@@ -9,19 +9,15 @@ namespace Scabbia\Extensions\Cache;
 
 use Scabbia\Extensions\Io\Io;
 use Scabbia\Config;
+use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
  * Cache Extension
  *
  * @package Scabbia
- * @subpackage cache
+ * @subpackage Cache
  * @version 1.1.0
- *
- * @scabbia-fwversion 1.1
- * @scabbia-fwdepends io
- * @scabbia-phpversion 5.3.0
- * @scabbia-phpdepends
  */
 class Cache
 {

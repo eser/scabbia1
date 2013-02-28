@@ -12,10 +12,11 @@ use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Config;
 
 /**
- * Subcontroller Class
+ * Mvc Extension: Subcontroller Class
  *
  * @package Scabbia
- * @subpackage LayerExtensions
+ * @subpackage Mvc
+ * @version 1.1.0
  */
 class Subcontroller
 {
