@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Views;
 
@@ -7,6 +12,7 @@ use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Views Extension
@@ -146,7 +152,7 @@ class views
             $uModel = & self::$vars;
         }
 
-        $tViewFilePath = Framework::translatePath($uView);
+        $tViewFilePath = Utils::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
             $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');

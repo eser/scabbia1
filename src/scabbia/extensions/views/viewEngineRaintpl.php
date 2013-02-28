@@ -1,10 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * ViewEngine: RainTpl Extension
@@ -40,13 +46,13 @@ class ViewEngineRaintpl
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('raintpl/path', '{core}include/3rdparty/raintpl/inc'));
+            $tPath = Utils::translatePath(Config::get('raintpl/path', '{core}include/3rdparty/raintpl/inc'));
             require $tPath . '/rain.tpl.class.php';
 
             raintpl::configure('base_url', null);
             raintpl::configure('tpl_dir', $uObject['templatePath']);
             raintpl::configure('tpl_ext', '.rain');
-            raintpl::configure('cache_dir', Framework::writablePath('cache/raintpl/'));
+            raintpl::configure('cache_dir', Utils::writablePath('cache/raintpl/'));
 
             if (Framework::$development >= 1) {
                 raintpl::configure('check_template_update', true);

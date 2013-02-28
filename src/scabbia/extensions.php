@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia;
 
@@ -29,9 +34,9 @@ class Extensions
         self::$configFiles = array();
 
         $tFiles = array();
-        Framework::glob(Framework::$corepath . 'src/scabbia/extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
+        Utils::glob(Framework::$corepath . 'src/scabbia/extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
         if (!is_null(Framework::$apppath)) {
-            Framework::glob(Framework::$apppath . 'extensions/', null, Framework::GLOB_DIRECTORIES | Framework::GLOB_RECURSIVE, '', $tFiles);
+            Utils::glob(Framework::$apppath . 'extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
         }
 
         foreach ($tFiles as $tFile) {

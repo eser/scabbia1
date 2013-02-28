@@ -1,10 +1,15 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Cache;
 
 use Scabbia\Extensions\Io\Io;
 use Scabbia\Config;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Cache Extension
@@ -114,7 +119,7 @@ class Cache
         }
 
         // path
-        $tPath = Framework::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
+        $tPath = Utils::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
 
         // age
         if ($uAge == -1) {
@@ -171,7 +176,7 @@ class Cache
     public static function fileSet($uFolder, $uFilename, $uObject)
     {
         // path
-        $tPath = Framework::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
+        $tPath = Utils::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
 
         // content
         Io::writeSerialize($tPath, $uObject, self::$keyphase);
@@ -184,7 +189,7 @@ class Cache
      */
     public static function fileDestroy($uFolder, $uFilename)
     {
-        $tPath = Framework::writablePath('cache/' . $uFolder, true);
+        $tPath = Utils::writablePath('cache/' . $uFolder, true);
         Io::destroy($tPath . Io::sanitize($uFilename));
     }
 
@@ -194,7 +199,7 @@ class Cache
     public static function fileGarbageCollect($uFolder, $uAge = -1)
     {
         // path
-        $tPath = Framework::writablePath('cache/' . $uFolder, true);
+        $tPath = Utils::writablePath('cache/' . $uFolder, true);
         $tDirectory = new \DirectoryIterator($tPath);
 
         // age

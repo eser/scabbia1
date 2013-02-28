@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Router;
 
@@ -6,7 +11,7 @@ use Scabbia\Extensions\Profiler\Profiler;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Config;
 use Scabbia\Extensions;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Router Extension
@@ -90,7 +95,7 @@ class router
                 continue;
             }
 
-            $tMatches = Framework::pregMatch(ltrim($tRoute[0], '/'), $uQueryString);
+            $tMatches = Utils::pregMatch(ltrim($tRoute[0], '/'), $uQueryString);
 
             if (count($tMatches) > 0) {
                 return array($tRoute[1], $tMatches);
@@ -118,27 +123,5 @@ class router
 
             self::$routes[] = array($tParts[0], $uMethod, $tLimitMethods);
         }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function route($uCallbacks, $uOtherwise = null)
-    {
-        Profiler::start('router', array('action' => 'routing'));
-
-        foreach ((array)$uCallbacks as $tCallback) {
-            $tReturn = call_user_func($tCallback);
-
-            if (!is_null($tReturn) && $tReturn === true) {
-                break;
-            }
-        }
-
-        if (!is_null($uOtherwise) && !isset($tReturn) || $tReturn !== true) {
-            call_user_func($uOtherwise);
-        }
-
-        Profiler::stop();
     }
 }

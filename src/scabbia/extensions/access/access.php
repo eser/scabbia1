@@ -1,11 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Access;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Access Extension
@@ -62,7 +67,7 @@ class Access
             if (!is_null($tMvcPage)) {
                 Views::view($tMvcPage);
             } else {
-                $tFile = Framework::translatePath(Config::get('access/maintenance/page'));
+                $tFile = Utils::translatePath(Config::get('access/maintenance/page'));
                 include $tFile;
             }
 
@@ -77,7 +82,7 @@ class Access
             if (!is_null($tMvcPage)) {
                 Views::view($tMvcPage);
             } else {
-                $tFile = Framework::translatePath(Config::get('access/ipFilter/page'));
+                $tFile = Utils::translatePath(Config::get('access/ipFilter/page'));
                 include $tFile;
             }
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Mvc;
 
@@ -8,7 +13,7 @@ use Scabbia\Extensions\Io\Io;
 use Scabbia\Extensions\Mvc\Subcontroller;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Controller Class
@@ -45,7 +50,7 @@ abstract class Controller extends Subcontroller
      */
     public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs)
     {
-        $tMap = Io::mapFlatten(Framework::translatePath($uDirectory), '*' . $uExtension, true, true);
+        $tMap = Io::mapFlatten(Utils::translatePath($uDirectory), '*' . $uExtension, true, true);
 
         array_unshift($uArgs, $uAction);
         $tPath = implode('/', $uArgs);

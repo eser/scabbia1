@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Resources;
 
@@ -11,6 +16,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Resources Extension
@@ -130,20 +136,20 @@ class Resources
                     switch ($tMimetype) {
                         case 'application/x-httpd-php':
                         case 'application/x-httpd-php-source':
-                            $tContent .= Framework::printFile(Framework::translatePath($tPart['path']));
+                            $tContent .= Utils::printFile(Utils::translatePath($tPart['path']));
                             break;
                         case 'application/x-javascript':
                             $tContent .= '/* JS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Framework::translatePath($tPart['path']));
+                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         case 'text/css':
                             $tContent .= '/* CSS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Framework::translatePath($tPart['path']));
+                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         default:
-                            $tContent .= Io::read(Framework::translatePath($tPart['path']));
+                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
                             break;
                     }
                 }
@@ -186,7 +192,7 @@ class Resources
      */
     public static function getDirectory($uSelectedDirectory, $uSubPath)
     {
-        $tPath = rtrim(Framework::translatePath($uSelectedDirectory['path']), '/');
+        $tPath = rtrim(Utils::translatePath($uSelectedDirectory['path']), '/');
 
         foreach (explode('/', ltrim($uSubPath, '/')) as $tSubDirectory) {
             if (strlen($tSubDirectory) == 0 || $tSubDirectory[0] == '.') {

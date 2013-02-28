@@ -1,10 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * ViewEngine: PHPTAL Extension
@@ -40,7 +46,7 @@ class ViewEnginePhptal
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('phptal/path', '{core}include/3rdparty/PHPTAL'));
+            $tPath = Utils::translatePath(Config::get('phptal/path', '{core}include/3rdparty/PHPTAL'));
             require $tPath . '/PHPTAL.php';
 
             self::$engine = new \PHPTAL();
@@ -67,7 +73,7 @@ class ViewEnginePhptal
 
         self::$engine->setForceReparse(false);
         self::$engine->setTemplateRepository($uObject['templatePath']);
-        self::$engine->setPhpCodeDestination(Framework::writablePath('cache/phptal/'));
+        self::$engine->setPhpCodeDestination(Utils::writablePath('cache/phptal/'));
         self::$engine->setOutputMode(PHPTAL::HTML5);
         self::$engine->setEncoding('UTF-8');
         self::$engine->setTemplate($uObject['templateFile']);

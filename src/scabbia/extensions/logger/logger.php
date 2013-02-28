@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Logger;
 
@@ -8,6 +13,7 @@ use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Logger Extension
@@ -199,7 +205,7 @@ class Logger
         $tContent = '+ ' . String::format(self::$line, $uParams);
 
         if (!Framework::$readonly) {
-            $tFilename = Framework::writablePath('logs/' . String::format(self::$filename, $uParams), true);
+            $tFilename = Utils::writablePath('logs/' . String::format(self::$filename, $uParams), true);
             file_put_contents($tFilename, $tContent, FILE_APPEND);
         }
     }

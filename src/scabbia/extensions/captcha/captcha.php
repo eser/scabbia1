@@ -1,11 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Captcha;
 
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Captcha Extension
@@ -30,7 +35,7 @@ class Captcha
      */
     public static function generate($uCookieName = 'captcha')
     {
-        $tFontFile = Framework::translatePath(Config::get('captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
+        $tFontFile = Utils::translatePath(Config::get('captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
         $tFontSize = intval(Config::get('captcha/fontSize', '45'));
         $tLength = intval(Config::get('captcha/length', '8'));
 

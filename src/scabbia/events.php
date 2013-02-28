@@ -1,8 +1,13 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia;
 
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Event manager which handles communication between framework parts and extensions.
@@ -94,7 +99,7 @@ class Events
                 class_exists($uValue, true);
                 break;
             case 'include':
-                include Framework::translatePath($uValue);
+                include Utils::translatePath($uValue);
                 break;
             case 'callback':
                 if (is_array($uValue)) {

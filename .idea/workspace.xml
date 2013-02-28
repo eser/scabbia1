@@ -5,43 +5,82 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\access\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\arrays\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\auth\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\blackmore\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\cache\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\captcha\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\collections\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\contracts\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\database\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\datasources\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\fb\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\html\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\http\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\i8n\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\io\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\logger\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\media\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\mime\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\models\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\mvc\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\oauth\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\output\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\profiler\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\resources\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\router\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\session\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\smartObjects\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\smtp\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\string\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\time\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\unittest\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\validation\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\views\extension.xml.php" afterPath="" />
-      <change type="DELETED" beforePath="C:\inetpub\wwwroot\scabbia-dev\src\scabbia\extensions\zmodels\extension.xml.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autoload.php" afterPath="$PROJECT_DIR$/autoload.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/patches.php" afterPath="$PROJECT_DIR$/src/patches.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/config.php" afterPath="$PROJECT_DIR$/src/scabbia/config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/events.php" afterPath="$PROJECT_DIR$/src/scabbia/events.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/access/access.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/access/access.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/arrays/arrays.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/arrays/arrays.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/auth/auth.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/auth/auth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmore.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmore.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreScabbia.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreScabbia.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreZmodels.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreZmodels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreZmodelsModel.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreZmodelsModel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/cache/cache.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/cache/cache.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/captcha/captcha.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/captcha/captcha.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/collections/collection.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/collections/collection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/collections/filecollection.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/collections/filecollection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/collections/xmlcollection.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/collections/xmlcollection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/contracts/contractObject.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/contracts/contractObject.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/contracts/contracts.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/contracts/contracts.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/database.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/database.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseConnection.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseConnection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseDataset.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseDataset.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseProviderMysql.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseProviderMysql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseProviderPdo.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseProviderPdo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseQuery.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseQueryResult.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/databaseQueryResult.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/database/datasets.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/database/datasets.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/datasources/datasource.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/datasources/datasource.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/datasources/datasources.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/datasources/datasources.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/fb/Facebook.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/fb/Facebook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/fb/FacebookQueryObject.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/fb/FacebookQueryObject.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/fb/fb.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/fb/fb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/html/html.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/html/html.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/http/http.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/http/http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/http/request.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/http/request.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/http/response.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/http/response.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/i8n/i8n.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/i8n/i8n.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/io/io.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/io/io.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/logger/logger.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/logger/logger.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/media/media.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/media/media.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/media/mediaFile.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/media/mediaFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mime/mime.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mime/mime.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mime/mimepart.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mime/mimepart.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mime/multipart.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mime/multipart.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/models/model.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/models/model.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mvc/controller.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mvc/controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mvc/controllers.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mvc/controllers.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mvc/mvc.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mvc/mvc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/mvc/subcontroller.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/mvc/subcontroller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/oauth/oauth.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/oauth/oauth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/output/output.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/output/output.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/profiler/profiler.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/profiler/profiler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/profiler/profilerData.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/profiler/profilerData.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/resources/resources.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/resources/resources.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/router/router.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/router/router.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/session/session.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/session/session.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/smartObjects/smartObject.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/smartObjects/smartObject.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/smtp/mail.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/smtp/mail.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/smtp/smtp.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/smtp/smtp.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/string/string.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/string/string.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/time/time.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/time/time.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/unittest/unittest.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/unittest/unittest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/validation/validation.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/validation/validation.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/validation/validationRule.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/validation/validationRule.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/view.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/view.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineMarkdown.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineMarkdown.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhp.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhp.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhptal.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhptal.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRaintpl.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRaintpl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRazor.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRazor.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineSmarty.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineSmarty.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineTwig.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineTwig.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/views/views.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/views/views.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodel.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodels.php" afterPath="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scabbia/framework.php" afterPath="$PROJECT_DIR$/src/scabbia/framework.php" />
     </list>
     <ignored path="scabbia-dev.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,44 +104,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="config.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scabbia/config.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="926" selection-end="926" vertical-scroll-proportion="-7.1923075">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="extensions.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/scabbia/extensions.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="66" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.89602447">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="blackmore.json.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/blackmore.json.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="375" selection-end="375" vertical-scroll-proportion="-8.5">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="framework.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scabbia/framework.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="324" column="0" selection-start="9716" selection-end="9716" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -115,22 +117,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/unittest/unittest.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/validation/validation.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/validation/validationRule.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/views/view.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineMarkdown.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhp.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhptal.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRaintpl.php" />
         <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRazor.php" />
         <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineSmarty.php" />
         <option value="$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineTwig.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodels.php" />
-        <option value="$PROJECT_DIR$/views/blackmore/header.php" />
-        <option value="$PROJECT_DIR$/views/blackmore/login.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/framework.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreScabbia.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/extensions/i8n/i8n.php" />
         <option value="$PROJECT_DIR$/src/scabbia/extensions/views/views.php" />
-        <option value="$PROJECT_DIR$/config/framework.json.php" />
-        <option value="$PROJECT_DIR$/config/mvc.json.php" />
-        <option value="$PROJECT_DIR$/config/resources.json.php" />
-        <option value="$PROJECT_DIR$/config/blackmore.json.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/config.php" />
-        <option value="$PROJECT_DIR$/src/scabbia/extensions.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodel.php" />
+        <option value="$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodels.php" />
+        <option value="$PROJECT_DIR$/src/patches.php" />
+        <option value="$PROJECT_DIR$/autoload.php" />
       </list>
     </option>
   </component>
@@ -227,38 +229,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -330,14 +300,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32933104" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298585" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21816827" sideWeight="0.67066896" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21816827" sideWeight="0.67066896" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -404,93 +374,143 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/session/session.php">
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhp.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="43" selection-start="1549" selection-end="1549" vertical-scroll-proportion="0.33235294" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/router/router.php">
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEnginePhptal.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="30" selection-start="1036" selection-end="1036" vertical-scroll-proportion="0.33235294" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/login.php">
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRaintpl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="59" selection-start="307" selection-end="307" vertical-scroll-proportion="0.55" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineRazor.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="118" selection-start="1895" selection-end="1895" vertical-scroll-proportion="0.33333334" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineSmarty.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/viewEngineTwig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodels.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="30" selection-start="531" selection-end="531" vertical-scroll-proportion="0.35882354" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/media/media.php">
+    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/zmodels/zmodel.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="55" selection-start="880" selection-end="880" vertical-scroll-proportion="0.63235295" />
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/views/views.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="44" selection-start="2076" selection-end="2076" vertical-scroll-proportion="0.35882354" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/i8n/i8n.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="61" selection-start="2903" selection-end="2903" vertical-scroll-proportion="0.35882354" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scabbia/extensions/blackmore/blackmoreScabbia.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="188" column="45" selection-start="6096" selection-end="6096" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/resources.json.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="318" selection-end="318" vertical-scroll-proportion="0.40882352" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/mvc.json.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="28" selection-start="358" selection-end="358" vertical-scroll-proportion="0.3764706" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/framework.json.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="19" selection-start="550" selection-end="550" vertical-scroll-proportion="0.33235294" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scabbia/framework.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="324" column="0" selection-start="9716" selection-end="9716" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/blackmore.json.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="375" selection-end="375" vertical-scroll-proportion="-8.5">
+        <state line="4" column="20" selection-start="113" selection-end="113" vertical-scroll-proportion="0.2">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scabbia/config.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="926" selection-end="926" vertical-scroll-proportion="-7.1923075">
-          <folding />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scabbia/events.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scabbia/extensions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="66" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.89602447">
-          <folding />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scabbia/framework.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scabbia/utils.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/patches.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.3">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

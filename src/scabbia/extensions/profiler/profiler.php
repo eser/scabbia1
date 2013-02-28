@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Profiler;
 
@@ -36,7 +41,7 @@ class Profiler
     public static function start($uName, $uParameters = null)
     {
         /*
-        if (Framework::phpVersion('5.3.6')) {
+        if (Utils::phpVersion('5.3.6')) {
             $tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         } else {
             $tBacktrace = debug_backtrace(false);

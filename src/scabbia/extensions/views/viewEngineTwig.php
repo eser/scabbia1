@@ -1,10 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * ViewEngine: Twig Extension
@@ -44,14 +50,14 @@ class viewEngineTwig
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('twig/path', '{core}include/3rdparty/twig/lib/Twig'));
+            $tPath = Utils::translatePath(Config::get('twig/path', '{core}include/3rdparty/twig/lib/Twig'));
             require $tPath . '/Autoloader.php';
 
             Twig_Autoloader::register();
             self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
             $tOptions = array(
-                'cache' => Framework::writablePath('cache/twig/')
+                'cache' => Utils::writablePath('cache/twig/')
             );
 
             if (Framework::$development >= 1) {

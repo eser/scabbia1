@@ -1,8 +1,14 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia;
 
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Configuration class which handles all configuration-based operations.
@@ -29,12 +35,12 @@ class Config
     {
         $tConfig = array();
 
-        foreach (Framework::glob(Framework::$corepath . 'config/', null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES) as $tFile) {
+        foreach (Utils::glob(Framework::$corepath . 'config/', null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 
         if (!is_null(Framework::$apppath)) {
-            foreach (Framework::glob(Framework::$apppath . 'config/', null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES) as $tFile) {
+            foreach (Utils::glob(Framework::$apppath . 'config/', null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
                 self::loadFile($tConfig, $tFile);
             }
         }
@@ -72,7 +78,7 @@ class Config
                             }
                             break;
                         case 'phpversion':
-                            if (!Framework::phpVersion($tNodeName[2])) {
+                            if (!Utils::phpVersion($tNodeName[2])) {
                                 continue 2;
                             }
                             break;

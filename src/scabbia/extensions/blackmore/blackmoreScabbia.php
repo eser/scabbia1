@@ -1,4 +1,9 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Blackmore;
 
@@ -7,6 +12,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * @ignore
@@ -95,7 +101,7 @@ class BlackmoreScabbia
 
         /* BEGIN */
         /*
-        $tCompiled = Framework::printFile('<' . '?php
+        $tCompiled = Utils::printFile('<' . '?php
 
 ignore_user_abort();
 
@@ -108,23 +114,23 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 ?' . '>');
         */
 
-        $tCompiled  = Framework::printFile(file_get_contents(Framework::$corepath . 'src/patches.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/framework.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/config.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/events.php'));
-        $tCompiled .= Framework::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/extensions.php'));
+        $tCompiled  = Utils::printFile(file_get_contents(Framework::$corepath . 'src/patches.php'));
+        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/framework.php'));
+        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/config.php'));
+        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/events.php'));
+        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/extensions.php'));
 
         $tDevelopment = Framework::$development;
         Framework::$development = 0;
 
         $tConfig = Config::load();
         Extensions::load();
-        $tCompiled .= Framework::printFile('<' . '?php Config::$default = ' . var_export($tConfig, true) . '; Extensions::$configFiles = ' . var_export(Extensions::$configFiles, true) . '; ?' . '>');
+        $tCompiled .= Utils::printFile('<' . '?php Config::$default = ' . var_export($tConfig, true) . '; Extensions::$configFiles = ' . var_export(Extensions::$configFiles, true) . '; ?' . '>');
 
         // download files
         if (isset($tConfig['/downloadList'])) {
             foreach ($tConfig['/downloadList'] as $tUrl) {
-                Framework::downloadFile($tUrl['filename'], $tUrl['url']);
+                Utils::downloadFile($tUrl['filename'], $tUrl['url']);
             }
         }
 
@@ -140,7 +146,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
                     $tFilename = $tExtension['path'] . $tFile;
 
                     if (!in_array($tFilename, $tIncludedFiles, true)) {
-                        $tCompiled .= Framework::printFile(file_get_contents($tFilename));
+                        $tCompiled .= Utils::printFile(file_get_contents($tFilename));
                         $tIncludedFiles[] = $tFilename;
                     }
                 }
@@ -150,9 +156,9 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
         // include files
         if (isset($tConfig['/includeList'])) {
             foreach ($tConfig['/includeList'] as $tInclude) {
-                $tIncludePath = pathinfo(Framework::translatePath($tInclude));
+                $tIncludePath = pathinfo(Utils::translatePath($tInclude));
 
-                $tFiles = Framework::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Framework::GLOB_FILES);
+                $tFiles = Utils::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Utils::GLOB_FILES);
                 if ($tFiles !== false) {
                     foreach ($tFiles as $tFilename) {
                         if (substr($tFilename, -1) == '/') {
@@ -160,7 +166,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
                         }
 
                         if (!in_array($tFilename, $tIncludedFiles, true)) {
-                            $tCompiled .= Framework::printFile(file_get_contents($tFilename));
+                            $tCompiled .= Utils::printFile(file_get_contents($tFilename));
                             $tIncludedFiles[] = $tFilename;
                         }
                     }
@@ -196,7 +202,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
      */
     private static function purgeFolder($uFolder)
     {
-        $tDirectory = Framework::glob($uFolder, null, Framework::GLOB_RECURSIVE | Framework::GLOB_FILES);
+        $tDirectory = Utils::glob($uFolder, null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES);
 
         if ($tDirectory === false) {
             return;

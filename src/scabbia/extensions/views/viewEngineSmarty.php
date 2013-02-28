@@ -1,10 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * ViewEngine: Smarty Extension
@@ -40,13 +46,13 @@ class ViewEngineSmarty
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Framework::translatePath(Config::get('smarty/path', '{core}include/3rdparty/smarty/libs'));
+            $tPath = Utils::translatePath(Config::get('smarty/path', '{core}include/3rdparty/smarty/libs'));
             require $tPath . '/Smarty.class.php';
 
             self::$engine = new \Smarty();
 
             self::$engine->setTemplateDir($uObject['templatePath']);
-            self::$engine->setCompileDir(Framework::writablePath('cache/smarty/'));
+            self::$engine->setCompileDir(Utils::writablePath('cache/smarty/'));
 
             if (Framework::$development >= 1) {
                 self::$engine->force_compile = true;

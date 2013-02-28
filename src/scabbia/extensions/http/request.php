@@ -1,11 +1,16 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Request Class
@@ -161,7 +166,7 @@ class Request
      */
     public static function rewriteUrl(&$uUrl, $uMatch, $uForward)
     {
-        $tReturn = Framework::pregReplace($uMatch, $uForward, $uUrl);
+        $tReturn = Utils::pregReplace($uMatch, $uForward, $uUrl);
         if ($tReturn !== false) {
             $uUrl = $tReturn;
 

@@ -1,10 +1,15 @@
 <?php
+/**
+ * Scabbia Framework Version 1.1
+ * https://github.com/larukedi/Scabbia-Framework/
+ * Eser Ozvataf, eser@sent.com
+ */
 
 namespace Scabbia\Extensions\Media;
 
 use Scabbia\Extensions\Media\MediaFile;
 use Scabbia\Config;
-use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Media Extension
@@ -39,7 +44,7 @@ class Media
      */
     public static function extensionLoad()
     {
-        self::$cachePath = Framework::writablePath('cache/media/', true);
+        self::$cachePath = Utils::writablePath('cache/media/', true);
         self::$cacheAge = intval(Config::get('media/cacheAge', '120'));
     }
 
