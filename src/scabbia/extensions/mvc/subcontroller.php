@@ -35,6 +35,14 @@ class Subcontroller
     /**
      * @ignore
      */
+    public $prerender = null;
+    /**
+     * @ignore
+     */
+    public $postrender = null;
+    /**
+     * @ignore
+     */
     public $vars = array();
 
 
@@ -92,7 +100,15 @@ class Subcontroller
         );
         $this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
 
+        if (!is_null($this->prerender)) {
+            call_user_func($this->prerender);
+        }
+
         $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
+
+        if (!is_null($this->postrender)) {
+            call_user_func($this->postrender);
+        }
         array_pop(Controllers::$stack);
 
         return $tReturn;
