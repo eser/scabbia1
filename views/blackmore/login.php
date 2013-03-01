@@ -1,15 +1,15 @@
 <?php
-	use Scabbia\config;
-	use Scabbia\framework;
-	use Scabbia\html;
-	use Scabbia\mvc;
+	use Scabbia\Config;
+	use Scabbia\Framework;
+	use Scabbia\Extensions\Html\Html;
+	use Scabbia\Extensions\Http\Http;
 ?>
-<?php echo html::doctype('html5'); ?>
+<?php echo Html::doctype('html5'); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
 	<meta charset="utf-8" />
 
-	<title><?php echo _(config::get('/blackmore/title', 'Scabbia: Blackmore')); ?></title>
+	<title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
 	<link type="text/css"
 			href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,blackmore"
@@ -20,9 +20,9 @@
 	<script type="text/javascript"
 			src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore"></script>
 </head>
-<body class="<?php echo config::get('/blackmore/bodyStyle', 'stretch'); ?> login">
+<body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?> login">
 <script type="text/javascript">
-	$l.contentBegin('main', '<?php echo framework::$siteroot; ?>');
+	$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
 </script>
 
 <div id="page">
@@ -32,7 +32,7 @@
 			<div class="bheadl"></div>
 			<div class="bheadr"></div>
 
-			<h2><?php echo _(config::get('/blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
+			<h2><?php echo _(Config::get('blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
 		</div>
 
 		<div class="block_content">
@@ -41,7 +41,7 @@
 			<div class="error"><?php echo $error; ?></div>
 			<?php } ?>
 
-			<form method="POST" action="<?php echo mvc::url('blackmore/login'); ?>">
+			<form method="POST" action="<?php echo Http::url('blackmore/login'); ?>">
 				<p>
 					<label><?php echo _('Username:'); ?></label> <br />
 					<input type="text" class="text tipsyFocus" name="username" title="Enter username" />

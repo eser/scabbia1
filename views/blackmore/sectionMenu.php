@@ -1,13 +1,13 @@
 <?php
-	use Scabbia\blackmore;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Blackmore\Blackmore;
+	use Scabbia\Extensions\Http\http;
 ?>
 <?php
-	$tModule = & blackmore::$modules[$model];
+	$tModule = & Blackmore::$modules[$model];
 ?>
 <div class="menuDiv">
 	<div class="menuDivHeader"><a class="boxed"
-			href="<?php echo mvc::url('blackmore/' . $model); ?>"><?php echo _($tModule['title']); ?></a>
+			href="<?php echo Http::url('blackmore/' . $model); ?>"><?php echo _($tModule['title']); ?></a>
 	</div>
 	<?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
 	<ul>
@@ -18,7 +18,7 @@
 			}
 			?>
 			<li><a class="boxed iconcategoryadd"
-					href="<?php echo mvc::url('blackmore/' . $model . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a>
+					href="<?php echo Http::url('blackmore/' . $model . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a>
 			</li>
 			<?php } ?>
 	</ul>

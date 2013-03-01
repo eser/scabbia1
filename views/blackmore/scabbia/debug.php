@@ -1,10 +1,10 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
-	use Scabbia\blackmore;
-	use Scabbia\framework;
+	use Scabbia\Extensions\Views\Views;
+	use Scabbia\Extensions\Session\Session;
+	use Scabbia\Extensions\Blackmore\Blackmore;
+	use Scabbia\Framework;
 ?>
-<?php views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
@@ -15,14 +15,14 @@
 				</div>
 				<?php } ?>
 
-				<?php if(session::existsFlash('notification')) { ?>
+				<?php if(Session::existsFlash('notification')) { ?>
 				<div class="message info">
-					<p><?php echo session::getFlash('notification'); ?></p>
+					<p><?php echo Session::getFlash('notification'); ?></p>
 				</div>
 				<?php } ?>
 
 				<div class="menuDivContainer">
-					<?php views::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
+					<?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -45,12 +45,12 @@
 							<div id="placeholder">
 
 								<?php
-								$tPrevious = QTIME_INIT;
-								foreach(framework::$milestones as $tMilestone) {
+								$tPrevious = Framework::$timestamp;
+								foreach(Framework::$milestones as $tMilestone) {
 									echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
 									$tPrevious = $tMilestone[1];
 								}
-								echo '<b>total</b> = ', number_format($tPrevious - QTIME_INIT, 5), ' ms.<br />';
+								echo '<b>total</b> = ', number_format($tPrevious - Framework::$timestamp, 5), ' ms.<br />';
 								?>
 
 							</div>
@@ -74,4 +74,4 @@
 		</td>
 	</tr>
 </table>
-<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>

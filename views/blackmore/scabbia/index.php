@@ -1,10 +1,10 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
-	use Scabbia\blackmore;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Views\Views;
+	use Scabbia\Extensions\Session\Session;
+	use Scabbia\Extensions\Blackmore\Blackmore;
+	use Scabbia\Extensions\Http\Http;
 ?>
-<?php views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{vendor}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
@@ -15,14 +15,14 @@
 				</div>
 				<?php } ?>
 
-				<?php if(session::existsFlash('notification')) { ?>
+				<?php if(Session::existsFlash('notification')) { ?>
 				<div class="message info">
-					<p><?php echo session::getFlash('notification'); ?></p>
+					<p><?php echo Session::getFlash('notification'); ?></p>
 				</div>
 				<?php } ?>
 
 				<div class="menuDivContainer">
-					<?php views::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
+					<?php Views::viewFile('{vendor}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -51,8 +51,8 @@
 								* add/remove downloads<br />
 								* edit database<br />
 								* edit files<br />
-								* <a href="<?php echo mvc::url('blackmore/build'); ?>">build</a><br />
-								* <a href="<?php echo mvc::url('blackmore/purge'); ?>">purge</a><br />
+								* <a href="<?php echo Http::url('blackmore/build'); ?>">build</a><br />
+								* <a href="<?php echo Http::url('blackmore/purge'); ?>">purge</a><br />
 
 							</div>
 							<div class="clear"></div>
@@ -75,4 +75,4 @@
 		</td>
 	</tr>
 </table>
-<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{vendor}views/blackmore/footer.php'); ?>

@@ -1,9 +1,9 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
+	use Scabbia\Extensions\Views\Views;
+	use Scabbia\Extensions\Session\Session;
 ?>
-<?php views::viewFile('{core}views/blackmore/header.php'); ?>
-<form method="POST" action="@mvc::url('editor/category')">
+<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
+<form method="POST" action="@Http::url('editor/category')">
 	<table id="pageMiddleTable">
 		<tr>
 			<td id="pageMiddleSidebar">
@@ -14,9 +14,9 @@
 					</div>
 					<?php } ?>
 
-					<?php if(session::existsFlash('notification')) { ?>
+					<?php if(Session::existsFlash('notification')) { ?>
 					<div class="message info">
-						<p><?php echo session::getFlash('notification'); ?></p>
+						<p><?php echo Session::getFlash('notification'); ?></p>
 					</div>
 					<?php } ?>
 
@@ -54,4 +54,4 @@
 		</tr>
 	</table>
 </form>
-<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>

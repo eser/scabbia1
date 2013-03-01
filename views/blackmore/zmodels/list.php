@@ -1,10 +1,10 @@
 <?php
-	use Scabbia\views;
-	use Scabbia\session;
-	use Scabbia\blackmore;
-	use Scabbia\mvc;
+	use Scabbia\Extensions\Views\Views;
+	use Scabbia\Extensions\Session\Session;
+	use Scabbia\Extensions\Blackmore\Blackmore;
+	use Scabbia\Extensions\Mvc\Mvc;
 ?>
-<?php views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
@@ -15,14 +15,14 @@
 				</div>
 				<?php } ?>
 
-				<?php if(session::existsFlash('notification')) { ?>
+				<?php if(Session::existsFlash('notification')) { ?>
 				<div class="message info">
-					<p><?php echo session::getFlash('notification'); ?></p>
+					<p><?php echo Session::getFlash('notification'); ?></p>
 				</div>
 				<?php } ?>
 
 				<div class="menuDivContainer">
-					<?php views::viewFile('{core}views/blackmore/sectionMenu.php', blackmore::$module); ?>
+					<?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -63,9 +63,9 @@
 							<?php } ?>
 						<td>
 							<a class="iconcategoryedit"
-									href="<?php echo mvc::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
+									href="<?php echo Http::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
 							<a class="iconcategorydelete delete"
-									href="<?php echo mvc::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
+									href="<?php echo Http::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
 						</td>
 					</tr>
 						<?php } ?>
@@ -95,4 +95,4 @@
 		</td>
 	</tr>
 </table>
-<?php views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>

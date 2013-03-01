@@ -1,4 +1,4 @@
-﻿/**
+/**
  @preserve CLEditor XHTML Plugin v1.0.0
  http://premiumsoftware.net/cleditor
  requires CLEditor v1.3.0 or later
