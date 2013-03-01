@@ -11,18 +11,15 @@
 
 	<title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
-	<link type="text/css"
-			href="<?php echo $root; ?>/scabbia.css?reset,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,blackmore"
-			rel="stylesheet" media="all" />
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $root; ?>/home/rss" />
-	<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
+	<link type="text/css" href="<?php echo Http::url('scabbia.css?reset,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,blackmore') ?>" rel="stylesheet" media="all" />
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo Http::url('home/rss'); ?>" />
+    <link rel="pingback" href="<?php echo Http::url('api/xmlrpc'); ?>" />
 
-	<script type="text/javascript"
-			src="<?php echo $root; ?>/scabbia.js?jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore"></script>
+	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,flot,blackmore'); ?>"></script>
 </head>
 <body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?> login">
 <script type="text/javascript">
-	$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
+	$l.contentBegin('login', '<?php echo Framework::$siteroot; ?>');
 </script>
 
 <div id="page">

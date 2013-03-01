@@ -10,7 +10,7 @@ function insertImageToParent(src) {
 	insertHtmlToParent('<img src="' + src + '" />');
 }
 
-$(document).ready(function() {
+$l.ready(function() {
 	$('#pageMiddleSidebarToggle').click(function() {
 		var element = $('#pageMiddleSidebar');
 		if(element.css('display') == 'none') {

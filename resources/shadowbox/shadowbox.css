@@ -1,30 +1,91 @@
-#sb-title-inner,#sb-info-inner,#sb-loading-inner,div.sb-message{font-family:"HelveticaNeue-Light","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:200;color:#fff;}
-#sb-container{position:fixed;margin:0;padding:0;top:0;left:0;z-index:999;text-align:left;visibility:hidden;display:none;}
-#sb-overlay{position:relative;height:100%;width:100%;}
-#sb-wrapper{position:absolute;visibility:hidden;width:100px;}
-#sb-wrapper-inner{position:relative;border:1px solid #303030;overflow:hidden;height:100px;}
-#sb-body{position:relative;height:100%;}
-#sb-body-inner{position:absolute;height:100%;width:100%;}
-#sb-player.html{height:100%;overflow:auto;}
-#sb-body img{border:none;}
-#sb-loading{position:relative;height:100%;}
-#sb-loading-inner{position:absolute;font-size:14px;line-height:24px;height:24px;top:50%;margin-top:-12px;width:100%;text-align:center;}
-#sb-loading-inner span{background:url('scabbia/shadowbox/images/loading.gif') no-repeat;padding-left:34px;display:inline-block;}
-#sb-body,#sb-loading{background-color:#FFFFFF;}
-#sb-title,#sb-info{position:relative;margin:0;padding:0;overflow:hidden;}
-#sb-title,#sb-title-inner{height:26px;line-height:26px;}
-#sb-title-inner{font-size:16px;}
-#sb-info,#sb-info-inner{height:20px;line-height:20px;}
-#sb-info-inner{font-size:12px;}
-#sb-nav{float:right;height:16px;padding:2px 0;width:45%;}
-#sb-nav a{display:block;float:right;height:16px;width:16px;margin-left:3px;cursor:pointer;background-repeat:no-repeat;}
-#sb-nav-close{background-image:url('scabbia/shadowbox/images/close.png');}
-#sb-nav-next{background-image:url('scabbia/shadowbox/images/next.png');}
-#sb-nav-previous{background-image:url('scabbia/shadowbox/images/previous.png');}
-#sb-nav-play{background-image:url('scabbia/shadowbox/images/play.png');}
-#sb-nav-pause{background-image:url('scabbia/shadowbox/images/pause.png');}
-#sb-counter{float:left;width:45%;}
-#sb-counter a{padding:0 4px 0 0;text-decoration:none;cursor:pointer;color:#fff;}
-#sb-counter a.sb-counter-current{text-decoration:underline;}
-div.sb-message{font-size:12px;padding:10px;text-align:center;}
-div.sb-message a:link,div.sb-message a:visited{color:#fff;text-decoration:underline;}
+/*!
+ * Shadowbox, version @VERSION
+ * http://shadowbox-js.com/
+ * Copyright 2007-2011 Michael Jackson
+ */
+
+#shadowbox {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  text-align: left;
+  visibility: hidden;
+  display: none;
+}
+
+#shadowbox img {
+  border: none;
+}
+
+#shadowbox * {
+  outline: 0; /* Disable dotted outline in Firefox */
+}
+
+#sb-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#sb-wrapper {
+  position: absolute;
+  display: block;
+  visibility: hidden;
+  left: 50%;
+  top: 50%;
+}
+
+#sb-body, #sb-content, #sb-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#sb-body {}
+
+#sb-content { background: black }
+
+#sb-cover {
+  background: black;
+}
+
+#sb-close, #sb-next, #sb-prev {
+  position: absolute;
+  display: none;
+  background: url("scabbia/shadowbox/images/shadowbox-icons.png") no-repeat;
+  cursor: pointer;
+}
+
+#shadowbox.active #sb-close, #shadowbox.has-next #sb-next, #shadowbox.has-prev #sb-prev {
+  display: block;
+}
+
+#sb-close {
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 40px;
+  background-position: 50% 0;
+  margin: -18px -30px 0 0;
+}
+
+#sb-next {
+  right: 0;
+  top: 50%;
+  width: 60px;
+  height: 46px;
+  background-position: 50% -40px;
+  margin: -20px -40px 0 0;
+}
+
+#sb-prev {
+  left: 0;
+  top: 50%;
+  width: 60px;
+  height: 46px;
+  background-position: 50% -86px;
+  margin: -20px 0 0 -37px;
+}

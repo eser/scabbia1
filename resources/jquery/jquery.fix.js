@@ -2,7 +2,7 @@
 
 	$.browser = {
 		opera: true,
-		version: '12.02'
+		version: '12.13'
 	};
 
 	/*

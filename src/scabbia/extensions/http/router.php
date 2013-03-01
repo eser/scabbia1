@@ -43,7 +43,7 @@ class Router
 
         self::$rewrites = array();
         foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
-            self::addRewrite($tRewriteList['match'], $tRewriteList['forward']);
+            self::addRewrite($tRewriteList['match'], $tRewriteList['forward'], isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10);
         }
 
         self::$routes = array();
@@ -55,14 +55,14 @@ class Router
                 }
             }
 
-            self::addRoute($tRouteList['match'], $tRouteList['callback'], $tDefaults);
+            self::addRoute($tRouteList['match'], $tRouteList['callback'], $tDefaults, isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10);
         }
     }
 
     /**
      * @ignore
      */
-    public static function addRewrite($uMatch, $uForward)
+    public static function addRewrite($uMatch, $uForward, $uPriority = 10)
     {
         self::load();
 
@@ -70,14 +70,20 @@ class Router
             $tParts = explode(' ', $tMatch, 2);
             $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-            self::$rewrites[] = array($tParts[0], $uForward, $tLimitMethods);
+            self::$rewrites[] = array($tParts[0], $uForward, $tLimitMethods, $uPriority);
         }
+        usort(
+            self::$rewrites,
+            function ($uFirst, $uSecond) {
+                return strnatcmp($uFirst[3], $uSecond[3]);
+            }
+        );
     }
 
     /**
      * @ignore
      */
-    public static function addRoute($uMatch, $uCallback, $uDefaults = array())
+    public static function addRoute($uMatch, $uCallback, $uDefaults = array(), $uPriority = 10)
     {
         self::load();
 
@@ -85,8 +91,14 @@ class Router
             $tParts = explode(' ', $tMatch, 2);
             $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-            self::$routes[] = array($tParts[0], $uCallback, $tLimitMethods, $uDefaults);
+            self::$routes[] = array($tParts[0], $uCallback, $tLimitMethods, $uDefaults, $uPriority);
         }
+        usort(
+            self::$routes,
+            function ($uFirst, $uSecond) {
+                return strnatcmp($uFirst[4], $uSecond[4]);
+            }
+        );
     }
 
     /**

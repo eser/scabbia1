@@ -12,11 +12,11 @@
 
 		<title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
 
-		<link type="text/css" href="<?php echo Http::url('scabbia.css?reset,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,blackmore'); ?>" rel="stylesheet" media="all" />
-		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo Http::url('/home/rss'); ?>" />
-		<link rel="pingback" href="<?php echo $root; ?>/xmlrpc.php" />
+		<link type="text/css" href="<?php echo Http::url('scabbia.css?reset,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,blackmore'); ?>" rel="stylesheet" media="all" />
+		<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo Http::url('home/rss'); ?>" />
+		<link rel="pingback" href="<?php echo Http::url('api/xmlrpc'); ?>" />
 
-		<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,tipsy,flot,blackmore'); ?>"></script>
+		<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,jqueryui,validation,cleditor,tablesorter,shadowbox,flot,blackmore'); ?>"></script>
 	</head>
 	<body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
