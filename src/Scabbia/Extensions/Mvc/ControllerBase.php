@@ -100,8 +100,14 @@ class ControllerBase
             }
 
             // fallback 2
-            if ($tMe->hasMethod($tActionName) && $tMe->getMethod($tActionName)->isPublic()) {
-                $tMethod = $tActionName;
+            $tMethod = $tActionName;
+            if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
+                break;
+            }
+
+            // fallback 3
+            $tMethod = 'otherwise';
+            if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
                 break;
             }
 
@@ -112,7 +118,7 @@ class ControllerBase
 
         $this->route = array(
             'controller' => get_class($this),
-            'action' => $tMethod,
+            'action' => $tActionName,
             'params' => $uParams,
             'query' => isset($uInput['query']) ? $uInput['query'] : ''
         );

@@ -7,14 +7,14 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\Http\Router;
-use Scabbia\Extensions\Http\Request;
-use Scabbia\Extensions\Http\Response;
-use Scabbia\Extensions\Mvc\Controllers;
-use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Events;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Http\Request;
+use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Http\Router;
+use Scabbia\Extensions\Mvc\Controllers;
+use Scabbia\Extensions\String\String;
 use Scabbia\Framework;
 
 /**
@@ -102,40 +102,20 @@ class Mvc
     /**
      * @ignore
      */
-    public static function currentUrl()
-    {
-        $tCurrent = self::current();
-
-        return String::format(
-            self::$link,
-            array(
-                 'siteroot' => rtrim(Framework::$siteroot, '/'),
-                 'device' => Request::$crawlerType,
-                 'controller' => $tCurrent->route['controller'],
-                 'action' => $tCurrent->route['action'],
-                 'parameters' => $tCurrent->route['parameters'],
-                 'queryString' => $tCurrent->route['queryString']
-            )
-        );
-    }
-
-    /**
-     * @ignore
-     */
     public static function export($uAjaxOnly = false)
     {
         $tArray = array();
 
         foreach (get_declared_classes() as $tClass) {
-            if (!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\Controller')) { // && $tClass != 'controller'
+            if (!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\Controller')) {
                 continue;
             }
 
             $tReflectedClass = new \ReflectionClass($tClass);
             foreach ($tReflectedClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethod) {
-                if ($tMethod->class == 'controller') {
-                    continue;
-                }
+                // if ($tMethod->class == 'Controller') {
+                //    continue;
+                // }
 
                 $tPos = strpos($tMethod->name, 'ajax_');
                 if ($uAjaxOnly && $tPos === false) {
