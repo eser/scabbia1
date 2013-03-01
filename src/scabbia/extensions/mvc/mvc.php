@@ -7,6 +7,7 @@
 
 namespace Scabbia\Extensions\Mvc;
 
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
@@ -126,7 +127,7 @@ class Mvc
         $tArray = array();
 
         foreach (get_declared_classes() as $tClass) {
-            if (!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\controller')) { // && $tClass != 'controller'
+            if (!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\Controller')) { // && $tClass != 'controller'
                 continue;
             }
 
@@ -180,7 +181,7 @@ EOD;
                     continue;
                 }
 
-                $tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . self::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
+                $tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
             }
             $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
         }
