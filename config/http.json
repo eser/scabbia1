@@ -12,7 +12,7 @@
 
         "routeList": [
             {
-                "match":            "GET (controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
+                "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
                 "callback":         "Scabbia\\Extensions\\Mvc\\Mvc::route",
                 "defaults": {
                     "controller":   "home",

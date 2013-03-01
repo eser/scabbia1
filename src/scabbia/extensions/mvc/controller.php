@@ -7,12 +7,8 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\Io\Io;
-use Scabbia\Extensions\Mvc\Subcontroller;
-use Scabbia\Extensions\Views\Views;
-use Scabbia\Extensions;
+use Scabbia\Extensions\Io;
+use Scabbia\Extensions\Mvc\ControllerBase;
 use Scabbia\Utils;
 
 /**
@@ -22,30 +18,8 @@ use Scabbia\Utils;
  * @subpackage Mvc
  * @version 1.1.0
  */
-abstract class Controller extends Subcontroller
+abstract class Controller extends ControllerBase
 {
-    /**
-     * @ignore
-     */
-    public $route = null;
-    /**
-     * @ignore
-     */
-    public $view = null;
-    /**
-     * @ignore
-     */
-    public $db;
-
-
-    /**
-     * @ignore
-     */
-    public function __construct()
-    {
-        $this->db = Datasources::get(); // default datasource to member 'db'
-    }
-
     /**
      * @ignore
      */
@@ -63,93 +37,5 @@ abstract class Controller extends Subcontroller
         }
 
         return false;
-    }
-
-    /**
-     * @ignore
-     */
-    public function loadDatasource($uDatasourceName, $uMemberName = null)
-    {
-        $uArgs = func_get_args();
-
-        if (is_null($uMemberName)) {
-            $uMemberName = $uDatasourceName;
-        }
-
-        $this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Mvc\\controllers::loadDatasource', $uArgs);
-    }
-
-    /**
-     * @ignore
-     */
-    public function load($uModelClass, $uMemberName = null)
-    {
-        $uArgs = func_get_args();
-
-        if (is_null($uMemberName)) {
-            $uMemberName = $uModelClass;
-        }
-
-        $this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Mvc\\controllers::load', $uArgs);
-    }
-
-    /**
-     * @ignore
-     */
-    public function view($uView = null, $uModel = null)
-    {
-        Views::view(
-            !is_null($uView) ? $uView : $this->view,
-            !is_null($uModel) ? $uModel : $this->vars
-        );
-    }
-
-    /**
-     * @ignore
-     */
-    public function viewFile($uView = null, $uModel = null)
-    {
-        Views::viewFile(
-            !is_null($uView) ? $uView : $this->view,
-            !is_null($uModel) ? $uModel : $this->vars
-        );
-    }
-
-    /**
-     * @ignore
-     */
-    public function json($uModel = null)
-    {
-        Views::json(
-            !is_null($uModel) ? $uModel : $this->vars
-        );
-    }
-
-    /**
-     * @ignore
-     */
-    public function xml($uModel = null)
-    {
-        Views::xml(
-            !is_null($uModel) ? $uModel : $this->vars
-        );
-    }
-
-    /**
-     * @ignore
-     */
-    public function redirect()
-    {
-        $uArgs = func_get_args();
-        call_user_func_array('Scabbia\\Extensions\\Http\\Http::redirect', $uArgs);
-    }
-
-    /**
-     * @ignore
-     */
-    public function end()
-    {
-        $uArgs = func_get_args();
-        call_user_func_array('Scabbia\\Framework::end', $uArgs);
     }
 }

@@ -7,10 +7,9 @@
 
 namespace Scabbia\Extensions\Auth;
 
-use Scabbia\Extensions\Mvc\Mvc;
-use Scabbia\Extensions\Session\Session;
 use Scabbia\Config;
-use Scabbia\Extensions;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Session\Session;
 use Scabbia\Framework;
 
 /**

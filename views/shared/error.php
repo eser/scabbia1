@@ -1,8 +1,7 @@
 <?php
-	use Scabbia\Extensions\Views\Views;
-	use Scabbia\Extensions\Html\Html;
-	use Scabbia\Extensions\Http\Http;
-	use Scabbia\Framework;
+    use Scabbia\Extensions\Html\Html;
+    use Scabbia\Extensions\Http\Http;
+    use Scabbia\Framework;
 
 	echo Html::doctype('html5');
 ?>

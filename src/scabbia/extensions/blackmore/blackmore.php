@@ -56,14 +56,13 @@ class Blackmore extends Controller
             'callback' => array(&$this, 'login')
         );
 
-        if (!isset(self::$modules[$uAction])) {
+        self::$module = (strlen($uAction) > 0) ? strtolower($uAction) : 'index';
+        if (!isset(self::$modules[self::$module])) {
             return false;
         }
 
-        self::$module = $uAction;
-
         if (count($uParams) > 0) {
-            foreach (self::$modules[$uAction]['actions'] as $tAction) {
+            foreach (self::$modules[self::$module]['actions'] as $tAction) {
                 if ($uParams[0] != $tAction['action']) {
                     continue;
                 }
@@ -72,7 +71,7 @@ class Blackmore extends Controller
             }
         }
 
-        return call_user_func_array(self::$modules[$uAction]['callback'], $uParams);
+        return call_user_func_array(self::$modules[self::$module]['callback'], $uParams);
     }
 
     /**

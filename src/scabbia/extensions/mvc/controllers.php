@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Mvc;
 
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Mvc\Subcontroller;
+use Scabbia\Extensions\Mvc\ControllerBase;
 use Scabbia\Events;
 use Scabbia\Extensions;
 
@@ -44,7 +44,7 @@ class Controllers
             $tParms = array();
             Events::invoke('registerControllers', $tParms);
 
-            self::$root = new Subcontroller();
+            self::$root = new ControllerBase();
 
             // if autoload is enabled
             // todo: maybe split _ for children
@@ -55,11 +55,11 @@ class Controllers
 
                 $tPos = strrpos($tClass, '\\');
                 if ($tPos !== false) {
-                    self::$root->addSubcontroller(substr($tClass, $tPos + 1), $tClass);
+                    self::$root->addChildController(substr($tClass, $tPos + 1), $tClass);
                     continue;
                 }
 
-                self::$root->addSubcontroller($tClass, $tClass);
+                self::$root->addChildController($tClass, $tClass);
             }
         }
     }
