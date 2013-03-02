@@ -212,7 +212,12 @@
                     {
                         "type":         "file",
                         "class":        "reset",
-                        "path":         "{core}resources/normalize/normalize.css"
+                        "path":         "{core}resources/reset/reset.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "normalize",
+                        "path":         "{core}resources/normalize.css/normalize.css"
                     },
                     {
                         "type":         "file",

@@ -7,10 +7,10 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Mvc\ControllerBase;
 use Scabbia\Events;
 use Scabbia\Extensions;
+use Scabbia\Extensions\Datasources\Datasources;
+use Scabbia\Extensions\Mvc\ControllerBase;
 
 /**
  * Mvc Extension: Controllers Class
