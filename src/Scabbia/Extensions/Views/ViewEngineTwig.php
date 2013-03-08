@@ -19,7 +19,7 @@ use Scabbia\Utils;
  * @subpackage Views
  * @version 1.1.0
  */
-class viewEngineTwig
+class ViewEngineTwig
 {
     /**
      * @ignore
@@ -36,7 +36,7 @@ class viewEngineTwig
      */
     public static function extensionLoad()
     {
-        Views::registerViewEngine('twig', 'viewEngineTwig');
+        Views::registerViewEngine('twig', 'Scabbia\\Extensions\\Views\\ViewEngineTwig');
     }
 
     /**

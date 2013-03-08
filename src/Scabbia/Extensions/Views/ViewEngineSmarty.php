@@ -32,7 +32,7 @@ class ViewEngineSmarty
      */
     public static function extensionLoad()
     {
-        Views::registerViewEngine('tpl', 'viewEngineSmarty');
+        Views::registerViewEngine('tpl', 'Scabbia\\Extensions\\Views\\ViewEngineSmarty');
     }
 
     /**

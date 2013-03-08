@@ -32,7 +32,7 @@ class ViewEngineRaintpl
      */
     public static function extensionLoad()
     {
-        Views::registerViewEngine('rain', 'viewEngineRaintpl');
+        Views::registerViewEngine('rain', 'Scabbia\\Extensions\\Views\\ViewEngineRaintpl');
     }
 
     /**

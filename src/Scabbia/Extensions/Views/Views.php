@@ -21,7 +21,7 @@ use Scabbia\Utils;
  * @subpackage Views
  * @version 1.1.0
  */
-class views
+class Views
 {
     /**
      * @ignore
@@ -42,7 +42,7 @@ class views
             self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
         }
 
-        self::registerViewEngine('php', 'viewEnginePhp');
+        self::registerViewEngine('php', 'Scabbia\\Extensions\\Views\\ViewEnginePhp');
     }
 
     /**

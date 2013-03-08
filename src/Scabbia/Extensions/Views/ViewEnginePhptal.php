@@ -32,7 +32,7 @@ class ViewEnginePhptal
      */
     public static function extensionLoad()
     {
-        Views::registerViewEngine('zpt', 'viewEnginePhptal');
+        Views::registerViewEngine('zpt', 'Scabbia\\Extensions\\Views\\ViewEnginePhptal');
     }
 
     /**

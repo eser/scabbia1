@@ -40,7 +40,7 @@ class ViewEngineRazor
     public static function extensionLoad()
     {
         self::$compiledAge = intval(Config::get('razor/templates/compiledAge', '120'));
-        Views::registerViewEngine('cshtml', 'viewEngineRazor');
+        Views::registerViewEngine('cshtml', 'Scabbia\\Extensions\\Views\\ViewEngineRazor');
     }
 
     /**
