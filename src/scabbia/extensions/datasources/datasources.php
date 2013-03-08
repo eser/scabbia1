@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Datasources;
 
 use Scabbia\Config;
+use Scabbia\Events;
 
 /**
  * Datasources Extension
@@ -39,6 +40,11 @@ class Datasources
     {
         if (is_null(self::$datasources)) {
             self::$datasources = array();
+
+            $tParms = array(
+                'datasources' => &self::$datasources
+            );
+            Events::invoke('datasourcesRegister', $tParms);
 
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
                 $tDatasource = new self::$types[$tDatasourceConfig['type']]['datasource'] ($tDatasourceConfig);

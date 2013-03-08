@@ -14,9 +14,9 @@
     },
     "eventList": [
         {
-            "name":         "load",
+            "name":         "datasourcesRegister",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Database\\Database::extensionLoad"
+            "value":        "Scabbia\\Extensions\\Database\\Database::datasourcesRegister"
         }
     ]
 }

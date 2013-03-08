@@ -84,9 +84,10 @@ class Database
     /**
      * @ignore
      */
-    public static function extensionLoad()
+    public static function datasourcesRegister()
     {
         Datasources::registerType('pdo', 'Scabbia\\Extensions\\Database\\DatabaseConnection', 'Scabbia\\Extensions\\Database\\DatabaseProviderPdo');
         Datasources::registerType('mysql', 'Scabbia\\Extensions\\Database\\DatabaseConnection', 'Scabbia\\Extensions\\Database\\DatabaseProviderMysql');
     }
+
 }
