@@ -98,11 +98,12 @@ class Framework
         // ini_set('error_log', self::$basepath . 'error.log');
 
         // Include framework dependencies and load them
-        require self::$corepath . 'src/patches.php';
-        // require self::$corepath . 'src/scabbia/framework.php';
-        require self::$corepath . 'src/scabbia/config.php';
-        require self::$corepath . 'src/scabbia/events.php';
-        require self::$corepath . 'src/scabbia/extensions.php';
+        require self::$corepath . 'src/Patches.php';
+        // require self::$corepath . 'src/Scabbia/Framework.php';
+        require self::$corepath . 'src/Scabbia/Utils.php';
+        require self::$corepath . 'src/Scabbia/Config.php';
+        require self::$corepath . 'src/Scabbia/Events.php';
+        require self::$corepath . 'src/Scabbia/Extensions.php';
 
         // endpoints
         if (count(self::$endpoints) > 0) {
