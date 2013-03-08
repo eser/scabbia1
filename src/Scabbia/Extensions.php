@@ -35,9 +35,9 @@ class Extensions
         self::$configFiles = array();
 
         $tFiles = array();
-        Utils::glob(Framework::$corepath . 'src/scabbia/extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
+        Utils::glob(Framework::$corepath . 'src/Scabbia/Extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
         if (!is_null(Framework::$apppath)) {
-            Utils::glob(Framework::$apppath . 'extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
+            Utils::glob(Framework::$apppath . 'Extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
         }
 
         foreach ($tFiles as $tFile) {
