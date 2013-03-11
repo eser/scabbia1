@@ -319,49 +319,51 @@ class Utils
         $tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
         $tRecursivePath = $tPath . $uRecursivePath;
 
-        try {
-            $tDir = new \DirectoryIterator($tRecursivePath);
+        // if(file_exists($tRecursivePath)) {
+            try {
+                $tDir = new \DirectoryIterator($tRecursivePath);
 
-            foreach ($tDir as $tFile) {
-                $tFileName = $tFile->getFilename();
+                foreach ($tDir as $tFile) {
+                    $tFileName = $tFile->getFilename();
 
-                if ($tFileName[0] == '.') { // $tFile->isDot()
-                    continue;
-                }
-
-                if ($tFile->isDir()) {
-                    $tDirectory = $uRecursivePath . $tFileName . '/';
-
-                    if (($uOptions & self::GLOB_DIRECTORIES) > 0) {
-                        $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . $tDirectory;
+                    if ($tFileName[0] == '.') { // $tFile->isDot()
+                        continue;
                     }
 
-                    if (($uOptions & self::GLOB_RECURSIVE) > 0) {
-                        self::glob(
-                            $tPath,
-                            $uFilter,
-                            $uOptions,
-                            $tDirectory,
-                            $uArray
-                        );
+                    if ($tFile->isDir()) {
+                        $tDirectory = $uRecursivePath . $tFileName . '/';
+
+                        if (($uOptions & self::GLOB_DIRECTORIES) > 0) {
+                            $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . $tDirectory;
+                        }
+
+                        if (($uOptions & self::GLOB_RECURSIVE) > 0) {
+                            self::glob(
+                                $tPath,
+                                $uFilter,
+                                $uOptions,
+                                $tDirectory,
+                                $uArray
+                            );
+                        }
+
+                        continue;
                     }
 
-                    continue;
-                }
+                    if (($uOptions & self::GLOB_FILES) > 0 && $tFile->isFile()) {
+                        if (is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
+                            $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $uRecursivePath . $tFileName : $tRecursivePath . $tFileName;
+                        }
 
-                if (($uOptions & self::GLOB_FILES) > 0 && $tFile->isFile()) {
-                    if (is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
-                        $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $uRecursivePath . $tFileName : $tRecursivePath . $tFileName;
+                        continue;
                     }
-
-                    continue;
                 }
+
+                return $uArray;
+            } catch (\Exception $tException) {
+                // echo $tException->getMessage();
             }
-
-            return $uArray;
-        } catch (\Exception $tException) {
-            // echo $tException->getMessage();
-        }
+        // }
 
         $uArray = false;
 
