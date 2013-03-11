@@ -31,6 +31,7 @@ class Config
      * Loads the default configuration for the current application.
      *
      * @uses loadFile()
+     * @return array loaded configuration
      */
     public static function load()
     {

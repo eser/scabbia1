@@ -18,25 +18,28 @@ use Scabbia\Utils;
  * @package Scabbia
  * @subpackage Access
  * @version 1.1.0
+ *
+ * @todo must be attached before 'run' event
+ * @todo no need of mvcpage stuff
  */
 class Access
 {
     /**
-     * @ignore
+     * Whether the system in maintenance mode or not
      */
     public static $maintenance = false;
     /**
-     * @ignore
+     * The allowed ip addresses during the maintenance mode
      */
     public static $maintenanceExcludeIps = array();
     /**
-     * @ignore
+     * Set of ip address rules
      */
     public static $ipFilters = array();
 
 
     /**
-     * @ignore
+     * Checks the set of rules against visitor's data
      */
     public static function run()
     {

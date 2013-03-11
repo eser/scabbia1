@@ -18,11 +18,13 @@ use Scabbia\Framework;
  * @package Scabbia
  * @subpackage Auth
  * @version 1.1.0
+ *
+ * @todo no need of mvcpage stuff
  */
 class Auth
 {
     /**
-     * @ignore
+     * Session key will be stored by client
      */
     public static $sessionKey;
 

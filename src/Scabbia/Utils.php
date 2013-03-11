@@ -87,6 +87,10 @@ class Utils
             return Framework::$corepath . substr($uPath, 6);
         }
 
+        if (substr($uPath, 0, 8) == '{vendor}') {
+            return Framework::$vendorpath . substr($uPath, 8);
+        }
+
         if (substr($uPath, 0, 5) == '{app}') {
             return Framework::$apppath . substr($uPath, 5);
         }

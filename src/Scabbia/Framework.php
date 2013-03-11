@@ -20,6 +20,9 @@ use Scabbia\Utils;
  */
 class Framework
 {
+    /**
+     * Scabbia Framework's version
+     */
     const VERSION = '1.1';
 
     /**
@@ -46,6 +49,10 @@ class Framework
      * Indicates the core directory which framework runs in
      */
     public static $corepath = null;
+    /**
+     * Indicates the vendor directory which dependencies can be found at
+     */
+    public static $vendorpath = null;
     /**
      * Stores relative path of running application
      */
@@ -90,20 +97,10 @@ class Framework
             self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
         }
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
+        self::$vendorpath = self::$basepath . 'vendor/';
 
         // Set error reporting occasions
         error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
-        // ini_set('display_errors', '1');
-        // ini_set('log_errors', '0');
-        // ini_set('error_log', self::$basepath . 'error.log');
-
-        // Include framework dependencies and load them
-        require self::$corepath . 'src/Patches.php';
-        // require self::$corepath . 'src/Scabbia/Framework.php';
-        require self::$corepath . 'src/Scabbia/Utils.php';
-        require self::$corepath . 'src/Scabbia/Config.php';
-        require self::$corepath . 'src/Scabbia/Events.php';
-        require self::$corepath . 'src/Scabbia/Extensions.php';
 
         // endpoints
         if (count(self::$endpoints) > 0) {
@@ -115,7 +112,6 @@ class Framework
 
                 if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
                     self::$endpoint = $tEndpoint;
-                    // self::$issecure = ($tParsed['scheme'] == 'https');
                     break;
                 }
             }
@@ -171,9 +167,12 @@ class Framework
     }
 
     /**
-     * Calls
+     * Invokes the startup methods for framework extensions and allows other parties to take over execution.
      *
+     * @param array|null $uCallbacks list of other parties
+     * @param array|null $uOtherwise fallback method
      *
+     * @return bool whether other party is called or not
      */
     public static function run($uCallbacks = null, $uOtherwise = null)
     {
@@ -218,7 +217,7 @@ class Framework
 
         Events::invoke('output', $tParms);
 
-        //! check invoke order
+        /*
         if (ini_get('output_handler') == '') {
             $tParms['content'] = mb_output_handler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 
@@ -226,6 +225,7 @@ class Framework
                 $tParms['content'] = ob_gzhandler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
             }
         }
+        */
 
         return $tParms['content'];
     }

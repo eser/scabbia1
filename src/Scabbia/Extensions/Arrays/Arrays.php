@@ -17,7 +17,9 @@ namespace Scabbia\Extensions\Arrays;
 class Arrays
 {
     /**
-     * @ignore
+     * Flatten the arrays
+     *
+     * @return array
      */
     public static function flat()
     {
@@ -40,6 +42,8 @@ class Arrays
 
     /**
      * Gets the first element in array, otherwise returns default value.
+     *
+     * @return mixed
      */
     public static function getFirst($uArray, $uDefault = null)
     {
@@ -108,13 +112,19 @@ class Arrays
     }
 
     /**
-     * @ignore
+     * Accesses child arrays by path notation
+     *
+     * @param array $uArray array
+     * @param string $uPath path
+     * @param string $uSeparator path separator
+     *
+     * @return mixed
      */
-    public static function getPath($uArray, $uPath, $uDivider = '.')
+    public static function getPath($uArray, $uPath, $uSeparator = '/')
     {
         $tVariable = $uArray;
 
-        foreach (explode($uDivider, $uPath) as $tKey) {
+        foreach (explode($uSeparator, $uPath) as $tKey) {
             $tVariable = $tVariable[$tKey];
         }
 
