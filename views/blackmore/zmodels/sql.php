@@ -35,7 +35,7 @@
 
 				<h2 class="iconxdashboard"><?php echo _('Dashboard'); ?></h2>
 
-				<table class="fullWidth">
+				<table class="fullWidth valignTop">
 					<tbody>
 					<tr>
 						<td class="halfWidth">

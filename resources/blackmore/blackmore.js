@@ -3,7 +3,7 @@ function insertHtmlToParent(html) {
 
 	data.editor.execCommand('inserthtml', html, null, data.button);
 	data.editor.focus();
-	window.parent.Shadowbox.close();
+	// window.parent.Shadowbox.close();
 }
 
 function insertImageToParent(src) {
@@ -34,6 +34,7 @@ $l.ready(function() {
 	$.cleditor.buttons.image.buttonClick = function(e, data) {
 		window.cleditorData = data;
 
+/*
 		Shadowbox.open({
 			content : location.origin + $l.baseLocation + '/editor/fileselect',
 			player : 'iframe',
@@ -41,6 +42,7 @@ $l.ready(function() {
 			height : 350,
 			width : 900
 		});
+*/
 
 		return false;
 	};
@@ -61,13 +63,15 @@ $l.ready(function() {
 		}
 	});
 
+/*
 	Shadowbox.init({
 		// handleOversize: 'drag',
 		modal : true
 	});
+*/
 
-	$('.tipsyFocus').tipsy({fade : true, gravity : 'w', trigger : 'focus'});
-	$('.tipsyHover').tipsy({fade : true, gravity : 'w', live : true});
+	// $('.tipsyFocus').tipsy({fade : true, gravity : 'w', trigger : 'focus'});
+	// $('.tipsyHover').tipsy({fade : true, gravity : 'w', live : true});
 
-	$l.ui.datepicker($('.input_datetime'), {})
+	// $l.ui.datepicker($('.input_datetime'), {})
 });

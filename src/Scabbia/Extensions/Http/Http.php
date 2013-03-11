@@ -49,7 +49,7 @@ class Http
     /**
      * @ignore
      */
-    public static function url($uPath)
+    public static function url($uPath, $uFull = false)
     {
         /*
         $tParms = array(
@@ -63,6 +63,11 @@ class Http
         return String::format(Config::get('http/link', '{@siteroot}/{@path}'), $tParms);
         */
         $tResolved = Router::resolve($uPath);
+
+        if ($uFull) {
+            return (Framework::$https ? 'https://' : 'http://') . Framework::$host . Framework::$siteroot . '/' . $tResolved[0];
+        }
+
         return Framework::$siteroot . '/' . $tResolved[0];
     }
 
