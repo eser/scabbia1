@@ -5,466 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitattributes" afterPath="$PROJECT_DIR$/.gitattributes" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scabbia-dev.iml" afterPath="$PROJECT_DIR$/.idea/scabbia-dev.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bendl.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bendl.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bendr.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bendr.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bhead.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bhead.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bheadl.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bheadl.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bheadr.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bheadr.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/bnd.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/bnd.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/btns.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/btns.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/btns_.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/btns_.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/category.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/category.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/category_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/category_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/category_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/category_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/category_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/category_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/error.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/error.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/file.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/file.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/file_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/file_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/file_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/file_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/file_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/file_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/hld.jpg" afterPath="$PROJECT_DIR$/resources/blackmore/images/hld.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxcategories.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxcategories.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxcontent.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxcontent.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxdashboard.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxdashboard.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxexit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxexit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxfiles.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxfiles.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxlinks.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxlinks.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxpages.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxpages.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxposts.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxposts.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/iconxusers.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/iconxusers.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/link.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/link.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/link_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/link_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/link_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/link_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/link_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/link_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/logo.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/logo.psd" afterPath="$PROJECT_DIR$/resources/blackmore/images/logo.psd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/mask.psd" afterPath="$PROJECT_DIR$/resources/blackmore/images/mask.psd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/page.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/page.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/page_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/page_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/page_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/page_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/page_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/page_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/post.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/post.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/post_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/post_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/post_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/post_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/post_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/post_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/success.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/success.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/upload_file.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/upload_file.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/user.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/user.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/user_add.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/user_add.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/user_delete.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/user_delete.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/user_edit.png" afterPath="$PROJECT_DIR$/resources/blackmore/images/user_edit.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/images/warning.gif" afterPath="$PROJECT_DIR$/resources/blackmore/images/warning.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bootstrap/images/glyphicons-halflings-white.png" afterPath="$PROJECT_DIR$/resources/bootstrap/images/glyphicons-halflings-white.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bootstrap/images/glyphicons-halflings.png" afterPath="$PROJECT_DIR$/resources/bootstrap/images/glyphicons-halflings.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/access.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/access.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/arrays.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/arrays.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/cache.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/cache.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/captcha.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/captcha.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/contracts.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/contracts.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/database.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/database.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/html.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/html.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/http.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/http.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/index.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/index.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/extensions/string.md" afterPath="$PROJECT_DIR$/resources/docs/extensions/string.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/index.md" afterPath="$PROJECT_DIR$/resources/docs/index.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/installation.md" afterPath="$PROJECT_DIR$/resources/docs/installation.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/errorpages/images/bgimage.jpg" afterPath="$PROJECT_DIR$/resources/errorpages/images/bgimage.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/fonts/KabobExtrabold.ttf" afterPath="$PROJECT_DIR$/resources/fonts/KabobExtrabold.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/images/buttons.gif" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/images/buttons.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/images/table.gif" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/images/table.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/images/toolbar.gif" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/images/toolbar.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/asc.gif" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/asc.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/bg.gif" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/bg.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/desc.gif" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/desc.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/first.png" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/first.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/last.png" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/last.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/next.png" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/next.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/images/prev.png" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/images/prev.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_flat_0_aaaaaa_40x100.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_flat_0_aaaaaa_40x100.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_flat_55_d8e7f3_40x100.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_flat_55_d8e7f3_40x100.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_65_fcfdfd_1x400.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_65_fcfdfd_1x400.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_85_fcfdfd_1x400.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_85_fcfdfd_1x400.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_95_fef1ec_1x400.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_glass_95_fef1ec_1x400.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_gloss-wave_55_f8f8f8_500x100.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_gloss-wave_55_f8f8f8_500x100.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_inset-hard_100_eef4f6_1x100.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_inset-hard_100_eef4f6_1x100.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_inset-hard_100_fcfdfd_1x100.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-bg_inset-hard_100_fcfdfd_1x100.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_469bdd_256x240.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_469bdd_256x240.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_cd0a0a_256x240.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_cd0a0a_256x240.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_d8e7f3_256x240.png" afterPath="$PROJECT_DIR$/resources/jquery.ui/images/ui-icons_d8e7f3_256x240.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/laroux" afterPath="$PROJECT_DIR$/resources/laroux" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/mapbox/images/map-controls.png" afterPath="$PROJECT_DIR$/resources/mapbox/images/map-controls.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/images/shadowbox-controls.png" afterPath="$PROJECT_DIR$/resources/shadowbox/images/shadowbox-controls.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/images/shadowbox-icons.png" afterPath="$PROJECT_DIR$/resources/shadowbox/images/shadowbox-icons.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/changelog.md" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/changelog.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/readme.md" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/readme.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/fb_ca_chain_bundle.crt" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/fb_ca_chain_bundle.crt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitmodules" afterPath="$PROJECT_DIR$/.gitmodules" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/frameworkRootSettings.xml" afterPath="$PROJECT_DIR$/.idea/frameworkRootSettings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/sass_stdlib.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sass_stdlib.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autoload.php" afterPath="$PROJECT_DIR$/autoload.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/blackmore.json" afterPath="$PROJECT_DIR$/config/blackmore.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/framework.json" afterPath="$PROJECT_DIR$/config/framework.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/http.json" afterPath="$PROJECT_DIR$/config/http.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/mvc.json" afterPath="$PROJECT_DIR$/config/mvc.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/resources.json" afterPath="$PROJECT_DIR$/config/resources.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/scabbia/utils/phpVersion.php" afterPath="$PROJECT_DIR$/examples/scabbia/utils/phpVersion.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/license.txt" afterPath="$PROJECT_DIR$/license.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/blackmore.css" afterPath="$PROJECT_DIR$/resources/blackmore/blackmore.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/blackmore.js" afterPath="$PROJECT_DIR$/resources/blackmore/blackmore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bootstrap/bootstrap-responsive.css" afterPath="$PROJECT_DIR$/resources/bootstrap/bootstrap-responsive.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bootstrap/bootstrap.css" afterPath="$PROJECT_DIR$/resources/bootstrap/bootstrap.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bootstrap/bootstrap.js" afterPath="$PROJECT_DIR$/resources/bootstrap/bootstrap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/docs/markdown.css" afterPath="$PROJECT_DIR$/resources/docs/markdown.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/errorpages/errorpages.css" afterPath="$PROJECT_DIR$/resources/errorpages/errorpages.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.advancedtable.js" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.advancedtable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.css" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.js" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.xhtml.js" afterPath="$PROJECT_DIR$/resources/jquery.cleditor/jquery.cleditor.xhtml.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.blind.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.blind.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.bounce.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.bounce.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.clip.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.clip.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.core.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.core.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.drop.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.drop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.explode.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.explode.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.fade.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.fade.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.fold.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.fold.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.highlight.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.highlight.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.pulsate.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.pulsate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.scale.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.scale.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.shake.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.shake.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.slide.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.slide.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.transfer.js" afterPath="$PROJECT_DIR$/resources/jquery.effects/jquery.effects.transfer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/excanvas.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/excanvas.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.categories.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.categories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.crosshair.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.crosshair.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.errorbars.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.errorbars.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.fillbetween.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.fillbetween.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.image.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.image.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.navigate.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.navigate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.pie.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.pie.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.resize.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.resize.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.selection.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.selection.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.stack.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.stack.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.symbol.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.symbol.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.threshold.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.threshold.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.time.js" afterPath="$PROJECT_DIR$/resources/jquery.flot/jquery.flot.time.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.maskedinput/jquery.maskedinput.js" afterPath="$PROJECT_DIR$/resources/jquery.maskedinput/jquery.maskedinput.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/filter.formatter.css" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/filter.formatter.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.metadata.js" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.metadata.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.js" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.pager.js" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.pager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.widgets-filter-formatter.js" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.widgets-filter-formatter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.widgets.js" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/jquery.tablesorter.widgets.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.tablesorter/theme.default.css" afterPath="$PROJECT_DIR$/resources/jquery.tablesorter/theme.default.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-af.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-af.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ar-DZ.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ar-DZ.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ar.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-az.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-az.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-bg.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-bg.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-bs.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-bs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ca.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ca.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-cs.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-cs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-cy-GB.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-cy-GB.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-da.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-da.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-de.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-de.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-el.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-el.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-AU.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-AU.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-GB.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-GB.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-NZ.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-en-NZ.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-eo.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-eo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-es.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-es.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-et.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-et.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-eu.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-eu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fa.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fa.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fi.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fo.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fr-CH.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fr-CH.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fr.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-fr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-gl.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-gl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-he.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-he.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hi.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hr.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hu.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hy.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-hy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-id.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-id.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-is.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-is.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-it.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-it.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ja.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ja.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ka.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ka.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-kk.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-kk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-km.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-km.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ko.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ko.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lb.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lb.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lt.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lt.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lv.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-lv.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-mk.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-mk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ml.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ml.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ms.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ms.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-nl-BE.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-nl-BE.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-nl.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-nl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-no.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-no.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pl.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pt-BR.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pt-BR.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pt.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-pt.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-rm.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-rm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ro.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ro.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ru.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ru.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sk.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sl.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sq.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sq.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sr-SR.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sr-SR.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sr.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sv.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-sv.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ta.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-ta.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-th.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-th.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-tj.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-tj.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-tr.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-tr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-uk.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-uk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-vi.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-vi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-CN.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-CN.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-HK.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-HK.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-TW.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/i18n/jquery.ui.datepicker-zh-TW.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.accordion.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.accordion.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.accordion.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.accordion.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.autocomplete.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.autocomplete.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.autocomplete.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.autocomplete.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.button.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.button.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.button.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.button.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.core.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.core.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.core.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.core.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.datepicker.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.datepicker.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.datepicker.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.datepicker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.dialog.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.dialog.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.dialog.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.dialog.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.draggable.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.draggable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.droppable.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.droppable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.mouse.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.mouse.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.position.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.position.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.progressbar.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.progressbar.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.progressbar.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.progressbar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.resizable.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.resizable.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.resizable.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.resizable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.selectable.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.selectable.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.selectable.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.selectable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.slider.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.slider.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.slider.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.slider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.sortable.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.sortable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.tabs.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.tabs.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.tabs.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.tabs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.theme.css" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.theme.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.widget.js" afterPath="$PROJECT_DIR$/resources/jquery.ui/jquery.ui.widget.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ar.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_bg.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_bg.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ca.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ca.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_cs.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_cs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_da.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_da.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_de.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_de.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_el.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_el.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_es.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_es.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_et.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_et.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_eu.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_eu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fa.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fa.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fi.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fr.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_fr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_he.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_he.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_hr.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_hr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_hu.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_hu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_it.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_it.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ja.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ja.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ka.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ka.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_kk.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_kk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_lt.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_lt.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_lv.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_lv.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_nl.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_nl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_no.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_no.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pl.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pt_BR.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pt_BR.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pt_PT.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_pt_PT.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ro.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ro.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ru.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_ru.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_si.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_si.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sk.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sl.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sr.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sv.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_sv.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_th.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_th.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_tr.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_tr.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_uk.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_uk.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_vi.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_vi.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_zh.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_zh.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_zh_TW.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-messages_zh_TW.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_de.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_de.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_nl.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_nl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_pt.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/i18n/jquery.validate-methods_pt.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/jquery.validate.additional-methods.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/jquery.validate.additional-methods.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery.validation/jquery.validate.js" afterPath="$PROJECT_DIR$/resources/jquery.validation/jquery.validate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery/jquery-1.8.1-custom.js" afterPath="$PROJECT_DIR$/resources/jquery/jquery-1.8.1-custom.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery/jquery.fix.js" afterPath="$PROJECT_DIR$/resources/jquery/jquery.fix.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/jquery/sizzle.js" afterPath="$PROJECT_DIR$/resources/jquery/sizzle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/mapbox/mapbox.css" afterPath="$PROJECT_DIR$/resources/mapbox/mapbox.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/mapbox/mapbox.js" afterPath="$PROJECT_DIR$/resources/mapbox/mapbox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/normalize.css/normalize.css" afterPath="$PROJECT_DIR$/resources/normalize.css/normalize.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/reset/reset.css" afterPath="$PROJECT_DIR$/resources/reset/reset.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/shadowbox-flash.js" afterPath="$PROJECT_DIR$/resources/shadowbox/shadowbox-flash.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/shadowbox-video.css" afterPath="$PROJECT_DIR$/resources/shadowbox/shadowbox-video.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/shadowbox-video.js" afterPath="$PROJECT_DIR$/resources/shadowbox/shadowbox-video.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/shadowbox.css" afterPath="$PROJECT_DIR$/resources/shadowbox/shadowbox.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shadowbox/shadowbox.js" afterPath="$PROJECT_DIR$/resources/shadowbox/shadowbox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Patches.php" afterPath="$PROJECT_DIR$/src/Patches.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Config.php" afterPath="$PROJECT_DIR$/src/Scabbia/Config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Events.php" afterPath="$PROJECT_DIR$/src/Scabbia/Events.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Access/Access.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Access/Access.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Access/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Access/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Arrays/Arrays.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Arrays/Arrays.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Arrays/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Arrays/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Auth/Auth.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Auth/Auth.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Auth/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Auth/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreScabbia.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreScabbia.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodelsModel.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodelsModel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Cache/Cache.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Cache/Cache.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Cache/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Cache/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/FileCollection.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/FileCollection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/XmlCollection.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/XmlCollection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/Database.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/Database.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseConnection.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseConnection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseDataset.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseDataset.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseProviderMysql.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseProviderMysql.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseProviderPdo.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseProviderPdo.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQueryResult.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQueryResult.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/Datasets.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/Datasets.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/Datasource.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/Datasource.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/Datasources.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/Datasources.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Datasources/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Facebook.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Facebook.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/FacebookQueryObject.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/FacebookQueryObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Fb.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Fb.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/.gitignore" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/.travis.yml" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/composer.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/examples/example.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/examples/example.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/examples/with_js_sdk.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/examples/with_js_sdk.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/base_facebook.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/base_facebook.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/facebook.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/src/facebook.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/tests/bootstrap.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/tests/bootstrap.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/tests/tests.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/tests/tests.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Html/Html.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Html/Html.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Html/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Html/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Http.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Http.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Request.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Request.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Response.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Response.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Router.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Router.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Http/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/I8n/I8n.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/I8n/I8n.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/I8n/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/I8n/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Io/Io.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Io/Io.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Io/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Io/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/Media.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/Media.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/MediaFile.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/MediaFile.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Media/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Mime.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Mime.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Mimepart.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Mimepart.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Models/Model.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Models/Model.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Models/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Models/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controller.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controller.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controllers.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controllers.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Mvc.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Mvc.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Oauth/Oauth.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Oauth/Oauth.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Oauth/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Oauth/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Output/Output.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Output/Output.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Output/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Output/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/Profiler.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/Profiler.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/ProfilerData.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/ProfilerData.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Profiler/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/CssMin.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/CssMin.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/JSMin.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/JSMin.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/JSMinException.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/JSMinException.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/Resources.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/Resources.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Resources/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/SmartObjects/SmartObject.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/SmartObjects/SmartObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/SmartObjects/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/SmartObjects/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/Mail.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/Mail.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/Smtp.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/Smtp.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Smtp/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/String/String.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/String/String.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/String/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/String/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Time/Time.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Time/Time.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Time/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Time/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/ContractObject.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/ContractObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/Contracts.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/Contracts.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/Validation.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/Validation.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/ValidationRule.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/ValidationRule.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Validation/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/View.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/View.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineMarkdown.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineMarkdown.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEnginePhp.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEnginePhp.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEnginePhptal.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEnginePhptal.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRaintpl.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRaintpl.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineSmarty.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineSmarty.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineTwig.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineTwig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/Views.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/Views.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownExtra.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownExtra.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownExtraParser.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownExtraParser.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownParser.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/markdownExtra/markdownParser.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRenderer.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRenderer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/Zmodel.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/Zmodel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/Zmodels.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/Zmodels.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/extension.json" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Zmodels/extension.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Framework.php" afterPath="$PROJECT_DIR$/src/Scabbia/Framework.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Utils.php" afterPath="$PROJECT_DIR$/src/Scabbia/Utils.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/footer.php" afterPath="$PROJECT_DIR$/views/blackmore/footer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/header.php" afterPath="$PROJECT_DIR$/views/blackmore/header.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/index.php" afterPath="$PROJECT_DIR$/views/blackmore/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/login.php" afterPath="$PROJECT_DIR$/views/blackmore/login.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" afterPath="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/scabbia/index.php" afterPath="$PROJECT_DIR$/views/blackmore/scabbia/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/sectionMenu.php" afterPath="$PROJECT_DIR$/views/blackmore/sectionMenu.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/zmodels/form.php" afterPath="$PROJECT_DIR$/views/blackmore/zmodels/form.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/zmodels/list.php" afterPath="$PROJECT_DIR$/views/blackmore/zmodels/list.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/zmodels/sql.php" afterPath="$PROJECT_DIR$/views/blackmore/zmodels/sql.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/docs/footer.php" afterPath="$PROJECT_DIR$/views/docs/footer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/docs/header.php" afterPath="$PROJECT_DIR$/views/docs/header.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/shared/error.php" afterPath="$PROJECT_DIR$/views/shared/error.php" />
     </list>
     <ignored path="scabbia-dev.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -489,75 +35,37 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="sectionMenu.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/blackmore/sectionMenu.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="header.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="56" selection-start="2102" selection-end="2114" vertical-scroll-proportion="-8.916667">
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#div#2;n#header#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="blackmore.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/blackmore.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="32" selection-start="173" selection-end="173" vertical-scroll-proportion="0.0">
+            <state line="46" column="58" selection-start="2116" selection-end="2116" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="blackmore.css" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="login.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/blackmore/login.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="25" selection-start="1115" selection-end="1115" vertical-scroll-proportion="-4.8076925">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="blackmore.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="341" column="16" selection-start="6273" selection-end="6282" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="49" selection-start="1060" selection-end="1060" vertical-scroll-proportion="-5.125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="debug.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="49" selection-start="1049" selection-end="1049" vertical-scroll-proportion="-5.125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="49" selection-start="1062" selection-end="1062" vertical-scroll-proportion="-5.125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sql.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/zmodels/sql.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="49" selection-start="1025" selection-end="1025" vertical-scroll-proportion="1.1325648">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="blackmore.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="7" selection-start="1605" selection-end="1605" vertical-scroll-proportion="0.0">
+            <state line="12" column="0" selection-start="230" selection-end="230" vertical-scroll-proportion="0.24170616">
               <folding />
             </state>
           </provider>
@@ -576,22 +84,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controller.php" />
-        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" />
         <option value="$PROJECT_DIR$/views/shared/error.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Auth/Auth.php" />
         <option value="$PROJECT_DIR$/config/http.json" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/mvc.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Http.php" />
-        <option value="$PROJECT_DIR$/views/blackmore/header.php" />
         <option value="$PROJECT_DIR$/config/blackmore.json" />
         <option value="$PROJECT_DIR$/resources/blackmore/blackmore.js" />
-        <option value="$PROJECT_DIR$/resources/blackmore/blackmore.css" />
         <option value="$PROJECT_DIR$/views/blackmore/index.php" />
         <option value="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" />
         <option value="$PROJECT_DIR$/views/blackmore/scabbia/index.php" />
         <option value="$PROJECT_DIR$/views/blackmore/zmodels/sql.php" />
+        <option value="$PROJECT_DIR$/views/blackmore/header.php" />
+        <option value="$PROJECT_DIR$/views/blackmore/sectionMenu.php" />
+        <option value="$PROJECT_DIR$/views/blackmore/login.php" />
+        <option value="$PROJECT_DIR$/resources/blackmore/blackmore.css" />
       </list>
     </option>
   </component>
@@ -600,9 +108,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="Wamp" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
-    <option name="width" value="1370" />
-    <option name="height" value="737" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1696" />
+    <option name="height" value="1026" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -655,6 +164,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -673,18 +183,92 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blackmore" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blackmore" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="preferences.sourceCode.PHP" />
     <property name="last_opened_file_path" value="C:/wamp/bin/php/php5.4.3" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="PublishConfig">
+    <servers>
+      <server id="fad3b86f-ddb2-4bda-bbd2-b90f31ea7d6d">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </server>
+    </servers>
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -699,6 +283,9 @@
       <method />
     </configuration>
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
       <method />
     </configuration>
     <list size="0" />
@@ -751,15 +338,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="0" width="1370" height="737" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32597622" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298585" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24497394" sideWeight="0.67402375" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24441762" sideWeight="0.67402375" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -768,6 +354,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32597622" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.67066896" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39965695" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -826,16 +413,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/autoload.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="36" selection-start="759" selection-end="759" vertical-scroll-proportion="0.7030075" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="4" selection-start="1149" selection-end="1200" vertical-scroll-proportion="0.5895954" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/http.json">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="37" selection-start="376" selection-end="376" vertical-scroll-proportion="0.33333334" />
@@ -848,9 +425,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/shared/error.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="94" selection-start="363" selection-end="363" vertical-scroll-proportion="0.35612535">
-          <folding />
-        </state>
+        <state line="12" column="94" selection-start="363" selection-end="363" vertical-scroll-proportion="0.35612535" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Http/Http.php">
@@ -864,11 +439,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Http/Request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="14" selection-start="2061" selection-end="2061" vertical-scroll-proportion="0.6183432">
-          <folding>
-            <element signature="e#6#127#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="109" column="14" selection-start="2061" selection-end="2061" vertical-scroll-proportion="0.6183432" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Framework.php">
@@ -880,60 +451,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/zmodels/sql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="921" selection-end="921" vertical-scroll-proportion="0.2200489" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="49" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.06479218" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="49" selection-start="1049" selection-end="1049" vertical-scroll-proportion="0.085574575" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="49" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.06479218" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="7" selection-start="1605" selection-end="1605" vertical-scroll-proportion="0.7985782" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/blackmore.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="32" selection-start="173" selection-end="173" vertical-scroll-proportion="0.0">
+        <state line="4" column="32" selection-start="173" selection-end="173" vertical-scroll-proportion="0.08056872" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/sectionMenu.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="56" selection-start="2102" selection-end="2114" vertical-scroll-proportion="-8.916667">
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#div#2;n#header#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state line="46" column="58" selection-start="2116" selection-end="2116" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
+    <entry file="file://$PROJECT_DIR$/views/blackmore/login.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="7" selection-start="1605" selection-end="1605" vertical-scroll-proportion="0.0">
+        <state line="24" column="25" selection-start="1115" selection-end="1115" vertical-scroll-proportion="-4.8076925">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="341" column="16" selection-start="6273" selection-end="6282" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="49" selection-start="1060" selection-end="1060" vertical-scroll-proportion="-5.125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="49" selection-start="1049" selection-end="1049" vertical-scroll-proportion="-5.125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="49" selection-start="1062" selection-end="1062" vertical-scroll-proportion="-5.125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/zmodels/sql.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="49" selection-start="1025" selection-end="1025" vertical-scroll-proportion="1.1325648">
+        <state line="12" column="0" selection-start="230" selection-end="230" vertical-scroll-proportion="0.24170616">
           <folding />
         </state>
       </provider>

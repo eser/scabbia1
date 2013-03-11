@@ -51,7 +51,7 @@
                                         <?php foreach(Blackmore::$modules as $tKey => $tModule) { ?>
                                             <?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
                                                 <li class="dropdown">
-                                                    <a id="drop1" href="<?php echo Http::url('blackmore/' . $tKey); ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <a href="<?php echo Http::url('blackmore/' . $tKey); ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
                                                         <?php echo _($tModule['title']); ?>
                                                         <b class="caret"></b>
                                                     </a>

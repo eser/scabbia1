@@ -1,15 +1,3 @@
-html, body {
-	height: 100%; /* needed for container min-height */
-}
-
-p {
-	padding-bottom: 15px;
-}
-
-img, a img {
-	border: 0px;
-}
-
 body {
 	background: #FFFFFF;
 	font-family: 'Arial', 'Helvetica', sans-serif;
@@ -50,57 +38,25 @@ body.stretch .wrapper .inner {
 
 /* LOGIN PAGE */
 
-.block.small.center.login {
-	width: 470px;
-	background: #FFFFFF url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
-	margin-top: 100px;
-	margin-bottom: 100px;
-	padding-bottom: 5px;
-}
-
-.block {
-	padding-bottom: 5px;
-	margin-bottom: 25px;
+.login .block {
+	width: 450px;
+	margin: 100px auto 0px auto;
 	clear: both;
-	background: #fff url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
+	border: 1px solid #CCCCCC;
+	border-top-width: 0px;
+	border-radius: 8px 8px 0px 0px;
 }
 
-.block .bendl {
-	width: 5px;
-	height: 5px;
-	background: url('scabbia/blackmore/images/bendl.gif') bottom left no-repeat;
-	float: left;
-}
-
-.block .bendr {
-	width: 5px;
-	height: 5px;
-	background: url('scabbia/blackmore/images/bendr.gif') bottom left no-repeat;
-	float: right;
-}
-
-.block .block_head {
+.login .block .block_head {
 	height: 54px;
 	line-height: 54px;
 	background: url('scabbia/blackmore/images/bhead.gif') 0 0 repeat-x;
 	overflow: hidden;
+	padding: 0px 10px 0px 10px;
+	border-radius: 8px 8px 0px 0px;
 }
 
-.block .block_head .bheadl {
-	width: 20px;
-	height: 54px;
-	float: left;
-	background: url('scabbia/blackmore/images/bheadl.gif') top left no-repeat;
-}
-
-.block .block_head .bheadr {
-	width: 20px;
-	height: 54px;
-	float: right;
-	background: url('scabbia/blackmore/images/bheadr.gif') top right no-repeat;
-}
-
-.block .block_head h2 {
+.login .block .block_head h2 {
 	font-size: 18px;
 	font-weight: normal;
 	text-transform: uppercase;
@@ -109,56 +65,25 @@ body.stretch .wrapper .inner {
 	float: left;
 }
 
-.block .block_content {
+.login .block .block_content {
 	overflow: hidden;
 	background: #FFFFFF;
-	border-left: 1px solid #CCCCCC;
-	border-right: 1px solid #CCCCCC;
-	padding: 10px 50px 0px 50px;
+	padding: 10px 0px 0px 0px;
 }
 
-.block.small.center {
-	float: none;
-	margin: 0 auto;
+.login .block .block_content .form-actions {
+	margin-bottom: 0px !important;
 }
 
-.block.small.center.login {
-	width: 450px;
-	background: #fff url('scabbia/blackmore/images/bnd.gif') bottom center repeat-x;
-	margin-top: 100px;
-	margin-bottom: 100px;
-	padding-bottom: 5px;
+.login .block form {
+	margin: 0px;
+}
+
+.indent {
+	padding: 0px 30px 0px 30px;
 }
 
 /* FORMS */
-form p {
-	overflow: hidden;
-	clear: both;
-}
-
-form label {
-	font-size: 12px;
-	font-weight: bold;
-	color: #555;
-	margin-right: 10px;
-	vertical-align: middle;
-}
-
-form input.text {
-	width: 320px;
-	background: #FEFEFE;
-	border: 1px solid #BBBBBB;
-	box-shadow: inset 0px 2px 3px #CCCCCC, 0px 1px rgba(255, 255, 255, 0.898);
-	font-size: 14px;
-	color: #333333;
-	padding: 7px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	outline: none;
-	vertical-align: middle;
-}
-
 form textarea.cleditor {
 	width: 98%;
 	height: 140px;
@@ -171,11 +96,6 @@ form textarea.cleditor {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	outline: none;
-}
-
-form input.radio,
-form input.checkbox {
-	vertical-align: middle;
 }
 
 form input.input_varchar, form input.input_uuid, form input.input_datetime {
@@ -251,28 +171,6 @@ form input.file {
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
 	outline: none;
-}
-
-form input.submit {
-	width: 85px;
-	height: 30px;
-	float: right;
-	line-height: 30px;
-	background: url('scabbia/blackmore/images/btns.gif') top center no-repeat;
-	border: 0;
-	font-size: 14px;
-	font-weight: normal;
-	text-transform: uppercase;
-	color: #fff;
-	text-shadow: 1px 1px 0 #0a5482;
-	cursor: pointer;
-	margin-right: 10px;
-	vertical-align: middle;
-}
-
-form input.submit:hover {
-	background: url('scabbia/blackmore/images/btns_.gif') top center no-repeat;
-	text-shadow: 1px 1px 0 #b55f10;
 }
 
 /* Messages */
@@ -430,6 +328,7 @@ form input.submit:hover {
 #pageTopLogo {
 	color: #FFFFFF;
 	/* background: transparent url('images/background.jpg') no-repeat 0px 0px; */
+	margin: 5px 0px 5px 0px;
 }
 
 #pageTopMenu {
@@ -522,27 +421,8 @@ form input.submit:hover {
 #pageMiddleSidebar {
 	width: 350px;
 	vertical-align: top;
-	background: #E0E0E0;
+	background: #F0F0F0;
 	border-right: 1px solid #A0A0A0;
-}
-
-#pageMiddleSidebar ul {
-	margin: 10px 0px;
-}
-
-#pageMiddleSidebar ul li:first-of-type {
-	border-top: 1px solid #C0C0C0;
-}
-
-#pageMiddleSidebar li {
-	padding: 5px 6px 5px 10px;
-	list-style-type: none;
-	border-bottom: 1px solid #C0C0C0;
-}
-
-#pageMiddleSidebar .memu-item:hover {
-	background-color: #F0F0F0;
-	color: #56789A;
 }
 
 #pageMiddleSidebar .topLine {
@@ -553,27 +433,6 @@ form input.submit:hover {
 
 #pageMiddleSidebar .menuDivContainer {
 	margin: 15px;
-}
-
-#pageMiddleSidebar .menuDiv {
-	padding: 5px 10px 5px 10px;
-	background: #FEFEFE;
-	border-top: 1px solid #FFFFFF;
-	border-left: 1px solid #FFFFFF;
-	border-bottom: 1px solid #A0A0A0;
-	border-right: 1px solid #A0A0A0;
-}
-
-#pageMiddleSidebar .menuDivHeader {
-	color: #707070;
-	font-size: 12pt;
-	font-weight: bold;
-	line-height: 12pt;
-	margin: 5px 0px 5px 0px;
-}
-
-#pageMiddleSidebar br {
-	height: 20px;
 }
 
 #pageMiddleSidebarToggle {
