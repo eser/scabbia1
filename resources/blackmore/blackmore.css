@@ -92,8 +92,6 @@ form textarea.cleditor {
 	border: 1px solid #BBBBBB;
 	font-size: 14px;
 	color: #333333;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 	outline: none;
 }
@@ -106,8 +104,6 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime {
 	font-size: 14px;
 	color: #333333;
 	padding: 7px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 	outline: none;
 	vertical-align: middle;
@@ -122,8 +118,6 @@ form .input_enum {
 	font-size: 14px;
 	color: #333333;
 	padding: 7px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 	outline: none;
 	vertical-align: middle;
@@ -166,8 +160,6 @@ form input.file {
 	padding: 4px;
 	-webkit-border-top-left-radius: 3px;
 	-webkit-border-bottom-left-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-bottomleft: 3px;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
 	outline: none;
@@ -181,7 +173,6 @@ form input.file {
 	font-weight: bold;
 	overflow: hidden;
 	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
 
@@ -333,26 +324,12 @@ form input.file {
 
 #pageTopMenu {
 	background: -webkit-linear-gradient(top, #FFFFFF, #C0C0C0);
-
-	/* Firefox 3.6+ */
-	background: -moz-linear-gradient(top, #FFFFFF, #C0C0C0);
-
-	/* IE 10 */
-	background: -ms-linear-gradient(top, #FFFFFF, #C0C0C0);
-
-	/* Opera 11.10+ */
-	background: -o-linear-gradient(top, #FFFFFF, #C0C0C0);
-
 	background: linear-gradient(top, #FFFFFF, #C0C0C0);
 }
 
 #pageMiddle {
-	border-top: 1px solid #000000;
 	width: 100%;
-}
-
-#pageMiddle > .wrapper {
-	border-top: 1px solid #A0A0A0;
+	/* border-top: 1px solid #A0A0A0; */
 }
 
 #pageMiddle table.tablesorter tr td {
@@ -484,8 +461,6 @@ form input.file {
 
 .ui {
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	-o-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 
 	background: #E0E0E0;
