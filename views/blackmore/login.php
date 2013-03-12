@@ -44,7 +44,9 @@
                         </div>
 
                         <div class="form-actions">
-                            <input type="submit" class="btn btn-primary" value="<?php echo _('Login'); ?>" />
+                            <div class="pull-right">
+                                <input type="submit" class="btn btn-primary" value="<?php echo _('Login'); ?>" />
+                            </div>
                         </div>
                     </fieldset>
                 </form>

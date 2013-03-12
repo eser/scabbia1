@@ -1,23 +1,5 @@
-body {
-	background: #FFFFFF;
-	font-family: 'Arial', 'Helvetica', sans-serif;
-	font-size: 12px;
-	color: #666666;
-	line-height: 20px;
-}
-
 body.login {
 	background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0px 0px repeat-x;
-}
-
-a {
-	color: #56789A;
-	text-decoration: none;
-	outline: none;
-}
-
-a:hover {
-	color: #008EE8;
 }
 
 body.narrow .wrapper {
@@ -35,6 +17,12 @@ body.stretch .wrapper {
 
 body.stretch .wrapper .inner {
 }
+
+#page {
+    background: #182844;
+    color: #666666;
+}
+
 
 /* LOGIN PAGE */
 
@@ -295,7 +283,6 @@ form input.file {
 }
 
 #pageTop {
-	background: #176093;
 	width: 100%;
 }
 
@@ -311,15 +298,14 @@ form input.file {
 }
 
 #pageTopHead {
-	background: #182844;
 	color: #6ABAFC;
 	border-bottom: 1px solid #65A5D1;
 }
 
 #pageTopLogo {
+    background-color: #176093;
 	color: #FFFFFF;
-	/* background: transparent url('images/background.jpg') no-repeat 0px 0px; */
-	margin: 5px 0px 5px 0px;
+	padding: 5px 0px 5px 0px;
 }
 
 #pageTopMenu {
@@ -329,6 +315,7 @@ form input.file {
 
 #pageMiddle {
 	width: 100%;
+    background-color: #FFFFFF;
 	/* border-top: 1px solid #A0A0A0; */
 }
 
@@ -350,8 +337,18 @@ form input.file {
 	vertical-align: top;
 }
 
+#pageMiddleContent a {
+    color: #56789A;
+    text-decoration: none;
+    outline: none;
+}
+
+#pageMiddleContent a:hover {
+    color: #008EE8;
+}
+
 #pageMiddleContent .middleLine {
-	padding: 15px 15px 15px 5px;
+	padding: 0px 15px 15px 5px;
 	min-height: 500px;
 }
 
@@ -420,15 +417,25 @@ form input.file {
 }
 
 #pageMiddleSidebarToggle {
-	width: 10px;
+	width: 20px;
+    font-size: 14pt;
 	text-align: center;
 	vertical-align: top;
 	cursor: pointer;
 }
 
+#pageMiddleSidebarToggle:hover {
+    background-color: #F0F0F0;
+}
+
 #pageBottom {
+    border-top: 1px solid #65A5D1;
 	clear: both;
 	width: 100%;
+}
+
+#pageBottom .inner {
+    padding: 10px;
 }
 
 #crudTable {

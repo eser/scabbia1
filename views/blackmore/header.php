@@ -46,7 +46,7 @@
                             <div id="pageTopNavbar" class="navbar navbar-static">
                                 <div class="navbar-inner">
                                     <div class="container" style="width: auto;">
-                                        <a class="brand" href="#">Blackmore</a>
+                                        <!-- <a class="brand" href="#">Blackmore</a> -->
                                         <ul class="nav" role="navigation">
                                         <?php foreach(Blackmore::$modules as $tKey => $tModule) { ?>
                                             <?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
