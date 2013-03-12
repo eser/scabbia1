@@ -71,7 +71,7 @@ class BlackmoreZmodels
      */
     public static function getModel()
     {
-        return Controllers::load('BlackmoreZmodelModel', null, Config::get('blackmore/database', null));
+        return Controllers::load('Scabbia\\Extensions\\Blackmore\\BlackmoreZmodelModel', null, Config::get('blackmore/database', null));
     }
 
     /**
@@ -120,7 +120,7 @@ class BlackmoreZmodels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = & Zmodels::$zmodels[Blackmore::$module];
+        $tModule = Zmodels::$zmodels[Blackmore::$module];
         $tViewbag = array(
             'module' => $tModule,
             'fields' => array()

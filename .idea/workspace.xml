@@ -4,9 +4,12 @@
     <option name="CUSTOM_SCOPE_NAME" value="PHP Files" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="* Blackmore is being migrated to bootstrap.">
+    <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodelsModel.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodelModel.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/laroux" afterPath="$PROJECT_DIR$/resources/laroux" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/blackmore.css" afterPath="$PROJECT_DIR$/resources/blackmore/blackmore.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/blackmore.js" afterPath="$PROJECT_DIR$/resources/blackmore/blackmore.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/header.php" afterPath="$PROJECT_DIR$/views/blackmore/header.php" />
     </list>
@@ -42,20 +45,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sectionMenu.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/sectionMenu.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="46" selection-start="255" selection-end="255" vertical-scroll-proportion="-5.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="header.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="149" selection-start="1832" selection-end="1832" vertical-scroll-proportion="1.6666666">
-              <folding />
+            <state line="33" column="276" selection-start="1763" selection-end="1763" vertical-scroll-proportion="-3.75">
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#div#2;n#header#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,7 +88,16 @@
       <file leaf-file-name="BlackmoreZmodels.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="43" selection-start="2020" selection-end="2020" vertical-scroll-proportion="0.7239382">
+            <state line="77" column="14" selection-start="2497" selection-end="2497" vertical-scroll-proportion="0.5367412">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="blackmore.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="77" column="73" selection-start="1871" selection-end="1871" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -101,7 +106,7 @@
       <file leaf-file-name="blackmore.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="281" column="25" selection-start="4776" selection-end="4776" vertical-scroll-proportion="0.0">
+            <state line="282" column="26" selection-start="4803" selection-end="4803" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -237,25 +242,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blackmore" />
+              <option name="myItemId" value="Scabbia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -272,18 +263,12 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemId" value="Scabbia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="Extensions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -297,29 +282,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bootstrap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
+              <option name="myItemId" value="Scabbia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="Extensions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="blackmore" />
+              <option name="myItemId" value="Blackmore" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -402,7 +377,11 @@
       <created>1363094694080</created>
       <updated>1363094694080</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="* Blackmore is being migrated to bootstrap.">
+      <created>1363099852679</created>
+      <updated>1363099852679</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -431,7 +410,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32933104" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298585" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32597622" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32597622" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32767403" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -503,11 +482,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="49" selection-start="1049" selection-end="1049" vertical-scroll-proportion="0.085574575" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/blackmore/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="49" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.06479218" />
@@ -571,33 +545,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="281" column="25" selection-start="4776" selection-end="4776" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="0" selection-start="1797" selection-end="1797" vertical-scroll-proportion="0.8339483">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="132" column="28" selection-start="3815" selection-end="3815" vertical-scroll-proportion="-18.75">
           <folding>
             <element signature="e#6#127#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="149" selection-start="1832" selection-end="1832" vertical-scroll-proportion="1.6666666">
-          <folding />
         </state>
       </provider>
     </entry>
@@ -608,9 +561,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="282" column="26" selection-start="4803" selection-end="4803" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/blackmore/blackmore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="77" column="73" selection-start="1871" selection-end="1871" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/blackmore/header.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="276" selection-start="1763" selection-end="1763" vertical-scroll-proportion="-3.75">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#div#2;n#header#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodelModel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="6" selection-start="403" selection-end="403" vertical-scroll-proportion="0.73619634">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreZmodels.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="43" selection-start="2020" selection-end="2020" vertical-scroll-proportion="0.7239382">
+        <state line="77" column="14" selection-start="2497" selection-end="2497" vertical-scroll-proportion="0.5367412">
           <folding />
         </state>
       </provider>

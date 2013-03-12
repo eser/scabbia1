@@ -74,4 +74,6 @@ $l.ready(function() {
 	// $('.tipsyHover').tipsy({fade : true, gravity : 'w', live : true});
 
 	// $l.ui.datepicker($('.input_datetime'), {})
+
+    $('.bootstrap-popover').popover({ placement: 'bottom', html: true });
 });
