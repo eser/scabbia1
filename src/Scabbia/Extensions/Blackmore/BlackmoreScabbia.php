@@ -32,18 +32,21 @@ class BlackmoreScabbia
 
         $uParms['modules']['index']['actions'][] = array(
             'action' => 'debug',
+            'icon' => 'info-sign',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::debug',
             'menutitle' => 'Debug Info'
         );
 
         $uParms['modules']['index']['actions'][] = array(
             'action' => 'build',
+            'icon' => 'download-alt',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::build',
             'menutitle' => 'Build'
         );
 
         $uParms['modules']['index']['actions'][] = array(
             'action' => 'purge',
+            'icon' => 'trash',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::purge',
             'menutitle' => 'Purge'
         );

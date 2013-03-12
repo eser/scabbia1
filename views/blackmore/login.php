@@ -37,10 +37,16 @@
                     <fieldset>
                         <div class="indent">
                             <label><?php echo _('Username:'); ?></label>
-                            <input type="text" class="text" name="username" placeholder="Enter username" />
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-user"></i></span>
+                                <input type="text" class="text" name="username" placeholder="Enter username" />
+                            </div>
 
                             <label><?php echo _('Password:'); ?></label>
-                            <input type="password" class="text" name="password" placeholder="Enter password" />
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-asterisk"></i></span>
+                                <input type="password" class="text" name="password" placeholder="Enter password" />
+                            </div>
                         </div>
 
                         <div class="form-actions">

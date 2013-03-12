@@ -1,6 +1,6 @@
 <?php
 	use Scabbia\Extensions\Blackmore\Blackmore;
-	use Scabbia\Extensions\Http\http;
+	use Scabbia\Extensions\Http\Http;
 ?>
 <?php
 	$tModule = & Blackmore::$modules[$model];
@@ -13,8 +13,9 @@
 			    if(!isset($tSubmenuItem['menutitle'])) {
     				continue;
     			}
+                $tIcon = isset($tSubmenuItem['icon']) ? $tSubmenuItem['icon'] : 'minus';
     ?>
-		<li><a href="<?php echo Http::url('blackmore/' . $model . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a></li>
+		<li><a href="<?php echo Http::url('blackmore/' . $model . '/' . $tSubmenuItem['action']); ?>"><i class="icon-<?php echo $tIcon; ?>"></i> <?php echo _($tSubmenuItem['menutitle']); ?></a></li>
 	<?php
             }
         }

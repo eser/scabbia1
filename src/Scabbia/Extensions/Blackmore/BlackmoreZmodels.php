@@ -37,9 +37,10 @@ class BlackmoreZmodels
         $uParms['modules']['index']['submenus'] = true;
 
         $uParms['modules']['index']['actions'][] = array(
+            'action' => 'generateSql',
+            'icon' => 'list-alt',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::generateSql',
-            'menutitle' => 'Generate Zmodel SQL',
-            'action' => 'generateSql'
+            'menutitle' => 'Generate Zmodel SQL'
         );
 
         foreach (Zmodels::$zmodels as $tKey => $tZmodel) {

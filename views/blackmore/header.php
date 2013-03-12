@@ -61,9 +61,10 @@
                                                         if(!isset($tSubmenuItem['menutitle'])) {
                                                             continue;
                                                         }
+                                                        $tIcon = isset($tSubmenuItem['icon']) ? $tSubmenuItem['icon'] : 'minus';
                                                     ?>
                                                         <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="<?php echo Http::url('blackmore/' . $tKey . '/' . $tSubmenuItem['action']); ?>"><?php echo _($tSubmenuItem['menutitle']); ?></a>
+                                                            <a role="menuitem" tabindex="-1" href="<?php echo Http::url('blackmore/' . $tKey . '/' . $tSubmenuItem['action']); ?>"><i class="icon-<?php echo $tIcon; ?>"></i> <?php echo _($tSubmenuItem['menutitle']); ?></a>
                                                         </li>
                                                     <?php } ?>
                                                     </ul>
