@@ -1,6 +1,7 @@
 <?php
 	use Scabbia\Config;
 	use Scabbia\Framework;
+    use Scabbia\Extensions\Blackmore\Blackmore;
 	use Scabbia\Extensions\Html\Html;
 	use Scabbia\Extensions\Http\Http;
 ?>
@@ -29,23 +30,23 @@
             </div>
 
             <div class="block_content">
-                <?php if(isset($error)) { ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
-                <?php } ?>
-
-                <form method="POST" action="<?php echo Http::url('blackmore/login'); ?>">
+                <form method="POST" action="<?php echo Http::url('blackmore/' . Blackmore::LOGIN_MODULE_INDEX); ?>">
                     <fieldset>
                         <div class="indent">
-                            <label><?php echo _('Username:'); ?></label>
+                            <?php if(isset($error)) { ?>
+                            <div class="alert alert-error"><?php echo $error; ?></div>
+                            <?php } ?>
+
+                            <label for="username"><?php echo _('Username:'); ?></label>
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-user"></i></span>
-                                <input type="text" class="text" name="username" placeholder="Enter username" />
+                                <input id="username" type="text" class="text" name="username" placeholder="Enter username" />
                             </div>
 
-                            <label><?php echo _('Password:'); ?></label>
+                            <label for="password"><?php echo _('Password:'); ?></label>
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-asterisk"></i></span>
-                                <input type="password" class="text" name="password" placeholder="Enter password" />
+                                <input id="password" type="password" class="text" name="password" placeholder="Enter password" />
                             </div>
                         </div>
 

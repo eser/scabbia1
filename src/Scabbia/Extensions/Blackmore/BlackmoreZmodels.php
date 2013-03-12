@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
+use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Extensions\Html\Html;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Mvc\Controllers;
@@ -34,10 +35,7 @@ class BlackmoreZmodels
      */
     public static function blackmoreRegisterModules($uParms)
     {
-        $uParms['modules']['index']['submenus'] = true;
-
-        $uParms['modules']['index']['actions'][] = array(
-            'action' => 'generateSql',
+        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['generateSql'] = array(
             'icon' => 'list-alt',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::generateSql',
             'menutitle' => 'Generate Zmodel SQL'
@@ -46,26 +44,20 @@ class BlackmoreZmodels
         foreach (Zmodels::$zmodels as $tKey => $tZmodel) {
             $uParms['modules'][$tKey] = array(
                 'title' => $tZmodel['title'],
-                'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::all',
-                'submenus' => true,
                 'actions' => array(
-                    array(
+                    'add' => array(
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::add',
-                        'menutitle' => 'Add ' . $tZmodel['singularTitle'],
-                        'action' => 'add'
+                        'menutitle' => 'Add ' . $tZmodel['singularTitle']
                     ),
-                    array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::edit',
-                        'action' => 'edit'
+                    'edit' => array(
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::edit'
                     ),
-                    array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::remove',
-                        'action' => 'remove'
+                    'remove' => array(
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::remove'
                     ),
-                    array(
+                    'all' => array(
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::all',
-                        'menutitle' => 'All ' . $tZmodel['title'],
-                        'action' => 'all'
+                        'menutitle' => 'All ' . $tZmodel['title']
                     )
                 )
             );

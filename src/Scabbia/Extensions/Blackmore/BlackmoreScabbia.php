@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
+use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
@@ -28,24 +29,19 @@ class BlackmoreScabbia
      */
     public static function blackmoreRegisterModules($uParms)
     {
-        $uParms['modules']['index']['submenus'] = true;
-
-        $uParms['modules']['index']['actions'][] = array(
-            'action' => 'debug',
+        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['debug'] = array(
             'icon' => 'info-sign',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::debug',
             'menutitle' => 'Debug Info'
         );
 
-        $uParms['modules']['index']['actions'][] = array(
-            'action' => 'build',
+        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['build'] = array(
             'icon' => 'download-alt',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::build',
             'menutitle' => 'Build'
         );
 
-        $uParms['modules']['index']['actions'][] = array(
-            'action' => 'purge',
+        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['purge'] = array(
             'icon' => 'trash',
             'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::purge',
             'menutitle' => 'Purge'

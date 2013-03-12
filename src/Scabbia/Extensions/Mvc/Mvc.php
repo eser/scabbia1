@@ -30,6 +30,7 @@ use Scabbia\Framework;
  * @todo selective loading with controller imports
  * @todo routing optimizations.
  * @todo map controller to path (/docs/index/* => views/docs/*.md)
+ * @todo subcontrollers as 'subcontroller arrays' with subscription
  */
 class Mvc
 {

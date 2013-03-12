@@ -9,6 +9,7 @@ namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Http\Request;
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controller;
 use Scabbia\Extensions\Validation\Validation;
 use Scabbia\Events;
@@ -19,9 +20,25 @@ use Scabbia\Events;
  * @package Scabbia
  * @subpackage Blackmore
  * @version 1.1.0
+ *
+ * @todo refactor using subcontrollers
  */
 class Blackmore extends Controller
 {
+    /**
+     * @ignore
+     */
+    const DEFAULT_MODULE_INDEX = 'index';
+    /**
+     * @ignore
+     */
+    const LOGIN_MODULE_INDEX = 'login';
+    /**
+     * @ignore
+     */
+    const DEFAULT_ACTION_INDEX = 'index';
+
+
     /**
      * @ignore
      */
@@ -41,9 +58,23 @@ class Blackmore extends Controller
      */
     public function render($uAction, $uParams, $uInput)
     {
-        self::$modules['index'] = array(
-            'title' => 'Dashboard',
-            'callback' => array(&$this, 'index')
+        self::$modules[self::DEFAULT_MODULE_INDEX] = array(
+            'title' => 'Blackmore',
+            'actions' => array(
+                self::DEFAULT_ACTION_INDEX => array(
+                    'icon' => 'th-large',
+                    'callback' => array(&$this, 'index'),
+                    'menutitle' => 'Dashboard'
+                )
+            )
+        );
+        self::$modules[self::LOGIN_MODULE_INDEX] = array(
+            'actions' => array(
+                self::DEFAULT_ACTION_INDEX => array(
+                    'icon' => 'remove-circle',
+                    'callback' => array(&$this, 'login')
+                )
+            )
         );
 
         $tParms = array(
@@ -51,27 +82,60 @@ class Blackmore extends Controller
         );
         Events::invoke('blackmoreRegisterModules', $tParms);
 
-        self::$modules['login'] = array(
-            'title' => 'Logout',
-            'callback' => array(&$this, 'login')
-        );
-
-        self::$module = (strlen($uAction) > 0) ? strtolower($uAction) : 'index';
+        self::$module = (strlen($uAction) > 0) ? strtolower($uAction) : self::DEFAULT_MODULE_INDEX;
         if (!isset(self::$modules[self::$module])) {
             return false;
         }
 
-        if (count($uParams) > 0) {
-            foreach (self::$modules[self::$module]['actions'] as $tAction) {
-                if ($uParams[0] != $tAction['action']) {
+        foreach (self::$modules as $tModuleKey => $tModule) {
+            if (!isset($tModule['title'])) {
+                continue;
+            }
+
+            self::$menuItems[$tModuleKey] = array(
+                ($tModuleKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tModuleKey),
+                _($tModule['title']),
+                array()
+            );
+
+            foreach ($tModule['actions'] as $tActionKey => $tAction) {
+                if (is_null($tAction)) {
+                    self::$menuItems[$tModuleKey][2][] = '-';
                     continue;
                 }
 
-                return call_user_func_array($tAction['callback'], $uParams);
+                if (!isset($tAction['menutitle'])) {
+                    continue;
+                }
+
+                if (isset($tAction['customurl'])) {
+                    $tUrl = $tAction['customurl'];
+                } elseif ($tActionKey === self::DEFAULT_ACTION_INDEX) {
+                    if ($tModuleKey === self::DEFAULT_MODULE_INDEX) {
+                        $tUrl = Http::url('blackmore');
+                    } else {
+                        $tUrl = Http::url('blackmore/' . $tModuleKey);
+                    }
+                } else {
+                    $tUrl = Http::url('blackmore/' . $tModuleKey . '/' . $tActionKey);
+                }
+
+                self::$menuItems[$tModuleKey][2][] = array(
+                    $tUrl,
+                    isset($tAction['icon']) ? $tAction['icon'] : 'minus',
+                    _($tAction['menutitle'])
+                );
             }
         }
+        self::$menuItems[self::DEFAULT_MODULE_INDEX][2][] = '-';
+        self::$menuItems[self::DEFAULT_MODULE_INDEX][2][] = array(
+            Http::url('blackmore/' . self::LOGIN_MODULE_INDEX),
+            'remove-circle',
+            _('Logout')
+        );
 
-        return call_user_func_array(self::$modules[self::$module]['callback'], $uParams);
+        $tSubAction = (count($uParams) > 0) ? $uParams[0] : self::DEFAULT_ACTION_INDEX;
+        return call_user_func_array(self::$modules[self::$module]['actions'][$tSubAction]['callback'], $uParams);
     }
 
     /**
@@ -111,7 +175,7 @@ class Blackmore extends Controller
             return;
         }
 
-        $this->redirect('blackmore/index');
+        $this->redirect('blackmore');
     }
 
     /**

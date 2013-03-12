@@ -48,28 +48,28 @@
                                     <div class="container" style="width: auto;">
                                         <!-- <a class="brand" href="#">Blackmore</a> -->
                                         <ul class="nav" role="navigation">
-                                        <?php foreach(Blackmore::$modules as $tKey => $tModule) { ?>
-                                            <?php if(isset($tModule['submenus']) && $tModule['submenus']) { ?>
-                                                <li class="dropdown">
-                                                    <a href="<?php echo Http::url('blackmore/' . $tKey); ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                                                        <?php echo _($tModule['title']); ?>
-                                                        <b class="caret"></b>
-                                                    </a>
-                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                                                    <?php
-                                                    foreach($tModule['actions'] as $tSubmenuItem) {
-                                                        if(!isset($tSubmenuItem['menutitle'])) {
-                                                            continue;
-                                                        }
-                                                        $tIcon = isset($tSubmenuItem['icon']) ? $tSubmenuItem['icon'] : 'minus';
-                                                    ?>
-                                                        <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="<?php echo Http::url('blackmore/' . $tKey . '/' . $tSubmenuItem['action']); ?>"><i class="icon-<?php echo $tIcon; ?>"></i> <?php echo _($tSubmenuItem['menutitle']); ?></a>
-                                                        </li>
-                                                    <?php } ?>
-                                                    </ul>
-                                                </li>
-                                            <?php } ?>
+                                        <?php foreach (Blackmore::$menuItems as $tKey => $tMenu) { ?>
+                                            <li class="dropdown">
+                                                <a href="<?php echo $tMenu[0]; ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <?php echo $tMenu[1]; ?>
+                                                    <b class="caret"></b>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                                                <?php
+                                                foreach ($tMenu[2] as $tMenuItem) {
+                                                    if ($tMenuItem === '-') {
+                                                ?>
+                                                    <li class="divider"></li>
+                                                <?php
+                                                        continue;
+                                                    }
+                                                ?>
+                                                    <li role="presentation">
+                                                        <a role="menuitem" tabindex="-1" href="<?php echo $tMenuItem[0]; ?>"><i class="icon-<?php echo $tMenuItem[1]; ?>"></i> <?php echo $tMenuItem[2]; ?></a>
+                                                    </li>
+                                                <?php } ?>
+                                                </ul>
+                                            </li>
                                         <?php } ?>
                                     </div>
                                 </div>

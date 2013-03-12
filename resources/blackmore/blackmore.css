@@ -275,6 +275,13 @@ form input.file {
     text-decoration: none;
 }
 
+.bgLink:active, .bgLink:focus {
+    color: #FFFFFF;
+    outline: thin dotted #333333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
 #page {
 	font-size: 13px;
 	width: 100%;
