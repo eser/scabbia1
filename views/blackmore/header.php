@@ -37,7 +37,7 @@
 				</div>
 				<div id="pageTopLogo">
 					<div class="containerBox inner">
-						<a href="<?php echo Http::url('blackmore/index'); ?>"><img src="<?php echo $root, Config::get('blackmore/logo', '/scabbia/blackmore/images/logo.png'); ?>" alt="" /></a>
+						<a href="<?php echo Http::url('blackmore'); ?>"><img src="<?php echo $root, Config::get('blackmore/logo', '/scabbia/blackmore/images/logo.png'); ?>" alt="" /></a>
 					</div>
 				</div>
 				<div id="pageTopMenu">

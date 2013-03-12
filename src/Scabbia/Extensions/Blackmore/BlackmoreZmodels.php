@@ -46,6 +46,7 @@ class BlackmoreZmodels
                 'title' => $tZmodel['title'],
                 'actions' => array(
                     'add' => array(
+                        'icon' => 'plus',
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::add',
                         'menutitle' => 'Add ' . $tZmodel['singularTitle']
                     ),
@@ -56,6 +57,7 @@ class BlackmoreZmodels
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::remove'
                     ),
                     'all' => array(
+                        'icon' => 'list-alt',
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::all',
                         'menutitle' => 'All ' . $tZmodel['title']
                     )
