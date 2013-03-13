@@ -174,12 +174,6 @@ class DatabaseQuery
      */
     public function addField($uField, $uValue = null)
     {
-        if (func_num_args() == 1) {
-            $this->fields[] = $uField;
-
-            return $this;
-        }
-
         if (is_null($uValue)) {
             $this->fields[$uField] = 'NULL';
         } else {

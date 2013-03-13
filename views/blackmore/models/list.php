@@ -38,36 +38,26 @@
 
 				<table class="tablesorter">
 					<thead>
-					<tr>
-						<?php
-						foreach($module['fieldList'] as $field) {
-							if(!array_key_exists('list', $field['methods'])) {
-								continue;
-							}
-							?>
+						<tr>
+					<?php foreach($fields as $field) { ?>
 							<th><?php echo _($field['title']); ?></th>
-							<?php } ?>
-						<th></th>
-					</tr>
+					<?php } ?>
+							<th></th>
+						</tr>
 					</thead>
 					<tbody>
 					<?php foreach($rows as $row) { ?>
-					<tr class="row" id="row-<?php echo $row['slug']; ?>">
-						<?php
-						foreach($module['fieldList'] as $field) {
-							if(!array_key_exists('list', $field['methods'])) {
-								continue;
-							}
-							?>
-							<td><?php echo $row[$field['name']]; ?></td>
-							<?php } ?>
-						<td>
-							<a class="iconcategoryedit"
-									href="<?php echo Http::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
-							<a class="iconcategorydelete delete"
-									href="<?php echo Http::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
-						</td>
-					</tr>
+						<tr>
+					<?php foreach($row as $cell) { ?>
+							<td><?php echo $cell; ?></td>
+					<?php } ?>
+							<td>
+								<a class="iconcategoryedit"
+										href="<?php echo Http::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
+								<a class="iconcategorydelete delete"
+										href="<?php echo Http::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
+							</td>
+						</tr>
 						<?php } ?>
 					</tbody>
 				</table>

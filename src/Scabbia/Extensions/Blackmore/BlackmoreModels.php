@@ -11,6 +11,7 @@ use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Extensions\Html\Html;
 use Scabbia\Extensions\Http\Request;
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Extensions\Session\Session;
@@ -57,9 +58,9 @@ class BlackmoreModels
                     'remove' => array(
                         'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::remove'
                     ),
-                    'all' => array(
+                    'index' => array(
                         'icon' => 'list-alt',
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::all',
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::index',
                         'menutitle' => 'All ' . $tAutoModel['title']
                     )
                 )
@@ -88,19 +89,21 @@ class BlackmoreModels
     /**
      * @ignore
      */
-    public static function all()
+    public static function index()
     {
         Auth::checkRedirect('editor');
 
-        $tAutoModel = new AutoModel('categories');
         $tModule = AutoModels::get(Blackmore::$module);
+	    $tAutoModel = new AutoModel($tModule['name']);
 
-        $tRows = $tAutoModel->getAll($tModule['name']);
+	    $tFields = $tAutoModel->ddlGetFieldsForMethod('list');
+        $tRows = $tAutoModel->getAll();
 
         Views::viewFile(
             '{core}views/blackmore/models/list.php',
             array(
                 'module' => $tModule,
+                'fields' => $tFields,
                 'rows' => $tRows
             )
         );
@@ -113,79 +116,78 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = AutoModels::get(Blackmore::$module);
+	    $tModule = AutoModels::get(Blackmore::$module);
+	    $tAutoModel = new AutoModel($tModule['name']);
+
+	    $tFields = $tAutoModel->ddlGetFieldsForMethod('add');
+
         $tViewbag = array(
             'module' => $tModule,
+	        'postback' => Http::url('blackmore/' . Blackmore::$module . '/add'),
             'fields' => array()
         );
 
-        if (Request::$method == 'post') {
-            // todo: validations
-            Validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
-            // Validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
+	    if (Request::$method == 'post') {
+		    $tInput = array();
 
-            if (Validation::validate($_POST)) {
-                $tSlug = Request::post('slug', '');
-                if (strlen(rtrim($tSlug)) == 0) {
-                    $tSlug = Request::post('name', '');
-                }
+		    foreach ($tFields as $tField) {
+			    $tInput[$tField['name']] = Request::post($tField['name']);
 
-                $tInput = array(
-                    'type' => Request::post('type'),
-                    'name' => Request::post('name'),
-                    'slug' => String::slug(String::removeAccent($tSlug))
-                );
+			    if (!isset($tField['validation'])) {
+				    continue;
+			    }
 
-                $tAutoModel = new AutoModel('categories');
-                $tAutoModel->insert($tInput);
+			    // @todo add validation type as array key
+			    foreach ($tField['validation'] as $tFieldValidationKey => $tFieldValidationMessage) {
+			        Validation::addRule($tField['name'])->isRequired()->errorMessage($tFieldValidationMessage);
+		        }
+		    }
 
-                Session::setFlash('notification', 'Record added.');
-                Http::redirect('blackmore/categories');
+		    if (Validation::validate($_POST)) {
+			    $tAutoModel->insert($tInput);
 
-                return;
-            }
+			    Session::setFlash('notification', 'Record added.');
+			    Http::redirect('blackmore/' . Blackmore::$module);
 
-            $tViewbag['error'] = implode('<br />', Validation::getErrorMessages(true));
-        }
+			    return;
+		    }
 
-        foreach ($tModule['fieldList'] as $tField) {
-            $tIsView = array_key_exists('view', $tField['methods']);
-            $tIsEdit = array_key_exists('edit', $tField['methods']);
+		    $tViewbag['error'] = implode('<br />', Validation::getErrorMessages(true));
+	    }
 
-            if ($tIsView || $tIsEdit) {
-                switch ($tField['type']) {
-                    case 'enum':
-                        $tTypes = array();
-                        foreach ($tField['valueList'] as $tValue) {
-                            $tTypes[$tValue['name']] = $tValue['title'];
-                        }
+        foreach ($tFields as $tField) {
+            switch ($tField['type']) {
+                case 'enum':
+                    $tTypes = array();
+                    foreach ($tField['valueList'] as $tValue) {
+                        $tTypes[$tValue['name']] = $tValue['title'];
+                    }
 
-                        $tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
-                        if (!$tIsEdit) {
-                            $tAttributes['readonly'] = 'readonly';
-                        }
+                    $tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+                    // if (!$tIsEdit) {
+                    //    $tAttributes['readonly'] = 'readonly';
+                    // }
 
-                        $tTag = '<p>' . _($tField['title']) . ': ' . Html::tag(
-                            'select',
-                            $tAttributes,
-                            Html::selectOptions($tTypes, Request::post($tField['name'], null))
-                        ) . '</p>';
-                        break;
+                    $tTag = '<p>' . _($tField['title']) . ': ' . Html::tag(
+                        'select',
+                        $tAttributes,
+                        Html::selectOptions($tTypes, Request::post($tField['name'], null))
+                    ) . '</p>';
+                    break;
 
-                    default:
-                        $tAttributes = array(
-                            'type' => 'text',
-                            'name' => $tField['name'],
-                            'value' => Request::post($tField['name'], ''),
-                            'class' => 'input input_' . $tField['type']
-                        );
-                        if (!$tIsEdit) {
-                            $tAttributes['readonly'] = 'readonly';
-                        }
+                default:
+                    $tAttributes = array(
+                        'type' => 'text',
+                        'name' => $tField['name'],
+                        'value' => Request::post($tField['name'], ''),
+                        'class' => 'input input_' . $tField['type']
+                    );
+                    // if (!$tIsEdit) {
+                    //    $tAttributes['readonly'] = 'readonly';
+                    // }
 
-                        $tTag = '<p>' . _($tField['title']) . ': ' . Html::tag('input', $tAttributes) . '</p>';
-                        break;
-                }
+                    $tTag = '<p>' . _($tField['title']) . ': ' . Html::tag('input', $tAttributes) . '</p>';
+                    break;
             }
 
             $tViewbag['fields'][] = array(

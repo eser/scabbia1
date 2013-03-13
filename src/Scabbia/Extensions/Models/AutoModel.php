@@ -124,24 +124,43 @@ class AutoModel extends Model
      */
     public function getAll()
     {
+	    $tFields = $this->ddlGetFieldsForMethod('list', 'name');
+
         return $this->db->createQuery()
             ->setTable($this->entityName)
-            ->addField('*')
+            ->setFieldsDirect($tFields)
             // ->setWhere()
             ->get()
             ->all();
     }
+
+	/**
+	 * @ignore
+	 */
+	public function ddlGetFieldsForMethod($uMethod, $uProperty = null)
+	{
+		$tMethods = array();
+
+		foreach ($this->entityDefinition['fieldList'] as $tField) {
+			if (isset($tField['methods']) && in_array($uMethod, $tField['methods'], true)) {
+				if (!is_null($uProperty)) {
+					$tMethods[] = $tField[$uProperty];
+					continue;
+				}
+
+				$tMethods[] = $tField;
+			}
+		}
+
+		return $tMethods;
+	}
 
     /**
      * @ignore
      */
     public function ddlCreateSql()
     {
-        $tSql = 'CREATE TABLE ' . $this->entityDefinition['name'] . ' (
-id UUID NOT NULL,
-createdate DATETIME NOT NULL,
-updatedate DATETIME NOT NULL,
-deletedate DATETIME,';
+        $tSql = 'CREATE TABLE ' . $this->entityDefinition['name'] . ' (';
 
         if (isset($this->entityDefinition['fieldList'])) {
             foreach ($this->entityDefinition['fieldList'] as $tField) {
