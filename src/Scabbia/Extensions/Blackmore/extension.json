@@ -9,10 +9,10 @@
         "fwdependList":     [
             "Auth",
             "Http",
+            "Models",
             "Resources",
             "String",
-            "Validation",
-            "Zmodels"
+            "Validation"
         ]
     },
     "eventList": [
@@ -29,7 +29,7 @@
         {
             "name":         "blackmoreRegisterModules",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::blackmoreRegisterModules"
+            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreModels::blackmoreRegisterModules"
         }
     ]
 }

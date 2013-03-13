@@ -5,18 +5,19 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Zmodels;
+namespace Scabbia\Extensions\Models;
 
-use Scabbia\Extensions\Zmodels\Zmodels;
+use Scabbia\Extensions\Models\AutoModels;
+use Scabbia\Extensions\Models\Model;
 
 /**
- * Zmodels Extension: Zmodel Class
+ * Models Extension: AutoModel Class
  *
  * @package Scabbia
- * @subpackage Zmodels
+ * @subpackage Models
  * @version 1.1.0
  */
-class zmodel
+class AutoModel extends Model
 {
     /**
      * @ignore
@@ -35,10 +36,12 @@ class zmodel
     /**
      * @ignore
      */
-    public function zmodel($uEntityName)
+    public function __construct($uEntityName, $uDatasource = null)
     {
+        parent::__construct($uDatasource);
+
         $this->entityName = $uEntityName;
-        $this->entityDefinition = Zmodels::$zmodels[$uEntityName];
+        $this->entityDefinition = AutoModels::get($uEntityName);
     }
 
     /**

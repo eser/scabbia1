@@ -17,18 +17,18 @@ use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\String\String;
 use Scabbia\Extensions\Validation\Validation;
 use Scabbia\Extensions\Views\Views;
-use Scabbia\Extensions\Zmodels\Zmodel;
-use Scabbia\Extensions\Zmodels\Zmodels;
+use Scabbia\Extensions\Models\AutoModel;
+use Scabbia\Extensions\Models\AutoModels;
 use Scabbia\Config;
 
 /**
- * Blackmore Extension: Zmodels Section
+ * Blackmore Extension: Models Section
  *
  * @package Scabbia
  * @subpackage Blackmore
  * @version 1.1.0
  */
-class BlackmoreZmodels
+class BlackmoreModels
 {
     /**
      * @ignore
@@ -37,29 +37,30 @@ class BlackmoreZmodels
     {
         $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['generateSql'] = array(
             'icon' => 'list-alt',
-            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::generateSql',
-            'menutitle' => 'Generate Zmodel SQL'
+            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::generateSql',
+            'menutitle' => 'Generate AutoModel SQL'
         );
 
-        foreach (Zmodels::$zmodels as $tKey => $tZmodel) {
+        AutoModels::load();
+        foreach (AutoModels::$autoModels as $tKey => $tAutoModel) {
             $uParms['modules'][$tKey] = array(
-                'title' => $tZmodel['title'],
+                'title' => $tAutoModel['title'],
                 'actions' => array(
                     'add' => array(
                         'icon' => 'plus',
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::add',
-                        'menutitle' => 'Add ' . $tZmodel['singularTitle']
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::add',
+                        'menutitle' => 'Add ' . $tAutoModel['singularTitle']
                     ),
                     'edit' => array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::edit'
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::edit'
                     ),
                     'remove' => array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::remove'
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::remove'
                     ),
                     'all' => array(
                         'icon' => 'list-alt',
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreZmodels::all',
-                        'menutitle' => 'All ' . $tZmodel['title']
+                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::all',
+                        'menutitle' => 'All ' . $tAutoModel['title']
                     )
                 )
             );
@@ -71,7 +72,7 @@ class BlackmoreZmodels
      */
     public static function getModel()
     {
-        return Controllers::load('Scabbia\\Extensions\\Blackmore\\BlackmoreZmodelModel', null, Config::get('blackmore/database', null));
+        return Controllers::load('Scabbia\\Extensions\\Blackmore\\BlackmoreAutoModel', null, Config::get('blackmore/database', null));
     }
 
     /**
@@ -81,11 +82,11 @@ class BlackmoreZmodels
     {
         Auth::checkRedirect('admin');
 
-        $tZmodel = new Zmodel('categories');
-        $tSql = $tZmodel->ddlCreateSql();
+        $tAutoModel = new AutoModel('categories');
+        $tSql = $tAutoModel->ddlCreateSql();
 
         Views::viewFile(
-            '{core}views/blackmore/zmodels/sql.php',
+            '{core}views/blackmore/models/sql.php',
             array(
                 'sql' => $tSql
             )
@@ -100,12 +101,12 @@ class BlackmoreZmodels
         Auth::checkRedirect('editor');
 
         $tModel = self::getModel();
-        $tModule = & Zmodels::$zmodels[Blackmore::$module];
+        $tModule = AutoModels::get(Blackmore::$module);
 
         $tRows = $tModel->getAll($tModule['name']);
 
         Views::viewFile(
-            '{core}views/blackmore/zmodels/list.php',
+            '{core}views/blackmore/models/list.php',
             array(
                 'module' => $tModule,
                 'rows' => $tRows
@@ -120,7 +121,7 @@ class BlackmoreZmodels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = Zmodels::$zmodels[Blackmore::$module];
+        $tModule = AutoModels::get(Blackmore::$module);
         $tViewbag = array(
             'module' => $tModule,
             'fields' => array()
@@ -201,7 +202,7 @@ class BlackmoreZmodels
             );
         }
 
-        Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+        Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
     }
 
     /**
@@ -211,7 +212,7 @@ class BlackmoreZmodels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = & Zmodels::$zmodels[Blackmore::$module];
+        $tModule = AutoModels::get(Blackmore::$module);
         $tViewbag = array(
             'module' => $tModule,
             'fields' => array()
@@ -290,7 +291,7 @@ class BlackmoreZmodels
                 );
             }
 
-            Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+            Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
 
             return;
         }
@@ -343,7 +344,7 @@ class BlackmoreZmodels
             );
         }
 
-        Views::viewFile('{core}views/blackmore/zmodels/form.php', $tViewbag);
+        Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
     }
 
     /**
