@@ -70,14 +70,6 @@ class BlackmoreModels
     /**
      * @ignore
      */
-    public static function getModel()
-    {
-        return Controllers::load('Scabbia\\Extensions\\Blackmore\\BlackmoreAutoModel', null, Config::get('blackmore/database', null));
-    }
-
-    /**
-     * @ignore
-     */
     public static function generateSql()
     {
         Auth::checkRedirect('admin');
@@ -100,10 +92,10 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tModel = self::getModel();
+        $tAutoModel = new AutoModel('categories');
         $tModule = AutoModels::get(Blackmore::$module);
 
-        $tRows = $tModel->getAll($tModule['name']);
+        $tRows = $tAutoModel->getAll($tModule['name']);
 
         Views::viewFile(
             '{core}views/blackmore/models/list.php',
@@ -144,8 +136,8 @@ class BlackmoreModels
                     'slug' => String::slug(String::removeAccent($tSlug))
                 );
 
-                $tModel = self::getModel();
-                $tModel->insert($tInput);
+                $tAutoModel = new AutoModel('categories');
+                $tAutoModel->insert($tInput);
 
                 Session::setFlash('notification', 'Record added.');
                 Http::redirect('blackmore/categories');
@@ -235,8 +227,8 @@ class BlackmoreModels
                     'slug' => String::slug(String::removeAccent($tSlug))
                 );
 
-                $tModel = self::getModel();
-                $tModel->update($uSlug, $tInput);
+                $tAutoModel = new AutoModel('categories');
+                $tAutoModel->update($uSlug, $tInput);
 
                 Session::setFlash('notification', 'Record modified.');
                 Http::redirect('blackmore/categories');
@@ -296,8 +288,8 @@ class BlackmoreModels
             return;
         }
 
-        $tModel = self::getModel();
-        $tCategory = $tModel->getBySlug($tModule['name'], $uSlug);
+        $tAutoModel = new AutoModel('categories');
+        $tCategory = $tAutoModel->getBySlug($tModule['name'], $uSlug);
 
         foreach ($tModule['fieldList'] as $tField) {
             $tIsView = array_key_exists('view', $tField['methods']);

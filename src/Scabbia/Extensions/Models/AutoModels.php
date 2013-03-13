@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Models;
 
-use Scabbia\Extensions\Models\AutoModel;
 use Scabbia\Config;
 
 /**

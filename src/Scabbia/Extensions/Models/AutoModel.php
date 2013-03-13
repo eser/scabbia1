@@ -100,7 +100,7 @@ class AutoModel extends Model
         return $this->db->createQuery()
                 ->setTable($this->entityName)
                 ->setFields($this->fields)
-        // ->setWhere()
+                // ->setWhere()
                 ->setLimit(1)
                 ->update()
                 ->execute();
@@ -113,10 +113,23 @@ class AutoModel extends Model
     {
         return $this->db->createQuery()
                 ->setTable($this->entityName)
-        // ->setWhere()
+                // ->setWhere()
                 ->setLimit(1)
                 ->delete()
                 ->execute();
+    }
+
+    /**
+     * @ignore
+     */
+    public function getAll()
+    {
+        return $this->db->createQuery()
+            ->setTable($this->entityName)
+            ->addField('*')
+            // ->setWhere()
+            ->get()
+            ->all();
     }
 
     /**
