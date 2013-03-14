@@ -53,9 +53,9 @@ class Config
     /**
      * @ignore
      */
-    private static function jsonProcessChildrenRecursive(&$uArray, $uNode, &$tNodeStack, $uIsArray = false)
+    private static function jsonProcessChildrenRecursive(&$uArray, $uNode, &$tNodeStack, $uIsArray = false, $uIsDirect = false)
     {
-        if (is_object($uNode)) {
+        if (is_object($uNode) && !$uIsDirect) {
             foreach ($uNode as $tKey => $tSubnode) {
                 $tNodeName = explode(':', $tKey);
 
@@ -89,34 +89,45 @@ class Config
                                 continue 2;
                             }
                             break;
+                        case 'direct':
+                            $uIsDirect = true;
+                            break;
                     }
                 }
 
                 array_push($tNodeStack, $tNodeName[0]);
-                self::jsonProcessChildrenRecursive($uArray, $tSubnode, $tNodeStack);
+                self::jsonProcessChildrenRecursive($uArray, $tSubnode, $tNodeStack, false, $uIsDirect);
                 array_pop($tNodeStack);
             }
         } else {
             $tNodePath = implode('/', $tNodeStack);
 
             if ($uIsArray) {
-                if (is_array($uNode)) {
-                     foreach ($uNode as $tSubnode) {
+                if (!is_scalar($uNode)) {
+                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
                          $tNewNodeStack = array();
-                         self::jsonProcessChildrenRecursive($uArray[], $tSubnode, $tNewNodeStack, true);
+                         if ($uIsDirect) {
+                             self::jsonProcessChildrenRecursive($uArray[$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                         } else {
+                             self::jsonProcessChildrenRecursive($uArray[], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                         }
                      }
                 } else {
                     $uArray = $uNode;
                 }
             } else {
-                if (is_array($uNode)) {
+                if (!is_scalar($uNode)) {
                     if (!isset($uArray[$tNodePath])) {
                         $uArray[$tNodePath] = array();
                     }
 
-                    foreach ($uNode as $tSubnode) {
+                    foreach ($uNode as $tSubnodeKey => $tSubnode) {
                         $tNewNodeStack = array();
-                        self::jsonProcessChildrenRecursive($uArray[$tNodePath][], $tSubnode, $tNewNodeStack, true);
+                        if ($uIsDirect) {
+                            self::jsonProcessChildrenRecursive($uArray[$tNodePath][$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                        } else {
+                            self::jsonProcessChildrenRecursive($uArray[$tNodePath][], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                        }
                     }
                 } else {
                     $uArray[$tNodePath] = $uNode;

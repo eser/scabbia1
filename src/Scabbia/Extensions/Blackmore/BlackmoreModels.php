@@ -95,7 +95,6 @@ class BlackmoreModels
 
         $tModule = AutoModels::get(Blackmore::$module);
 	    $tAutoModel = new AutoModel($tModule['name']);
-
 	    $tFields = $tAutoModel->ddlGetFieldsForMethod('list');
         $tRows = $tAutoModel->getAll();
 
