@@ -85,7 +85,7 @@ class Blackmore extends Controller
             return false;
         }
 
-        foreach (Config::get('menuList', array()) as $tMenuKey => $tMenu) {
+        foreach (Config::get('blackmore/menuList', array()) as $tMenuKey => $tMenu) {
             self::$menuItems[$tMenuKey] = array(
                 ($tMenuKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tMenuKey),
                 _($tMenu['title']),

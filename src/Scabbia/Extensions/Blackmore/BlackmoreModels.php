@@ -28,6 +28,10 @@ use Scabbia\Config;
  * @package Scabbia
  * @subpackage Blackmore
  * @version 1.1.0
+ *
+ * @todo blackmore-bootstrap integration on input fields, for example:
+ * - required fields in red focus
+ * - e-mail fields with prepend icon
  */
 class BlackmoreModels
 {
@@ -137,15 +141,15 @@ class BlackmoreModels
 			    }
 
 			    // @todo add validation type as array key
-			    foreach ($tField['validation'] as $tFieldValidationKey => $tFieldValidationMessage) {
-			        Validation::addRule($tField['name'])->isRequired()->errorMessage($tFieldValidationMessage);
+			    foreach ($tField['validation'] as $tFieldValidation) {
+			        Validation::addRule($tField['name'])->set($tFieldValidation['type'], isset($tFieldValidation['params']) ? $tFieldValidation['params'] : array())->errorMessage($tFieldValidation['message']);
 		        }
 		    }
 
 		    if (Validation::validate($_POST)) {
 			    $tAutoModel->insert($tInput);
 
-			    Session::setFlash('notification', 'Record added.');
+			    Session::setFlash('notification', array('ok-sign', 'Record added.'));
 			    Http::redirect('blackmore/' . Blackmore::$module);
 
 			    return;
@@ -162,7 +166,7 @@ class BlackmoreModels
                         $tTypes[$tValue['name']] = $tValue['title'];
                     }
 
-                    $tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+                    $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
                     // if (!$tIsEdit) {
                     //    $tAttributes['readonly'] = 'readonly';
                     // }
@@ -179,7 +183,7 @@ class BlackmoreModels
                         'type' => 'text',
                         'name' => $tField['name'],
                         'value' => Request::post($tField['name'], ''),
-                        'class' => 'input input_' . $tField['type']
+                        'class' => 'input-block-level input_' . $tField['type']
                     );
                     // if (!$tIsEdit) {
                     //    $tAttributes['readonly'] = 'readonly';
@@ -231,7 +235,7 @@ class BlackmoreModels
                 $tAutoModel = new AutoModel('categories');
                 $tAutoModel->update($uSlug, $tInput);
 
-                Session::setFlash('notification', 'Record modified.');
+                Session::setFlash('notification', array('ok-sign', 'Record modified.'));
                 Http::redirect('blackmore/categories');
 
                 return;
@@ -251,7 +255,7 @@ class BlackmoreModels
                                 $tTypes[$tValue['name']] = $tValue['title'];
                             }
 
-                            $tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+                            $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
                             if (!$tIsEdit) {
                                 $tAttributes['readonly'] = 'readonly';
                             }
@@ -267,7 +271,7 @@ class BlackmoreModels
                                 'type' => 'text',
                                 'name' => $tField['name'],
                                 'value' => Request::post($tField['name'], ''),
-                                'class' => 'input input_' . $tField['type']
+                                'class' => 'input-block-level input_' . $tField['type']
                             );
                             if (!$tIsEdit) {
                                 $tAttributes['readonly'] = 'readonly';
@@ -304,7 +308,7 @@ class BlackmoreModels
                             $tTypes[$tValue['name']] = $tValue['title'];
                         }
 
-                        $tAttributes = array('name' => $tField['name'], 'class' => 'input input_' . $tField['type']);
+                        $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
                         if (!$tIsEdit) {
                             $tAttributes['readonly'] = 'readonly';
                         }
@@ -320,7 +324,7 @@ class BlackmoreModels
                             'type' => 'text',
                             'name' => $tField['name'],
                             'value' => $tCategory[$tField['name']],
-                            'class' => 'input input_' . $tField['type']
+                            'class' => 'input-block-level input_' . $tField['type']
                         );
                         if (!$tIsEdit) {
                             $tAttributes['readonly'] = 'readonly';
@@ -347,7 +351,7 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        Session::setFlash('notification', 'Category removed.');
+        Session::setFlash('notification', array('ok-sign', 'Category removed.'));
         Http::redirect('blackmore/categories');
     }
 }

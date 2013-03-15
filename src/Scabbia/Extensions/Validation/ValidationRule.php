@@ -56,6 +56,17 @@ class ValidationRule
     /**
      * @ignore
      */
+    public function set($uType, $uArgs = array())
+    {
+        $this->type = $uType;
+        $this->args = (array)$uArgs;
+
+        return $this;
+    }
+
+    /**
+     * @ignore
+     */
     public function field($uField)
     {
         $this->field = $uField;
@@ -69,5 +80,7 @@ class ValidationRule
     public function errorMessage($uErrorMessage)
     {
         $this->errorMessage = $uErrorMessage;
+
+        return $this;
     }
 }

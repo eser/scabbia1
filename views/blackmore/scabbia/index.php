@@ -9,19 +9,20 @@
 	<tr>
 		<td id="pageMiddleSidebar">
 			<div class="middleLine">
-				<?php if(isset($error)) { ?>
-				<div class="message errormsg">
-					<p><?php echo $error; ?></p>
-				</div>
-				<?php } ?>
-
-				<?php if(Session::existsFlash('notification')) { ?>
-				<div class="message info">
-					<p><?php echo Session::getFlash('notification'); ?></p>
-				</div>
-				<?php } ?>
-
 				<div class="menuDivContainer">
+                    <?php if(isset($error)) { ?>
+                        <div class="alert alert-error">
+                            <?php echo $error; ?>
+                        </div>
+                    <?php } ?>
+
+                    <?php if(Session::existsFlash('notification')) {
+                        $notification = Session::getFlash('notification'); ?>
+                        <div class="alert alert-info">
+                            <i class="icon-<?php echo $notification[0]; ?>"></i> <?php echo $notification[1]; ?>
+                        </div>
+                    <?php } ?>
+
 					<?php Views::viewFile('{vendor}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
 				</div>
 			</div>

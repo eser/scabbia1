@@ -83,74 +83,10 @@ form textarea.cleditor {
 	outline: none;
 }
 
-form input.input_varchar, form input.input_uuid, form input.input_datetime {
-	width: 280px;
-	background: #FEFEFE;
-	border: 1px solid #BBBBBB;
-	box-shadow: inset 0px 2px 3px #CCCCCC, 0px 1px rgba(255, 255, 255, 0.898);
-	font-size: 14px;
-	color: #333333;
-	padding: 7px;
-	border-radius: 3px;
-	outline: none;
-	vertical-align: middle;
+form input.input_varchar, form input.input_uuid, form input.input_datetime, form .input_enum, form .input_file {
 	display: block;
 }
 
-form .input_enum {
-	width: 300px;
-	background: #FEFEFE;
-	border: 1px solid #BBBBBB;
-	box-shadow: inset 0px 2px 3px #CCCCCC, 0px 1px rgba(255, 255, 255, 0.898);
-	font-size: 14px;
-	color: #333333;
-	padding: 7px;
-	border-radius: 3px;
-	outline: none;
-	vertical-align: middle;
-	display: block;
-}
-
-form .fileupload {
-	position: relative;
-	height: 30px;
-}
-
-form .fileupload {
-	background: url('scabbia/blackmore/images/upload_file.gif') right top no-repeat;
-	border: none;
-	overflow: hidden;
-}
-
-form .fileupload .file-text {
-	width: 209px !important;
-	height: 14px !important;
-	border-radius: 3px 0px 0px 3px;
-	border-right: 0px;
-}
-
-form input.file {
-	margin-left: -145px;
-	opacity: 0.0;
-	float: right;
-}
-
-form input.file {
-	width: 75px;
-	height: 30px;
-	margin-top: 10px;
-	background: #fefefe;
-	border: 1px solid #bbb;
-	border-right: 0;
-	font-size: 14px;
-	color: #333;
-	padding: 4px;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-bottom-left-radius: 3px;
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
-	outline: none;
-}
 
 /* Messages */
 
