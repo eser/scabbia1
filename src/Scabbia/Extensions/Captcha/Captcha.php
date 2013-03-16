@@ -93,7 +93,7 @@ class Captcha
 
         // store the code in session
 
-        Session::setFlash($uCookieName, $tCode);
+        Session::set($uCookieName, $tCode);
 
         // try to avoid caching
         header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
@@ -118,9 +118,6 @@ class Captcha
     {
         // check the supplied code
         $tResult = (Session::getFlash($uCookieName, '') == strtolower($uCode));
-
-        // clear the code from session (code cannot be reused/retried)
-        // Session::removeFlash($uCookieName);
 
         // return the result
         return $tResult;

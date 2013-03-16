@@ -1,7 +1,7 @@
 <?php
     use Scabbia\Extensions\Session\Session;
 
-    if (Session::existsFlash('notification')) {
+    if (Session::exists('notification')) {
         $notification = Session::getFlash('notification');
 ?>
     <div class="alert alert-<?php echo $notification[0]; ?>">

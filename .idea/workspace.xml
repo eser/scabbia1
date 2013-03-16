@@ -5,26 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/blackmore/sectionError.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/blackmore/blackmore.css" afterPath="$PROJECT_DIR$/resources/blackmore/blackmore.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" afterPath="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/models/form.php" afterPath="$PROJECT_DIR$/views/blackmore/models/form.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/index.php" afterPath="$PROJECT_DIR$/views/blackmore/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/scabbia/index.php" afterPath="$PROJECT_DIR$/views/blackmore/scabbia/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/models/list.php" afterPath="$PROJECT_DIR$/views/blackmore/models/list.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/login.php" afterPath="$PROJECT_DIR$/views/blackmore/login.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/models/sql.php" afterPath="$PROJECT_DIR$/views/blackmore/models/sql.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blackmore/sectionError.php" afterPath="$PROJECT_DIR$/views/blackmore/sectionError.php" />
     </list>
     <ignored path="scabbia-dev.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363414249802" ignored="false" />
     <file path="/Zmodels.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363164880264" ignored="false" />
     <file path="/Zmodel.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363163871610" ignored="false" />
-    <file path="/a.dummy" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363415721961" ignored="false" />
+    <file path="/a.dummy" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363417350600" ignored="false" />
     <file path="/BlackmoreZmodelModel.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363164083540" ignored="false" />
     <file path="/BlackmoreModels.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363360228984" ignored="false" />
     <file path="$PROJECT_DIR$/../goldsoft/application/config/blackmore.json" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363360354359" ignored="false" />
@@ -44,8 +36,8 @@
     <file path="/blackmore.css" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363414422121" ignored="false" />
     <file path="/errorpages.css" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363381415847" ignored="false" />
     <file path="/footer.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363389707864" ignored="false" />
-    <file path="/sectionError.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363415183761" ignored="false" />
-    <file path="/Session.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363416882948" ignored="false" />
+    <file path="/sectionError.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363417361567" ignored="false" />
+    <file path="/Session.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363417217808" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +76,7 @@
       <file leaf-file-name="Blackmore.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="163" column="73" selection-start="5093" selection-end="5093" vertical-scroll-proportion="-3.5172415">
+            <state line="163" column="24" selection-start="5039" selection-end="5039" vertical-scroll-proportion="-3.7586207">
               <folding>
                 <element signature="e#170#203#0" expanded="true" />
               </folding>
@@ -95,7 +87,16 @@
       <file leaf-file-name="BlackmoreModels.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="243" column="73" selection-start="7942" selection-end="7942" vertical-scroll-proportion="-3.5172415">
+            <state line="353" column="20" selection-start="12422" selection-end="12422" vertical-scroll-proportion="-4.448276">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Captcha.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="121" column="0" selection-start="4174" selection-end="4174" vertical-scroll-proportion="-10.24138">
               <folding />
             </state>
           </provider>
@@ -104,7 +105,7 @@
       <file leaf-file-name="sectionError.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/blackmore/sectionError.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="338" selection-end="338" vertical-scroll-proportion="0.5847953">
+            <state line="3" column="42" selection-start="93" selection-end="93" vertical-scroll-proportion="0.18691589">
               <folding />
             </state>
           </provider>
@@ -113,7 +114,7 @@
       <file leaf-file-name="Session.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="274" column="5" selection-start="5891" selection-end="5891" vertical-scroll-proportion="-2.137931">
+            <state line="220" column="0" selection-start="4626" selection-end="4626" vertical-scroll-proportion="-7.9310346">
               <folding>
                 <element signature="e#6#127#0" expanded="true" />
               </folding>
@@ -181,7 +182,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/resources/errorpages/errorpages.css" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Arrays/Arrays.php" />
         <option value="$PROJECT_DIR$/views/blackmore/footer.php" />
         <option value="$PROJECT_DIR$/config/blackmore.json" />
@@ -193,10 +193,11 @@
         <option value="$PROJECT_DIR$/views/blackmore/scabbia/debug.php" />
         <option value="$PROJECT_DIR$/views/blackmore/scabbia/index.php" />
         <option value="$PROJECT_DIR$/views/blackmore/models/form.php" />
-        <option value="$PROJECT_DIR$/views/blackmore/sectionError.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php" />
-        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php" />
+        <option value="$PROJECT_DIR$/views/blackmore/sectionError.php" />
       </list>
     </option>
   </component>
@@ -641,13 +642,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/blackmore.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="32" selection-start="166" selection-end="173" vertical-scroll-proportion="0.058380414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/blackmore/footer.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="33" selection-start="148" selection-end="148" vertical-scroll-proportion="0.37664783">
@@ -729,9 +723,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="220" column="0" selection-start="4626" selection-end="4626" vertical-scroll-proportion="-7.9310346">
+          <folding>
+            <element signature="e#6#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/Blackmore.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="73" selection-start="5093" selection-end="5093" vertical-scroll-proportion="-3.5172415">
+        <state line="163" column="24" selection-start="5039" selection-end="5039" vertical-scroll-proportion="-3.7586207">
           <folding>
             <element signature="e#170#203#0" expanded="true" />
           </folding>
@@ -740,23 +743,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="243" column="73" selection-start="7942" selection-end="7942" vertical-scroll-proportion="-3.5172415">
+        <state line="353" column="20" selection-start="12422" selection-end="12422" vertical-scroll-proportion="-4.448276">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Session/Session.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Captcha/Captcha.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="274" column="5" selection-start="5891" selection-end="5891" vertical-scroll-proportion="-2.137931">
-          <folding>
-            <element signature="e#6#127#0" expanded="true" />
-          </folding>
+        <state line="121" column="0" selection-start="4174" selection-end="4174" vertical-scroll-proportion="-10.24138">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/blackmore/sectionError.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="338" selection-end="338" vertical-scroll-proportion="0.5847953">
+        <state line="3" column="42" selection-start="93" selection-end="93" vertical-scroll-proportion="0.18691589">
           <folding />
         </state>
       </provider>

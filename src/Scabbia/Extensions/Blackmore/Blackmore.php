@@ -150,7 +150,7 @@ class Blackmore extends Controller
         Validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
 
         if (!Validation::validate($_POST)) {
-            Session::setFlash('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
+            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
             $this->viewFile('{core}views/blackmore/login.php');
 
             return;
@@ -161,7 +161,7 @@ class Blackmore extends Controller
 
         // user not found
         if (!Auth::login($username, $password)) {
-            Session::setFlash('notification', array('error', 'remove-sign', 'User not found'));
+            Session::set('notification', array('error', 'remove-sign', 'User not found'));
             $this->viewFile('{core}views/blackmore/login.php');
 
             return;

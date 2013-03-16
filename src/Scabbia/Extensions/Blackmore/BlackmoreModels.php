@@ -149,13 +149,13 @@ class BlackmoreModels
 		    if (Validation::validate($_POST)) {
 			    $tAutoModel->insert($tInput);
 
-			    Session::setFlash('notification', array('info', 'ok-sign', 'Record added.'));
+			    Session::set('notification', array('info', 'ok-sign', 'Record added.'));
 			    Http::redirect('blackmore/' . Blackmore::$module);
 
 			    return;
 		    }
 
-            Session::setFlash('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
+            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
 	    }
 
         foreach ($tFields as $tField) {
@@ -235,13 +235,13 @@ class BlackmoreModels
                 $tAutoModel = new AutoModel('categories');
                 $tAutoModel->update($uSlug, $tInput);
 
-                Session::setFlash('notification', array('info', 'ok-sign', 'Record modified.'));
+                Session::set('notification', array('info', 'ok-sign', 'Record modified.'));
                 Http::redirect('blackmore/categories');
 
                 return;
             }
 
-            Session::setFlash('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
+            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
 
             foreach ($tModule['fieldList'] as $tField) {
                 $tIsView = array_key_exists('view', $tField['methods']);
@@ -351,7 +351,7 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        Session::setFlash('notification', array('info', 'ok-sign', 'Category removed.'));
+        Session::set('notification', array('info', 'ok-sign', 'Category removed.'));
         Http::redirect('blackmore/categories');
     }
 }
