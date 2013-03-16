@@ -97,17 +97,14 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = AutoModels::get(Blackmore::$module);
-	    $tAutoModel = new AutoModel($tModule['name']);
-	    $tFields = $tAutoModel->ddlGetFieldsForMethod('list');
-        $tRows = $tAutoModel->getAll();
+	    $tAutoModel = new AutoModel(Blackmore::$module);
+        $tData = $tAutoModel->call('list');
 
         Views::viewFile(
             '{core}views/blackmore/models/list.php',
             array(
-                'module' => $tModule,
-                'fields' => $tFields,
-                'rows' => $tRows
+                'automodel' => $tAutoModel,
+                'data' => $tData
             )
         );
     }

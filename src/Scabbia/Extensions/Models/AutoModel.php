@@ -26,144 +26,82 @@ class AutoModel extends Model
     /**
      * @ignore
      */
-    public $entityDefinition;
+    public $modelDefinition;
     /**
      * @ignore
      */
-    public $fields = array();
+    public $methods = array();
 
 
     /**
      * @ignore
      */
-    public function __construct($uEntityName, $uDatasource = null)
+    public function __construct($uModelName, $uDatasource = null)
     {
         parent::__construct($uDatasource);
 
-        $this->entityName = $uEntityName;
-        $this->entityDefinition = AutoModels::get($uEntityName);
+        $this->entityName = $uModelName;
+        $this->modelDefinition = AutoModels::get($uModelName);
     }
 
     /**
      * @ignore
      */
-    public function __isset($uName)
+    public function call($uMethod)
     {
-        return isset($this->fields[$uName]);
-    }
-
-    /**
-     * @ignore
-     */
-    public function __unset($uName)
-    {
-        unset($this->fields[$uName]);
-    }
-
-    /**
-     * @ignore
-     */
-    public function __get($uName)
-    {
-        return $this->fields[$uName];
-    }
-
-    /**
-     * @ignore
-     */
-    public function __set($uName, $uValue)
-    {
-        if (!isset($this->entityDefinition['fields'][$uName])) {
-            return;
+        if (!isset($this->modelDefinition['methodList'][$uMethod])) {
+            return false;
         }
 
-        $this->fields[$uName] = $uValue;
+        $tReturn = array(
+            'method' => $this->modelDefinition['methodList'][$uMethod]
+        );
+
+        $tQuery = $this->db->createQuery()
+                ->setTable($this->entityName);
+
+        switch ($tReturn['method']['type']) {
+            /*
+            case 'add':
+                $tQuery->setFields($this->fields)
+                    ->insert()
+                    ->execute();
+                break;
+            case 'edit':
+                $tQuery->setFields($this->fields)
+                    // ->setWhere()
+                    ->setLimit(1)
+                    ->update()
+                    ->execute();
+                break;
+            case 'delete':
+                $tQuery->setLimit(1)
+                    ->delete()
+                    ->execute();
+                break;
+            case 'view':
+                break;
+            */
+            case 'list':
+                $tReturn['rows'] = $tQuery->setFieldsDirect($tReturn['method']['fields'])
+                    // ->setWhere()
+                    ->get()
+                    ->all();
+                break;
+        }
+
+        return $tReturn;
     }
-
-    /**
-     * @ignore
-     */
-    public function insert()
-    {
-        return $this->db->createQuery()
-                ->setTable($this->entityName)
-                ->setFields($this->fields)
-                ->insert()
-                ->execute();
-    }
-
-    /**
-     * @ignore
-     */
-    public function update()
-    {
-        return $this->db->createQuery()
-                ->setTable($this->entityName)
-                ->setFields($this->fields)
-                // ->setWhere()
-                ->setLimit(1)
-                ->update()
-                ->execute();
-    }
-
-    /**
-     * @ignore
-     */
-    public function delete()
-    {
-        return $this->db->createQuery()
-                ->setTable($this->entityName)
-                // ->setWhere()
-                ->setLimit(1)
-                ->delete()
-                ->execute();
-    }
-
-    /**
-     * @ignore
-     */
-    public function getAll()
-    {
-	    $tFields = $this->ddlGetFieldsForMethod('list', 'name');
-
-        return $this->db->createQuery()
-            ->setTable($this->entityName)
-            ->setFieldsDirect($tFields)
-            // ->setWhere()
-            ->get()
-            ->all();
-    }
-
-	/**
-	 * @ignore
-	 */
-	public function ddlGetFieldsForMethod($uMethod, $uProperty = null)
-	{
-		$tMethods = array();
-
-		foreach ($this->entityDefinition['fieldList'] as $tField) {
-			if (isset($tField['methods']) && in_array($uMethod, $tField['methods'], true)) {
-				if (!is_null($uProperty)) {
-					$tMethods[] = $tField[$uProperty];
-					continue;
-				}
-
-				$tMethods[] = $tField;
-			}
-		}
-
-		return $tMethods;
-	}
 
     /**
      * @ignore
      */
     public function ddlCreateSql()
     {
-        $tSql = 'CREATE TABLE ' . $this->entityDefinition['name'] . ' (';
+        $tSql = 'CREATE TABLE ' . $this->modelDefinition['name'] . ' (';
 
-        if (isset($this->entityDefinition['fieldList'])) {
-            foreach ($this->entityDefinition['fieldList'] as $tField) {
+        if (isset($this->modelDefinition['fieldList'])) {
+            foreach ($this->modelDefinition['fieldList'] as $tField) {
                 $tSql .= '
 ' . $tField['name'] . ' ' . strtoupper($tField['type']) . ' NOT NULL,';
             }

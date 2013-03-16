@@ -15,7 +15,7 @@
                             <fieldset>
                                 <legend><?php echo _($module['singularTitle']); ?></legend>
                                 <?php
-                                foreach($fields as $tField) {
+                                foreach ($fields as $tField) {
                                     echo $tField['html'];
                                 }
                                 ?>

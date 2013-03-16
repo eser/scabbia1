@@ -4,6 +4,7 @@
     use Scabbia\Extensions\Blackmore\Blackmore;
 	use Scabbia\Extensions\Html\Html;
 	use Scabbia\Extensions\Http\Http;
+    use Scabbia\Extensions\Views\Views;
 ?>
 <?php echo Html::doctype('html5'); ?>
 <html lang="en-us">

@@ -31,8 +31,8 @@ class AutoModels
         if (is_null(self::$autoModels)) {
             self::$autoModels = array();
 
-            foreach (Config::get('autoModelList', array()) as $tAutoModel) {
-                self::$autoModels[$tAutoModel['name']] = $tAutoModel;
+            foreach (Config::get('autoModelList', array()) as $tAutoModelKey => $tAutoModel) {
+                self::$autoModels[$tAutoModelKey] = $tAutoModel;
             }
         }
     }

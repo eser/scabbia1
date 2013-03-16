@@ -21,28 +21,28 @@
 			<div class="topLine"></div>
 			<div class="middleLine">
 
-				<h2 class="iconxcategories"><?php echo _($module['title']); ?></h2>
+				<h2 class="iconxcategories"><?php echo _($automodel->modelDefinition['title']); ?></h2>
 
 				<table class="tablesorter">
 					<thead>
 						<tr>
-					<?php foreach($fields as $field) { ?>
-							<th><?php echo _($field['title']); ?></th>
+					<?php foreach ($data['method']['fields'] as $field) { ?>
+							<th><?php echo _($field); ?></th>
 					<?php } ?>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php foreach($rows as $row) { ?>
+					<?php foreach ($data['rows'] as $row) { ?>
 						<tr>
-					<?php foreach($row as $cell) { ?>
+					<?php foreach ($row as $cell) { ?>
 							<td><?php echo $cell; ?></td>
 					<?php } ?>
 							<td>
 								<a class="iconcategoryedit"
-										href="<?php echo Http::url('blackmore/' . $module['name'] . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
+										href="<?php echo Http::url('blackmore/' . $automodel->entityName . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
 								<a class="iconcategorydelete delete"
-										href="<?php echo Http::url('blackmore/' . $module['name'] . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
+										href="<?php echo Http::url('blackmore/' . $automodel->entityName . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
 							</td>
 						</tr>
 						<?php } ?>
