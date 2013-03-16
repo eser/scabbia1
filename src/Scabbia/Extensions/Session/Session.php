@@ -34,10 +34,6 @@ class Session
     /**
      * @ignore
      */
-    public static $flashdata_loaded = null;
-    /**
-     * @ignore
-     */
     public static $flashdata_next = array();
     /**
      * @ignore
@@ -81,7 +77,10 @@ class Session
                     (!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])
                 ) {
                     self::$data = $tData['data'];
-                    self::$flashdata_loaded = $tData['flashdata'];
+                    self::$flashdata_next = $tData['flashdata'];
+                    // if (count(self::$flashdata_next) > 0) {
+                    //    self::$isModified = true;
+                    // }
 
                     return;
                 }
@@ -89,7 +88,7 @@ class Session
         }
 
         self::$data = array();
-        self::$flashdata_loaded = array();
+        self::$flashdata_next = array();
         self::$isModified = false;
     }
 
@@ -145,7 +144,7 @@ class Session
 
         self::$id = null;
         self::$data = null;
-        self::$flashdata_loaded = null;
+        self::$flashdata_next = null;
 
         self::$isModified = false;
     }
@@ -219,19 +218,22 @@ class Session
     /**
      * @ignore
      */
-    public static function getFlash($uKey, $uDefault = null)
+    public static function getFlash($uKey, $uDefault = null, $uPreserve = false)
     {
         if (is_null(self::$data)) {
             self::open();
         }
 
-        if (!array_key_exists($uKey, self::$flashdata_loaded)) {
-            return $uDefault;
+        if (!$uPreserve && array_key_exists($uKey, self::$flashdata_next)) {
+            $tValue = self::$flashdata_next[$uKey];
+            unset(self::$flashdata_next[$uKey]);
+
+            self::$isModified = true;
+
+            return $tValue;
         }
 
-        self::$isModified = true;
-
-        return self::$flashdata_loaded[$uKey];
+        return $uDefault;
     }
 
     /**
@@ -243,7 +245,6 @@ class Session
             self::open();
         }
 
-        self::$flashdata_loaded[$uKey] = $uValue;
         self::$flashdata_next[$uKey] = $uValue;
         self::$isModified = true;
     }
@@ -264,31 +265,13 @@ class Session
     /**
      * @ignore
      */
-    public static function keepFlash($uKey, $uDefault)
-    {
-        if (is_null(self::$data)) {
-            self::open();
-        }
-
-        if (!array_key_exists($uKey, self::$flashdata_loaded)) {
-            self::$flashdata_next[$uKey] = $uDefault;
-        } else {
-            self::$flashdata_next[$uKey] = self::$flashdata_loaded[$uKey];
-        }
-
-        self::$isModified = true;
-    }
-
-    /**
-     * @ignore
-     */
     public static function existsFlash($uKey)
     {
         if (is_null(self::$data)) {
             self::open();
         }
 
-        return array_key_exists($uKey, self::$flashdata_loaded);
+        return array_key_exists($uKey, self::$flashdata_next);
     }
 
     /**
@@ -300,7 +283,7 @@ class Session
             self::open();
         }
 
-        return array_keys(self::$flashdata_loaded);
+        return array_keys(self::$flashdata_next);
     }
 
     /**

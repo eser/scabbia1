@@ -11,6 +11,7 @@ use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controller;
+use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\Validation\Validation;
 use Scabbia\Config;
 use Scabbia\Events;
@@ -149,7 +150,7 @@ class Blackmore extends Controller
         Validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
 
         if (!Validation::validate($_POST)) {
-            $this->set('error', implode('<br />', Validation::getErrorMessages(true)));
+            Session::setFlash('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
             $this->viewFile('{core}views/blackmore/login.php');
 
             return;
@@ -160,7 +161,7 @@ class Blackmore extends Controller
 
         // user not found
         if (!Auth::login($username, $password)) {
-            $this->set('error', 'User not found');
+            Session::setFlash('notification', array('error', 'remove-sign', 'User not found'));
             $this->viewFile('{core}views/blackmore/login.php');
 
             return;

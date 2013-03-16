@@ -33,11 +33,7 @@
                 <form method="POST" action="<?php echo Http::url('blackmore/' . Blackmore::LOGIN_MODULE_INDEX); ?>">
                     <fieldset>
                         <div class="indent">
-                            <?php if(isset($error)) { ?>
-                            <div class="alert alert-error">
-                                <?php echo $error; ?>
-                            </div>
-                            <?php } ?>
+                            <?php Views::viewFile('{core}views/blackmore/sectionError.php'); ?>
 
                             <label for="username"><?php echo _('Username:'); ?></label>
                             <div class="input-prepend">

@@ -1,4 +1,5 @@
 <?php
+    use Scabbia\Extensions\Blackmore\Blackmore;
 	use Scabbia\Extensions\Views\Views;
 	use Scabbia\Extensions\Session\Session;
 ?>
@@ -8,18 +9,7 @@
 			<tr>
 				<td id="pageMiddleSidebar">
                     <div class="menuDivContainer">
-                        <?php if(isset($error)) { ?>
-                            <div class="alert alert-error">
-                                <?php echo $error; ?>
-                            </div>
-                        <?php } ?>
-
-                        <?php if(Session::existsFlash('notification')) {
-                            $notification = Session::getFlash('notification'); ?>
-                            <div class="alert alert-info">
-                                <i class="icon-<?php echo $notification[0]; ?>"></i> <?php echo $notification[1]; ?>
-                            </div>
-                        <?php } ?>
+                        <?php Views::viewFile('{core}views/blackmore/sectionError.php', Blackmore::$module); ?>
 
                         <div class="menuDiv">
                             <fieldset>

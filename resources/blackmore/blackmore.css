@@ -208,6 +208,7 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 	width: 100%;
     background-color: #FFFFFF;
 	/* border-top: 1px solid #A0A0A0; */
+    min-height: 500px;
 }
 
 #pageMiddle table.tablesorter tr td {
