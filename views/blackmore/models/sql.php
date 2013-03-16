@@ -7,24 +7,22 @@
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
-			<div class="middleLine">
-				<div class="menuDivContainer">
-                    <?php if(isset($error)) { ?>
-                        <div class="alert alert-error">
-                            <?php echo $error; ?>
-                        </div>
-                    <?php } ?>
+            <div class="menuDivContainer">
+                <?php if(isset($error)) { ?>
+                    <div class="alert alert-error">
+                        <?php echo $error; ?>
+                    </div>
+                <?php } ?>
 
-                    <?php if(Session::existsFlash('notification')) {
-                        $notification = Session::getFlash('notification'); ?>
-                        <div class="alert alert-info">
-                            <i class="icon-<?php echo $notification[0]; ?>"></i> <?php echo $notification[1]; ?>
-                        </div>
-                    <?php } ?>
+                <?php if(Session::existsFlash('notification')) {
+                    $notification = Session::getFlash('notification'); ?>
+                    <div class="alert alert-info">
+                        <i class="icon-<?php echo $notification[0]; ?>"></i> <?php echo $notification[1]; ?>
+                    </div>
+                <?php } ?>
 
-					<?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
-				</div>
-			</div>
+                <?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
+            </div>
 			<div class="clear"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">

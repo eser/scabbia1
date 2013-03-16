@@ -30,7 +30,7 @@ class Config
     /**
      * Loads the default configuration for the current application.
      *
-     * @uses loadFile()
+     * @uses Config::loadFile()
      * @return array loaded configuration
      */
     public static function load()
@@ -48,6 +48,22 @@ class Config
         }
 
         return $tConfig;
+    }
+
+    /**
+     * Returns a configuration which is a compilation of a configuration file.
+     *
+     * @param array  $uConfig   the array which will contain read data
+     * @param string $uFile     path of configuration file
+     *
+     * @return array the configuration
+     */
+    public static function loadFile(&$uConfig, $uFile)
+    {
+        $tJsonObject = json_decode(file_get_contents($uFile));
+
+        $tNodeStack = array();
+        self::jsonProcessChildrenRecursive($uConfig, $tJsonObject, $tNodeStack);
     }
 
     /**
@@ -134,22 +150,6 @@ class Config
                 }
             }
         }
-    }
-
-    /**
-     * Returns a configuration which is a compilation of a configuration file.
-     *
-     * @param array  $uConfig   the array which will contain read data
-     * @param string $uFile     path of configuration file
-     *
-     * @return array the configuration
-     */
-    public static function loadFile(&$uConfig, $uFile)
-    {
-        $tJsonObject = json_decode(file_get_contents($uFile));
-
-        $tNodeStack = array();
-        self::jsonProcessChildrenRecursive($uConfig, $tJsonObject, $tNodeStack);
     }
 
     /**

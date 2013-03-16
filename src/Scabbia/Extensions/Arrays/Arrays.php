@@ -43,6 +43,9 @@ class Arrays
     /**
      * Gets the first element in array, otherwise returns default value.
      *
+     * @param $uArray
+     * @param null $uDefault
+     *
      * @return mixed
      */
     public static function getFirst($uArray, $uDefault = null)
