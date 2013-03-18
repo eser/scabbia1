@@ -12,10 +12,7 @@ use Scabbia\Extensions\Io\Io;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
-
-require 'markdownExtra/markdownExtra.php';
-require 'markdownExtra/markdownParser.php';
-require 'markdownExtra/markdownExtraParser.php';
+use dflydev\markdown\MarkdownExtraParser;
 
 /**
  * Views Extension: ViewEngineMarkdown Class
@@ -55,11 +52,11 @@ class ViewEngineMarkdown
         $tOutputFile = Cache::filePath('md/', $uObject['compiledFile'], self::$compiledAge);
         if (Framework::$development >= 1 || !$tOutputFile[0]) {
             if (is_null(self::$engine)) {
-                self::$engine = new \MarkdownExtra_Parser();
+                self::$engine = new MarkdownExtraParser();
             }
 
             $tInput = Io::read($tInputFile);
-            $tOutput = self::$engine->transform($tInput);
+            $tOutput = self::$engine->transformMarkdown($tInput);
 
             if (!is_null($tOutputFile[1])) {
                 Io::write($tOutputFile[1], $tOutput);
