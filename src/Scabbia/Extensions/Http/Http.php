@@ -65,7 +65,7 @@ class Http
         $tResolved = Router::resolve($uPath);
 
         if ($uFull) {
-            return (Framework::$https ? 'https://' : 'http://') . Framework::$host . Framework::$siteroot . '/' . $tResolved[0];
+            return (Request::$https ? 'https://' : 'http://') . Request::$host . Framework::$siteroot . '/' . $tResolved[0];
         }
 
         return Framework::$siteroot . '/' . $tResolved[0];
