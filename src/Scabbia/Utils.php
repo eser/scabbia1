@@ -47,7 +47,7 @@ class Utils
     /**
      * Checks the given framework version is greater than running one.
      *
-     * @param string $uVersion framework version
+     * @param string    $uVersion   framework version
      *
      * @return bool running framework version is greater than parameter
      */
@@ -59,7 +59,7 @@ class Utils
     /**
      * Checks the given php version is greater than running one.
      *
-     * @param string $uVersion php version
+     * @param string    $uVersion   php version
      *
      * @example ../../examples/scabbia/utils/phpVersion.php How to use this function
      * @return bool running php version is greater than parameter
@@ -72,8 +72,8 @@ class Utils
     /**
      * Translates given framework-relative path to physical path.
      *
-     * @param string $uPath the framework-relative path
-     * @param string $uBasePath
+     * @param string    $uPath      the framework-relative path
+     * @param string    $uBasePath
      *
      * @return string translated physical path
      */
@@ -105,8 +105,8 @@ class Utils
     /**
      * Determines the file is whether readable or not.
      *
-     * @param string $uFile the relative path
-     * @param int $uAge the time to live period in seconds
+     * @param string    $uFile  the relative path
+     * @param int       $uAge   the time to live period in seconds
      *
      * @return bool the result
      */
@@ -121,6 +121,33 @@ class Utils
         }
 
         return true;
+    }
+
+    /**
+     * Reads the contents from cache file as long as it is not expired.
+     * If the file is expired, invokes callback method and caches output.
+     *
+     * @param string        $uFile      the relative path
+     * @param int           $uAge       the time to live period in seconds
+     * @param callback|null $uCallback  the callback method
+     *
+     * @return mixed the result
+     */
+    public static function readFromCache($uFile, $uAge = -1, $uCallback = null) {
+        $uFile = self::translatePath($uFile);
+
+        if (self::isReadable($uFile, $uAge)) {
+            return file_get_contents($uFile);
+        }
+
+        if (is_null($uCallback)) {
+            return null;
+        }
+
+        $tResult = call_user_func($uCallback);
+        file_put_contents($uFile, $tResult);
+
+        return $tResult;
     }
 
     /**
@@ -154,8 +181,8 @@ class Utils
     /**
      * Downloads given file into framework's download directory.
      *
-     * @param $uFile string filename in destination
-     * @param $uUrl string url of source
+     * @param string    $uFile  filename in destination
+     * @param string    $uUrl   url of source
      *
      * @return bool whether the file is downloaded or not
      */
@@ -193,8 +220,8 @@ class Utils
     /**
      * Returns a php file source to view.
      *
-     * @param string $uInput string path of source file
-     * @param bool $uOnlyContent returns just file content without comments
+     * @param string    $uInput         string path of source file
+     * @param bool      $uOnlyContent   returns just file content without comments
      *
      * @return array|string the file content in printable format with or without comments
      */
@@ -310,11 +337,11 @@ class Utils
     /**
      * Returns a php file source to view.
      *
-     * @param string      $uPath    the path will be searched
-     * @param string|null $uFilter  the pattern
-     * @param int         $uOptions the flags
-     * @param string      $uRecursivePath the path will be concatenated (recursive)
-     * @param array       $uArray the results array (recursive)
+     * @param string      $uPath            the path will be searched
+     * @param string|null $uFilter          the pattern
+     * @param int         $uOptions         the flags
+     * @param string      $uRecursivePath   the path will be concatenated (recursive)
+     * @param array       $uArray           the results array (recursive)
      *
      * @return array|bool the search results
      */
@@ -377,7 +404,7 @@ class Utils
     /**
      * Converts presets to the regular expressions.
      *
-     * @param string $uPattern the pattern to search for, as a string
+     * @param string    $uPattern   the pattern to search for, as a string
      *
      * @return string generated regular expression
      */
@@ -447,9 +474,9 @@ class Utils
     /**
      * Searches subject for a match to the regular expression given in pattern.
      *
-     * @param string $uPattern the pattern to search for, as a string
-     * @param string $uSubject the input string
-     * @param string $uModifiers the PCRE modifiers
+     * @param string    $uPattern   the pattern to search for, as a string
+     * @param string    $uSubject   the input string
+     * @param string    $uModifiers the PCRE modifiers
      *
      * @return array the matches
      */
@@ -475,10 +502,10 @@ class Utils
     /**
      * Replaces subject with the matches of the regular expression given in pattern.
      *
-     * @param string $uPattern the pattern to search for, as a string
-     * @param string $uReplacement the replacement string
-     * @param string $uSubject the string or an array with strings to replace
-     * @param string $uModifiers the PCRE modifiers
+     * @param string    $uPattern       the pattern to search for, as a string
+     * @param string    $uReplacement   the replacement string
+     * @param string    $uSubject       the string or an array with strings to replace
+     * @param string    $uModifiers     the PCRE modifiers
      *
      * @return array the result of replace operation
      */
