@@ -14,7 +14,7 @@
         {
             "name":         "load",
             "type":         "include",
-            "value":        "{vendorpath}facebook/php-sdk/src/base_facebook.php"
+            "value":        "{vendor}facebook/php-sdk/src/base_facebook.php"
         }
     ]
 }
