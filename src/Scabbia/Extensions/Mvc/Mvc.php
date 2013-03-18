@@ -70,20 +70,15 @@ class Mvc
         Controllers::getControllers();
 
         while (true) {
-            try {
-                $tReturn = Controllers::$root->render($tActualController, $uParams, $uInput);
-                if ($tReturn === false) {
-                    break;
-                }
+            $tReturn = Controllers::$root->render($tActualController, $uParams, $uInput);
+            if ($tReturn === false) {
+                break;
+            }
 
-                // call callback/closure returned by render
-                if ($tReturn !== true && !is_null($tReturn)) {
-                    call_user_func($tReturn);
-                    break;
-                }
-            } catch (\Exception $ex) {
-                self::error($ex->getMessage());
-                $tReturn = false;
+            // call callback/closure returned by render
+            if ($tReturn !== true && !is_null($tReturn)) {
+                call_user_func($tReturn);
+                break;
             }
 
             break;
