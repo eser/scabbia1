@@ -36,6 +36,10 @@ class DatabaseQuery
     /**
      * @ignore
      */
+    public $rawFields;
+    /**
+     * @ignore
+     */
     public $parameters;
     /**
      * @ignore
@@ -109,6 +113,7 @@ class DatabaseQuery
     {
         $this->table = '';
         $this->fields = array();
+        $this->rawFields = array();
         $this->parameters = array();
         $this->where = '';
         $this->groupby = '';
@@ -144,15 +149,55 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function setFields($uArray)
+    public function setFields($uField, $uValue = false)
     {
-        foreach ($uArray as $tField => $tValue) {
-            // $this->fields[$tField] = String::squote($tValue, true);
-            if (is_null($tValue)) {
-                $this->fields[$tField] = 'NULL';
+        $this->fields = array();
+        $this->rawFields = array();
+
+        $this->addField($uField, $uValue);
+
+        return $this;
+    }
+
+    /**
+     * @ignore
+     */
+    public function setFieldsDirect($uField, $uValue = false)
+    {
+        $this->fields = array();
+        $this->rawFields = array();
+
+        $this->addFieldDirect($uField, $uValue);
+
+        return $this;
+    }
+
+    /**
+     * @ignore
+     */
+    public function addField($uField, $uValue = false)
+    {
+        if ($uValue === false) {
+            if (is_array($uField)) {
+                foreach ($uField as $tField => $tValue) {
+                    // $this->fields[$tField] = String::squote($tValue, true);
+                    if (is_null($tValue)) {
+                        $this->fields[$tField] = 'NULL';
+                    } else {
+                        $this->fields[$tField] = ':' . $tField;
+                        $this->parameters[$this->fields[$tField]] = $tValue;
+                    }
+                }
             } else {
-                $this->fields[$tField] = ':' . $tField;
-                $this->parameters[$this->fields[$tField]] = $tValue;
+                $this->rawFields[] = $uField;
+            }
+        } else {
+            if (is_null($uValue)) {
+                $this->fields[$uField] = 'NULL';
+            } else {
+                // $this->fields[$uField] = String::squote($uValue, true);
+                $this->fields[$uField] = ':' . $uField;
+                $this->parameters[$this->fields[$uField]] = $uValue;
             }
         }
 
@@ -162,35 +207,28 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function setFieldsDirect($uArray)
+    public function addFieldDirect($uField, $uValue = null)
     {
-        $this->fields = $uArray;
-
-        return $this;
-    }
-
-    /**
-     * @ignore
-     */
-    public function addField($uField, $uValue = null)
-    {
-        if (is_null($uValue)) {
-            $this->fields[$uField] = 'NULL';
+        if ($uValue === false) {
+            if (is_array($uField)) {
+                foreach ($uField as $tField => $tValue) {
+                    // $this->fields[$tField] = String::squote($tValue, true);
+                    if (is_null($tValue)) {
+                        $this->fields[$tField] = 'NULL';
+                    } else {
+                        $this->fields[$tField] = $tValue;
+                    }
+                }
+            } else {
+                $this->rawFields[] = $uField;
+            }
         } else {
-            // $this->fields[$uField] = String::squote($uValue, true);
-            $this->fields[$uField] = ':' . $uField;
-            $this->parameters[$this->fields[$uField]] = $uValue;
+            if (is_null($uValue)) {
+                $this->fields[$uField] = 'NULL';
+            } else {
+                $this->fields[$uField] = $uValue;
+            }
         }
-
-        return $this;
-    }
-
-    /**
-     * @ignore
-     */
-    public function addFieldDirect($uField, $uValue)
-    {
-        $this->fields[$uField] = $uValue;
 
         return $this;
     }
@@ -450,7 +488,7 @@ class DatabaseQuery
      */
     public function update()
     {
-        $tQuery = $this->database->provider->sqlUpdate($this->table, $this->fields, $this->where, array('limit' => $this->limit));
+        $tQuery = $this->database->provider->sqlUpdate($this->table, $this->fields, $this->rawFields, $this->where, array('limit' => $this->limit));
         if ($this->debug) {
             echo 'Update Query: ', $tQuery;
         }
@@ -490,7 +528,7 @@ class DatabaseQuery
      */
     public function get()
     {
-        $tQuery = $this->database->provider->sqlSelect($this->table, $this->fields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
+        $tQuery = $this->database->provider->sqlSelect($this->table, $this->fields, $this->rawFields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
         if ($this->debug) {
             echo 'Get Query: ', $tQuery;
         }
@@ -510,7 +548,7 @@ class DatabaseQuery
      */
     public function calculate($uOperation = 'COUNT')
     {
-        $tQuery = $this->database->provider->sqlSelect($this->table, array($uOperation . '(' . $this->fields[0] . ')'), $this->where, null, $this->groupby);
+        $tQuery = $this->database->provider->sqlSelect($this->table, array(), $uOperation . '(' . $this->rawFields . ')', $this->where, null, $this->groupby);
         if ($this->debug) {
             echo 'Calculate Query: ', $tQuery;
         }

@@ -220,9 +220,9 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function sqlUpdate($uTable, $uObject, $uWhere, $uExtra = null)
+    public function sqlUpdate($uTable, $uObject, $uRawObject, $uWhere, $uExtra = null)
     {
-        $tPairs = array();
+        $tPairs = $uRawObject;
         foreach ($uObject as $tKey => $tValue) {
             $tPairs[] = $tKey . '=' . $tValue;
         }
@@ -270,12 +270,13 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function sqlSelect($uTable, $uFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null)
+    public function sqlSelect($uTable, $uFields, $uRawFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null)
     {
         $tSql = 'SELECT ';
 
-        if (count($uFields) > 0) {
+        if (count($uFields) > 0 || count($uRawFields) > 0) {
             $tSql .= implode(', ', $uFields);
+            $tSql .= implode(', ', $uRawFields);
         } else {
             $tSql .= '*';
         }
