@@ -137,7 +137,7 @@ class Utils
         $uFile = self::translatePath($uFile);
 
         if (self::isReadable($uFile, $uAge)) {
-            return file_get_contents($uFile);
+            return unserialize(file_get_contents($uFile));
         }
 
         if (is_null($uCallback)) {
@@ -145,7 +145,7 @@ class Utils
         }
 
         $tResult = call_user_func($uCallback);
-        file_put_contents($uFile, $tResult);
+        file_put_contents($uFile, serialize($tResult));
 
         return $tResult;
     }
