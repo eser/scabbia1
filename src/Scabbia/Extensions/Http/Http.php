@@ -63,7 +63,6 @@ class Http
         return String::format(Config::get('http/link', '{@siteroot}/{@path}'), $tParms);
         */
         $tResolved = Router::resolve($uPath);
-
         if ($uFull) {
             return (Request::$https ? 'https://' : 'http://') . Request::$host . Framework::$siteroot . '/' . $tResolved[0];
         }
