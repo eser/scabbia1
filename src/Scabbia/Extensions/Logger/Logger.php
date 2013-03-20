@@ -129,15 +129,15 @@ class Logger
 
             if (isset($tFrame['file'])) {
                 if (Framework::$development >= 1) {
-                    $tLine = Utils::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
+                    $tLocation = Utils::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
                 } else {
-                    $tLine = pathinfo($tFrame['file'], PATHINFO_FILENAME);
+                    $tLocation = pathinfo($tFrame['file'], PATHINFO_FILENAME);
                 }
             } else {
-                $tLine = '-';
+                $tLocation = '-';
             }
 
-            $tStackTrace[] = $tLine . ' # ' . $tFunction . '(' . implode(', ', $tArgs) . ')';
+            $tStackTrace[] = $tFunction . '(' . implode(', ', $tArgs) . ') in ' . $tLocation;
         }
 
         $tIgnoreError = false;
