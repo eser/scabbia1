@@ -7,11 +7,9 @@
 
 namespace Scabbia\Extensions\Logger;
 
-use Scabbia\Extensions\Profiler\Profiler;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Events;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Utils;
 
@@ -42,7 +40,7 @@ class Logger
     public static function extensionLoad()
     {
         self::$filename = Config::get('logger/filename', '{date|\'d-m-Y\'}.txt');
-        self::$line = Config::get('logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@message}');
+        self::$line = Config::get('logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@location} | {@message}');
 
         set_exception_handler('Scabbia\\Extensions\\Logger\\logger::exceptionCallback');
         set_error_handler('Scabbia\\Extensions\\Logger\\logger::errorCallback', E_ALL);
@@ -106,86 +104,56 @@ class Logger
                 break;
         }
 
+        if (Framework::$development >= 1) {
+            $tLocation = Utils::extractPath($uFile) . ' @' . $uLine;
+        } else {
+            $tLocation = pathinfo($uFile, PATHINFO_FILENAME);
+        }
+
+        $tStackTrace = array();
+        foreach (array_slice(debug_backtrace(), 2) as $tFrame) {
+            $tArgs = array();
+            /*
+            if (isset($tFrame['args'])) {
+                foreach ($tFrame['args'] as $tArg) {
+                    $tArgs[] = var_export($tArg, true);
+                }
+            }
+            */
+
+            if (isset($tFrame['class'])) {
+                $tFunction = $tFrame['class'] . $tFrame['type'] . $tFrame['function'];
+            } else {
+                $tFunction = $tFrame['function'];
+            }
+
+            if (isset($tFrame['file'])) {
+                if (Framework::$development >= 1) {
+                    $tLine = Utils::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
+                } else {
+                    $tLine = pathinfo($tFrame['file'], PATHINFO_FILENAME);
+                }
+            } else {
+                $tLine = '-';
+            }
+
+            $tStackTrace[] = $tLine . ' # ' . $tFunction . '(' . implode(', ', $tArgs) . ')';
+        }
+
         $tIgnoreError = false;
         $tParms = array(
             'type' => &$tType,
             'message' => $uMessage,
-            'file' => $uFile,
-            'line' => $uLine,
+            'location' => $tLocation,
+            'stackTrace' => $tStackTrace,
+            'eventDepth' => Events::$eventDepth,
             'ignore' => &$tIgnoreError
         );
         Events::invoke('reportError', $tParms);
 
         if (!$tIgnoreError) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-            header('Content-Type: text/html, charset=UTF-8', true);
-
             Events::$disabled = true;
-            $tEventDepth = Events::$eventDepth;
-
-            for ($tCount = ob_get_level(); --$tCount > 1; ob_end_flush()) {
-                ;
-            }
-
-            if (Framework::$development >= 1) {
-                $tDeveloperLocation = $uFile . ' @' . $uLine;
-            } else {
-                $tDeveloperLocation = pathinfo($uFile, PATHINFO_FILENAME);
-            }
-
-            $tString = '';
-            $tString .= '<pre style="font-family: \'Consolas\', monospace;">'; // for content-type: text/xml
-            $tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $tType . '</span>: ' . $tDeveloperLocation . '</div>' . PHP_EOL;
-            $tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; line-height: 20px;">' . $uMessage . '</div>' . PHP_EOL . PHP_EOL;
-
-            if (Framework::$development >= 1) {
-                if (count($tEventDepth) > 0) {
-                    $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>eventDepth:</b>' . PHP_EOL . implode(PHP_EOL, $tEventDepth) . '</div>' . PHP_EOL . PHP_EOL;
-                }
-
-                $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>stackTrace:</b>' . PHP_EOL;
-
-                $tCount = 0;
-                foreach (array_slice(debug_backtrace(), 2) as $tFrame) {
-                    $tArgs = array();
-                    if (isset($tFrame['args'])) {
-                        /*foreach ($tFrame['args'] as $tArg) {
-                            $tArgs[] = var_export($tArg, true);
-                        }*/
-                    }
-
-                    if (isset($tFrame['class'])) {
-                        $tFunction = $tFrame['class'] . $tFrame['type'] . $tFrame['function'];
-                    } else {
-                        $tFunction = $tFrame['function'];
-                    }
-
-                    ++$tCount;
-                    if (isset($tFrame['file'])) {
-                        $tString .= '#' . $tCount . ' ' . $tFrame['file'] . '(' . $tFrame['line'] . '):' . PHP_EOL;
-                    }
-
-                    $tString .= '#' . $tCount . ' <strong>' . $tFunction . '</strong>(' . implode(', ', $tArgs) . ')' . PHP_EOL . PHP_EOL;
-                }
-
-                $tString .= '</div>' . PHP_EOL;
-
-                $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler stack:</b>' . PHP_EOL;
-                $tString .= Profiler::exportStack(false);
-                $tString .= '</div>' . PHP_EOL;
-
-                $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler output:</b>' . PHP_EOL;
-                $tString .= Profiler::export(false);
-                $tString .= '</div>';
-            }
-
-            $tString .= '</pre>';
-
-            self::write('error', array('message' => strip_tags($tString)));
-
-            $tString .= '<div style="font-size: 7pt; color: #808080; padding: 0px 12px 0px 12px;">Generated by <a href="https://github.com/larukedi/Scabbia-Framework/">Scabbia Framework</a>.</div>' . PHP_EOL;
-            echo $tString;
-
+            self::write('error', $tParms);
             exit();
         }
     }

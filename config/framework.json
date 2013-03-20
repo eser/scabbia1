@@ -34,7 +34,7 @@
 
     "logger": {
         "filename":     "{date|'d-m-Y'} {@category}.txt",
-        "line":         "[{date|'d-m-Y H:i:s'}] {strtoupper|@category} | {@ip} | {@message}"
+        "line":         "[{date|'d-m-Y H:i:s'}] {strtoupper|@category} | {@ip} | {@location} | {@message}"
     },
 
     "cache": {

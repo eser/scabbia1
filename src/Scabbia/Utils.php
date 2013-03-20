@@ -103,6 +103,30 @@ class Utils
     }
 
     /**
+     * Extracts a path from different path.
+     *
+     * @param string    $uPath      the full path
+     * @param string    $uBasePath  path to extract
+     *
+     * @return string relative path
+     */
+    public static function extractPath($uPath, $uBasePath = null)
+    {
+        $uPath = strtr($uPath, DIRECTORY_SEPARATOR, '/');
+
+        if (is_null($uBasePath)) {
+            $uBasePath = Framework::$basepath;
+        }
+
+        $tLen = strlen($uBasePath);
+        if (strncmp($uPath, $uBasePath, $tLen) == 0) {
+            return substr($uPath, $tLen);
+        }
+
+        return $uPath;
+    }
+
+    /**
      * Determines the file is whether readable or not.
      *
      * @param string    $uFile  the relative path

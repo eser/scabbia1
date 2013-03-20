@@ -17,9 +17,9 @@
             "value":        "Scabbia\\Extensions\\Http\\Request::extensionLoad"
         },
         {
-            "name":         "output",
+            "name":         "reportError",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Http\\Http::output"
+            "value":        "Scabbia\\Extensions\\Http\\Http::reportError"
         }
     ]
 }
