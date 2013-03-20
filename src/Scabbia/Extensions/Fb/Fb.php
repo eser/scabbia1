@@ -14,8 +14,6 @@ use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Framework;
 
-require 'facebook-php-sdk/src/';
-
 /**
  * Fb Extension
  *
