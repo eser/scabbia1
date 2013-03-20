@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Fb.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Fb.php" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\.travis.yml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\changelog.md" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\composer.json" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\examples\example.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\examples\with_js_sdk.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\readme.md" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\src\base_facebook.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\src\facebook.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\src\fb_ca_chain_bundle.crt" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\tests\bootstrap.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\Program Files (x86)\Zend\Apache2\htdocs\scabbia-dev\src\Scabbia\Extensions\Fb\facebook-php-sdk\tests\tests.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="scabbia-dev.iws" />
@@ -82,6 +95,7 @@
     <file path="/ViewEngineMarkdown.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363613437575" ignored="false" />
     <file path="/Files.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363720986469" ignored="false" />
     <file path="$PROJECT_DIR$/src/Scabbia/Files.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363721204021" ignored="false" />
+    <file path="/ControllerBase.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363780141388" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,10 +129,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="extension.json" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="extension.json" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Fb/extension.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="9" selection-start="289" selection-end="289" vertical-scroll-proportion="0.36036035">
+            <state line="10" column="9" selection-start="289" selection-end="289" vertical-scroll-proportion="-6.8965516">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControllerBase.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="72" column="62" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.3981982">
               <folding />
             </state>
           </provider>
@@ -148,8 +171,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/views/blackmore/login.php" />
-        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Models/AutoModels.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Blackmore/BlackmoreModels.php" />
         <option value="$PROJECT_DIR$/views/blackmore/models/list.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" />
@@ -164,6 +185,8 @@
         <option value="$PROJECT_DIR$/src/Scabbia/Files.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Utils.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Fb/Fb.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" />
       </list>
     </option>
   </component>
@@ -300,7 +323,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Fb" />
+              <option name="myItemId" value="Mvc" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -574,13 +597,6 @@
         <state line="21" column="3" selection-start="460" selection-end="460" vertical-scroll-proportion="0.14234875" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Fb/facebook-php-sdk/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="29" selection-start="15" selection-end="31" vertical-scroll-proportion="0.023724793">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="37" selection-start="606" selection-end="606" vertical-scroll-proportion="0.430605" />
@@ -608,9 +624,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Views/razor/RazorViewRendererException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="32" selection-start="123" selection-end="140" vertical-scroll-proportion="0.18018018">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Fb/extension.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="9" selection-start="289" selection-end="289" vertical-scroll-proportion="0.36036035">
+        <state line="10" column="9" selection-start="289" selection-end="289" vertical-scroll-proportion="-6.8965516">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="62" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.3981982">
           <folding />
         </state>
       </provider>

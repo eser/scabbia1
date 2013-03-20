@@ -70,7 +70,7 @@ class ControllerBase
     public function render($uAction, $uParams, $uInput)
     {
         $tActionName = strtolower($uAction); // strtr($uAction, '/', '_');
-        if (is_null($tActionName)) {
+        if (is_null($tActionName) || strlen($tActionName) <= 0) {
             $tActionName = $this->defaultAction;
         }
 
