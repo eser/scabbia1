@@ -9,7 +9,7 @@ namespace Scabbia\Extensions\Logger;
 
 use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Config;
-use Psr\Log\LogLevel;
+// use Psr\Log\LogLevel;
 
 /**
  * Logger Extension
@@ -81,25 +81,25 @@ class Logger
             case E_ERROR:
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
-                $tType = LogLevel::ERROR;
+                $tType = 'error'; // LogLevel::ERROR;
                 break;
             case E_WARNING:
             case E_USER_WARNING:
-                $tType = LogLevel::WARNING;
+                $tType = 'warning'; // LogLevel::WARNING;
                 break;
             case E_NOTICE:
             case E_USER_NOTICE:
-                $tType = LogLevel::NOTICE;
+                $tType = 'notice'; // LogLevel::NOTICE;
                 break;
             case E_STRICT:
-                $tType = LogLevel::WARNING;
+                $tType = 'warning'; // LogLevel::WARNING;
                 break;
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
-                $tType = LogLevel::WARNING;
+                $tType = 'warning'; // LogLevel::WARNING;
                 break;
             default:
-                $tType = LogLevel::WARNING;
+                $tType = 'warning'; // LogLevel::WARNING;
                 break;
         }
 
