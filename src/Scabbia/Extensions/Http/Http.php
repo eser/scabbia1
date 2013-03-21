@@ -207,7 +207,7 @@ class Http
         }
 
         $tString  = '<pre style="font-family: \'Consolas\', monospace;">'; // for content-type: text/xml
-        $tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $uParms['type'] . '</span>: ' . $uParms['location'] . '</div>' . PHP_EOL;
+        $tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $uParms['category'] . '</span>: ' . $uParms['location'] . '</div>' . PHP_EOL;
         $tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; line-height: 20px;">' . $uParms['message'] . '</div>' . PHP_EOL . PHP_EOL;
 
         if (Framework::$development >= 1) {

@@ -12,8 +12,8 @@ use Scabbia\Extensions\String\String;
 use Scabbia\Events;
 use Scabbia\Framework;
 use Scabbia\Io;
-// use Psr\Log\LoggerInterface;
-// use Psr\Log\LogLevel;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Logger Extension: LoggerInstance Class
@@ -22,7 +22,7 @@ use Scabbia\Io;
  * @subpackage Logger
  * @version 1.1.0
  */
-class LoggerInstance // implements LoggerInterface
+class LoggerInstance implements LoggerInterface
 {
     /**
      * System is unusable.
@@ -33,7 +33,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function emergency($uMessage, array $uContext = array())
     {
-        $this->log('emergency' /* LogLevel::EMERGENCY */, $uMessage, $uContext);
+        $this->log(LogLevel::EMERGENCY, $uMessage, $uContext);
     }
 
     /**
@@ -48,7 +48,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function alert($uMessage, array $uContext = array())
     {
-        $this->log('alert' /* LogLevel::ALERT */, $uMessage, $uContext);
+        $this->log(LogLevel::ALERT, $uMessage, $uContext);
     }
 
     /**
@@ -62,7 +62,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function critical($uMessage, array $uContext = array())
     {
-        $this->log('critical' /* LogLevel::CRITICAL */, $uMessage, $uContext);
+        $this->log(LogLevel::CRITICAL, $uMessage, $uContext);
     }
 
     /**
@@ -75,7 +75,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function error($uMessage, array $uContext = array())
     {
-        $this->log('error' /* LogLevel::ERROR */, $uMessage, $uContext);
+        $this->log(LogLevel::ERROR, $uMessage, $uContext);
     }
 
     /**
@@ -90,7 +90,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function warning($uMessage, array $uContext = array())
     {
-        $this->log('warning' /* LogLevel::WARNING */, $uMessage, $uContext);
+        $this->log(LogLevel::WARNING, $uMessage, $uContext);
     }
 
     /**
@@ -102,7 +102,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function notice($uMessage, array $uContext = array())
     {
-        $this->log('notice' /* LogLevel::NOTICE */, $uMessage, $uContext);
+        $this->log(LogLevel::NOTICE, $uMessage, $uContext);
     }
 
     /**
@@ -116,7 +116,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function info($uMessage, array $uContext = array())
     {
-        $this->log('info' /* LogLevel::INFO */, $uMessage, $uContext);
+        $this->log(LogLevel::INFO, $uMessage, $uContext);
     }
 
     /**
@@ -128,7 +128,7 @@ class LoggerInstance // implements LoggerInterface
      */
     public function debug($uMessage, array $uContext = array())
     {
-        $this->log('debug' /* LogLevel::DEBUG */, $uMessage, $uContext);
+        $this->log(LogLevel::DEBUG, $uMessage, $uContext);
     }
 
     /**
@@ -154,6 +154,8 @@ class LoggerInstance // implements LoggerInterface
             } else {
                 $uContext['location'] = pathinfo($uContext['file'], PATHINFO_FILENAME);
             }
+        } else {
+            $uContext['location'] = '-';
         }
 
         $uContext['stackTrace'] = array();

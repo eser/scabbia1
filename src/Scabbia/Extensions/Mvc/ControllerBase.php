@@ -10,10 +10,11 @@ namespace Scabbia\Extensions\Mvc;
 use Scabbia\Config;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Http\Request;
+use Scabbia\Extensions\Logger\Logger;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
-// use Psr\Log\LoggerAwareInterface;
-// use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Mvc Extension: ControllerBase Class
@@ -22,7 +23,7 @@ use Scabbia\Extensions\Views\Views;
  * @subpackage Mvc
  * @version 1.1.0
  */
-class ControllerBase // implements LoggerAwareInterface
+class ControllerBase implements LoggerAwareInterface
 {
     /**
      * @ignore
@@ -68,13 +69,13 @@ class ControllerBase // implements LoggerAwareInterface
     public function __construct()
     {
         $this->db = Datasources::get(); // default datasource to member 'db'
-        $this->logger = Logger::$instance;
+        $this->logger = Logger::getInstance();
     }
 
     /**
      * @ignore
      */
-    public function setLogger(/* LoggerInterface */ $uLogger) {
+    public function setLogger(LoggerInterface $uLogger) {
         $this->logger = $uLogger;
     }
 

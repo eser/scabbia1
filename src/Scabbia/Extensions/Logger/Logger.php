@@ -9,7 +9,7 @@ namespace Scabbia\Extensions\Logger;
 
 use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Config;
-// use Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 
 /**
  * Logger Extension
@@ -49,6 +49,17 @@ class Logger
     /**
      * @ignore
      */
+    public static function getInstance() {
+        if (is_null(self::$instance)) {
+            self::$instance = new LoggerInstance();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * @ignore
+     */
     public static function errorCallback($uCode, $uMessage, $uFile, $uLine)
     {
         self::handler(
@@ -81,32 +92,29 @@ class Logger
             case E_ERROR:
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
-                $tType = 'error'; // LogLevel::ERROR;
+                $tType = LogLevel::ERROR;
                 break;
             case E_WARNING:
             case E_USER_WARNING:
-                $tType = 'warning'; // LogLevel::WARNING;
+                $tType = LogLevel::WARNING;
                 break;
             case E_NOTICE:
             case E_USER_NOTICE:
-                $tType = 'notice'; // LogLevel::NOTICE;
+                $tType = LogLevel::NOTICE;
                 break;
             case E_STRICT:
-                $tType = 'warning'; // LogLevel::WARNING;
+                $tType = LogLevel::WARNING;
                 break;
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
-                $tType = 'warning'; // LogLevel::WARNING;
+                $tType = LogLevel::WARNING;
                 break;
             default:
-                $tType = 'warning'; // LogLevel::WARNING;
+                $tType = LogLevel::WARNING;
                 break;
         }
 
-        if (is_null(self::$instance)) {
-            self::$instance = new LoggerInstance();
-        }
-        self::$instance->log($tType, $uMessage, array(
+        self::getInstance()->log($tType, $uMessage, array(
                 'file' => $uFile,
                 'line' => $uLine
             ));
