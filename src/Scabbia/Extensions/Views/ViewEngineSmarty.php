@@ -10,7 +10,7 @@ namespace Scabbia\Extensions\Views;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Views Extension: ViewEngineSmarty Class
@@ -41,13 +41,13 @@ class ViewEngineSmarty
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Utils::translatePath(Config::get('smarty/path', '{core}include/3rdparty/smarty/libs'));
+            $tPath = Io::translatePath(Config::get('smarty/path', '{core}include/3rdparty/smarty/libs'));
             require $tPath . '/Smarty.class.php';
 
             self::$engine = new \Smarty();
 
             self::$engine->setTemplateDir($uObject['templatePath']);
-            self::$engine->setCompileDir(Utils::writablePath('cache/smarty/'));
+            self::$engine->setCompileDir(Io::writablePath('cache/smarty/'));
 
             if (Framework::$development >= 1) {
                 self::$engine->force_compile = true;

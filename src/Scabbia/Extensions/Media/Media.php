@@ -9,7 +9,7 @@ namespace Scabbia\Extensions\Media;
 
 use Scabbia\Extensions\Media\MediaFile;
 use Scabbia\Config;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Media Extension
@@ -39,7 +39,7 @@ class Media
      */
     public static function extensionLoad()
     {
-        self::$cachePath = Utils::writablePath('cache/media/', true);
+        self::$cachePath = Io::writablePath('cache/media/', true);
         self::$cacheAge = intval(Config::get('media/cacheAge', '120'));
     }
 

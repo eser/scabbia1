@@ -7,10 +7,10 @@
 
 namespace Scabbia\Extensions\Cache;
 
-use Scabbia\Extensions\Io\Io;
+use Scabbia\Extensions\IoEx\IoEx;
 use Scabbia\Config;
 use Scabbia\Framework;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Cache Extension
@@ -115,7 +115,7 @@ class Cache
         }
 
         // path
-        $tPath = Utils::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
+        $tPath = Io::writablePath('cache/' . $uFolder . IoEx::sanitize($uFilename), true);
 
         // age
         if ($uAge == -1) {
@@ -146,7 +146,7 @@ class Cache
         }
 
         // content
-        return Io::readSerialize($tPath[1], self::$keyphase);
+        return IoEx::readSerialize($tPath[1], self::$keyphase);
     }
 
     /**
@@ -158,12 +158,12 @@ class Cache
 
         if (!$tFile[0]) {
             $tContent = file_get_contents($uUrl);
-            Io::write($tFile[1], $tContent);
+            IoEx::write($tFile[1], $tContent);
 
             return $tContent;
         }
 
-        return Io::read($tFile[1]);
+        return IoEx::read($tFile[1]);
     }
 
     /**
@@ -172,10 +172,10 @@ class Cache
     public static function fileSet($uFolder, $uFilename, $uObject)
     {
         // path
-        $tPath = Utils::writablePath('cache/' . $uFolder . Io::sanitize($uFilename), true);
+        $tPath = Io::writablePath('cache/' . $uFolder . IoEx::sanitize($uFilename), true);
 
         // content
-        Io::writeSerialize($tPath, $uObject, self::$keyphase);
+        IoEx::writeSerialize($tPath, $uObject, self::$keyphase);
 
         return $tPath;
     }
@@ -185,8 +185,8 @@ class Cache
      */
     public static function fileDestroy($uFolder, $uFilename)
     {
-        $tPath = Utils::writablePath('cache/' . $uFolder, true);
-        Io::destroy($tPath . Io::sanitize($uFilename));
+        $tPath = Io::writablePath('cache/' . $uFolder, true);
+        IoEx::destroy($tPath . IoEx::sanitize($uFilename));
     }
 
     /**
@@ -195,7 +195,7 @@ class Cache
     public static function fileGarbageCollect($uFolder, $uAge = -1)
     {
         // path
-        $tPath = Utils::writablePath('cache/' . $uFolder, true);
+        $tPath = Io::writablePath('cache/' . $uFolder, true);
         $tDirectory = new \DirectoryIterator($tPath);
 
         // age
@@ -213,7 +213,7 @@ class Cache
                 continue;
             }
 
-            Io::destroy($tFile->getPathname());
+            IoEx::destroy($tFile->getPathname());
         }
     }
 }

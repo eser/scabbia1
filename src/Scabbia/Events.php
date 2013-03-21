@@ -7,7 +7,7 @@
 
 namespace Scabbia;
 
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Event manager which handles communication between framework parts and extensions.
@@ -100,7 +100,7 @@ class Events
                 class_exists($uValue, true);
                 break;
             case 'include':
-                include Utils::translatePath($uValue);
+                include Io::translatePath($uValue);
                 break;
             case 'callback':
                 if (is_array($uValue)) {

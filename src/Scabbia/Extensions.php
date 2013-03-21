@@ -10,6 +10,7 @@ namespace Scabbia;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Framework;
+use Scabbia\Io;
 
 /**
  * Extensions manager which extends the framework capabilities with extra routines.
@@ -35,9 +36,9 @@ class Extensions
         self::$configFiles = array();
 
         $tFiles = array();
-        Utils::glob(Framework::$corepath . 'src/Scabbia/Extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
+        Io::glob(Framework::$corepath . 'src/Scabbia/Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
         if (!is_null(Framework::$apppath)) {
-            Utils::glob(Framework::$apppath . 'Extensions/', null, Utils::GLOB_DIRECTORIES | Utils::GLOB_RECURSIVE, '', $tFiles);
+            Io::glob(Framework::$apppath . 'Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
         }
 
         foreach ($tFiles as $tFile) {

@@ -10,7 +10,7 @@ namespace Scabbia;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Extensions;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Methods for essential framework functionality.
@@ -133,7 +133,7 @@ class Framework
 
         // download files
         foreach (Config::get('downloadList', array()) as $tUrl) {
-            Utils::downloadFile($tUrl['filename'], $tUrl['url']);
+            Io::downloadFile($tUrl['filename'], $tUrl['url']);
         }
         self::$milestones[] = array('downloads', microtime(true));
 
@@ -149,9 +149,9 @@ class Framework
 
         // include files
         foreach (Config::get('includeList', array()) as $tInclude) {
-            $tIncludePath = pathinfo(Utils::translatePath($tInclude));
+            $tIncludePath = pathinfo(Io::translatePath($tInclude));
 
-            $tFiles = Utils::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Utils::GLOB_FILES);
+            $tFiles = Io::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Io::GLOB_FILES);
             if ($tFiles !== false) {
                 foreach ($tFiles as $tFilename) {
                     //! todo require_once?

@@ -10,12 +10,13 @@ namespace Scabbia\Extensions\Resources;
 use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
-use Scabbia\Extensions\Io\Io;
+use Scabbia\Extensions\IoEx\IoEx;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Io;
 use Scabbia\Utils;
 
 /**
@@ -131,20 +132,20 @@ class Resources
                     switch ($tMimetype) {
                         case 'application/x-httpd-php':
                         case 'application/x-httpd-php-source':
-                            $tContent .= Utils::printFile(Utils::translatePath($tPart['path']));
+                            $tContent .= Utils::printFile(Io::translatePath($tPart['path']));
                             break;
                         case 'application/x-javascript':
                             $tContent .= '/* JS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
+                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         case 'text/css':
                             $tContent .= '/* CSS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
+                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         default:
-                            $tContent .= Io::read(Utils::translatePath($tPart['path']));
+                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
                             break;
                     }
                 }
@@ -156,20 +157,20 @@ class Resources
                 case 'application/x-javascript':
                     // $tContent = JSMin::minify($tContent);
                     if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
+                        IoEx::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;
                 case 'text/css':
                     // $tContent = CssMin::minify($tContent);
                     if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
+                        IoEx::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;
                 default:
                     if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
+                        IoEx::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;
@@ -187,7 +188,7 @@ class Resources
      */
     public static function getDirectory($uSelectedDirectory, $uSubPath)
     {
-        $tPath = rtrim(Utils::translatePath($uSelectedDirectory['path']), '/');
+        $tPath = rtrim(Io::translatePath($uSelectedDirectory['path']), '/');
 
         foreach (explode('/', ltrim($uSubPath, '/')) as $tSubDirectory) {
             if (strlen($tSubDirectory) == 0 || $tSubDirectory[0] == '.') {
@@ -223,7 +224,7 @@ class Resources
             return false;
         }
 
-        header('Content-Type: ' . Io::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
+        header('Content-Type: ' . IoEx::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
         header('Content-Transfer-Encoding: binary', true);
         // header('ETag: "' . md5_file($tPath) . '"', true);
 

@@ -10,7 +10,7 @@ namespace Scabbia\Extensions\Access;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Access Extension
@@ -65,7 +65,7 @@ class Access
             if (!is_null($tMvcPage)) {
                 Views::view($tMvcPage);
             } else {
-                $tFile = Utils::translatePath(Config::get('access/maintenance/page'));
+                $tFile = Io::translatePath(Config::get('access/maintenance/page'));
                 include $tFile;
             }
 
@@ -80,7 +80,7 @@ class Access
             if (!is_null($tMvcPage)) {
                 Views::view($tMvcPage);
             } else {
-                $tFile = Utils::translatePath(Config::get('access/ipFilter/page'));
+                $tFile = Io::translatePath(Config::get('access/ipFilter/page'));
                 include $tFile;
             }
 

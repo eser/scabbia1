@@ -5,18 +5,18 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Io;
+namespace Scabbia\Extensions\IoEx;
 
 use Scabbia\Extensions\String\String;
 
 /**
- * Io Extension
+ * IoEx Extension
  *
  * @package Scabbia
- * @subpackage Io
+ * @subpackage IoEx
  * @version 1.1.0
  */
-class Io
+class IoEx
 {
     /**
      * @ignore

@@ -7,7 +7,7 @@
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
-            "Io"
+            "IoEx"
         ]
     },
     "eventList": [

@@ -10,7 +10,7 @@ namespace Scabbia\Extensions\Views;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Views Extension: ViewEngineTwig Class
@@ -45,14 +45,14 @@ class ViewEngineTwig
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
-            $tPath = Utils::translatePath(Config::get('twig/path', '{core}include/3rdparty/twig/lib/Twig'));
+            $tPath = Io::translatePath(Config::get('twig/path', '{core}include/3rdparty/twig/lib/Twig'));
             require $tPath . '/Autoloader.php';
 
             Twig_Autoloader::register();
             self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
             $tOptions = array(
-                'cache' => Utils::writablePath('cache/twig/')
+                'cache' => Io::writablePath('cache/twig/')
             );
 
             if (Framework::$development >= 1) {

@@ -10,7 +10,7 @@ namespace Scabbia\Extensions\Captcha;
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Captcha Extension
@@ -30,7 +30,7 @@ class Captcha
      */
     public static function generate($uCookieName = 'captcha')
     {
-        $tFontFile = Utils::translatePath(Config::get('captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
+        $tFontFile = Io::translatePath(Config::get('captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
         $tFontSize = intval(Config::get('captcha/fontSize', '45'));
         $tLength = intval(Config::get('captcha/length', '8'));
 

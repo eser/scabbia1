@@ -13,6 +13,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Io;
 use Scabbia\Utils;
 
 /**
@@ -133,7 +134,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
         // download files
         if (isset($tConfig['/downloadList'])) {
             foreach ($tConfig['/downloadList'] as $tUrl) {
-                Utils::downloadFile($tUrl['filename'], $tUrl['url']);
+                Io::downloadFile($tUrl['filename'], $tUrl['url']);
             }
         }
 
@@ -159,9 +160,9 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
         // include files
         if (isset($tConfig['/includeList'])) {
             foreach ($tConfig['/includeList'] as $tInclude) {
-                $tIncludePath = pathinfo(Utils::translatePath($tInclude));
+                $tIncludePath = pathinfo(Io::translatePath($tInclude));
 
-                $tFiles = Utils::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Utils::GLOB_FILES);
+                $tFiles = Io::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Io::GLOB_FILES);
                 if ($tFiles !== false) {
                     foreach ($tFiles as $tFilename) {
                         if (substr($tFilename, -1) == '/') {
@@ -205,7 +206,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
      */
     private static function purgeFolder($uFolder)
     {
-        $tDirectory = Utils::glob($uFolder, null, Utils::GLOB_RECURSIVE | Utils::GLOB_FILES);
+        $tDirectory = Io::glob($uFolder, null, Io::GLOB_RECURSIVE | Io::GLOB_FILES);
 
         if ($tDirectory === false) {
             return;

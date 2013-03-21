@@ -11,7 +11,7 @@ use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Framework;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Logger Extension
@@ -105,7 +105,7 @@ class Logger
         }
 
         if (Framework::$development >= 1) {
-            $tLocation = Utils::extractPath($uFile) . ' @' . $uLine;
+            $tLocation = Io::extractPath($uFile) . ' @' . $uLine;
         } else {
             $tLocation = pathinfo($uFile, PATHINFO_FILENAME);
         }
@@ -129,7 +129,7 @@ class Logger
 
             if (isset($tFrame['file'])) {
                 if (Framework::$development >= 1) {
-                    $tLocation = Utils::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
+                    $tLocation = Io::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
                 } else {
                     $tLocation = pathinfo($tFrame['file'], PATHINFO_FILENAME);
                 }
@@ -170,7 +170,7 @@ class Logger
         $tContent = '+ ' . String::format(self::$line, $uParams);
 
         if (!Framework::$readonly) {
-            $tFilename = Utils::writablePath('logs/' . String::format(self::$filename, $uParams), true);
+            $tFilename = Io::writablePath('logs/' . String::format(self::$filename, $uParams), true);
             file_put_contents($tFilename, $tContent, FILE_APPEND);
         }
     }

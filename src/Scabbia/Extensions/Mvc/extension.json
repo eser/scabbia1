@@ -8,7 +8,7 @@
         "fwversion":        "1.1",
         "fwdependList":     [
             "Http",
-            "Io",
+            "IoEx",
             "Models",
             "Router",
             "String",

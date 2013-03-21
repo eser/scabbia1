@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Cache\Cache;
-use Scabbia\Extensions\Io\Io;
+use Scabbia\Extensions\IoEx\IoEx;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -55,11 +55,11 @@ class ViewEngineMarkdown
                 self::$engine = new MarkdownExtraParser();
             }
 
-            $tInput = Io::read($tInputFile);
+            $tInput = IoEx::read($tInputFile);
             $tOutput = self::$engine->transformMarkdown($tInput);
 
             if (!is_null($tOutputFile[1])) {
-                Io::write($tOutputFile[1], $tOutput);
+                IoEx::write($tOutputFile[1], $tOutput);
             }
             echo $tOutput;
         } else {

@@ -12,7 +12,7 @@ use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Views Extension
@@ -147,7 +147,7 @@ class Views
             $uModel = & self::$vars;
         }
 
-        $tViewFilePath = Utils::translatePath($uView);
+        $tViewFilePath = Io::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
             $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');

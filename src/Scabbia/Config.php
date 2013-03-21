@@ -8,6 +8,7 @@
 namespace Scabbia;
 
 use Scabbia\Framework;
+use Scabbia\Io;
 use Scabbia\Utils;
 
 /**
@@ -37,12 +38,12 @@ class Config
     {
         $tConfig = array();
 
-        foreach (Utils::glob(Framework::$corepath . 'config/', '*.json', Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
+        foreach (Io::glob(Framework::$corepath . 'config/', '*.json', Io::GLOB_RECURSIVE | Io::GLOB_FILES) as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 
         if (!is_null(Framework::$apppath)) {
-            foreach (Utils::glob(Framework::$apppath . 'config/', '*.json', Utils::GLOB_RECURSIVE | Utils::GLOB_FILES) as $tFile) {
+            foreach (Io::glob(Framework::$apppath . 'config/', '*.json', Io::GLOB_RECURSIVE | Io::GLOB_FILES) as $tFile) {
                 self::loadFile($tConfig, $tFile);
             }
         }

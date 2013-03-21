@@ -9,7 +9,7 @@
         "fwdependList":     [
             "Cache",
             "Http",
-            "Io",
+            "IoEx",
             "Mime"
         ]
     },

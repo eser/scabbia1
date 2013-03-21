@@ -7,9 +7,9 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\Io;
+use Scabbia\Extensions\IoEx;
 use Scabbia\Extensions\Mvc\ControllerBase;
-use Scabbia\Utils;
+use Scabbia\Io;
 
 /**
  * Mvc Extension: Controller Class
@@ -25,7 +25,7 @@ abstract class Controller extends ControllerBase
      */
     public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs)
     {
-        $tMap = Io::mapFlatten(Utils::translatePath($uDirectory), '*' . $uExtension, true, true);
+        $tMap = IoEx::mapFlatten(Io::translatePath($uDirectory), '*' . $uExtension, true, true);
 
         array_unshift($uArgs, $uAction);
         $tPath = implode('/', $uArgs);
