@@ -315,6 +315,18 @@ class Contracts
     /**
      * @ignore
      */
+    public static function inString($uValue, $uString)
+    {
+        if (strpos($uString, $uValue) === false) {
+            return new ContractObject(false);
+        }
+
+        return new ContractObject(true);
+    }
+
+    /**
+     * @ignore
+     */
     public static function regExp($uValue, $uExpression)
     {
         if (!preg_match($uExpression, $uValue)) {
