@@ -31,6 +31,141 @@ class Io
 
 
     /**
+     * Reads from a file.
+     *
+     * @param string        $uPath  the file path
+     * @param int           $uFlags io flags
+     *
+     * @return bool|string  the file content
+     */
+    public static function read($uPath, $uFlags = LOCK_SH)
+    {
+        if (!is_readable($uPath)) {
+            return false;
+        }
+
+        $tHandle = fopen($uPath, 'r', false);
+        if ($tHandle === false) {
+            return false;
+        }
+
+        $tLock = flock($tHandle, $uFlags);
+        if ($tLock === false) {
+            fclose($tHandle);
+
+            return false;
+        }
+
+        $tContent = stream_get_contents($tHandle);
+        flock($tHandle, LOCK_UN);
+        fclose($tHandle);
+
+        return $tContent;
+    }
+
+    /**
+     * Writes to a file.
+     *
+     * @param string    $uPath      the file path
+     * @param string    $uContent   the file content
+     * @param int       $uFlags     io flags
+     *
+     * @return bool
+     */
+    public static function write($uPath, $uContent, $uFlags = LOCK_EX)
+    {
+        $tHandle = fopen($uPath, 'w', false);
+        if ($tHandle === false) {
+            return false;
+        }
+
+        if (flock($tHandle, $uFlags) === false) {
+            fclose($tHandle);
+
+            return false;
+        }
+
+        fwrite($tHandle, $uContent);
+        fflush($tHandle);
+        flock($tHandle, LOCK_UN);
+        fclose($tHandle);
+
+        return true;
+    }
+
+    /**
+     * Reads from a serialized file.
+     *
+     * @param string        $uPath      the file path
+     * @param string|null   $uKeyphase  the key
+     *
+     * @return bool|mixed   the unserialized object
+     */
+    public static function readSerialize($uPath, $uKeyphase = null)
+    {
+        $tContent = self::read($uPath);
+
+        //! ambiguous return value
+        if ($tContent === false) {
+            return false;
+        }
+
+        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+            $tContent = Utils::decrypt($tContent, $uKeyphase);
+        }
+
+        return unserialize($tContent);
+    }
+
+    /**
+     * Serializes an object into a file.
+     *
+     * @param string        $uPath      the file path
+     * @param string        $uContent   the file content
+     * @param string|null   $uKeyphase  the key
+     *
+     * @return bool
+     */
+    public static function writeSerialize($uPath, $uContent, $uKeyphase = null)
+    {
+        $tContent = serialize($uContent);
+
+        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+            $tContent = Utils::encrypt($tContent, $uKeyphase);
+        }
+
+        return self::write($uPath, $tContent);
+    }
+
+    /**
+     * Updates a modification time of a file.
+     *
+     * @param string    $uPath      the file path
+     *
+     * @return bool
+     */
+    public static function touch($uPath)
+    {
+        return touch($uPath);
+    }
+
+    /**
+     * Deletes a file.
+     *
+     * @param string    $uPath      the file path
+     *
+     * @return bool
+     */
+    public static function destroy($uPath)
+    {
+        if (file_exists($uPath)) {
+            return unlink($uPath);
+        }
+
+        return false;
+    }
+
+    /**
      * Translates given framework-relative path to physical path.
      *
      * @param string    $uPath      the framework-relative path

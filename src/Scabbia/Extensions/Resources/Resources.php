@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Resources;
 use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
-use Scabbia\Extensions\IoEx\IoEx;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
@@ -136,16 +135,16 @@ class Resources
                             break;
                         case 'application/x-javascript':
                             $tContent .= '/* JS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
+                            $tContent .= Io::read(Io::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         case 'text/css':
                             $tContent .= '/* CSS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
+                            $tContent .= Io::read(Io::translatePath($tPart['path']));
                             $tContent .= PHP_EOL;
                             break;
                         default:
-                            $tContent .= IoEx::read(Io::translatePath($tPart['path']));
+                            $tContent .= Io::read(Io::translatePath($tPart['path']));
                             break;
                     }
                 }
@@ -157,20 +156,20 @@ class Resources
                 case 'application/x-javascript':
                     // $tContent = JSMin::minify($tContent);
                     if (!is_null($tOutputFile[1])) {
-                        IoEx::write($tOutputFile[1], $tContent);
+                        Io::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;
                 case 'text/css':
                     // $tContent = CssMin::minify($tContent);
                     if (!is_null($tOutputFile[1])) {
-                        IoEx::write($tOutputFile[1], $tContent);
+                        Io::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;
                 default:
                     if (!is_null($tOutputFile[1])) {
-                        IoEx::write($tOutputFile[1], $tContent);
+                        Io::write($tOutputFile[1], $tContent);
                     }
                     echo $tContent;
                     break;

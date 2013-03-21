@@ -146,7 +146,7 @@ class Cache
         }
 
         // content
-        return IoEx::readSerialize($tPath[1], self::$keyphase);
+        return Io::readSerialize($tPath[1], self::$keyphase);
     }
 
     /**
@@ -158,12 +158,12 @@ class Cache
 
         if (!$tFile[0]) {
             $tContent = file_get_contents($uUrl);
-            IoEx::write($tFile[1], $tContent);
+            Io::write($tFile[1], $tContent);
 
             return $tContent;
         }
 
-        return IoEx::read($tFile[1]);
+        return Io::read($tFile[1]);
     }
 
     /**
@@ -175,7 +175,7 @@ class Cache
         $tPath = Io::writablePath('cache/' . $uFolder . IoEx::sanitize($uFilename), true);
 
         // content
-        IoEx::writeSerialize($tPath, $uObject, self::$keyphase);
+        Io::writeSerialize($tPath, $uObject, self::$keyphase);
 
         return $tPath;
     }
@@ -186,7 +186,7 @@ class Cache
     public static function fileDestroy($uFolder, $uFilename)
     {
         $tPath = Io::writablePath('cache/' . $uFolder, true);
-        IoEx::destroy($tPath . IoEx::sanitize($uFilename));
+        Io::destroy($tPath . IoEx::sanitize($uFilename));
     }
 
     /**
@@ -213,7 +213,7 @@ class Cache
                 continue;
             }
 
-            IoEx::destroy($tFile->getPathname());
+            Io::destroy($tFile->getPathname());
         }
     }
 }

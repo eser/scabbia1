@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\IoEx;
 
 use Scabbia\Extensions\String\String;
+use Scabbia\Utils;
 
 /**
  * IoEx Extension
@@ -85,111 +86,6 @@ class IoEx
         }
 
         return $uArray;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function read($uPath, $uFlags = LOCK_SH)
-    {
-        if (!is_readable($uPath)) {
-            return false;
-        }
-
-        $tHandle = fopen($uPath, 'r', false);
-        if ($tHandle === false) {
-            return false;
-        }
-
-        $tLock = flock($tHandle, $uFlags);
-        if ($tLock === false) {
-            fclose($tHandle);
-
-            return false;
-        }
-
-        $tContent = stream_get_contents($tHandle);
-        flock($tHandle, LOCK_UN);
-        fclose($tHandle);
-
-        return $tContent;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function write($uPath, $uContent, $uFlags = LOCK_EX)
-    {
-        $tHandle = fopen($uPath, 'w', false);
-        if ($tHandle === false) {
-            return false;
-        }
-
-        if (flock($tHandle, $uFlags) === false) {
-            fclose($tHandle);
-
-            return false;
-        }
-
-        fwrite($tHandle, $uContent);
-        fflush($tHandle);
-        flock($tHandle, LOCK_UN);
-        fclose($tHandle);
-
-        return true;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function readSerialize($uPath, $uKeyphase = null)
-    {
-        $tContent = self::read($uPath);
-
-        //! ambiguous return value
-        if ($tContent === false) {
-            return false;
-        }
-
-        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
-            $tContent = String::decrypt($tContent, $uKeyphase);
-        }
-
-        return unserialize($tContent);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function writeSerialize($uPath, $uContent, $uKeyphase = null)
-    {
-        $tContent = serialize($uContent);
-
-        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
-            $tContent = String::encrypt($tContent, $uKeyphase);
-        }
-
-        return self::write($uPath, $tContent);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function touch($uPath)
-    {
-        return touch($uPath);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function destroy($uPath)
-    {
-        if (file_exists($uPath)) {
-            return unlink($uPath);
-        }
-
-        return false;
     }
 
     /**

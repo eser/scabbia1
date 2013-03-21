@@ -372,38 +372,6 @@ class String
     /**
      * @ignore
      */
-    public static function encrypt($uString, $uKey)
-    {
-        $tResult = '';
-
-        for ($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
-            $tChar = substr($uString, $i - 1, 1);
-            $tKeyChar = substr($uKey, ($i % strlen($uKey)) - 1, 1);
-            $tResult .= chr(ord($tChar) + ord($tKeyChar));
-        }
-
-        return $tResult;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function decrypt($uString, $uKey)
-    {
-        $tResult = '';
-
-        for ($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
-            $tChar = substr($uString, $i - 1, 1);
-            $tKeyChar = substr($uKey, ($i % strlen($uKey)) - 1, 1);
-            $tResult .= chr(ord($tChar) - ord($tKeyChar));
-        }
-
-        return $tResult;
-    }
-
-    /**
-     * @ignore
-     */
     public static function strip($uString, $uValids)
     {
         $tOutput = '';
