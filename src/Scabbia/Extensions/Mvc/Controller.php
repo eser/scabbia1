@@ -23,7 +23,7 @@ abstract class Controller extends ControllerBase
     /**
      * @ignore
      */
-    public function mapDirectory($uDirectory, $uExtension, $uAction, $uArgs)
+    public function mapDirectory($uDirectory, $uExtension, $uAction, array $uArgs)
     {
         $tMap = IoEx::mapFlatten(Io::translatePath($uDirectory), '*' . $uExtension, true, true);
 

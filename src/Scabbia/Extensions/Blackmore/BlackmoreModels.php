@@ -38,7 +38,7 @@ class BlackmoreModels
     /**
      * @ignore
      */
-    public static function blackmoreRegisterModules($uParms)
+    public static function blackmoreRegisterModules(array $uParms)
     {
         $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['generateSql'] = array(
             'icon' => 'list-alt',

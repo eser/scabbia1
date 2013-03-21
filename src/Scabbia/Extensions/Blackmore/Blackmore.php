@@ -58,7 +58,7 @@ class Blackmore extends Controller
     /**
      * @ignore
      */
-    public function render($uAction, $uParams, $uInput)
+    public function render($uAction, array $uParams, $uInput)
     {
         self::$modules[self::DEFAULT_MODULE_INDEX] = array(
             'title' => 'Blackmore',

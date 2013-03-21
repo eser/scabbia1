@@ -61,7 +61,7 @@ class Mvc
     /**
      * @ignore
      */
-    public static function route($uInput)
+    public static function route(array $uInput)
     {
         $tActualController = $uInput['controller'];
         $tActualParams = trim($uInput['params'], '/');

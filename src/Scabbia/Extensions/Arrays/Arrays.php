@@ -48,7 +48,7 @@ class Arrays
      *
      * @return mixed
      */
-    public static function getFirst($uArray, $uDefault = null)
+    public static function getFirst(array $uArray, $uDefault = null)
     {
         $tValue = current($uArray);
         if ($tValue === false) {
@@ -67,7 +67,7 @@ class Arrays
      *
      * @return mixed|null
      */
-    public static function get($uArray, $uElement, $uDefault = null)
+    public static function get(array $uArray, $uElement, $uDefault = null)
     {
         if (!isset($uArray[$uElement])) {
             return $uDefault;
@@ -84,7 +84,7 @@ class Arrays
      * @internal param mixed $uElement key
      * @return array
      */
-    public static function getArray($uArray)
+    public static function getArray(array $uArray)
     {
         $tReturn = array();
 
@@ -102,7 +102,7 @@ class Arrays
      *
      * @return null
      */
-    public static function getRandom($uArray)
+    public static function getRandom(array $uArray)
     {
         $tCount = count($uArray);
         if ($tCount == 0) {
@@ -123,7 +123,7 @@ class Arrays
      *
      * @return mixed
      */
-    public static function getPath($uArray, $uPath, $uSeparator = '/')
+    public static function getPath(array $uArray, $uPath, $uSeparator = '/')
     {
         $tVariable = $uArray;
 
@@ -168,7 +168,7 @@ class Arrays
      *
      * @return array
      */
-    public static function sortByKey($uArray, $uField, $uOrder = 'asc')
+    public static function sortByKey(array $uArray, $uField, $uOrder = 'asc')
     {
         $tReturn = array();
         if (count($uArray) == 0) {
@@ -201,7 +201,7 @@ class Arrays
      *
      * @return array
      */
-    public static function categorize($uArray, $uKey)
+    public static function categorize(array $uArray, $uKey)
     {
         $tReturn = array();
         if (!is_array($uKey)) {
@@ -234,7 +234,7 @@ class Arrays
      *
      * @return array
      */
-    public static function assignKeys($uArray, $uKey)
+    public static function assignKeys(array $uArray, $uKey)
     {
         $tReturn = array();
 
@@ -255,7 +255,7 @@ class Arrays
      *
      * @return array
      */
-    public static function column($uArray, $uKey, $uSkipEmpties = false, $uDistinct = false)
+    public static function column(array $uArray, $uKey, $uSkipEmpties = false, $uDistinct = false)
     {
         $tReturn = array();
 
@@ -283,7 +283,7 @@ class Arrays
      *
      * @return bool
      */
-    public static function getRow($uArray, $uKey, $uValue)
+    public static function getRow(array $uArray, $uKey, $uValue)
     {
         foreach ($uArray as $tRow) {
             if (isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
@@ -303,7 +303,7 @@ class Arrays
      *
      * @return bool|int|string
      */
-    public static function getRowKey($uArray, $uKey, $uValue)
+    public static function getRowKey(array $uArray, $uKey, $uValue)
     {
         foreach ($uArray as $tKey => $tRow) {
             if (isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
@@ -323,7 +323,7 @@ class Arrays
      *
      * @return array
      */
-    public static function getRows($uArray, $uKey, $uValue)
+    public static function getRows(array $uArray, $uKey, $uValue)
     {
         $tReturn = array();
 
@@ -344,7 +344,7 @@ class Arrays
      *
      * @return array
      */
-    public static function combine($uArray1, $uArray2)
+    public static function combine(array $uArray1, array $uArray2)
     {
         $tArray = array();
 
@@ -400,7 +400,7 @@ class Arrays
      *
      * @return array
      */
-    public static function sortByPriority($uArray, $uPriorities)
+    public static function sortByPriority(array $uArray, $uPriorities)
     {
         $tArray = array();
 

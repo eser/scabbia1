@@ -246,7 +246,7 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    private static function constructWhere($uArray, $uIsList = false)
+    private static function constructWhere(array $uArray, $uIsList = false)
     {
         $tOutput = '(';
         $tPreviousElement = null;

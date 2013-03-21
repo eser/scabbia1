@@ -63,7 +63,7 @@ class View
     /**
      * @ignore
      */
-    public function setRange($uArray)
+    public function setRange(array $uArray)
     {
         foreach ($uArray as $tKey => $tValue) {
             $this->vars[$tKey] = $tValue;

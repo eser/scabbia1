@@ -12,6 +12,8 @@ use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Mvc Extension: ControllerBase Class
@@ -20,7 +22,7 @@ use Scabbia\Extensions\Views\Views;
  * @subpackage Mvc
  * @version 1.1.0
  */
-class ControllerBase
+class ControllerBase implements LoggerAwareInterface
 {
     /**
      * @ignore
@@ -54,6 +56,10 @@ class ControllerBase
      * @ignore
      */
     public $db;
+    /**
+     * @ignore
+     */
+    public $log;
 
 
     /**
@@ -62,12 +68,20 @@ class ControllerBase
     public function __construct()
     {
         $this->db = Datasources::get(); // default datasource to member 'db'
+        $this->log = Logger::$instance;
     }
 
     /**
      * @ignore
      */
-    public function render($uAction, $uParams, $uInput)
+    public function setLogger(LoggerInterface $uLogger) {
+        $this->log = $uLogger;
+    }
+
+    /**
+     * @ignore
+     */
+    public function render($uAction, array $uParams, array $uInput)
     {
         $tActionName = strtolower($uAction); // strtr($uAction, '/', '_');
         if (is_null($tActionName) || strlen($tActionName) <= 0) {
@@ -181,7 +195,7 @@ class ControllerBase
     /**
      * @ignore
      */
-    public function setRange($uArray)
+    public function setRange(array $uArray)
     {
         foreach ($uArray as $tKey => $tValue) {
             $this->vars[$tKey] = $tValue;

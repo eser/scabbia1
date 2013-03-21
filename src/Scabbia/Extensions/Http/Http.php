@@ -187,7 +187,7 @@ class Http
     /**
      * @ignore
      */
-    public static function reportError($uParms) {
+    public static function reportError(array $uParms) {
         if ($uParms['ignore']) {
             return;
         }

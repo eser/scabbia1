@@ -45,7 +45,7 @@ class DatabaseConnection extends Datasource
     /**
      * @ignore
      */
-    public function __construct($uConfig)
+    public function __construct(array $uConfig)
     {
         parent::__construct($uConfig);
 
@@ -157,7 +157,7 @@ class DatabaseConnection extends Datasource
     /**
      * @ignore
      */
-    public function query($uQuery, $uParameters = array(), $uCaching = Database::CACHE_MEMORY)
+    public function query($uQuery, array $uParameters = array(), $uCaching = Database::CACHE_MEMORY)
     {
         $this->open();
 

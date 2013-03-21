@@ -49,7 +49,7 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function __construct($uConfig)
+    public function __construct(array $uConfig)
     {
         $this->pdoString = $uConfig['pdoString'];
         $this->username = $uConfig['username'];
@@ -137,7 +137,7 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function queryDirect($uQuery, $uParameters = array())
+    public function queryDirect($uQuery, array $uParameters = array())
     {
         $tQuery = $this->connection->prepare($uQuery);
         $tQuery->execute($uParameters);

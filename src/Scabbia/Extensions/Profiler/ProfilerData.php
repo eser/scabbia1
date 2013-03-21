@@ -49,7 +49,7 @@ class ProfilerData
     /**
      * @ignore
      */
-    public function __construct($uName, $uParameters = null, $uSource)
+    public function __construct($uName, array $uParameters = array(), $uSource)
     {
         $this->name = $uName;
         $this->parameters = $uParameters;

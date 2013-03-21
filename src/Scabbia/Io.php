@@ -213,7 +213,7 @@ class Io
      *
      * @return array|bool the search results
      */
-    public static function glob($uPath, $uFilter = null, $uOptions = self::GLOB_FILES, $uRecursivePath = '', &$uArray = array())
+    public static function glob($uPath, $uFilter = null, $uOptions = self::GLOB_FILES, $uRecursivePath = '', array &$uArray = array())
     {
         $tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
         $tRecursivePath = $tPath . $uRecursivePath;

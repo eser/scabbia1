@@ -88,7 +88,7 @@ class Resources
     /**
      * @ignore
      */
-    public static function getPack($uName, $uClasses = array())
+    public static function getPack($uName, array $uClasses = array())
     {
         foreach (self::$packs as $tPack) {
             if ($tPack['name'] != $uName) {
@@ -224,7 +224,7 @@ class Resources
             return false;
         }
 
-        header('Content-Type: ' . IoEx::getMimeType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
+        header('Content-Type: ' . Mime::getType(pathinfo($tPath, PATHINFO_EXTENSION)), true);
         header('Content-Transfer-Encoding: binary', true);
         // header('ETag: "' . md5_file($tPath) . '"', true);
 

@@ -460,7 +460,7 @@ class String
         static $tSquotes = array('\\' => '\\\\', '\'' => '\\\'');
 
         $tArray = array();
-        foreach ($uArray as $tKey => $tValue) {
+        foreach ((array)$uArray as $tKey => $tValue) {
             if ($uCover) {
                 $tArray[$tKey] = '\'' . strtr($tValue, $tSquotes) . '\'';
                 continue;
@@ -480,7 +480,7 @@ class String
         static $tDquotes = array('\\' => '\\\\', '"' => '\\"');
 
         $tArray = array();
-        foreach ($uArray as $tKey => $tValue) {
+        foreach ((array)$uArray as $tKey => $tValue) {
             if ($uCover) {
                 $tArray[$tKey] = '\'' . strtr($tValue, $tDquotes) . '\'';
                 continue;

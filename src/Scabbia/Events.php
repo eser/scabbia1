@@ -63,7 +63,7 @@ class Events
      * @uses invokeSingle()
      * @return bool whether the event is invoked or not
      */
-    public static function invoke($uEventName, &$uEventArgs = array())
+    public static function invoke($uEventName, array &$uEventArgs = array())
     {
         if (self::$disabled) {
             return null;
@@ -89,7 +89,7 @@ class Events
      *
      * @return bool whether the event is invoked or not
      */
-    public static function invokeSingle($uType, $uValue, &$uEventArgs = array())
+    public static function invokeSingle($uType, $uValue, array &$uEventArgs = array())
     {
         if (self::$disabled) {
             return null;

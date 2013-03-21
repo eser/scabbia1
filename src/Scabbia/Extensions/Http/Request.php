@@ -317,7 +317,7 @@ class Request
             $tArgs = array_slice(func_get_args(), 2);
         }
 
-        foreach ($uKeys as $tKey) {
+        foreach ((array)$uKeys as $tKey) {
             if (!array_key_exists($tKey, $_GET)) {
                 continue;
             }
@@ -351,7 +351,7 @@ class Request
             $tArgs = array_slice(func_get_args(), 2);
         }
 
-        foreach ($uKeys as $tKey) {
+        foreach ((array)$uKeys as $tKey) {
             if (!array_key_exists($tKey, $_POST)) {
                 continue;
             }
@@ -385,7 +385,7 @@ class Request
             $tArgs = array_slice(func_get_args(), 2);
         }
 
-        foreach ($uKeys as $tKey) {
+        foreach ((array)$uKeys as $tKey) {
             if (!array_key_exists($tKey, $_COOKIE)) {
                 continue;
             }

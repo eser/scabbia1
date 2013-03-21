@@ -68,7 +68,7 @@ class Validation
     /**
      * @ignore
      */
-    public static function validate(Array $uArray = null)
+    public static function validate(array $uArray = null)
     {
         if (!is_null($uArray)) {
             foreach (self::$rules as $tRule) {

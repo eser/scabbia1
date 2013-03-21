@@ -7,11 +7,9 @@
 
 namespace Scabbia\Extensions\Logger;
 
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Config;
-use Scabbia\Events;
-use Scabbia\Framework;
-use Scabbia\Io;
+use Psr\Log\LogLevel;
 
 /**
  * Logger Extension
@@ -19,11 +17,13 @@ use Scabbia\Io;
  * @package Scabbia
  * @subpackage Logger
  * @version 1.1.0
- *
- * @todo PSR-3 Logger Interface Compability
  */
 class Logger
 {
+    /**
+     * @ignore
+     */
+    public static $instance = null;
     /**
      * @ignore
      */
@@ -42,8 +42,8 @@ class Logger
         self::$filename = Config::get('logger/filename', '{date|\'d-m-Y\'}.txt');
         self::$line = Config::get('logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@location} | {@message}');
 
-        set_exception_handler('Scabbia\\Extensions\\Logger\\logger::exceptionCallback');
-        set_error_handler('Scabbia\\Extensions\\Logger\\logger::errorCallback', E_ALL);
+        set_exception_handler('Scabbia\\Extensions\\Logger\\Logger::exceptionCallback');
+        set_error_handler('Scabbia\\Extensions\\Logger\\Logger::errorCallback', E_ALL);
     }
 
     /**
@@ -81,97 +81,34 @@ class Logger
             case E_ERROR:
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
-                $tType = 'Error';
+                $tType = LogLevel::ERROR;
                 break;
             case E_WARNING:
             case E_USER_WARNING:
-                $tType = 'Warning';
+                $tType = LogLevel::WARNING;
                 break;
             case E_NOTICE:
             case E_USER_NOTICE:
-                $tType = 'Notice';
+                $tType = LogLevel::NOTICE;
                 break;
             case E_STRICT:
-                $tType = 'Strict';
+                $tType = LogLevel::WARNING;
                 break;
-                // case E_DEPRECATED: // PHP >= 5.3.0
-            case 8192:
-                // case E_USER_DEPRECATED: // PHP >= 5.3.0
-            case 16384:
+            case E_DEPRECATED:
+            case E_USER_DEPRECATED:
+                $tType = LogLevel::WARNING;
                 break;
             default:
-                $tType = 'Unknown';
+                $tType = LogLevel::WARNING;
                 break;
         }
 
-        if (Framework::$development >= 1) {
-            $tLocation = Io::extractPath($uFile) . ' @' . $uLine;
-        } else {
-            $tLocation = pathinfo($uFile, PATHINFO_FILENAME);
+        if (is_null(self::$instance)) {
+            self::$instance = new LoggerInstance();
         }
-
-        $tStackTrace = array();
-        foreach (array_slice(debug_backtrace(), 2) as $tFrame) {
-            $tArgs = array();
-            /*
-            if (isset($tFrame['args'])) {
-                foreach ($tFrame['args'] as $tArg) {
-                    $tArgs[] = var_export($tArg, true);
-                }
-            }
-            */
-
-            if (isset($tFrame['class'])) {
-                $tFunction = $tFrame['class'] . $tFrame['type'] . $tFrame['function'];
-            } else {
-                $tFunction = $tFrame['function'];
-            }
-
-            if (isset($tFrame['file'])) {
-                if (Framework::$development >= 1) {
-                    $tLocation = Io::extractPath($tFrame['file']) . ' @' . $tFrame['line'];
-                } else {
-                    $tLocation = pathinfo($tFrame['file'], PATHINFO_FILENAME);
-                }
-            } else {
-                $tLocation = '-';
-            }
-
-            $tStackTrace[] = $tFunction . '(' . implode(', ', $tArgs) . ') in ' . $tLocation;
-        }
-
-        $tIgnoreError = false;
-        $tParms = array(
-            'type' => &$tType,
-            'message' => $uMessage,
-            'location' => $tLocation,
-            'stackTrace' => $tStackTrace,
-            'eventDepth' => Events::$eventDepth,
-            'ignore' => &$tIgnoreError
-        );
-        Events::invoke('reportError', $tParms);
-
-        if (!$tIgnoreError) {
-            Events::$disabled = true;
-            self::write('error', $tParms);
-            exit();
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function write($uCategory, $uParams)
-    {
-        $uParams['category'] = $uCategory;
-        $uParams['ip'] = $_SERVER['REMOTE_ADDR'];
-
-        $uParams['message'] = String::prefixLines($uParams['message'], '- ', PHP_EOL);
-        $tContent = '+ ' . String::format(self::$line, $uParams);
-
-        if (!Framework::$readonly) {
-            $tFilename = Io::writablePath('logs/' . String::format(self::$filename, $uParams), true);
-            file_put_contents($tFilename, $tContent, FILE_APPEND);
-        }
+        self::$instance->log($tType, $uMessage, array(
+                'file' => $uFile,
+                'line' => $uLine
+            ));
     }
 }

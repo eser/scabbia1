@@ -33,7 +33,7 @@ class Profiler
     /**
      * @ignore
      */
-    public static function start($uName, $uParameters = null)
+    public static function start($uName, array $uParameters = array())
     {
         /*
         if (Utils::phpVersion('5.3.6')) {

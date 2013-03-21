@@ -40,7 +40,7 @@ class Html
     /**
      * @ignore
      */
-    public static function tag($uName, $uAttributes = array(), $uValue = null)
+    public static function tag($uName, array $uAttributes = array(), $uValue = null)
     {
         $tReturn = '<' . $uName;
         if (count($uAttributes) > 0) {
@@ -59,7 +59,7 @@ class Html
     /**
      * @ignore
      */
-    public static function attributes($uAttributes)
+    public static function attributes(array $uAttributes)
     {
         $tAttributes = Arrays::sortByPriority($uAttributes, self::$attributeOrder);
 
@@ -79,7 +79,7 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptions($uOptions, $uDefault = null, $uField = null)
+    public static function selectOptions(array $uOptions, $uDefault = null, $uField = null)
     {
         $tOutput = '';
 
@@ -98,7 +98,7 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptionsArray($uOptions, $uDefault = null, $uField = null)
+    public static function selectOptionsArray(array $uOptions, $uDefault = null, $uField = null)
     {
         $tOutput = array();
 
@@ -118,7 +118,7 @@ class Html
     /**
      * @ignore
      */
-    public static function radioOptions($uName, $uOptions, $uDefault = null, $uField = null)
+    public static function radioOptions($uName, array $uOptions, $uDefault = null, $uField = null)
     {
         $tOutput = '';
 
@@ -144,7 +144,7 @@ class Html
     /**
      * @ignore
      */
-    public static function radioOptionsArray($uName, $uOptions, $uDefault = null, $uField = null)
+    public static function radioOptionsArray($uName, array $uOptions, $uDefault = null, $uField = null)
     {
         $tOutput = array();
 
@@ -171,7 +171,7 @@ class Html
     /**
      * @ignore
      */
-    public static function textBox($uName, $uValue = '', $uAttributes = array())
+    public static function textBox($uName, $uValue = '', array $uAttributes = array())
     {
         $uAttributes['name'] = $uName;
         $uAttributes['value'] = $uValue;
@@ -184,7 +184,7 @@ class Html
     /**
      * @ignore
      */
-    public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, $uAttributes = array())
+    public static function checkBox($uName, $uValue, $uCurrentValue = null, $uText = null, array $uAttributes = array())
     {
         $uAttributes['name'] = $uName;
         $uAttributes['value'] = $uValue;
@@ -207,7 +207,7 @@ class Html
     /**
      * @ignore
      */
-    public static function pager($uOptions)
+    public static function pager(array $uOptions)
     {
         $tPages = ceil($uOptions['total'] / $uOptions['pagesize']);
 
@@ -364,7 +364,7 @@ class Html
     /**
      * @ignore
      */
-    public static function table($uOptions)
+    public static function table(array $uOptions)
     {
         if (!isset($uOptions['table'])) {
             $uOptions['table'] = '<table>';

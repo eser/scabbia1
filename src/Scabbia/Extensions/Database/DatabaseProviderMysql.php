@@ -45,7 +45,7 @@ class DatabaseProviderMysql
     /**
      * @ignore
      */
-    public function __construct($uConfig)
+    public function __construct(array $uConfig)
     {
         $this->host = $uConfig['host'];
         $this->database = $uConfig['database'];
@@ -115,7 +115,7 @@ class DatabaseProviderMysql
     /**
      * @ignore
      */
-    public function queryDirect($uQuery, $uParameters = array())
+    public function queryDirect($uQuery, array $uParameters = array())
     {
         $tQuery = $this->connection->prepare($uQuery);
 

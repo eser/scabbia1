@@ -28,7 +28,7 @@ class BlackmoreScabbia
     /**
      * @ignore
      */
-    public static function blackmoreRegisterModules($uParms)
+    public static function blackmoreRegisterModules(array $uParms)
     {
         $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['debug'] = array(
             'icon' => 'info-sign',

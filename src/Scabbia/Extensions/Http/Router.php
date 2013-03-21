@@ -83,7 +83,7 @@ class Router
     /**
      * @ignore
      */
-    public static function addRoute($uMatch, $uCallback, $uDefaults = array(), $uPriority = 10)
+    public static function addRoute($uMatch, $uCallback, array $uDefaults = array(), $uPriority = 10)
     {
         self::load();
 

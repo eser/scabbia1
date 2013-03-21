@@ -84,7 +84,7 @@ class Views
     /**
      * @ignore
      */
-    public static function setRange($uArray)
+    public static function setRange(array $uArray)
     {
         foreach ($uArray as $tKey => $tValue) {
             self::$vars[$tKey] = $tValue;

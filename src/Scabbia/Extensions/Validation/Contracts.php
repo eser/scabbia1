@@ -291,7 +291,7 @@ class Contracts
     /**
      * @ignore
      */
-    public static function inArray($uValue, $uArray)
+    public static function inArray($uValue, array $uArray)
     {
         if (!in_array($uValue, $uArray)) {
             return new ContractObject(false);
@@ -303,7 +303,7 @@ class Contracts
     /**
      * @ignore
      */
-    public static function inKeys($uKey, $uArray)
+    public static function inKeys($uKey, array $uArray)
     {
         if (!array_key_exists($uKey, $uArray)) {
             return new ContractObject(false);

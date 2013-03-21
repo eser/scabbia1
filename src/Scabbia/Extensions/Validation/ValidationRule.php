@@ -56,7 +56,7 @@ class ValidationRule
     /**
      * @ignore
      */
-    public function set($uType, $uArgs = array())
+    public function set($uType, array $uArgs = array())
     {
         $this->type = $uType;
         $this->args = (array)$uArgs;

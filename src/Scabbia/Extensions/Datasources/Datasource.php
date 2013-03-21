@@ -39,7 +39,7 @@ abstract class Datasource
     /**
      * @ignore
      */
-    public function __construct($uConfig)
+    public function __construct(array $uConfig)
     {
         $this->id = $uConfig['id'];
 
