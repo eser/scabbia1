@@ -7,6 +7,7 @@
 
 namespace Scabbia;
 
+use Scabbia\Delegate;
 use Scabbia\Io;
 
 /**
@@ -20,11 +21,7 @@ class Events
     /**
      * The array of registered callbacks for the events
      */
-    public static $callbacks = array();
-    /**
-     * Is priority sort needed or not?
-     */
-    public static $prioritySortNeeded = false;
+    public static $events = array();
     /**
      * Event depth
      */
@@ -45,12 +42,11 @@ class Events
      */
     public static function register($uEventName, $uType, $uValue, $uPriority = 10)
     {
-        if (!array_key_exists($uEventName, self::$callbacks)) {
-            self::$callbacks[$uEventName] = array();
+        if (!array_key_exists($uEventName, self::$events)) {
+            self::$events[$uEventName] = new Delegate();
         }
 
-        self::$callbacks[$uEventName][] = array($uType, $uValue, $uPriority);
-        self::$prioritySortNeeded = true;
+        self::$events[$uEventName]->add('Scabbia\\Events::invokeSingle', array($uType, $uValue), $uPriority);
     }
 
     /**
@@ -62,36 +58,17 @@ class Events
      * @uses invokeSingle()
      * @return bool whether the event is invoked or not
      */
-    public static function invoke($uEventName, array &$uEventArgs = array())
+    public static function invoke($uEventName, array $uEventArgs = array())
     {
         if (self::$disabled) {
             return null;
         }
 
-        if (!array_key_exists($uEventName, self::$callbacks)) {
+        if (!array_key_exists($uEventName, self::$events)) {
             return null;
         }
 
-        if (self::$prioritySortNeeded) {
-            usort(
-                self::$callbacks[$uEventName],
-                function ($uFirst, $uSecond) {
-                    if ($uFirst[2] == $uSecond[2]) {
-                        return 0;
-                    }
-
-                    return ($uFirst[2] > $uSecond[2]) ? 1 : -1;
-                }
-            );
-
-            self::$prioritySortNeeded = false;
-        }
-
-        foreach (self::$callbacks[$uEventName] as $tCallback) {
-            self::invokeSingle($tCallback[0], $tCallback[1], $uEventArgs);
-        }
-
-        return true;
+        return self::$events[$uEventName]->invoke($uEventArgs);
     }
 
     /**
@@ -103,11 +80,11 @@ class Events
      *
      * @return bool whether the event is invoked or not
      */
-    public static function invokeSingle($uType, $uValue, array &$uEventArgs = array())
+    public static function invokeSingle($uType, $uValue, array $uEventArgs = null)
     {
-        if (self::$disabled) {
-            return null;
-        }
+        // if (self::$disabled) {
+        //    return null;
+        // }
 
         switch ($uType) {
             case 'loadClass':
@@ -123,7 +100,11 @@ class Events
                     array_push(self::$eventDepth, '\\' . $uValue . '()');
                 }
 
-                $tReturn = call_user_func_array($uValue, array(&$uEventArgs));
+                if (!is_null($uEventArgs)) {
+                    $tReturn = call_user_func_array($uValue, $uEventArgs);
+                } else {
+                    $tReturn = call_user_func($uValue);
+                }
                 array_pop(self::$eventDepth);
 
                 if ($tReturn === false) {

@@ -35,9 +35,9 @@ class Delegate
     {
         $tNewInstance = new Delegate();
 
-        return function($uCallback = null, $uPriority = 10) use ($tNewInstance) {
+        return function($uCallback = null, array $uState = null, $uPriority = 10) use ($tNewInstance) {
             if (!is_null($uCallback)) {
-                $tNewInstance->add($uCallback, $uPriority);
+                $tNewInstance->add($uCallback, $uState, $uPriority);
             }
 
             return $tNewInstance;
@@ -47,8 +47,8 @@ class Delegate
     /**
      * Adds
      */
-    public function add($uCallback, $uPriority = 10) {
-        $this->callbacks[] = array($uCallback, $uPriority);
+    public function add($uCallback, array $uState = null, $uPriority = 10) {
+        $this->callbacks[] = array($uCallback, $uState, $uPriority);
         $this->prioritySortNeeded = true;
     }
 
@@ -62,11 +62,11 @@ class Delegate
             usort(
                 $this->callbacks,
                 function ($uFirst, $uSecond) {
-                    if ($uFirst[1] == $uSecond[1]) {
+                    if ($uFirst[2] == $uSecond[2]) {
                         return 0;
                     }
 
-                    return ($uFirst[1] > $uSecond[1]) ? 1 : -1;
+                    return ($uFirst[2] > $uSecond[2]) ? 1 : -1;
                 }
             );
 
@@ -74,7 +74,13 @@ class Delegate
         }
 
         foreach ($this->callbacks as $tCallback) {
-            call_user_func_array($tCallback[0], $tArgs);
+            $tEventArgs = (!is_null($tCallback[1]) ? array_merge($tCallback[1], $tArgs) : $tArgs);
+
+            if (call_user_func_array($tCallback[0], $tEventArgs) === false) {
+                return false;
+            }
         }
+
+        return true;
     }
 }
