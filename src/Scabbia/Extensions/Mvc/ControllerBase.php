@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Mvc;
 
 use Scabbia\Config;
+use Scabbia\Delegate;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Logger\Logger;
@@ -40,11 +41,11 @@ class ControllerBase implements LoggerAwareInterface
     /**
      * @ignore
      */
-    public $prerender = null;
+    public $prerender;
     /**
      * @ignore
      */
-    public $postrender = null;
+    public $postrender;
     /**
      * @ignore
      */
@@ -70,6 +71,9 @@ class ControllerBase implements LoggerAwareInterface
     {
         $this->db = Datasources::get(); // default datasource to member 'db'
         $this->logger = Logger::getInstance();
+
+        $this->prerender = new Delegate();
+        $this->postrender = new Delegate();
     }
 
     /**
@@ -139,15 +143,11 @@ class ControllerBase implements LoggerAwareInterface
         );
         $this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
 
-        if (!is_null($this->prerender)) {
-            call_user_func($this->prerender);
-        }
+        $this->prerender->invoke();
 
         $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
 
-        if (!is_null($this->postrender)) {
-            call_user_func($this->postrender);
-        }
+        $this->postrender->invoke();
         array_pop(Controllers::$stack);
 
         return $tReturn;

@@ -22,6 +22,10 @@ class Events
      */
     public static $callbacks = array();
     /**
+     * Is priority sort needed or not?
+     */
+    public static $prioritySortNeeded = false;
+    /**
      * Event depth
      */
     public static $eventDepth = array();
@@ -46,12 +50,7 @@ class Events
         }
 
         self::$callbacks[$uEventName][] = array($uType, $uValue, $uPriority);
-        usort(
-            self::$callbacks[$uEventName],
-            function ($uFirst, $uSecond) {
-                return strnatcmp($uFirst[2], $uSecond[2]);
-            }
-        );
+        self::$prioritySortNeeded = true;
     }
 
     /**
@@ -71,6 +70,21 @@ class Events
 
         if (!array_key_exists($uEventName, self::$callbacks)) {
             return null;
+        }
+
+        if (self::$prioritySortNeeded) {
+            usort(
+                self::$callbacks[$uEventName],
+                function ($uFirst, $uSecond) {
+                    if ($uFirst[2] == $uSecond[2]) {
+                        return 0;
+                    }
+
+                    return ($uFirst[2] > $uSecond[2]) ? 1 : -1;
+                }
+            );
+
+            self::$prioritySortNeeded = false;
         }
 
         foreach (self::$callbacks[$uEventName] as $tCallback) {

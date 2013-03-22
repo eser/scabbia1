@@ -8,6 +8,7 @@
 namespace Scabbia;
 
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Global input/output functions which helps framework execution.

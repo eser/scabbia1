@@ -17,7 +17,6 @@ use Scabbia\Utils;
  * @package Scabbia
  * @version 1.1.0
  *
- * @todo _node parsing
  * @todo caching
  */
 class Config

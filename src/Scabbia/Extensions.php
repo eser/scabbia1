@@ -18,7 +18,7 @@ use Scabbia\Io;
  * @package Scabbia
  * @version 1.1.0
  *
- * @todo cache the extensions.xml.php array
+ * @todo caching
  */
 class Extensions
 {
