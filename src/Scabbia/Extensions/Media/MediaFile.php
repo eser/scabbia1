@@ -304,9 +304,9 @@ class MediaFile
     public function output()
     {
         Response::sendHeaderCache(-1);
-        Response::sendHeader('Content-Type', $this->mime, true);
-        Response::sendHeader('Content-Length', $this->size, true);
-        Response::sendHeader('Content-Disposition', 'inline;filename=' . $this->filename . '.' . $this->extension, true);
+        header('Content-Type: ' . $this->mime, true);
+        header('Content-Length: ' . $this->size, true);
+        header('Content-Disposition: inline;filename=' . $this->filename . '.' . $this->extension, true);
         // @readfile($this->source);
 
         switch ($this->mime) {

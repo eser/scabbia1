@@ -179,6 +179,8 @@ class Views
 
     /**
      * @ignore
+     *
+     * @todo offer wrapping?
      */
     public static function json($uModel = null)
     {

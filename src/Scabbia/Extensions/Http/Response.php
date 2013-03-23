@@ -233,7 +233,7 @@ class Response
      */
     public static function sendRedirect($uLocation, $uTerminate = true)
     {
-        header('Location' . $uLocation, true);
+        header('Location: ' . $uLocation, true);
 
         if ($uTerminate) {
             Framework::end(0);
