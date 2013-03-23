@@ -73,9 +73,9 @@ class Http
     /**
      * @ignore
      */
-    public static function redirect($uPath)
+    public static function redirect($uPath, $uTerminate = true)
     {
-        Response::sendRedirect(self::url($uPath));
+        Response::sendRedirect(self::url($uPath), $uTerminate);
     }
 
     /**

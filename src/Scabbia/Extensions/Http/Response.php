@@ -202,16 +202,17 @@ class Response
         }
 
         self::sendHeaderCache(-1);
-        self::sendHeader('Accept-Ranges', 'bytes', true);
-        self::sendHeader('Content-Type', $tType, true);
+        header('Accept-Ranges: bytes', true);
+        header('Content-Type: ' . $tType, true);
         if ($uAttachment) {
-            self::sendHeader('Content-Disposition', 'attachment; filename=' . pathinfo($uFilePath, PATHINFO_BASENAME) . ';', true);
+            header('Content-Disposition: attachment; filename=' . pathinfo($uFilePath, PATHINFO_BASENAME) . ';', true);
         }
-        self::sendHeader('Content-Transfer-Encoding', 'binary', true);
+        header('Content-Transfer-Encoding: binary', true);
         //! filesize problem
-        // self::sendHeader('Content-Length', filesize($uFilePath), true);
-        self::sendHeaderETag(md5_file($uFilePath));
+        // header('Content-Length: ' . filesize($uFilePath), true);
+        header('ETag: "' . md5_file($uFilePath) . '"', true);
         readfile($uFilePath, false);
+
         Framework::end(0);
     }
 
@@ -220,7 +221,7 @@ class Response
      */
     public static function sendHeaderLastModified($uTime, $uNotModified = false)
     {
-        self::sendHeader('Last-Modified', gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $uTime) . ' GMT', true);
 
         if ($uNotModified) {
             self::sendStatus(304);
@@ -232,7 +233,7 @@ class Response
      */
     public static function sendRedirect($uLocation, $uTerminate = true)
     {
-        self::sendHeader('Location', $uLocation, true);
+        header('Location' . $uLocation, true);
 
         if ($uTerminate) {
             Framework::end(0);
@@ -245,7 +246,7 @@ class Response
     public static function sendRedirectPermanent($uLocation, $uTerminate = true)
     {
         self::sendStatus(301);
-        self::sendHeader('Location', $uLocation, true);
+        header('Location: ' . $uLocation, true);
 
         if ($uTerminate) {
             Framework::end(0);
@@ -257,7 +258,7 @@ class Response
      */
     public static function sendHeaderETag($uHash)
     {
-        self::sendHeader('ETag', '"' . $uHash . '"', true);
+        header('ETag: "' . $uHash . '"', true);
     }
 
     /**
@@ -267,13 +268,13 @@ class Response
     {
         if ($uTtl < 0) {
             if ($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
-                self::sendHeader('Pragma', 'no-cache', true);
-                self::sendHeader('Expires', 'Thu, 01 Jan 1970 00:00:00 GMT', true);
+                header('Pragma: no-cache', true);
+                header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
 
                 return;
             }
 
-            self::sendHeader('Cache-Control', (($uMustRevalidate) ? 'no-store, no-cache, must-revalidate' : 'no-store, no-cache'), true);
+            header('Cache-Control: ' . (($uMustRevalidate) ? 'no-store, no-cache, must-revalidate' : 'no-store, no-cache'), true);
 
             return;
         }
@@ -285,8 +286,8 @@ class Response
         }
 
         if ($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
-            self::sendHeader('Pragma', $tPublicity, true);
-            self::sendHeader('Expires', gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
+            header('Pragma: ' . $tPublicity, true);
+            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
 
             return;
         }
@@ -295,7 +296,7 @@ class Response
             $tPublicity .= ', must-revalidate';
         }
 
-        self::sendHeader('Cache-Control', 'max-age=' . $uTtl . ', ' . $tPublicity, true);
+        header('Cache-Control: max-age=' . $uTtl . ', ' . $tPublicity, true);
     }
 
     /**
