@@ -302,9 +302,14 @@ class Response
     /**
      * @ignore
      */
-    public static function sendCookie($uCookie, $uValue, $uExpire = 0)
+    public static function sendCookie($uCookie, $uValue, $uExpire = -1)
     {
-        setrawcookie($uCookie, Http::encode($uValue), $uExpire);
+        if ($uExpire == -1) {
+            $uExpire = time() + (60 * 60 * 24 * 365); // a year
+
+        }
+
+        setrawcookie($uCookie, Http::encode($uValue), $uExpire, Framework::$siteroot);
     }
 
     /**
@@ -312,6 +317,6 @@ class Response
      */
     public static function removeCookie($uCookie)
     {
-        setrawcookie($uCookie, '', time() - 3600);
+        setrawcookie($uCookie, '', time() - 3600, Framework::$siteroot);
     }
 }
