@@ -45,7 +45,7 @@
                     {
                         "type":         "function",
                         "class":        "core",
-                        "name":         "Scabbia\\Extensions\\Mvc\\mvc::exportAjaxJs"
+                        "name":         "Scabbia\\Extensions\\LarouxJs\\LarouxJs::exportJs"
                     },
                     {
                         "type":         "file",

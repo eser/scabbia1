@@ -10,9 +10,6 @@ namespace Scabbia\Extensions\Mvc;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\Http\Request;
-use Scabbia\Extensions\Http\Response;
-use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\String\String;
 use Scabbia\Framework;
@@ -127,46 +124,5 @@ class Mvc
         }
 
         return $tArray;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function exportAjaxJs()
-    {
-        $tArray = self::export(true);
-
-        $tReturn = <<<EOD
-\$l.ready(function() {
-    \$l.extend({
-EOD;
-        foreach ($tArray as $tClassName => $tClass) {
-            $tLines = array();
-
-            if (isset($tFirst)) {
-                $tReturn .= ',';
-            } else {
-                $tFirst = false;
-            }
-
-            $tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
-
-            foreach ($tClass as $tMethod) {
-                $tMethods = explode('_', $tMethod, 2);
-                if (count($tMethods) < 2 || strpos($tMethods[0], 'ajax') === false) {
-                    continue;
-                }
-
-                $tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
-            }
-            $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
-        }
-        $tReturn .= <<<EOD
-
-    });
-});
-EOD;
-
-        return $tReturn;
     }
 }

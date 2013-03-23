@@ -167,7 +167,7 @@ class Blackmore extends Controller
             return;
         }
 
-        $this->redirect('blackmore');
+        Http::redirect('blackmore');
     }
 
     /**

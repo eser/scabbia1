@@ -58,7 +58,7 @@ class Events
      * @uses invokeSingle()
      * @return bool whether the event is invoked or not
      */
-    public static function invoke($uEventName, array $uEventArgs = array())
+    public static function invoke($uEventName, $uEventArgs = null)
     {
         if (self::$disabled) {
             return null;
@@ -80,31 +80,27 @@ class Events
      *
      * @return bool whether the event is invoked or not
      */
-    public static function invokeSingle($uType, $uValue, array $uEventArgs = null)
+    public static function invokeSingle($uState, $uEventArgs = null)
     {
         // if (self::$disabled) {
         //    return null;
         // }
-
-        switch ($uType) {
+        switch ($uState[0]) {
             case 'loadClass':
-                class_exists($uValue, true);
+                class_exists($uState[1], true);
                 break;
             case 'include':
-                include Io::translatePath($uValue);
+                include Io::translatePath($uState[1]);
                 break;
             case 'callback':
-                if (is_array($uValue)) {
-                    array_push(self::$eventDepth, get_class($uValue[0]) . '::' . $uValue[1] . '()');
+                if (is_array($uState[1])) {
+                    array_push(self::$eventDepth, get_class($uState[1][0]) . '::' . $uState[1][1] . '()');
                 } else {
-                    array_push(self::$eventDepth, '\\' . $uValue . '()');
+                    array_push(self::$eventDepth, '\\' . $uState[1] . '()');
                 }
 
-                if (!is_null($uEventArgs)) {
-                    $tReturn = call_user_func_array($uValue, $uEventArgs);
-                } else {
-                    $tReturn = call_user_func($uValue);
-                }
+                $tReturn = call_user_func($uState[1], $uEventArgs);
+
                 array_pop(self::$eventDepth);
 
                 if ($tReturn === false) {

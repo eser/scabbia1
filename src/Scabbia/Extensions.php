@@ -53,7 +53,7 @@ class Extensions
             if (isset($tSubconfig['eventList'])) {
                 foreach ($tSubconfig['eventList'] as $tLoad) {
                     if ($tLoad['name'] == 'load') {
-                        Events::invokeSingle($tLoad['type'], $tLoad['value']);
+                        Events::invokeSingle(array($tLoad['type'], $tLoad['value']));
                         continue;
                     }
 

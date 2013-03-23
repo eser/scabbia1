@@ -41,6 +41,10 @@ class Request
     /**
      * @ignore
      */
+    public static $isLarouxJs = false;
+    /**
+     * @ignore
+     */
     public static $queryString;
     /**
      * @ignore
@@ -134,6 +138,10 @@ class Request
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             self::$isAjax = true;
             self::$methodext .= 'ajax';
+        }
+
+        if (isset($_SERVER['HTTP_X_WRAPPER_FUNCTION']) && $_SERVER['HTTP_X_WRAPPER_FUNCTION'] == 'laroux.js') {
+            self::$isLarouxJs = true;
         }
 
         // $userAgent

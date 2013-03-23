@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Mvc;
 use Scabbia\Config;
 use Scabbia\Delegate;
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Logger\Logger;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
@@ -107,13 +106,13 @@ class ControllerBase implements LoggerAwareInterface
         $tMe = new \ReflectionClass($this);
 
         while (true) {
-            $tMethod = Request::$methodext . '_' . $tActionName;
+            $tMethod = $uInput['methodext'] . '_' . $tActionName;
             if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
                 break;
             }
 
             // fallback
-            $tMethod = Request::$method . '_' . $tActionName;
+            $tMethod = $uInput['method'] . '_' . $tActionName;
             if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
                 break;
             }
@@ -279,15 +278,6 @@ class ControllerBase implements LoggerAwareInterface
         Views::xml(
             !is_null($uModel) ? $uModel : $this->vars
         );
-    }
-
-    /**
-     * @ignore
-     */
-    public function redirect()
-    {
-        $uArgs = func_get_args();
-        call_user_func_array('Scabbia\\Extensions\\Http\\Http::redirect', $uArgs);
     }
 
     /**

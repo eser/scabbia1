@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Http;
 
-use Scabbia\Extensions\Profiler\Profiler;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Config;
 use Scabbia\Extensions;
@@ -104,7 +103,7 @@ class Router
     /**
      * @ignore
      */
-    public static function resolve($uQueryString, $uMethod = null)
+    public static function resolve($uQueryString, $uMethod = null, $uMethodExt = null)
     {
         self::load();
 
@@ -128,7 +127,11 @@ class Router
             $tMatches = Utils::pregMatch(ltrim($tRouteItem[0], '/'), $uQueryString);
 
             if (count($tMatches) > 0) {
-                $tParameters = array();
+                $tParameters = array(
+                    'method' => $uMethod,
+                    'methodext' => $uMethodExt
+                );
+
                 foreach ($tRouteItem[3] as $tDefaultKey => $tDefaultItem) {
                     if (isset($tMatches[$tDefaultKey])) {
                         $tParameters[$tDefaultKey] = $tMatches[$tDefaultKey];

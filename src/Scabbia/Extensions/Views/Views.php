@@ -179,19 +179,11 @@ class Views
 
     /**
      * @ignore
-     *
-     * @todo offer wrapping?
      */
     public static function json($uModel = null)
     {
-        if (is_null($uModel)) {
-            $uModel = & self::$vars;
-        }
-
-        header('Content-Type: application/json', true);
-
         echo json_encode(
-            $uModel
+            (!is_null($uModel) ? $uModel : self::$vars)
         );
     }
 
@@ -200,15 +192,9 @@ class Views
      */
     public static function xml($uModel = null)
     {
-        if (is_null($uModel)) {
-            $uModel = & self::$vars;
-        }
-
-        header('Content-Type: application/xml', true);
-
         echo '<?xml version="1.0" encoding="UTF-8" ?>';
         echo '<xml>';
-        self::xmlRecursive($uModel);
+        self::xmlRecursive((!is_null($uModel) ? $uModel : self::$vars));
         echo '</xml>';
     }
 

@@ -1,24 +1,22 @@
 {
     "info": {
-        "name":             "Mvc",
+        "name":             "LarouxJs",
         "version":          "1.1.0",
         "license":          "GPLv3",
         "phpversion":       "5.3.0",
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
-            "Logger",
-            "IoEx",
-            "Models",
-            "String",
-            "Views"
+            "Http",
+            "Mvc",
+            "String"
         ]
     },
     "eventList": [
         {
-            "name":         "load",
+            "name":         "output",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Mvc\\Mvc::extensionLoad"
+            "value":        "Scabbia\\Extensions\\LarouxJs\\LarouxJs::output"
         }
     ]
 }

@@ -35,7 +35,7 @@ class Delegate
     {
         $tNewInstance = new Delegate();
 
-        return function($uCallback = null, array $uState = null, $uPriority = 10) use ($tNewInstance) {
+        return function($uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
             if (!is_null($uCallback)) {
                 $tNewInstance->add($uCallback, $uState, $uPriority);
             }
@@ -47,7 +47,7 @@ class Delegate
     /**
      * Adds
      */
-    public function add($uCallback, array $uState = null, $uPriority = 10) {
+    public function add($uCallback, $uState = null, $uPriority = 10) {
         $this->callbacks[] = array($uCallback, $uState, $uPriority);
         $this->prioritySortNeeded = true;
     }
@@ -74,7 +74,8 @@ class Delegate
         }
 
         foreach ($this->callbacks as $tCallback) {
-            $tEventArgs = (!is_null($tCallback[1]) ? array_merge($tCallback[1], $tArgs) : $tArgs);
+            $tEventArgs = $tArgs;
+            array_unshift($tEventArgs, $tCallback[1]);
 
             if (call_user_func_array($tCallback[0], $tEventArgs) === false) {
                 return false;

@@ -36,7 +36,7 @@ class Http
      */
     public static function routing()
     {
-        $tResolution = Router::resolve(Request::$queryString, Request::$methodext);
+        $tResolution = Router::resolve(Request::$queryString, Request::$method, Request::$methodext);
 
         if (!is_null($tResolution) && call_user_func($tResolution[1], $tResolution[2]) !== false) {
             // to interrupt event-chain execution
