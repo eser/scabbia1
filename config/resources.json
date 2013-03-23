@@ -38,6 +38,11 @@
                         "path":         "{core}resources/laroux/laroux.js"
                     },
                     {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux/laroux.ui.js"
+                    },
+                    {
                         "type":         "function",
                         "class":        "core",
                         "name":         "Scabbia\\Extensions\\Mvc\\mvc::exportAjaxJs"
@@ -91,11 +96,6 @@
                         "type":         "file",
                         "class":        "jqueryuiwidgets",
                         "path":         "{core}resources/jquery.ui/jquery.ui.datepicker.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuiwidgets",
-                        "path":         "{core}resources/laroux/laroux.ui.js"
                     },
                     {
                         "type":         "file",
@@ -191,6 +191,11 @@
                 "partList": [
                     {
                         "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux/laroux.ui.css"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "errorpages",
                         "path":         "{core}resources/errorpages/errorpages.css"
                     },
@@ -238,11 +243,6 @@
                         "type":         "file",
                         "class":        "jqueryui",
                         "path":         "{core}resources/jquery.ui/jquery.ui.theme.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/laroux/laroux.ui.css"
                     },
                     {
                         "type":         "file",
