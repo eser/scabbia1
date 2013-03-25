@@ -21,25 +21,26 @@ use Scabbia\Io;
  *
  * @todo must be attached before 'run' event
  * @todo no need of mvcpage stuff
+ * @todo should be running independent from Http
  */
 class Access
 {
     /**
-     * Whether the system in maintenance mode or not
+     * @var bool    Whether the system in maintenance mode or not
      */
     public static $maintenance = false;
     /**
-     * The allowed ip addresses during the maintenance mode
+     * @var array   The allowed ip addresses during the maintenance mode
      */
     public static $maintenanceExcludeIps = array();
     /**
-     * Set of ip address rules
+     * @var array   Set of ip address rules
      */
     public static $ipFilters = array();
 
 
     /**
-     * Checks the set of rules against visitor's data
+     * Checks the set of rules against visitor's data.
      */
     public static function run()
     {

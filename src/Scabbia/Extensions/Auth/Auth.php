@@ -24,24 +24,33 @@ use Scabbia\Framework;
 class Auth
 {
     /**
-     * Session key will be stored by client
+     * @var string Session key will be stored by client
      */
-    public static $sessionKey;
+    public static $sessionKey = null;
 
 
     /**
-     * @ignore
+     * Lazy loading method for the extension
      */
-    public static function extensionLoad()
+    public static function load()
     {
-        self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
+        if (is_null(self::$sessionKey)) {
+            self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
+        }
     }
 
     /**
-     * @ignore
+     * Allows authenticated users to log into the system
+     *
+     * @param string $uUsername username
+     * @param string $uPassword password
+     *
+     * @return bool whether the user logged in or not
      */
     public static function login($uUsername, $uPassword)
     {
+        self::load();
+
         foreach (Config::get('auth/userList', array()) as $tUser) {
             if ($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
                 continue;
@@ -57,18 +66,26 @@ class Auth
     }
 
     /**
-     * @ignore
+     * Clears logged user information
      */
     public static function clear()
     {
+        self::load();
+
         Session::remove(self::$sessionKey);
     }
 
     /**
-     * @ignore
+     * Checks if the logged user has the specific roles
+     *
+     * @param string $uRequiredRoles roles
+     *
+     * @return bool whether logged user has the role or not
      */
     public static function check($uRequiredRoles = 'user')
     {
+        self::load();
+
         $tUser = Session::get(self::$sessionKey);
         if (is_null($tUser)) {
             return false;
@@ -86,10 +103,15 @@ class Auth
     }
 
     /**
-     * @ignore
+     * Redirects users to another location if user does not have required roles
+     *
+     * @uses Auth::check($uRequiredRoles)
+     * @param string $uRequiredRoles roles
      */
     public static function checkRedirect($uRequiredRoles = 'user')
     {
+        self::load();
+
         if (self::check($uRequiredRoles)) {
             return;
         }
@@ -97,11 +119,10 @@ class Auth
         $tMvcUrl = Config::get('auth/loginMvcUrl', null);
         if (!is_null($tMvcUrl)) {
             //! todo: warning messages like insufficent privileges.
-            Http::redirect($tMvcUrl);
-        } else {
-            header('Location: ' . Config::get('auth/loginUrl'));
+            Http::redirect($tMvcUrl, true);
         }
 
+        header('Location: ' . Config::get('auth/loginUrl'));
         Framework::end(0);
     }
 }

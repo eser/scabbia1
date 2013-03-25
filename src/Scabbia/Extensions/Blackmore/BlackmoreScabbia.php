@@ -187,7 +187,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
     /**
      * Purges the files in given directory.
      *
-     * @internal param string $uFolder destination directory
+     * @param string $uFolder destination directory
      */
     public static function purge()
     {

@@ -184,6 +184,8 @@ class Resources
 
     /**
      * @ignore
+     *
+     * @throws \Exception
      */
     public static function getDirectory($uSelectedDirectory, $uSubPath)
     {

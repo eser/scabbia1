@@ -21,60 +21,60 @@ use Scabbia\Io;
 class Framework
 {
     /**
-     * Scabbia Framework's version
+     * @var string  Scabbia Framework's version
      */
     const VERSION = '1.1';
 
     /**
-     * Composer's class loader
+     * @var object  Composer's class loader
      */
     public static $classLoader = null;
     /**
-     * Indicates framework is running in production, development or debug mode
+     * @var int     Indicates framework is running in production, development or debug mode
      */
     public static $development = 0;
     /**
-     * Indicates framework is running in readonly mode or not
+     * @var bool    Indicates framework is running in readonly mode or not
      */
     public static $readonly = false;
     /**
-     * The timestamp indicates when the request started
+     * @var int     The timestamp indicates when the request started
      */
     public static $timestamp = null;
     /**
-     * Indicates the base directory which framework runs in
+     * @var string  Indicates the base directory which framework runs in
      */
     public static $basepath = null;
     /**
-     * Indicates the core directory which framework runs in
+     * @var string  Indicates the core directory which framework runs in
      */
     public static $corepath = null;
     /**
-     * Indicates the vendor directory which dependencies can be found at
+     * @var string  Indicates the vendor directory which dependencies can be found at
      */
     public static $vendorpath = null;
     /**
-     * Stores relative path of running application
+     * @var string  Stores relative path of running application
      */
     public static $apppath = null;
     /**
-     * Stores relative path of framework root
+     * @var string  Stores relative path of framework root
      */
     public static $siteroot = null;
     /**
-     * The milestones passed in code
+     * @var array   The milestones passed in code
      */
     public static $milestones = array();
     /**
-     * Stores all available endpoints
+     * @var array   Stores all available endpoints
      */
     public static $endpoints = array();
     /**
-     * Stores active endpoint information
+     * @var string  Stores active endpoint information
      */
     public static $endpoint = null;
     /**
-     * The exit status
+     * @var int     The exit status
      */
     public static $exitStatus = null;
 
@@ -82,7 +82,7 @@ class Framework
     /**
      * Initializes the framework.
      *
-     * @param object $uClassLoader composer's class loader
+     * @param object|null $uClassLoader composer's class loader
      *
      * @throws \Exception
      */
@@ -203,8 +203,8 @@ class Framework
      * Output callback method which will be called when the output buffer
      * is flushed at the end of the request.
      *
-     * @param string $uValue the generated content
-     * @param int $uStatus the status of the output buffer
+     * @param string    $uValue     the generated content
+     * @param int       $uStatus    the status of the output buffer
      *
      * @return string final content
      */
@@ -233,8 +233,8 @@ class Framework
     /**
      * Terminates the execution of the framework.
      *
-     * @param int $uLevel the exit status (0-254)
-     * @param string $uErrorMessage the error message if available
+     * @param int       $uLevel         the exit status (0-254)
+     * @param string    $uErrorMessage  the error message if available
      */
     public static function end($uLevel = 0, $uErrorMessage = null)
     {

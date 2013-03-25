@@ -24,20 +24,35 @@ use Scabbia\Utils;
  */
 class Io
 {
+    /**
+     * @var int none
+     */
     const GLOB_NONE = 0;
+    /**
+     * @var int recursive
+     */
     const GLOB_RECURSIVE = 1;
+    /**
+     * @var int files
+     */
     const GLOB_FILES = 2;
+    /**
+     * @var int directories
+     */
     const GLOB_DIRECTORIES = 4;
+    /**
+     * @var int just names
+     */
     const GLOB_JUSTNAMES = 8;
 
 
     /**
      * Reads from a file.
      *
-     * @param string        $uPath  the file path
-     * @param int           $uFlags io flags
+     * @param string    $uPath  the file path
+     * @param int       $uFlags io flags
      *
-     * @return bool|string  the file content
+     * @return bool|string the file content
      */
     public static function read($uPath, $uFlags = LOCK_SH)
     {

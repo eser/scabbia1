@@ -18,7 +18,7 @@ use Scabbia\Framework;
 class Utils
 {
     /**
-     * Presets which can be used in regular expression
+     * @var array Presets which can be used in regular expression
      */
     public static $regexpPresets = array(
         'num' => '[0-9]+',

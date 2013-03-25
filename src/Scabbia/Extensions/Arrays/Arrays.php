@@ -17,9 +17,9 @@ namespace Scabbia\Extensions\Arrays;
 class Arrays
 {
     /**
-     * Flatten the arrays
+     * Flattens parameters into an array.
      *
-     * @return array
+     * @return array flatten array
      */
     public static function flat()
     {
@@ -43,10 +43,10 @@ class Arrays
     /**
      * Gets the first element in array, otherwise returns default value.
      *
-     * @param $uArray
-     * @param null $uDefault
+     * @param array         $uArray     array
+     * @param mixed|null    $uDefault   default value
      *
-     * @return mixed
+     * @return mixed|null first element of array
      */
     public static function getFirst(array $uArray, $uDefault = null)
     {
@@ -61,11 +61,11 @@ class Arrays
     /**
      * Gets the specified element in array, otherwise returns default value.
      *
-     * @param array $uArray array
-     * @param mixed $uElement key
-     * @param mixed $uDefault default value
+     * @param array $uArray     array
+     * @param mixed $uElement   key
+     * @param mixed $uDefault   default value
      *
-     * @return mixed|null
+     * @return mixed|null extracted element
      */
     public static function get(array $uArray, $uElement, $uDefault = null)
     {
@@ -81,8 +81,7 @@ class Arrays
      *
      * @param array $uArray array
      *
-     * @internal param mixed $uElement key
-     * @return array
+     * @return array array of extracted elements
      */
     public static function getArray(array $uArray)
     {
@@ -100,7 +99,7 @@ class Arrays
      *
      * @param array $uArray array
      *
-     * @return null
+     * @return mixed|null a random element in the set
      */
     public static function getRandom(array $uArray)
     {
@@ -115,13 +114,13 @@ class Arrays
     }
 
     /**
-     * Accesses child arrays by path notation
+     * Accesses child arrays by path notation.
      *
-     * @param array $uArray array
-     * @param string $uPath path
-     * @param string $uSeparator path separator
+     * @param array     $uArray     array
+     * @param string    $uPath      path
+     * @param string    $uSeparator path separator
      *
-     * @return mixed
+     * @return mixed target element
      */
     public static function getPath(array $uArray, $uPath, $uSeparator = '/')
     {
@@ -137,17 +136,18 @@ class Arrays
     /**
      * Returns an array filled with the elements in specified range.
      *
-     * @param int $uMinimum minumum number
-     * @param int $uMaximum maximum number
-     * @param bool $uWithKeys whether set keys or not
+     * @param int|float   $uMinimum     minimum number
+     * @param int|float   $uMaximum     maximum number
+     * @param int|float   $uStep        step
+     * @param bool        $uWithKeys    whether set keys or not
      *
-     * @return array
+     * @return array a set contains sequence of numbers in given range
      */
-    public static function range($uMinimum, $uMaximum, $uWithKeys = false)
+    public static function range($uMinimum, $uMaximum, $uStep = 1, $uWithKeys = false)
     {
         $tReturn = array();
 
-        for ($i = $uMinimum; $i <= $uMaximum; $i++) {
+        for ($i = $uMinimum; $i <= $uMaximum; $i += $uStep) {
             if ($uWithKeys) {
                 $tReturn[$i] = $i;
                 continue;
@@ -162,11 +162,11 @@ class Arrays
     /**
      * Sorts an array by key.
      *
-     * @param array $uArray array
-     * @param mixed $uField field
-     * @param string $uOrder order
+     * @param array     $uArray array
+     * @param mixed     $uField field
+     * @param string    $uOrder order
      *
-     * @return array
+     * @return array sorted array
      */
     public static function sortByKey(array $uArray, $uField, $uOrder = 'asc')
     {
@@ -197,9 +197,9 @@ class Arrays
      * Categorizes an array by key.
      *
      * @param array $uArray array
-     * @param mixed $uKey key
+     * @param mixed $uKey   key
      *
-     * @return array
+     * @return array categorized array
      */
     public static function categorize(array $uArray, $uKey)
     {
@@ -227,12 +227,12 @@ class Arrays
     }
 
     /**
-     * ....
+     * Assigns keys by key.
      *
      * @param array $uArray array
-     * @param mixed $uKey key
+     * @param mixed $uKey   key
      *
-     * @return array
+     * @return array array with new keys
      */
     public static function assignKeys(array $uArray, $uKey)
     {
@@ -248,12 +248,12 @@ class Arrays
     /**
      * Extracts specified column from the array.
      *
-     * @param array $uArray array
-     * @param mixed $uKey key
-     * @param bool $uSkipEmpties whether skip empty entries or not
-     * @param bool $uDistinct whether returns multiple instances of same entries or not
+     * @param array $uArray         array
+     * @param mixed $uKey           key
+     * @param bool  $uSkipEmpties   whether skip empty entries or not
+     * @param bool  $uDistinct      whether returns multiple instances of same entries or not
      *
-     * @return array
+     * @return array values of the specified column from a multi-dimensional array
      */
     public static function column(array $uArray, $uKey, $uSkipEmpties = false, $uDistinct = false)
     {
@@ -275,13 +275,13 @@ class Arrays
     }
 
     /**
-     * Gets the first matching row.
+     * Gets the first matching row from a multi-dimensional array.
      *
      * @param array $uArray array
-     * @param mixed $uKey key
+     * @param mixed $uKey   key
      * @param mixed $uValue value
      *
-     * @return bool
+     * @return array|bool entire row matches the condition
      */
     public static function getRow(array $uArray, $uKey, $uValue)
     {
@@ -298,10 +298,10 @@ class Arrays
      * Gets the first matching row's key.
      *
      * @param array $uArray array
-     * @param mixed $uKey key
+     * @param mixed $uKey   key
      * @param mixed $uValue value
      *
-     * @return bool|int|string
+     * @return mixed|bool key of row matches the condition
      */
     public static function getRowKey(array $uArray, $uKey, $uValue)
     {
@@ -318,10 +318,10 @@ class Arrays
      * Gets the matching rows.
      *
      * @param array $uArray array
-     * @param mixed $uKey key
+     * @param mixed $uKey   key
      * @param mixed $uValue value
      *
-     * @return array
+     * @return array set of elements matches the condition
      */
     public static function getRows(array $uArray, $uKey, $uValue)
     {
@@ -337,12 +337,12 @@ class Arrays
     }
 
     /**
-     * Combines two array properly.
+     * Combines two arrays properly.
      *
-     * @param array $uArray1 first array
-     * @param array $uArray2 second array
+     * @param array $uArray1    first array
+     * @param array $uArray2    second array
      *
-     * @return array
+     * @return array combined array
      */
     public static function combine(array $uArray1, array $uArray2)
     {
@@ -361,7 +361,9 @@ class Arrays
     }
 
     /**
-     * Combines two array properly.
+     * Combines two or more arrays.
+     *
+     * @return array combined array
      */
     public static function combine2()
     {
@@ -395,10 +397,10 @@ class Arrays
     /**
      * Sorts an array by priority list.
      *
-     * @param array $uArray array
-     * @param array $uPriorities priority list
+     * @param array $uArray         array
+     * @param array $uPriorities    list of priorities
      *
-     * @return array
+     * @return array sorted array
      */
     public static function sortByPriority(array $uArray, $uPriorities)
     {

@@ -45,6 +45,8 @@ class ViewEngineRazor
 
     /**
      * @ignore
+     *
+     * @throws \Exception
      */
     public static function renderview($uObject)
     {

@@ -17,11 +17,11 @@ namespace Scabbia;
 class Delegate
 {
     /**
-     * List of callbacks
+     * @var array   List of callbacks
      */
     public $callbacks = array();
     /**
-     * Is priority sort needed or not?
+     * @var bool    Is priority sort needed or not?
      */
     public $prioritySortNeeded = false;
 
@@ -29,7 +29,7 @@ class Delegate
     /**
      * Constructs a new delegate in order to assign it to a member
      *
-     * @return object
+     * @return object a delegate
      */
     public static function assign()
     {
@@ -45,7 +45,11 @@ class Delegate
     }
 
     /**
-     * Adds
+     * Adds a callback to delegate
+     *
+     * @param callback  $uCallback  callback method
+     * @param mixed     $uState     state object
+     * @param int       $uPriority  priority level
      */
     public function add($uCallback, $uState = null, $uPriority = 10) {
         $this->callbacks[] = array($uCallback, $uState, $uPriority);
@@ -54,6 +58,8 @@ class Delegate
 
     /**
      * Invokes the event-chain execution
+     *
+     * @return bool whether the execution is broken or not
      */
     public function invoke() {
         $tArgs = func_get_args();

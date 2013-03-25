@@ -33,7 +33,7 @@ class LarouxJs
                 . ', "errorMessage": ' . (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true));
 
             if ($tLastContentType == false) {
-                // header('Content-Type: application/json', true);
+                header('Content-Type: application/json', true);
 
                 $tContent .= ', "object": ' . json_encode($uParms['content']);
             } else {
@@ -42,6 +42,7 @@ class LarouxJs
 
             $tContent .= ' }';
 
+            header('X-Response-Wrapper-Function: laroux.js', true);
             $uParms['content'] = $tContent;
         }
     }

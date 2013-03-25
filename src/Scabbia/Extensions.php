@@ -23,9 +23,9 @@ use Scabbia\Io;
 class Extensions
 {
     /**
-     * The array of extensions' config files
+     * @var array The array of extensions' config files
      */
-    public static $configFiles = null;
+    public static $configFiles = array();
 
 
     /**
@@ -33,8 +33,6 @@ class Extensions
      */
     public static function load()
     {
-        self::$configFiles = array();
-
         $tFiles = array();
         Io::glob(Framework::$corepath . 'src/Scabbia/Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
         if (!is_null(Framework::$apppath)) {

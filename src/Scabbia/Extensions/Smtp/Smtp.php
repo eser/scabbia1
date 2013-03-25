@@ -38,6 +38,8 @@ class Smtp
 
     /**
      * @ignore
+     *
+     * @throws \Exception
      */
     private static function sockwait($uSocket, $uExpectation)
     {

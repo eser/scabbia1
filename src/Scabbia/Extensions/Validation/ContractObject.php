@@ -37,6 +37,8 @@ class ContractObject
 
     /**
      * @ignore
+     *
+     * @throws \Exception
      */
     public function exception($uErrorMessage)
     {

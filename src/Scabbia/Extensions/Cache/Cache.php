@@ -191,6 +191,8 @@ class Cache
 
     /**
      * @ignore
+     *
+     * @todo can be moved to Io
      */
     public static function fileGarbageCollect($uFolder, $uAge = -1)
     {

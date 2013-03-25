@@ -11,10 +11,5 @@
         ]
     },
     "eventList": [
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Auth\\Auth::extensionLoad"
-        }
     ]
 }

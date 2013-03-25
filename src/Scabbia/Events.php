@@ -19,15 +19,15 @@ use Scabbia\Io;
 class Events
 {
     /**
-     * The array of registered callbacks for the events
+     * @var array   The array of registered callbacks for the events
      */
     public static $events = array();
     /**
-     * Event depth
+     * @var array   Event depth
      */
     public static $eventDepth = array();
     /**
-     * Indicates the event manager is currently disabled or not
+     * @var bool    Indicates the event manager is currently disabled or not
      */
     public static $disabled = false;
 
@@ -35,10 +35,10 @@ class Events
     /**
      * Makes a callback method subscribed to specified event.
      *
-     * @param string $uEventName the event
-     * @param string $uType the type of event
-     * @param mixed $uValue the value
-     * @param int $uPriority the priority
+     * @param string    $uEventName event
+     * @param string    $uType      type of event
+     * @param mixed     $uValue     value
+     * @param int       $uPriority  priority
      */
     public static function register($uEventName, $uType, $uValue, $uPriority = 10)
     {
@@ -52,8 +52,8 @@ class Events
     /**
      * Invokes an event.
      *
-     * @param string $uEventName the event
-     * @param array $uEventArgs arguments for the event
+     * @param string    $uEventName name of the event
+     * @param array     $uEventArgs arguments for the event
      *
      * @uses invokeSingle()
      * @return bool whether the event is invoked or not
@@ -74,9 +74,8 @@ class Events
     /**
      * Executes a single event.
      *
-     * @param string $uType the type of event
-     * @param mixed $uValue the value of event
-     * @param array $uEventArgs arguments for the event
+     * @param string    $uState     state object
+     * @param mixed     $uEventArgs arguments for the event
      *
      * @return bool whether the event is invoked or not
      */
@@ -85,6 +84,7 @@ class Events
         // if (self::$disabled) {
         //    return null;
         // }
+
         switch ($uState[0]) {
             case 'loadClass':
                 class_exists($uState[1], true);

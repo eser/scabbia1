@@ -22,7 +22,7 @@ use Scabbia\Utils;
 class Config
 {
     /**
-     * Default configuration
+     * @var array Default configuration
      */
     public static $default;
 
@@ -67,9 +67,15 @@ class Config
     }
 
     /**
-     * @ignore
+     * Loads the json decoded object into an array.
+     *
+     * @param mixed $uTarget    target reference
+     * @param mixed $uNode      source object
+     * @param array $tNodeStack stack of nodes
+     * @param bool  $uIsArray   whether is an array or not
+     * @param bool  $uIsDirect  read directly as an array
      */
-    private static function jsonProcessChildrenRecursive(&$uArray, $uNode, &$tNodeStack, $uIsArray = false, $uIsDirect = false)
+    private static function jsonProcessChildrenRecursive(&$uTarget, $uNode, &$tNodeStack, $uIsArray = false, $uIsDirect = false)
     {
         if (is_object($uNode) && !$uIsDirect) {
             foreach ($uNode as $tKey => $tSubnode) {
@@ -112,7 +118,7 @@ class Config
                 }
 
                 array_push($tNodeStack, $tNodeName[0]);
-                self::jsonProcessChildrenRecursive($uArray, $tSubnode, $tNodeStack, false, $uIsDirect);
+                self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $tNodeStack, false, $uIsDirect);
                 array_pop($tNodeStack);
             }
         } else {
@@ -123,30 +129,30 @@ class Config
                      foreach ($uNode as $tSubnodeKey => $tSubnode) {
                          $tNewNodeStack = array();
                          if ($uIsDirect) {
-                             self::jsonProcessChildrenRecursive($uArray[$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                             self::jsonProcessChildrenRecursive($uTarget[$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
                          } else {
-                             self::jsonProcessChildrenRecursive($uArray[], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                             self::jsonProcessChildrenRecursive($uTarget[], $tSubnode, $tNewNodeStack, true, $uIsDirect);
                          }
                      }
                 } else {
-                    $uArray = $uNode;
+                    $uTarget = $uNode;
                 }
             } else {
                 if (!is_scalar($uNode)) {
-                    if (!isset($uArray[$tNodePath])) {
-                        $uArray[$tNodePath] = array();
+                    if (!isset($uTarget[$tNodePath])) {
+                        $uTarget[$tNodePath] = array();
                     }
 
                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
                         $tNewNodeStack = array();
                         if ($uIsDirect) {
-                            self::jsonProcessChildrenRecursive($uArray[$tNodePath][$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                            self::jsonProcessChildrenRecursive($uTarget[$tNodePath][$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
                         } else {
-                            self::jsonProcessChildrenRecursive($uArray[$tNodePath][], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                            self::jsonProcessChildrenRecursive($uTarget[$tNodePath][], $tSubnode, $tNewNodeStack, true, $uIsDirect);
                         }
                     }
                 } else {
-                    $uArray[$tNodePath] = $uNode;
+                    $uTarget[$tNodePath] = $uNode;
                 }
             }
         }
@@ -155,8 +161,8 @@ class Config
     /**
      * Gets a value from default configuration.
      *
-     * @param string $uKey path of the value
-     * @param mixed $uDefault default value
+     * @param string    $uKey       path of the value
+     * @param mixed     $uDefault   default value
      *
      * @return mixed|null the value
      */
