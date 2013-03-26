@@ -90,6 +90,8 @@ class IoEx
 
     /**
      * @ignore
+     *
+     * @todo optionally explode by '/', sanitize between
      */
     public static function sanitize($uFilename, $uRemoveAccent = false, $uRemoveSpaces = false)
     {

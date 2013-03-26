@@ -3,7 +3,7 @@
         "fontFile":     "{core}resources/fonts/KabobExtrabold.ttf"
     },
 
-    "resources": {
+    "assets": {
         "directoryList": [
             {
                 "name":     "scabbia/",

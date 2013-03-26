@@ -7,19 +7,27 @@
 
 namespace Scabbia\Extensions\Database;
 
+use Scabbia\Extensions\Database\DatabaseSource;
+
 /**
- * Database Extension: DatabaseProviderMysql Class
+ * Database Extension: MysqlSource Class
  *
  * @package Scabbia
  * @subpackage Database
  * @version 1.1.0
  */
-class DatabaseProviderMysql
+class MysqlSource extends DatabaseSource
 {
     /**
      * @ignore
      */
-    public $standard = null;
+    public static $type = 'mysql';
+
+
+    /**
+     * @ignore
+     */
+    public $connection = null;
     /**
      * @ignore
      */
@@ -47,6 +55,8 @@ class DatabaseProviderMysql
      */
     public function __construct(array $uConfig)
     {
+        parent::__construct($uConfig);
+
         $this->host = $uConfig['host'];
         $this->database = $uConfig['database'];
         $this->username = $uConfig['username'];
@@ -58,8 +68,14 @@ class DatabaseProviderMysql
     /**
      * @ignore
      */
-    public function open()
+    public function connectionOpen()
     {
+        if (!is_null($this->connection)) {
+            return;
+        }
+
+        parent::connectionOpen();
+
         // if ($this->persistent) {
         // }
 
@@ -76,110 +92,9 @@ class DatabaseProviderMysql
     /**
      * @ignore
      */
-    public function close()
+    public function connectionClose()
     {
-    }
-
-    /**
-     * @ignore
-     */
-    public function beginTransaction()
-    {
-        $this->connection->autocommit(false);
-    }
-
-    /**
-     * @ignore
-     */
-    public function commit()
-    {
-        $this->connection->commit();
-    }
-
-    /**
-     * @ignore
-     */
-    public function rollBack()
-    {
-        $this->connection->rollback();
-    }
-
-    /**
-     * @ignore
-     */
-    public function execute($uQuery)
-    {
-        return $this->connection->query($uQuery);
-    }
-
-    /**
-     * @ignore
-     */
-    public function queryDirect($uQuery, array $uParameters = array())
-    {
-        $tQuery = $this->connection->prepare($uQuery);
-
-        foreach ($uParameters as $tParameter) {
-            switch (gettype($tParameter)) {
-                case 'integer':
-                    $tType = 'i';
-                    break;
-                case 'double':
-                    $tType = 'd';
-                    break;
-                default:
-                    $tType = 's';
-                    break;
-            }
-
-            $tQuery->bind_param($tType, $tParameter);
-        }
-
-        $tQuery->execute();
-
-        return $tQuery;
-    }
-
-    /**
-     * @ignore
-     */
-    public function itSeek($uObject, $uRow)
-    {
-        $uObject->data_seek($uRow);
-
-        return $this->itNext($uObject);
-    }
-
-    /**
-     * @ignore
-     */
-    public function itNext($uObject)
-    {
-        return $uObject->fetch();
-    }
-
-    /**
-     * @ignore
-     */
-    public function itCount($uObject)
-    {
-        return $uObject->num_rows;
-    }
-
-    /**
-     * @ignore
-     */
-    public function itClose($uObject)
-    {
-        return $uObject->close();
-    }
-
-    /**
-     * @ignore
-     */
-    public function lastInsertId($uName = null)
-    {
-        return $this->connection->insert_id;
+        parent::connectionClose();
     }
 
     /**
@@ -193,14 +108,44 @@ class DatabaseProviderMysql
     /**
      * @ignore
      */
+    public function beginTransaction()
+    {
+        parent::beginTransaction();
+
+        $this->connection->autocommit(false);
+    }
+
+    /**
+     * @ignore
+     */
+    public function commit()
+    {
+        $this->connection->commit();
+
+        parent::commit();
+    }
+
+    /**
+     * @ignore
+     */
+    public function rollBack()
+    {
+        $this->connection->rollback();
+
+        parent::rollBack();
+    }
+
+    /**
+     * @ignore
+     */
     public function sqlInsert($uTable, $uObject, $uReturning = '')
     {
         $tSql =
-                'INSERT INTO ' . $uTable . ' ('
-                        . implode(', ', array_keys($uObject))
-                        . ') VALUES ('
-                        . implode(', ', array_values($uObject))
-                        . ')';
+            'INSERT INTO ' . $uTable . ' ('
+                . implode(', ', array_keys($uObject))
+                . ') VALUES ('
+                . implode(', ', array_values($uObject))
+                . ')';
 
         // if (strlen($uReturning) > 0) {
         //     $tSql .= ' RETURNING ' . $uReturning;
@@ -220,7 +165,7 @@ class DatabaseProviderMysql
         }
 
         $tSql = 'UPDATE ' . $uTable . ' SET '
-                . implode(', ', $tPairs);
+            . implode(', ', $tPairs);
 
         if (strlen($uWhere) > 0) {
             $tSql .= ' WHERE ' . $uWhere;
@@ -294,5 +239,83 @@ class DatabaseProviderMysql
         }
 
         return $tSql;
+    }
+
+    /**
+     * @ignore
+     */
+    public function itSeek($uObject, $uRow)
+    {
+        $uObject->data_seek($uRow);
+
+        return $this->itNext($uObject);
+    }
+
+    /**
+     * @ignore
+     */
+    public function itNext($uObject)
+    {
+        return $uObject->fetch();
+    }
+
+    /**
+     * @ignore
+     */
+    public function itCount($uObject)
+    {
+        return $uObject->num_rows;
+    }
+
+    /**
+     * @ignore
+     */
+    public function itClose($uObject)
+    {
+        return $uObject->close();
+    }
+
+    /**
+     * @ignore
+     */
+    public function lastInsertId($uName = null)
+    {
+        return $this->connection->insert_id;
+    }
+
+    /**
+     * @ignore
+     */
+    public function internalExecute($uQuery)
+    {
+        return $this->connection->query($uQuery);
+    }
+
+    /**
+     * @ignore
+     */
+    public function queryDirect($uQuery, array $uParameters = array())
+    {
+        $tQuery = $this->connection->prepare($uQuery);
+
+        foreach ($uParameters as $tParameter) {
+            switch (gettype($tParameter)) {
+                case 'integer':
+                    $tType = 'i';
+                    break;
+                case 'double':
+                    $tType = 'd';
+                    break;
+                default:
+                    $tType = 's';
+                    break;
+            }
+
+            $tQuery->bind_param($tType, $tParameter);
+        }
+
+        $tQuery->execute();
+
+        return $tQuery;
     }
 }

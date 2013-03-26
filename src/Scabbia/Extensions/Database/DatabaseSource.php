@@ -11,24 +11,35 @@ use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Database\Database;
 use Scabbia\Extensions\Database\DatabaseQuery;
 use Scabbia\Extensions\Database\DatabaseQueryResult;
-use Scabbia\Extensions\Database\Datasets;
-use Scabbia\Extensions\Datasources\Datasource;
+use Scabbia\Extensions\Database\IQueryGenerator;
+use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IServerConnection;
+use Scabbia\Extensions\Datasources\ITransactionSupport;
 use Scabbia\Extensions\Profiler\Profiler;
-use Scabbia\Extensions;
 
 /**
- * Database Extension: DatabaseConnection Class
+ * Database Extension: DatabaseSource Class
  *
  * @package Scabbia
  * @subpackage Database
  * @version 1.1.0
+ *
+ * @todo generic sqlSelect, sqlUpdate, etc.
  */
-class DatabaseConnection extends Datasource
+abstract class DatabaseSource implements IDatasource, IServerConnection, ITransactionSupport, IQueryGenerator
 {
     /**
      * @ignore
      */
+    public $id;
+    /**
+     * @ignore
+     */
     public $default;
+    /**
+     * @ignore
+     */
+    public $cache = array();
     /**
      * @ignore
      */
@@ -41,14 +52,21 @@ class DatabaseConnection extends Datasource
      * @ignore
      */
     public $errorHandling = Database::ERROR_NONE;
+    /**
+     * @ignore
+     */
+    public $stats = array(
+        'query' => 0,
+        'cache' => 0
+    );
+
 
     /**
      * @ignore
      */
     public function __construct(array $uConfig)
     {
-        parent::__construct($uConfig);
-
+        $this->id = $uConfig['id'];
         $this->default = isset($uConfig['default']);
 
         if (isset($uConfig['initCommand'])) {
@@ -59,23 +77,13 @@ class DatabaseConnection extends Datasource
     /**
      * @ignore
      */
-    public function __destruct()
+    public function connectionOpen()
     {
-        parent::__destruct();
-    }
-
-    /**
-     * @ignore
-     */
-    public function open()
-    {
-        parent::open();
-
         if (strlen($this->initCommand) > 0) {
             // $this->execute($this->initCommand); // occurs recursive loop
             //! may need pass the initial command to the profiler extension
             try {
-                $this->provider->execute($this->initCommand);
+                $this->internalExecute($this->initCommand);
             } catch (\Exception $ex) {
                 if ($this->errorHandling == Database::ERROR_EXCEPTION) {
                     throw $ex;
@@ -91,9 +99,14 @@ class DatabaseConnection extends Datasource
     /**
      * @ignore
      */
-    public function close()
+    public function connectionClose()
     {
-        parent::close();
+    }
+
+    /**
+     * @ignore
+     */
+    public function serverInfo() {
     }
 
     /**
@@ -101,8 +114,6 @@ class DatabaseConnection extends Datasource
      */
     public function beginTransaction()
     {
-        $this->open();
-        $this->provider->beginTransaction();
         $this->inTransaction = true;
     }
 
@@ -111,7 +122,6 @@ class DatabaseConnection extends Datasource
      */
     public function commit()
     {
-        $this->provider->commit();
         $this->inTransaction = false;
     }
 
@@ -120,16 +130,50 @@ class DatabaseConnection extends Datasource
      */
     public function rollBack()
     {
-        $this->provider->rollBack();
         $this->inTransaction = false;
     }
 
     /**
      * @ignore
      */
+    public abstract function itSeek($uObject, $uRow);
+
+    /**
+     * @ignore
+     */
+    public abstract function itNext($uObject);
+
+    /**
+     * @ignore
+     */
+    public abstract function itCount($uObject);
+
+    /**
+     * @ignore
+     */
+    public abstract function itClose($uObject);
+
+    /**
+     * @ignore
+     */
+    public abstract function lastInsertId($uName = null);
+
+    /**
+     * @ignore
+     */
+    public abstract function internalExecute($uQuery);
+
+    /**
+     * @ignore
+     */
+    public abstract function queryDirect($uQuery, array $uParameters = array());
+
+    /**
+     * @ignore
+     */
     public function execute($uQuery)
     {
-        $this->open();
+        $this->connectionOpen();
 
         Profiler::start(
             'databaseQuery',
@@ -140,7 +184,7 @@ class DatabaseConnection extends Datasource
         );
 
         try {
-            $tReturn = $this->provider->execute($uQuery);
+            $tReturn = $this->internalExecute($uQuery);
         } catch (\Exception $ex) {
             if ($this->errorHandling == Database::ERROR_EXCEPTION) {
                 throw $ex;
@@ -159,7 +203,7 @@ class DatabaseConnection extends Datasource
      */
     public function query($uQuery, array $uParameters = array(), $uCaching = Database::CACHE_MEMORY)
     {
-        $this->open();
+        $this->connectionOpen();
 
         Profiler::start(
             'databaseQuery',
@@ -228,28 +272,12 @@ class DatabaseConnection extends Datasource
     /**
      * @ignore
      */
-    public function lastInsertId($uName = null)
-    {
-        return $this->provider->lastInsertId($uName);
-    }
-
-    /**
-     * @ignore
-     */
-    public function serverInfo()
-    {
-        return parent::serverInfo();
-    }
-
-    /**
-     * @ignore
-     */
     public function dataset()
     {
-        $this->open();
+        $this->connectionOpen();
 
         $uProps = func_get_args();
-        $uDataset = Datasets::get(array_shift($uProps));
+        $uDataset = Database::getDataset(array_shift($uProps));
 
         if ($uDataset->transaction) {
             $this->beginTransaction();

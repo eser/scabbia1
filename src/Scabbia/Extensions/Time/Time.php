@@ -63,14 +63,6 @@ class Time
             $uTime = time();
         }
 
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            if ($uShowHours) {
-                return date('d.m.Y H:i', $uTimestamp);
-            }
-
-            return date('d.m.Y', $uTimestamp);
-        }
-
         $tDifference = $uTime - $uTimestamp;
 
         if ($tDifference >= 0 && $uCalculateAgo) {
@@ -176,13 +168,8 @@ class Time
     public static function toDb($uTime, $uFormat = 'd-m-Y H:i:s')
     {
         if (!is_numeric($uTime)) {
-            if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                // Eser: let database to handle that.
-                return $uTime;
-            } else {
-                $tTime = date_parse_from_format($uFormat, $uTime);
-                $uTime = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
-            }
+            $tTime = date_parse_from_format($uFormat, $uTime);
+            $uTime = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
         }
 
         return date('Y-m-d H:i:s', $uTime);
@@ -193,11 +180,6 @@ class Time
      */
     public static function fromDb($uTime)
     {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            $tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
-            return mktime($tTime[3], $tTime[4], $tTime[5], $tTime[1], $tTime[2], $tTime[0]);
-        }
-
         $tTime = date_parse_from_format('Y-m-d H:i:s', $uTime);
 
         return mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
@@ -208,13 +190,8 @@ class Time
      */
     public static function convert($uTime, $uSourceFormat, $uDestinationFormat = null)
     {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            $tTime = sscanf($uTime, '%d-%d-%d %d:%d:%d'); // year, month, day, hour, minute, second
-            $tTimestamp = mktime($tTime[3], $tTime[4], $tTime[5], $tTime[1], $tTime[2], $tTime[0]);
-        } else {
-            $tTime = date_parse_from_format($uSourceFormat, $uTime);
-            $tTimestamp = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
-        }
+        $tTime = date_parse_from_format($uSourceFormat, $uTime);
+        $tTimestamp = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
 
         if (is_null($uDestinationFormat)) {
             return $tTimestamp;

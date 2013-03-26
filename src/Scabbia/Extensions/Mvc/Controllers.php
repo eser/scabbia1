@@ -48,11 +48,7 @@ class Controllers
 
             // if autoload is enabled
             // todo: maybe split _ for children
-            foreach (get_declared_classes() as $tClass) {
-                if (!is_subclass_of($tClass, 'Scabbia\\Extensions\\Mvc\\Controller')) {
-                    continue;
-                }
-
+            foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
                 $tPos = strrpos($tClass, '\\');
                 if ($tPos !== false) {
                     self::$root->addChildController(substr($tClass, $tPos + 1), $tClass);

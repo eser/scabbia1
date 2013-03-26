@@ -3,20 +3,24 @@
         "name":             "Database",
         "version":          "1.1.0",
         "license":          "GPLv3",
-        "phpversion":       "5.3.0",
+        "phpversion":       "5.3.7",
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
-            "Cache",
             "Datasources",
             "String"
         ]
     },
     "eventList": [
         {
-            "name":         "datasourcesRegister",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Database\\Database::datasourcesRegister"
+            "name":         "registerDatasources",
+            "type":         "loadClass",
+            "value":        "Scabbia\\Extensions\\Database\\PdoSource"
+        },
+        {
+            "name":         "registerDatasources",
+            "type":         "loadClass",
+            "value":        "Scabbia\\Extensions\\Database\\MysqlSource"
         }
     ]
 }

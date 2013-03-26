@@ -7,7 +7,8 @@
 
 namespace Scabbia\Extensions\Database;
 
-use Scabbia\Extensions\Datasources\Datasources;
+use Scabbia\Extensions\Database\DatabaseDataset;
+use Scabbia\Config;
 
 /**
  * @ignore
@@ -84,10 +85,21 @@ class Database
     /**
      * @ignore
      */
-    public static function datasourcesRegister()
-    {
-        Datasources::registerType('pdo', 'Scabbia\\Extensions\\Database\\DatabaseConnection', 'Scabbia\\Extensions\\Database\\DatabaseProviderPdo');
-        Datasources::registerType('mysql', 'Scabbia\\Extensions\\Database\\DatabaseConnection', 'Scabbia\\Extensions\\Database\\DatabaseProviderMysql');
-    }
+    public static $datasets = null;
 
+
+    /**
+     * @ignore
+     */
+    public static function getDataset($uDataset = null)
+    {
+        if (is_null(self::$datasets)) {
+            foreach (Config::get('datasetList', array()) as $tDatasetConfig) {
+                $tDataset = new DatabaseDataset($tDatasetConfig);
+                self::$datasets[$tDataset->id] = $tDataset;
+            }
+        }
+
+        return self::$datasets[$uDataset];
+    }
 }

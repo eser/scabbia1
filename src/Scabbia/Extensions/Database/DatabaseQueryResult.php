@@ -188,8 +188,8 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     public function execute()
     {
         try {
-            $this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
-            $this->_count = $this->_database->provider->itCount($this->_object);
+            $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
+            $this->_count = $this->_database->itCount($this->_object);
         } catch (\Exception $ex) {
             if ($this->_database->errorHandling == Database::ERROR_EXCEPTION) {
                 throw $ex;
@@ -296,14 +296,14 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
 
         if (is_null($this->_object)) {
             try {
-                $this->_object = $this->_database->provider->queryDirect($this->_query, $this->_parameters);
-                $this->_count = $this->_database->provider->itCount($this->_object);
+                $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
+                $this->_count = $this->_database->itCount($this->_object);
 
                 if ($this->_count <= $this->_cursor) {
                     return false;
                 }
 
-                $this->_rows[$this->_cursor] = $this->_database->provider->itSeek($this->_object, $this->_cursor);
+                $this->_rows[$this->_cursor] = $this->_database->itSeek($this->_object, $this->_cursor);
             } catch (\Exception $ex) {
                 if ($this->_database->errorHandling == Database::ERROR_EXCEPTION) {
                     throw $ex;
@@ -319,7 +319,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
             return false;
         }
 
-        $this->_rows[$this->_cursor] = $this->_database->provider->itNext($this->_object);
+        $this->_rows[$this->_cursor] = $this->_database->itNext($this->_object);
 
         return true;
     }
@@ -330,7 +330,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     public function close()
     {
         if (!is_null($this->_object)) {
-            $this->_database->provider->itClose($this->_object);
+            $this->_database->itClose($this->_object);
             $this->_object = null;
         }
 

@@ -462,7 +462,7 @@ class DatabaseQuery
      */
     public function insert()
     {
-        $tQuery = $this->database->provider->sqlInsert($this->table, $this->fields, $this->returning);
+        $tQuery = $this->database->sqlInsert($this->table, $this->fields, $this->returning);
         if ($this->debug) {
             echo 'Insert Query: ', $tQuery;
         }
@@ -488,7 +488,7 @@ class DatabaseQuery
      */
     public function update()
     {
-        $tQuery = $this->database->provider->sqlUpdate($this->table, $this->fields, $this->rawFields, $this->where, array('limit' => $this->limit));
+        $tQuery = $this->database->sqlUpdate($this->table, $this->fields, $this->rawFields, $this->where, array('limit' => $this->limit));
         if ($this->debug) {
             echo 'Update Query: ', $tQuery;
         }
@@ -508,7 +508,7 @@ class DatabaseQuery
      */
     public function delete()
     {
-        $tQuery = $this->database->provider->sqlDelete($this->table, $this->where, array('limit' => $this->limit));
+        $tQuery = $this->database->sqlDelete($this->table, $this->where, array('limit' => $this->limit));
         if ($this->debug) {
             echo 'Delete Query: ', $tQuery;
         }
@@ -528,7 +528,7 @@ class DatabaseQuery
      */
     public function get()
     {
-        $tQuery = $this->database->provider->sqlSelect($this->table, $this->fields, $this->rawFields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
+        $tQuery = $this->database->sqlSelect($this->table, $this->fields, $this->rawFields, $this->where, $this->orderby, $this->groupby, array('limit' => $this->limit, 'offset' => $this->offset));
         if ($this->debug) {
             echo 'Get Query: ', $tQuery;
         }
@@ -548,7 +548,7 @@ class DatabaseQuery
      */
     public function calculate($uOperation = 'COUNT')
     {
-        $tQuery = $this->database->provider->sqlSelect($this->table, array(), $uOperation . '(' . $this->rawFields . ')', $this->where, null, $this->groupby);
+        $tQuery = $this->database->sqlSelect($this->table, array(), $uOperation . '(' . $this->rawFields . ')', $this->where, null, $this->groupby);
         if ($this->debug) {
             echo 'Calculate Query: ', $tQuery;
         }

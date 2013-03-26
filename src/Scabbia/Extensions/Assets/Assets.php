@@ -5,7 +5,7 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Resources;
+namespace Scabbia\Extensions\Assets;
 
 use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Http\Request;
@@ -19,15 +19,15 @@ use Scabbia\Io;
 use Scabbia\Utils;
 
 /**
- * Resources Extension
+ * Assets Extension
  *
  * @package Scabbia
- * @subpackage Resources
+ * @subpackage Assets
  * @version 1.1.0
  *
  * @todo integrate with cache extension
  */
-class Resources
+class Assets
 {
     /**
      * @ignore
@@ -45,9 +45,9 @@ class Resources
     public static function routing()
     {
         if (is_null(self::$packs)) {
-            self::$packs = Config::get('resources/packList', array());
+            self::$packs = Config::get('assets/packList', array());
 
-            foreach (Config::get('resources/fileList', array()) as $tFile) {
+            foreach (Config::get('assets/fileList', array()) as $tFile) {
                 self::$packs[] = array(
                     'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
                     'name' => $tFile['name'],
@@ -56,7 +56,7 @@ class Resources
                 );
             }
 
-            self::$directories = Config::get('resources/directoryList', array());
+            self::$directories = Config::get('assets/directoryList', array());
         }
 
         if (strlen(Request::$queryString) > 0) {
@@ -114,7 +114,7 @@ class Resources
         $tMimetype = Mime::getType($tType);
         header('Content-Type: ' . $tMimetype, true);
 
-        $tOutputFile = Cache::filePath('resources/', $tFilename, $tCompileAge);
+        $tOutputFile = Cache::filePath('assets/', $tFilename, $tCompileAge);
         if (Framework::$development >= 1 || !$tOutputFile[0]) {
             $tContent = '';
             foreach ($tSelectedPack['partList'] as $tPart) {
@@ -200,7 +200,7 @@ class Resources
         }
 
         if (!file_exists($tPath)) {
-            throw new \Exception('resource not found.');
+            throw new \Exception('asset not found.');
         }
 
         if (isset($uSelectedDirectory['autoViewer'])) {

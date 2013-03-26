@@ -315,6 +315,35 @@ class Io
     }
 
     /**
+     * Garbage collects the given path
+     *
+     * @param string    $uPath  path
+     * @param int       $uAge   age
+     */
+    public static function garbageCollect($uPath, $uAge = -1)
+    {
+        $tDirectory = new \DirectoryIterator($uPath);
+
+        // age
+        if ($uAge == -1) {
+            $uAge = $this->defaultAge;
+        }
+
+        clearstatcache();
+        foreach ($tDirectory as $tFile) {
+            if (!$tFile->isFile()) {
+                continue;
+            }
+
+            if (time() - $tFile->getMTime() < $uAge) {
+                continue;
+            }
+
+            self::destroy($tFile->getPathname());
+        }
+    }
+
+    /**
      * Downloads given file into framework's download directory.
      *
      * @param string    $uFile  filename in destination

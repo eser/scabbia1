@@ -3,14 +3,14 @@
         "name":             "Blackmore",
         "version":          "1.1.0",
         "license":          "GPLv3",
-        "phpversion":       "5.3.0",
+        "phpversion":       "5.3.7",
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
             "Auth",
             "Http",
             "Models",
-            "Resources",
+            "Assets",
             "String",
             "Validation"
         ]
@@ -22,14 +22,14 @@
             "value":        "Scabbia\\Extensions\\Blackmore\\Blackmore"
         },
         {
-            "name":         "blackmoreRegisterModules",
+            "name":         "registerBlackmoreModules",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::blackmoreRegisterModules"
+            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::registerBlackmoreModules"
         },
         {
-            "name":         "blackmoreRegisterModules",
+            "name":         "registerBlackmoreModules",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreModels::blackmoreRegisterModules"
+            "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreModels::registerBlackmoreModules"
         }
     ]
 }

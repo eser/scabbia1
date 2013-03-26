@@ -7,15 +7,27 @@
 
 namespace Scabbia\Extensions\Database;
 
+use Scabbia\Extensions\Database\DatabaseSource;
+
 /**
- * Database Extension: DatabaseProviderPdo Class
+ * Database Extension: PdoSource Class
  *
  * @package Scabbia
  * @subpackage Database
  * @version 1.1.0
  */
-class DatabaseProviderPdo
+class PdoSource extends DatabaseSource
 {
+    /**
+     * @ignore
+     */
+    public static $type = 'pdo';
+
+
+    /**
+     * @ignore
+     */
+    public $connection = null;
     /**
      * @ignore
      */
@@ -51,6 +63,8 @@ class DatabaseProviderPdo
      */
     public function __construct(array $uConfig)
     {
+        parent::__construct($uConfig);
+
         $this->pdoString = $uConfig['pdoString'];
         $this->username = $uConfig['username'];
         $this->password = $uConfig['password'];
@@ -69,8 +83,14 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function open()
+    public function connectionOpen()
     {
+        if (!is_null($this->connection)) {
+            return;
+        }
+
+        parent::connectionOpen();
+
         $tParms = array();
         if ($this->persistent) {
             $tParms[\PDO::ATTR_PERSISTENT] = true;
@@ -98,8 +118,17 @@ class DatabaseProviderPdo
     /**
      * @ignore
      */
-    public function close()
+    public function connectionClose()
     {
+        parent::connectionClose();
+    }
+
+    /**
+     * @ignore
+     */
+    public function serverInfo()
+    {
+        return $this->connection->getAttribute(\PDO::ATTR_SERVER_INFO);
     }
 
     /**
@@ -107,6 +136,8 @@ class DatabaseProviderPdo
      */
     public function beginTransaction()
     {
+        parent::beginTransaction();
+
         $this->connection->beginTransaction();
     }
 
@@ -116,6 +147,8 @@ class DatabaseProviderPdo
     public function commit()
     {
         $this->connection->commit();
+
+        parent::commit();
     }
 
     /**
@@ -124,78 +157,8 @@ class DatabaseProviderPdo
     public function rollBack()
     {
         $this->connection->rollBack();
-    }
 
-    /**
-     * @ignore
-     */
-    public function execute($uQuery)
-    {
-        return $this->connection->exec($uQuery);
-    }
-
-    /**
-     * @ignore
-     */
-    public function queryDirect($uQuery, array $uParameters = array())
-    {
-        $tQuery = $this->connection->prepare($uQuery);
-        $tQuery->execute($uParameters);
-
-        return $tQuery;
-    }
-
-    /**
-     * @ignore
-     */
-    public function itSeek($uObject, $uRow)
-    {
-        // return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_ABS, $uRow);
-        for ($i = 0; $i < $uRow; $i++) {
-            $uObject->fetch(\PDO::FETCH_NUM, \PDO::FETCH_ORI_NEXT);
-        }
-
-        return $this->itNext($uObject);
-    }
-
-    /**
-     * @ignore
-     */
-    public function itNext($uObject)
-    {
-        return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_NEXT);
-    }
-
-    /**
-     * @ignore
-     */
-    public function itCount($uObject)
-    {
-        return $uObject->rowCount();
-    }
-
-    /**
-     * @ignore
-     */
-    public function itClose($uObject)
-    {
-        return $uObject->closeCursor();
-    }
-
-    /**
-     * @ignore
-     */
-    public function lastInsertId($uName = null)
-    {
-        return $this->connection->lastInsertId($uName);
-    }
-
-    /**
-     * @ignore
-     */
-    public function serverInfo()
-    {
-        return $this->connection->getAttribute(\PDO::ATTR_SERVER_INFO);
+        parent::rollBack();
     }
 
     /**
@@ -318,5 +281,69 @@ class DatabaseProviderPdo
         }
 
         return $tSql;
+    }
+
+    /**
+     * @ignore
+     */
+    public function itSeek($uObject, $uRow)
+    {
+        // return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_ABS, $uRow);
+        for ($i = 0; $i < $uRow; $i++) {
+            $uObject->fetch(\PDO::FETCH_NUM, \PDO::FETCH_ORI_NEXT);
+        }
+
+        return $this->itNext($uObject);
+    }
+
+    /**
+     * @ignore
+     */
+    public function itNext($uObject)
+    {
+        return $uObject->fetch($this->fetchMode, \PDO::FETCH_ORI_NEXT);
+    }
+
+    /**
+     * @ignore
+     */
+    public function itCount($uObject)
+    {
+        return $uObject->rowCount();
+    }
+
+    /**
+     * @ignore
+     */
+    public function itClose($uObject)
+    {
+        return $uObject->closeCursor();
+    }
+
+    /**
+     * @ignore
+     */
+    public function lastInsertId($uName = null)
+    {
+        return $this->connection->lastInsertId($uName);
+    }
+
+    /**
+     * @ignore
+     */
+    public function internalExecute($uQuery)
+    {
+        return $this->connection->exec($uQuery);
+    }
+
+    /**
+     * @ignore
+     */
+    public function queryDirect($uQuery, array $uParameters = array())
+    {
+        $tQuery = $this->connection->prepare($uQuery);
+        $tQuery->execute($uParameters);
+
+        return $tQuery;
     }
 }

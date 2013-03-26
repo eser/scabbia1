@@ -5,7 +5,7 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Captcha;
+namespace Scabbia\Extensions\Media;
 
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\String\String;
@@ -13,10 +13,10 @@ use Scabbia\Config;
 use Scabbia\Io;
 
 /**
- * Captcha Extension
+ * Media Extension: Captcha class
  *
  * @package Scabbia
- * @subpackage Captcha
+ * @subpackage Media
  * @version 1.1.0
  */
 class Captcha

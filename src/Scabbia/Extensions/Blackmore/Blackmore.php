@@ -79,7 +79,7 @@ class Blackmore extends Controller
         $tParms = array(
             'modules' => &self::$modules
         );
-        Events::invoke('blackmoreRegisterModules', $tParms);
+        Events::invoke('registerBlackmoreModules', $tParms);
 
         self::$module = (strlen($uAction) > 0) ? strtolower($uAction) : self::DEFAULT_MODULE_INDEX;
         if (!isset(self::$modules[self::$module])) {

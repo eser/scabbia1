@@ -140,7 +140,6 @@ class Contracts
 
     /**
      * @ignore
-     * PHP 5.3 only.
      */
     public static function isDate($uValue, $uFormat)
     {

@@ -30,7 +30,7 @@ Scabbia\Framework::load($loader);
 
 Requirements
 ------------
-* PHP 5.3.0+ (http://www.php.net/)
+* PHP 5.3.7+ (http://www.php.net/)
 * Composer Dependency Manager (http://getcomposer.org/)
 
 

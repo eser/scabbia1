@@ -9,6 +9,7 @@ namespace Scabbia\Extensions\Datasources;
 
 use Scabbia\Config;
 use Scabbia\Events;
+use Scabbia\Extensions;
 
 /**
  * Datasources Extension
@@ -39,15 +40,15 @@ class Datasources
     public static function get($uDatasource = null)
     {
         if (is_null(self::$datasources)) {
-            self::$datasources = array();
+            $tParms = array();
+            Events::invoke('registerDatasources', $tParms);
 
-            $tParms = array(
-                'datasources' => &self::$datasources
-            );
-            Events::invoke('datasourcesRegister', $tParms);
+            foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Datasources\\IDatasource', true) as $tClass) {
+                self::$types[$tClass::$type] = $tClass;
+            }
 
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
-                $tDatasource = new self::$types[$tDatasourceConfig['type']]['datasource'] ($tDatasourceConfig);
+                $tDatasource = new self::$types[$tDatasourceConfig['type']] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
 
                 if (is_null(self::$default) || $tDatasource->default) {
@@ -61,20 +62,5 @@ class Datasources
         }
 
         return self::$datasources[$uDatasource];
-    }
-
-    /**
-     * @ignore
-     */
-    public static function registerType($uName, $uDatasourceClass, $uDataProviderClass)
-    {
-        if (isset(self::$types[$uName])) {
-            return;
-        }
-
-        self::$types[$uName] = array(
-            'datasource' => $uDatasourceClass,
-            'provider' => $uDataProviderClass
-        );
     }
 }
