@@ -63,12 +63,12 @@ class Smtp
         $tResult = array();
 
         self::$host = Config::get('smtp/host', 'localhost');
-        self::$port = Config::get('smtp/port', '25');
+        self::$port = Config::get('smtp/port', 25);
         self::$username = Config::get('smtp/username');
         self::$password = Config::get('smtp/password');
         // self::$from =;
 
-        $tSmtp = fsockopen(self::$host, intval(self::$port));
+        $tSmtp = fsockopen(self::$host, self::$port);
         if ($tSmtp !== false) {
             self::sockwait($tSmtp, '220');
 

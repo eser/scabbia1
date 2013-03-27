@@ -31,7 +31,7 @@ class FileSource implements IDatasource, ICacheProvider
     /**
      * @ignore
      */
-    public $defaultAge;
+    public $cacheTtl;
     /**
      * @ignore
      */
@@ -47,9 +47,9 @@ class FileSource implements IDatasource, ICacheProvider
      */
     public function __construct(array $uConfig)
     {
-        $this->defaultAge = isset($uConfig['defaultAge']) ? intval($uConfig['defaultAge']) : 120;
+        $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
         $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
-        $this->path = isset($uConfig['path']) ? parse_url($uConfig['path']) : null;
+        $this->path = $uConfig['path'];
     }
 
     /**
@@ -58,7 +58,7 @@ class FileSource implements IDatasource, ICacheProvider
     public function cacheGet($uKey)
     {
         // path
-        $tPath = Io::writablePath($this->path . $uKey, true);
+        $tPath = Io::translatePath($this->path . $uKey, true);
 
         return Io::readSerialize($tPath, $this->keyphase);
     }
@@ -69,7 +69,7 @@ class FileSource implements IDatasource, ICacheProvider
     public function cacheSet($uKey, $uObject)
     {
         // path
-        $tPath = Io::writablePath($this->path . $uKey, true);
+        $tPath = Io::translatePath($this->path . $uKey, true);
 
         Io::writeSerialize($tPath, $uObject, $this->keyphase);
     }
@@ -80,7 +80,7 @@ class FileSource implements IDatasource, ICacheProvider
     public function cacheRemove($uKey)
     {
         // path
-        $tPath = Io::writablePath($this->path . $uKey, true);
+        $tPath = Io::translatePath($this->path . $uKey, true);
 
         Io::destroy($tPath);
     }
@@ -91,8 +91,8 @@ class FileSource implements IDatasource, ICacheProvider
     public function cacheGarbageCollect()
     {
         // path
-        $tPath = Io::writablePath($this->path, true);
+        $tPath = Io::translatePath($this->path, true);
 
-        Io::garbageCollect($tPath, $this->defaultAge);
+        Io::garbageCollect($tPath, $this->cacheTtl);
     }
 }

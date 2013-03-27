@@ -31,7 +31,7 @@ class DatabaseDataset
     /**
      * @ignore
      */
-    public $cacheLife;
+    public $cacheTtl;
     /**
      * @ignore
      */
@@ -46,7 +46,7 @@ class DatabaseDataset
         $this->id = $uConfig['id'];
         $this->queryString = $uConfig['command'];
         $this->parameters = strlen($uConfig['parameters']) > 0 ? explode(',', $uConfig['parameters']) : array();
-        $this->cacheLife = isset($uConfig['cacheLife']) ? (int)$uConfig['cacheLife'] : 0;
+        $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 0;
         $this->transaction = isset($uConfig['transaction']);
     }
 }

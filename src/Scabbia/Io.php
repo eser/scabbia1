@@ -184,34 +184,39 @@ class Io
     /**
      * Translates given framework-relative path to physical path.
      *
-     * @param string    $uPath      the framework-relative path
-     * @param string    $uBasePath
+     * @param string    $uPath          the framework-relative path
+     * @param bool      $uCreateFolder  creates path if does not exist
      *
+     * @throws \Exception
      * @return string translated physical path
      */
-    public static function translatePath($uPath, $uBasePath = null)
+    public static function translatePath($uPath, $uCreateFolder = false)
     {
         if (substr($uPath, 0, 6) == '{base}') {
-            return Framework::$basepath . substr($uPath, 6);
+            $uPath = Framework::$basepath . substr($uPath, 6);
+        } elseif (substr($uPath, 0, 6) == '{core}') {
+            $uPath = Framework::$corepath . substr($uPath, 6);
+        } elseif (substr($uPath, 0, 8) == '{vendor}') {
+            $uPath = Framework::$vendorpath . substr($uPath, 8);
+        } elseif (substr($uPath, 0, 5) == '{app}') {
+            $uPath = Framework::$apppath . substr($uPath, 5);
+        } elseif (substr($uPath, 0, 10) == '{writable}') {
+            $uPath = Framework::$apppath . 'writable/' . substr($uPath, 10);
         }
 
-        if (substr($uPath, 0, 6) == '{core}') {
-            return Framework::$corepath . substr($uPath, 6);
+        if ($uCreateFolder) {
+            $tPathDirectory = pathinfo($uPath, PATHINFO_DIRNAME);
+
+            if (!is_dir($tPathDirectory)) {
+                if (Framework::$readonly) {
+                    throw new \Exception($tPathDirectory . ' does not exists.');
+                }
+
+                mkdir($tPathDirectory, 0777, true);
+            }
         }
 
-        if (substr($uPath, 0, 8) == '{vendor}') {
-            return Framework::$vendorpath . substr($uPath, 8);
-        }
-
-        if (substr($uPath, 0, 5) == '{app}') {
-            return Framework::$apppath . substr($uPath, 5);
-        }
-
-        if (is_null($uBasePath)) {
-            return $uPath;
-        }
-
-        return $uBasePath . $uPath;
+        return $uPath;
     }
 
     /**
@@ -287,34 +292,6 @@ class Io
     }
 
     /**
-     * Locates the writable path and concatenates it with given relative path.
-     *
-     * @param string $uFile         the relative path
-     * @param bool   $uCreateFolder creates path if does not exist
-     *
-     * @throws \Exception
-     * @return string the physical path
-     */
-    public static function writablePath($uFile = '', $uCreateFolder = false)
-    {
-        $tPathConcat = Framework::$apppath . 'writable/' . $uFile;
-
-        if ($uCreateFolder) {
-            $tPathDirectory = pathinfo($tPathConcat, PATHINFO_DIRNAME);
-
-            if (!is_dir($tPathDirectory)) {
-                if (Framework::$readonly) {
-                    throw new \Exception($tPathDirectory . ' does not exists.');
-                }
-
-                mkdir($tPathDirectory, 0777, true);
-            }
-        }
-
-        return $tPathConcat;
-    }
-
-    /**
      * Garbage collects the given path
      *
      * @param string    $uPath  path
@@ -324,18 +301,13 @@ class Io
     {
         $tDirectory = new \DirectoryIterator($uPath);
 
-        // age
-        if ($uAge == -1) {
-            $uAge = $this->defaultAge;
-        }
-
         clearstatcache();
         foreach ($tDirectory as $tFile) {
             if (!$tFile->isFile()) {
                 continue;
             }
 
-            if (time() - $tFile->getMTime() < $uAge) {
+            if ($uAge !== -1 && (time() - $tFile->getMTime()) < $uAge) {
                 continue;
             }
 
@@ -358,7 +330,7 @@ class Io
             return false;
         }
 
-        $tHandle = fopen(self::writablePath('downloaded/' . $uFile), 'wb', false);
+        $tHandle = fopen(self::translatePath('{writable}downloaded/' . $uFile, true), 'wb', false);
         if ($tHandle === false) {
             fclose($tUrlHandle);
 

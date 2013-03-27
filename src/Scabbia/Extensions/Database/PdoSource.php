@@ -73,7 +73,7 @@ class PdoSource extends DatabaseSource
             $this->overrideCase = $uConfig['overrideCase'];
         }
 
-        $this->persistent = isset($uConfig['persistent']);
+        $this->persistent = (isset($uConfig['persistent']) && $uConfig['persistent'] === true);
         $this->fetchMode = \PDO::FETCH_ASSOC;
 
         $tConnectionString = explode(':', $this->pdoString, 2);

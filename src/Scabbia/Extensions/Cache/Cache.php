@@ -24,7 +24,7 @@ class Cache
     /**
      * @ignore
      */
-    public static $defaultAge;
+    public static $cacheTtl;
     /**
      * @ignore
      */
@@ -44,7 +44,7 @@ class Cache
      */
     public static function extensionLoad()
     {
-        self::$defaultAge = intval(Config::get('cache/defaultAge', '120'));
+        self::$cacheTtl = Config::get('cache/cacheTtl', 120);
         self::$keyphase = Config::get('cache/keyphase', '');
 
         $tStorage = Config::get('cache/storage', '');
@@ -89,7 +89,7 @@ class Cache
 
         // age
         if ($uAge == -1) {
-            $uAge = self::$defaultAge;
+            $uAge = self::$cacheTtl;
         }
 
         self::$storageObject->set($uKey, $uValue, 0, $uAge);
@@ -115,11 +115,11 @@ class Cache
         }
 
         // path
-        $tPath = Io::writablePath('cache/' . $uFolder . IoEx::sanitize($uFilename), true);
+        $tPath = Io::translatePath('{writable}cache/' . $uFolder . IoEx::sanitize($uFilename), true);
 
         // age
         if ($uAge == -1) {
-            $uAge = self::$defaultAge;
+            $uAge = self::$cacheTtl;
         }
 
         // check
@@ -172,7 +172,7 @@ class Cache
     public static function fileSet($uFolder, $uFilename, $uObject)
     {
         // path
-        $tPath = Io::writablePath('cache/' . $uFolder . IoEx::sanitize($uFilename), true);
+        $tPath = Io::translatePath('{writable}cache/' . $uFolder . IoEx::sanitize($uFilename), true);
 
         // content
         Io::writeSerialize($tPath, $uObject, self::$keyphase);
@@ -185,7 +185,7 @@ class Cache
      */
     public static function fileDestroy($uFolder, $uFilename)
     {
-        $tPath = Io::writablePath('cache/' . $uFolder, true);
+        $tPath = Io::translatePath('{writable}cache/' . $uFolder, true);
         Io::destroy($tPath . IoEx::sanitize($uFilename));
     }
 
@@ -197,12 +197,12 @@ class Cache
     public static function fileGarbageCollect($uFolder, $uAge = -1)
     {
         // path
-        $tPath = Io::writablePath('cache/' . $uFolder, true);
+        $tPath = Io::translatePath('{writable}cache/' . $uFolder, true);
         $tDirectory = new \DirectoryIterator($tPath);
 
         // age
         if ($uAge == -1) {
-            $uAge = self::$defaultAge;
+            $uAge = self::$cacheTtl;
         }
 
         clearstatcache();

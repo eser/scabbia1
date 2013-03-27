@@ -187,15 +187,15 @@
     "session": {
         "cookie": {
             "name":     "sessid",
-            "life":     "0",
-            "ipCheck":  "0",
-            "uaCheck":  "1"
+            "life":     0,
+            "ipCheck":  false,
+            "uaCheck":  true
         }
     },
 
     "access": {
         "maintenance": {
-            "mode":         "0",
+            "mode":         false,
             "page":         "{app}views/static_maintenance.php",
             "mvcpage":      "shared/maintenance.cshtml",
             "ipExcludeList": [

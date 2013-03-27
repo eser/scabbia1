@@ -26,7 +26,7 @@ class ViewEngineRaintpl
      */
     public static $engine = null;
 
-    
+
     /**
      * @ignore
      */
@@ -47,7 +47,7 @@ class ViewEngineRaintpl
             raintpl::configure('base_url', null);
             raintpl::configure('tpl_dir', $uObject['templatePath']);
             raintpl::configure('tpl_ext', '.rain');
-            raintpl::configure('cache_dir', Io::writablePath('cache/raintpl/'));
+            raintpl::configure('cache_dir', Io::translatePath('{writable}cache/raintpl/'));
 
             if (Framework::$development >= 1) {
                 raintpl::configure('check_template_update', true);

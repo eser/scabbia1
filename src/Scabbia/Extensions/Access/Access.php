@@ -44,7 +44,7 @@ class Access
      */
     public static function run()
     {
-        self::$maintenance = (intval(Config::get('access/maintenance/mode', '0')) >= 1);
+        self::$maintenance = Config::get('access/maintenance/mode', false);
         self::$maintenanceExcludeIps = Config::get('access/maintenance/ipExcludeList', array());
 
         foreach (Config::get('access/ipFilter/ipFilterList', array()) as $tIpFilterList) {

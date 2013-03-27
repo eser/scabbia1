@@ -62,7 +62,7 @@ class MysqlSource extends DatabaseSource
         $this->username = $uConfig['username'];
         $this->password = $uConfig['password'];
 
-        $this->persistent = isset($uConfig['persistent']);
+        $this->persistent = (isset($uConfig['persistent']) && $uConfig['persistent'] === true);
     }
 
     /**

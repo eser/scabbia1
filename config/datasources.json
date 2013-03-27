@@ -1,0 +1,11 @@
+{
+    "datasourceList": [
+        {
+            "id":           "cacheFiles",
+            "type":         "file",
+            "cacheTtl":     120,
+            "keyphase":     "",
+            "path":         "{writable}cache/temp/"
+        }
+    ]
+}

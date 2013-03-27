@@ -221,7 +221,7 @@ class Framework
         if (ini_get('output_handler') == '') {
             $tParms['content'] = mb_output_handler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 
-            if (!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && Config::get('options/gzip', '1') != '0') {
+            if (!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && Config::get('options/gzip', true) === true) {
                 $tParms['content'] = ob_gzhandler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
             }
         }

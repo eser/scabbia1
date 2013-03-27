@@ -8,9 +8,8 @@
     ],
 
     "options": {
-        "gzip":         "1",
-        "autoload":     "0",
-        "siteroot:disabled":   "/sampleapp"
+        "gzip":                 true,
+        "siteroot:disabled":    "/sampleapp"
     },
 
     "i8n": {
@@ -44,7 +43,7 @@
 
     "smtp": {
         "host":         "ssl://mail.messagingengine.com",
-        "port":         "465",
+        "port":         465,
         "username":     "eser@sent.com",
         "password":     ""
     }

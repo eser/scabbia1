@@ -47,7 +47,7 @@ class ViewEngineSmarty
             self::$engine = new \Smarty();
 
             self::$engine->setTemplateDir($uObject['templatePath']);
-            self::$engine->setCompileDir(Io::writablePath('cache/smarty/'));
+            self::$engine->setCompileDir(Io::translatePath('{writable}cache/smarty/'));
 
             if (Framework::$development >= 1) {
                 self::$engine->force_compile = true;

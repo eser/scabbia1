@@ -39,7 +39,7 @@ class Media
      */
     public static function extensionLoad()
     {
-        self::$cachePath = Io::writablePath('cache/media/', true);
+        self::$cachePath = Io::translatePath('{writable}cache/media/', true);
         self::$cacheAge = intval(Config::get('media/cacheAge', '120'));
     }
 

@@ -52,7 +52,7 @@ class ViewEngineTwig
             self::$loader = new \Twig_Loader_Filesystem($uObject['templatePath']);
 
             $tOptions = array(
-                'cache' => Io::writablePath('cache/twig/')
+                'cache' => Io::translatePath('{writable}cache/twig/')
             );
 
             if (Framework::$development >= 1) {

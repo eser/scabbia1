@@ -24,7 +24,16 @@
         "dflydev/markdown": ">=1.0.2"
     },
     "suggest": {
-        "ext-intl": "ext/intl for i18n features"
+        "ext-curl": "ext/curl for http communication",
+        "ext-gd": "ext/gd for image manipulation",
+        "ext-gettext": "ext/gettext for translation",
+        "ext-intl": "ext/intl for i18n features",
+        "ext-mbstring": "ext/json for multibyte string manipulation",
+        "ext-memcache": "ext/memcache for caching features",
+        "ext-mongo": "ext/mongo for mongodb support",
+        "ext-soap": "ext/soap for soap protocol",
+        "ext-sockets": "ext/sockets for socket communication",
+        "ext-tokenizer": "ext/tokenizer for lexical analysis"
     },
     "autoload": {
         "psr-0": {

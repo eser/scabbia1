@@ -56,15 +56,15 @@ class Session
             self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
         }
 
-        self::$sessionLife = intval(Config::get('session/cookie/life', '0'));
+        self::$sessionLife = Config::get('session/cookie/life', 0);
 
         if (array_key_exists(self::$sessionName, $_COOKIE)) {
             self::$id = $_COOKIE[self::$sessionName];
         }
 
         if (!is_null(self::$id)) {
-            $tIpCheck = (bool)Config::get('session/cookie/ipCheck', '0');
-            $tUACheck = (bool)Config::get('session/cookie/uaCheck', '1');
+            $tIpCheck = Config::get('session/cookie/ipCheck', false);
+            $tUACheck = Config::get('session/cookie/uaCheck', true);
 
             $tData = Cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
             if ($tData !== false) {

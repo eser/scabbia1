@@ -28,10 +28,6 @@ class Datasources
      * @ignore
      */
     public static $types = array();
-    /**
-     * @ignore
-     */
-    public static $default = null;
 
 
     /**
@@ -50,15 +46,12 @@ class Datasources
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
                 $tDatasource = new self::$types[$tDatasourceConfig['type']] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
-
-                if (is_null(self::$default) || $tDatasource->default) {
-                    self::$default = self::$datasources[$tDatasourceConfig['id']];
-                }
             }
         }
 
+        // default name is dbconn
         if (is_null($uDatasource)) {
-            return self::$default;
+            $uDatasource = 'dbconn';
         }
 
         return self::$datasources[$uDatasource];

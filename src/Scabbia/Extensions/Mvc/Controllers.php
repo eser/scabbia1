@@ -46,7 +46,6 @@ class Controllers
 
             self::$root = new ControllerBase();
 
-            // if autoload is enabled
             // todo: maybe split _ for children
             foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
                 $tPos = strrpos($tClass, '\\');

@@ -29,7 +29,7 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
     /**
      * @ignore
      */
-    public $defaultAge;
+    public $cacheTtl;
     /**
      * @ignore
      */
@@ -37,7 +37,11 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
     /**
      * @ignore
      */
-    public $storage = null;
+    public $host;
+    /**
+     * @ignore
+     */
+    public $port;
     /**
      * @ignore
      */
@@ -49,9 +53,10 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
      */
     public function __construct(array $uConfig)
     {
-        $this->defaultAge = isset($uConfig['defaultAge']) ? intval($uConfig['defaultAge']) : 120;
+        $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
         $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
-        $this->storage = isset($uConfig['storage']) ? parse_url($uConfig['storage']) : null;
+        $this->host = $uConfig['host'];
+        $this->port = $uConfig['port'];
     }
 
     /**
@@ -63,12 +68,8 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
             return;
         }
 
-        if ($this->storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
-            $this->connection = new \Memcache();
-            $this->connection->connect($this->storage['host'], $this->storage['port']);
-
-            return;
-        }
+        $this->connection = new \Memcache();
+        $this->connection->connect($this->host, $this->port);
     }
 
     /**
@@ -91,7 +92,7 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
      */
     public function cacheGet($uKey)
     {
-        $this->openConnection();
+        $this->connectionOpen();
 
         return $this->connection->get($uKey);
     }
@@ -101,9 +102,9 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
      */
     public function cacheSet($uKey, $uObject)
     {
-        $this->openConnection();
+        $this->connectionOpen();
 
-        $this->connection->set($uKey, $uObject, 0, $this->defaultAge);
+        $this->connection->set($uKey, $uObject, 0, $this->cacheTtl);
     }
 
     /**
@@ -111,7 +112,7 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
      */
     public function cacheRemove($uKey)
     {
-        $this->openConnection();
+        $this->connectionOpen();
 
         $this->connection->delete($uKey);
     }
