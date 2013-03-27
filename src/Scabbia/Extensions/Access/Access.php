@@ -62,13 +62,8 @@ class Access
             header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503);
             header('Retry-After: 600', true);
 
-            $tMvcPage = Config::get('access/maintenance/mvcpage', null);
-            if (!is_null($tMvcPage)) {
-                Views::view($tMvcPage);
-            } else {
-                $tFile = Io::translatePath(Config::get('access/maintenance/page'));
-                include $tFile;
-            }
+            $tFile = Io::translatePath(Config::get('access/maintenance/page'));
+            Views::viewFile($tFile);
 
             // to interrupt event-chain execution
             return false;
@@ -77,13 +72,8 @@ class Access
         if (count(self::$ipFilters) > 0) {
             header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 
-            $tMvcPage = Config::get('access/ipFilter/mvcpage', null);
-            if (!is_null($tMvcPage)) {
-                Views::view($tMvcPage);
-            } else {
-                $tFile = Io::translatePath(Config::get('access/ipFilter/page'));
-                include $tFile;
-            }
+            $tFile = Io::translatePath(Config::get('access/ipFilter/page'));
+            Views::viewFile($tFile);
 
             // to interrupt event-chain execution
             return false;

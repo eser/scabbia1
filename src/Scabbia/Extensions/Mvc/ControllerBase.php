@@ -243,8 +243,8 @@ class ControllerBase implements LoggerAwareInterface
      */
     public function view($uView = null, $uModel = null)
     {
-        Views::view(
-            !is_null($uView) ? $uView : $this->view,
+        Views::viewFile(
+            '{app}views/' . (!is_null($uView) ? $uView : $this->view),
             !is_null($uModel) ? $uModel : $this->vars
         );
     }

@@ -102,45 +102,6 @@ class Views
     /**
      * @ignore
      */
-    public static function view($uView, $uModel = null)
-    {
-        if (is_null($uModel)) {
-            $uModel = & self::$vars;
-        }
-
-        $tViewFilePath = Framework::$apppath . 'views/' . $uView;
-        $tViewFileInfo = pathinfo($tViewFilePath);
-        if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
-            $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
-        }
-
-        $tExtra = array(
-            'root' => rtrim(Framework::$siteroot, '/')
-        );
-
-        $tExtra['lang'] = I8n::$language['key'];
-        $tExtra['controller'] = Mvc::current();
-
-        $tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-        $tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
-
-        $tViewArray = array(
-            'templatePath' => &$tTemplatePath,
-            'templateFile' => &$tViewFile,
-            'compiledFile' => hash('adler32', $tViewFilePath) . '-' . $tViewFileInfo['basename'],
-            'model' => &$uModel,
-            'extra' => &$tExtra
-        );
-
-        call_user_func(
-            self::$viewEngines[$tViewFileInfo['extension']] . '::renderview',
-            $tViewArray
-        );
-    }
-
-    /**
-     * @ignore
-     */
     public static function viewFile($uView, $uModel = null)
     {
         if (is_null($uModel)) {
@@ -154,7 +115,7 @@ class Views
         }
 
         $tExtra = array(
-            'root' => Framework::$siteroot
+            'root' => rtrim(Framework::$siteroot, '/')
         );
 
         $tExtra['lang'] = I8n::$language['key'];

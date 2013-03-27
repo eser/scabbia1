@@ -81,14 +81,6 @@ class View
     /**
      * @ignore
      */
-    public function render()
-    {
-        Views::view($this->path, $this->vars);
-    }
-
-    /**
-     * @ignore
-     */
     public function renderFile()
     {
         Views::viewFile($this->path, $this->vars);

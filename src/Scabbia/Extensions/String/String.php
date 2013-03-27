@@ -783,13 +783,13 @@ class String
     /**
      * @ignore
      */
-    public static function slug($uString)
+    public static function slug($uString, $uReplaceWith = '-')
     {
         $uString = self::removeInvisibles($uString);
         $uString = self::removeAccent($uString);
         $uString = strtolower(trim($uString));
-        $uString = preg_replace('/[^a-z0-9-]/', '_', $uString);
-        $uString = preg_replace('/-+/', '_', $uString);
+        $uString = preg_replace('/[^a-z0-9-]/', $uReplaceWith, $uString);
+        $uString = preg_replace('/-+/', $uReplaceWith, $uString);
 
         return $uString;
     }
