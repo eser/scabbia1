@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Assets;
 
-use Scabbia\Extensions\Cache\Cache;
+use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Mime\Mime;
@@ -114,8 +114,11 @@ class Assets
         $tMimetype = Mime::getType($tType);
         header('Content-Type: ' . $tMimetype, true);
 
-        $tOutputFile = Cache::filePath('assets/', $tFilename, $tCompileAge);
-        if (Framework::$development >= 1 || !$tOutputFile[0]) {
+        $tCache = Datasources::get('fileCache');
+        $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
+        if ($tCachedData !== false) {
+            echo $tCachedData;
+        } else {
             $tContent = '';
             foreach ($tSelectedPack['partList'] as $tPart) {
                 $tType = isset($tPart['type']) ? $tPart['type'] : 'file';
@@ -155,27 +158,18 @@ class Assets
             switch ($tMimetype) {
                 case 'application/x-javascript':
                     // $tContent = JSMin::minify($tContent);
-                    if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
-                    }
                     echo $tContent;
                     break;
                 case 'text/css':
                     // $tContent = CssMin::minify($tContent);
-                    if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
-                    }
                     echo $tContent;
                     break;
                 default:
-                    if (!is_null($tOutputFile[1])) {
-                        Io::write($tOutputFile[1], $tContent);
-                    }
                     echo $tContent;
                     break;
             }
-        } else {
-            readfile($tOutputFile[1]);
+
+            $tCache->cacheSet('assets/' . $tFilename, $tContent);
         }
 
         return true;

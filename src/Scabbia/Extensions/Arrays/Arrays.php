@@ -114,7 +114,7 @@ class Arrays
     }
 
     /**
-     * Accesses child arrays by path notation.
+     * Accesses child elements by path notation.
      *
      * @param array     $uArray     array
      * @param string    $uPath      path

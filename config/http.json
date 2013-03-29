@@ -185,6 +185,7 @@
     },
 
     "session": {
+        "datasource":   "fileCache",
         "cookie": {
             "name":     "sessid",
             "life":     0,

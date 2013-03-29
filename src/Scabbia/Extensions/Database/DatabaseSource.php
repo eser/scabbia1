@@ -234,20 +234,8 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
                     $tLoadedFromCache = false;
                 }
             } else {
-                if (($uCaching & Database::CACHE_STORAGE) > 0) { //  && Framework::$development <= 0
-                    $tKey = strtr($tFolder, '/', '_') . $uPropsSerialized;
-                    $tData = Cache::storageGet($tKey);
-
-                    if ($tData !== false) {
-                        $this->cache[$uPropsSerialized] = $tData->resume($this);
-                        $tLoadedFromCache = true;
-                    } else {
-                        $tLoadedFromCache = false;
-                    }
-                } else {
-                    $tData = false;
-                    $tLoadedFromCache = false;
-                }
+                $tData = false;
+                $tLoadedFromCache = false;
             }
         }
 

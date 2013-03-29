@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Views;
 
-use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -48,21 +47,13 @@ class ViewEngineMarkdown
     {
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
 
-        $tOutputFile = Cache::filePath('md/', $uObject['compiledFile'], self::$compiledAge);
-        if (Framework::$development >= 1 || !$tOutputFile[0]) {
-            if (is_null(self::$engine)) {
-                self::$engine = new MarkdownExtraParser();
-            }
-
-            $tInput = Io::read($tInputFile);
-            $tOutput = self::$engine->transformMarkdown($tInput);
-
-            if (!is_null($tOutputFile[1])) {
-                Io::write($tOutputFile[1], $tOutput);
-            }
-            echo $tOutput;
-        } else {
-            require $tOutputFile[1];
+        if (is_null(self::$engine)) {
+            self::$engine = new MarkdownExtraParser();
         }
+
+        $tInput = Io::read($tInputFile);
+        $tOutput = self::$engine->transformMarkdown($tInput);
+
+        echo $tOutput;
     }
 }

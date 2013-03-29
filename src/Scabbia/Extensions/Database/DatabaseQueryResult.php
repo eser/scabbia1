@@ -344,11 +344,6 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
 
         if (($this->_caching & Database::CACHE_FILE) > 0) {
             Cache::fileSet($this->_directory, $this->_filename, $this);
-        } else {
-            if (($this->_caching & Database::CACHE_STORAGE) > 0) {
-                $tKey = strtr($this->_directory, '/', '_') . $this->_filename;
-                Cache::storageSet($tKey, $this);
-            }
         }
     }
 

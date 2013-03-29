@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Session;
 
 use Scabbia\Extensions\Cache\Cache;
+use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Extensions;
@@ -34,6 +35,10 @@ class Session
     /**
      * @ignore
      */
+    public static $datasource;
+    /**
+     * @ignore
+     */
     public static $sessionName;
     /**
      * @ignore
@@ -50,6 +55,8 @@ class Session
      */
     public static function open()
     {
+        self::$datasource = Datasources::get(Config::get('session/datasource', 'fileCache'));
+
         self::$sessionName = Config::get('session/cookie/name', 'sessid');
 
         if (Config::get('session/cookie/nameIp', true)) {
@@ -66,7 +73,7 @@ class Session
             $tIpCheck = Config::get('session/cookie/ipCheck', false);
             $tUACheck = Config::get('session/cookie/uaCheck', true);
 
-            $tData = Cache::fileGet('sessions/', self::$id, self::$sessionLife, true);
+            $tData = self::$datasource->cacheGet('sessions/' . self::$id);
             if ($tData !== false) {
                 if (
                     (!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
@@ -80,7 +87,6 @@ class Session
         }
 
         self::$data = array();
-        self::$isModified = false;
     }
 
     /**
@@ -110,7 +116,7 @@ class Session
             'ua' => $_SERVER['HTTP_USER_AGENT']
         );
 
-        Cache::fileSet('sessions/', self::$id, $tData);
+        self::$datasource->cacheSet('sessions/' . self::$id, $tData);
 
         self::$isModified = false;
     }
@@ -130,7 +136,7 @@ class Session
 
         setcookie(self::$sessionName, '', time() - 3600, '/');
 
-        Cache::fileDestroy('sessions/', self::$id);
+        self::$datasource->cacheRemove('sessions/' . self::$id);
 
         self::$id = null;
         self::$data = null;

@@ -29,14 +29,6 @@ class Cache
      * @ignore
      */
     public static $keyphase;
-    /**
-     * @ignore
-     */
-    public static $storage = null;
-    /**
-     * @ignore
-     */
-    public static $storageObject = null;
 
 
     /**
@@ -46,63 +38,6 @@ class Cache
     {
         self::$cacheTtl = Config::get('cache/cacheTtl', 120);
         self::$keyphase = Config::get('cache/keyphase', '');
-
-        $tStorage = Config::get('cache/storage', '');
-        if (strlen($tStorage) > 0) {
-            self::$storage = parse_url($tStorage);
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function storageOpen()
-    {
-        if (!is_null(self::$storageObject)) {
-            return;
-        }
-
-        if (self::$storage['scheme'] == 'memcache' && extension_loaded('memcache')) {
-            self::$storageObject = new \Memcache();
-            self::$storageObject->connect(self::$storage['host'], self::$storage['port']);
-
-            return;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function storageGet($uKey)
-    {
-        self::storageOpen();
-
-        return self::$storageObject->get($uKey);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function storageSet($uKey, $uValue, $uAge = -1)
-    {
-        self::storageOpen();
-
-        // age
-        if ($uAge == -1) {
-            $uAge = self::$cacheTtl;
-        }
-
-        self::$storageObject->set($uKey, $uValue, 0, $uAge);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function storageDestroy($uKey)
-    {
-        self::storageOpen();
-
-        self::$storageObject->delete($uKey);
     }
 
     /**
@@ -178,44 +113,5 @@ class Cache
         Io::writeSerialize($tPath, $uObject, self::$keyphase);
 
         return $tPath;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function fileDestroy($uFolder, $uFilename)
-    {
-        $tPath = Io::translatePath('{writable}cache/' . $uFolder, true);
-        Io::destroy($tPath . IoEx::sanitize($uFilename));
-    }
-
-    /**
-     * @ignore
-     *
-     * @todo can be moved to Io
-     */
-    public static function fileGarbageCollect($uFolder, $uAge = -1)
-    {
-        // path
-        $tPath = Io::translatePath('{writable}cache/' . $uFolder, true);
-        $tDirectory = new \DirectoryIterator($tPath);
-
-        // age
-        if ($uAge == -1) {
-            $uAge = self::$cacheTtl;
-        }
-
-        clearstatcache();
-        foreach ($tDirectory as $tFile) {
-            if (!$tFile->isFile()) {
-                continue;
-            }
-
-            if (time() - $tFile->getMTime() < $uAge) {
-                continue;
-            }
-
-            Io::destroy($tFile->getPathname());
-        }
     }
 }
