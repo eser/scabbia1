@@ -191,7 +191,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function removeIndex($uIndex)
     {
-        // todo: seek with iterator
+        //! todo: seek with iterator
         if ($this->count < $uIndex) {
             return 0;
         } //SPD (int)$uIndex cast

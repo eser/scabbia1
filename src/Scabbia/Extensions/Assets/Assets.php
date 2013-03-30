@@ -25,7 +25,7 @@ use Scabbia\Utils;
  * @subpackage Assets
  * @version 1.1.0
  *
- * @todo integrate with cache extension
+ * @todo cdn support somehow
  */
 class Assets
 {

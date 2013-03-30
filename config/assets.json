@@ -105,7 +105,7 @@
                     {
                         "type":         "file",
                         "class":        "jqueryuifx",
-                        "path":         "{core}resources/jquer.effects/jquery.effects.highlight.js"
+                        "path":         "{core}resources/jquery.effects/jquery.effects.highlight.js"
                     },
                     {
                         "type":         "file",

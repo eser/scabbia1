@@ -158,24 +158,6 @@ class MediaFile
     /**
      * @ignore
      */
-    public function getCache($uTag)
-    {
-        $tCachePath = Media::$cachePath . '/' . $uTag;
-
-        if (file_exists($tCachePath)) {
-            $tTtl = time() - filemtime($tCachePath);
-
-            if ($tTtl < Media::$cacheTtl) {
-                return new mediaFile($tCachePath);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @ignore
-     */
     public function resize($uWidth, $uHeight, $uMode = 'fit')
     {
         $tAspectRatio = $uWidth / $uHeight;

@@ -49,8 +49,6 @@ class ViewEngineRazor
     {
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
 
-        // cengiz: Render if file not exist
-        // or debug mode on
         $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
 
         if (Framework::$development >= 1 || !Io::isReadable($tOutputFile, self::$compiledTtl)) {

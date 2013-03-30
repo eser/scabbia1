@@ -19,7 +19,7 @@ use Scabbia\Framework;
  * @subpackage Auth
  * @version 1.1.0
  *
- * @todo no need of mvcpage stuff
+ * @todo datasources integration
  */
 class Auth
 {

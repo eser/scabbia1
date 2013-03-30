@@ -13,6 +13,8 @@ namespace Scabbia\Extensions\Date;
  * @package Scabbia
  * @subpackage Date
  * @version 1.1.0
+ *
+ * @todo improve humanize (fuzzy span)
  */
 class Date
 {

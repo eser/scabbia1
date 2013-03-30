@@ -27,6 +27,7 @@ if (!defined('ENT_HTML5')) {
  * @version 1.1.0
  *
  * @todo pluralize, singularize
+ * @todo split Text functions into another file
  */
 class String
 {

@@ -19,6 +19,7 @@ use Scabbia\Framework;
  *
  * @todo translitIt
  * @todo intl extension methods
+ * @todo localeconv methods
  */
 class I18n
 {

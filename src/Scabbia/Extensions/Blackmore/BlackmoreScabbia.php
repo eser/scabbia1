@@ -109,7 +109,7 @@ class BlackmoreScabbia
 
 ignore_user_abort();
 
-// todo dump framework variables here.
+//! todo dump framework variables here.
 
 error_reporting(' . var_export(error_reporting(), true) . ');
 ini_set(\'display_errors\', ' . var_export(ini_get('display_errors'), true) . ');
@@ -118,11 +118,11 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 ?' . '>');
         */
 
-        $tCompiled  = Utils::printFile(file_get_contents(Framework::$corepath . 'src/patches.php'));
-        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/framework.php'));
-        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/config.php'));
-        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/events.php'));
-        $tCompiled .= Utils::printFile(file_get_contents(Framework::$corepath . 'src/scabbia/extensions.php'));
+        $tCompiled  = Utils::printFile(Io::read(Framework::$corepath . 'src/patches.php'));
+        $tCompiled .= Utils::printFile(Io::read(Framework::$corepath . 'src/scabbia/framework.php'));
+        $tCompiled .= Utils::printFile(Io::read(Framework::$corepath . 'src/scabbia/config.php'));
+        $tCompiled .= Utils::printFile(Io::read(Framework::$corepath . 'src/scabbia/events.php'));
+        $tCompiled .= Utils::printFile(Io::read(Framework::$corepath . 'src/scabbia/extensions.php'));
 
         $tDevelopment = Framework::$development;
         Framework::$development = 0;
@@ -157,7 +157,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
                     $tFilename = $tExtension['path'] . $tFile;
 
                     if (!in_array($tFilename, $tIncludedFiles, true)) {
-                        $tCompiled .= Utils::printFile(file_get_contents($tFilename));
+                        $tCompiled .= Utils::printFile(Io::read($tFilename));
                         $tIncludedFiles[] = $tFilename;
                     }
                 }
@@ -177,7 +177,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
                         }
 
                         if (!in_array($tFilename, $tIncludedFiles, true)) {
-                            $tCompiled .= Utils::printFile(file_get_contents($tFilename));
+                            $tCompiled .= Utils::printFile(Io::read($tFilename));
                             $tIncludedFiles[] = $tFilename;
                         }
                     }

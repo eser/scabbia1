@@ -19,9 +19,7 @@ use Scabbia\Io;
  * @subpackage Access
  * @version 1.1.0
  *
- * @todo must be attached before 'run' event
- * @todo no need of mvcpage stuff
- * @todo should be running independent from Http
+ * @todo must be attached before 'run' event (application prefilter)
  */
 class Access
 {

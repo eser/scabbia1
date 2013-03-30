@@ -20,7 +20,7 @@ use Scabbia\Io;
  *
  * @todo add watermark
  * @todo write text w/ truetype fonts
- * @todo integrate with cache extension
+ * @todo imageCheckDimensions, imageCheckSize
  */
 class Media
 {
@@ -59,28 +59,5 @@ class Media
         $uArgs = func_get_args();
 
         return implode('_', $uArgs);
-    }
-
-    /**
-     * @ignore
-     *
-     * @todo use Io::garbageCollect
-     */
-    public static function garbageCollect()
-    {
-        $tDirectory = new \DirectoryIterator(self::$cachePath);
-
-        clearstatcache();
-        foreach ($tDirectory as $tFile) {
-            if (!$tFile->isFile()) {
-                continue;
-            }
-
-            if (time() - $tFile->getMTime() < self::$cacheTtl) {
-                continue;
-            }
-
-            unlink($tFile->getPathname());
-        }
     }
 }

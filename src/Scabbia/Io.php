@@ -16,11 +16,9 @@ use Scabbia\Utils;
  * @package Scabbia
  * @version 1.1.0
  *
- * @todo serialize/unserialize data (example: resources)
  * @todo download garbage collection
- * @todo global event-based garbage collector
  * @todo download caching w/ aging
- * @todo purge
+ * @todo purge (event based garbage collector)
  */
 class Io
 {
@@ -56,10 +54,6 @@ class Io
      */
     public static function read($uPath, $uFlags = LOCK_SH)
     {
-        if (!is_readable($uPath)) {
-            return false;
-        }
-
         $tHandle = fopen($uPath, 'r', false);
         if ($tHandle === false) {
             return false;
@@ -90,7 +84,11 @@ class Io
      */
     public static function write($uPath, $uContent, $uFlags = LOCK_EX)
     {
-        $tHandle = fopen($uPath, 'w', false);
+        $tHandle = fopen(
+            $uPath,
+            ($uFlags & FILE_APPEND) > 0 ? 'a' : 'w',
+            false
+        );
         if ($tHandle === false) {
             return false;
         }
@@ -277,7 +275,7 @@ class Io
     public static function readFromCache($uFile, $uTtl = -1, $uCallback = null)
     {
         if (self::isReadable($uFile, $uTtl)) {
-            return unserialize(file_get_contents($uFile));
+            return self::readSerialize($uFile);
         }
 
         if (is_null($uCallback)) {
@@ -285,7 +283,7 @@ class Io
         }
 
         $tResult = call_user_func($uCallback);
-        file_put_contents($uFile, serialize($tResult));
+        self::writeSerialize($uFile, $tResult);
 
         return $tResult;
     }

@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Session;
 
-use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\String\String;
 use Scabbia\Config;
@@ -20,7 +19,7 @@ use Scabbia\Extensions;
  * @subpackage Session
  * @version 1.1.0
  *
- * @todo integrate with cache extension
+ * @todo Cookie salt w/ SHA1
  */
 class Session
 {

@@ -60,6 +60,10 @@ class FileSource implements IDatasource, ICacheProvider
         // path
         $tPath = Io::translatePath($this->path . $uKey, true);
 
+        if (!Io::isReadable($tPath)) {
+            return false;
+        }
+
         return Io::readSerialize($tPath, $this->keyphase);
     }
 

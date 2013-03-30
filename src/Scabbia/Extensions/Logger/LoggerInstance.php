@@ -205,7 +205,7 @@ class LoggerInstance implements LoggerInterface
                 $tContent = '+ ' . String::format(Logger::$line, $uContext);
                 $tFilename = Io::translatePath('{writable}logs/' . String::format(Logger::$filename, $uContext), true);
 
-                file_put_contents($tFilename, $tContent, FILE_APPEND);
+                Io::write($tFilename, $tContent, LOCK_EX | FILE_APPEND);
             }
 
             exit();

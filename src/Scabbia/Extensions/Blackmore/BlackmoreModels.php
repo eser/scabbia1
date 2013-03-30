@@ -221,7 +221,7 @@ class BlackmoreModels
         );
 
         if (Request::$method == 'post') {
-            // todo: validations
+            //! todo: validations
             Validation::addRule('name')->isRequired()->errorMessage('Name shouldn\'t be blank.');
             // Validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 

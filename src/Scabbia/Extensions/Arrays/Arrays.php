@@ -13,6 +13,11 @@ namespace Scabbia\Extensions\Arrays;
  * @package Scabbia
  * @subpackage Arrays
  * @version 1.1.0
+ *
+ * @todo isTraversable method
+ * @todo isAssoc method
+ * @todo Arrays::get, Arrays::getArray with Arrays::getPath functionality
+ * @todo remove Arrays::getPath
  */
 class Arrays
 {

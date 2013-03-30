@@ -15,6 +15,8 @@ use Scabbia\Extensions\Database\DatabaseSource;
  * @package Scabbia
  * @subpackage Database
  * @version 1.1.0
+ *
+ * @todo unbuffered queries
  */
 class MysqlSource extends DatabaseSource
 {

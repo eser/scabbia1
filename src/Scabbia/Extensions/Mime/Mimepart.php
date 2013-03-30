@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Mime;
 
 use Scabbia\Extensions\String\String;
+use Scabbia\Io;
 
 /**
  * Mime Extension: Mimepart Class
@@ -111,6 +112,6 @@ class Mimepart
      */
     public function load($uFilename)
     {
-        $this->content = file_get_contents($uFilename);
+        $this->content = Io::read($uFilename);
     }
 }

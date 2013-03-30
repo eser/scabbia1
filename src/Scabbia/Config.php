@@ -68,7 +68,7 @@ class Config
      */
     public static function loadFile(&$uConfig, $uFile)
     {
-        $tJsonObject = json_decode(file_get_contents($uFile));
+        $tJsonObject = json_decode(Io::read($uFile));
 
         $tNodeStack = array();
         self::jsonProcessChildrenRecursive($uConfig, $tJsonObject, $tNodeStack);

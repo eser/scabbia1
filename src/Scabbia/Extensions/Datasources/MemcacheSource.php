@@ -17,6 +17,10 @@ use Scabbia\Extensions\Datasources\IServerConnection;
  * @package Scabbia
  * @subpackage Datasources
  * @version 1.1.0
+ *
+ * @todo addServer support
+ * @todo pconnect option
+ * @todo replace?
  */
 class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
 {

@@ -20,8 +20,8 @@ use Scabbia\Framework;
  *
  * @todo form open
  * @todo form fields
- * @todo add callJavascriptFromRepository
- * @todo add callStylesheetFromRepository
+ * @todo Html::script
+ * @todo Html::style
  */
 class Html
 {

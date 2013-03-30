@@ -13,6 +13,9 @@ namespace Scabbia\Extensions\Output;
  * @package Scabbia
  * @subpackage Output
  * @version 1.1.0
+ *
+ * @todo application postfilter
+ * @todo fragment methods and caching with fragments
  */
 class Output
 {
