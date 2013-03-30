@@ -72,23 +72,23 @@ class Mimepart
 
         if ($uHeaders) {
             $tHeaders = & $this->headers;
-            if (!array_key_exists('Content-Id', $tHeaders)) {
+            if (!isset($tHeaders['Content-Id'])) {
                 $tHeaders['Content-Id'] = '<' . String::generate(15) . '>';
             }
 
-            if (!array_key_exists('Content-Type', $tHeaders)) {
+            if (!isset($tHeaders['Content-Type'])) {
                 $tHeaders['Content-Type'] = $this->type;
             }
 
-            if (!array_key_exists('Content-Transfer-Encoding', $tHeaders)) {
+            if (!isset($tHeaders['Content-Transfer-Encoding'])) {
                 $tHeaders['Content-Transfer-Encoding'] = $this->transferEncoding;
             }
 
-            if (!array_key_exists('Content-Disposition', $tHeaders) && strlen($this->filename) > 0) {
+            if (!isset($tHeaders['Content-Disposition']) && strlen($this->filename) > 0) {
                 $tHeaders['Content-Disposition'] = 'attachment; filename=' . $this->filename;
             }
 
-            if (!array_key_exists('Content-Length', $tHeaders)) {
+            if (!isset($tHeaders['Content-Length'])) {
                 $tHeaders['Content-Length'] = strlen($tBody);
             }
 

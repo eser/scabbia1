@@ -94,7 +94,11 @@ class Framework
         self::$classLoader = $uClassLoader;
 
         if (is_null(self::$basepath)) {
-            self::$basepath = strtr(pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME), DIRECTORY_SEPARATOR, '/') . '/';
+            self::$basepath = strtr(
+                pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME),
+                DIRECTORY_SEPARATOR,
+                '/'
+            ) . '/';
         }
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
@@ -181,7 +185,7 @@ class Framework
         Events::invoke('run', $tParms);
         self::$milestones[] = array('extensionsRun', microtime(true));
 
-        if(!is_null($uCallbacks)) {
+        if (!is_null($uCallbacks)) {
             foreach ((array)$uCallbacks as $tCallback) {
                 $tReturn = call_user_func($tCallback);
 
@@ -217,15 +221,21 @@ class Framework
 
         Events::invoke('output', $tParms);
 
-        /*
         if (ini_get('output_handler') == '') {
-            $tParms['content'] = mb_output_handler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+            $tParms['content'] = mb_output_handler(
+                $tParms['content'],
+                $uStatus
+            ); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 
-            if (!ini_get('zlib.output_compression') && (PHP_SAPI != 'cli') && Config::get('options/gzip', true) === true) {
-                $tParms['content'] = ob_gzhandler($tParms['content'], $uStatus); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
+            if (!ini_get('zlib.output_compression') &&
+                (PHP_SAPI != 'cli') &&
+                Config::get('options/gzip', true) === true) {
+                $tParms['content'] = ob_gzhandler(
+                    $tParms['content'],
+                    $uStatus
+                ); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
             }
         }
-        */
 
         return $tParms['content'];
     }

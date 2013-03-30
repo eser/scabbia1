@@ -101,13 +101,13 @@ class Mail
     {
         $tHeaders = $this->headers;
 
-        if (!array_key_exists('From', $tHeaders)) {
+        if (!isset($tHeaders['From'])) {
             $tHeaders['From'] = $this->from;
         }
-        if (!array_key_exists('To', $tHeaders)) {
+        if (!isset($tHeaders['To'])) {
             $tHeaders['To'] = $this->to;
         }
-        if (!array_key_exists('Subject', $tHeaders)) {
+        if (!isset($tHeaders['Subject'])) {
             $tHeaders['Subject'] = $this->subject;
         }
 

@@ -1,5 +1,6 @@
 <?php
-	use Scabbia\Framework;
+use Scabbia\Framework;
+
 ?>
 					</div>
 				</div>

@@ -37,12 +37,20 @@ class Config
     {
         $tConfig = array();
 
-        foreach (Io::glob(Framework::$corepath . 'config/', '*.json', Io::GLOB_RECURSIVE | Io::GLOB_FILES) as $tFile) {
+        foreach (Io::glob(
+            Framework::$corepath . 'config/',
+            '*.json',
+            Io::GLOB_RECURSIVE | Io::GLOB_FILES
+        ) as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 
         if (!is_null(Framework::$apppath)) {
-            foreach (Io::glob(Framework::$apppath . 'config/', '*.json', Io::GLOB_RECURSIVE | Io::GLOB_FILES) as $tFile) {
+            foreach (Io::glob(
+                Framework::$apppath . 'config/',
+                '*.json',
+                Io::GLOB_RECURSIVE | Io::GLOB_FILES
+            ) as $tFile) {
                 self::loadFile($tConfig, $tFile);
             }
         }
@@ -75,8 +83,13 @@ class Config
      * @param bool  $uIsArray   whether is an array or not
      * @param bool  $uIsDirect  read directly as an array
      */
-    private static function jsonProcessChildrenRecursive(&$uTarget, $uNode, &$tNodeStack, $uIsArray = false, $uIsDirect = false)
-    {
+    private static function jsonProcessChildrenRecursive(
+        &$uTarget,
+        $uNode,
+        &$tNodeStack,
+        $uIsArray = false,
+        $uIsDirect = false
+    ) {
         if (is_object($uNode) && !$uIsDirect) {
             foreach ($uNode as $tKey => $tSubnode) {
                 $tNodeName = explode(':', $tKey);
@@ -87,12 +100,7 @@ class Config
                             continue 2;
                             break;
                         case 'development':
-                            if (Framework::$development < 1) {
-                                continue 2;
-                            }
-                            break;
-                        case 'debug':
-                            if (Framework::$development < 2) {
+                            if (Framework::$development <= 0) {
                                 continue 2;
                             }
                             break;
@@ -126,14 +134,26 @@ class Config
 
             if ($uIsArray) {
                 if (!is_scalar($uNode)) {
-                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
-                         $tNewNodeStack = array();
-                         if ($uIsDirect) {
-                             self::jsonProcessChildrenRecursive($uTarget[$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
-                         } else {
-                             self::jsonProcessChildrenRecursive($uTarget[], $tSubnode, $tNewNodeStack, true, $uIsDirect);
-                         }
-                     }
+                    foreach ($uNode as $tSubnodeKey => $tSubnode) {
+                        $tNewNodeStack = array();
+                        if ($uIsDirect) {
+                            self::jsonProcessChildrenRecursive(
+                                $uTarget[$tSubnodeKey],
+                                $tSubnode,
+                                $tNewNodeStack,
+                                true,
+                                $uIsDirect
+                            );
+                        } else {
+                            self::jsonProcessChildrenRecursive(
+                                $uTarget[],
+                                $tSubnode,
+                                $tNewNodeStack,
+                                true,
+                                $uIsDirect
+                            );
+                        }
+                    }
                 } else {
                     $uTarget = $uNode;
                 }
@@ -146,9 +166,21 @@ class Config
                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
                         $tNewNodeStack = array();
                         if ($uIsDirect) {
-                            self::jsonProcessChildrenRecursive($uTarget[$tNodePath][$tSubnodeKey], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                            self::jsonProcessChildrenRecursive(
+                                $uTarget[$tNodePath][$tSubnodeKey],
+                                $tSubnode,
+                                $tNewNodeStack,
+                                true,
+                                $uIsDirect
+                            );
                         } else {
-                            self::jsonProcessChildrenRecursive($uTarget[$tNodePath][], $tSubnode, $tNewNodeStack, true, $uIsDirect);
+                            self::jsonProcessChildrenRecursive(
+                                $uTarget[$tNodePath][],
+                                $tSubnode,
+                                $tNewNodeStack,
+                                true,
+                                $uIsDirect
+                            );
                         }
                     }
                 } else {
@@ -168,7 +200,7 @@ class Config
      */
     public static function get($uKey, $uDefault = null)
     {
-        if (!array_key_exists($uKey, self::$default)) {
+        if (!isset(self::$default[$uKey])) {
             return $uDefault;
         }
 

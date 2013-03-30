@@ -1,7 +1,9 @@
 <?php
-	use Scabbia\Extensions\Blackmore\Blackmore;
-	use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Extensions\Http\Http;
 
+?>
+<?php
     if (isset(Blackmore::$menuItems[$model])) {
         $tMenu = Blackmore::$menuItems[$model];
 ?>

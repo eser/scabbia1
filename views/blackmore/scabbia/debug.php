@@ -1,8 +1,9 @@
 <?php
-	use Scabbia\Extensions\Views\Views;
-	use Scabbia\Extensions\Session\Session;
-	use Scabbia\Extensions\Blackmore\Blackmore;
-	use Scabbia\Framework;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Extensions\Session\Session;
+use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Framework;
+
 ?>
 <?php Views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">
@@ -32,13 +33,13 @@
 							<div id="placeholder">
 
 								<?php
-								$tPrevious = Framework::$timestamp;
-								foreach(Framework::$milestones as $tMilestone) {
-									echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
-									$tPrevious = $tMilestone[1];
-								}
-								echo '<b>total</b> = ', number_format($tPrevious - Framework::$timestamp, 5), ' ms.<br />';
-								?>
+                                    $tPrevious = Framework::$timestamp;
+                                    foreach (Framework::$milestones as $tMilestone) {
+                                        echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
+                                        $tPrevious = $tMilestone[1];
+                                    }
+                                    echo '<b>total</b> = ', number_format($tPrevious - Framework::$timestamp, 5), ' ms.<br />';
+                                ?>
 
 							</div>
 							<div class="clear"></div>

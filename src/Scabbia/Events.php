@@ -42,7 +42,7 @@ class Events
      */
     public static function register($uEventName, $uType, $uValue, $uPriority = 10)
     {
-        if (!array_key_exists($uEventName, self::$events)) {
+        if (!isset(self::$events[$uEventName])) {
             self::$events[$uEventName] = new Delegate();
         }
 
@@ -64,7 +64,7 @@ class Events
             return null;
         }
 
-        if (!array_key_exists($uEventName, self::$events)) {
+        if (!isset(self::$events[$uEventName])) {
             return null;
         }
 

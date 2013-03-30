@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Database;
 
-use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Database\Database;
 use Scabbia\Extensions\Database\DatabaseQuery;
 use Scabbia\Extensions\Database\DatabaseQueryResult;
@@ -106,7 +105,8 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
-    public function serverInfo() {
+    public function serverInfo()
+    {
     }
 
     /**
@@ -136,37 +136,37 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
-    public abstract function itSeek($uObject, $uRow);
+    abstract public function itSeek($uObject, $uRow);
 
     /**
      * @ignore
      */
-    public abstract function itNext($uObject);
+    abstract public function itNext($uObject);
 
     /**
      * @ignore
      */
-    public abstract function itCount($uObject);
+    abstract public function itCount($uObject);
 
     /**
      * @ignore
      */
-    public abstract function itClose($uObject);
+    abstract public function itClose($uObject);
 
     /**
      * @ignore
      */
-    public abstract function lastInsertId($uName = null);
+    abstract public function lastInsertId($uName = null);
 
     /**
      * @ignore
      */
-    public abstract function internalExecute($uQuery);
+    abstract public function internalExecute($uQuery);
 
     /**
      * @ignore
      */
-    public abstract function queryDirect($uQuery, array $uParameters = array());
+    abstract public function queryDirect($uQuery, array $uParameters = array());
 
     /**
      * @ignore
@@ -201,7 +201,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
-    public function query($uQuery, array $uParameters = array(), $uCaching = Database::CACHE_MEMORY)
+    public function query($uQuery, array $uParameters = array(), $uCaching = null)
     {
         $this->connectionOpen();
 
@@ -213,34 +213,27 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             )
         );
 
-        $tFolder = 'database/' . $this->id . '/';
-
-        $uPropsSerialized = hash('adler32', $uQuery);
+        $uPropsSerialized = $this->id . '/' . hash('adler32', $uQuery);
         foreach ($uParameters as $tProp) {
             $uPropsSerialized .= '_' . $tProp;
         }
 
-        if (($uCaching & Database::CACHE_MEMORY) > 0 && isset($this->cache[$uPropsSerialized])) {
-            $tData = $this->cache[$uPropsSerialized]->resume($this);
-            $tLoadedFromCache = true;
-        } else {
-            if (($uCaching & Database::CACHE_FILE) > 0) { //  && Framework::$development <= 0
-                $tData = Cache::fileGet($tFolder, $uPropsSerialized, -1, true);
+        if (!is_null($uCaching) && Framework::$development <= 0) {
+            $tData = Datasources::get($uCaching)->cacheGet($uPropsSerialized);
 
-                if ($tData !== false) {
-                    $this->cache[$uPropsSerialized] = $tData->resume($this);
-                    $tLoadedFromCache = true;
-                } else {
-                    $tLoadedFromCache = false;
-                }
+            if ($tData !== false) {
+                $this->cache[$uPropsSerialized] = $tData->resume($this);
+                $tLoadedFromCache = true;
             } else {
-                $tData = false;
                 $tLoadedFromCache = false;
             }
+        } else {
+            $tData = false;
+            $tLoadedFromCache = false;
         }
 
         if ($tData === false) {
-            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $uCaching, $tFolder, $uPropsSerialized);
+            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $uCaching, $uPropsSerialized);
             ++$this->stats['query'];
         } else {
             ++$this->stats['cache'];

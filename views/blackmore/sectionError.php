@@ -1,6 +1,8 @@
 <?php
-    use Scabbia\Extensions\Session\Session;
+use Scabbia\Extensions\Session\Session;
 
+?>
+<?php
     if (Session::exists('notification')) {
         $notification = Session::getFlash('notification');
 ?>

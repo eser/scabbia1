@@ -97,7 +97,7 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-	    $tAutoModel = new AutoModel(Blackmore::$module);
+        $tAutoModel = new AutoModel(Blackmore::$module);
         $tData = $tAutoModel->call('list');
 
         Views::viewFile(
@@ -116,44 +116,50 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-	    $tModule = AutoModels::get(Blackmore::$module);
-	    $tAutoModel = new AutoModel($tModule['name']);
+        $tModule = AutoModels::get(Blackmore::$module);
+        $tAutoModel = new AutoModel($tModule['name']);
 
-	    $tFields = $tAutoModel->ddlGetFieldsForMethod('add');
+        $tFields = $tAutoModel->ddlGetFieldsForMethod('add');
 
         $tViewbag = array(
             'module' => $tModule,
-	        'postback' => Http::url('blackmore/' . Blackmore::$module . '/add'),
+            'postback' => Http::url('blackmore/' . Blackmore::$module . '/add'),
             'fields' => array()
         );
 
-	    if (Request::$method == 'post') {
-		    $tInput = array();
+        if (Request::$method == 'post') {
+            $tInput = array();
 
-		    foreach ($tFields as $tField) {
-			    $tInput[$tField['name']] = Request::post($tField['name']);
+            foreach ($tFields as $tField) {
+                $tInput[$tField['name']] = Request::post($tField['name']);
 
-			    if (!isset($tField['validation'])) {
-				    continue;
-			    }
+                if (!isset($tField['validation'])) {
+                    continue;
+                }
 
-			    // @todo add validation type as array key
-			    foreach ($tField['validation'] as $tFieldValidation) {
-			        Validation::addRule($tField['name'])->set($tFieldValidation['type'], isset($tFieldValidation['params']) ? $tFieldValidation['params'] : array())->errorMessage($tFieldValidation['message']);
-		        }
-		    }
+                // @todo add validation type as array key
+                foreach ($tField['validation'] as $tFieldValidation) {
+                    Validation::addRule($tField['name'])->set(
+                        $tFieldValidation['type'],
+                        isset($tFieldValidation['params']) ? $tFieldValidation['params'] : array()
+                    )->errorMessage($tFieldValidation['message']);
+                }
+            }
 
-		    if (Validation::validate($_POST)) {
-			    $tAutoModel->insert($tInput);
+            if (Validation::validate($_POST)) {
+                $tAutoModel->insert($tInput);
 
-			    Session::set('notification', array('info', 'ok-sign', 'Record added.'));
-			    Http::redirect('blackmore/' . Blackmore::$module);
+                Session::set('notification', array('info', 'ok-sign', 'Record added.'));
+                Http::redirect('blackmore/' . Blackmore::$module);
 
-			    return;
-		    }
+                return;
+            }
 
-            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
-	    }
+            Session::set(
+                'notification',
+                array('error', 'remove-sign', Validation::getErrorMessages(true))
+            );
+        }
 
         foreach ($tFields as $tField) {
             switch ($tField['type']) {
@@ -163,7 +169,10 @@ class BlackmoreModels
                         $tTypes[$tValue['name']] = $tValue['title'];
                     }
 
-                    $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
+                    $tAttributes = array(
+                        'name' => $tField['name'],
+                        'class' => 'input-block-level input_' . $tField['type']
+                    );
                     // if (!$tIsEdit) {
                     //    $tAttributes['readonly'] = 'readonly';
                     // }
@@ -174,7 +183,6 @@ class BlackmoreModels
                         Html::selectOptions($tTypes, Request::post($tField['name'], null))
                     ) . '</p>';
                     break;
-
                 default:
                     $tAttributes = array(
                         'type' => 'text',
@@ -238,7 +246,7 @@ class BlackmoreModels
                 return;
             }
 
-            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
+            Session::set('notification', array('error', 'remove-sign', Validation::getErrorMessages(true)));
 
             foreach ($tModule['fieldList'] as $tField) {
                 $tIsView = array_key_exists('view', $tField['methods']);
@@ -252,7 +260,10 @@ class BlackmoreModels
                                 $tTypes[$tValue['name']] = $tValue['title'];
                             }
 
-                            $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
+                            $tAttributes = array(
+                                'name' => $tField['name'],
+                                'class' => 'input-block-level input_' . $tField['type']
+                            );
                             if (!$tIsEdit) {
                                 $tAttributes['readonly'] = 'readonly';
                             }
@@ -305,7 +316,10 @@ class BlackmoreModels
                             $tTypes[$tValue['name']] = $tValue['title'];
                         }
 
-                        $tAttributes = array('name' => $tField['name'], 'class' => 'input-block-level input_' . $tField['type']);
+                        $tAttributes = array(
+                            'name' => $tField['name'],
+                            'class' => 'input-block-level input_' . $tField['type']
+                        );
                         if (!$tIsEdit) {
                             $tAttributes['readonly'] = 'readonly';
                         }

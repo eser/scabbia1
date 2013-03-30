@@ -40,7 +40,10 @@ class Logger
     public static function extensionLoad()
     {
         self::$filename = Config::get('logger/filename', '{date|\'d-m-Y\'}.txt');
-        self::$line = Config::get('logger/line', '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@location} | {@message}');
+        self::$line = Config::get(
+            'logger/line',
+            '[{date|\'d-m-Y H:i:s\'}] {strtoupper|@category} | {@ip} | {@location} | {@message}'
+        );
 
         set_exception_handler('Scabbia\\Extensions\\Logger\\Logger::exceptionCallback');
         set_error_handler('Scabbia\\Extensions\\Logger\\Logger::errorCallback', E_ALL);
@@ -49,7 +52,8 @@ class Logger
     /**
      * @ignore
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (is_null(self::$instance)) {
             self::$instance = new LoggerInstance();
         }
@@ -114,9 +118,13 @@ class Logger
                 break;
         }
 
-        self::getInstance()->log($tType, $uMessage, array(
+        self::getInstance()->log(
+            $tType,
+            $uMessage,
+            array(
                 'file' => $uFile,
                 'line' => $uLine
-            ));
+            )
+        );
     }
 }

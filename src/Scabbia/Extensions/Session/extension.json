@@ -7,7 +7,7 @@
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
-            "Cache"
+            "Datasources"
         ]
     },
     "eventList": [

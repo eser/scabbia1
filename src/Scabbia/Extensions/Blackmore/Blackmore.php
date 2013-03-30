@@ -86,9 +86,9 @@ class Blackmore extends Controller
             return false;
         }
 
-        foreach (Config::get('blackmore/menuList', array()) as $tMenuKey => $tMenu) {
-            self::$menuItems[$tMenuKey] = array(
-                ($tMenuKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tMenuKey),
+        foreach (Config::get('blackmore/menuList', array()) as $tKey => $tMenu) {
+            self::$menuItems[$tKey] = array(
+                ($tKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tKey),
                 _($tMenu['title']),
                 array()
             );
@@ -96,23 +96,23 @@ class Blackmore extends Controller
             foreach ($tMenu['actions'] as $tMenuActionKey => $tMenuAction) {
                 if (isset($tMenuAction['before'])) {
                     if ($tMenuAction['before'] == 'separator') {
-                        self::$menuItems[$tMenuKey][2][] = '-';
+                        self::$menuItems[$tKey][2][] = '-';
                     }
                 }
 
                 if (isset($tMenuAction['customurl'])) {
                     $tUrl = $tMenuAction['customurl'];
                 } elseif ($tMenuActionKey === self::DEFAULT_ACTION_INDEX) {
-                    if ($tMenuKey === self::DEFAULT_MODULE_INDEX) {
+                    if ($tKey === self::DEFAULT_MODULE_INDEX) {
                         $tUrl = Http::url('blackmore');
                     } else {
-                        $tUrl = Http::url('blackmore/' . $tMenuKey);
+                        $tUrl = Http::url('blackmore/' . $tKey);
                     }
                 } else {
-                    $tUrl = Http::url('blackmore/' . $tMenuKey . '/' . $tMenuActionKey);
+                    $tUrl = Http::url('blackmore/' . $tKey . '/' . $tMenuActionKey);
                 }
 
-                self::$menuItems[$tMenuKey][2][] = array(
+                self::$menuItems[$tKey][2][] = array(
                     $tUrl,
                     isset($tMenuAction['icon']) ? $tMenuAction['icon'] : 'minus',
                     _($tMenuAction['title'])
@@ -120,7 +120,7 @@ class Blackmore extends Controller
 
                 if (isset($tMenuAction['after'])) {
                     if ($tMenuAction['after'] == 'separator') {
-                        self::$menuItems[$tMenuKey][2][] = '-';
+                        self::$menuItems[$tKey][2][] = '-';
                     }
                 }
             }
@@ -147,10 +147,15 @@ class Blackmore extends Controller
         Validation::addRule('username')->isRequired()->errorMessage('Username shouldn\'t be blank.');
         // Validation::addRule('username')->isEmail()->errorMessage('Please consider your e-mail address once again.');
         Validation::addRule('password')->isRequired()->errorMessage('Password shouldn\'t be blank.');
-        Validation::addRule('password')->lengthMinimum(4)->errorMessage('Password should be longer than 4 characters at least.');
+        Validation::addRule('password')
+            ->lengthMinimum(4)
+            ->errorMessage('Password should be longer than 4 characters at least.');
 
         if (!Validation::validate($_POST)) {
-            Session::set('notification', array('error', 'remove-sign', implode('<br />', Validation::getErrorMessages(true))));
+            Session::set(
+                'notification',
+                array('error', 'remove-sign', Validation::getErrorMessages(true))
+            );
             $this->viewFile('{core}views/blackmore/login.php');
 
             return;

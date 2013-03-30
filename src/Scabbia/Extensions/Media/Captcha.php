@@ -31,8 +31,8 @@ class Captcha
     public static function generate($uCookieName = 'captcha')
     {
         $tFontFile = Io::translatePath(Config::get('captcha/fontFile', '{core}resources/fonts/KabobExtrabold.ttf'));
-        $tFontSize = intval(Config::get('captcha/fontSize', '45'));
-        $tLength = intval(Config::get('captcha/length', '8'));
+        $tFontSize = (int)Config::get('captcha/fontSize', 45);
+        $tLength = (int)Config::get('captcha/length', 8);
 
         // pick a random word
         $tCode = String::generatePassword($tLength);
@@ -45,7 +45,13 @@ class Captcha
         $tColorBackground = imagecolorallocate($tImageCanvas, 255, 255, 255);
         $tColorBackgroundChars = imagecolorallocatealpha($tImageCanvas, $tColorScale, $tColorScale, $tColorScale, 80);
         $tColorTextShadow = imagecolorallocatealpha($tImageCanvas, 255, 255, 255, 20);
-        $tColorText = imagecolorallocatealpha($tImageCanvas, $tColorScale + 25, $tColorScale + 10, $tColorScale + 10, 30);
+        $tColorText = imagecolorallocatealpha(
+            $tImageCanvas,
+            $tColorScale + 25,
+            $tColorScale + 10,
+            $tColorScale + 10,
+            30
+        );
 
         // clear the background
         imagefilledrectangle($tImageCanvas, 0, 0, 300, 80, $tColorBackground);
@@ -59,7 +65,16 @@ class Captcha
             $y = rand(-50, 80);
             $tAngle = rand(-90, 90);
 
-            imagettftext($tImageCanvas, $tFontSize, $tAngle, $x, $y, $tColorBackgroundChars, $tFontFile, $tBackgroundChars[rand(0, strlen($tBackgroundChars) - 1)]);
+            imagettftext(
+                $tImageCanvas,
+                $tFontSize,
+                $tAngle,
+                $x,
+                $y,
+                $tColorBackgroundChars,
+                $tFontFile,
+                $tBackgroundChars[rand(0, strlen($tBackgroundChars) - 1)]
+            );
         }
 
         // randomize the start of the code
@@ -74,7 +89,16 @@ class Captcha
             // create the shadow for the letter
             for ($ax = -1; $ax < 0; $ax++) {
                 for ($ay = -1; $ay < 0; $ay++) {
-                    imagettftext($tImageCanvas, $tFontSize, $tAngle, $x + $ax, $y + $ay, $tColorTextShadow, $tFontFile, $tCode[$i]);
+                    imagettftext(
+                        $tImageCanvas,
+                        $tFontSize,
+                        $tAngle,
+                        $x + $ax,
+                        $y + $ay,
+                        $tColorTextShadow,
+                        $tFontFile,
+                        $tCode[$i]
+                    );
                 }
             }
 

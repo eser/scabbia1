@@ -35,7 +35,7 @@ class Delegate
     {
         $tNewInstance = new Delegate();
 
-        return function($uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
+        return function ($uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
             if (!is_null($uCallback)) {
                 $tNewInstance->add($uCallback, $uState, $uPriority);
             }
@@ -51,7 +51,8 @@ class Delegate
      * @param mixed     $uState     state object
      * @param int       $uPriority  priority level
      */
-    public function add($uCallback, $uState = null, $uPriority = 10) {
+    public function add($uCallback, $uState = null, $uPriority = 10)
+    {
         $this->callbacks[] = array($uCallback, $uState, $uPriority);
         $this->prioritySortNeeded = true;
     }
@@ -61,7 +62,8 @@ class Delegate
      *
      * @return bool whether the execution is broken or not
      */
-    public function invoke() {
+    public function invoke()
+    {
         $tArgs = func_get_args();
 
         if ($this->prioritySortNeeded) {

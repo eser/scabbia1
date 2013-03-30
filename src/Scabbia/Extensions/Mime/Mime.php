@@ -40,10 +40,15 @@ class Mime
                 $tType = 'application/x-rar-compressed';
                 break;
             case 'gz':
+            case 'gzip':
+            case 'tgz':
                 $tType = 'application/x-gzip';
                 break;
             case 'tar':
                 $tType = 'application/x-tar';
+                break;
+            case 'jar':
+                $tType = 'application/java-archive';
                 break;
             case 'deb':
                 $tType = 'application/x-deb';
@@ -66,6 +71,9 @@ class Mime
             case 'odt':
                 $tType = 'application/vnd.oasis.opendocument.text';
                 break;
+            case 'smil':
+                $tType = 'application/smil';
+                break;
             case 'eml':
                 $tType = 'message/rfc822';
                 break;
@@ -74,9 +82,11 @@ class Mime
                 $tType = 'text/xml';
                 break;
             case 'doc':
+            case 'dot':
             case 'word':
                 $tType = 'application/msword';
                 break;
+            case 'dotx':
             case 'docx':
                 $tType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                 break;
@@ -91,6 +101,9 @@ class Mime
                 break;
             case 'ppt':
                 $tType = 'application/vnd.ms-powerpoint';
+                break;
+            case 'ics':
+                $tType = 'text/calendar';
                 break;
             case 'bmp':
                 $tType = 'image/x-ms-bmp';
@@ -116,6 +129,14 @@ class Mime
             case 'psd':
                 $tType = 'image/vnd.adobe.photoshop';
                 break;
+            case 'ai':
+            case 'eps':
+            case 'ps':
+                $tType = 'application/postscript';
+                break;
+            case 'cdr':
+                $tType = 'application/cdr';
+                break;
             case 'mid':
             case 'midi':
                 $tType = 'audio/midi';
@@ -124,6 +145,11 @@ class Mime
             case 'mp2':
             case 'mp3':
                 $tType = 'audio/mpeg';
+                break;
+            case 'aif':
+            case 'aiff':
+            case 'aifc':
+                $tType = 'audio/x-aiff';
                 break;
             case 'wav':
                 $tType = 'audio/x-wav';
@@ -137,12 +163,16 @@ class Mime
             case 'wma':
                 $tType = 'audio/x-ms-wma';
                 break;
+            case 'm4a':
+                $tType = 'audio/x-m4a';
+                break;
             case 'mpeg':
             case 'mpg':
             case 'mpe':
                 $tType = 'video/mpeg';
                 break;
             case 'mp4':
+            case 'f4v':
                 $tType = 'application/mp4';
                 break;
             case 'qt':
@@ -154,6 +184,9 @@ class Mime
                 break;
             case 'wmv':
                 $tType = 'video/x-ms-wmv';
+                break;
+            case 'webm':
+                $tType = 'video/webm';
                 break;
             case 'swf':
                 $tType = 'application/x-shockwave-flash';
@@ -191,6 +224,19 @@ class Mime
                 break;
             case 'sh':
                 $tType = 'text/x-shellscript';
+                break;
+            case 'pem':
+                $tType = 'application/x-x509-user-cert';
+                break;
+            case 'crt':
+            case 'cer':
+                $tType = 'application/x-x509-ca-cert';
+                break;
+            case 'pgp':
+                $tType = 'application/pgp';
+                break;
+            case 'gpg':
+                $tType = 'application/gpg-keys';
                 break;
             default:
                 $tType = $uDefault;

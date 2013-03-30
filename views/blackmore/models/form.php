@@ -1,7 +1,8 @@
 <?php
-    use Scabbia\Extensions\Blackmore\Blackmore;
-	use Scabbia\Extensions\Views\Views;
-	use Scabbia\Extensions\Session\Session;
+use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Extensions\Views\Views;
+use Scabbia\Extensions\Session\Session;
+
 ?>
 <?php Views::viewFile('{core}views/blackmore/header.php'); ?>
 	<form method="POST" action="<?php echo $postback; ?>">

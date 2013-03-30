@@ -1,8 +1,9 @@
 <?php
-    use Scabbia\Extensions\Blackmore\Blackmore;
-    use Scabbia\Extensions\Http\Http;
-    use Scabbia\Extensions\Session\Session;
-    use Scabbia\Extensions\Views\Views;
+use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Session\Session;
+use Scabbia\Extensions\Views\Views;
+
 ?>
 <?php Views::viewFile('{core}views/blackmore/header.php'); ?>
 <table id="pageMiddleTable">

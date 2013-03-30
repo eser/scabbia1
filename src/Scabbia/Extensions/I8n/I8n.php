@@ -64,13 +64,13 @@ class I8n
             }
         }
 
-        if (array_key_exists($uLanguage, self::$languages)) {
+        if (isset(self::$languages[$uLanguage])) {
             self::$language = self::$languages[$uLanguage];
         } else {
             if ($uLastChoice) {
                 $tExploded = explode('-', $uLanguage, 2);
 
-                if (array_key_exists($tExploded[0], self::$languages)) {
+                if (isset(self::$languages[$tExploded[0]])) {
                     self::$language = self::$languages[$tExploded[0]];
                 }
             }

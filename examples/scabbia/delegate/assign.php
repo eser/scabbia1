@@ -4,12 +4,18 @@ use Scabbia\Delegate;
 
 $x = Delegate::assign();
 
-$x(function() {
+$x(
+    function () {
         echo 'hello';
-    }, 10);
+    },
+    10
+);
 
-$x(function() {
+$x(
+    function () {
         echo 'world';
-    }, 11);
+    },
+    11
+);
 
 $x()->invoke();

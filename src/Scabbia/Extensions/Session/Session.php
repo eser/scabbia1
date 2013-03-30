@@ -43,7 +43,7 @@ class Session
     /**
      * @ignore
      */
-    public static $sessionLife;
+    public static $sessionTtl;
     /**
      * @ignore
      */
@@ -63,9 +63,9 @@ class Session
             self::$sessionName .= hash('adler32', $_SERVER['REMOTE_ADDR']);
         }
 
-        self::$sessionLife = Config::get('session/cookie/life', 0);
+        self::$sessionTtl = Config::get('session/cookie/ttl', 0);
 
-        if (array_key_exists(self::$sessionName, $_COOKIE)) {
+        if (isset($_COOKIE[self::$sessionName])) {
             self::$id = $_COOKIE[self::$sessionName];
         }
 
@@ -75,10 +75,8 @@ class Session
 
             $tData = self::$datasource->cacheGet('sessions/' . self::$id);
             if ($tData !== false) {
-                if (
-                    (!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
-                    (!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])
-                ) {
+                if ((!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
+                    (!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])) {
                     self::$data = $tData['data'];
 
                     return;
@@ -102,13 +100,13 @@ class Session
             self::$id = String::generateUuid();
         }
 
-        if (self::$sessionLife > 0) {
-            $tCookieLife = time() + self::$sessionLife;
+        if (self::$sessionTtl > 0) {
+            $tCookieTtl = time() + self::$sessionTtl;
         } else {
-            $tCookieLife = 0;
+            $tCookieTtl = 0;
         }
 
-        setcookie(self::$sessionName, self::$id, $tCookieLife, '/');
+        setcookie(self::$sessionName, self::$id, $tCookieTtl, '/');
 
         $tData = array(
             'data' => self::$data,
@@ -153,7 +151,7 @@ class Session
             self::open();
         }
 
-        if (!array_key_exists($uKey, self::$data)) {
+        if (!isset(self::$data[$uKey])) {
             return $uDefault;
         }
 
@@ -195,7 +193,7 @@ class Session
             self::open();
         }
 
-        return array_key_exists($uKey, self::$data);
+        return isset(self::$data[$uKey]);
     }
 
     /**
@@ -219,16 +217,16 @@ class Session
             self::open();
         }
 
-        if (array_key_exists($uKey, self::$data)) {
-            $tValue = self::$data[$uKey];
-            unset(self::$data[$uKey]);
-
-            self::$isModified = true;
-
-            return $tValue;
+        if (!isset(self::$data[$uKey])) {
+            return $uDefault;
         }
 
-        return $uDefault;
+        $tValue = self::$data[$uKey];
+        unset(self::$data[$uKey]);
+
+        self::$isModified = true;
+
+        return $tValue;
     }
 
     /**

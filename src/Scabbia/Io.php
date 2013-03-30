@@ -247,17 +247,17 @@ class Io
      * Determines the file is whether readable or not.
      *
      * @param string    $uFile  the relative path
-     * @param int       $uAge   the time to live period in seconds
+     * @param int       $uTtl   the time to live period in seconds
      *
      * @return bool the result
      */
-    public static function isReadable($uFile, $uAge = -1)
+    public static function isReadable($uFile, $uTtl = -1)
     {
         if (!file_exists($uFile)) {
             return false;
         }
 
-        if ($uAge >= 0 && (time() - filemtime($uFile) >= $uAge)) {
+        if ($uTtl >= 0 && (time() - filemtime($uFile) >= $uTtl)) {
             return false;
         }
 
@@ -269,20 +269,19 @@ class Io
      * If the file is expired, invokes callback method and caches output.
      *
      * @param string        $uFile      the relative path
-     * @param int           $uAge       the time to live period in seconds
+     * @param int           $uTtl       the time to live period in seconds
      * @param callback|null $uCallback  the callback method
      *
      * @return mixed the result
      */
-    public static function readFromCache($uFile, $uAge = -1, $uCallback = null) {
-        $uFile = self::translatePath($uFile);
-
-        if (self::isReadable($uFile, $uAge)) {
+    public static function readFromCache($uFile, $uTtl = -1, $uCallback = null)
+    {
+        if (self::isReadable($uFile, $uTtl)) {
             return unserialize(file_get_contents($uFile));
         }
 
         if (is_null($uCallback)) {
-            return null;
+            return false;
         }
 
         $tResult = call_user_func($uCallback);
@@ -295,9 +294,9 @@ class Io
      * Garbage collects the given path
      *
      * @param string    $uPath  path
-     * @param int       $uAge   age
+     * @param int       $uTtl   age
      */
-    public static function garbageCollect($uPath, $uAge = -1)
+    public static function garbageCollect($uPath, $uTtl = -1)
     {
         $tDirectory = new \DirectoryIterator($uPath);
 
@@ -307,7 +306,7 @@ class Io
                 continue;
             }
 
-            if ($uAge !== -1 && (time() - $tFile->getMTime()) < $uAge) {
+            if ($uTtl !== -1 && (time() - $tFile->getMTime()) < $uTtl) {
                 continue;
             }
 
@@ -365,55 +364,62 @@ class Io
      *
      * @return array|bool the search results
      */
-    public static function glob($uPath, $uFilter = null, $uOptions = self::GLOB_FILES, $uRecursivePath = '', array &$uArray = array())
-    {
+    public static function glob(
+        $uPath,
+        $uFilter = null,
+        $uOptions = self::GLOB_FILES,
+        $uRecursivePath = '',
+        array &$uArray = array()
+    ) {
         $tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
         $tRecursivePath = $tPath . $uRecursivePath;
 
-        // if(file_exists($tRecursivePath)) {
-            try {
-                $tDir = new \DirectoryIterator($tRecursivePath);
+        // if (file_exists($tRecursivePath)) {
+        try {
+            $tDir = new \DirectoryIterator($tRecursivePath);
 
-                foreach ($tDir as $tFile) {
-                    $tFileName = $tFile->getFilename();
+            foreach ($tDir as $tFile) {
+                $tFileName = $tFile->getFilename();
 
-                    if ($tFileName[0] == '.') { // $tFile->isDot()
-                        continue;
-                    }
-
-                    if ($tFile->isDir()) {
-                        $tDirectory = $uRecursivePath . $tFileName . '/';
-
-                        if (($uOptions & self::GLOB_DIRECTORIES) > 0) {
-                            $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . $tDirectory;
-                        }
-
-                        if (($uOptions & self::GLOB_RECURSIVE) > 0) {
-                            self::glob(
-                                $tPath,
-                                $uFilter,
-                                $uOptions,
-                                $tDirectory,
-                                $uArray
-                            );
-                        }
-
-                        continue;
-                    }
-
-                    if (($uOptions & self::GLOB_FILES) > 0 && $tFile->isFile()) {
-                        if (is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
-                            $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $uRecursivePath . $tFileName : $tRecursivePath . $tFileName;
-                        }
-
-                        continue;
-                    }
+                if ($tFileName[0] == '.') { // $tFile->isDot()
+                    continue;
                 }
 
-                return $uArray;
-            } catch (\Exception $tException) {
-                // echo $tException->getMessage();
+                if ($tFile->isDir()) {
+                    $tDirectory = $uRecursivePath . $tFileName . '/';
+
+                    if (($uOptions & self::GLOB_DIRECTORIES) > 0) {
+                        $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ? $tDirectory : $tPath . $tDirectory;
+                    }
+
+                    if (($uOptions & self::GLOB_RECURSIVE) > 0) {
+                        self::glob(
+                            $tPath,
+                            $uFilter,
+                            $uOptions,
+                            $tDirectory,
+                            $uArray
+                        );
+                    }
+
+                    continue;
+                }
+
+                if (($uOptions & self::GLOB_FILES) > 0 && $tFile->isFile()) {
+                    if (is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
+                        $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ?
+                            $uRecursivePath . $tFileName :
+                            $tRecursivePath . $tFileName;
+                    }
+
+                    continue;
+                }
             }
+
+            return $uArray;
+        } catch (\Exception $tException) {
+            // echo $tException->getMessage();
+        }
         // }
 
         $uArray = false;

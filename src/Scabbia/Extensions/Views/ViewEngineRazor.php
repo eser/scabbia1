@@ -7,13 +7,10 @@
 
 namespace Scabbia\Extensions\Views;
 
-use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
-
-require 'razor/RazorViewRenderer.php';
-require 'razor/RazorViewRendererException.php';
+use Scabbia\Io;
 
 /**
  * Views Extension: ViewEngineRazor Class
@@ -31,7 +28,7 @@ class ViewEngineRazor
     /**
      * @ignore
      */
-    public static $compiledAge;
+    public static $compiledTtl;
 
 
     /**
@@ -39,7 +36,7 @@ class ViewEngineRazor
      */
     public static function extensionLoad()
     {
-        self::$compiledAge = intval(Config::get('razor/templates/compiledAge', '120'));
+        self::$compiledTtl = (int)Config::get('razor/templates/compiledTtl', 120);
         Views::registerViewEngine('cshtml', 'Scabbia\\Extensions\\Views\\ViewEngineRazor');
     }
 
@@ -54,17 +51,21 @@ class ViewEngineRazor
 
         // cengiz: Render if file not exist
         // or debug mode on
-        $tOutputFile = Cache::filePath('cshtml/', $uObject['compiledFile'], self::$compiledAge);
-        if (Framework::$development >= 1 || !$tOutputFile[0]) {
+        $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
+
+        if (Framework::$development >= 1 || !Io::isReadable($tOutputFile, self::$compiledTtl)) {
             if (is_null(self::$engine)) {
+                require 'razor/RazorViewRenderer.php';
+                require 'razor/RazorViewRendererException.php';
+
                 self::$engine = new \RazorViewRenderer();
             }
 
-            if (is_null($tOutputFile[1])) {
+            if (Framework::$readonly) {
                 throw new \Exception('Framework runs in read only mode.');
             }
 
-            self::$engine->generateViewFile($tInputFile, $tOutputFile[1]);
+            self::$engine->generateViewFile($tInputFile, $tOutputFile);
         }
 
         // variable extraction
@@ -77,6 +78,6 @@ class ViewEngineRazor
             extract($uObject['extra'], EXTR_SKIP | EXTR_REFS);
         }
 
-        require $tOutputFile[1];
+        require $tOutputFile;
     }
 }

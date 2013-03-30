@@ -58,23 +58,6 @@ class Database
     /**
      * @ignore
      */
-    const CACHE_NONE = 0;
-    /**
-     * @ignore
-     */
-    const CACHE_MEMORY = 1;
-    /**
-     * @ignore
-     */
-    const CACHE_FILE = 2;
-    /**
-     * @ignore
-     */
-    const CACHE_STORAGE = 4;
-
-    /**
-     * @ignore
-     */
     const ERROR_NONE = 0;
     /**
      * @ignore

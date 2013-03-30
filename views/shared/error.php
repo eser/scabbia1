@@ -1,14 +1,15 @@
 <?php
-    use Scabbia\Extensions\Html\Html;
-    use Scabbia\Extensions\Http\Http;
-    use Scabbia\Framework;
+use Scabbia\Extensions\Html\Html;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Framework;
 
-	echo Html::doctype('html5');
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<?php echo Html::doctype('html5'); ?>
+<html lang="en-US">
 <head>
-	<title>Scabbia Framework</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
+
+	<title><?php echo _('Scabbia Framework'); ?></title>
 
 	<link type="text/css" href="<?php echo Http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />
 	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core'); ?>"></script>

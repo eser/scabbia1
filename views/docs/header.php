@@ -1,20 +1,18 @@
 <?php
-	use Scabbia\Extensions\Html\Html;
-	use Scabbia\Extensions\Http\Http;
-	use Scabbia\Framework;
+use Scabbia\Extensions\Html\Html;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Framework;
+
 ?>
 <?php echo Html::doctype('html5'); ?>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US">
 <head>
 	<meta charset="utf-8" />
 
-	<title><?php echo _('Scabbia: Docs'); ?></title>
+	<title><?php echo _('Scabbia Framework: Docs'); ?></title>
 
-	<link type="text/css" href="<?php echo Http::url('scabbia.css?reset,docs'); ?>" rel="stylesheet" media="all" />
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo Http::url('rss'); ?>" />
-	<link rel="pingback" href="<?php echo Http::url('xmlrpc'); ?>" />
-
-	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?docs'); ?>"></script>
+	<link type="text/css" href="<?php echo Http::url('scabbia.css?core,docs'); ?>" rel="stylesheet" media="all" />
+	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core'); ?>"></script>
 </head>
 <body>
 <script type="text/javascript">

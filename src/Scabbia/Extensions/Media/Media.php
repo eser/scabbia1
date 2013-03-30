@@ -31,7 +31,7 @@ class Media
     /**
      * @ignore
      */
-    public static $cacheAge;
+    public static $cacheTtl;
 
 
     /**
@@ -40,7 +40,7 @@ class Media
     public static function extensionLoad()
     {
         self::$cachePath = Io::translatePath('{writable}cache/media/', true);
-        self::$cacheAge = intval(Config::get('media/cacheAge', '120'));
+        self::$cacheTtl = (int)Config::get('media/cacheTtl', 120);
     }
 
     /**
@@ -63,6 +63,8 @@ class Media
 
     /**
      * @ignore
+     *
+     * @todo use Io::garbageCollect
      */
     public static function garbageCollect()
     {
@@ -74,7 +76,7 @@ class Media
                 continue;
             }
 
-            if (time() - $tFile->getMTime() < self::$cacheAge) {
+            if (time() - $tFile->getMTime() < self::$cacheTtl) {
                 continue;
             }
 

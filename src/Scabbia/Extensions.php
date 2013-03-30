@@ -34,7 +34,13 @@ class Extensions
     public static function load()
     {
         $tFiles = array();
-        Io::glob(Framework::$corepath . 'src/Scabbia/Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
+        Io::glob(
+            Framework::$corepath . 'src/Scabbia/Extensions/',
+            null,
+            Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE,
+            '',
+            $tFiles
+        );
         if (!is_null(Framework::$apppath)) {
             Io::glob(Framework::$apppath . 'Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
         }
@@ -65,6 +71,7 @@ class Extensions
      * Get Subclasses
      *
      * @param string $uClassName name of the parent class
+     * @param bool   $uJustKeys  return keys without reflection instances
      *
      * @return array list of sub classes
      */

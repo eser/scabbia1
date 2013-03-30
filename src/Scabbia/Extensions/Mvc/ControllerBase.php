@@ -78,7 +78,8 @@ class ControllerBase implements LoggerAwareInterface
     /**
      * @ignore
      */
-    public function setLogger(LoggerInterface $uLogger) {
+    public function setLogger(LoggerInterface $uLogger)
+    {
         $this->logger = $uLogger;
     }
 
@@ -125,7 +126,7 @@ class ControllerBase implements LoggerAwareInterface
 
             // fallback 3
             $tMethod = 'otherwise';
-            if($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
+            if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
                 break;
             }
 
@@ -140,7 +141,11 @@ class ControllerBase implements LoggerAwareInterface
             'params' => $uParams,
             'query' => isset($uInput['query']) ? $uInput['query'] : ''
         );
-        $this->view = $this->route['controller'] . '/' . $this->route['action'] . '.' . Config::get('mvc/view/defaultViewExtension', 'php');
+        $this->view = $this->route['controller'] .
+            '/' .
+            $this->route['action'] .
+            '.' .
+            Config::get('mvc/view/defaultViewExtension', 'php');
 
         $this->prerender->invoke();
 

@@ -23,7 +23,7 @@ use Scabbia\Framework;
  *
  * @todo direct api query like /me/home
  */
-class fb
+class Fb
 {
     /**
      * @ignore
@@ -72,18 +72,20 @@ class fb
         self::$appRedirectUri = Config::get('facebook/APP_REDIRECT_URI');
 
         if (is_null(self::$api)) {
-            self::$api = new Facebook(array(
-                                           'appId' => self::$appId,
-                                           'secret' => self::$appSecret,
-                                           'cookie' => true,
-                                           'fileUpload' => (self::$appFileUpload == '1')
-                                      ));
+            self::$api = new Facebook(
+                array(
+                    'appId' => self::$appId,
+                    'secret' => self::$appSecret,
+                    'cookie' => true,
+                    'fileUpload' => (self::$appFileUpload == '1')
+                )
+            );
         }
 
         self::$userId = self::$api->getUser();
 
         $tUserId = Session::get('fbUserId', null);
-        if (is_null($tUserId)) { // || self::$userId != intval($tUserId)
+        if (is_null($tUserId)) { // || self::$userId != (int)$tUserId
             self::resetSession();
         }
     }
@@ -172,10 +174,12 @@ class fb
      */
     public static function getLoginUrl($uPermissions, $uRedirectUri = null)
     {
-        $tLoginUrl = self::$api->getLoginUrl(array(
-                                                  'scope' => $uPermissions,
-                                                  'redirect_uri' => String::coalesce($uRedirectUri, self::$appRedirectUri)
-                                             ));
+        $tLoginUrl = self::$api->getLoginUrl(
+            array(
+                'scope' => $uPermissions,
+                'redirect_uri' => String::coalesce($uRedirectUri, self::$appRedirectUri)
+            )
+        );
 
         return $tLoginUrl;
     }
@@ -185,7 +189,11 @@ class fb
      */
     public static function checkLogin($uPermissions, $uRequiredPermissions = null, $uRedirectUri = null)
     {
-        if (self::$userId == 0 || (!is_null($uRequiredPermissions) && strlen($uRequiredPermissions) > 0 && !self::checkUserPermission($uRequiredPermissions))) {
+        if (self::$userId == 0 || (
+            !is_null($uRequiredPermissions) &&
+            strlen($uRequiredPermissions) > 0 &&
+            !self::checkUserPermission($uRequiredPermissions)
+        )) {
             $tLoginUrl = self::getLoginUrl($uPermissions, $uRedirectUri);
             Session::remove('fb_me_permissions');
             header('Location: ' . $tLoginUrl, true);
@@ -292,7 +300,8 @@ class fb
         }
 
         if (!isset($uExtra['fields'])) {
-            $uExtra['fields'] = 'name,first_name,last_name,username,quotes,gender,email,timezone,locale,verified,updated_time,picture,link';
+            $uExtra['fields'] = 'name,first_name,last_name,username,quotes,gender,email' .
+                                'timezone,locale,verified,updated_time,picture,link';
         }
 
         return self::get('/me', true, $uExtra);
@@ -345,18 +354,4 @@ class fb
 
         return self::get('/me/friends', true, $uExtra);
     }
-
-    // public static function getAccessToken($uCode)
-    // {
-    //     $tResult = file_get_contents(BaseFacebook::$DOMAIN_MAP['graph'] . 'oauth/access_token?client_id=' . self::$appId . '&redirect_uri=' . urlencode(self::$appRedirectUri) . '&client_secret=' . self::$appSecret . '&code=' . $uCode);
-    //
-    //     return ($tResult == 'true');
-    // }
-
-    // public static function userLikedPage($uFacebookId, $uAccessToken)
-    // {
-    //     $tResult = file_get_contents(BaseFacebook::$DOMAIN_MAP['api'] . 'method/pages.isFan?page_id=' . self::$appPageId . '&uid=' . $uFacebookId . '&access_token=' . $uAccessToken . '&format=json');
-    //
-    //     return ($tResult == 'true');
-    // }
 }

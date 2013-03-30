@@ -77,13 +77,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function keyExists($uKey, $uNullValue = true)
+    public function keyExists($uKey)
     {
-        if ($uNullValue) {
-            return array_key_exists($uKey, $this->tag['items']);
-        }
-
-        return isset($this->tag['items'][$uKey]);
+        return array_key_exists($uKey, $this->tag['items']);
     }
 
     /**

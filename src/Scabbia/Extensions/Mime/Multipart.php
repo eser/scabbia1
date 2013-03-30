@@ -93,36 +93,36 @@ class Multipart
 
         if ($uHeaders) {
             $tHeaders = & $this->headers;
-            if (!array_key_exists('MIME-Version', $tHeaders)) {
+            if (!isset($tHeaders['MIME-Version'])) {
                 $tHeaders['MIME-Version'] = '1.0';
             }
 
             if (count($this->parts) > 0) {
                 $tPart = $this->parts[0];
 
-                if (!array_key_exists('Content-Type', $tHeaders)) {
+                if (!isset($tHeaders['Content-Type'])) {
                     if ($this->boundaryType == self::ALTERNATIVE) {
                         $tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
                     } else {
                         $tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;
 
-                        if (array_key_exists('Content-Id', $tPart->headers)) {
+                        if (isset($tPart->headers['Content-Id'])) {
                             $tHeaders['Content-Type'] .= '; start="' . $tPart->headers['Content-Id'] . '"';
                         }
                     }
 
-                    if (array_key_exists('Content-Type', $tPart->headers)) {
+                    if (isset($tPart->headers['Content-Type'])) {
                         $tContentType = explode(';', $tPart->headers['Content-Type'], 2);
                         $tHeaders['Content-Type'] .= '; type="' . $tContentType[0] . '"';
                     }
                 }
             }
 
-            if (!array_key_exists('Content-Disposition', $tHeaders) && strlen($this->filename) > 0) {
+            if (!isset($tHeaders['Content-Disposition']) && strlen($this->filename) > 0) {
                 $tHeaders['Content-Disposition'] = 'attachment; filename=' . $this->filename;
             }
 
-            if (!array_key_exists('Content-Length', $tHeaders)) {
+            if (!isset($tHeaders['Content-Length'])) {
                 $tHeaders['Content-Length'] = strlen($tBody);
             }
 

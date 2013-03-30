@@ -103,20 +103,24 @@ class Assets
         }
 
         $tType = $tSelectedPack['type'];
-        $tCacheTtl = isset($tSelectedPack['cacheTtl']) ? $tSelectedPack['cacheTtl'] : 0;
+        $tCacheTtl = isset($tSelectedPack['cacheTtl']) ? (int)$tSelectedPack['cacheTtl'] : 0;
         $tFilename = $uName;
         foreach ($uClasses as $tClassName) {
             $tFilename .= '_' . $tClassName;
         }
         $tFilename .= '.' . $tType;
 
-        $tCompileAge = isset($tSelectedPack['compiledAge']) ? $tSelectedPack['compiledAge'] : 120;
         $tMimetype = Mime::getType($tType);
         header('Content-Type: ' . $tMimetype, true);
 
         $tCache = Datasources::get('fileCache');
-        $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
-        if ($tCachedData !== false) {
+        $tGenerate = (Framework::$development >= 1);
+
+        if (!$tGenerate) {
+            $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
+        }
+
+        if (!$tGenerate && $tCachedData !== false) {
             echo $tCachedData;
         } else {
             $tContent = '';

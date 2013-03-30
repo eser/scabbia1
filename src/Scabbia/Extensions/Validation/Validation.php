@@ -72,7 +72,7 @@ class Validation
     {
         if (!is_null($uArray)) {
             foreach (self::$rules as $tRule) {
-                if (!array_key_exists($tRule->field, $uArray)) {
+                if (!isset($uArray[$tRule->field])) {
                     if ($tRule->type == 'isExist') {
                         self::addSummary($tRule->field, $tRule->errorMessage);
                     }
@@ -83,7 +83,10 @@ class Validation
                 $tArgs = $tRule->args;
                 array_unshift($tArgs, $uArray[$tRule->field]);
 
-                if (!call_user_func_array('Scabbia\\Extensions\\Validation\\Contracts::' . $tRule->type, $tArgs)->check()) {
+                if (!call_user_func_array(
+                    'Scabbia\\Extensions\\Validation\\Contracts::' . $tRule->type,
+                    $tArgs
+                )->check()) {
                     self::addSummary($tRule->field, $tRule->errorMessage);
                 }
             }
@@ -100,7 +103,7 @@ class Validation
         $uArgs = func_get_args();
 
         if (count($uArgs) > 0) {
-            return array_key_exists($uArgs[0], self::$summary);
+            return isset(self::$summary[$uArgs[0]]);
         }
 
         return (count(self::$summary) > 0);
@@ -111,7 +114,7 @@ class Validation
      */
     public static function getErrors($uKey)
     {
-        if (!array_key_exists($uKey, self::$summary)) {
+        if (!isset(self::$summary[$uKey])) {
             return false;
         }
 

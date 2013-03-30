@@ -129,7 +129,9 @@ class Html
                 $tOutput .= ' class="selected"';
             }
 
-            $tOutput .= '><input type="radio" name="' . String::dquote($uName) . '" value="' . String::dquote($tKey) . '"';
+            $tOutput .= '><input type="radio" name="' .
+                String::dquote($uName) .
+                '" value="' . String::dquote($tKey) . '"';
 
             if ($uDefault == $tKey) {
                 $tOutput .= ' checked="checked"';
@@ -155,7 +157,9 @@ class Html
                 $tItem .= ' class="selected"';
             }
 
-            $tItem .= '><input type="radio" name="' . String::dquote($uName) . '" value="' . String::dquote($tKey) . '"';
+            $tItem .= '><input type="radio" name="' .
+                String::dquote($uName) . '" value="' .
+                String::dquote($tKey) . '"';
 
             if ($uDefault == $tKey) {
                 $tItem .= ' checked="checked"';
@@ -270,14 +274,42 @@ class Html
         if ($tPages > 1) {
             if ($tCurrent <= 1) {
                 if ($uOptions['firstlast']) {
-                    $tResult .= String::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+                    $tResult .= String::format(
+                        $uOptions['passivelink'],
+                        array(
+                             'root' => Framework::$siteroot,
+                             'page' => '1',
+                             'pagetext' => '&lt;&lt;'
+                        )
+                    );
                 }
-                $tResult .= String::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;'));
+                $tResult .= String::format(
+                    $uOptions['passivelink'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => '1',
+                         'pagetext' => '&lt;'
+                    )
+                );
             } else {
                 if ($uOptions['firstlast']) {
-                    $tResult .= String::format($uOptions['link'], array('root' => Framework::$siteroot, 'page' => '1', 'pagetext' => '&lt;&lt;'));
+                    $tResult .= String::format(
+                        $uOptions['link'],
+                        array(
+                             'root' => Framework::$siteroot,
+                             'page' => '1',
+                             'pagetext' => '&lt;&lt;'
+                        )
+                    );
                 }
-                $tResult .= String::format($uOptions['link'], array('root' => Framework::$siteroot, 'page' => $tCurrent - 1, 'pagetext' => '&lt;'));
+                $tResult .= String::format(
+                    $uOptions['link'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => $tCurrent - 1,
+                         'pagetext' => '&lt;'
+                    )
+                );
             }
 
             if ($tStart > 1) {
@@ -289,9 +321,23 @@ class Html
 
         for ($i = $tStart; $i <= $tEnd; $i++) {
             if ($tCurrent == $i) {
-                $tResult .= String::format($uOptions['activelink'], array('root' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
+                $tResult .= String::format(
+                    $uOptions['activelink'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => $i,
+                         'pagetext' => $i
+                    )
+                );
             } else {
-                $tResult .= String::format($uOptions['link'], array('root' => Framework::$siteroot, 'page' => $i, 'pagetext' => $i));
+                $tResult .= String::format(
+                    $uOptions['link'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => $i,
+                         'pagetext' => $i
+                    )
+                );
             }
 
             if ($i != $tEnd) {
@@ -307,14 +353,38 @@ class Html
             }
 
             if ($tCurrent >= $tPages) {
-                $tResult .= String::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;'));
+                $tResult .= String::format(
+                    $uOptions['passivelink'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => $tPages,
+                         'pagetext' => '&gt;'
+                    )
+                );
                 if ($uOptions['firstlast']) {
-                    $tResult .= String::format($uOptions['passivelink'], array('root' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+                    $tResult .= String::format(
+                        $uOptions['passivelink'],
+                        array(
+                             'root' => Framework::$siteroot,
+                             'page' => $tPages,
+                             'pagetext' => '&gt;&gt;'
+                        )
+                    );
                 }
             } else {
-                $tResult .= String::format($uOptions['link'], array('root' => Framework::$siteroot, 'page' => $tCurrent + 1, 'pagetext' => '&gt;'));
+                $tResult .= String::format(
+                    $uOptions['link'],
+                    array(
+                         'root' => Framework::$siteroot,
+                         'page' => $tCurrent + 1,
+                         'pagetext' => '&gt;'
+                    )
+                );
                 if ($uOptions['firstlast']) {
-                    $tResult .= String::format($uOptions['link'], array('root' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;'));
+                    $tResult .= String::format(
+                        $uOptions['link'],
+                        array('root' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;')
+                    );
                 }
             }
         }
@@ -334,27 +404,41 @@ class Html
                 break;
             case 'xhtml11':
             case 'xhtml1.1':
-                return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' .
+                    PHP_EOL;
                 break;
             case 'xhtml1':
             case 'xhtml1-strict':
-                return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' .
+                    PHP_EOL;
                 break;
             case 'xhtml1-trans':
-                return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' .
+                    PHP_EOL;
                 break;
             case 'xhtml1-frame':
-                return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' .
+                    PHP_EOL;
                 break;
             case 'html4-strict':
-                return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' .
+                    PHP_EOL;
                 break;
             case 'html4':
             case 'html4-trans':
-                return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' .
+                    PHP_EOL;
                 break;
             case 'html4-frame':
-                return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">' . PHP_EOL;
+                return
+                    '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">' .
+                    PHP_EOL;
                 break;
         }
 

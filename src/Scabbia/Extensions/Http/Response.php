@@ -274,7 +274,14 @@ class Response
                 return;
             }
 
-            header('Cache-Control: ' . (($uMustRevalidate) ? 'no-store, no-cache, must-revalidate' : 'no-store, no-cache'), true);
+            header(
+                'Cache-Control: ' . (
+                    ($uMustRevalidate) ?
+                    'no-store, no-cache, must-revalidate' :
+                    'no-store, no-cache'
+                ),
+                true
+            );
 
             return;
         }

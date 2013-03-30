@@ -42,7 +42,11 @@ class Router
 
         self::$rewrites = array();
         foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
-            self::addRewrite($tRewriteList['match'], $tRewriteList['forward'], isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10);
+            self::addRewrite(
+                $tRewriteList['match'],
+                $tRewriteList['forward'],
+                isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10
+            );
         }
 
         self::$routes = array();
@@ -54,7 +58,12 @@ class Router
                 }
             }
 
-            self::addRoute($tRouteList['match'], $tRouteList['callback'], $tDefaults, isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10);
+            self::addRoute(
+                $tRouteList['match'],
+                $tRouteList['callback'],
+                $tDefaults,
+                isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10
+            );
         }
     }
 

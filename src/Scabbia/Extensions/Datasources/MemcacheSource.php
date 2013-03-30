@@ -75,14 +75,16 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
     /**
      * @ignore
      */
-    public function connectionClose() {
+    public function connectionClose()
+    {
         $this->connection->close();
     }
 
     /**
      * @ignore
      */
-    public function serverInfo() {
+    public function serverInfo()
+    {
         return $this->connection->getVersion();
     }
 

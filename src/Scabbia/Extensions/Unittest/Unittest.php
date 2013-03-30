@@ -59,7 +59,7 @@ class Unittest
     {
         $tScope = end(self::$stack);
 
-        if (!array_key_exists($tScope['name'], self::$report)) {
+        if (!isset(self::$report[$tScope['name']])) {
             self::$report[$tScope['name']] = array();
         }
 

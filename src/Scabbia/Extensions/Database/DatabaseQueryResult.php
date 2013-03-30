@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Database;
 
-use Scabbia\Extensions\Cache\Cache;
 use Scabbia\Extensions\Database\Database;
 
 /**
@@ -42,10 +41,6 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
-    public $_directory = null;
-    /**
-     * @ignore
-     */
     public $_filename = null;
     /**
      * @ignore
@@ -68,13 +63,12 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
-    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching, $uDirectory, $uFilename)
+    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching, $uFilename)
     {
         $this->_query = $uQuery;
         $this->_parameters = $uParameters;
         $this->_database = $uDatabase;
         $this->_caching = $uCaching;
-        $this->_directory = $uDirectory;
         $this->_filename = $uFilename;
     }
 
@@ -336,15 +330,11 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
 
         $this->_cursor = 0;
 
-        if (($this->_caching & Database::CACHE_MEMORY) > 0) {
-            $this->_database->cache[$this->_filename] = $this;
+        if (!is_null($this->_caching)) {
+            Datasources::get($this->_caching)->cacheSet($this->_filename, $this);
         }
 
         $this->_database = null;
-
-        if (($this->_caching & Database::CACHE_FILE) > 0) {
-            Cache::fileSet($this->_directory, $this->_filename, $this);
-        }
     }
 
     /**

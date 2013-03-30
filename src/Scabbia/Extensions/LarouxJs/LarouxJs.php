@@ -29,8 +29,9 @@ class LarouxJs
     {
         if (Request::$isAjax && Request::$isLarouxJs) {
             $tLastContentType = Response::sentHeaderValue('Content-Type');
-            $tContent = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true')
-                . ', "errorMessage": ' . (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true));
+            $tContent = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true') .
+                ', "errorMessage": ' .
+                (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true));
 
             if ($tLastContentType == false) {
                 header('Content-Type: application/json', true);
@@ -75,7 +76,11 @@ EOD;
                     continue;
                 }
 
-                $tLines[] = "\t\t\t\t" . $tMethods[1] . ': function(values, fnc) { $l.ajax.post(\'' . Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) . '\', values, fnc); }';
+                $tLines[] = "\t\t\t\t" .
+                    $tMethods[1] .
+                    ': function(values, fnc) { $l.ajax.post(\'' .
+                    Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) .
+                    '\', values, fnc); }';
             }
             $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
         }

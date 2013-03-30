@@ -27,7 +27,8 @@ class AutoModels
     /**
      * @ignore
      */
-    public static function load() {
+    public static function load()
+    {
         if (is_null(self::$autoModels)) {
             self::$autoModels = array();
 

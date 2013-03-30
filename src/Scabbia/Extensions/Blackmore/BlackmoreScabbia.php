@@ -129,7 +129,14 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 
         $tConfig = Config::load();
         Extensions::load();
-        $tCompiled .= Utils::printFile('<' . '?php Config::$default = ' . var_export($tConfig, true) . '; Extensions::$configFiles = ' . var_export(Extensions::$configFiles, true) . '; ?' . '>');
+        $tCompiled .= Utils::printFile(
+            '<' . '?php Config::$default = ' .
+            var_export($tConfig, true) .
+            '; Extensions::$configFiles = ' .
+            var_export(Extensions::$configFiles, true) .
+            '; ?' .
+            '>'
+        );
 
         // download files
         if (isset($tConfig['/downloadList'])) {
@@ -186,8 +193,7 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
 
     /**
      * Purges the files in given directory.
-     *
-     * @param string $uFolder destination directory
+     * @todo use garbage collector
      */
     public static function purge()
     {

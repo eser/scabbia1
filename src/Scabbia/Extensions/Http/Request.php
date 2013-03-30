@@ -111,7 +111,12 @@ class Request
         }
 
         // $https
-        self::$https = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == '1' || strcasecmp($_SERVER['HTTPS'], 'on') == 0));
+        self::$https = (
+            isset($_SERVER['HTTPS']) && (
+                $_SERVER['HTTPS'] == '1' ||
+                strcasecmp($_SERVER['HTTPS'], 'on') == 0
+            )
+        );
 
         // $protocol
         if (isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0') {
@@ -152,8 +157,12 @@ class Request
         // self::$browser = get_browser(null, true);
 
         // $languages, $contentTypes
-        self::$languages = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? Http::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true) : array();
-        self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ? Http::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) : array();
+        self::$languages = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
+            Http::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true) :
+            array();
+        self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ?
+            Http::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) :
+            array();
 
         // $queryString
         self::$queryString = $_SERVER['QUERY_STRING'];
@@ -234,23 +243,12 @@ class Request
         return in_array(strtolower($uContentType), self::$contentTypes);
     }
 
-//        public static function is($uType)
-//        {
-//            $tType = 'is' . ucfirst($uType);
-//            return self::${$tType};
-//        }
-//
-//        public static function __callStatic($uMethod, $uArgs)
-//        {
-//            return self::${$uMethod};
-//        }
-
     /**
      * @ignore
      */
     public static function get($uKey, $uDefault = null, $uFilter = null)
     {
-        if (!array_key_exists($uKey, $_GET)) {
+        if (!isset($_GET[$uKey])) {
             return $uDefault;
         }
 
@@ -273,7 +271,7 @@ class Request
      */
     public static function post($uKey, $uDefault = null, $uFilter = null)
     {
-        if (!array_key_exists($uKey, $_POST)) {
+        if (!isset($_POST[$uKey])) {
             return $uDefault;
         }
 
@@ -296,7 +294,7 @@ class Request
      */
     public static function cookie($uKey, $uDefault = null, $uFilter = null)
     {
-        if (!array_key_exists($uKey, $_COOKIE)) {
+        if (!isset($_COOKIE[$uKey])) {
             return $uDefault;
         }
 
@@ -326,7 +324,7 @@ class Request
         }
 
         foreach ((array)$uKeys as $tKey) {
-            if (!array_key_exists($tKey, $_GET)) {
+            if (!isset($_GET[$tKey])) {
                 continue;
             }
 
@@ -360,7 +358,7 @@ class Request
         }
 
         foreach ((array)$uKeys as $tKey) {
-            if (!array_key_exists($tKey, $_POST)) {
+            if (!isset($_POST[$tKey])) {
                 continue;
             }
 
@@ -394,7 +392,7 @@ class Request
         }
 
         foreach ((array)$uKeys as $tKey) {
-            if (!array_key_exists($tKey, $_COOKIE)) {
+            if (!isset($_COOKIE[$tKey])) {
                 continue;
             }
 

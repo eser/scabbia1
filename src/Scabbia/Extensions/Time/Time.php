@@ -144,7 +144,12 @@ class Time
         }
 
         // 4byte: hi=date, lo=time
-        return (($tTimeArray['year'] - 1980) << 25) | ($tTimeArray['mon'] << 21) | ($tTimeArray['mday'] << 16) | ($tTimeArray['hours'] << 11) | ($tTimeArray['minutes'] << 5) | ($tTimeArray['seconds'] >> 1);
+        return (($tTimeArray['year'] - 1980) << 25) |
+            ($tTimeArray['mon'] << 21) |
+            ($tTimeArray['mday'] << 16) |
+            ($tTimeArray['hours'] << 11) |
+            ($tTimeArray['minutes'] << 5) |
+            ($tTimeArray['seconds'] >> 1);
     }
 
     /**
@@ -169,7 +174,14 @@ class Time
     {
         if (!is_numeric($uTime)) {
             $tTime = date_parse_from_format($uFormat, $uTime);
-            $uTime = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
+            $uTime = mktime(
+                $tTime['hour'],
+                $tTime['minute'],
+                $tTime['second'],
+                $tTime['month'],
+                $tTime['day'],
+                $tTime['year']
+            ); // $tTime['is_dst']
         }
 
         return date('Y-m-d H:i:s', $uTime);
@@ -182,7 +194,14 @@ class Time
     {
         $tTime = date_parse_from_format('Y-m-d H:i:s', $uTime);
 
-        return mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
+        return mktime(
+            $tTime['hour'],
+            $tTime['minute'],
+            $tTime['second'],
+            $tTime['month'],
+            $tTime['day'],
+            $tTime['year']
+        ); // $tTime['is_dst']
     }
 
     /**
@@ -191,7 +210,14 @@ class Time
     public static function convert($uTime, $uSourceFormat, $uDestinationFormat = null)
     {
         $tTime = date_parse_from_format($uSourceFormat, $uTime);
-        $tTimestamp = mktime($tTime['hour'], $tTime['minute'], $tTime['second'], $tTime['month'], $tTime['day'], $tTime['year']); // $tTime['is_dst']
+        $tTimestamp = mktime(
+            $tTime['hour'],
+            $tTime['minute'],
+            $tTime['second'],
+            $tTime['month'],
+            $tTime['day'],
+            $tTime['year']
+        ); // $tTime['is_dst']
 
         if (is_null($uDestinationFormat)) {
             return $tTimestamp;

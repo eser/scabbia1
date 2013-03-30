@@ -48,7 +48,14 @@ class Access
         self::$maintenanceExcludeIps = Config::get('access/maintenance/ipExcludeList', array());
 
         foreach (Config::get('access/ipFilter/ipFilterList', array()) as $tIpFilterList) {
-            if (preg_match('/^' . str_replace(array('.', '*', '?'), array('\\.', '[0-9]{1,3}', '[0-9]{1}'), $tIpFilterList['pattern']) . '$/i', $_SERVER['REMOTE_ADDR'])) {
+            if (preg_match(
+                '/^' . str_replace(
+                    array('.', '*', '?'),
+                    array('\\.', '[0-9]{1,3}', '[0-9]{1}'),
+                    $tIpFilterList['pattern']
+                ) . '$/i',
+                $_SERVER['REMOTE_ADDR']
+            )) {
                 if ($tIpFilterList['type'] == 'allow') {
                     self::$ipFilters = array();
                     continue;

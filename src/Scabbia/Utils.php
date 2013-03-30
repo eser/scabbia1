@@ -217,7 +217,7 @@ class Utils
                         $tBuffer[$tBrackets][1] .= '(?P<' . $tLast[0] . '>';
                     }
 
-                    if (array_key_exists($tLast[1], self::$regexpPresets)) {
+                    if (isset(self::$regexpPresets[$tLast[1]])) {
                         $tBuffer[$tBrackets][1] .= self::$regexpPresets[$tLast[1]] . ')';
                     } else {
                         $tBuffer[$tBrackets][1] .= $tLast[1] . ')';
@@ -287,9 +287,21 @@ class Utils
         $tPattern = self::pregFormat($uPattern);
 
         if (strpos($uModifiers, '^') === 0) {
-            $tResult = preg_replace('#^' . $tPattern . '$#' . substr($uModifiers, 1), $uReplacement, $uSubject, -1, $tCount);
+            $tResult = preg_replace(
+                '#^' . $tPattern . '$#' . substr($uModifiers, 1),
+                $uReplacement,
+                $uSubject,
+                -1,
+                $tCount
+            );
         } else {
-            $tResult = preg_replace('#' . $tPattern . '#' . $uModifiers, $uReplacement, $uSubject, -1, $tCount);
+            $tResult = preg_replace(
+                '#' . $tPattern . '#' . $uModifiers,
+                $uReplacement,
+                $uSubject,
+                -1,
+                $tCount
+            );
         }
 
         if ($tCount > 0) {

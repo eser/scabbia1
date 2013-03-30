@@ -8,7 +8,7 @@
         "fwversion":        "1.1",
         "fwdependList":     [
             "Logger",
-            "IoEx",
+            "FileSystem",
             "Models",
             "String",
             "Views"

@@ -5,19 +5,16 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\IoEx;
-
-use Scabbia\Extensions\String\String;
-use Scabbia\Utils;
+namespace Scabbia\Extensions\FileSystem;
 
 /**
- * IoEx Extension
+ * FileSystem Extension
  *
  * @package Scabbia
- * @subpackage IoEx
+ * @subpackage FileSystem
  * @version 1.1.0
  */
-class IoEx
+class FileSystem
 {
     /**
      * @ignore
@@ -55,8 +52,14 @@ class IoEx
     /**
      * @ignore
      */
-    public static function mapFlatten($uPath, $uPattern = null, $uRecursive = true, $uBasenames = false, &$uArray = null, $uPrefix = '')
-    {
+    public static function mapFlatten(
+        $uPath,
+        $uPattern = null,
+        $uRecursive = true,
+        $uBasenames = false,
+        &$uArray = null,
+        $uPrefix = ''
+    ) {
         if (is_null($uArray)) {
             $uArray = array();
         }
@@ -86,37 +89,5 @@ class IoEx
         }
 
         return $uArray;
-    }
-
-    /**
-     * @ignore
-     *
-     * @todo optionally explode by '/', sanitize between
-     */
-    public static function sanitize($uFilename, $uRemoveAccent = false, $uRemoveSpaces = false)
-    {
-        static $sReplaceChars = array('\\' => '-', '/' => '-', ':' => '-', '?' => '-', '*' => '-', '"' => '-', '\'' => '-', '<' => '-', '>' => '-', '|' => '-', '.' => '-', '+' => '-');
-
-        $tPathInfo = pathinfo($uFilename);
-        $tFilename = strtr($tPathInfo['filename'], $sReplaceChars);
-
-        if (isset($tPathInfo['extension'])) {
-            $tFilename .= '.' . strtr($tPathInfo['extension'], $sReplaceChars);
-        }
-
-        $tFilename = String::removeInvisibles($tFilename);
-        if ($uRemoveAccent) {
-            $tFilename = String::removeAccent($tFilename);
-        }
-
-        if ($uRemoveSpaces) {
-            $tFilename = strtr($tFilename, ' ', '_');
-        }
-
-        if (isset($tPathInfo['dirname']) && $tPathInfo['dirname'] != '.') {
-            return rtrim(strtr($tPathInfo['dirname'], DIRECTORY_SEPARATOR, '/'), '/') . '/' . $tFilename;
-        }
-
-        return $tFilename;
     }
 }

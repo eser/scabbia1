@@ -44,7 +44,15 @@ class MediaFile
     /**
      * @ignore
      */
-    public $sw, $sh, $sa;
+    public $sw;
+    /**
+     * @ignore
+     */
+    public $sh;
+    /**
+     * @ignore
+     */
+    public $sa;
     /**
      * @ignore
      */
@@ -95,7 +103,7 @@ class MediaFile
                     $this->image = imagecreatefromjpeg($this->source);
                     break;
                 case 'gif':
-                    $this->image = imagecreatefromgif ($this->source);
+                    $this->image = imagecreatefromgif($this->source);
                     break;
                 case 'png':
                     $this->image = imagecreatefrompng($this->source);
@@ -155,9 +163,9 @@ class MediaFile
         $tCachePath = Media::$cachePath . '/' . $uTag;
 
         if (file_exists($tCachePath)) {
-            $tAge = time() - filemtime($tCachePath);
+            $tTtl = time() - filemtime($tCachePath);
 
-            if ($tAge < Media::$cacheAge) {
+            if ($tTtl < Media::$cacheTtl) {
                 return new mediaFile($tCachePath);
             }
         }
@@ -236,26 +244,75 @@ class MediaFile
             case 'image/jpeg':
             case 'image/jpg':
                 $tImage = imagecreatetruecolor($uWidth, $uHeight);
-                $tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+                $tBackground = imagecolorallocate(
+                    $tImage,
+                    $this->background[0],
+                    $this->background[1],
+                    $this->background[2]
+                );
                 imagefill($tImage, 0, 0, $tBackground);
 
-                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                imagecopyresampled(
+                    $tImage,
+                    $this->image,
+                    $tTargetX,
+                    $tTargetY,
+                    $tSourceX,
+                    $tSourceY,
+                    $tTargetW,
+                    $tTargetH,
+                    $tSourceW,
+                    $tSourceH
+                );
                 break;
             case 'image/gif':
                 $tImage = imagecreate($uWidth, $uHeight);
-                $tBackground = imagecolorallocate($tImage, $this->background[0], $this->background[1], $this->background[2]);
+                $tBackground = imagecolorallocate(
+                    $tImage,
+                    $this->background[0],
+                    $this->background[1],
+                    $this->background[2]
+                );
                 imagefill($tImage, 0, 0, $tBackground);
 
-                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                imagecopyresampled(
+                    $tImage,
+                    $this->image,
+                    $tTargetX,
+                    $tTargetY,
+                    $tSourceX,
+                    $tSourceY,
+                    $tTargetW,
+                    $tTargetH,
+                    $tSourceW,
+                    $tSourceH
+                );
                 break;
             case 'image/png':
                 $tImage = imagecreatetruecolor($uWidth, $uHeight);
-                $tBackground = imagecolorallocatealpha($tImage, $this->background[0], $this->background[1], $this->background[2], $this->background[3]);
+                $tBackground = imagecolorallocatealpha(
+                    $tImage,
+                    $this->background[0],
+                    $this->background[1],
+                    $this->background[2],
+                    $this->background[3]
+                );
                 imagefill($tImage, 0, 0, $tBackground);
 
                 imagealphablending($tImage, true);
                 imagesavealpha($tImage, true);
-                imagecopyresampled($tImage, $this->image, $tTargetX, $tTargetY, $tSourceX, $tSourceY, $tTargetW, $tTargetH, $tSourceW, $tSourceH);
+                imagecopyresampled(
+                    $tImage,
+                    $this->image,
+                    $tTargetX,
+                    $tTargetY,
+                    $tSourceX,
+                    $tSourceY,
+                    $tTargetW,
+                    $tTargetH,
+                    $tSourceW,
+                    $tSourceH
+                );
                 break;
         }
 
@@ -310,16 +367,16 @@ class MediaFile
         // @readfile($this->source);
 
         switch ($this->mime) {
-        case 'image/jpeg':
-        case 'image/jpg':
-            imagejpeg($this->image);
-            break;
-        case 'image/gif':
-            imagegif ($this->image);
-            break;
-        case 'image/png':
-            imagepng($this->image);
-            break;
+            case 'image/jpeg':
+            case 'image/jpg':
+                imagejpeg($this->image);
+                break;
+            case 'image/gif':
+                imagegif($this->image);
+                break;
+            case 'image/png':
+                imagepng($this->image);
+                break;
         }
 
         return $this;

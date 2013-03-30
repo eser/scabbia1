@@ -64,7 +64,12 @@ class Http
         */
         $tResolved = Router::resolve($uPath);
         if ($uFull) {
-            return (Request::$https ? 'https://' : 'http://') . Request::$host . Framework::$siteroot . '/' . $tResolved[0];
+            return
+                (Request::$https ? 'https://' : 'http://') .
+                Request::$host .
+                Framework::$siteroot .
+                '/' .
+                $tResolved[0];
         }
 
         return Framework::$siteroot . '/' . $tResolved[0];
@@ -92,10 +97,13 @@ class Http
 
         //! todo internalization.
         // maybe just include?
-        Views::viewFile(self::$notfoundPage, array(
-                                           'title' => 'Error',
-                                           'message' => '404 Not Found'
-                                      ));
+        Views::viewFile(
+            self::$notfoundPage,
+            array(
+                'title' => 'Error',
+                'message' => '404 Not Found'
+            )
+        );
 
         Framework::end(1);
     }
@@ -106,7 +114,31 @@ class Http
     public static function xss($uString)
     {
         if (is_string($uString)) {
-            $tString = str_replace(array('<', '>', '"', '\'', '$', '(', ')', '%28', '%29'), array('&#60;', '&#62;', '&#34;', '&#39;', '&#36;', '&#40;', '&#41;', '&#40;', '&#41;'), $uString); // '&' => '&#38;'
+            $tString = str_replace(
+                array(
+                     '<',
+                     '>',
+                     '"',
+                     '\'',
+                     '$',
+                     '(',
+                     ')',
+                     '%28',
+                     '%29'
+                ),
+                array(
+                     '&#60;',
+                     '&#62;',
+                     '&#34;',
+                     '&#39;',
+                     '&#36;',
+                     '&#40;',
+                     '&#41;',
+                     '&#40;',
+                     '&#41;'
+                ),
+                $uString
+            ); // '&' => '&#38;'
             return $tString;
         }
 
@@ -187,7 +219,8 @@ class Http
     /**
      * @ignore
      */
-    public static function reportError(array $uParms) {
+    public static function reportError(array $uParms)
+    {
         if ($uParms['ignore']) {
             return;
         }

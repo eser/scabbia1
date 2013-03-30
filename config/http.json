@@ -40,110 +40,57 @@
                     "name":     "Windows"
                 },
                 {
-                    "match":    "os x|ppc mac|ppc",
+                    "match":    "os x|ppc",
                     "name":     "MacOS"
                 },
                 {
-                    "match":    "irix|netbsd|freebsd|openbsd|bsdi|unix|sunos|linux|debian|gnu",
+                    "match":    "irix|netbsd|freebsd|openbsd|bsdi|unix|sunos|beos|linux|debian|gnu",
                     "name":     "Unix"
+                },
+                {
+                    "match":    "android",
+                    "name":     "Android"
+                },
+                {
+                    "match":    "blackberry",
+                    "name":     "Blackberry"
+                },
+                {
+                    "match":    "iphone|ipad|ipod",
+                    "name":     "iOS"
                 }
             ],
 
             "crawlerList": [
                 {
                     "type":     "bot",
-                    "match":    "googlebot|msnbot|slurp|yahoo|askjeeves|fastcrawler|infoseek|lycos",
+                    "match":    "googlebot|msnbot|bingbot|slurp|yahoo|askjeeves|fastcrawler|infoseek|lycos|yandexbot",
                     "name":     "Searchbot"
                 },
                 {
                     "type":     "browser",
-                    "match":    "Opera",
+                    "match":    "opera",
                     "name":     "Opera"
                 },
                 {
                     "type":     "browser",
-                    "match":    "Mozilla|Firefox|Firebird|Phoenix",
-                    "name":     "Firefox"
+                    "match":    "mozilla|firefox|swiftfox|firebird|phoenix|iceweasel|swiftweasel|camino|chimera|netscape|fennec|icedragon",
+                    "name":     "Firefox/Gecko"
                 },
                 {
                     "type":     "browser",
-                    "match":    "MSIE|Internet Explorer",
+                    "match":    "msie|internet explorer|ie mobile|trident",
                     "name":     "Internet Explorer"
                 },
                 {
                     "type":     "browser",
-                    "match":    "Flock",
-                    "name":     "Flock"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Chrome",
-                    "name":     "Chrome"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Shiira",
-                    "name":     "Shiira"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Chimera",
-                    "name":     "Chimera"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Camino",
-                    "name":     "Camino"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Netscape",
-                    "name":     "Netscape"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "OmniWeb",
-                    "name":     "OmniWeb"
+                    "match":    "chrome|flock|shiira|omniweb|konqueror|rekonq|icab|maxthon|avant|yabrowser|netfront|comodo_dragon",
+                    "name":     "Chromium"
                 },
                 {
                     "type":     "browser",
                     "match":    "Safari",
                     "name":     "Safari"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Konqueror",
-                    "name":     "Konqueror"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "icab",
-                    "name":     "iCab"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Lynx",
-                    "name":     "Lynx"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "Links",
-                    "name":     "Links"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "hotjava",
-                    "name":     "HotJava"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "amaya",
-                    "name":     "Amaya"
-                },
-                {
-                    "type":     "browser",
-                    "match":    "IBrowse",
-                    "name":     "IBrowse"
                 },
                 {
                     "type":     "mobile",
@@ -152,8 +99,13 @@
                 },
                 {
                     "type":     "mobile",
-                    "match":    "iphone|ipod",
+                    "match":    "iphone|ipod|ipad",
                     "name":     "iOS"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "android",
+                    "name":     "Android"
                 },
                 {
                     "type":     "mobile",
@@ -167,8 +119,8 @@
                 },
                 {
                     "type":     "mobile",
-                    "match":    "windows ce",
-                    "name":     "Windows CE"
+                    "match":    "windows ce|windows phone",
+                    "name":     "Windows Phone"
                 },
                 {
                     "type":     "mobile",
@@ -188,7 +140,7 @@
         "datasource":   "fileCache",
         "cookie": {
             "name":     "sessid",
-            "life":     0,
+            "ttl":      0,
             "ipCheck":  false,
             "uaCheck":  true
         }
