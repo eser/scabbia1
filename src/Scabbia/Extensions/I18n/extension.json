@@ -1,6 +1,6 @@
 {
     "info": {
-        "name":             "I8n",
+        "name":             "I18n",
         "version":          "1.1.0",
         "license":          "GPLv3",
         "phpversion":       "5.3.7",

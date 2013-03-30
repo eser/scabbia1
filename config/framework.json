@@ -12,7 +12,7 @@
         "siteroot:disabled":    "/sampleapp"
     },
 
-    "i8n": {
+    "i18n": {
         "languages": [
             {
                 "id":               "en",

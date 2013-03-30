@@ -5,22 +5,22 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\I8n;
+namespace Scabbia\Extensions\I18n;
 
 use Scabbia\Config;
 use Scabbia\Framework;
 
 /**
- * I8n Extension
+ * I18n Extension
  *
  * @package Scabbia
- * @subpackage I8n
+ * @subpackage I18n
  * @version 1.1.0
  *
  * @todo translitIt
  * @todo intl extension methods
  */
-class I8n
+class I18n
 {
     /**
      * @ignore
@@ -53,7 +53,7 @@ class I8n
         if (is_null(self::$languages)) {
             self::$languages = array();
 
-            foreach (Config::get('i8n/languageList', array()) as $tLanguage) {
+            foreach (Config::get('i18n/languageList', array()) as $tLanguage) {
                 self::$languages[$tLanguage['id']] = array(
                     'key' => $tLanguage['id'],
                     'locale' => $tLanguage['locale'],

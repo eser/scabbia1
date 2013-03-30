@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Views;
 
-use Scabbia\Extensions\I8n\I8n;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Config;
 use Scabbia\Extensions;
@@ -118,7 +118,7 @@ class Views
             'root' => rtrim(Framework::$siteroot, '/')
         );
 
-        $tExtra['lang'] = I8n::$language['key'];
+        $tExtra['lang'] = I18n::$language['key'];
         $tExtra['controller'] = Mvc::current();
 
         $tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';

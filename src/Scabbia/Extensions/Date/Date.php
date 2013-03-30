@@ -5,16 +5,16 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Time;
+namespace Scabbia\Extensions\Date;
 
 /**
- * Time Extension
+ * Date Extension
  *
  * @package Scabbia
- * @subpackage Time
+ * @subpackage Date
  * @version 1.1.0
  */
-class Time
+class Date
 {
     /**
      * @ignore
