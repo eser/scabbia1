@@ -1,9 +1,29 @@
-# Installation #
+# Kurulum #
 
-Check out [the latest release](https://github.com/larukedi/Scabbia-Framework/) from its GitHub repository. Once you have a copy of Scabbia Framework available, your application needs to be configured properly.
+En güncel sürüme sahip olmak için [Github Repository](https://github.com/larukedi/Scabbia-Framework/)'i kontrol edebilirsiniz. Scabbia Framework'ün bir kopyasını elde ettikten sonra, web uygulamanızı aşağıdaki adımları takip ederek konfigure etmeniz gereklidir.
 
-## Prerequisites ##
 
-We assume that you are running **PHP 5.2** with **PDO** or **Mysqli** extensions available.
+## Gereksinimler ##
 
-You must also ensure that your web server has the **rewrite extension** installed which is configurable via `.htaccess` or `web.config` files.
+### PHP ###
+Scabbia Framework'ü kullanabilmek için tek şart **PHP 5.3.7** veya daha güncel bir PHP kurulumuna sahip olmak olsa dahi. Daha düzgün bir çalışma ortamı ve tam işlevsellik adına ekstra gereksinimler bulunmaktadır.
+
+Veritabanı desteği için **PDO** veya **Mysqli** uzantılarından birinin sunucu üzerinde kurulu olduğunu varsayıyoruz.
+
+Yine çoklu dil desteği için mbstring uzantısına gereksinim duyulmaktadır.
+
+
+### Web Sunucu ###
+Scabbia Framework Apache, IIS ve Nginx üzerinde Debian ve Windows platformlarında test edilmiştir.
+
+Eğer web sunucunuz **url rewrite** kapasitesine sahip ise, framework'e ait **Fancy URL** özelliğini kullanabileceksiniz. Bunun için kurulum paketi içerisinde ayrıca .htaccess veya web.config dosyalarını bulabilirsiniz.
+
+
+## Kurulum Adımları ##
+Aşağıdaki adımları takip ederek Scabbia Framework kurulumunu gerçekleştirebilirsiniz:
+
+* Scabbia Framework'ü [Github Repository](https://github.com/larukedi/Scabbia-Framework/)'den forklayın veya [zip paketi](https://github.com/larukedi/Scabbia-Framework/archive/master.zip) olarak indirin
+* İndirdiğiniz dosyaları web sunucuya yerleştirin
+* Dosyaları yerleştirdiğiniz web konumunu ziyaret ederek kuruluma web arabirimi üzerinden devam edin
+
+Daha sonraki adımlar için [Başlarken](gettingstarted.md) bölümü incelenebilir.
