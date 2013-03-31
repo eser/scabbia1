@@ -11,7 +11,7 @@
             "viewEngineList:development": [
                 {
                     "extension":    "md",
-                    "class":        "viewEngineMarkdown"
+                    "class":        "Scabbia\\Extensions\\Views\\ViewEngineMarkdown"
                 }
             ]
         }

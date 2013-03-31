@@ -201,19 +201,19 @@ class Assets
             throw new \Exception('asset not found.');
         }
 
-        if (isset($uSelectedDirectory['autoViewer'])) {
+        if (isset($uSelectedDirectory['autoViewer/defaultPage'])) {
             if (is_dir($tPath)) {
-                $tPath = rtrim($tPath, '/') . '/' . $uSelectedDirectory['autoViewer']['defaultPage'];
+                $tPath = rtrim($tPath, '/') . '/' . $uSelectedDirectory['autoViewer/defaultPage'];
             }
 
-            if (isset($uSelectedDirectory['autoViewer']['header'])) {
-                Views::viewFile($uSelectedDirectory['autoViewer']['header']);
+            if (isset($uSelectedDirectory['autoViewer/header'])) {
+                Views::viewFile($uSelectedDirectory['autoViewer/header']);
             }
 
             Views::viewFile($tPath);
 
-            if (isset($uSelectedDirectory['autoViewer']['footer'])) {
-                Views::viewFile($uSelectedDirectory['autoViewer']['footer']);
+            if (isset($uSelectedDirectory['autoViewer/footer'])) {
+                Views::viewFile($uSelectedDirectory['autoViewer/footer']);
             }
 
             return true;

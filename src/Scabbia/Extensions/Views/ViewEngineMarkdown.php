@@ -10,6 +10,7 @@ namespace Scabbia\Extensions\Views;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Io;
 use dflydev\markdown\MarkdownExtraParser;
 
 /**
@@ -37,7 +38,7 @@ class ViewEngineMarkdown
     public static function extensionLoad()
     {
         self::$compiledTtl = (int)Config::get('razor/templates/compiledTtl', 120);
-        Views::registerViewEngine('md', 'Scabbia\\Extensions\\Views\\ViewEngineMarkdown');
+        // Views::registerViewEngine('md', 'Scabbia\\Extensions\\Views\\ViewEngineMarkdown');
     }
 
     /**

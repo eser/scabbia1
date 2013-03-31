@@ -17,7 +17,6 @@
 
                 "autoViewer": {
                     "defaultPage":  "index.md",
-                    "viewEngine":   "viewEngineMarkdown",
                     "header":       "{core}views/docs/header.php",
                     "footer":       "{core}views/docs/footer.php"
                 }
