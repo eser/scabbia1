@@ -1,7 +1,7 @@
 <?php
 /**
  * Scabbia Framework Version 1.1
- * https://github.com/larukedi/Scabbia-Framework/
+ * http://larukedi.github.com/Scabbia-Framework/
  * Eser Ozvataf, eser@sent.com
  */
 

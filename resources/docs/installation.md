@@ -1,6 +1,6 @@
 # Kurulum #
 
-En güncel sürüme sahip olmak için [Github Repository](https://github.com/larukedi/Scabbia-Framework/)'i kontrol edebilirsiniz. Scabbia Framework'ün bir kopyasını elde ettikten sonra, web uygulamanızı aşağıdaki adımları takip ederek konfigure etmeniz gereklidir.
+En güncel sürüme sahip olmak için [Github Repository](http://larukedi.github.com/Scabbia-Framework/)'i kontrol edebilirsiniz. Scabbia Framework'ün bir kopyasını elde ettikten sonra, web uygulamanızı aşağıdaki adımları takip ederek konfigure etmeniz gereklidir.
 
 
 ## Gereksinimler ##
@@ -22,7 +22,7 @@ Eğer web sunucunuz **url rewrite** kapasitesine sahip ise, framework'e ait **Fa
 ## Kurulum Adımları ##
 Aşağıdaki adımları takip ederek Scabbia Framework kurulumunu gerçekleştirebilirsiniz:
 
-* Scabbia Framework'ü [Github Repository](https://github.com/larukedi/Scabbia-Framework/)'den forklayın veya [zip paketi](https://github.com/larukedi/Scabbia-Framework/archive/master.zip) olarak indirin
+* Scabbia Framework'ü [Github Repository](http://larukedi.github.com/Scabbia-Framework/)'den forklayın veya [zip paketi](http://larukedi.github.com/Scabbia-Framework/archive/master.zip) olarak indirin
 * İndirdiğiniz dosyaları web sunucuya yerleştirin
 * Dosyaları yerleştirdiğiniz web konumunu ziyaret ederek kuruluma web arabirimi üzerinden devam edin
 

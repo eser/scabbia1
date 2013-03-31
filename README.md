@@ -8,22 +8,14 @@ Scabbia follows the accepted standards of PHP Framework Interop Group (http://ww
 
 Installation
 ------------
-On *nix:
-``` bash
-curl -s http://getcomposer.org/installer | php
-php composer.phar install
-```
-
-On Windows:
-``` bat
-composer install
-```
+Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch composer.
 
 Requirements
 ------------
 * PHP 5.3.7+ (http://www.php.net/)
-* Composer Dependency Manager (http://getcomposer.org/)
+* Composer Dependency Manager** (http://getcomposer.org/)
 
+** Skeleton application auto-installs this requirement with other dependencies.
 
 Dependencies
 ------------

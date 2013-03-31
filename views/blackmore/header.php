@@ -29,7 +29,7 @@ use Scabbia\Extensions\String\String;
 						<a href="#" class="bgLink floatLeft"><?php echo _('Notifications:'); ?> <span class="bgCount">0</span></a>
 						<span class="bgSpacer floatLeft"></span>
 						<a href="#" class="bgLink floatLeft"><?php echo _('Users:'); ?> <span class="bgCount">0</span></a>
-						<a href="#" class="bgLink floatRight bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://eser.ozvataf.com/scabbia/'), 'http://eser.ozvataf.com/scabbia/'))); ?>" title="" data-original-title="<?php echo _('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo _('Scabbia Framework'); ?></a>
+						<a href="#" class="bgLink floatRight bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo _('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo _('Scabbia Framework'); ?></a>
 						<div class="clear"></div>
 					</div>
 				</div>
