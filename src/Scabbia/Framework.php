@@ -253,4 +253,19 @@ class Framework
 
         exit($uLevel);
     }
+
+    /**
+     * Prints milestones.
+     */
+    public static function printMilestones()
+    {
+        $tPrevious = Framework::$timestamp;
+
+        foreach (Framework::$milestones as $tMilestone) {
+            echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
+            $tPrevious = $tMilestone[1];
+        }
+
+        echo '<b>total</b> = ', number_format($tPrevious - Framework::$timestamp, 5), ' ms.<br />';
+    }
 }
