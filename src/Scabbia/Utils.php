@@ -352,4 +352,21 @@ class Utils
 
         return $tResult;
     }
+
+    /**
+     * adds new objects into given array
+     *
+     * @param array $uArray
+     * @param mixed $uIterativeObject
+     *
+     * @return array merged array
+     */
+    public static function addToArray(array &$uArray, $uIterativeObject)
+    {
+        foreach ($uIterativeObject as $tObject) {
+            $uArray[] = $tObject;
+        }
+
+        return $uArray;
+    }
 }

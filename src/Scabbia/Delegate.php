@@ -19,11 +19,7 @@ class Delegate
     /**
      * @var array   List of callbacks
      */
-    public $callbacks = array();
-    /**
-     * @var bool    Is priority sort needed or not?
-     */
-    public $prioritySortNeeded = false;
+    public $callbacks = null;
 
 
     /**
@@ -53,8 +49,11 @@ class Delegate
      */
     public function add($uCallback, $uState = null, $uPriority = 10)
     {
-        $this->callbacks[] = array($uCallback, $uState, $uPriority);
-        $this->prioritySortNeeded = true;
+        if (is_null($this->callbacks)) {
+            $this->callbacks = new \SplPriorityQueue();
+        }
+
+        $this->callbacks->insert(array($uCallback, $uState), $uPriority);
     }
 
     /**
@@ -66,27 +65,14 @@ class Delegate
     {
         $tArgs = func_get_args();
 
-        if ($this->prioritySortNeeded) {
-            usort(
-                $this->callbacks,
-                function ($uFirst, $uSecond) {
-                    if ($uFirst[2] == $uSecond[2]) {
-                        return 0;
-                    }
+        if (!is_null($this->callbacks)) {
+            foreach ($this->callbacks as $tCallback) {
+                $tEventArgs = $tArgs;
+                array_unshift($tEventArgs, $tCallback[1]);
 
-                    return ($uFirst[2] > $uSecond[2]) ? 1 : -1;
+                if (call_user_func_array($tCallback[0], $tEventArgs) === false) {
+                    return false;
                 }
-            );
-
-            $this->prioritySortNeeded = false;
-        }
-
-        foreach ($this->callbacks as $tCallback) {
-            $tEventArgs = $tArgs;
-            array_unshift($tEventArgs, $tCallback[1]);
-
-            if (call_user_func_array($tCallback[0], $tEventArgs) === false) {
-                return false;
             }
         }
 

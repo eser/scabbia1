@@ -48,7 +48,6 @@ class ViewEngineRazor
     public static function renderview($uObject)
     {
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
-
         $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
 
         if (Framework::$development >= 1 || !Io::isReadable($tOutputFile, self::$compiledTtl)) {

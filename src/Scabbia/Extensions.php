@@ -33,27 +33,42 @@ class Extensions
      */
     public static function load()
     {
-        $tFiles = array();
+        $tExtensionFiles = array();
+
         Io::glob(
             Framework::$corepath . 'src/Scabbia/Extensions/',
-            null,
-            Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE,
+            'extension.json',
+            Io::GLOB_RECURSIVE | Io::GLOB_FILES,
             '',
-            $tFiles
+            $tExtensionFiles
         );
+
         if (!is_null(Framework::$apppath)) {
-            Io::glob(Framework::$apppath . 'Extensions/', null, Io::GLOB_DIRECTORIES | Io::GLOB_RECURSIVE, '', $tFiles);
+            Io::glob(
+                Framework::$apppath . 'Extensions/',
+                'extension.json',
+                Io::GLOB_RECURSIVE | Io::GLOB_FILES,
+                '',
+                $tExtensionFiles
+            );
         }
 
-        foreach ($tFiles as $tFile) {
-            if (!file_exists($tFile . 'extension.json')) {
-                continue;
+        $tLastModified = Io::getLastModified($tExtensionFiles);
+        $tOutputFile = Io::translatePath('{writable}cache/extensions');
+
+        if (/* Framework::$development <= 0 && */ Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
+            self::$configFiles = Io::readSerialize($tOutputFile);
+        } else {
+            foreach ($tExtensionFiles as $tFile) {
+                $tSubconfig = array();
+                Config::loadFile($tSubconfig, $tFile);
+                self::$configFiles[$tSubconfig['info/name']] = $tSubconfig;
             }
 
-            $tSubconfig = array();
-            Config::loadFile($tSubconfig, $tFile . 'extension.json');
-            self::$configFiles[$tSubconfig['info/name']] = array('path' => $tFile, 'config' => $tSubconfig);
+            Io::writeSerialize($tOutputFile, self::$configFiles);
+        }
 
+        foreach (self::$configFiles as $tSubconfig) {
             if (isset($tSubconfig['eventList'])) {
                 foreach ($tSubconfig['eventList'] as $tLoad) {
                     if ($tLoad['name'] == 'load') {

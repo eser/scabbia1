@@ -242,7 +242,7 @@ class Io
     }
 
     /**
-     * Determines the file is whether readable or not.
+     * Determines the file is if readable and not expired.
      *
      * @param string    $uFile  the relative path
      * @param int       $uTtl   the time to live period in seconds
@@ -255,11 +255,20 @@ class Io
             return false;
         }
 
-        if ($uTtl >= 0 && (time() - filemtime($uFile) >= $uTtl)) {
-            return false;
-        }
+        return ($uTtl < 0 || (time() - filemtime($uFile) <= $uTtl));
+    }
 
-        return true;
+    /**
+     * Determines the file is if readable and newer than given timestamp.
+     *
+     * @param string    $uFile          the relative path
+     * @param int       $uLastModified  the time to live period in seconds
+     *
+     * @return bool the result
+     */
+    public static function isReadableAndNewer($uFile, $uLastModified = -1)
+    {
+        return (file_exists($uFile) && filemtime($uFile) >= $uLastModified);
     }
 
     /**
@@ -423,5 +432,27 @@ class Io
         $uArray = false;
 
         return $uArray;
+    }
+
+    /**
+     * Gets the last modification date from the list of files
+     *
+     * @param array|string $uFiles list of files
+     *
+     * @return int last modification
+     */
+    public static function getLastModified($uFiles)
+    {
+        $tLastModified = -1;
+
+        foreach ((array)$uFiles as $tFile) {
+            $tFileMod = filemtime($tFile);
+
+            if ($tLastModified < $tFileMod) {
+                $tLastModified = $tFileMod;
+            }
+        }
+
+        return $tLastModified;
     }
 }

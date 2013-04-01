@@ -40,7 +40,7 @@ class Router
             return;
         }
 
-        self::$rewrites = array();
+        self::$rewrites = new \SplPriorityQueue();
         foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
             self::addRewrite(
                 $tRewriteList['match'],
@@ -49,7 +49,7 @@ class Router
             );
         }
 
-        self::$routes = array();
+        self::$routes = new \SplPriorityQueue();
         foreach (Config::get('http/routeList', array()) as $tRouteList) {
             $tDefaults = array();
             foreach ($tRouteList as $tRouteListKey => $tRouteListItem) {
@@ -78,14 +78,8 @@ class Router
             $tParts = explode(' ', $tMatch, 2);
             $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-            self::$rewrites[] = array($tParts[0], $uForward, $tLimitMethods, $uPriority);
+            self::$rewrites->insert(array($tParts[0], $uForward, $tLimitMethods), $uPriority);
         }
-        usort(
-            self::$rewrites,
-            function ($uFirst, $uSecond) {
-                return strnatcmp($uFirst[3], $uSecond[3]);
-            }
-        );
     }
 
     /**
@@ -99,14 +93,8 @@ class Router
             $tParts = explode(' ', $tMatch, 2);
             $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
 
-            self::$routes[] = array($tParts[0], $uCallback, $tLimitMethods, $uDefaults, $uPriority);
+            self::$routes->insert(array($tParts[0], $uCallback, $tLimitMethods, $uDefaults), $uPriority);
         }
-        usort(
-            self::$routes,
-            function ($uFirst, $uSecond) {
-                return strnatcmp($uFirst[4], $uSecond[4]);
-            }
-        );
     }
 
     /**
@@ -118,6 +106,7 @@ class Router
 
         $tMethod = strtolower($uMethod);
 
+        // @todo use self::$routes->top() if needed.
         foreach (self::$rewrites as $tRewriteItem) {
             if (isset($tRewriteItem[2]) && !is_null($uMethod) && !in_array($tMethod, $tRewriteItem[2])) {
                 continue;
@@ -128,6 +117,7 @@ class Router
             }
         }
 
+        // @todo use self::$routes->top() if needed.
         foreach (self::$routes as $tRouteItem) {
             if (isset($tRouteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRouteItem[2])) {
                 continue;

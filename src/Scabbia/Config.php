@@ -35,25 +35,39 @@ class Config
      */
     public static function load()
     {
-        $tConfig = array();
+        $tConfigFiles = array();
 
-        foreach (Io::glob(
+        $tConfigFiles = Io::glob(
             Framework::$corepath . 'config/',
             '*.json',
-            Io::GLOB_RECURSIVE | Io::GLOB_FILES
-        ) as $tFile) {
+            Io::GLOB_RECURSIVE | Io::GLOB_FILES,
+            '',
+            $tConfigFiles
+        );
+
+        if (!is_null(Framework::$apppath)) {
+            Io::glob(
+                Framework::$apppath . 'config/',
+                '*.json',
+                Io::GLOB_RECURSIVE | Io::GLOB_FILES,
+                '',
+                $tConfigFiles
+            );
+        }
+
+        $tLastModified = Io::getLastModified($tConfigFiles);
+        $tOutputFile = Io::translatePath('{writable}cache/config');
+
+        if (/* Framework::$development <= 0 && */ Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
+            return Io::readSerialize($tOutputFile);
+        }
+
+        $tConfig = array();
+        foreach ($tConfigFiles as $tFile) {
             self::loadFile($tConfig, $tFile);
         }
 
-        if (!is_null(Framework::$apppath)) {
-            foreach (Io::glob(
-                Framework::$apppath . 'config/',
-                '*.json',
-                Io::GLOB_RECURSIVE | Io::GLOB_FILES
-            ) as $tFile) {
-                self::loadFile($tConfig, $tFile);
-            }
-        }
+        Io::writeSerialize($tOutputFile, $tConfig);
 
         return $tConfig;
     }
