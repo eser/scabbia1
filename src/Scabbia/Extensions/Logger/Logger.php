@@ -32,6 +32,10 @@ class Logger
      * @ignore
      */
     public static $line;
+    /**
+     * @var bool    Indicates the logger is currently disabled or not
+     */
+    public static $disabled = false;
 
 
     /**
@@ -66,6 +70,10 @@ class Logger
      */
     public static function errorCallback($uCode, $uMessage, $uFile, $uLine)
     {
+        if (self::$disabled) {
+            return;
+        }
+
         self::handler(
             $uMessage,
             $uCode,
@@ -79,6 +87,10 @@ class Logger
      */
     public static function exceptionCallback($uException)
     {
+        if (self::$disabled) {
+            return;
+        }
+
         self::handler(
             $uException->getMessage(),
             $uException->getCode(),
