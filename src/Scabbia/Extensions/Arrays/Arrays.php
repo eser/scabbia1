@@ -16,8 +16,6 @@ namespace Scabbia\Extensions\Arrays;
  *
  * @todo isTraversable method
  * @todo isAssoc method
- * @todo Arrays::get, Arrays::getArray with Arrays::getPath functionality
- * @todo remove Arrays::getPath
  */
 class Arrays
 {
@@ -92,8 +90,62 @@ class Arrays
     {
         $tReturn = array();
 
-        foreach (array_slice(func_get_args(), 1) as $tKey) {
-            $tReturn[$tKey] = $uArray[$tKey];
+        foreach (array_slice(func_get_args(), 1) as $tElement) {
+            $tReturn[$tElement] = isset($uArray[$tElement]) ? $uArray[$tElement] : null;
+        }
+
+        return $tReturn;
+    }
+
+    /**
+     * Accesses child element by path notation, otherwise returns default value.
+     *
+     * @param array     $uArray     array
+     * @param mixed     $uElement   key
+     * @param mixed     $uDefault   default value
+     * @param string    $uSeparator path separator
+     *
+     * @return mixed|null extracted element
+     */
+    public static function getPath(array $uArray, $uElement, $uDefault = null, $uSeparator = '/')
+    {
+        $tVariable = $uArray;
+
+        foreach (explode($uSeparator, $uElement) as $tKey) {
+            if (!isset($tVariable[$tKey])) {
+                return $uDefault;
+            }
+
+            $tVariable = $tVariable[$tKey];
+        }
+
+        return $tVariable;
+    }
+
+    /**
+     * Accesses child elements by path notation.
+     *
+     * @param array $uArray array
+     *
+     * @return array array of extracted elements
+     */
+    public static function getArrayPath(array $uArray)
+    {
+        $tReturn = array();
+
+        foreach (array_slice(func_get_args(), 1) as $tElement) {
+            $tVariable = $uArray;
+
+            foreach (explode('/', $tElement) as $tKey) {
+                if (!isset($tVariable[$tKey])) {
+                    $tVariable = null;
+                    break;
+                }
+
+                $tVariable = $tVariable[$tKey];
+            }
+
+            $tReturn[$tElement] = $tVariable;
         }
 
         return $tReturn;
@@ -116,26 +168,6 @@ class Arrays
         $uValues = array_values($uArray);
 
         return $uValues[rand(0, $tCount - 1)];
-    }
-
-    /**
-     * Accesses child elements by path notation.
-     *
-     * @param array     $uArray     array
-     * @param string    $uPath      path
-     * @param string    $uSeparator path separator
-     *
-     * @return mixed target element
-     */
-    public static function getPath(array $uArray, $uPath, $uSeparator = '/')
-    {
-        $tVariable = $uArray;
-
-        foreach (explode($uSeparator, $uPath) as $tKey) {
-            $tVariable = $tVariable[$tKey];
-        }
-
-        return $tVariable;
     }
 
     /**

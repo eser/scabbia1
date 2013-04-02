@@ -7,6 +7,7 @@
 
 namespace Scabbia\Extensions\Validation;
 
+use Scabbia\Extensions\Arrays\Arrays;
 use Scabbia\Extensions\String\String;
 use Scabbia\Extensions\Validation\ValidationRule;
 use Scabbia\Extensions;
@@ -72,14 +73,17 @@ class Validation
     {
         if (!is_null($uArray)) {
             foreach (self::$rules as $tRule) {
-                if (!isset($uArray[$tRule->field])) {
+                $tValue = Arrays::getPath($uArray, $tRule->field, $tRule->defaultValue);
+                if (is_null($tValue)) {
+                    // if it's null and also default value is not set
+                    self::addSummary($tRule->field, $tRule->errorMessage);
                     continue;
                 }
 
                 $tResult = null;
                 foreach ($tRule->conditions as $tCondition) {
                     $tArgs = $tCondition[1];
-                    array_unshift($tArgs, $uArray[$tRule->field]);
+                    array_unshift($tArgs, $tValue);
 
                     $tSingleResult = call_user_func_array(
                         'Scabbia\\Extensions\\Validation\\Conditions::' . $tCondition[0],

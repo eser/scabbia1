@@ -23,6 +23,10 @@ class ValidationRule
     /**
      * @ignore
      */
+    public $defaultValue;
+    /**
+     * @ignore
+     */
     public $conditions = array();
     /**
      * @ignore
@@ -33,9 +37,10 @@ class ValidationRule
     /**
      * @ignore
      */
-    public function __construct($uField)
+    public function __construct($uField, $uDefaultValue = null)
     {
         $this->field = $uField;
+        $this->defaultValue = $uDefaultValue;
     }
 
     /**
