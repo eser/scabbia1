@@ -19,11 +19,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public $id;
-    /**
-     * @ignore
-     */
-    public $tag;
+    public $_items;
 
 
     /**
@@ -31,11 +27,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function __construct($tArray = null)
     {
-        $this->id = null;
-        $this->tag = array();
-
-        $this->tag['items'] = is_array($tArray) ? $tArray : array();
-        $this->tag['class'] = get_class($this);
+        $this->_items = is_array($tArray) ? $tArray : array();
     }
 
     /**
@@ -43,7 +35,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function add($uItem)
     {
-        $this->tag['items'][] = $uItem;
+        $this->_items[] = $uItem;
     }
 
     /**
@@ -51,7 +43,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function addKey($uKey, $uItem)
     {
-        $this->tag['items'][$uKey] = $uItem;
+        $this->_items[$uKey] = $uItem;
     }
 
     /**
@@ -79,7 +71,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function keyExists($uKey)
     {
-        return array_key_exists($uKey, $this->tag['items']);
+        return array_key_exists($uKey, $this->_items);
     }
 
     /**
@@ -87,7 +79,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function contains($uItem)
     {
-        foreach ($this->tag['items'] as $tItem) {
+        foreach ($this->_items as $tItem) {
             if ($uItem == $tItem) {
                 return true;
             }
@@ -102,11 +94,11 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     public function count($uItem = null)
     {
         if (!isset($uItem)) {
-            return count($this->tag['items']);
+            return count($this->_items);
         }
 
         $tCounted = 0;
-        foreach ($this->tag['items'] as $tItem) {
+        foreach ($this->_items as $tItem) {
             if ($uItem != $tItem) {
                 continue;
             }
@@ -138,13 +130,13 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     {
         $tRemoved = 0;
 
-        foreach ($this->tag['items'] as $tKey => $tVal) {
+        foreach ($this->_items as $tKey => $tVal) {
             if ($uItem != $tVal) {
                 continue;
             }
 
             ++$tRemoved;
-            unset($this->tag['items'][$tKey]);
+            unset($this->_items[$tKey]);
 
             if (isset($uLimit) && $uLimit >= $tRemoved) {
                 break;
@@ -181,7 +173,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
             return 0;
         }
 
-        unset($this->tag['items'][$uKey]);
+        unset($this->_items[$uKey]);
 
         return 1;
     }
@@ -196,12 +188,12 @@ class Collection implements \ArrayAccess, \IteratorAggregate
             return 0;
         } //SPD (int)$uIndex cast
 
-        reset($this->tag['items']);
+        reset($this->_items);
         for ($i = 0; $i < $uIndex; $i++) {
-            next($this->tag['items']);
+            next($this->_items);
         }
 
-        unset($this->tag['items'][key($this->tag['items'])]);
+        unset($this->_items[key($this->_items)]);
 
         return 1;
     }
@@ -211,9 +203,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function chunk($uSize, $uPreserveKeys = false)
     {
-        $tArray = array_chunk($this->tag['items'], $uSize, $uPreserveKeys);
+        $tArray = array_chunk($this->_items, $uSize, $uPreserveKeys);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -225,9 +217,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
             $uArray = $uArray->toArrayRef();
         }
 
-        $tArray = array_combine($uArray, $this->tag['items']);
+        $tArray = array_combine($uArray, $this->_items);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -239,9 +231,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
             $uArray = $uArray->toArrayRef();
         }
 
-        $tArray = array_combine($this->tag['items'], $uArray);
+        $tArray = array_combine($this->_items, $uArray);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -249,9 +241,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function countValues()
     {
-        $tArray = array_count_values($this->tag['items']);
+        $tArray = array_count_values($this->_items);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -259,7 +251,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function diff()
     {
-        $uParms = array(&$this->tag['items']);
+        $uParms = array(&$this->_items);
         foreach (func_get_args() as $tItem) {
             if (is_subclass_of($tItem, 'Scabbia\\Extensions\\Collections\\Collection')) {
                 $uParms[] = $tItem->toArrayRef();
@@ -271,7 +263,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
         $tArray = call_user_func_array('array_diff', $uParms);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -279,9 +271,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function filter($uCallback)
     {
-        $tArray = array_filter($this->tag['items'], $uCallback);
+        $tArray = array_filter($this->_items, $uCallback);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -289,9 +281,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function flip()
     {
-        $tArray = array_flip($this->tag['items']);
+        $tArray = array_flip($this->_items);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -299,7 +291,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function intersect()
     {
-        $uParms = array(&$this->tag['items']);
+        $uParms = array(&$this->_items);
 
         foreach (func_get_args() as $tItem) {
             if (is_subclass_of($tItem, 'Scabbia\\Extensions\\Collections\\Collection')) {
@@ -312,7 +304,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
         $tArray = call_user_func_array('array_intersect', $uParms);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -320,9 +312,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function keys()
     {
-        $tArray = array_keys($this->tag['items']);
+        $tArray = array_keys($this->_items);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -330,9 +322,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function map($uCallback)
     {
-        $tArray = array_map($uCallback, $this->tag['items']);
+        $tArray = array_map($uCallback, $this->_items);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -340,7 +332,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function mergeRecursive()
     {
-        $uParms = array(&$this->tag['items']);
+        $uParms = array(&$this->_items);
 
         foreach (func_get_args() as $tItem) {
             if (is_subclass_of($tItem, 'Scabbia\\Extensions\\Collections\\Collection')) {
@@ -353,7 +345,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
         $tArray = call_user_func_array('array_merge_recursive', $uParms);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -361,7 +353,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function merge()
     {
-        $uParms = array(&$this->tag['items']);
+        $uParms = array(&$this->_items);
         foreach (func_get_args() as $tItem) {
             if (is_subclass_of($tItem, 'Scabbia\\Extensions\\Collections\\Collection')) {
                 $uParms[] = $tItem->toArrayRef();
@@ -373,7 +365,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
         $tArray = call_user_func_array('array_merge', $uParms);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -381,9 +373,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function pad($uSize, $uValue)
     {
-        $tArray = array_pad($this->tag['items'], $uSize, $uValue);
+        $tArray = array_pad($this->_items, $uSize, $uValue);
 
-        return new $this->tag['class'] ($tArray);
+        return new static($tArray);
     }
 
     /**
@@ -391,7 +383,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function pop()
     {
-        return array_pop($this->tag['items']);
+        return array_pop($this->_items);
     }
 
     /**
@@ -399,7 +391,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function product()
     {
-        return array_product($this->tag['items']);
+        return array_product($this->_items);
     }
 
     /**
@@ -407,7 +399,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function push()
     {
-        $uParms = array(&$this->tag['items']);
+        $uParms = array(&$this->_items);
 
         foreach (func_get_args() as $tItem) {
             $uParms[] = $tItem;
@@ -421,7 +413,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function first()
     {
-        reset($this->tag['items']);
+        reset($this->_items);
 
         return $this->current();
     }
@@ -431,7 +423,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function last()
     {
-        return end($this->tag['items']);
+        return end($this->_items);
     }
 
     /**
@@ -439,7 +431,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function current()
     {
-        $tValue = current($this->tag['items']);
+        $tValue = current($this->_items);
 
         if ($tValue === false) {
             return null;
@@ -454,7 +446,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     public function next()
     {
         $tValue = $this->current();
-        next($this->tag['items']);
+        next($this->_items);
 
         return $tValue;
     }
@@ -464,7 +456,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function clear()
     {
-        $this->tag['items'] = array();
+        $this->_items = array();
         // $this->internalIterator->rewind();
     }
 
@@ -482,7 +474,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGet($uId)
     {
-        return $this->tag['items'][$uId];
+        return $this->_items[$uId];
     }
 
     /**
@@ -490,7 +482,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetSet($uId, $uValue)
     {
-        $this->tag['items'][$uId] = $uValue;
+        $this->_items[$uId] = $uValue;
     }
 
     /**
@@ -507,7 +499,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->tag['items']);
+        return new \ArrayIterator($this->_items);
     }
 
     /**
@@ -515,7 +507,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function toCollection()
     {
-        return new Collection($this->tag['items']);
+        return new Collection($this->_items);
     }
 
     /**
@@ -523,7 +515,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function toArray()
     {
-        return $this->tag['items'];
+        return $this->_items;
     }
 
     /**
@@ -531,14 +523,14 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function &toArrayRef()
     {
-        return $this->tag['items'];
+        return $this->_items;
     }
 
     /**
      * @ignore
      */
-    public function toString($uSeperator = '')
+    public function toString($uSeparator = '')
     {
-        return implode($uSeperator, $this->tag['items']);
+        return implode($uSeparator, $this->_items);
     }
 }

@@ -61,7 +61,7 @@ class Multipart
     /**
      * @ignore
      */
-    public function __construct($uBoundaryName = 'mimeboundary', $uBoundaryType = self::ALTERNATIVE)
+    public function __construct($uBoundaryName = 'mimeboundary', $uBoundaryType = static::ALTERNATIVE)
     {
         $this->boundaryName = $uBoundaryName;
         $this->boundaryType = $uBoundaryType;
@@ -101,7 +101,7 @@ class Multipart
                 $tPart = $this->parts[0];
 
                 if (!isset($tHeaders['Content-Type'])) {
-                    if ($this->boundaryType == self::ALTERNATIVE) {
+                    if ($this->boundaryType == static::ALTERNATIVE) {
                         $tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
                     } else {
                         $tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;

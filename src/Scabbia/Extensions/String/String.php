@@ -704,7 +704,7 @@ class String
     /**
      * @ignore
      */
-    public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeperator = null)
+    public static function parseQueryString($uString, $uParameters = '?&', $uKeys = '=', $uSeparator = null)
     {
         $tParts = explode('#', $uString, 2);
 
@@ -719,11 +719,11 @@ class String
         $tPos = 0;
         $tLen = self::length($tParts[0]);
 
-        if (!is_null($uSeperator)) {
+        if (!is_null($uSeparator)) {
             for (; $tPos < $tLen; $tPos++) {
                 $tChar = self::substr($tParts[0], $tPos, 1);
 
-                if (self::strpos($uSeperator, $tChar) !== false) {
+                if (self::strpos($uSeparator, $tChar) !== false) {
                     if (self::length($tStrings[1]) > 0) {
                         $tParsed['_segments'][] = $tStrings[1];
                     }

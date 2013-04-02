@@ -8,17 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ace0684f-6c1a-4a35-9583-33c87c2f8e21" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/TestFixture.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scabbia/Extensions/String/String.php" afterPath="$PROJECT_DIR$/src/Scabbia/Extensions/String/String.php" />
     </list>
     <ignored path="scabbia-dev.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364540546319" ignored="false" />
     <file path="/Zmodels.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363164880264" ignored="false" />
     <file path="/Zmodel.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363163871610" ignored="false" />
-    <file path="/a.dummy" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364885467168" ignored="false" />
+    <file path="/a.dummy" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364892075782" ignored="false" />
     <file path="/BlackmoreZmodelModel.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363164083540" ignored="false" />
     <file path="/BlackmoreModels.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363851970777" ignored="false" />
     <file path="$PROJECT_DIR$/../goldsoft/application/config/blackmore.json" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364766051161" ignored="false" />
@@ -45,7 +45,7 @@
     <file path="$PROJECT_DIR$/../kibristayim/vendor/larukedi/scabbia-framework/src/Scabbia/Extensions/Models/Model.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363588711812" ignored="false" />
     <file path="$PROJECT_DIR$/../kibristayim/vendor/larukedi/scabbia-framework/src/Scabbia/Extensions/Time/Time.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363588711812" ignored="false" />
     <file path="$PROJECT_DIR$/../kibristayim/vendor/larukedi/scabbia-framework/src/Scabbia/Extensions/Database/Database.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363588711812" ignored="false" />
-    <file path="/DatabaseQuery.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364629600728" ignored="false" />
+    <file path="/DatabaseQuery.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364892138028" ignored="false" />
     <file path="/DatabaseProviderMysql.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363852109813" ignored="false" />
     <file path="/DatabaseProviderPdo.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363852140178" ignored="false" />
     <file path="$PROJECT_DIR$/../kibristayim/application/views/account/editemail.cshtml" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363590460231" ignored="false" />
@@ -116,7 +116,7 @@
     <file path="/Mvc.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364394395069" ignored="false" />
     <file path="/Profiler.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364195764790" ignored="false" />
     <file path="/ProfilerData.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364675873444" ignored="false" />
-    <file path="/String.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364675150778" ignored="false" />
+    <file path="/String.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364891998712" ignored="false" />
     <file path="/Validation.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364583476688" ignored="false" />
     <file path="/View.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1363853051835" ignored="false" />
     <file path="/IoEx.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364675311791" ignored="false" />
@@ -182,7 +182,7 @@
     <file path="$PROJECT_DIR$/../muhafiz/svn-hooks/muhafiz.conf" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364557529214" ignored="false" />
     <file path="/I8n.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364582948857" ignored="false" />
     <file path="/Mimepart.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364685302388" ignored="false" />
-    <file path="/Multipart.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364583119936" ignored="false" />
+    <file path="/Multipart.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364892231679" ignored="false" />
     <file path="/Mail.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364583393745" ignored="false" />
     <file path="/Unittest.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364885151283" ignored="false" />
     <file path="/database.md" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364585522166" ignored="false" />
@@ -311,6 +311,7 @@
     <file path="$PROJECT_DIR$/../kibristayim/application/writable/cache/cshtml/c9c30c5f-header.cshtml" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364803520252" ignored="false" />
     <file path="$PROJECT_DIR$/../kibristayim/application/writable/cache/assets/scabbia.js_core_jquery_jqueryui_jqueryuifx_bootstrap_validation_maskedinput_introjs.js" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364803520252" ignored="false" />
     <file path="/TestFixture.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364888477908" ignored="false" />
+    <file path="/Collection.php" changelist="ace0684f-6c1a-4a35-9583-33c87c2f8e21" time="1364891986856" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,110 +339,7 @@
     <favorites_list name="scabbia-dev" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="ControllerBase.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="43" selection-start="2263" selection-end="2263" vertical-scroll-proportion="-3.3793104">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Io.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Io.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="297" column="5" selection-start="7594" selection-end="7594" vertical-scroll-proportion="-17.137932">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Config.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Config.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="0" selection-start="1593" selection-end="1593" vertical-scroll-proportion="-16.310345">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Framework.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Framework.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="255" column="0" selection-start="7728" selection-end="7728" vertical-scroll-proportion="-8.724138">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Unittest.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="27" selection-start="427" selection-end="427" vertical-scroll-proportion="-16.551723">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestFixture.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/TestFixture.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="35" selection-start="2426" selection-end="2426" vertical-scroll-proportion="0.45941806">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Extensions.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="65" selection-start="1774" selection-end="1774" vertical-scroll-proportion="-10.103448">
-              <folding>
-                <element signature="e#6#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Date.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Date/Date.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="32" selection-start="664" selection-end="664" vertical-scroll-proportion="-6.206897">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="debug.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="65" selection-start="1054" selection-end="1054" vertical-scroll-proportion="-11.275862">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewEngineRazor.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="0" selection-start="982" selection-end="982" vertical-scroll-proportion="0.44827586">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -465,10 +363,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/composer.json" />
-        <option value="$PROJECT_DIR$/views/blackmore/header.php" />
-        <option value="$PROJECT_DIR$/src/Scabbia/Delegate.php" />
-        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Http/Router.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Utils.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Io.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php" />
@@ -481,6 +375,10 @@
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php" />
         <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/TestFixture.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/String/String.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php" />
+        <option value="$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php" />
       </list>
     </option>
   </component>
@@ -599,32 +497,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Extensions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scabbia-dev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Scabbia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Extensions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Logger" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -786,11 +658,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32881355" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20982143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20982143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298585" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1686874" sideWeight="0.7901786" order="1" side_tool="false" content_ui="combo" />
@@ -888,23 +760,27 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Utils.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Collections/Collection.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="40" selection-start="1090" selection-end="1090" vertical-scroll-proportion="0.48085758">
-          <folding />
+        <state line="533" column="29" selection-start="9880" selection-end="9880" vertical-scroll-proportion="0.72434914">
+          <folding>
+            <element signature="e#6#126#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/TestFixture.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="0" selection-start="982" selection-end="982" vertical-scroll-proportion="0.44827586">
-          <folding />
+        <state line="7" column="0" selection-start="128" selection-end="128" vertical-scroll-proportion="0.2143951">
+          <folding>
+            <element signature="e#6#126#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Io.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Framework.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="297" column="5" selection-start="7594" selection-end="7594" vertical-scroll-proportion="-17.137932">
+        <state line="255" column="0" selection-start="7728" selection-end="7728" vertical-scroll-proportion="0.38744256">
           <folding>
             <element signature="e#6#126#0" expanded="true" />
           </folding>
@@ -913,16 +789,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Config.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="0" selection-start="1593" selection-end="1593" vertical-scroll-proportion="-16.310345">
+        <state line="69" column="0" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.72434914">
           <folding>
             <element signature="e#6#126#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Io.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="297" column="5" selection-start="7594" selection-end="7594" vertical-scroll-proportion="0.7611026">
+          <folding>
+            <element signature="e#6#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="43" selection-start="2263" selection-end="2263" vertical-scroll-proportion="0.15007657">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Collections/FileCollection.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="0" selection-start="1973" selection-end="1973" vertical-scroll-proportion="0.8162328">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="65" selection-start="1774" selection-end="1774" vertical-scroll-proportion="-10.103448">
+        <state line="67" column="65" selection-start="1774" selection-end="1774" vertical-scroll-proportion="0.4486983">
           <folding>
             <element signature="e#6#126#0" expanded="true" />
           </folding>
@@ -931,88 +830,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Date/Date.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="32" selection-start="664" selection-end="664" vertical-scroll-proportion="-6.206897">
+        <state line="41" column="32" selection-start="664" selection-end="664" vertical-scroll-proportion="0.27565083">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/blackmore/scabbia/debug.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="65" selection-start="1054" selection-end="1054" vertical-scroll-proportion="-11.275862">
+        <state line="35" column="65" selection-start="1054" selection-end="1054" vertical-scroll-proportion="0.5007657">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Framework.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Views/ViewEngineRazor.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="255" column="0" selection-start="7728" selection-end="7728" vertical-scroll-proportion="-8.724138">
-          <folding>
-            <element signature="e#6#126#0" expanded="true" />
-          </folding>
+        <state line="50" column="0" selection-start="982" selection-end="982" vertical-scroll-proportion="-0.019908117">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/Unittest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="27" selection-start="427" selection-end="427" vertical-scroll-proportion="-16.551723">
+        <state line="20" column="7" selection-start="310" selection-end="310" vertical-scroll-proportion="0.58499235">
           <folding>
             <element signature="e#6#126#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Http/Router.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="19" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.3062787">
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/Controllers.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="47" selection-start="1651" selection-end="1651" vertical-scroll-proportion="0.3568147">
+        <state line="79" column="42" selection-start="1856" selection-end="1856" vertical-scroll-proportion="0.63246554">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Delegate.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mime/Multipart.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="0" selection-start="1590" selection-end="1590" vertical-scroll-proportion="2.0520673">
-          <folding>
-            <element signature="e#6#126#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Events.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="547" selection-end="640" vertical-scroll-proportion="0.67381316">
-          <folding>
-            <element signature="e#6#126#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Logger/Logger.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="8" selection-start="1010" selection-end="1010" vertical-scroll-proportion="0.3583461">
+        <state line="106" column="36" selection-start="2205" selection-end="2205" vertical-scroll-proportion="0.69984686">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Mvc/ControllerBase.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Media/Media.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="43" selection-start="2263" selection-end="2263" vertical-scroll-proportion="-3.3793104">
+        <state line="41" column="8" selection-start="666" selection-end="666" vertical-scroll-proportion="0.6018377">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Unittest/TestFixture.php">
+    <entry file="file://$PROJECT_DIR$/src/Scabbia/Extensions/Database/DatabaseQuery.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="35" selection-start="2426" selection-end="2426" vertical-scroll-proportion="0.45941806">
-          <folding>
-            <element signature="e#6#126#0" expanded="true" />
-          </folding>
+        <state line="255" column="49" selection-start="5410" selection-end="5424" vertical-scroll-proportion="0.3323124">
+          <folding />
         </state>
       </provider>
     </entry>

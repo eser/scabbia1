@@ -246,14 +246,14 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    private static function constructWhere(array $uArray, $uIsList = false)
+    private function constructWhere(array $uArray, $uIsList = false)
     {
         $tOutput = '(';
         $tPreviousElement = null;
 
         foreach ($uArray as $tElement) {
             if (is_array($tElement)) {
-                $tOutput .= self::constructWhere($tElement, ($tPreviousElement == _IN || $tPreviousElement == _NOTIN));
+                $tOutput .= $this->constructWhere($tElement, ($tPreviousElement == _IN || $tPreviousElement == _NOTIN));
                 continue;
             }
 
@@ -281,7 +281,7 @@ class DatabaseQuery
     public function setWhere($uCondition, $uList = null)
     {
         if (is_array($uCondition)) {
-            $this->where = self::constructWhere($uCondition);
+            $this->where = $this->constructWhere($uCondition);
 
             return $this;
         }
