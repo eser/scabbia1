@@ -139,7 +139,7 @@ class BlackmoreModels
 
                 // @todo add validation type as array key
                 foreach ($tField['validation'] as $tFieldValidation) {
-                    Validation::addRule($tField['name'])->set(
+                    Validation::addRule($tField['name'])->add(
                         $tFieldValidation['type'],
                         isset($tFieldValidation['params']) ? $tFieldValidation['params'] : array()
                     )->errorMessage($tFieldValidation['message']);

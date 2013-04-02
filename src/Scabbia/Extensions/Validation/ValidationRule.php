@@ -23,11 +23,7 @@ class ValidationRule
     /**
      * @ignore
      */
-    public $type;
-    /**
-     * @ignore
-     */
-    public $args;
+    public $conditions = array();
     /**
      * @ignore
      */
@@ -45,31 +41,31 @@ class ValidationRule
     /**
      * @ignore
      */
-    public function __call($uName, $uArgs)
+    public function __call($uName, array $uArgs)
     {
-        $this->type = $uName;
-        $this->args = $uArgs;
-
-        return $this;
+        return $this->add($uName, $uArgs);
     }
 
     /**
      * @ignore
      */
-    public function set($uType, array $uArgs = array())
+    public function add($uType, array $uArgs)
     {
-        $this->type = $uType;
-        $this->args = (array)$uArgs;
+        if (strncmp($uType, 'or', 2) == 0) {
+            $uNewType = lcfirst(substr($uType, 2));
+            $this->conditions[] = array($uNewType, $uArgs, 'or');
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * @ignore
-     */
-    public function field($uField)
-    {
-        $this->field = $uField;
+        if (strncmp($uType, 'and', 3) == 0) {
+            $uNewType = lcfirst(substr($uType, 3));
+            $this->conditions[] = array($uNewType, $uArgs, 'and');
+
+            return $this;
+        }
+
+        $this->conditions[] = array($uType, $uArgs, null);
 
         return $this;
     }

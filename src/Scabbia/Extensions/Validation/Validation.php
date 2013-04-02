@@ -73,20 +73,29 @@ class Validation
         if (!is_null($uArray)) {
             foreach (self::$rules as $tRule) {
                 if (!isset($uArray[$tRule->field])) {
-                    if ($tRule->type == 'isExist') {
-                        self::addSummary($tRule->field, $tRule->errorMessage);
-                    }
-
                     continue;
                 }
 
-                $tArgs = $tRule->args;
-                array_unshift($tArgs, $uArray[$tRule->field]);
+                $tResult = null;
+                foreach ($tRule->conditions as $tCondition) {
+                    $tArgs = $tCondition[1];
+                    array_unshift($tArgs, $uArray[$tRule->field]);
 
-                if (!call_user_func_array(
-                    'Scabbia\\Extensions\\Validation\\Contracts::' . $tRule->type,
-                    $tArgs
-                )->check()) {
+                    $tSingleResult = call_user_func_array(
+                        'Scabbia\\Extensions\\Validation\\Conditions::' . $tCondition[0],
+                        $tArgs
+                    );
+
+                    if (is_null($tResult) || is_null($tCondition[2])) {
+                        $tResult = $tSingleResult;
+                    } elseif ($tCondition[2] == 'and') {
+                        $tResult = $tResult && $tSingleResult;
+                    } elseif ($tCondition[2] == 'or') {
+                        $tResult = $tResult || $tSingleResult;
+                    }
+                }
+
+                if ($tResult === false) {
                     self::addSummary($tRule->field, $tRule->errorMessage);
                 }
             }

@@ -190,15 +190,15 @@ class Io
      */
     public static function translatePath($uPath, $uCreateFolder = false)
     {
-        if (substr($uPath, 0, 6) == '{base}') {
+        if (strncmp($uPath, '{base}', 6) == 0) {
             $uPath = Framework::$basepath . substr($uPath, 6);
-        } elseif (substr($uPath, 0, 6) == '{core}') {
+        } elseif (strncmp($uPath, '{core}', 6) == 0) {
             $uPath = Framework::$corepath . substr($uPath, 6);
-        } elseif (substr($uPath, 0, 8) == '{vendor}') {
+        } elseif (strncmp($uPath, '{vendor}', 8) == 0) {
             $uPath = Framework::$vendorpath . substr($uPath, 8);
-        } elseif (substr($uPath, 0, 5) == '{app}') {
+        } elseif (strncmp($uPath, '{app}', 5) == 0) {
             $uPath = Framework::$apppath . substr($uPath, 5);
-        } elseif (substr($uPath, 0, 10) == '{writable}') {
+        } elseif (strncmp($uPath, '{writable}', 10) == 0) {
             $uPath = Framework::$apppath . 'writable/' . substr($uPath, 10);
         }
 
