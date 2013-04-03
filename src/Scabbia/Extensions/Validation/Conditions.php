@@ -15,6 +15,7 @@ namespace Scabbia\Extensions\Validation;
  * @version 1.1.0
  *
  * @todo add more conditions such as phone, hex, octal, digit, isUnique, etc.
+ * @todo use multibyte functions or String extension
  */
 class Conditions
 {

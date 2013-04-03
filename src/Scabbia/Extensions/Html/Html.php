@@ -22,6 +22,8 @@ use Scabbia\Framework;
  * @todo form fields
  * @todo Html::script
  * @todo Html::style
+ * @todo Html::list (<li> every row)
+ * @todo Html::br (<br /> implode)
  */
 class Html
 {

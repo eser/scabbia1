@@ -563,6 +563,34 @@ class String
     /**
      * @ignore
      */
+    public static function startsWith($uString, $uNeedle)
+    {
+        // $tLength = mb_strlen($uNeedle);
+        $tLength = strlen(utf8_decode($uNeedle));
+        if ($tLength == 0) {
+            return true;
+        }
+
+        return (mb_substr($uString, 0, $tLength) === $uNeedle);
+    }
+
+    /**
+     * @ignore
+     */
+    public static function endsWith($uString, $uNeedle)
+    {
+        // $tLength = mb_strlen($uNeedle);
+        $tLength = strlen(utf8_decode($uNeedle));
+        if ($tLength == 0) {
+            return true;
+        }
+
+        return (mb_substr($uString, -$tLength) === $uNeedle);
+    }
+
+    /**
+     * @ignore
+     */
     public static function substr($uString, $uStart, $uLength = null)
     {
         if (is_null($uLength)) {

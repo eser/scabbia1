@@ -93,6 +93,12 @@ class Framework
 
         self::$classLoader = $uClassLoader;
 
+        // Set internal encoding
+        mb_internal_encoding('UTF-8');
+
+        // Set error reporting occasions
+        error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
+
         if (is_null(self::$basepath)) {
             self::$basepath = strtr(
                 pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME),
@@ -103,8 +109,6 @@ class Framework
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
 
-        // Set error reporting occasions
-        error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
 
         // endpoints
         if (count(self::$endpoints) > 0) {

@@ -73,29 +73,40 @@ class Validation
     {
         if (!is_null($uArray)) {
             foreach (self::$rules as $tRule) {
-                $tValue = Arrays::getPath($uArray, $tRule->field, $tRule->defaultValue);
-                if (is_null($tValue)) {
+                $tValues = Arrays::getPath($uArray, $tRule->field, $tRule->defaultValue);
+                if (is_null($tValues)) {
                     // if it's null and also default value is not set
                     self::addSummary($tRule->field, $tRule->errorMessage);
                     continue;
                 }
 
-                $tResult = null;
-                foreach ($tRule->conditions as $tCondition) {
-                    $tArgs = $tCondition[1];
-                    array_unshift($tArgs, $tValue);
+                if (!$tRule->isArray) {
+                    $tValues = array($tValues);
+                }
 
-                    $tSingleResult = call_user_func_array(
-                        'Scabbia\\Extensions\\Validation\\Conditions::' . $tCondition[0],
-                        $tArgs
-                    );
+                foreach ($tValues as $tValue) {
+                    $tResult = null;
 
-                    if (is_null($tResult) || is_null($tCondition[2])) {
-                        $tResult = $tSingleResult;
-                    } elseif ($tCondition[2] == 'and') {
-                        $tResult = $tResult && $tSingleResult;
-                    } elseif ($tCondition[2] == 'or') {
-                        $tResult = $tResult || $tSingleResult;
+                    foreach ($tRule->conditions as $tCondition) {
+                        $tArgs = $tCondition[1];
+                        array_unshift($tArgs, $tValue);
+
+                        $tSingleResult = call_user_func_array(
+                            'Scabbia\\Extensions\\Validation\\Conditions::' . $tCondition[0],
+                            $tArgs
+                        );
+
+                        if (is_null($tResult) || is_null($tCondition[2])) {
+                            $tResult = $tSingleResult;
+                        } elseif ($tCondition[2] == 'and') {
+                            $tResult = $tResult && $tSingleResult;
+                        } elseif ($tCondition[2] == 'or') {
+                            $tResult = $tResult || $tSingleResult;
+                        }
+                    }
+
+                    if ($tResult === false) {
+                        break;
                     }
                 }
 

@@ -7,6 +7,8 @@
 
 namespace Scabbia\Extensions\Validation;
 
+use Scabbia\Extensions\String\String;
+
 /**
  * Validation Extension: ValidationRule Class
  *
@@ -20,6 +22,10 @@ class ValidationRule
      * @ignore
      */
     public $field;
+    /**
+     * @ignore
+     */
+    public $isArray;
     /**
      * @ignore
      */
@@ -39,7 +45,14 @@ class ValidationRule
      */
     public function __construct($uField, $uDefaultValue = null)
     {
-        $this->field = $uField;
+        if (String::endsWith($uField, '[]')) {
+            $this->field = String::substr($uField, 0, -2);
+            $this->isArray = true;
+        } else {
+            $this->field = $uField;
+            $this->isArray = false;
+        }
+
         $this->defaultValue = $uDefaultValue;
     }
 

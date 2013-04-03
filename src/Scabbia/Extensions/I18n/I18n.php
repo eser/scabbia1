@@ -93,7 +93,7 @@ class I18n
             }
             setlocale(LC_ALL, $tLocale[0]);
 
-            mb_internal_encoding(self::$language['internalEncoding']);
+            // mb_internal_encoding(self::$language['internalEncoding']);
             mb_http_output(self::$language['internalEncoding']);
 
             // bindtextdomain('core', Framework::$corepath . 'locale');
