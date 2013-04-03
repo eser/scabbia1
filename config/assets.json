@@ -13,7 +13,7 @@
         "directoryList:development": [
             {
                 "name":     "docs/",
-                "path":     "{core}resources/docs/",
+                "path":     "{core}docs/",
 
                 "autoViewer": {
                     "defaultPage":  "index.md",
