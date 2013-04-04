@@ -34,12 +34,12 @@
                     {
                         "type":         "file",
                         "class":        "core",
-                        "path":         "{core}resources/laroux/laroux.js"
+                        "path":         "{core}resources/laroux.js/laroux.js"
                     },
                     {
                         "type":         "file",
                         "class":        "core",
-                        "path":         "{core}resources/laroux/laroux.ui.js"
+                        "path":         "{core}resources/laroux.js/laroux.ui.js"
                     },
                     {
                         "type":         "function",
@@ -131,7 +131,7 @@
                     {
                         "type":         "file",
                         "class":        "core",
-                        "path":         "{core}resources/laroux/laroux.ui.css"
+                        "path":         "{core}resources/laroux.js/laroux.ui.css"
                     },
                     {
                         "type":         "file",
@@ -166,7 +166,7 @@
                     {
                         "type":         "file",
                         "class":        "cleditor",
-                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.editor.css"
                     },
                     {
                         "type":         "file",
