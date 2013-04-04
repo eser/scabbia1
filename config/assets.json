@@ -58,61 +58,6 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.core.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.widget.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.mouse.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.position.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.sortable.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuiwidgets",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.tabs.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuiwidgets",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.autocomplete.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuiwidgets",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.datepicker.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuifx",
-                        "path":         "{core}resources/jquery.effects/jquery.effects.core.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuifx",
-                        "path":         "{core}resources/jquery.effects/jquery.effects.highlight.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryuifx",
-                        "path":         "{core}resources/jquery.effects/jquery.effects.shake.js"
-                    },
-                    {
-                        "type":         "file",
                         "class":        "validation",
                         "path":         "{core}resources/jquery.validation/jquery.validate.js"
                     },
@@ -125,11 +70,6 @@
                         "type":         "file",
                         "class":        "cleditor",
                         "path":         "{core}resources/jquery.cleditor/jquery.cleditor.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "cleditor",
-                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.xhtml.js"
                     },
                     {
                         "type":         "file",
@@ -220,28 +160,8 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.core.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.autocomplete.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.tabs.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.datepicker.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "jqueryui",
-                        "path":         "{core}resources/jquery.ui/jquery.ui.theme.css"
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
                     },
                     {
                         "type":         "file",

@@ -2,6 +2,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    background: #FFFFFF;
+}
+
 body.login {
     background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0 0 repeat-x;
 }
@@ -23,7 +27,6 @@ body.stretch .wrapper .inner {
 }
 
 #page {
-    background: #182844;
     color: #666666;
 
     width: 100%;
@@ -189,6 +192,7 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 }
 
 #pageTopHead {
+    background: #182844;
     color: #6ABAFC;
     border-bottom: 1px solid #65A5D1;
 }
@@ -282,15 +286,16 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 }
 
 #footer {
-    border-top: 1px solid #65A5D1;
     height: 49px;
     clear: both;
     width: 100%;
 }
 
 #footer .container-fluid {
+    border-top: 1px solid #65A5D1;
+    color: #404040;
     padding: 10px;
-    color: #FFFFFF;
+    margin: 0px 20px 0px 20px;
 }
 
 #crudTable {
