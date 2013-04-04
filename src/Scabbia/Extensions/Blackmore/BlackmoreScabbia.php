@@ -149,11 +149,11 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
         $tIncludedFiles = array();
 
         //! autoloaded extensions?
-        foreach ($tConfig['/extensionList'] as $tExtensionName) {
+        foreach ($tConfig['extensionList'] as $tExtensionName) {
             $tExtension = $tExtensions[$tExtensionName];
 
-            if (isset($tExtension['config']['/includeList'])) {
-                foreach ($tExtension['config']['/includeList'] as $tFile) {
+            if (isset($tExtension['config']['includeList'])) {
+                foreach ($tExtension['config']['includeList'] as $tFile) {
                     $tFilename = $tExtension['path'] . $tFile;
 
                     if (!in_array($tFilename, $tIncludedFiles, true)) {
@@ -165,8 +165,8 @@ ini_set(\'log_errors\', ' . var_export(ini_get('log_errors'), true) . ');
         }
 
         // include files
-        if (isset($tConfig['/includeList'])) {
-            foreach ($tConfig['/includeList'] as $tInclude) {
+        if (isset($tConfig['includeList'])) {
+            foreach ($tConfig['includeList'] as $tInclude) {
                 $tIncludePath = pathinfo(Io::translatePath($tInclude));
 
                 $tFiles = Io::glob($tIncludePath['dirname'] . '/', $tIncludePath['basename'], Io::GLOB_FILES);

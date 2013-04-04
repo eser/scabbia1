@@ -35,22 +35,20 @@ class Extensions
     {
         $tExtensionFiles = array();
 
-        Io::glob(
-            Framework::$corepath . 'src/Scabbia/Extensions/',
-            'extension.json',
-            Io::GLOB_RECURSIVE | Io::GLOB_FILES,
-            '',
-            $tExtensionFiles
-        );
+        foreach (Config::get('extensionList', array()) as $tExtension) {
+            $tFile = Framework::$corepath . 'src/Scabbia/Extensions/' . $tExtension . '/extension.json';
+            if (file_exists($tFile)) {
+                $tExtensionFiles[] = $tFile;
+                continue;
+            }
 
-        if (!is_null(Framework::$apppath)) {
-            Io::glob(
-                Framework::$apppath . 'Extensions/',
-                'extension.json',
-                Io::GLOB_RECURSIVE | Io::GLOB_FILES,
-                '',
-                $tExtensionFiles
-            );
+            $tFile = Framework::$apppath . 'Extensions/' . $tExtension . '/extension.json';
+            if (file_exists($tFile)) {
+                $tExtensionFiles[] = $tFile;
+                continue;
+            }
+
+            throw new \Exception('extension not found - ' . $tExtension);
         }
 
         $tLastModified = Io::getLastModified($tExtensionFiles);

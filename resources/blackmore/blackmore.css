@@ -226,6 +226,8 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 #pageMiddleTable {
     table-layout: fixed;
     width: 100%;
+    min-height: 800px;
+    border-bottom: 1px solid #C0C0C0;
 }
 
 #pageMiddleContent {
@@ -292,7 +294,6 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 }
 
 #footer .container-fluid {
-    border-top: 1px solid #65A5D1;
     color: #404040;
     padding: 10px;
     margin: 0px 20px 0px 20px;

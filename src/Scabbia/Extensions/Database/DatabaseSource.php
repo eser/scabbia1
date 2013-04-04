@@ -218,7 +218,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             $uPropsSerialized .= '_' . $tProp;
         }
 
-        if (!is_null($uCaching) && Framework::$development <= 0) {
+        if (!is_null($uCaching) /* && Framework::$development <= 0 */) {
             $tData = Datasources::get($uCaching)->cacheGet($uPropsSerialized);
 
             if ($tData !== false) {

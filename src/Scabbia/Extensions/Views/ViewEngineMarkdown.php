@@ -26,10 +26,6 @@ class ViewEngineMarkdown
      * @ignore
      */
     public static $engine = null;
-    /**
-     * @ignore
-     */
-    public static $compiledTtl;
 
 
     /**
@@ -37,7 +33,6 @@ class ViewEngineMarkdown
      */
     public static function extensionLoad()
     {
-        self::$compiledTtl = (int)Config::get('razor/templates/compiledTtl', 120);
         // Views::registerViewEngine('md', 'Scabbia\\Extensions\\Views\\ViewEngineMarkdown');
     }
 
@@ -47,14 +42,20 @@ class ViewEngineMarkdown
     public static function renderview($uObject)
     {
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
+        $tOutputFile = Io::translatePath('{writable}cache/md/' . $uObject['compiledFile']);
 
-        if (is_null(self::$engine)) {
-            self::$engine = new MarkdownExtraParser();
+        if (/* Framework::$development >= 1 || */ !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
+            if (is_null(self::$engine)) {
+                self::$engine = new MarkdownExtraParser();
+            }
+
+            $tInput = Io::read($tInputFile);
+            $tOutput = self::$engine->transformMarkdown($tInput);
+
+            Io::writeSerialize($tOutputFile, $tOutput);
+            echo $tOutput;
+        } else {
+            echo Io::readSerialize($tOutputFile);
         }
-
-        $tInput = Io::read($tInputFile);
-        $tOutput = self::$engine->transformMarkdown($tInput);
-
-        echo $tOutput;
     }
 }

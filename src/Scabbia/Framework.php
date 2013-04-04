@@ -169,6 +169,12 @@ class Framework
         }
         self::$milestones[] = array('includesLoad', microtime(true));
 
+        // loadClass classes
+        foreach (Config::get('loadClassList', array()) as $tClass) {
+            class_exists($tClass, true);
+        }
+        self::$milestones[] = array('loadClassLoad', microtime(true));
+
         // output handling
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);

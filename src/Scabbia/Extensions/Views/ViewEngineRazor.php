@@ -25,10 +25,6 @@ class ViewEngineRazor
      * @ignore
      */
     public static $engine = null;
-    /**
-     * @ignore
-     */
-    public static $compiledTtl;
 
 
     /**
@@ -36,7 +32,6 @@ class ViewEngineRazor
      */
     public static function extensionLoad()
     {
-        self::$compiledTtl = (int)Config::get('razor/templates/compiledTtl', 120);
         Views::registerViewEngine('cshtml', 'Scabbia\\Extensions\\Views\\ViewEngineRazor');
     }
 
@@ -50,7 +45,7 @@ class ViewEngineRazor
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
         $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
 
-        if (Framework::$development >= 1 || !Io::isReadable($tOutputFile, self::$compiledTtl)) {
+        if (/* Framework::$development >= 1 || */ !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
             if (is_null(self::$engine)) {
                 require 'razor/RazorViewRenderer.php';
                 require 'razor/RazorViewRendererException.php';

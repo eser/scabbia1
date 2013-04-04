@@ -1,10 +1,37 @@
 {
-    "includeList":          [],
-    "downloadList":         [],
-
-    "includeList:disabled": [
+    "downloadList:disabled":    [],
+    "includeList:disabled":     [
         "{core}controllers/*.php",
         "{core}models/*.php"
+    ],
+    "loadClassList:disabled":   [],
+    "extensionList":           [
+        "Access",
+        "Arrays",
+        "Assets",
+        "Auth",
+        "Blackmore",
+        "Database",
+        "Datasources",
+        "Date",
+        "Fb",
+        "FileSystem",
+        "Html",
+        "Http",
+        "I18n",
+        "LarouxJs",
+        "Logger",
+        "Media",
+        "Mime",
+        "Models",
+        "Mvc",
+        "Profiler",
+        "Session",
+        "Smtp",
+        "String",
+        "Unittest",
+        "Validation",
+        "Views"
     ],
 
     "options": {
