@@ -48,13 +48,13 @@ use Scabbia\Extensions\String\String;
                                         <ul class="nav" role="navigation">
                                         <?php foreach (Blackmore::$menuItems as $tKey => $tMenu) { ?>
                                             <li class="dropdown">
-                                                <a href="<?php echo $tMenu[0]; ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <?php echo $tMenu[1]; ?>
+                                                <a href="<?php echo $tMenu[Blackmore::MENU_TITLEURL]; ?>" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <?php echo $tMenu[Blackmore::MENU_TITLE]; ?>
                                                     <b class="caret"></b>
                                                 </a>
                                                 <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                                                 <?php
-                                                foreach ($tMenu[2] as $tMenuItem) {
+                                                foreach ($tMenu[Blackmore::MENU_ITEMS] as $tMenuItem) {
                                                     if ($tMenuItem === '-') {
                                                 ?>
                                                     <li class="divider"></li>
@@ -63,7 +63,7 @@ use Scabbia\Extensions\String\String;
                                                     }
                                                 ?>
                                                     <li role="presentation">
-                                                        <a role="menuitem" tabindex="-1" href="<?php echo $tMenuItem[0]; ?>"><i class="icon-<?php echo $tMenuItem[1]; ?>"></i> <?php echo $tMenuItem[2]; ?></a>
+                                                        <a role="menuitem" tabindex="-1" href="<?php echo $tMenuItem[Blackmore::MENUITEM_URL]; ?>"><i class="icon-<?php echo $tMenuItem[Blackmore::MENUITEM_ICON]; ?>"></i> <?php echo $tMenuItem[Blackmore::MENUITEM_TITLE]; ?></a>
                                                     </li>
                                                 <?php } ?>
                                                 </ul>

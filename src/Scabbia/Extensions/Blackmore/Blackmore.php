@@ -40,6 +40,31 @@ class Blackmore extends Controller
      */
     const DEFAULT_ACTION_INDEX = 'index';
 
+    /**
+     * @ignore
+     */
+    const MENU_TITLEURL = 0;
+    /**
+     * @ignore
+     */
+    const MENU_TITLE = 1;
+    /**
+     * @ignore
+     */
+    const MENU_ITEMS = 2;
+    /**
+     * @ignore
+     */
+    const MENUITEM_URL = 0;
+    /**
+     * @ignore
+     */
+    const MENUITEM_ICON = 1;
+    /**
+     * @ignore
+     */
+    const MENUITEM_TITLE = 2;
+
 
     /**
      * @ignore
@@ -61,7 +86,6 @@ class Blackmore extends Controller
     public function render($uAction, array $uParams, array $uInput)
     {
         self::$modules[self::DEFAULT_MODULE_INDEX] = array(
-            'title' => 'Blackmore',
             'actions' => array(
                 self::DEFAULT_ACTION_INDEX => array(
                     'callback' => array(&$this, 'index')
@@ -76,7 +100,9 @@ class Blackmore extends Controller
             )
         );
 
+        $tMenuList = Config::get('blackmore/menuList', array());
         $tParms = array(
+            'menu' => &$tMenuList,
             'modules' => &self::$modules
         );
         Events::invoke('registerBlackmoreModules', $tParms);
@@ -86,7 +112,7 @@ class Blackmore extends Controller
             return false;
         }
 
-        foreach (Config::get('blackmore/menuList', array()) as $tKey => $tMenu) {
+        foreach ($tMenuList as $tKey => $tMenu) {
             self::$menuItems[$tKey] = array(
                 ($tKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tKey),
                 _($tMenu['title']),
@@ -96,7 +122,7 @@ class Blackmore extends Controller
             foreach ($tMenu['actions'] as $tMenuActionKey => $tMenuAction) {
                 if (isset($tMenuAction['before'])) {
                     if ($tMenuAction['before'] == 'separator') {
-                        self::$menuItems[$tKey][2][] = '-';
+                        self::$menuItems[$tKey][self::MENU_ITEMS][] = '-';
                     }
                 }
 
@@ -112,7 +138,7 @@ class Blackmore extends Controller
                     $tUrl = Http::url('blackmore/' . $tKey . '/' . $tMenuActionKey);
                 }
 
-                self::$menuItems[$tKey][2][] = array(
+                self::$menuItems[$tKey][self::MENU_ITEMS][] = array(
                     $tUrl,
                     isset($tMenuAction['icon']) ? $tMenuAction['icon'] : 'minus',
                     _($tMenuAction['title'])
@@ -120,7 +146,7 @@ class Blackmore extends Controller
 
                 if (isset($tMenuAction['after'])) {
                     if ($tMenuAction['after'] == 'separator') {
-                        self::$menuItems[$tKey][2][] = '-';
+                        self::$menuItems[$tKey][self::MENU_ITEMS][] = '-';
                     }
                 }
             }

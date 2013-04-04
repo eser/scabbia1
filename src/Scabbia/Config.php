@@ -25,6 +25,10 @@ class Config
      * @var array Default configuration
      */
     public static $default;
+    /**
+     * @var bool whether the config is read or loaded from cache
+     */
+    public static $loadedFromCache;
 
 
     /**
@@ -59,6 +63,7 @@ class Config
         $tOutputFile = Io::translatePath('{writable}cache/config');
 
         if (/* Framework::$development <= 0 && */ Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
+            self::$loadedFromCache = true;
             return Io::readSerialize($tOutputFile);
         }
 
@@ -67,6 +72,7 @@ class Config
             self::loadFile($tConfig, $tFile);
         }
 
+        self::$loadedFromCache = false;
         Io::writeSerialize($tOutputFile, $tConfig);
 
         return $tConfig;

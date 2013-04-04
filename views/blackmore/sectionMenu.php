@@ -8,9 +8,9 @@ use Scabbia\Extensions\Http\Http;
         $tMenu = Blackmore::$menuItems[$model];
 ?>
 <ul class="nav nav-list">
-	<li class="nav-header"><?php echo $tMenu[1]; ?></li>
+	<li class="nav-header"><?php echo $tMenu[Blackmore::MENU_TITLE]; ?></li>
 	<?php
-        foreach ($tMenu[2] as $tMenuItem) {
+        foreach ($tMenu[Blackmore::MENU_ITEMS] as $tMenuItem) {
             if ($tMenuItem === '-') {
     ?>
         <li class="divider"></li>
@@ -18,7 +18,7 @@ use Scabbia\Extensions\Http\Http;
                 continue;
             }
     ?>
-		<li><a href="<?php echo $tMenuItem[0]; ?>"><i class="icon-<?php echo $tMenuItem[1]; ?>"></i> <?php echo $tMenuItem[2]; ?></a></li>
+		<li><a href="<?php echo $tMenuItem[Blackmore::MENUITEM_URL]; ?>"><i class="icon-<?php echo $tMenuItem[Blackmore::MENUITEM_ICON]; ?>"></i> <?php echo $tMenuItem[Blackmore::MENUITEM_TITLE]; ?></a></li>
 	<?php
         }
     ?>
