@@ -21,8 +21,8 @@ Dependencies
 ------------
 * psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
 * facebook/php-sdk: Facebook PHP SDK
-* twitter/bootstrap: Twitter Bootstrap
 * dflydev/markdown: Markdown Parser
+* nitra/php-min: Minifying CSS, JS
 
 
 Optional PHP Extensions
