@@ -78,7 +78,7 @@ EOD;
 
                 $tLines[] = "\t\t\t\t" .
                     $tMethods[1] .
-                    ': function(values, fnc) { $l.ajax.post(\'' .
+                    ': function(values, fnc, method) { $l.ajax[(typeof method === \'undefined\' && (typeof values === \'undefined\' || values == null)) ? \'get\' : \'post\'](\'' .
                     Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) .
                     '\', values, fnc); }';
             }
