@@ -78,9 +78,9 @@ EOD;
 
                 $tLines[] = "\t\t\t\t" .
                     $tMethods[1] .
-                    ': function(values, fnc, method) { $l.ajax[(typeof method === \'undefined\' && (typeof values === \'undefined\' || values == null)) ? \'get\' : \'post\'](\'' .
+                    ': function(values, fnc, method) { $l.ajax.request(\'' .
                     Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) .
-                    '\', values, fnc); }';
+                    '\', values, fnc, method); }';
             }
             $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
         }
