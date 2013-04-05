@@ -49,7 +49,7 @@ class I18n
     /**
      * @ignore
      */
-    public static function setLanguage($uLanguage, $uLastChoice = false)
+    public static function load()
     {
         if (is_null(self::$languages)) {
             self::$languages = array();
@@ -64,6 +64,24 @@ class I18n
                 );
             }
         }
+    }
+
+    /**
+     * @ignore
+     */
+    public static function getLanguages()
+    {
+        self::load();
+
+        return self::$languages;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function setLanguage($uLanguage, $uLastChoice = false)
+    {
+        self::load();
 
         if (isset(self::$languages[$uLanguage])) {
             self::$language = self::$languages[$uLanguage];

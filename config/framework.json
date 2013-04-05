@@ -40,7 +40,7 @@
     },
 
     "i18n": {
-        "languages": [
+        "languageList": [
             {
                 "id":               "en",
                 "locale":           "en_US.UTF-8",
