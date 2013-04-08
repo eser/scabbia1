@@ -8,18 +8,19 @@ use Scabbia\Extensions\String\String;
 
 ?>
 <?php echo Html::doctype('html5'); ?>
-<html lang="en-US">
+<html lang="en-us">
 	<head>
 		<meta charset="utf-8" />
 
 		<title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
+        <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
 		<link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,blackmore'); ?>" rel="stylesheet" media="all" />
 		<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,blackmore'); ?>"></script>
 	</head>
 	<body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?>">
 		<script type="text/javascript">
-			$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
+			$l.contentBegin('main', '<?php echo $root; ?>/');
 		</script>
 
 		<div id="page">

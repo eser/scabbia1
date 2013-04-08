@@ -13,16 +13,14 @@ use Scabbia\Extensions\Views\Views;
         <meta charset="utf-8" />
 
         <title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
+        <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
-        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,blackmore') ?>" rel="stylesheet" media="all" />
-        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo Http::url('home/rss'); ?>" />
-        <link rel="pingback" href="<?php echo Http::url('api/xmlrpc'); ?>" />
-
+        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,blackmore'); ?>" rel="stylesheet" media="all" />
         <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,blackmore'); ?>"></script>
     </head>
     <body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?> login">
         <script type="text/javascript">
-            $l.contentBegin('login', '<?php echo Framework::$siteroot; ?>');
+            $l.contentBegin('login', '<?php echo $root; ?>/');
         </script>
 
         <div class="block">

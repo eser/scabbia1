@@ -151,7 +151,10 @@ class Framework
 
         // siteroot
         if (is_null(self::$siteroot)) {
-            self::$siteroot = Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+            self::$siteroot = trim(Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME)), '/');
+            if (strlen(self::$siteroot) > 0) {
+                self::$siteroot = '/' . self::$siteroot;
+            }
         }
         self::$milestones[] = array('siteRoot', microtime(true));
 

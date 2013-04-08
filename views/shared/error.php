@@ -5,18 +5,19 @@ use Scabbia\Framework;
 
 ?>
 <?php echo Html::doctype('html5'); ?>
-<html lang="en-US">
+<html lang="en-us">
 <head>
     <meta charset="utf-8" />
 
-	<title><?php echo _('Scabbia Framework'); ?></title>
+	<title><?php echo _('Scabbia Framework: Error'); ?></title>
+    <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
 	<link type="text/css" href="<?php echo Http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />
 	<script type="text/javascript" src="<?php echo Http::url('scabbia.js?core'); ?>"></script>
 </head>
 <body>
 	<script type="text/javascript">
-			$l.contentBegin('main', '<?php echo Framework::$siteroot; ?>');
+			$l.contentBegin('main', '<?php echo $root; ?>/');
 	</script>
 
 	<div class="ppopup">

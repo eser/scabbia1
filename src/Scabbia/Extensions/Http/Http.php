@@ -53,7 +53,7 @@ class Http
     {
         /*
         $tParms = array(
-            'siteroot' => rtrim(Framework::$siteroot, '/'),
+            'siteroot' => Framework::$siteroot,
             'device' => Request::$crawlerType,
             'path' => $uPath
         );

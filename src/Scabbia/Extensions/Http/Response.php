@@ -316,7 +316,7 @@ class Response
 
         }
 
-        setrawcookie($uCookie, Http::encode($uValue), $uExpire, Framework::$siteroot);
+        setrawcookie($uCookie, Http::encode($uValue), $uExpire, Framework::$siteroot . '/');
     }
 
     /**
@@ -324,6 +324,6 @@ class Response
      */
     public static function removeCookie($uCookie)
     {
-        setrawcookie($uCookie, '', time() - 3600, Framework::$siteroot);
+        setrawcookie($uCookie, '', time() - 3600, Framework::$siteroot . '/');
     }
 }

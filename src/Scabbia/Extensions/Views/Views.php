@@ -117,7 +117,7 @@ class Views
         }
 
         $tExtra = array(
-            'root' => rtrim(Framework::$siteroot, '/')
+            'root' => Framework::$siteroot
         );
 
         $tExtra['lang'] = I18n::$language['key'];
