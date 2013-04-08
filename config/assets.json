@@ -103,11 +103,6 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "introjs",
-                        "path":         "{core}resources/jquery.introjs/introjs-jquery.js"
-                    },
-                    {
-                        "type":         "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/bootstrap/bootstrap.js"
                     },
@@ -118,8 +113,8 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "shadowbox",
-                        "path":         "{core}resources/shadowbox/shadowbox.js"
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/intro.js"
                     }
                 ]
             },
@@ -175,11 +170,6 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "introjs",
-                        "path":         "{core}resources/jquery.introjs/introjs-jquery.css"
-                    },
-                    {
-                        "type":         "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/bootstrap/bootstrap.css"
                     },
@@ -195,8 +185,8 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "shadowbox",
-                        "path":         "{core}resources/shadowbox/shadowbox.css"
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/introjs.css"
                     }
                 ]
             }
