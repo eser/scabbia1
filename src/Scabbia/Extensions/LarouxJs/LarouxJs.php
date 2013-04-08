@@ -60,6 +60,10 @@ class LarouxJs
     \$l.extend({
 EOD;
         foreach ($tArray as $tClassName => $tClass) {
+            if (($tPos = strrpos($tClassName, '\\')) !== false) {
+                $tClassName = substr($tClassName, $tPos + 1);
+            }
+
             $tLines = array();
 
             if (isset($tFirst)) {
