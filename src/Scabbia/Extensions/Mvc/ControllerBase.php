@@ -237,7 +237,11 @@ class ControllerBase implements LoggerAwareInterface
         $uArgs = func_get_args();
 
         if (is_null($uMemberName)) {
-            $uMemberName = $uModelClass;
+            if (($tPos = strrpos($uModelClass, '\\')) !== false) {
+                $uMemberName = substr($uModelClass, $tPos + 1);
+            } else {
+                $uMemberName = $uModelClass;
+            }
         }
 
         $this->{$uMemberName} = call_user_func_array('Scabbia\\Extensions\\Mvc\\Controllers::load', $uArgs);
