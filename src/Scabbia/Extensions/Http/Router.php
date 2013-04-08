@@ -104,11 +104,9 @@ class Router
     {
         self::load();
 
-        $tMethod = strtolower($uMethod);
-
         // @todo use self::$routes->top() if needed.
         foreach (self::$rewrites as $tRewriteItem) {
-            if (isset($tRewriteItem[2]) && !is_null($uMethod) && !in_array($tMethod, $tRewriteItem[2])) {
+            if (isset($tRewriteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRewriteItem[2])) {
                 continue;
             }
 

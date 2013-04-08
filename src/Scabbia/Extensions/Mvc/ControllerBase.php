@@ -88,7 +88,7 @@ class ControllerBase implements LoggerAwareInterface
      */
     public function render($uAction, array $uParams, array $uInput)
     {
-        $tActionName = strtolower($uAction); // strtr($uAction, '/', '_');
+        $tActionName = $uAction; // strtr($uAction, '/', '_');
         if (is_null($tActionName) || strlen($tActionName) <= 0) {
             $tActionName = $this->defaultAction;
         }
@@ -162,8 +162,8 @@ class ControllerBase implements LoggerAwareInterface
      */
     public function addChildController($uAction, $uClass)
     {
-        // echo strtolower($uAction) . " => " . $uClass . '<br />';
-        $this->childControllers[strtolower($uAction)] = $uClass;
+        // echo $uAction . " => " . $uClass . '<br />';
+        $this->childControllers[$uAction] = $uClass;
     }
 
     /**
