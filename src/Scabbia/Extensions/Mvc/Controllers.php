@@ -49,11 +49,12 @@ class Controllers
             // todo: maybe split _ for children
             foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
                 if (($tPos = strrpos($tClass, '\\')) !== false) {
-                    self::$root->addChildController(substr($tClass, $tPos + 1), $tClass);
-                    continue;
+                    $tClassName = lcfirst(substr($tClass, $tPos + 1));
+                } else {
+                    $tClassName = lcfirst($tClass);
                 }
 
-                self::$root->addChildController($tClass, $tClass);
+                self::$root->addChildController($tClassName, $tClass);
             }
         }
     }
