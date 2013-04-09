@@ -123,8 +123,8 @@ class Views
         $tExtra['lang'] = I18n::$language['key'];
         $tExtra['controller'] = Mvc::current();
 
-        $tTemplatePath = pathinfo($tViewFilePath, PATHINFO_DIRNAME) . '/';
-        $tViewFile = pathinfo($tViewFilePath, PATHINFO_BASENAME);
+        $tTemplatePath = $tViewFileInfo['dirname'] . '/';
+        $tViewFile = $tViewFileInfo['basename'];
 
         $tViewArray = array(
             'templatePath' => &$tTemplatePath,

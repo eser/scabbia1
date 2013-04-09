@@ -141,6 +141,11 @@ class ControllerBase implements LoggerAwareInterface
             'params' => $uParams,
             'query' => isset($uInput['query']) ? $uInput['query'] : ''
         );
+
+        if (($tPos = strrpos($this->route['controller'], '\\')) !== false) {
+            $this->route['controller'] = substr($this->route['controller'], $tPos + 1);
+        }
+
         $this->view = $this->route['controller'] .
             '/' .
             $this->route['action'] .
