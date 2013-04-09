@@ -97,7 +97,7 @@ class Http
      */
     public static function error($uErrorType, $uTitle = null, $uMessage = null)
     {
-        if (is_null(self::$errorPages[$uErrorType])) {
+        if (!isset(self::$errorPages[$uErrorType])) {
             self::$errorPages[$uErrorType] = Config::get('http/errorPages/' . $uErrorType, '{core}views/shared/error.php');
         }
 
