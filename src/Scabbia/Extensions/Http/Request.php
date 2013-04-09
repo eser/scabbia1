@@ -150,7 +150,7 @@ class Request
         }
 
         // $userAgent
-        if (Config::get('http/userAgents/autoCheck', '1') == '1') {
+        if (Config::get('http/userAgents/autoCheck', false) !== false) {
             self::checkUserAgent();
         }
 

@@ -23,17 +23,7 @@
             }
         ],
 
-        "errorPages": {
-            "notfound":             "{core}views/shared/error.php",
-            "restriction":          "{core}views/shared/error.php",
-            "maintenance":          "{core}views/shared/error.php",
-            "ipban":                "{core}views/shared/error.php",
-            "error":                "{core}views/shared/error.php"
-        },
-
         "userAgents": {
-            "autoCheck": "0",
-
             "platformList": [
                 {
                     "match":    "windows|winnt|win95|win98",
@@ -143,33 +133,6 @@
             "ttl":      0,
             "ipCheck":  false,
             "uaCheck":  true
-        }
-    },
-
-    "access": {
-        "maintenance": {
-            "mode":         false,
-            "page":         "{app}views/static_maintenance.php",
-            "mvcpage":      "shared/maintenance.cshtml",
-            "ipExcludeList": [
-                "127.0.0.1",
-                "127.0.0.2"
-            ]
-        },
-
-        "ipFilter": {
-            "page":         "{app}views/static_ipban.php",
-            "mvcpage":      "shared/ipban.cshtml",
-            "ipFilterList": [
-                {
-                    "type":     "deny",
-                    "pattern":  "188.0.0.?"
-                },
-                {
-                    "type":     "allow",
-                    "pattern":  "*.*.*.*"
-                }
-            ]
         }
     }
 }

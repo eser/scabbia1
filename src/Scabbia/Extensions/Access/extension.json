@@ -10,9 +10,9 @@
     },
     "eventList": [
         {
-            "name":         "run",
+            "name":         "pre-run",
             "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Access\\Access::run"
+            "value":        "Scabbia\\Extensions\\Access\\Access::prerun"
         }
     ]
 }

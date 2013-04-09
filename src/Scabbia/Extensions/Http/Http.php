@@ -28,7 +28,7 @@ class Http
     /**
      * @ignore
      */
-    public static $notfoundPage = null;
+    public static $errorPages = array();
 
 
     /**
@@ -89,24 +89,31 @@ class Http
     public static function notfound()
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+        self::error('notfound', _('404 Not Found'), _('The resource you have been looking for is not found on the server'));
+    }
 
-        // $notfoundPage
-        if (is_null(self::$notfoundPage)) {
-            self::$notfoundPage = Config::get('http/errorPages/notfound', '{app}views/shared/error.php');
+    /**
+     * @ignore
+     */
+    public static function error($uErrorType, $uTitle = null, $uMessage = null)
+    {
+        if (is_null(self::$errorPages[$uErrorType])) {
+            self::$errorPages[$uErrorType] = Config::get('http/errorPages/' . $uErrorType, '{core}views/shared/error.php');
         }
 
         //! todo internalization.
         // maybe just include?
         Views::viewFile(
-            self::$notfoundPage,
+            self::$errorPages[$uErrorType],
             array(
-                'title' => 'Error',
-                'message' => '404 Not Found'
+                'title' => $uTitle,
+                'message' => $uMessage
             )
         );
 
         Framework::end(1);
     }
+
 
     /**
      * @ignore

@@ -40,7 +40,7 @@ class Access
     /**
      * Checks the set of rules against visitor's data.
      */
-    public static function run()
+    public static function prerun(array $uParms)
     {
         self::$maintenance = Config::get('access/maintenance/mode', false);
         self::$maintenanceExcludeIps = Config::get('access/maintenance/ipExcludeList', array());
@@ -67,8 +67,7 @@ class Access
             header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503);
             header('Retry-After: 600', true);
 
-            $tFile = Io::translatePath(Config::get('access/maintenance/page'));
-            Views::viewFile($tFile);
+            call_user_func($uParms['onerror'], 'maintenance', _('Service Unavailable'), _('This service is currently undergoing scheduled maintenance. Please try back later. Sorry for the inconvenience.'));
 
             // to interrupt event-chain execution
             return false;
@@ -77,8 +76,7 @@ class Access
         if (count(self::$ipFilters) > 0) {
             header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 
-            $tFile = Io::translatePath(Config::get('access/ipFilter/page'));
-            Views::viewFile($tFile);
+            call_user_func($uParms['onerror'], 'ipban', _('Service Unavailable'), _('Your access have been banned from this service.'));
 
             // to interrupt event-chain execution
             return false;

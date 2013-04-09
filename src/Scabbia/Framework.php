@@ -186,17 +186,20 @@ class Framework
     /**
      * Invokes the startup methods for framework extensions and allows other parties to take over execution.
      *
-     * @param array|null $uCallbacks list of other parties
-     * @param array|null $uOtherwise fallback method
+     * @param array|null    $uCallbacks list of other parties
+     * @param callback|null $uOtherwise fallback method
+     * @param callback|null $uOnError   method will be executed on error
      *
      * @return bool whether other party is called or not
      */
-    public static function run($uCallbacks = null, $uOtherwise = null)
+    public static function run($uCallbacks = null, $uOtherwise = null, $uOnError = null)
     {
         // run extensions
-        $tParms = array();
-        Events::invoke('run', $tParms);
-        self::$milestones[] = array('extensionsRun', microtime(true));
+        $tParms = array(
+            'onerror' => $uOnError
+        );
+        Events::invoke('pre-run', $tParms);
+        self::$milestones[] = array('extensionsPreRun', microtime(true));
 
         if (!is_null($uCallbacks)) {
             foreach ((array)$uCallbacks as $tCallback) {
