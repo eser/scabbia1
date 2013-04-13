@@ -1,6 +1,3 @@
-[submodule "resources/laroux"]
-	path = resources/laroux
-	url = https://github.com/larukedi/laroux.js
 [submodule "resources/jquery.cleditor"]
 	path = resources/jquery.cleditor
 	url = git://github.com/larukedi/cleditor.git
