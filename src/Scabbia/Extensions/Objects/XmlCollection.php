@@ -5,15 +5,15 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Collections;
+namespace Scabbia\Extensions\Objects;
 
-use Scabbia\Extensions\Collections\Collection;
+use Scabbia\Extensions\Objects\Collection;
 
 /**
- * Collections Extension: XmlCollection Class
+ * Objects Extension: XmlCollection Class
  *
  * @package Scabbia
- * @subpackage Collections
+ * @subpackage Objects
  * @version 1.1.0
  */
 class XmlCollection extends Collection
@@ -23,7 +23,7 @@ class XmlCollection extends Collection
      */
     public static function fromString($uString)
     {
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         $tTemp->add(simplexml_load_string($uString));
 
         return $tTemp;
@@ -34,7 +34,7 @@ class XmlCollection extends Collection
      */
     public static function fromFile($uFile)
     {
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         $tTemp->add(simplexml_load_file($uFile));
 
         return $tTemp;
@@ -50,7 +50,7 @@ class XmlCollection extends Collection
             $uFiles = $uFiles[0];
         }
 
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         foreach ($uFiles as $tFile) {
             $tTemp->add(simplexml_load_file($tFile));
         }
@@ -79,7 +79,7 @@ class XmlCollection extends Collection
             $tPattern = '';
         }
 
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         $tHandle = new \DirectoryIterator($tPath);
         $tPatExists = (strlen($uPattern) > 0);
 
@@ -104,7 +104,7 @@ class XmlCollection extends Collection
      */
     public static function fromSimplexml($uObject)
     {
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         $tTemp->add($uObject);
 
         return $tTemp;
@@ -115,7 +115,7 @@ class XmlCollection extends Collection
      */
     public static function fromDom($uDom)
     {
-        $tTemp = new XmlCollection();
+        $tTemp = new static();
         $tTemp->add(simplexml_import_dom($uDom));
 
         return $tTemp;

@@ -40,7 +40,7 @@ class Conditions
     /**
      * @ignore
      */
-    public static function register($uKey, $uCallback)
+    public static function register($uKey, Callable $uCallback)
     {
         self::$externalConditions[$uKey] = $uCallback;
     }
@@ -349,9 +349,9 @@ class Conditions
     /**
      * @ignore
      */
-    public static function custom($uValue, $uFunction)
+    public static function custom($uValue, Callable $uCallback)
     {
-        if (!call_user_func($uFunction, $uValue)) {
+        if (!call_user_func($uCallback, $uValue)) {
             return false;
         }
 

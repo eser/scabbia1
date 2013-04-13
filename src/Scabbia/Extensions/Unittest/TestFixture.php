@@ -53,7 +53,7 @@ abstract class TestFixture
     /**
      * @ignore
      */
-    public function testUnit($uName, $uCallback)
+    public function testUnit($uName, Callable $uCallback)
     {
         array_push($this->testStack, array('name' => $uName, 'callback' => $uCallback));
 

@@ -281,7 +281,7 @@ class Io
      *
      * @return mixed the result
      */
-    public static function readFromCache($uFile, $uTtl = -1, $uCallback = null)
+    public static function readFromCache($uFile, $uTtl = -1, Callable $uCallback = null)
     {
         if (self::isReadable($uFile, $uTtl)) {
             return self::readSerialize($uFile);

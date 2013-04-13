@@ -5,13 +5,13 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\SmartObjects;
+namespace Scabbia\Extensions\Objects;
 
 /**
- * SmartObjects Extension: SmartObject Class
+ * Objects Extension: SmartObject Class
  *
  * @package Scabbia
- * @subpackage SmartObjects
+ * @subpackage Objects
  * @version 1.1.0
  */
 class SmartObject

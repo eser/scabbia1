@@ -5,15 +5,15 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Collections;
+namespace Scabbia\Extensions\Objects;
 
-use Scabbia\Extensions\Collections\Collection;
+use Scabbia\Extensions\Objects\Collection;
 
 /**
- * Collections Extension: FileCollection Class
+ * Objects Extension: FileCollection Class
  *
  * @package Scabbia
- * @subpackage Collections
+ * @subpackage Objects
  * @version 1.1.0
  */
 class FileCollection extends Collection
@@ -23,7 +23,7 @@ class FileCollection extends Collection
      */
     public static function fromFile($uFile)
     {
-        $tTemp = new FileCollection();
+        $tTemp = new static();
         $tTemp->add($uFile);
 
         return $tTemp;
@@ -39,7 +39,7 @@ class FileCollection extends Collection
             $uFiles = $uFiles[0];
         }
 
-        $tTemp = new FileCollection();
+        $tTemp = new static();
 
         foreach ($uFiles as $tFile) {
             $tTemp->add($tFile);
@@ -69,7 +69,7 @@ class FileCollection extends Collection
             $tPattern = '';
         }
 
-        $tTemp = new FileCollection();
+        $tTemp = new static();
         $tHandle = new \DirectoryIterator($tPath);
         $tPatExists = (strlen($uPattern) > 0);
 
