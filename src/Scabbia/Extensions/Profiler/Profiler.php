@@ -7,8 +7,8 @@
 
 namespace Scabbia\Extensions\Profiler;
 
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Profiler\ProfilerData;
-use Scabbia\Extensions\String\String;
 use Scabbia\Extensions;
 
 /**

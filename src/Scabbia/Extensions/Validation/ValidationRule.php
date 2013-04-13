@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Validation;
 
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\String;
 
 /**
  * Validation Extension: ValidationRule Class

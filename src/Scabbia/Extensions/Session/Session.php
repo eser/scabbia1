@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Session;
 
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Config;
 use Scabbia\Extensions;
 

@@ -5,7 +5,7 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\String;
+namespace Scabbia\Extensions\Helpers;
 
 /**
  * @ignore
@@ -20,10 +20,10 @@ if (!defined('ENT_HTML5')) {
 }
 
 /**
- * String Extension
+ * Helpers Extension: String Class
  *
  * @package Scabbia
- * @subpackage String
+ * @subpackage Helpers
  * @version 1.1.0
  *
  * @todo pluralize, singularize

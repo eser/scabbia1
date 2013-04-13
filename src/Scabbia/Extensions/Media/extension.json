@@ -7,8 +7,8 @@
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
-            "Session",
-            "String"
+            "Helpers",
+            "Session"
         ]
     },
     "eventList": [

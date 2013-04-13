@@ -5,13 +5,13 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\FileSystem;
+namespace Scabbia\Extensions\Helpers;
 
 /**
- * FileSystem Extension
+ * Helpers Extension: FileSystem Class
  *
  * @package Scabbia
- * @subpackage FileSystem
+ * @subpackage Helpers
  * @version 1.1.0
  */
 class FileSystem

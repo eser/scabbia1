@@ -7,8 +7,8 @@
 
 namespace Scabbia\Extensions\Media;
 
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Session\Session;
-use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Io;
 

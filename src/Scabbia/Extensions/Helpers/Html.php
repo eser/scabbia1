@@ -5,17 +5,17 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Html;
+namespace Scabbia\Extensions\Helpers;
 
-use Scabbia\Extensions\Arrays\Arrays;
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\Arrays;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Framework;
 
 /**
- * Html Extension
+ * Helpers Extension: Html Class
  *
  * @package Scabbia
- * @subpackage Html
+ * @subpackage Helpers
  * @version 1.1.0
  *
  * @todo form open

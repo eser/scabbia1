@@ -8,10 +8,10 @@
 namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Profiler\Profiler;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Http\Router;
-use Scabbia\Extensions\String\String;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;

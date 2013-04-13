@@ -7,9 +7,9 @@
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
+            "Helpers",
             "Http",
-            "Mvc",
-            "String"
+            "Mvc"
         ]
     },
     "eventList": [

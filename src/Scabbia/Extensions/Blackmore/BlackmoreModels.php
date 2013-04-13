@@ -9,13 +9,13 @@ namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Blackmore\Blackmore;
-use Scabbia\Extensions\Html\Html;
+use Scabbia\Extensions\Helpers\Html;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Extensions\Session\Session;
-use Scabbia\Extensions\String\String;
 use Scabbia\Extensions\Validation\Validation;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Models\AutoModel;

@@ -6,7 +6,9 @@
         "phpversion":       "5.3.7",
         "phpdependList":    [],
         "fwversion":        "1.1",
-        "fwdependList":     []
+        "fwdependList":     [
+            "Helpers"
+        ]
     },
     "eventList": []
 }

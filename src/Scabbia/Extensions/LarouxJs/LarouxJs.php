@@ -7,11 +7,11 @@
 
 namespace Scabbia\Extensions\LarouxJs;
 
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Mvc\Mvc;
-use Scabbia\Extensions\String\String;
 
 /**
  * LarouxJs Extension

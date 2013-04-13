@@ -1,5 +1,5 @@
 <?php
-use Scabbia\Extensions\Html\Html;
+use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Framework;
 

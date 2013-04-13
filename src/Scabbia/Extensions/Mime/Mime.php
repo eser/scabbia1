@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Mime;
 
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\String;
 
 /**
  * Mime Extension

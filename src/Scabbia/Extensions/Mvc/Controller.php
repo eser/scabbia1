@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Mvc;
 
-use Scabbia\Extensions\FileSystem\FileSystem;
+use Scabbia\Extensions\Helpers\FileSystem;
 use Scabbia\Extensions\Mvc\ControllerBase;
 use Scabbia\Io;
 

@@ -7,10 +7,9 @@
         "phpdependList":    [],
         "fwversion":        "1.1",
         "fwdependList":     [
+            "Helpers",
             "Logger",
-            "FileSystem",
             "Models",
-            "String",
             "Views"
         ]
     },

@@ -7,8 +7,8 @@
 
 namespace Scabbia\Extensions\Logger;
 
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Logger\Logger;
-use Scabbia\Extensions\String\String;
 use Scabbia\Events;
 use Scabbia\Framework;
 use Scabbia\Io;

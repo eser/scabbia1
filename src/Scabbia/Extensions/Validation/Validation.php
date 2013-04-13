@@ -7,8 +7,8 @@
 
 namespace Scabbia\Extensions\Validation;
 
-use Scabbia\Extensions\Arrays\Arrays;
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\Arrays;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Validation\ValidationRule;
 use Scabbia\Extensions;
 

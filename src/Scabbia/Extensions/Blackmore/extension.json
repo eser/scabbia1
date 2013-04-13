@@ -8,10 +8,10 @@
         "fwversion":        "1.1",
         "fwdependList":     [
             "Auth",
+            "Assets",
+            "Helpers",
             "Http",
             "Models",
-            "Assets",
-            "String",
             "Validation"
         ]
     },

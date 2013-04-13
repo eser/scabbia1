@@ -9,9 +9,9 @@ namespace Scabbia\Extensions\Mvc;
 
 use Scabbia\Config;
 use Scabbia\Events;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
-use Scabbia\Extensions\String\String;
 use Scabbia\Extensions;
 use Scabbia\Framework;
 

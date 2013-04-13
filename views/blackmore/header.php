@@ -2,9 +2,9 @@
 use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Config;
 use Scabbia\Framework;
-use Scabbia\Extensions\Html\Html;
+use Scabbia\Extensions\Helpers\Html;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\String\String;
 
 ?>
 <?php echo Html::doctype('html5'); ?>

@@ -9,7 +9,7 @@ namespace Scabbia\Extensions\Database;
 
 use Scabbia\Extensions\Database\Database;
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\String;
 
 /**
  * Database Extension: DatabaseQuery Class

@@ -5,13 +5,13 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Date;
+namespace Scabbia\Extensions\Helpers;
 
 /**
- * Date Extension
+ * Helpers Extension: Date Class
  *
  * @package Scabbia
- * @subpackage Date
+ * @subpackage Helpers
  * @version 1.1.0
  *
  * @todo improve humanize (fuzzy span)

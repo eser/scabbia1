@@ -9,8 +9,8 @@ namespace Scabbia\Extensions\Fb;
 
 use Scabbia\Extensions\Fb\Facebook;
 use Scabbia\Extensions\Fb\FacebookQueryObject;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Session\Session;
-use Scabbia\Extensions\String\String;
 use Scabbia\Config;
 use Scabbia\Framework;
 

@@ -5,13 +5,13 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Arrays;
+namespace Scabbia\Extensions\Helpers;
 
 /**
- * Arrays Extension
+ * Helpers Extension: Arrays Class
  *
  * @package Scabbia
- * @subpackage Arrays
+ * @subpackage Helpers
  * @version 1.1.0
  *
  * @todo isTraversable method

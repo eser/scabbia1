@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Unittest;
 
-use Scabbia\Extensions\String\String;
+use Scabbia\Extensions\Helpers\String;
 
 /**
  * Unittest Extension: TestFixture Class
