@@ -115,6 +115,11 @@
                         "type":         "file",
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/intro.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "handlebars",
+                        "path":         "{core}resources/handlebars/handlebars.js"
                     }
                 ]
             },
