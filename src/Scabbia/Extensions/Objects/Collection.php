@@ -25,9 +25,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function __construct($tArray = null)
+    public function __construct(Array $uArray = array())
     {
-        $this->_items = is_array($tArray) ? $tArray : array();
+        $this->_items = $uArray;
     }
 
     /**
@@ -106,6 +106,18 @@ class Collection implements \ArrayAccess, \IteratorAggregate
         }
 
         return count($this->_items);
+    }
+
+    /**
+     * @ignore
+     */
+    public function get($uKey, $uDefault = null)
+    {
+        if (!array_key_exists($uKey, $this->_items)) {
+            return $uDefault;
+        }
+
+        return $this->_items[$uKey];
     }
 
     /**
