@@ -183,7 +183,7 @@ class Assets
                     break;
                 case 'text/css':
                     if ($tMinify) {
-                        $tContent = \CssMin::minify($tContent);
+                        // $tContent = \CssMin::minify($tContent);
                     }
                     echo $tContent;
                     break;
