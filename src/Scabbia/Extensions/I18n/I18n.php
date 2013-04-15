@@ -136,7 +136,7 @@ class I18n
             $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
             $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
             if (!file_exists($tMoFile) && file_exists($tPoFile)) {
-                $tCompiler = new \TrekkSoft\Potomoco\Compiler\Compiler();
+                $tCompiler = new \TrekkSoft\Potomoco\Compiler();
                 $tCompiler->compile($tPoFile, $tMoFile);
             }
 
