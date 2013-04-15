@@ -108,6 +108,7 @@ class Assets
 
         $tType = $tSelectedPack['type'];
         $tCacheTtl = isset($tSelectedPack['cacheTtl']) ? (int)$tSelectedPack['cacheTtl'] : 0;
+        $tMinify = isset($tSelectedPack['minify']) ? (bool)$tSelectedPack['minify'] : true;
         $tFilename = $uName;
         foreach ($uClasses as $tClassName) {
             $tFilename .= '_' . $tClassName;
@@ -175,11 +176,15 @@ class Assets
 
             switch ($tMimetype) {
                 case 'application/x-javascript':
-                    // $tContent = JSMin::minify($tContent);
+                    if ($tMinify) {
+                        $tContent = JSMin::minify($tContent);
+                    }
                     echo $tContent;
                     break;
                 case 'text/css':
-                    // $tContent = CssMin::minify($tContent);
+                    if ($tMinify) {
+                        $tContent = CssMin::minify($tContent);
+                    }
                     echo $tContent;
                     break;
                 default:
