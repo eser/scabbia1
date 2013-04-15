@@ -20,6 +20,10 @@ class Application
      */
     public $name = 'Default';
     /**
+     * @var string      application directory
+     */
+    public $directory = 'application/';
+    /**
      * @var array       callback definitions
      */
     public $callbacks = array();

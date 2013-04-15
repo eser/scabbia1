@@ -208,7 +208,7 @@ class LoggerInstance implements LoggerInterface
                 Io::write($tFilename, $tContent, LOCK_EX | FILE_APPEND);
             }
 
-            exit();
+            Framework::end(-1);
         }
     }
 }

@@ -17,6 +17,8 @@ use Scabbia\Io;
  *
  * @package Scabbia
  * @version 1.1.0
+ *
+ * @todo determine application before apppath, get apppath from application's itself
  */
 class Framework
 {
@@ -104,13 +106,79 @@ class Framework
         }
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
+    }
 
-        if (!self::$readonly && is_null(self::$apppath)) {
-            self::$apppath = self::$basepath . 'application/';
+    /**
+     * Determines application by endpoint.
+     *
+     * @param array $uEndpoints set of endpoints
+     * @return null|mixed selected application
+     */
+    public static function runApplicationByEndpoint(array $uEndpoints)
+    {
+        foreach ($uEndpoints as $tEndpointKey => $tEndpointAddresses) {
+            foreach ((array)$tEndpointAddresses as $tEndpointAddress) {
+                $tParsed = parse_url($tEndpointAddress);
+                if (!isset($tParsed['port'])) {
+                    $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+                }
+
+                if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+                    return self::runApplication(new $tEndpointKey ());
+                }
+            }
         }
-        if (!is_null($uClassLoader)) {
-            $uClassLoader->set('Application', self::$apppath);
+
+        return false;
+    }
+
+    /**
+     * Invokes the startup methods for framework extensions and runs an application instance.
+     *
+     * @param Application $uApplication application instance currently running on
+     *
+     * @return bool whether other party is called or not
+     */
+    public static function runApplication(Application $uApplication)
+    {
+        self::$application = $uApplication;
+        self::$apppath = self::$basepath . self::$application->directory;
+
+        if (!is_null(self::$classLoader)) {
+            self::$classLoader->set(self::$application->name, self::$apppath);
         }
+
+        self::run();
+
+        // run extensions
+        $tParms = array(
+            'onerror' => $uApplication->onError
+        );
+        Events::invoke('pre-run', $tParms);
+        self::$milestones[] = array('extensionsPreRun', microtime(true));
+
+        foreach ($uApplication->callbacks as $tCallback) {
+            $tReturn = call_user_func($tCallback);
+
+            if (!is_null($tReturn) && $tReturn === true) {
+                break;
+            }
+        }
+
+        if (!is_null($uApplication->otherwise) && !isset($tReturn) || $tReturn !== true) {
+            call_user_func($uApplication->otherwise);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Invokes the startup methods just for framework extensions so other parties can take over execution.
+     */
+    public static function run()
+    {
+        self::$readonly = true;
 
         // load config
         Config::$default = Config::load();
@@ -158,64 +226,6 @@ class Framework
         // output handling
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);
-    }
-
-    /**
-     * Determines application by endpoint.
-     *
-     * @param array $uEndpoints set of endpoints
-     * @return null|mixed selected application
-     */
-    public static function runApplicationByEndpoint(array $uEndpoints)
-    {
-        foreach ($uEndpoints as $tEndpointKey => $tEndpointAddresses) {
-            foreach ((array)$tEndpointAddresses as $tEndpointAddress) {
-                $tParsed = parse_url($tEndpointAddress);
-                if (!isset($tParsed['port'])) {
-                    $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
-                }
-
-                if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                    return self::runApplication(new $tEndpointKey ());
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Invokes the startup methods for framework extensions and allows other parties to take over execution.
-     *
-     * @param Application $uApplication application instance currently running on
-     *
-     * @return bool whether other party is called or not
-     */
-    public static function runApplication(Application $uApplication)
-    {
-        self::$application = $uApplication;
-
-        // run extensions
-        $tParms = array(
-            'onerror' => $uApplication->onError
-        );
-        Events::invoke('pre-run', $tParms);
-        self::$milestones[] = array('extensionsPreRun', microtime(true));
-
-        foreach ($uApplication->callbacks as $tCallback) {
-            $tReturn = call_user_func($tCallback);
-
-            if (!is_null($tReturn) && $tReturn === true) {
-                break;
-            }
-        }
-
-        if (!is_null($uApplication->otherwise) && !isset($tReturn) || $tReturn !== true) {
-            call_user_func($uApplication->otherwise);
-            return false;
-        }
-
-        return true;
     }
 
     /**

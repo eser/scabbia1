@@ -73,7 +73,9 @@ class Config
         }
 
         self::$loadedFromCache = false;
-        Io::writeSerialize($tOutputFile, $tConfig);
+        if (!Framework::$readonly) {
+            Io::writeSerialize($tOutputFile, $tConfig);
+        }
 
         return $tConfig;
     }

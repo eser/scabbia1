@@ -128,16 +128,14 @@ class I18n
             // mb_internal_encoding(self::$language['internalEncoding']);
             mb_http_output(self::$language['internalEncoding']);
 
-            if (!Framework::$readonly) {
-                putenv('LANG=' . $tLocale[0]);
-            }
+            putenv('LANG=' . $tLocale[0]);
             setlocale(LC_ALL, $tLocale[0]);
 
             $tLocalePath = Framework::$apppath . 'locale';
             $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
             $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
 
-            if (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile))) {
+            if (!Framework::$readonly && (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile)))) {
                 $tCompiler = new \TrekkSoft\Potomoco\Compiler();
                 $tCompiler->compile($tPoFile, $tMoFile);
             }

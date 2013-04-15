@@ -63,7 +63,9 @@ class Extensions
                 self::$configFiles[$tSubconfig['info/name']] = $tSubconfig;
             }
 
-            Io::writeSerialize($tOutputFile, self::$configFiles);
+            if (!Framework::$readonly) {
+                Io::writeSerialize($tOutputFile, self::$configFiles);
+            }
         }
 
         foreach (self::$configFiles as $tSubconfig) {
