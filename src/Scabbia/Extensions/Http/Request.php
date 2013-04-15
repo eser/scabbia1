@@ -10,6 +10,7 @@ namespace Scabbia\Extensions\Http;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Router;
+use Scabbia\Extensions\Objects\Collection;
 use Scabbia\Config;
 use Scabbia\Utils;
 
