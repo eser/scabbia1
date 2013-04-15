@@ -85,9 +85,9 @@ class Gettext
         $data   = fread($fp, 8);
         $header = unpack("lmagic/lrevision", $data);
 
-        if ((int) self::MAGIC1 != $header['magic']
-            && (int) self::MAGIC2 != $header['magic']) {
-            return null;
+        if ((int)self::MAGIC1 != $header['magic'] && (int) self::MAGIC2 != $header['magic']) {
+            // TODO Eser: somehow problematic
+            // return null;
         }
 
         if (0 != $header['revision']) {
