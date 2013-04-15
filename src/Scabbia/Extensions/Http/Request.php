@@ -41,11 +41,23 @@ class Request
     /**
      * @ignore
      */
-    public static $isLarouxJs = false;
+    public static $wrapperFunction = false;
     /**
      * @ignore
      */
     public static $queryString;
+    /**
+     * @ignore
+     */
+    public static $get;
+    /**
+     * @ignore
+     */
+    public static $post;
+    /**
+     * @ignore
+     */
+    public static $cookie;
     /**
      * @ignore
      */
@@ -145,9 +157,14 @@ class Request
             self::$methodext .= 'ajax';
         }
 
-        if (isset($_SERVER['HTTP_X_WRAPPER_FUNCTION']) && $_SERVER['HTTP_X_WRAPPER_FUNCTION'] == 'laroux.js') {
-            self::$isLarouxJs = true;
+        if (isset($_SERVER['HTTP_X_WRAPPER_FUNCTION'])) {
+            self::$wrapperFunction = $_SERVER['HTTP_X_WRAPPER_FUNCTION'];
         }
+
+        // get/post/cookie
+        self::$get = new Collection($_GET);
+        self::$post = new Collection($_POST);
+        self::$cookie = new Collection($_COOKIE);
 
         // $userAgent
         if (Config::get('http/userAgents/autoCheck', false) !== false) {

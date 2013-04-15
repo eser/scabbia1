@@ -9,6 +9,7 @@
         "fwdependList":     [
             "Helpers",
             "Mime",
+            "Objects",
             "Profiler",
             "Views"
         ]

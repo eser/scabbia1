@@ -27,7 +27,7 @@ class LarouxJs
      */
     public static function output($uParms)
     {
-        if (Request::$isAjax && Request::$isLarouxJs) {
+        if (Request::$isAjax && Request::$wrapperFunction == 'laroux.js') {
             $tLastContentType = Response::sentHeaderValue('Content-Type');
             $tContent = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true') .
                 ', "errorMessage": ' .
