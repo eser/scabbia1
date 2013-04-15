@@ -132,16 +132,24 @@ class I18n
             }
             setlocale(LC_ALL, $tLocale[0]);
 
+            $tLocalePath = Framework::$apppath . 'locale';
+            $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
+            $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
+            if (!file_exists($tMoFile) && file_exists($tPoFile)) {
+                $tCompiler = new \TrekkSoft\Potomoco\Compiler\Compiler();
+                $tCompiler->compile($tPoFile, $tMoFile);
+            }
+
             if (self::$gettextType == self::GETTEXT_EXTENSION) {
                 // bindtextdomain('core', Framework::$corepath . 'locale');
                 // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
-                bindtextdomain('application', Framework::$apppath . 'locale');
+                bindtextdomain('application', $tLocalePath);
                 bind_textdomain_codeset('application', self::$language['internalEncoding']);
 
                 textdomain('application');
             } else {
-                self::$gettextInstance = new Gettext(Framework::$apppath . 'locale', 'application', $tLocale[0]);
+                self::$gettextInstance = new Gettext($tLocalePath, 'application', $tLocale[0]);
             }
 
             return true;
