@@ -7,6 +7,7 @@
 
 namespace Scabbia\Extensions\I18n;
 
+use Scabbia\Extensions\I18n\Gettext;
 use Scabbia\Config;
 use Scabbia\Framework;
 
@@ -26,11 +27,29 @@ class I18n
     /**
      * @ignore
      */
+    const GETTEXT_EXTENSION = 0;
+    /**
+     * @ignore
+     */
+    const GETTEXT_IMPLEMENTATION = 1;
+
+
+    /**
+     * @ignore
+     */
     public static $languages = null;
     /**
      * @ignore
      */
     public static $language = null;
+    /**
+     * @ignore
+     */
+    public static $gettextType = self::GETTEXT_IMPLEMENTATION;
+    /**
+     * @ignore
+     */
+    public static $gettextInstance;
 
 
     /**
@@ -105,26 +124,65 @@ class I18n
 
             $tLocale['all'] = implode('.', $tLocale);
 
-            // putenv('LC_ALL=' . $tLocale[0]);
+            // mb_internal_encoding(self::$language['internalEncoding']);
+            mb_http_output(self::$language['internalEncoding']);
+
             if (!Framework::$readonly) {
                 putenv('LANG=' . $tLocale[0]);
             }
             setlocale(LC_ALL, $tLocale[0]);
 
-            // mb_internal_encoding(self::$language['internalEncoding']);
-            mb_http_output(self::$language['internalEncoding']);
+            if (self::$gettextType == self::GETTEXT_EXTENSION) {
+                // bindtextdomain('core', Framework::$corepath . 'locale');
+                // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
-            // bindtextdomain('core', Framework::$corepath . 'locale');
-            // bind_textdomain_codeset('core', self::$language['internalEncoding']);
+                bindtextdomain('application', Framework::$apppath . 'locale');
+                bind_textdomain_codeset('application', self::$language['internalEncoding']);
 
-            bindtextdomain('application', Framework::$apppath . 'locale');
-            bind_textdomain_codeset('application', self::$language['internalEncoding']);
-
-            textdomain('application');
+                textdomain('application');
+            } else {
+                self::$gettextInstance = new Gettext(Framework::$apppath . 'locale', 'application', $tLocale[0]);
+            }
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function _($uMessage)
+    {
+        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+            return \_($uMessage);
+        }
+
+        return self::$gettextInstance->gettext($uMessage);
+    }
+
+    /**
+     * @ignore
+     */
+    public static function gettext($uMessage)
+    {
+        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+            return \gettext($uMessage);
+        }
+
+        return self::$gettextInstance->gettext($uMessage);
+    }
+
+    /**
+     * @ignore
+     */
+    public static function ngettext($uMessage, $uMessagePlural, $uCount)
+    {
+        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+            return \ngettext($uMessage, $uMessagePlural, $uCount);
+        }
+
+        return self::$gettextInstance->ngettext($uMessage, $uMessagePlural, $uCount);
     }
 }
