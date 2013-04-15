@@ -177,7 +177,7 @@ class Assets
             switch ($tMimetype) {
                 case 'application/x-javascript':
                     if ($tMinify) {
-                        $tContent = \JSMin::minify($tContent);
+                        $tContent = \JSMinPlus::minify($tContent);
                     }
                     echo $tContent;
                     break;
