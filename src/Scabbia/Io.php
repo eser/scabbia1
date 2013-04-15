@@ -266,7 +266,7 @@ class Io
      *
      * @return bool the result
      */
-    public static function isReadableAndNewer($uFile, $uLastModified = -1)
+    public static function isReadableAndNewer($uFile, $uLastModified)
     {
         return (file_exists($uFile) && filemtime($uFile) >= $uLastModified);
     }

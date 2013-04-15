@@ -10,6 +10,7 @@ namespace Scabbia\Extensions\I18n;
 use Scabbia\Extensions\I18n\Gettext;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Io;
 
 /**
  * I18n Extension
@@ -135,7 +136,8 @@ class I18n
             $tLocalePath = Framework::$apppath . 'locale';
             $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
             $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
-            if (!file_exists($tMoFile) && file_exists($tPoFile)) {
+
+            if (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile))) {
                 $tCompiler = new \TrekkSoft\Potomoco\Compiler();
                 $tCompiler->compile($tPoFile, $tMoFile);
             }
@@ -149,7 +151,7 @@ class I18n
 
                 textdomain('application');
             } else {
-                self::$gettextInstance = new Gettext($tLocalePath, 'application', $tLocale[0]);
+                self::$gettextInstance = new Gettext($tMoFile);
             }
 
             return true;

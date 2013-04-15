@@ -63,10 +63,9 @@ class Gettext
      *
      * @param String $mofile The file to parse
      */
-    public function __construct($directory, $domain, $locale)
+    public function __construct($mofile)
     {
-        $this->mofile = sprintf("%s/%s/LC_MESSAGES/%s.mo", $directory,
-            $locale, $domain);
+        $this->mofile = $mofile;
     }
 
     /**
