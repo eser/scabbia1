@@ -37,6 +37,10 @@ class Assets
      * @ignore
      */
     public static $directories = null;
+    /**
+     * @ignore
+     */
+    public static $lessCompiler = null;
 
 
     /**
@@ -134,6 +138,16 @@ class Assets
 
                 if ($tType == 'function') {
                     $tContent .= call_user_func($tPart['name']);
+                } else if ($tType == 'file.less') {
+                    if (is_null(self::$lessCompiler)) {
+                        self::$lessCompiler = new \lessc();
+                    }
+
+                    $tLessScript = Io::translatePath($tPart['path']);
+
+                    $tContent .= '/* CSS: ' . $tPart['path'] . ' (LESS) */' . PHP_EOL;
+                    $tContent .= self::$lessCompiler->compileFile($tLessScript);
+                    $tContent .= PHP_EOL;
                 } else {
                     switch ($tMimetype) {
                         case 'application/x-httpd-php':
