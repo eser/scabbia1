@@ -124,8 +124,8 @@ class Config
                                 continue 2;
                             }
                             break;
-                        case 'endpoint':
-                            if (Framework::$endpoint != $tNodeName[2]) {
+                        case 'application':
+                            if (Framework::$application->name != $tNodeName[2]) {
                                 continue 2;
                             }
                             break;

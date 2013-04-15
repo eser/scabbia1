@@ -30,6 +30,10 @@ class Framework
      */
     public static $classLoader = null;
     /**
+     * @var object  Application instance
+     */
+    public static $application = null;
+    /**
      * @var int     Indicates framework is running in production, development or debug mode
      */
     public static $development = 0;
@@ -66,14 +70,6 @@ class Framework
      */
     public static $milestones = array();
     /**
-     * @var array   Stores all available endpoints
-     */
-    public static $endpoints = array();
-    /**
-     * @var string  Stores active endpoint information
-     */
-    public static $endpoint = null;
-    /**
      * @var int     The exit status
      */
     public static $exitStatus = null;
@@ -109,30 +105,11 @@ class Framework
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
 
-
-        // endpoints
-        if (count(self::$endpoints) > 0) {
-            foreach (self::$endpoints as $tEndpoint) {
-                $tParsed = parse_url($tEndpoint);
-                if (!isset($tParsed['port'])) {
-                    $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
-                }
-
-                if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                    self::$endpoint = $tEndpoint;
-                    break;
-                }
-            }
-
-            if (is_null(self::$endpoint)) {
-                throw new \Exception('no endpoints match.');
-            }
-        }
-
-        self::$milestones[] = array('endpoints', microtime(true));
-
         if (!self::$readonly && is_null(self::$apppath)) {
             self::$apppath = self::$basepath . 'application/';
+        }
+        if (!is_null($uClassLoader)) {
+            $uClassLoader->set('Application', self::$apppath);
         }
 
         // load config
@@ -184,36 +161,58 @@ class Framework
     }
 
     /**
+     * Determines application by endpoint.
+     *
+     * @param array $uEndpoints set of endpoints
+     * @return null|mixed selected application
+     */
+    public static function runApplicationByEndpoint(array $uEndpoints)
+    {
+        foreach ($uEndpoints as $tEndpointKey => $tEndpointAddresses) {
+            foreach ((array)$tEndpointAddresses as $tEndpointAddress) {
+                $tParsed = parse_url($tEndpointAddress);
+                if (!isset($tParsed['port'])) {
+                    $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+                }
+
+                if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+                    return self::runApplication(new $tEndpointKey ());
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Invokes the startup methods for framework extensions and allows other parties to take over execution.
      *
-     * @param array|null    $uCallbacks list of other parties
-     * @param callback|null $uOtherwise fallback method
-     * @param callback|null $uOnError   method will be executed on error
+     * @param Application $uApplication application instance currently running on
      *
      * @return bool whether other party is called or not
      */
-    public static function run($uCallbacks = null, $uOtherwise = null, $uOnError = null)
+    public static function runApplication(Application $uApplication)
     {
+        self::$application = $uApplication;
+
         // run extensions
         $tParms = array(
-            'onerror' => $uOnError
+            'onerror' => $uApplication->onError
         );
         Events::invoke('pre-run', $tParms);
         self::$milestones[] = array('extensionsPreRun', microtime(true));
 
-        if (!is_null($uCallbacks)) {
-            foreach ((array)$uCallbacks as $tCallback) {
-                $tReturn = call_user_func($tCallback);
+        foreach ($uApplication->callbacks as $tCallback) {
+            $tReturn = call_user_func($tCallback);
 
-                if (!is_null($tReturn) && $tReturn === true) {
-                    break;
-                }
+            if (!is_null($tReturn) && $tReturn === true) {
+                break;
             }
+        }
 
-            if (!is_null($uOtherwise) && !isset($tReturn) || $tReturn !== true) {
-                call_user_func($uOtherwise);
-                return false;
-            }
+        if (!is_null($uApplication->otherwise) && !isset($tReturn) || $tReturn !== true) {
+            call_user_func($uApplication->otherwise);
+            return false;
         }
 
         return true;
