@@ -148,7 +148,7 @@ class Framework
             self::$classLoader->set(self::$application->name, self::$apppath);
         }
 
-        self::run();
+        self::run(false);
 
         // run extensions
         $tParms = array(
@@ -176,9 +176,11 @@ class Framework
     /**
      * Invokes the startup methods just for framework extensions so other parties can take over execution.
      */
-    public static function run()
+    public static function run($uReadonly = true)
     {
-        self::$readonly = true;
+        if ($uReadonly) {
+            self::$readonly = true;
+        }
 
         // load config
         Config::$default = Config::load();
