@@ -58,6 +58,10 @@ class Fb
     /**
      * @ignore
      */
+    public static $appExtendedAccess;
+    /**
+     * @ignore
+     */
     public static $api = null;
     /**
      * @ignore
@@ -72,7 +76,7 @@ class Fb
     /**
      * @ignore
      */
-    public static function loadApi()
+    public static function loadApi($uForceClear = false)
     {
         self::$appId = Config::get('facebook/applicationId');
         self::$appSecret = Config::get('facebook/applicationSecret');
@@ -80,6 +84,7 @@ class Fb
         self::$appPermissions = Config::get('facebook/permissions', 'email, read_stream');
         self::$appRedirectUri = Config::get('facebook/redirectUrl');
         self::$appFileUpload = Config::get('facebook/fileUpload', false);
+        self::$appExtendedAccess = Config::get('facebook/extendedAccess', false);
 
         self::$api = new \Facebook(
             array(
@@ -91,33 +96,29 @@ class Fb
         );
 
         self::$userId = self::$api->getUser();
-
         self::$facebookData = Session::get('facebookData', null);
-        if (is_null(self::$facebookData) || self::$facebookData['userid'] !== self::$userId)
+
+        $tFirstTime = (is_null(self::$facebookData) || self::$facebookData['userid'] !== self::$userId);
+        if ($tFirstTime && self::$appExtendedAccess) {
+            self::$api->setExtendedAccessToken();
+        }
+
+        if ($uForceClear || $tFirstTime)
         {
-            self::resetSession();
+            self::$facebookData = array(
+                'userid'        => self::$userId,
+                'access_token'  => self::$api->getAccessToken(),
+                'cache'         => array()
+            );
+
+            Session::set('facebookData', self::$facebookData);
         }
     }
 
     /**
      * @ignore
      */
-    public static function resetSession($uForceClear = false)
-    {
-        if ($uForceClear || is_null(self::$facebookData)) {
-            self::$facebookData = array();
-        }
-
-        self::$facebookData['userid'] = self::$userId;
-        self::$facebookData['cache'] = array();
-
-        Session::set('facebookData', self::$facebookData);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function login($uExtendedAccess = true, $uForcePermissions = false)
+    public static function login($uForcePermissions = false)
     {
         if (self::$userId !== self::NO_USER_ID) {
             if (!$uForcePermissions || self::checkUserPermission(self::$appPermissions)) {
@@ -146,13 +147,6 @@ class Fb
 
             return false;
         }
-
-        if ($uExtendedAccess) {
-            self::$api->setExtendedAccessToken();
-        }
-
-        self::$facebookData['access_token'] = self::$api->getAccessToken();
-        Session::set('facebookData', self::$facebookData);
 
         return true;
     }
