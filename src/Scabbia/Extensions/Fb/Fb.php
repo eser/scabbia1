@@ -72,16 +72,16 @@ class Fb
     /**
      * @ignore
      */
-    public static function loadApi($uRedirectUrl = null, $uPermissions = null)
+    public static function loadApi()
     {
         self::$appId = Config::get('facebook/applicationId');
         self::$appSecret = Config::get('facebook/applicationSecret');
         self::$appUrl = Config::get('facebook/applicationUrl');
-        self::$appPermissions = !is_null($uPermissions) ? $uPermissions : Config::get('facebook/permissions', 'email, read_stream');
-        self::$appRedirectUri = !is_null($uRedirectUrl) ? $uRedirectUrl : Config::get('facebook/redirectUrl');
+        self::$appPermissions = Config::get('facebook/permissions', 'email, read_stream');
+        self::$appRedirectUri = Config::get('facebook/redirectUrl');
         self::$appFileUpload = Config::get('facebook/fileUpload', false);
 
-        self::$api = new Facebook(
+        self::$api = new \Facebook(
             array(
                 'appId' => self::$appId,
                 'secret' => self::$appSecret,
@@ -90,10 +90,10 @@ class Fb
             )
         );
 
-        self::$facebookData = Session::get('facebookData', null);
         self::$userId = self::$api->getUser();
 
-        if (is_null(self::$facebookData) || self::$facebookData['userid'] != self::$userId)
+        self::$facebookData = Session::get('facebookData', null);
+        if (is_null(self::$facebookData) || self::$facebookData['userid'] !== self::$userId)
         {
             self::resetSession();
         }
@@ -105,9 +105,7 @@ class Fb
     public static function resetSession($uForceClear = false)
     {
         if ($uForceClear || is_null(self::$facebookData)) {
-            self::$facebookData = array(
-                'state'     => String::generateUuid()
-            );
+            self::$facebookData = array();
         }
 
         self::$facebookData['userid'] = self::$userId;
@@ -119,29 +117,12 @@ class Fb
     /**
      * @ignore
      */
-    public static function login()
+    public static function login($uExtendedAccess = true, $uForcePermissions = false)
     {
-        $tLoginUrl = self::$api->getLoginUrl(
-            array(
-                'scope' => self::$appPermissions,
-                'state' => md5(self::$facebookData['state']),
-                'redirect_uri' => self::$appRedirectUri
-            )
-        );
-
-        header('Location: ' . $tLoginUrl, true);
-        Framework::end(0);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function checkLogin()
-    {
-        $tState = Request::get('state', null);
-
-        if (is_null($tState) || $tState != md5(self::$facebookData['state'])) {
-            return false;
+        if (self::$userId !== self::NO_USER_ID) {
+            if (!$uForcePermissions || self::checkUserPermission(self::$appPermissions)) {
+                return true;
+            }
         }
 
         $tError = Request::get('error_code', null);
@@ -149,22 +130,28 @@ class Fb
             return false;
         }
 
-        $tCode = Request::get('code');
+        $tCode = Request::get('code', null);
+        if (is_null($tCode)) {
+            Session::set('facebookData', self::$facebookData);
 
-        $tResponse = self::$api->unboxOauthRequest(
-            self::$api->unboxGetUrl('graph', '/oauth/access_token'),
-            array(
-                'client_id' => self::$appId,
-                'client_secret' => self::$appSecret,
-                'redirect_uri' => self::$appRedirectUri,
-                'code' => $tCode
-            )
-        );
+            $tLoginUrl = self::$api->getLoginUrl(
+                array(
+                    'scope' => self::$appPermissions,
+                    'redirect_uri' => self::$appRedirectUri
+                )
+            );
 
-        $tArray = null;
-        parse_str($tResponse, $tArray);
+            header('Location: ' . $tLoginUrl, true);
+            Framework::end(0);
 
-        self::$facebookData += $tArray;
+            return false;
+        }
+
+        if ($uExtendedAccess) {
+            self::$api->setExtendedAccessToken();
+        }
+
+        self::$facebookData['access_token'] = self::$api->getAccessToken();
         Session::set('facebookData', self::$facebookData);
 
         return true;
@@ -173,28 +160,9 @@ class Fb
     /**
      * @ignore
      */
-    public static function requireLogin($uRedirect = true, $uPermissions = null)
+    public static function logoutUrl()
     {
-        if (self::$userId === self::NO_USER_ID && self::checkLogin()) {
-            return true;
-        } elseif (self::checkUserPermission($uPermissions)) {
-            return true;
-        }
-
-        if ($uRedirect)
-        {
-            self::login();
-        }
-        return false;
-    }
-
-
-    /**
-     * @ignore
-     */
-    public static function getUserId()
-    {
-        return self::$userId;
+        return self::$api->getLogoutUrl();
     }
 
     /**
