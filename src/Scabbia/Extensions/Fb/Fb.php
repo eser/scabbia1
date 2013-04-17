@@ -10,6 +10,8 @@ namespace Scabbia\Extensions\Fb;
 use Scabbia\Extensions\Fb\Facebook;
 use Scabbia\Extensions\Fb\FacebookQueryObject;
 use Scabbia\Extensions\Helpers\String;
+use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -20,11 +22,15 @@ use Scabbia\Framework;
  * @package Scabbia
  * @subpackage Fb
  * @version 1.1.0
- *
- * @todo direct api query like /me/home
  */
 class Fb
 {
+    /**
+     * @ignore
+     */
+    const NO_USER_ID = '0';
+
+
     /**
      * @ignore
      */
@@ -36,19 +42,19 @@ class Fb
     /**
      * @ignore
      */
-    public static $appFileUpload;
-    /**
-     * @ignore
-     */
     public static $appUrl;
     /**
      * @ignore
      */
-    public static $appPageId;
+    public static $appPermissions;
     /**
      * @ignore
      */
     public static $appRedirectUri;
+    /**
+     * @ignore
+     */
+    public static $appFileUpload;
     /**
      * @ignore
      */
@@ -57,6 +63,10 @@ class Fb
      * @ignore
      */
     public static $userId = null;
+    /**
+     * @ignore
+     */
+    public static $facebookData = null;
 
 
     /**
@@ -64,28 +74,27 @@ class Fb
      */
     public static function loadApi()
     {
-        self::$appId = Config::get('facebook/APP_ID');
-        self::$appSecret = Config::get('facebook/APP_SECRET');
-        self::$appFileUpload = Config::get('facebook/APP_FILEUPLOAD');
-        self::$appUrl = Config::get('facebook/APP_URL');
-        self::$appPageId = Config::get('facebook/APP_PAGE_ID');
-        self::$appRedirectUri = Config::get('facebook/APP_REDIRECT_URI');
+        self::$appId = Config::get('facebook/applicationId');
+        self::$appSecret = Config::get('facebook/applicationSecret');
+        self::$appUrl = Config::get('facebook/applicationUrl');
+        self::$appPermissions = Config::get('facebook/permissions', 'email, read_stream');
+        self::$appRedirectUri = Config::get('facebook/redirectUrl');
+        self::$appFileUpload = Config::get('facebook/fileUpload', false);
 
-        if (is_null(self::$api)) {
-            self::$api = new Facebook(
-                array(
-                    'appId' => self::$appId,
-                    'secret' => self::$appSecret,
-                    'cookie' => true,
-                    'fileUpload' => (self::$appFileUpload == '1')
-                )
-            );
-        }
+        self::$api = new Facebook(
+            array(
+                'appId' => self::$appId,
+                'secret' => self::$appSecret,
+                'cookie' => true,
+                'fileUpload' => self::$appFileUpload
+            )
+        );
 
+        self::$facebookData = Session::get('facebookData', null);
         self::$userId = self::$api->getUser();
 
-        $tUserId = Session::get('fbUserId', null);
-        if (is_null($tUserId)) { // || self::$userId != (int)$tUserId
+        if (is_null(self::$facebookData) || self::$facebookData['userid'] != self::$userId)
+        {
             self::resetSession();
         }
     }
@@ -93,20 +102,87 @@ class Fb
     /**
      * @ignore
      */
-    public static function resetSession()
+    public static function login()
     {
-        Session::remove('fbUser');
-        Session::remove('fbUserAccessToken');
+        $tLoginUrl = self::$api->getLoginUrl(
+            array(
+                'scope' => self::$appPermissions,
+                'state' => md5(self::$facebookData['state']),
+                'redirect_uri' => self::$appRedirectUri
+            )
+        );
 
-        foreach (Session::getKeys() as $tKey) {
-            if (substr($tKey, 0, 3) != 'fb_') {
-                continue;
-            }
+        header('Location: ' . $tLoginUrl, true);
+        Framework::end(0);
+    }
 
-            Session::remove($tKey);
+    /**
+     * @ignore
+     */
+    public static function checkLogin($uCode, $uState)
+    {
+        if (md5(self::$facebookData['state']) != $uState) {
+            return false;
         }
 
-        Session::set('fbUserId', self::$userId);
+        $tResponse = self::$api->unboxOauthRequest(
+            self::$api->unboxGetUrl('graph', '/oauth/access_token'),
+            array(
+                'client_id' => self::$appId,
+                'client_secret' => self::$appSecret,
+                // 'redirect_uri' => self::$appRedirectUri,
+                'code' => $uCode
+            )
+        );
+
+        $tArray = null;
+        parse_str($tResponse, $tArray);
+
+        self::$facebookData += $tArray;
+        Session::set('facebookData', self::$facebookData);
+
+        return true;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function requireLogin($uPermissions = null)
+    {
+        $tCode = Request::get('code');
+        $tState = Request::get('state');
+
+        if (self::$userId === self::NO_USER_ID && !is_null($tCode) && !is_null($tState)) {
+            if (self::checkLogin($tCode, $tState)) {
+                return;
+            }
+        } elseif (self::checkUserPermission($uPermissions)) {
+            return;
+        }
+
+        self::login();
+    }
+
+    /**
+     * @ignore
+     */
+    public static function resetSession($uForceClear = false)
+    {
+        if ($uForceClear || self::$userId === self::NO_USER_ID) {
+            self::$facebookData = array(
+                'userid'    => self::NO_USER_ID,
+                'state'     => String::generateUuid(),
+                'cache'     => array()
+            );
+        } else {
+            self::$facebookData = array(
+                'userid'    => self::$userId,
+                'state'     => String::generateUuid(),
+                'cache'     => array()
+            );
+        }
+
+        Session::set('facebookData', self::$facebookData);
     }
 
     /**
@@ -120,105 +196,50 @@ class Fb
     /**
      * @ignore
      */
-    public static function getUserAccessToken($uExtended = false)
+    public static function get($uQuery, $uUseCache = false, $uExtra = null)
     {
-        if (self::$userId == 0) {
+        if (self::$userId === self::NO_USER_ID) {
             return false;
         }
 
-        $tUserAccessToken = Session::get('fbUserAccessToken', null);
-        if (is_null($tUserAccessToken)) {
-            $tUserAccessToken = self::$api->getAccessToken();
-
-            if ($tUserAccessToken === false) {
-                $tUserAccessToken = null;
-            }
-
-            Session::set('fbUserAccessToken', $tUserAccessToken);
+        if (is_null($uExtra)) {
+            $uExtra = array();
         }
 
-        if ($uExtended && !is_null($tUserAccessToken)) {
-            $tExtendedUserAccessToken = Session::get('fbUserAccessTokenEx', null);
-            if (is_null($tExtendedUserAccessToken)) {
-                $tExtendedUserAccessTokenResponse = self::$api->unboxOauthRequest(
-                    self::$api->unboxGetUrl('graph', '/oauth/access_token'),
-                    array(
-                         'client_id' => self::$appId,
-                         'client_secret' => self::$appSecret,
-                         'grant_type' => 'fb_exchange_token',
-                         'fb_exchange_token' => $tUserAccessToken
-                    )
-                );
+        if ($uUseCache && isset(self::$facebookData['cache'][$uQuery])) {
+            $tObject = self::$facebookData['cache'][$uQuery];
+        } else {
+            try {
+                $tObject = self::$api->api($uQuery, $uExtra);
 
-                if ($tExtendedUserAccessTokenResponse !== false) {
-                    $tExtendedUserAccessTokenArray = array();
-                    parse_str($tExtendedUserAccessTokenResponse, $tExtendedUserAccessTokenArray);
-
-                    if (isset($tExtendedUserAccessTokenArray['access_token'])) {
-                        $tExtendedUserAccessToken = $tExtendedUserAccessTokenArray['access_token'];
-
-                        Session::set('fbUserAccessTokenEx', $tExtendedUserAccessToken);
-                        $tUserAccessToken = $tExtendedUserAccessToken;
-                    }
-                }
-            } else {
-                $tUserAccessToken = $tExtendedUserAccessToken;
-            }
-        }
-
-        return $tUserAccessToken;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function getLoginUrl($uPermissions, $uRedirectUri = null)
-    {
-        $tLoginUrl = self::$api->getLoginUrl(
-            array(
-                'scope' => $uPermissions,
-                'redirect_uri' => String::coalesce($uRedirectUri, self::$appRedirectUri)
-            )
-        );
-
-        return $tLoginUrl;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function checkLogin($uPermissions, $uRequiredPermissions = null, $uRedirectUri = null)
-    {
-        if (self::$userId == 0 || (
-            !is_null($uRequiredPermissions) &&
-            strlen($uRequiredPermissions) > 0 &&
-            !self::checkUserPermission($uRequiredPermissions)
-        )) {
-            $tLoginUrl = self::getLoginUrl($uPermissions, $uRedirectUri);
-            Session::remove('fb_me_permissions');
-            header('Location: ' . $tLoginUrl, true);
-            Framework::end(0);
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function checkUserPermission($uPermissions)
-    {
-        if (self::$userId == 0) {
-            return false;
-        }
-
-        $tUserPermissions = self::get('/me/permissions', true);
-
-        if (count($tUserPermissions->data) == 0) {
-            return false;
-        }
-
-        foreach (explode(',', $uPermissions) as $tPermission) {
-            if (!array_key_exists($tPermission, $tUserPermissions->data[0])) {
+                self::$facebookData['cache'][$uQuery] = $tObject;
+                Session::set('facebookData', self::$facebookData);
+            } catch (\FacebookApiException $tException) {
                 return false;
+            }
+        }
+
+        return new FacebookQueryObject($tObject);
+    }
+
+    /**
+     * @ignore
+     */
+    public static function checkUserPermission($uPermissions = null)
+    {
+        $tPermissions = String::coalesce($uPermissions, self::$appPermissions);
+
+        if (!is_null($tPermissions)) {
+            $tUserPermissions = self::get('/me/permissions', true);
+
+            if ($tUserPermissions === false || count($tUserPermissions->data) == 0) {
+                return false;
+            }
+
+            foreach (explode(',', $uPermissions) as $tPermission) {
+                if (!array_key_exists($tPermission, $tUserPermissions->data[0])) {
+                    return false;
+                }
             }
         }
 
@@ -230,62 +251,21 @@ class Fb
      */
     public static function checkLike($uId)
     {
-        if (self::$userId == 0) {
-            return false;
-        }
-
         $tLikeResponse = self::get('/me/likes/' . $uId, false, null);
 
-        if (!empty($tLikeResponse->data)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function get($uQuery, $uUseCache = false, $uExtra = null)
-    {
-        if (self::$userId == 0) {
+        if ($tLikeResponse === false || empty($tLikeResponse->data)) {
             return false;
         }
 
-        if (is_null($uExtra)) {
-            $uExtra = array();
-        }
-
-        if (!$uUseCache || Framework::$development >= 1) {
-            try {
-                $tObject = self::$api->api($uQuery, $uExtra);
-            } catch (FacebookApiException $tException) {
-                return false;
-            }
-
-            return new FacebookQueryObject($tObject);
-        }
-
-        $tQuerySerialized = 'fb' . String::capitalizeEx($uQuery, '/', '_');
-        $tObject = Session::get($tQuerySerialized, null);
-        if (is_null($tObject)) {
-            try {
-                $tObject = self::$api->api($uQuery, $uExtra);
-                Session::set($tQuerySerialized, $tObject);
-            } catch (FacebookApiException $tException) {
-                return false;
-            }
-        }
-
-        return new FacebookQueryObject($tObject);
+        return true;
     }
 
     /**
      * @ignore
      */
-    public static function postToFeed($uUser, $uAccessToken, $uContent)
+    public static function postToFeed($uUser, $uContent)
     {
-        $uContent['access_token'] = $uAccessToken;
+        $uContent['access_token'] = self::$facebookData['access_token'];
 
         self::$api->api('/' . $uUser . '/feed', 'post', $uContent);
     }
