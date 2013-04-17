@@ -28,7 +28,7 @@ class Fb
     /**
      * @ignore
      */
-    const NO_USER_ID = '0';
+    const NO_USER_ID = 0;
 
 
     /**
@@ -72,13 +72,13 @@ class Fb
     /**
      * @ignore
      */
-    public static function loadApi()
+    public static function loadApi($uRedirectUrl = null, $uPermissions = null)
     {
         self::$appId = Config::get('facebook/applicationId');
         self::$appSecret = Config::get('facebook/applicationSecret');
         self::$appUrl = Config::get('facebook/applicationUrl');
-        self::$appPermissions = Config::get('facebook/permissions', 'email, read_stream');
-        self::$appRedirectUri = Config::get('facebook/redirectUrl');
+        self::$appPermissions = !is_null($uPermissions) ? $uPermissions : Config::get('facebook/permissions', 'email, read_stream');
+        self::$appRedirectUri = !is_null($uRedirectUrl) ? $uRedirectUrl : Config::get('facebook/redirectUrl');
         self::$appFileUpload = Config::get('facebook/fileUpload', false);
 
         self::$api = new Facebook(
@@ -102,6 +102,23 @@ class Fb
     /**
      * @ignore
      */
+    public static function resetSession($uForceClear = false)
+    {
+        if ($uForceClear || is_null(self::$facebookData)) {
+            self::$facebookData = array(
+                'state'     => String::generateUuid()
+            );
+        }
+
+        self::$facebookData['userid'] = self::$userId;
+        self::$facebookData['cache'] = array();
+
+        Session::set('facebookData', self::$facebookData);
+    }
+
+    /**
+     * @ignore
+     */
     public static function login()
     {
         $tLoginUrl = self::$api->getLoginUrl(
@@ -119,19 +136,28 @@ class Fb
     /**
      * @ignore
      */
-    public static function checkLogin($uCode, $uState)
+    public static function checkLogin()
     {
-        if (md5(self::$facebookData['state']) != $uState) {
+        $tState = Request::get('state', null);
+
+        if (is_null($tState) || $tState != md5(self::$facebookData['state'])) {
             return false;
         }
+
+        $tError = Request::get('error_code', null);
+        if (!is_null($tError)) {
+            return false;
+        }
+
+        $tCode = Request::get('code');
 
         $tResponse = self::$api->unboxOauthRequest(
             self::$api->unboxGetUrl('graph', '/oauth/access_token'),
             array(
                 'client_id' => self::$appId,
                 'client_secret' => self::$appSecret,
-                // 'redirect_uri' => self::$appRedirectUri,
-                'code' => $uCode
+                'redirect_uri' => self::$appRedirectUri,
+                'code' => $tCode
             )
         );
 
@@ -147,43 +173,21 @@ class Fb
     /**
      * @ignore
      */
-    public static function requireLogin($uPermissions = null)
+    public static function requireLogin($uRedirect = true, $uPermissions = null)
     {
-        $tCode = Request::get('code');
-        $tState = Request::get('state');
-
-        if (self::$userId === self::NO_USER_ID && !is_null($tCode) && !is_null($tState)) {
-            if (self::checkLogin($tCode, $tState)) {
-                return;
-            }
+        if (self::$userId === self::NO_USER_ID && self::checkLogin()) {
+            return true;
         } elseif (self::checkUserPermission($uPermissions)) {
-            return;
+            return true;
         }
 
-        self::login();
-    }
-
-    /**
-     * @ignore
-     */
-    public static function resetSession($uForceClear = false)
-    {
-        if ($uForceClear || self::$userId === self::NO_USER_ID) {
-            self::$facebookData = array(
-                'userid'    => self::NO_USER_ID,
-                'state'     => String::generateUuid(),
-                'cache'     => array()
-            );
-        } else {
-            self::$facebookData = array(
-                'userid'    => self::$userId,
-                'state'     => String::generateUuid(),
-                'cache'     => array()
-            );
+        if ($uRedirect)
+        {
+            self::login();
         }
-
-        Session::set('facebookData', self::$facebookData);
+        return false;
     }
+
 
     /**
      * @ignore
@@ -237,7 +241,7 @@ class Fb
             }
 
             foreach (explode(',', $uPermissions) as $tPermission) {
-                if (!array_key_exists($tPermission, $tUserPermissions->data[0])) {
+                if (!array_key_exists(trim($tPermission), $tUserPermissions->data[0])) {
                     return false;
                 }
             }
