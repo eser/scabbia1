@@ -247,7 +247,7 @@ class Fb
 
         if (!isset($uExtra['fields'])) {
             $uExtra['fields'] = 'name,first_name,middle_name,last_name,name_format,username,quotes,gender,email,' .
-                                'timezone,locale,verified,updated_time,link';
+                                'timezone,locale,verified,updated_time,link,picture';
         }
 
         return self::get('/me', true, $uExtra);
