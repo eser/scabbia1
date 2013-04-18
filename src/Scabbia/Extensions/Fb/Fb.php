@@ -246,7 +246,7 @@ class Fb
         }
 
         if (!isset($uExtra['fields'])) {
-            $uExtra['fields'] = 'name,first_name,last_name,username,quotes,gender,email' .
+            $uExtra['fields'] = 'name,first_name,middle_name,last_name,name_format,username,quotes,gender,email,' .
                                 'timezone,locale,verified,updated_time,link';
         }
 
