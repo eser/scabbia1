@@ -8,7 +8,25 @@ Scabbia follows the accepted standards of PHP Framework Interop Group (http://ww
 
 Installation
 ------------
-Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch composer.
+##### Alternative 1: Zip Package #####
+
+Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch `./composer_update.sh` or `composer_update.cmd`.
+
+##### Alternative 2: Composer #####
+
+On *nix:
+``` bash
+php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
+php composer.phar create-project larukedi/scabbia-skeleton -s dev
+```
+
+On Windows:
+Download and install [Composer-Setup.exe](http://getcomposer.org/Composer-Setup.exe) then run:
+``` bat
+composer create-project larukedi/scabbia-skeleton -s dev
+```
+
+
 
 Requirements
 ------------
@@ -17,12 +35,15 @@ Requirements
 
 ** Skeleton application auto-installs this requirement with other dependencies.
 
+
 Dependencies
 ------------
 * psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
 * facebook/php-sdk: Facebook PHP SDK
 * dflydev/markdown: Markdown Parser
 * nitra/php-min: Minifying CSS, JS
+* trekksoft/potomoco: gettext compiler
+* leafo/lessphp: LESS compiler
 
 
 Optional PHP Extensions
@@ -46,4 +67,5 @@ See [license.txt](license.txt)
 
 Contributing
 ------------
-Fork the repo, push your changes to your fork, and submit a pull request.
+* Fork the repo, push your changes to your fork, and submit a pull request.
+* If something does not work, please report it using GitHub issues.
