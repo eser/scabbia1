@@ -180,11 +180,6 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "bootstrap",
-                        "path":         "{core}resources/bootstrap/bootstrap-responsive.css"
-                    },
-                    {
-                        "type":         "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.css"
                     },
