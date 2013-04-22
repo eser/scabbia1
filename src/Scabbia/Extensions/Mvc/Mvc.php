@@ -43,7 +43,7 @@ class Mvc
     /**
      * @ignore
      */
-    public static $link;
+    public static $current = null;
 
 
     /**
@@ -53,7 +53,6 @@ class Mvc
     {
         self::$defaultController = Config::get('mvc/defaultController', 'home');
         self::$defaultAction = Config::get('mvc/defaultAction', 'index');
-        self::$link = Config::get('mvc/link', '{@siteroot}/{@controller}/{@action}{@params}{@query}');
     }
 
     /**
@@ -88,9 +87,26 @@ class Mvc
     /**
      * @ignore
      */
-    public static function current()
+    public static function setController($uControllerInstance, $uActionName, array $uParams = array(), array $uInput = array())
     {
-        return end(Controllers::$stack);
+        Mvc::$current = $uControllerInstance;
+
+        $uControllerInstance->route = array(
+            'controller' => get_class($uControllerInstance),
+            'action' => $uActionName,
+            'params' => $uParams,
+            'query' => !isset($uInput['query']) ? $uInput['query'] : ''
+        );
+
+        if (($tPos = strrpos($uControllerInstance->route['controller'], '\\')) !== false) {
+            $uControllerInstance->route['controller'] = substr($uControllerInstance->route['controller'], $tPos + 1);
+        }
+
+        $uControllerInstance->view = $uControllerInstance->route['controller'] .
+            '/' .
+            $uControllerInstance->route['action'] .
+            '.' .
+            Config::get('mvc/view/defaultViewExtension', 'php');
     }
 
     /**

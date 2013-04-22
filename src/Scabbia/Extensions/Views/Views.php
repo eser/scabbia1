@@ -121,7 +121,7 @@ class Views
         );
 
         $tExtra['lang'] = I18n::$language['key'];
-        $tExtra['controller'] = Mvc::current();
+        $tExtra['controller'] = Mvc::$current;
 
         $tTemplatePath = $tViewFileInfo['dirname'] . '/';
         $tViewFile = $tViewFileInfo['basename'];

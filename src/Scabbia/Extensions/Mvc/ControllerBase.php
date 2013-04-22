@@ -133,31 +133,13 @@ class ControllerBase implements LoggerAwareInterface
             return false;
         }
 
-        array_push(Controllers::$stack, $this);
-
-        $this->route = array(
-            'controller' => get_class($this),
-            'action' => $tActionName,
-            'params' => $uParams,
-            'query' => isset($uInput['query']) ? $uInput['query'] : ''
-        );
-
-        if (($tPos = strrpos($this->route['controller'], '\\')) !== false) {
-            $this->route['controller'] = substr($this->route['controller'], $tPos + 1);
-        }
-
-        $this->view = $this->route['controller'] .
-            '/' .
-            $this->route['action'] .
-            '.' .
-            Config::get('mvc/view/defaultViewExtension', 'php');
+        Mvc::setController($this, $tActionName, $uParams, $uInput);
 
         $this->prerender->invoke();
 
         $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
 
         $this->postrender->invoke();
-        array_pop(Controllers::$stack);
 
         return $tReturn;
     }
