@@ -185,6 +185,11 @@
                     },
                     {
                         "type":         "file",
+                        "class":        "typeahead",
+                        "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.css"
                     },
