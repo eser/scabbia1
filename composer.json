@@ -21,7 +21,6 @@
         "psr/log": "1.0.0",
         "facebook/php-sdk": ">=3.2.2",
         "dflydev/markdown": ">=1.0.2",
-        "nitra/php-min": "dev-master",
         "trekksoft/potomoco": "dev-master",
         "leafo/lessphp": "dev-master"
     },

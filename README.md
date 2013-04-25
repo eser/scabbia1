@@ -41,9 +41,27 @@ Dependencies
 * psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
 * facebook/php-sdk: Facebook PHP SDK
 * dflydev/markdown: Markdown Parser
-* nitra/php-min: Minifying CSS, JS
 * trekksoft/potomoco: gettext compiler
 * leafo/lessphp: LESS compiler
+
+
+Bundled Components
+------------------
+* fonts/KabobExtrabold.ttf
+* twitter/bootstrap
+* twitter/hogan
+* twitter/typeahead
+* introjs
+* jquery
+* cleditor
+* flot
+* jquery.maskedinput
+* jquery.tablesorter
+* jquery.validation
+* laroux.js
+* mapbox
+* normalize.css
+* reset.css
 
 
 Optional PHP Extensions

@@ -108,6 +108,16 @@
                     },
                     {
                         "type":         "file",
+                        "class":        "typeahead",
+                        "path":         "{core}resources/typeahead/typeahead.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "hogan",
+                        "path":         "{core}resources/hogan/hogan-2.0.0.js"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.js"
                     },
@@ -115,11 +125,6 @@
                         "type":         "file",
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/intro.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "handlebars",
-                        "path":         "{core}resources/handlebars/handlebars.js"
                     }
                 ]
             },
