@@ -81,7 +81,7 @@ class Fb
         self::$appId = Config::get('facebook/applicationId');
         self::$appSecret = Config::get('facebook/applicationSecret');
         self::$appUrl = Config::get('facebook/applicationUrl');
-        self::$appPermissions = Config::get('facebook/permissions', 'email, read_stream');
+        self::$appPermissions = Config::get('facebook/permissions', 'email');
         self::$appRedirectUri = Config::get('facebook/redirectUrl');
         self::$appFileUpload = Config::get('facebook/fileUpload', false);
         self::$appExtendedAccess = Config::get('facebook/extendedAccess', false);

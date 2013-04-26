@@ -41,6 +41,7 @@ Dependencies
 * psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
 * facebook/php-sdk: Facebook PHP SDK
 * dflydev/markdown: Markdown Parser
+* mustache/mustache: Mustache Parser
 * trekksoft/potomoco: gettext compiler
 * leafo/lessphp: LESS compiler
 
