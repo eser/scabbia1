@@ -29,7 +29,15 @@ class String
     /**
      * @ignore
      */
+    // const FILTER_RECURSIVE = ;
+    /**
+     * @ignore
+     */
     const FILTER_VALIDATE_BOOLEAN = 'scabbiaFilterValidateBoolean';
+    /**
+     * @ignore
+     */
+    const FILTER_SANITIZE_BOOLEAN = 'scabbiaFilterSanitizeBoolean';
     /**
      * @ignore
      */
@@ -94,25 +102,39 @@ class String
 
     /**
      * @ignore
+     *
+     * @todo recursive filtering option
      */
-    public static function filter()
+    public static function filter($uValue, $uFilter)
     {
-        $uArgs = func_get_args();
-
-        if ($uArgs[1] == SCABBIA_FILTER_VALIDATE_BOOLEAN) {
-            if ($uArgs[0] === true || $uArgs[0] == 'true' || $uArgs[0] === 1 || $uArgs[0] == '1') {
+        if ($uFilter == self::FILTER_VALIDATE_BOOLEAN) {
+            if (
+                $uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1' ||
+                $uValue === false || $uValue == 'false' || $uValue === 0 || $uValue == '0'
+            ) {
                 return true;
             }
 
             return false;
-        } elseif ($uArgs[1] == SCABBIA_FILTER_SANITIZE_XSS) {
-            return self::xss($uArgs[0]);
-        } elseif (is_callable($uArgs[1], true)) {
-            $tValue = array_shift($uArgs);
-            $tFunction = $uArgs[0];
-            $uArgs[0] = $tValue;
+        }
 
-            return call_user_func_array($tFunction, $uArgs);
+        if ($uFilter == self::FILTER_SANITIZE_BOOLEAN) {
+            if ($uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1') {
+                return true;
+            }
+
+            return false;
+        }
+
+        if ($uFilter == self::FILTER_SANITIZE_XSS) {
+            return self::xss($uValue);
+        }
+
+        $uArgs = func_get_args();
+
+        if (is_callable($uFilter, true)) {
+            $uArgs[1] = $uValue;
+            return call_user_func_array($uFilter, array_slice($uArgs, 1));
         }
 
         return call_user_func_array('filter_var', $uArgs);

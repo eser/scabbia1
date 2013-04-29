@@ -270,14 +270,18 @@ class Request
             return $uDefault;
         }
 
-        if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
-            array_unshift($tArgs, $_GET[$uKey]);
-
-            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
+        if (is_null($uFilter)) {
+            return $_GET[$uKey];
         }
 
-        return $_GET[$uKey];
+        if (func_num_args() > 2) {
+            $tNewArgs = array_slice(func_get_args(), 2);
+            array_unshift($tNewArgs, $_GET[$uKey]);
+        } else {
+            $tNewArgs = array($_GET[$uKey], $uFilter);
+        }
+
+        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
     }
 
     /**
@@ -289,14 +293,18 @@ class Request
             return $uDefault;
         }
 
-        if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
-            array_unshift($tArgs, $_POST[$uKey]);
-
-            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
+        if (is_null($uFilter)) {
+            return $_POST[$uKey];
         }
 
-        return $_POST[$uKey];
+        if (func_num_args() > 2) {
+            $tNewArgs = array_slice(func_get_args(), 2);
+            array_unshift($tNewArgs, $_POST[$uKey]);
+        } else {
+            $tNewArgs = array($_POST[$uKey], $uFilter);
+        }
+
+        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
     }
 
     /**
@@ -308,14 +316,18 @@ class Request
             return $uDefault;
         }
 
-        if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
-            array_unshift($tArgs, $_COOKIE[$uKey]);
-
-            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
+        if (is_null($uFilter)) {
+            return $_COOKIE[$uKey];
         }
 
-        return $_COOKIE[$uKey];
+        if (func_num_args() > 2) {
+            $tNewArgs = array_slice(func_get_args(), 2);
+            array_unshift($tNewArgs, $_COOKIE[$uKey]);
+        } else {
+            $tNewArgs = array($_COOKIE[$uKey], $uFilter);
+        }
+
+        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
     }
 
 
@@ -326,7 +338,11 @@ class Request
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 1);
+            if (func_num_args() > 1) {
+                $tArgs = array_slice(func_get_args(), 1);
+            } else {
+                $tArgs = array($uFilter);
+            }
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -334,15 +350,15 @@ class Request
                 continue;
             }
 
-            if (isset($tArgs)) {
-                $tNewArgs = $tArgs;
-                array_unshift($tNewArgs, $_GET[$tKey]);
-
-                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            if (!isset($tArgs)) {
+                $tValues[$tKey] = $_GET[$tKey];
                 continue;
             }
 
-            $tValues[$tKey] = $_GET[$tKey];
+            $tNewArgs = $tArgs;
+            array_unshift($tNewArgs, $_GET[$tKey]);
+
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
         }
 
         return $tValues;
@@ -355,7 +371,11 @@ class Request
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 1);
+            if (func_num_args() > 1) {
+                $tArgs = array_slice(func_get_args(), 1);
+            } else {
+                $tArgs = array($uFilter);
+            }
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -363,15 +383,15 @@ class Request
                 continue;
             }
 
-            if (isset($tArgs)) {
-                $tNewArgs = $tArgs;
-                array_unshift($tNewArgs, $_POST[$tKey]);
-
-                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            if (!isset($tArgs)) {
+                $tValues[$tKey] = $_POST[$tKey];
                 continue;
             }
 
-            $tValues[$tKey] = $_POST[$tKey];
+            $tNewArgs = $tArgs;
+            array_unshift($tNewArgs, $_POST[$tKey]);
+
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
         }
 
         return $tValues;
@@ -384,7 +404,11 @@ class Request
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 1);
+            if (func_num_args() > 1) {
+                $tArgs = array_slice(func_get_args(), 1);
+            } else {
+                $tArgs = array($uFilter);
+            }
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -392,15 +416,15 @@ class Request
                 continue;
             }
 
-            if (isset($tArgs)) {
-                $tNewArgs = $tArgs;
-                array_unshift($tNewArgs, $_COOKIE[$tKey]);
-
-                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            if (!isset($tArgs)) {
+                $tValues[$tKey] = $_COOKIE[$tKey];
                 continue;
             }
 
-            $tValues[$tKey] = $_COOKIE[$tKey];
+            $tNewArgs = $tArgs;
+            array_unshift($tNewArgs, $_COOKIE[$tKey]);
+
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
         }
 
         return $tValues;
