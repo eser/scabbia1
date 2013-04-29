@@ -139,7 +139,7 @@ class Assets
 
                 if ($tType == 'function') {
                     $tContent .= call_user_func($tPart['name']);
-                } else if ($tType == 'file.less') {
+                } elseif ($tType == 'file.less') {
                     if (is_null(self::$lessCompiler)) {
                         self::$lessCompiler = new \lessc();
                     }

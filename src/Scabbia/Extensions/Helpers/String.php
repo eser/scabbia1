@@ -7,11 +7,6 @@
 
 namespace Scabbia\Extensions\Helpers;
 
-/**
- * @ignore
- */
-define('FILTER_VALIDATE_BOOLEAN_FIX', 'filterValidateBooleanFix');
-
 if (!defined('ENT_HTML5')) {
     /**
      * @ignore
@@ -31,6 +26,16 @@ if (!defined('ENT_HTML5')) {
  */
 class String
 {
+    /**
+     * @ignore
+     */
+    const FILTER_VALIDATE_BOOLEAN = 'scabbiaFilterValidateBoolean';
+    /**
+     * @ignore
+     */
+    const FILTER_SANITIZE_XSS = 'scabbiaFilterSanitizeXss';
+
+
     /**
      * @ignore
      */
@@ -94,20 +99,20 @@ class String
     {
         $uArgs = func_get_args();
 
-        if ($uArgs[1] == FILTER_VALIDATE_BOOLEAN_FIX) {
+        if ($uArgs[1] == SCABBIA_FILTER_VALIDATE_BOOLEAN) {
             if ($uArgs[0] === true || $uArgs[0] == 'true' || $uArgs[0] === 1 || $uArgs[0] == '1') {
                 return true;
             }
 
             return false;
-        } else {
-            if (is_callable($uArgs[1], true)) {
-                $tValue = array_shift($uArgs);
-                $tFunction = $uArgs[0];
-                $uArgs[0] = $tValue;
+        } elseif ($uArgs[1] == SCABBIA_FILTER_SANITIZE_XSS) {
+            return self::xss($uArgs[0]);
+        } elseif (is_callable($uArgs[1], true)) {
+            $tValue = array_shift($uArgs);
+            $tFunction = $uArgs[0];
+            $uArgs[0] = $tValue;
 
-                return call_user_func_array($tFunction, $uArgs);
-            }
+            return call_user_func_array($tFunction, $uArgs);
         }
 
         return call_user_func_array('filter_var', $uArgs);
@@ -398,6 +403,42 @@ class String
         }
 
         return $tOutput;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function xss($uString)
+    {
+        if (!is_string($uString)) {
+            return $uString;
+        }
+
+        return str_replace(
+            array(
+                '<',
+                '>',
+                '"',
+                '\'',
+                '$',
+                '(',
+                ')',
+                '%28',
+                '%29'
+            ),
+            array(
+                '&#60;',
+                '&#62;',
+                '&#34;',
+                '&#39;',
+                '&#36;',
+                '&#40;',
+                '&#41;',
+                '&#40;',
+                '&#41;'
+            ),
+            $uString
+        ); // '&' => '&#38;'
     }
 
     /**

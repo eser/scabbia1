@@ -264,81 +264,69 @@ class Request
     /**
      * @ignore
      */
-    public static function get($uKey, $uDefault = null, $uFilter = null)
+    public static function get($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         if (!isset($_GET[$uKey])) {
             return $uDefault;
-        }
-
-        if ($uFilter === false) {
-            return $_GET[$uKey];
         }
 
         if (!is_null($uFilter)) {
             $tArgs = array_slice(func_get_args(), 2);
             array_unshift($tArgs, $_GET[$uKey]);
 
-            return call_user_func_array('String::filter', $tArgs);
+            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
         }
 
-        return Http::xss($_GET[$uKey]);
+        return $_GET[$uKey];
     }
 
     /**
      * @ignore
      */
-    public static function post($uKey, $uDefault = null, $uFilter = null)
+    public static function post($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         if (!isset($_POST[$uKey])) {
             return $uDefault;
-        }
-
-        if ($uFilter === false) {
-            return $_POST[$uKey];
         }
 
         if (!is_null($uFilter)) {
             $tArgs = array_slice(func_get_args(), 2);
             array_unshift($tArgs, $_POST[$uKey]);
 
-            return call_user_func_array('String::filter', $tArgs);
+            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
         }
 
-        return Http::xss($_POST[$uKey]);
+        return $_POST[$uKey];
     }
 
     /**
      * @ignore
      */
-    public static function cookie($uKey, $uDefault = null, $uFilter = null)
+    public static function cookie($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         if (!isset($_COOKIE[$uKey])) {
             return $uDefault;
-        }
-
-        if ($uFilter === false) {
-            return $_COOKIE[$uKey];
         }
 
         if (!is_null($uFilter)) {
             $tArgs = array_slice(func_get_args(), 2);
             array_unshift($tArgs, $_COOKIE[$uKey]);
 
-            return call_user_func_array('String::filter', $tArgs);
+            return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tArgs);
         }
 
-        return Http::xss($_COOKIE[$uKey]);
+        return $_COOKIE[$uKey];
     }
 
 
     /**
      * @ignore
      */
-    public static function getArray($uKeys, $uFilter = null)
+    public static function getArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
+            $tArgs = array_slice(func_get_args(), 1);
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -346,20 +334,15 @@ class Request
                 continue;
             }
 
-            if ($uFilter === false) {
-                $tValues[$tKey] = $_GET[$tKey];
-                continue;
-            }
-
             if (isset($tArgs)) {
                 $tNewArgs = $tArgs;
                 array_unshift($tNewArgs, $_GET[$tKey]);
 
-                $tValues[$tKey] = call_user_func_array('String::filter', $tNewArgs);
+                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
                 continue;
             }
 
-            $tValues[$tKey] = Http::xss($_GET[$tKey]);
+            $tValues[$tKey] = $_GET[$tKey];
         }
 
         return $tValues;
@@ -368,11 +351,11 @@ class Request
     /**
      * @ignore
      */
-    public static function postArray($uKeys, $uFilter = null)
+    public static function postArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
+            $tArgs = array_slice(func_get_args(), 1);
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -380,20 +363,15 @@ class Request
                 continue;
             }
 
-            if ($uFilter === false) {
-                $tValues[$tKey] = $_POST[$tKey];
-                continue;
-            }
-
             if (isset($tArgs)) {
                 $tNewArgs = $tArgs;
                 array_unshift($tNewArgs, $_POST[$tKey]);
 
-                $tValues[$tKey] = call_user_func_array('String::filter', $tNewArgs);
+                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
                 continue;
             }
 
-            $tValues[$tKey] = Http::xss($_POST[$tKey]);
+            $tValues[$tKey] = $_POST[$tKey];
         }
 
         return $tValues;
@@ -402,11 +380,11 @@ class Request
     /**
      * @ignore
      */
-    public static function cookieArray($uKeys, $uFilter = null)
+    public static function cookieArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
-            $tArgs = array_slice(func_get_args(), 2);
+            $tArgs = array_slice(func_get_args(), 1);
         }
 
         foreach ((array)$uKeys as $tKey) {
@@ -414,20 +392,15 @@ class Request
                 continue;
             }
 
-            if ($uFilter === false) {
-                $tValues[$tKey] = $_COOKIE[$tKey];
-                continue;
-            }
-
             if (isset($tArgs)) {
                 $tNewArgs = $tArgs;
                 array_unshift($tNewArgs, $_COOKIE[$tKey]);
 
-                $tValues[$tKey] = call_user_func_array('String::filter', $tNewArgs);
+                $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
                 continue;
             }
 
-            $tValues[$tKey] = Http::xss($_COOKIE[$tKey]);
+            $tValues[$tKey] = $_COOKIE[$tKey];
         }
 
         return $tValues;

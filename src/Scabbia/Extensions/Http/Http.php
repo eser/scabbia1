@@ -114,44 +114,6 @@ class Http
         Framework::end(1);
     }
 
-
-    /**
-     * @ignore
-     */
-    public static function xss($uString)
-    {
-        if (is_string($uString)) {
-            $tString = str_replace(
-                array(
-                     '<',
-                     '>',
-                     '"',
-                     '\'',
-                     '$',
-                     '(',
-                     ')',
-                     '%28',
-                     '%29'
-                ),
-                array(
-                     '&#60;',
-                     '&#62;',
-                     '&#34;',
-                     '&#39;',
-                     '&#36;',
-                     '&#40;',
-                     '&#41;',
-                     '&#40;',
-                     '&#41;'
-                ),
-                $uString
-            ); // '&' => '&#38;'
-            return $tString;
-        }
-
-        return $uString;
-    }
-
     /**
      * @ignore
      */
