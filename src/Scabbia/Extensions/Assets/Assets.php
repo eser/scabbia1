@@ -26,6 +26,7 @@ use Scabbia\Utils;
  * @version 1.1.0
  *
  * @todo cdn support somehow
+ * @todo add new assets like Assets::add('scabbia.js', 'jquery', 'url://')
  */
 class Assets
 {

@@ -17,8 +17,6 @@ use Scabbia\Io;
  *
  * @package Scabbia
  * @version 1.1.0
- *
- * @todo caching
  */
 class Extensions
 {

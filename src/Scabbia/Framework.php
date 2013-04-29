@@ -19,6 +19,10 @@ use Scabbia\Io;
  * @version 1.1.0
  *
  * @todo determine application before apppath, get apppath from application's itself
+ * @todo completely independent architecture allows no-application, maybe same with $readonly?
+ * @todo Request abstract classes attached to Framework (will be derived CliRequest, HttpRequest etc.)
+ * @todo Response abstract classes attached to Framework (will be derived HttpResponse, CliResponse etc.)
+ * @todo HttpResponse might have OutputAdapter (Html, Xml, Json, PDF, DownloadFile-Binary etc.) and OutputEncoding
  */
 class Framework
 {
@@ -42,7 +46,7 @@ class Framework
     /**
      * @var bool    Indicates framework is running in readonly mode or not
      */
-    public static $readonly = false;
+    public static $readonly = true;
     /**
      * @var int     The timestamp indicates when the request started
      */
@@ -112,9 +116,11 @@ class Framework
      * Determines application by endpoint.
      *
      * @param array $uEndpoints set of endpoints
+     * @param bool  $uReadonly  run in readonly mode
+     *
      * @return null|mixed selected application
      */
-    public static function runApplicationByEndpoint(array $uEndpoints)
+    public static function runApplicationByEndpoint(array $uEndpoints, $uReadonly = false)
     {
         foreach ($uEndpoints as $tEndpointKey => $tEndpointAddresses) {
             foreach ((array)$tEndpointAddresses as $tEndpointAddress) {
@@ -124,7 +130,7 @@ class Framework
                 }
 
                 if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                    return self::runApplication(new $tEndpointKey ());
+                    return self::runApplication(new $tEndpointKey (), $uReadonly);
                 }
             }
         }
@@ -136,19 +142,21 @@ class Framework
      * Invokes the startup methods for framework extensions and runs an application instance.
      *
      * @param Application $uApplication application instance currently running on
+     * @param bool        $uReadonly    run in readonly mode
      *
      * @return bool whether other party is called or not
      */
-    public static function runApplication(Application $uApplication)
+    public static function runApplication(Application $uApplication, $uReadonly = false)
     {
         self::$application = $uApplication;
         self::$apppath = self::$basepath . self::$application->directory;
+        self::$readonly = $uReadonly;
 
         if (!is_null(self::$classLoader)) {
             self::$classLoader->set(self::$application->name, self::$apppath);
         }
 
-        self::run(false);
+        self::run();
 
         // run extensions
         $tParms = array(
@@ -176,12 +184,8 @@ class Framework
     /**
      * Invokes the startup methods just for framework extensions so other parties can take over execution.
      */
-    public static function run($uReadonly = true)
+    public static function run()
     {
-        if ($uReadonly) {
-            self::$readonly = true;
-        }
-
         // load config
         Config::$default = Config::load();
         self::$milestones[] = array('configLoad', microtime(true));

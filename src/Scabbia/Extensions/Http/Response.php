@@ -17,6 +17,8 @@ use Scabbia\Framework;
  * @package Scabbia
  * @subpackage Http
  * @version 1.1.0
+ *
+ * @todo Secure cookies w/ AES-256 encryption
  */
 class Response
 {

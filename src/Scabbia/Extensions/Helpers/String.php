@@ -23,6 +23,7 @@ if (!defined('ENT_HTML5')) {
  *
  * @todo pluralize, singularize
  * @todo split Text functions into another file
+ * @todo alternator, camel2underscore, underscore2camel
  */
 class String
 {

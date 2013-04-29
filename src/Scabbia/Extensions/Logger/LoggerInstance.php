@@ -21,6 +21,8 @@ use Psr\Log\LogLevel;
  * @package Scabbia
  * @subpackage Logger
  * @version 1.1.0
+ *
+ * @todo use datasources to write log messages
  */
 class LoggerInstance implements LoggerInterface
 {

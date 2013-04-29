@@ -20,6 +20,7 @@ use Scabbia\Extensions;
  * @version 1.1.0
  *
  * @todo Cookie salt w/ SHA1
+ * @todo garbage collector
  */
 class Session
 {

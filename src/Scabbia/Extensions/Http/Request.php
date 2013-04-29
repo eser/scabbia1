@@ -20,6 +20,8 @@ use Scabbia\Utils;
  * @package Scabbia
  * @subpackage Http
  * @version 1.1.0
+ *
+ * @todo ->file()
  */
 class Request
 {

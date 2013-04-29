@@ -19,6 +19,8 @@ use Scabbia\Extensions\Mvc\Mvc;
  * @package Scabbia
  * @subpackage LarouxJs
  * @version 1.1.0
+ *
+ * @todo translations
  */
 class LarouxJs
 {

@@ -12,6 +12,8 @@ namespace Scabbia;
  *
  * @package Scabbia
  * @version 1.1.0
+ *
+ * @todo generate('GET', 'test/test');
  */
 class Application
 {
