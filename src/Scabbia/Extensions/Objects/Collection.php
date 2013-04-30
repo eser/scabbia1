@@ -25,7 +25,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function __construct(Array $uArray = array())
+    public function __construct(array $uArray = array())
     {
         $this->_items = $uArray;
     }
