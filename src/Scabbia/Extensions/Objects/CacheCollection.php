@@ -25,17 +25,28 @@ class CacheCollection extends Collection
     /**
      * @ignore
      */
-    public $_prefetch = null;
+    public $_prefetch;
     /**
      * @ignore
      */
-    public $_fetchAll = null;
+    public $_update;
 
 
     /**
      * @ignore
      */
-    public function addToQueue($uKey)
+    public function __construct(/* callable */ $uUpdate, /* callable */ $uPrefetch = null)
+    {
+        parent::__construct();
+
+        $this->_update = $uUpdate;
+        $this->_prefetch = $uPrefetch;
+    }
+
+    /**
+     * @ignore
+     */
+    public function enqueue($uKey)
     {
         if (in_array($uKey, $this->_queue, true) || $this->keyExists($uKey)) {
             return;
@@ -53,19 +64,23 @@ class CacheCollection extends Collection
             return;
         }
 
-        call_user_func($this->_prefetch);
+        $this->_items += call_user_func($this->_prefetch);
     }
 
     /**
      * @ignore
      */
-    public function fetchAll()
+    public function update()
     {
-        if (is_null($this->_fetchAll)) {
+        if (is_null($this->_update)) {
             return;
         }
 
-        $this->_items += call_user_func($this->_fetchAll, $this->_queue);
+        if (count($this->_queue) == 0) {
+            return;
+        }
+
+        $this->_items += call_user_func($this->_update, $this->_queue);
         $this->_queue = array();
     }
 }

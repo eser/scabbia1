@@ -31,7 +31,7 @@ class Delegate
     {
         $tNewInstance = new Delegate();
 
-        return function (Callback $uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
+        return function (/* callable */ $uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
             if (!is_null($uCallback)) {
                 $tNewInstance->add($uCallback, $uState, $uPriority);
             }
@@ -47,7 +47,7 @@ class Delegate
      * @param mixed     $uState     state object
      * @param int       $uPriority  priority level
      */
-    public function add(Callable $uCallback, $uState = null, $uPriority = 10)
+    public function add(/* callable */ $uCallback, $uState = null, $uPriority = 10)
     {
         if (is_null($this->callbacks)) {
             $this->callbacks = new \SplPriorityQueue();

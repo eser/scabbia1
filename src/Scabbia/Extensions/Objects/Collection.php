@@ -250,7 +250,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function walk(Callable $uCallback, $uRecursive = false)
+    public function walk(/* callable */ $uCallback, $uRecursive = false)
     {
         if ($uRecursive) {
             array_walk_recursive($this->_items, $uCallback);
