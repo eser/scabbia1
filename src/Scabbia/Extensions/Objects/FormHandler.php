@@ -28,10 +28,10 @@ class FormHandler
     /**
      * @ignore
      */
-    public static function getFromRequest(array $uFields)
+    public static function getFromRequest($uChangeField, array $uFields)
     {
         $tNewInstance = new static();
-        $tChangedRecords = Request::post('changed', array());
+        $tChangedRecords = Request::post($uChangeField, array());
 
         $tFieldValues = array();
         foreach ($uFields as $tField) {
