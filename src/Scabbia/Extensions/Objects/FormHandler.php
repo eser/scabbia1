@@ -44,7 +44,7 @@ class FormHandler
                 'changed' => $tChangedRecord
             );
             foreach ($uFields as $tField) {
-                $tRecord[$tField] = $tFieldValues[$tField][$tIndex];
+                $tRecord[$tField] = isset($tFieldValues[$tField][$tIndex]) ? $tFieldValues[$tField][$tIndex] : null;
             }
 
             if (!isset($tNewInstance->records[$tChangedRecord])) {
