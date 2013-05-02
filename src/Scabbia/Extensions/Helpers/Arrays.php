@@ -374,6 +374,28 @@ class Arrays
     }
 
     /**
+     * Gets the not matching rows.
+     *
+     * @param array $uArray array
+     * @param mixed $uKey   key
+     * @param mixed $uValue value
+     *
+     * @return array set of elements not matches the condition
+     */
+    public static function getRowsBut(array $uArray, $uKey, $uValue)
+    {
+        $tReturn = array();
+
+        foreach ($uArray as $tKey => $tRow) {
+            if (isset($tRow[$uKey]) && $tRow[$uKey] != $uValue) {
+                $tReturn[$tKey] = $tRow;
+            }
+        }
+
+        return $tReturn;
+    }
+
+    /**
      * Combines two arrays properly.
      *
      * @param array $uArray1    first array

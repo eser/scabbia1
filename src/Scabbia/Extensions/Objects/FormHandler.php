@@ -47,10 +47,7 @@ class FormHandler
                 $tRecord[$tField] = isset($tFieldValues[$tField][$tIndex]) ? $tFieldValues[$tField][$tIndex] : null;
             }
 
-            if (!isset($tNewInstance->records[$tChangedRecord])) {
-                $tNewInstance->records[$tChangedRecord] = array();
-            }
-            $tNewInstance->records[$tChangedRecord][] = $tRecord;
+            $tNewInstance->records[] = $tRecord;
         }
 
         return $tNewInstance;
@@ -61,7 +58,7 @@ class FormHandler
      */
     public function getInserted()
     {
-        return Arrays::get($this->records, 'insert', array());
+        return Arrays::getRows($this->records, 'changed', 'insert');
     }
 
     /**
@@ -69,7 +66,7 @@ class FormHandler
      */
     public function getUpdated()
     {
-        return Arrays::get($this->records, 'update', array());
+        return Arrays::getRows($this->records, 'changed', 'update');
     }
 
     /**
@@ -77,6 +74,22 @@ class FormHandler
      */
     public function getDeleted()
     {
-        return Arrays::get($this->records, 'delete', array());
+        return Arrays::getRows($this->records, 'changed', 'delete');
+    }
+
+    /**
+     * @ignore
+     */
+    public function getNotModified()
+    {
+        return Arrays::getRows($this->records, 'changed', 'none');
+    }
+
+    /**
+     * @ignore
+     */
+    public function getButDeleted()
+    {
+        return Arrays::getRowsBut($this->records, 'changed', 'delete');
     }
 }
