@@ -20,6 +20,11 @@
             "name":         "registerDatasources",
             "type":         "loadClass",
             "value":        "Scabbia\\Extensions\\Datasources\\MemcacheSource"
+        },
+        {
+            "name":         "registerDatasources",
+            "type":         "loadClass",
+            "value":        "Scabbia\\Extensions\\Datasources\\RestSource"
         }
     ]
 }

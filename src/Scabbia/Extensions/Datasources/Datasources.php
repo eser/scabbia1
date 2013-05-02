@@ -56,4 +56,15 @@ class Datasources
 
         return self::$datasources[$uDatasource];
     }
+
+    /**
+     * @ignore
+     */
+    public static function add($uId, $uType, array $uConfig = array())
+    {
+        $uConfig['id'] = $uId;
+        $uConfig['type'] = $uType;
+
+        self::$datasources[$uId] = new self::$types[$uType] ($uConfig);
+    }
 }
