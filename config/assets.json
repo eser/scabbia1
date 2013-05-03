@@ -118,6 +118,11 @@
                     },
                     {
                         "type":         "file",
+                        "class":        "datepicker",
+                        "path":         "{core}resources/bootstrap.datepicker/js/bootstrap-datepicker.js"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.js"
                     },
@@ -165,6 +170,11 @@
                     },
                     {
                         "type":         "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.css"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "cleditor",
                         "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
                     },
@@ -187,6 +197,11 @@
                         "type":         "file",
                         "class":        "typeahead",
                         "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "datepicker",
+                        "path":         "{core}resources/bootstrap.datepicker/css/datepicker.css"
                     },
                     {
                         "type":         "file",
