@@ -35,6 +35,10 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
     /**
      * @ignore
      */
+    public $storageTtl;
+    /**
+     * @ignore
+     */
     public $keyphase;
     /**
      * @ignore
@@ -52,6 +56,7 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
     public function __construct(array $uConfig)
     {
         $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
+        $this->storageTtl = isset($uConfig['storageTtl']) ? $uConfig['storageTtl'] : -1;
         $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
         $this->path = $uConfig['path'];
         $this->baseurl = $uConfig['baseurl'];
@@ -166,9 +171,11 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
      */
     public function storageGarbageCollect()
     {
-        // path
-        $tPath = Io::translatePath($this->path, true);
+        if ($this->storageTtl > 0) {
+            // path
+            $tPath = Io::translatePath($this->path, true);
 
-        Io::garbageCollect($tPath, $this->cacheTtl);
+            Io::garbageCollect($tPath, $this->storageTtl);
+        }
     }
 }
