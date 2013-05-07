@@ -20,7 +20,7 @@ use Scabbia\Io;
  *
  * @todo sanitize filenames
  */
-class FileSource implements IDatasource, ICacheProvider
+class FileSource implements IDatasource, ICacheProvider, IStorageProvider
 {
     /**
      * @ignore
@@ -40,6 +40,10 @@ class FileSource implements IDatasource, ICacheProvider
      * @ignore
      */
     public $path;
+    /**
+     * @ignore
+     */
+    public $baseurl;
 
 
     /**
@@ -50,6 +54,7 @@ class FileSource implements IDatasource, ICacheProvider
         $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
         $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
         $this->path = $uConfig['path'];
+        $this->baseurl = $uConfig['baseurl'];
     }
 
     /**
@@ -93,6 +98,73 @@ class FileSource implements IDatasource, ICacheProvider
      * @ignore
      */
     public function cacheGarbageCollect()
+    {
+        // path
+        $tPath = Io::translatePath($this->path, true);
+
+        Io::garbageCollect($tPath, $this->cacheTtl);
+    }
+
+    /**
+     * @ignore
+     */
+    public function storageGetUrl($uKey)
+    {
+        return $this->baseurl . $uKey;
+    }
+
+    /**
+     * @ignore
+     */
+    public function storageGet($uKey)
+    {
+        // path
+        $tPath = Io::translatePath($this->path . $uKey, true);
+
+        if (!Io::isReadable($tPath)) {
+            return false;
+        }
+
+        return Io::readSerialize($tPath, $this->keyphase);
+    }
+
+    /**
+     * @ignore
+     */
+    public function storagePut($uKey, $uObject)
+    {
+        // path
+        $tPath = Io::translatePath($this->path . $uKey, true);
+
+        Io::writeSerialize($tPath, $uObject, $this->keyphase);
+    }
+
+    /**
+     * @ignore
+     */
+    public function storageReplace($uKey, $uObject)
+    {
+        // path
+        $tPath = Io::translatePath($this->path . $uKey, true);
+
+        Io::writeSerialize($tPath, $uObject, $this->keyphase);
+    }
+
+    /**
+     * @ignore
+     */
+    public function storageRemove($uKey)
+    {
+        // path
+        $tPath = Io::translatePath($this->path . $uKey, true);
+
+        Io::destroy($tPath);
+    }
+
+    /**
+     * @ignore
+     */
+    public function storageGarbageCollect()
     {
         // path
         $tPath = Io::translatePath($this->path, true);
