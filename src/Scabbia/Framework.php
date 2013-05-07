@@ -207,6 +207,7 @@ class Framework
                 self::$siteroot = '/' . self::$siteroot;
             }
         }
+        Utils::addVariable('root', self::$siteroot);
         self::$milestones[] = array('siteRoot', microtime(true));
 
         // include files

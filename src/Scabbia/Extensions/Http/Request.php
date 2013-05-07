@@ -12,6 +12,7 @@ use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Objects\Collection;
 use Scabbia\Config;
+use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
@@ -76,11 +77,11 @@ class Request
     /**
      * @ignore
      */
-    public static $host;
+    public static $protocol;
     /**
      * @ignore
      */
-    public static $protocol;
+    public static $host;
     /**
      * @ignore
      */
@@ -146,8 +147,16 @@ class Request
         } else {
             self::$host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
 
-            if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') {
-                self::$host .= $_SERVER['SERVER_PORT'];
+            if (isset($_SERVER['SERVER_PORT'])) {
+                if (self::$https) {
+                    if ($_SERVER['SERVER_PORT'] != '443') {
+                        self::$host .= $_SERVER['SERVER_PORT'];
+                    }
+                } else {
+                    if ($_SERVER['SERVER_PORT'] != '80') {
+                        self::$host .= $_SERVER['SERVER_PORT'];
+                    }
+                }
             }
         }
 
@@ -187,6 +196,11 @@ class Request
         // $queryString
         self::$queryString = $_SERVER['QUERY_STRING'];
         self::$route = Router::resolve(self::$queryString, self::$methodext);
+
+        // framework variables
+        Utils::addVariable('host', Request::$host);
+        Utils::addVariable('scheme', Request::$https ? 'https' : 'http');
+        Utils::addVariable('method', Request::$method);
     }
 
     /**

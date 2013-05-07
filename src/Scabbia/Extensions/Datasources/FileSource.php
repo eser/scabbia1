@@ -10,6 +10,7 @@ namespace Scabbia\Extensions\Datasources;
 use Scabbia\Extensions\Datasources\ICacheProvider;
 use Scabbia\Extensions\Datasources\IDatasource;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Datasources Extension: FileSource class
@@ -59,7 +60,7 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
         $this->storageTtl = isset($uConfig['storageTtl']) ? $uConfig['storageTtl'] : -1;
         $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
         $this->path = $uConfig['path'];
-        $this->baseurl = $uConfig['baseurl'];
+        $this->baseurl = isset($uConfig['baseurl']) ? $uConfig['baseurl'] : '';
     }
 
     /**
@@ -115,7 +116,7 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
      */
     public function storageGetUrl($uKey)
     {
-        return $this->baseurl . $uKey;
+        return Utils::translate($this->baseurl) . $uKey;
     }
 
     /**
