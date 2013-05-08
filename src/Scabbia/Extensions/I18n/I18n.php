@@ -11,6 +11,7 @@ use Scabbia\Extensions\I18n\Gettext;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * I18n Extension
@@ -151,6 +152,8 @@ class I18n
             } else {
                 self::$gettextInstance = new Gettext($tMoFile);
             }
+
+            Utils::$variables['lang'] = self::$language['key'];
 
             return true;
         }

@@ -14,6 +14,7 @@ use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Mvc Extension
@@ -40,10 +41,6 @@ class Mvc
      * @ignore
      */
     public static $defaultAction;
-    /**
-     * @ignore
-     */
-    public static $current = null;
 
 
     /**
@@ -89,7 +86,7 @@ class Mvc
      */
     public static function setController($uControllerInstance, $uActionName, array $uParams = array(), array $uInput = array())
     {
-        Mvc::$current = $uControllerInstance;
+        Utils::$variables['controller'] = $uControllerInstance;
 
         $uControllerInstance->route = array(
             'controller' => get_class($uControllerInstance),

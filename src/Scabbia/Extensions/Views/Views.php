@@ -13,6 +13,7 @@ use Scabbia\Config;
 use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Views Extension
@@ -117,13 +118,6 @@ class Views
             $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
         }
 
-        $tExtra = array(
-            'root' => Framework::$siteroot
-        );
-
-        $tExtra['lang'] = I18n::$language['key'];
-        $tExtra['controller'] = Mvc::$current;
-
         $tTemplatePath = $tViewFileInfo['dirname'] . '/';
         $tViewFile = $tViewFileInfo['basename'];
 
@@ -132,7 +126,7 @@ class Views
             'templateFile' => &$tViewFile,
             'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
             'model' => &$uModel,
-            'extra' => &$tExtra
+            'extra' => &Utils::$variables
         );
 
         call_user_func(

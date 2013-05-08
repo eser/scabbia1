@@ -318,17 +318,6 @@ class Utils
     }
 
     /**
-     * Adds a new framework-variable into array.
-     *
-     * @param string $uKey   name of variable
-     * @param string $uValue value of variable
-     */
-    public static function addVariable($uKey, $uValue)
-    {
-        self::$variables['{' . $uKey . '}'] = $uValue;
-    }
-
-    /**
      * Replaces placeholders in given string with framework-variables.
      *
      * @param string $uInput the string with placeholders
@@ -337,10 +326,11 @@ class Utils
      */
     public static function translate($uInput)
     {
-        return strtr(
-            $uInput,
-            self::$variables
-        );
+        foreach (self::$variables as $tKey => $tValue) {
+            $uInput = str_replace('{' . $tKey . '}', $tValue, $uInput);
+        }
+
+        return $uInput;
     }
 
     /**

@@ -198,9 +198,9 @@ class Request
         self::$route = Router::resolve(self::$queryString, self::$methodext);
 
         // framework variables
-        Utils::addVariable('host', Request::$host);
-        Utils::addVariable('scheme', Request::$https ? 'https' : 'http');
-        Utils::addVariable('method', Request::$method);
+        Utils::$variables['host'] = Request::$host;
+        Utils::$variables['scheme'] = Request::$https ? 'https' : 'http';
+        Utils::$variables['method'] = Request::$method;
     }
 
     /**

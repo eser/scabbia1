@@ -93,6 +93,8 @@ class ControllerBase implements LoggerAwareInterface
             $tActionName = $this->defaultAction;
         }
 
+        $tFormat = '_' . substr($uInput['format'], 1);
+
         if (isset($this->childControllers[$tActionName])) {
             if (count($uParams) > 0) {
                 $tSubaction = array_shift($uParams);
@@ -105,43 +107,36 @@ class ControllerBase implements LoggerAwareInterface
         }
 
         $tMe = new \ReflectionClass($this);
+        $tMethods = array(
+            $uInput['methodext'] . '_' . $tActionName . $tFormat,
+            $uInput['methodext'] . '_' . $tActionName,
+            $uInput['methodext'] . '_otherwise' . $tFormat,
+            $uInput['methodext'] . '_otherwise',
+            $uInput['method'] . '_' . $tActionName . $tFormat,
+            $uInput['method'] . '_' . $tActionName,
+            $uInput['method'] . '_otherwise' . $tFormat,
+            $uInput['method'] . '_otherwise',
+            $tActionName . $tFormat,
+            'otherwise' . $tFormat,
+            $tActionName,
+            'otherwise'
+        );
 
-        while (true) {
-            $tMethod = $uInput['methodext'] . '_' . $tActionName;
+        foreach ($tMethods as $tMethod) {
             if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                break;
-            }
+                Mvc::setController($this, $tActionName, $uParams, $uInput);
 
-            // fallback
-            $tMethod = $uInput['method'] . '_' . $tActionName;
-            if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                break;
-            }
+                $this->prerender->invoke();
 
-            // fallback 2
-            $tMethod = $tActionName;
-            if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                break;
-            }
+                $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
 
-            // fallback 3
-            $tMethod = 'otherwise';
-            if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                break;
-            }
+                $this->postrender->invoke();
 
-            return false;
+                return $tReturn;
+            }
         }
 
-        Mvc::setController($this, $tActionName, $uParams, $uInput);
-
-        $this->prerender->invoke();
-
-        $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
-
-        $this->postrender->invoke();
-
-        return $tReturn;
+        return false;
     }
 
     /**

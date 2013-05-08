@@ -66,6 +66,14 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
     /**
      * @ignore
      */
+    public function baseUrl()
+    {
+        return Utils::translate($this->baseurl);
+    }
+
+    /**
+     * @ignore
+     */
     public function cacheGet($uKey)
     {
         // path
