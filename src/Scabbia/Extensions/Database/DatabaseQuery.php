@@ -467,13 +467,12 @@ class DatabaseQuery
             $this->fields,
             $this->returning
         );
-        if ($this->debug) {
-            echo 'Insert Query: ', $tQuery;
-        }
+
         $tReturn = $this->database->query(
             $tQuery,
             $this->parameters,
-            $this->caching
+            $this->caching,
+            $this->debug
         );
 
         if (!is_null($this->sequence) && strlen($this->sequence) > 0) {
@@ -499,13 +498,12 @@ class DatabaseQuery
             $this->where,
             array('limit' => $this->limit)
         );
-        if ($this->debug) {
-            echo 'Update Query: ', $tQuery;
-        }
+
         $tReturn = $this->database->query(
             $tQuery,
             $this->parameters,
-            $this->caching
+            $this->caching,
+            $this->debug
         );
 
         $this->clear();
@@ -523,13 +521,12 @@ class DatabaseQuery
             $this->where,
             array('limit' => $this->limit)
         );
-        if ($this->debug) {
-            echo 'Delete Query: ', $tQuery;
-        }
+
         $tReturn = $this->database->query(
             $tQuery,
             $this->parameters,
-            $this->caching
+            $this->caching,
+            $this->debug
         );
 
         $this->clear();
@@ -551,13 +548,12 @@ class DatabaseQuery
             $this->groupby,
             array('limit' => $this->limit, 'offset' => $this->offset)
         );
-        if ($this->debug) {
-            echo 'Get Query: ', $tQuery;
-        }
+
         $tReturn = $this->database->query(
             $tQuery,
             $this->parameters,
-            $this->caching
+            $this->caching,
+            $this->debug
         );
 
         $this->clear();
@@ -578,13 +574,12 @@ class DatabaseQuery
             null,
             $this->groupby
         );
-        if ($this->debug) {
-            echo 'Calculate Query: ', $tQuery;
-        }
+
         $tReturn = $this->database->query(
             $tQuery,
             $this->parameters,
-            $this->caching
+            $this->caching,
+            $this->debug
         );
 
         $this->clear();

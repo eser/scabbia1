@@ -14,6 +14,7 @@ use Scabbia\Extensions\Database\IQueryGenerator;
 use Scabbia\Extensions\Datasources\IDatasource;
 use Scabbia\Extensions\Datasources\IServerConnection;
 use Scabbia\Extensions\Datasources\ITransactionSupport;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Profiler\Profiler;
 
 /**
@@ -201,17 +202,16 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
-    public function query($uQuery, array $uParameters = array(), $uCaching = null)
+    public function query($uQuery, array $uParameters = array(), $uCaching = null, $uDebug = false)
     {
         $this->connectionOpen();
 
-        Profiler::start(
-            'databaseQuery',
-            array(
-                 'query' => $uQuery,
-                 'parameters' => $uParameters
-            )
+        $tDebugInfo = array(
+            'query' => $uQuery,
+            'parameters' => $uParameters
         );
+
+        Profiler::start('databaseQuery', $tDebugInfo);
 
         $uPropsSerialized = $this->id . '/' . hash('adler32', $uQuery);
         foreach ($uParameters as $tProp) {
@@ -240,12 +240,15 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
         }
 
         //! affected rows
-        Profiler::stop(
-            array(
-                 'affectedRows' => $tData->count(),
-                 'fromCache' => $tLoadedFromCache
-            )
+        $tPostDebugInfo = array(
+            'affectedRows' => $tData->count(),
+            'fromCache' => $tLoadedFromCache
         );
+        Profiler::stop($tPostDebugInfo);
+
+        if ($uDebug) {
+            String::vardump($tDebugInfo + $tPostDebugInfo);
+        }
 
         return $tData;
     }
