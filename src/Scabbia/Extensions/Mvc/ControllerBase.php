@@ -151,13 +151,6 @@ class ControllerBase implements LoggerAwareInterface
     /**
      * @ignore
      */
-    public function export()
-    {
-    }
-
-    /**
-     * @ignore
-     */
     public function get($uKey)
     {
         return $this->vars[$uKey];

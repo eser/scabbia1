@@ -108,9 +108,9 @@ class Config
         $uNode,
         &$tNodeStack,
         $uIsArray = false,
-        $uIsDirect = false
+        array $uNodeFlags = array()
     ) {
-        if (is_object($uNode) && !$uIsDirect) {
+        if (is_object($uNode) && !in_array('direct', $uNodeFlags)) {
             foreach ($uNode as $tKey => $tSubnode) {
                 $tNodeName = explode(':', $tKey);
 
@@ -139,14 +139,12 @@ class Config
                                 continue 2;
                             }
                             break;
-                        case 'direct':
-                            $uIsDirect = true;
-                            break;
                     }
                 }
 
                 array_push($tNodeStack, $tNodeName[0]);
-                self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $tNodeStack, false, $uIsDirect);
+                array_shift($tNodeName);
+                self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $tNodeStack, false, $tNodeName);
                 array_pop($tNodeStack);
             }
         } else {
@@ -154,15 +152,19 @@ class Config
 
             if ($uIsArray) {
                 if (!is_scalar($uNode)) {
+                    if (in_array('override', $uNodeFlags)) {
+                        $uTarget = array();
+                    }
+
                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
                         $tNewNodeStack = array();
-                        if ($uIsDirect) {
+                        if (in_array('direct', $uNodeFlags)) {
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[$tSubnodeKey],
                                 $tSubnode,
                                 $tNewNodeStack,
                                 true,
-                                $uIsDirect
+                                $uNodeFlags
                             );
                         } else {
                             self::jsonProcessChildrenRecursive(
@@ -170,7 +172,7 @@ class Config
                                 $tSubnode,
                                 $tNewNodeStack,
                                 true,
-                                $uIsDirect
+                                $uNodeFlags
                             );
                         }
                     }
@@ -179,19 +181,19 @@ class Config
                 }
             } else {
                 if (!is_scalar($uNode)) {
-                    if (!isset($uTarget[$tNodePath])) {
+                    if (in_array('override', $uNodeFlags) || !isset($uTarget[$tNodePath])) {
                         $uTarget[$tNodePath] = array();
                     }
 
                     foreach ($uNode as $tSubnodeKey => $tSubnode) {
                         $tNewNodeStack = array();
-                        if ($uIsDirect) {
+                        if (in_array('direct', $uNodeFlags)) {
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[$tNodePath][$tSubnodeKey],
                                 $tSubnode,
                                 $tNewNodeStack,
                                 true,
-                                $uIsDirect
+                                $uNodeFlags
                             );
                         } else {
                             self::jsonProcessChildrenRecursive(
@@ -199,7 +201,7 @@ class Config
                                 $tSubnode,
                                 $tNewNodeStack,
                                 true,
-                                $uIsDirect
+                                $uNodeFlags
                             );
                         }
                     }

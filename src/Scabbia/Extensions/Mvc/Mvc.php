@@ -36,25 +36,6 @@ class Mvc
     /**
      * @ignore
      */
-    public static $defaultController;
-    /**
-     * @ignore
-     */
-    public static $defaultAction;
-
-
-    /**
-     * @ignore
-     */
-    public static function extensionLoad()
-    {
-        self::$defaultController = Config::get('mvc/defaultController', 'home');
-        self::$defaultAction = Config::get('mvc/defaultAction', 'index');
-    }
-
-    /**
-     * @ignore
-     */
     public static function route(array $uInput)
     {
         $tActualController = $uInput['controller'];
