@@ -217,6 +217,25 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
+    public function allWithKey($uKey)
+    {
+        $tItems = array();
+
+        $this->_cursor = 0;
+        while ($this->valid()) {
+            $tCurrent = $this->current();
+            $tItems[$tCurrent[$uKey]] = $tCurrent;
+            ++$this->_cursor;
+        }
+
+        $this->close();
+
+        return $tItems;
+    }
+
+    /**
+     * @ignore
+     */
     public function column($uKey)
     {
         $tItems = array();
