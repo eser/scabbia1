@@ -327,6 +327,10 @@ class Utils
     public static function translate($uInput)
     {
         foreach (self::$variables as $tKey => $tValue) {
+            if (!is_scalar($tValue)) {
+                continue;
+            }
+
             $uInput = str_replace('{' . $tKey . '}', $tValue, $uInput);
         }
 
