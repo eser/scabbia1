@@ -101,9 +101,12 @@ class RestSource implements IDatasource
         }
 
         if (!is_null($uHeaders)) {
-            curl_setopt($this->curlObject, CURLOPT_HEADER, $uHeaders);
-        } else {
-            curl_setopt($this->curlObject, CURLOPT_HEADER, array());
+            $tHeaders = array();
+            foreach ($uHeaders as $tHeaderKey => $tHeader) {
+                $tHeaders[] = $tHeaderKey . ': ' . $tHeader;
+            }
+
+            curl_setopt($this->curlObject, CURLOPT_HTTPHEADER, $tHeaders);
         }
 
         $tReturn = curl_exec($this->curlObject);
