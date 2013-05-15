@@ -48,11 +48,13 @@ class CacheCollection extends Collection
      */
     public function enqueue($uKey)
     {
-        if (in_array($uKey, $this->_queue, true) || $this->keyExists($uKey)) {
-            return;
-        }
+        foreach ((array)$uKey as $tKey) {
+            if (in_array($tKey, $this->_queue, true) || $this->keyExists($tKey)) {
+                continue;
+            }
 
-        $this->_queue[] = $uKey;
+            $this->_queue[] = $uKey;
+        }
     }
 
     /**
