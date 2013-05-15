@@ -65,7 +65,7 @@ class RestSource implements IDatasource
     /**
      * @ignore
      */
-    public function makeRequest($uMethod, $uUrl, array $uPostFields = null, array $uHeaders = null)
+    public function makeRequest($uMethod, $uUrl, $uPostFields = null, array $uHeaders = null)
     {
         if (is_null($this->curlObject)) {
             $this->curlObject = curl_init();
@@ -97,7 +97,7 @@ class RestSource implements IDatasource
             curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, $uPostFields);
         } else {
             curl_setopt($this->curlObject, CURLOPT_POST, 0);
-            curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, array());
+            // curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, '');
         }
 
         if (!is_null($uHeaders)) {
