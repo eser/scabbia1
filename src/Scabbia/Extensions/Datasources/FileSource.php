@@ -130,7 +130,7 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
     /**
      * @ignore
      */
-    public function storageGet($uKey)
+    public function storageGet($uKey, $uDirect = false)
     {
         // path
         $tPath = Io::translatePath($this->path . $uKey, true);
@@ -139,16 +139,25 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
             return false;
         }
 
+        if ($uDirect) {
+            return Io::read($tPath);
+        }
+
         return Io::readSerialize($tPath, $this->keyphase);
     }
 
     /**
      * @ignore
      */
-    public function storagePut($uKey, $uObject)
+    public function storagePut($uKey, $uObject, $uDirect = false)
     {
         // path
         $tPath = Io::translatePath($this->path . $uKey, true);
+
+        if ($uDirect) {
+            Io::write($tPath, $uObject);
+            return;
+        }
 
         Io::writeSerialize($tPath, $uObject, $this->keyphase);
     }
@@ -156,10 +165,15 @@ class FileSource implements IDatasource, ICacheProvider, IStorageProvider
     /**
      * @ignore
      */
-    public function storageReplace($uKey, $uObject)
+    public function storageReplace($uKey, $uObject, $uDirect = false)
     {
         // path
         $tPath = Io::translatePath($this->path . $uKey, true);
+
+        if ($uDirect) {
+            Io::write($tPath, $uObject);
+            return;
+        }
 
         Io::writeSerialize($tPath, $uObject, $this->keyphase);
     }
