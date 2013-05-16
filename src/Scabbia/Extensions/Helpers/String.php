@@ -392,7 +392,7 @@ class String
     public static function generateUuid()
     {
         if (function_exists('com_create_guid')) {
-            return trim(com_create_guid(), '{}');
+            return strtolower(trim(com_create_guid(), '{}'));
         }
 
         // return md5(uniqid(mt_rand(), true));
