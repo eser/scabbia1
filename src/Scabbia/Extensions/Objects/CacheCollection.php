@@ -72,7 +72,7 @@ class CacheCollection extends Collection
     /**
      * @ignore
      */
-    public function update()
+    public function update($uArray = null)
     {
         if (is_null($this->_update)) {
             return;
@@ -84,16 +84,20 @@ class CacheCollection extends Collection
 
         $this->_items += call_user_func($this->_update, $this->_queue);
         $this->_queue = array();
+
+        if (!is_null($uArray)) {
+            return $this->getRange($this->_items);
+        }
+
+        return null;
     }
 
     /**
      * @ignore
      */
-    public function updateRange(array $uArray)
+    public function updateRange(array $uArray = null)
     {
         $this->enqueue($uArray);
-        $this->update();
-
-        return $this->getRange($this->_items);
+        return $this->update($uArray);
     }
 }
