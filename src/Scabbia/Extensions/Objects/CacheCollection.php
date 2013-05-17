@@ -94,6 +94,6 @@ class CacheCollection extends Collection
         $this->enqueue($uArray);
         $this->update();
 
-        return $this->getRange($uArray);
+        return $this->getRange($this->_items);
     }
 }
