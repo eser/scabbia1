@@ -85,4 +85,15 @@ class CacheCollection extends Collection
         $this->_items += call_user_func($this->_update, $this->_queue);
         $this->_queue = array();
     }
+
+    /**
+     * @ignore
+     */
+    public function updateRange(array $uArray)
+    {
+        $this->enqueue($uArray);
+        $this->update();
+
+        return $this->getRange($uArray);
+    }
 }

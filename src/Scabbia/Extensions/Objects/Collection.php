@@ -123,6 +123,24 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
+    public function getRange(array $uArray)
+    {
+        $tItems = array();
+
+        foreach ($uArray as $tKey => $tItem) {
+            if (in_array($tKey, $uArray, true)) {
+                continue;
+            }
+
+            $tItems[$tKey] = $tItem;
+        }
+
+        return $tItems;
+    }
+
+    /**
+     * @ignore
+     */
     public function remove($uItem, $uLimit = 0)
     {
         $tRemoved = 0;
