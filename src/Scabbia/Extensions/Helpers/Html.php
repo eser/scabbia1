@@ -81,7 +81,7 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptions(array $uOptions, $uDefault = null, $uField = null)
+    public static function selectOptions(array $uOptions, $uDefault = null, $uField = null, $uExtra = '')
     {
         $tOutput = '';
 
@@ -91,7 +91,7 @@ class Html
                 $tOutput .= ' selected="selected"';
             }
 
-            $tOutput .= '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
+            $tOutput .= $uExtra . '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
         }
 
         return $tOutput;
@@ -100,7 +100,7 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptionsArray(array $uOptions, $uDefault = null, $uField = null)
+    public static function selectOptionsArray(array $uOptions, $uDefault = null, $uField = null, $uExtra = '')
     {
         $tOutput = array();
 
@@ -111,7 +111,7 @@ class Html
             }
 
             $tItem .= '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
-            $tOutput[] = $tItem;
+            $tOutput[] = $uExtra . $tItem;
         }
 
         return $tOutput;
