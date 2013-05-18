@@ -110,8 +110,8 @@ class Html
                 $tItem .= ' selected="selected"';
             }
 
-            $tItem .= '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
-            $tOutput[] = $uExtra . $tItem;
+            $tItem .= $uExtra . '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
+            $tOutput[] = $tItem;
         }
 
         return $tOutput;
