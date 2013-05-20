@@ -460,16 +460,22 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function insert()
+    public function insertQuery()
     {
-        $tQuery = $this->database->sqlInsert(
+        return $this->database->sqlInsert(
             $this->table,
             $this->fields,
             $this->returning
         );
+    }
 
+    /**
+     * @ignore
+     */
+    public function insert()
+    {
         $tReturn = $this->database->query(
-            $tQuery,
+            $this->insertQuery(),
             $this->parameters,
             $this->caching,
             $this->debug
@@ -489,18 +495,24 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function update()
+    public function updateQuery()
     {
-        $tQuery = $this->database->sqlUpdate(
+        return $this->database->sqlUpdate(
             $this->table,
             $this->fields,
             $this->rawFields,
             $this->where,
             array('limit' => $this->limit)
         );
+    }
 
+    /**
+     * @ignore
+     */
+    public function update()
+    {
         $tReturn = $this->database->query(
-            $tQuery,
+            $this->updateQuery(),
             $this->parameters,
             $this->caching,
             $this->debug
@@ -509,6 +521,18 @@ class DatabaseQuery
         $this->clear();
 
         return $tReturn;
+    }
+
+    /**
+     * @ignore
+     */
+    public function deleteQuery()
+    {
+        return $this->database->sqlDelete(
+            $this->table,
+            $this->where,
+            array('limit' => $this->limit)
+        );
     }
 
     /**
@@ -516,14 +540,8 @@ class DatabaseQuery
      */
     public function delete()
     {
-        $tQuery = $this->database->sqlDelete(
-            $this->table,
-            $this->where,
-            array('limit' => $this->limit)
-        );
-
         $tReturn = $this->database->query(
-            $tQuery,
+            $this->deleteQuery(),
             $this->parameters,
             $this->caching,
             $this->debug
@@ -537,9 +555,9 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function get()
+    public function getQuery()
     {
-        $tQuery = $this->database->sqlSelect(
+        return $this->database->sqlSelect(
             $this->table,
             $this->fields,
             $this->rawFields,
@@ -548,9 +566,15 @@ class DatabaseQuery
             $this->groupby,
             array('limit' => $this->limit, 'offset' => $this->offset)
         );
+    }
 
+    /**
+     * @ignore
+     */
+    public function get()
+    {
         $tReturn = $this->database->query(
-            $tQuery,
+            $this->getQuery(),
             $this->parameters,
             $this->caching,
             $this->debug
@@ -564,9 +588,8 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function calculate($uOperation = 'COUNT')
-    {
-        $tQuery = $this->database->sqlSelect(
+    public function aggregateQuery($uOperation = 'COUNT') {
+        return $this->database->sqlSelect(
             $this->table,
             array(),
             $uOperation . '(' . $this->rawFields . ')',
@@ -574,9 +597,15 @@ class DatabaseQuery
             null,
             $this->groupby
         );
+    }
 
+    /**
+     * @ignore
+     */
+    public function aggregate($uOperation = 'COUNT')
+    {
         $tReturn = $this->database->query(
-            $tQuery,
+            $this->aggregateQuery($uOperation),
             $this->parameters,
             $this->caching,
             $this->debug
