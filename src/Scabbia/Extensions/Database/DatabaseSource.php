@@ -11,6 +11,7 @@ use Scabbia\Extensions\Database\Database;
 use Scabbia\Extensions\Database\DatabaseQuery;
 use Scabbia\Extensions\Database\DatabaseQueryResult;
 use Scabbia\Extensions\Database\IQueryGenerator;
+use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Datasources\IDatasource;
 use Scabbia\Extensions\Datasources\IServerConnection;
 use Scabbia\Extensions\Datasources\ITransactionSupport;
@@ -213,27 +214,38 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
 
         Profiler::start('databaseQuery', $tDebugInfo);
 
-        $uPropsSerialized = $this->id . '/' . hash('adler32', $uQuery);
-        foreach ($uParameters as $tProp) {
-            $uPropsSerialized .= '_' . $tProp;
-        }
-
         if (!is_null($uCaching) /* && Framework::$development <= 0 */) {
-            $tData = Datasources::get($uCaching)->cacheGet($uPropsSerialized);
+            $tCaching = (array)$uCaching;
+
+            if (!isset($tCaching[1])) {
+                $tOld = array_merge((array)$uQuery, $uParameters);
+            } else {
+                $tOld = (array)$tCaching[1];
+            }
+
+            $tCaching[1] = $this->id;
+            $tCount = 0;
+
+            foreach ($tOld as $tParameter) {
+                $tCaching[1] .= (($tCount++ == 0) ? '/' : '_') . hash('adler32', $tParameter);
+            }
+
+            $tData = Datasources::get($tCaching[0])->cacheGet($tCaching[1]);
 
             if ($tData !== false) {
-                $this->cache[$uPropsSerialized] = $tData->resume($this);
+                $this->cache[$tCaching[1]] = $tData->resume($this);
                 $tLoadedFromCache = true;
             } else {
                 $tLoadedFromCache = false;
             }
         } else {
+            $tCaching = null;
             $tData = false;
             $tLoadedFromCache = false;
         }
 
         if ($tData === false) {
-            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $uCaching, $uPropsSerialized);
+            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $tCaching);
             ++$this->stats['query'];
         } else {
             ++$this->stats['cache'];

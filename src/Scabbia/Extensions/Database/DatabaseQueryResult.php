@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Database;
 
 use Scabbia\Extensions\Database\Database;
+use Scabbia\Extensions\Datasources\Datasources;
 
 /**
  * Database Extension: DatabaseQueryResult Class
@@ -63,13 +64,12 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
-    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching, $uFilename)
+    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching)
     {
         $this->_query = $uQuery;
         $this->_parameters = $uParameters;
         $this->_database = $uDatabase;
         $this->_caching = $uCaching;
-        $this->_filename = $uFilename;
     }
 
     /**
@@ -344,16 +344,15 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     {
         if (!is_null($this->_object)) {
             $this->_database->itClose($this->_object);
+            $this->_database = null;
             $this->_object = null;
         }
 
         $this->_cursor = 0;
 
         if (!is_null($this->_caching)) {
-            Datasources::get($this->_caching)->cacheSet($this->_filename, $this);
+            Datasources::get($this->_caching[0])->cacheSet($this->_caching[1], $this);
         }
-
-        $this->_database = null;
     }
 
     /**
