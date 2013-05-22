@@ -351,7 +351,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
         $this->_cursor = 0;
 
         if (!is_null($this->_caching)) {
-            Datasources::get($this->_caching[0])->cacheSet($this->_caching[1], $this);
+            Datasources::get($this->_caching[0])->cacheSet($this->_caching[1], $this, $this->_caching[2]);
         }
     }
 

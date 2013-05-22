@@ -106,11 +106,15 @@ class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
     /**
      * @ignore
      */
-    public function cacheSet($uKey, $uObject)
+    public function cacheSet($uKey, $uObject, $uCacheTtl = 0)
     {
         $this->connectionOpen();
 
-        $this->connection->set($uKey, $uObject, 0, $this->cacheTtl);
+        if ($uCacheTtl <= 0) {
+            $uCacheTtl = $this->cacheTtl;
+        }
+
+        $this->connection->set($uKey, $uObject, 0, $uCacheTtl);
     }
 
     /**

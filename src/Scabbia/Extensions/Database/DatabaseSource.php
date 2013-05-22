@@ -223,6 +223,10 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
                 $tOld = (array)$tCaching[1];
             }
 
+            if (!isset($tCaching[2])) {
+                $tCaching[2] = 0;
+            }
+
             $tCaching[1] = $this->id;
             $tCount = 0;
 
@@ -288,7 +292,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             }
 
             try {
-                $tResult = $this->query($uDataset->queryString, $tArray, true); //! constant
+                $tResult = $this->query($uDataset->queryString, $tArray); //! todo: add caching
             } catch (\Exception $ex) {
                 if ($this->errorHandling == Database::ERROR_EXCEPTION) {
                     throw $ex;
