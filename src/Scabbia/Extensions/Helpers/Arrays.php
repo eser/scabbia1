@@ -312,6 +312,34 @@ class Arrays
     }
 
     /**
+     * Extracts specified columns from the array.
+     *
+     * @param array $uArray         array
+     * @param mixed $uKeys          array of keys
+     *
+     * @return array values of the specified column from a multi-dimensional array
+     */
+    public static function columns(array $uArray)
+    {
+        $tReturn = array();
+        $tKeys = array_slice(func_get_args(), 1);
+
+        foreach ($uArray as $tRow) {
+            $tReturnRow = array();
+
+            foreach ($tKeys as $tKey) {
+                if (isset($tRow[$tKey])) {
+                    $tReturnRow[$tKey] = $tRow[$tKey];
+                }
+            }
+
+            $tReturn[] = $tReturnRow;
+        }
+
+        return $tReturn;
+    }
+
+    /**
      * Gets the first matching row from a multi-dimensional array.
      *
      * @param array $uArray array
