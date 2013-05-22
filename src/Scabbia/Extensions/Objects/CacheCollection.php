@@ -25,22 +25,17 @@ class CacheCollection extends Collection
     /**
      * @ignore
      */
-    public $_prefetch;
-    /**
-     * @ignore
-     */
-    public $_update;
+    public $_updateFunc;
 
 
     /**
      * @ignore
      */
-    public function __construct(/* callable */ $uUpdate, /* callable */ $uPrefetch = null)
+    public function __construct(/* callable */ $uUpdateFunc, array $uArray = array())
     {
-        parent::__construct();
+        parent::__construct($uArray);
 
-        $this->_update = $uUpdate;
-        $this->_prefetch = $uPrefetch;
+        $this->_updateFunc = $uUpdateFunc;
     }
 
     /**
@@ -53,20 +48,8 @@ class CacheCollection extends Collection
                 continue;
             }
 
-            $this->_queue[] = $uKey;
+            $this->_queue[] = $tKey;
         }
-    }
-
-    /**
-     * @ignore
-     */
-    public function prefetch()
-    {
-        if (is_null($this->_prefetch)) {
-            return;
-        }
-
-        $this->_items += call_user_func($this->_prefetch);
     }
 
     /**
@@ -74,7 +57,7 @@ class CacheCollection extends Collection
      */
     public function update()
     {
-        if (is_null($this->_update)) {
+        if (is_null($this->_updateFunc)) {
             return;
         }
 
@@ -82,7 +65,7 @@ class CacheCollection extends Collection
             return;
         }
 
-        $this->_items += call_user_func($this->_update, $this->_queue);
+        $this->_items += call_user_func($this->_updateFunc, $this->_queue);
         $this->_queue = array();
     }
 
@@ -95,5 +78,17 @@ class CacheCollection extends Collection
         $this->update();
 
         return $this->getRange($uArray);
+    }
+
+    /**
+     * @ignore
+     */
+    public function get($uKey)
+    {
+        if (in_array($uKey, $this->_queue, true)) {
+            $this->update();
+        }
+
+        return call_user_func_array('parent::get', func_get_args());
     }
 }

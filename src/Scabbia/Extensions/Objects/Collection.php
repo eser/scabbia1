@@ -111,10 +111,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function get($uKey, $uDefault = null)
+    public function get($uKey)
     {
-        if (!array_key_exists($uKey, $this->_items)) {
-            return $uDefault;
+        if (!array_key_exists($uKey, $this->_items) && func_num_args() > 1) {
+            return func_get_arg(1);
         }
 
         return $this->_items[$uKey];
@@ -136,6 +136,14 @@ class Collection implements \ArrayAccess, \IteratorAggregate
         }
 
         return $tItems;
+    }
+
+    /**
+     * @ignore
+     */
+    public function set($uKey, $uValue)
+    {
+        $this->_items[$uKey] = $uValue;
     }
 
     /**
@@ -292,7 +300,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGet($uId)
     {
-        return $this->_items[$uId];
+        return $this->get($uId);
     }
 
     /**
@@ -300,7 +308,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetSet($uId, $uValue)
     {
-        $this->_items[$uId] = $uValue;
+        $this->set($uId, $uValue);
     }
 
     /**
