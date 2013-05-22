@@ -28,6 +28,44 @@ class Http
     /**
      * @ignore
      */
+    const BUILDURL_STRIP_NONE = 0;
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_USER = 1;          // Strip any user authentication information
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_PASS = 2;          // Strip any password authentication information
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_AUTH = 3;          // Strip any authentication information
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_PORT = 4;          // Strip explicit port numbers
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_PATH = 8;          // Strip complete path
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_QUERY = 16;        // Strip query string
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_FRAGMENT = 32;     // Strip any fragments (#identifier)
+    /**
+     * @ignore
+     */
+    const BUILDURL_STRIP_ALL = 63;          // Strip anything but scheme and host
+
+
+    /**
+     * @ignore
+     */
     public static $errorPages = array();
 
 
@@ -117,6 +155,30 @@ class Http
     /**
      * @ignore
      */
+    public static function buildUrl(array $uParts, $uFlags = self::BUILDURL_STRIP_NONE)
+    {
+        $tKeys = array('user', 'pass', 'port', 'path', 'query', 'fragment');
+        foreach ($tKeys as $tKey) {
+            if ($uFlags & constant('self::BUILDURL_STRIP_' . strtoupper($tKey))) {
+                unset($uParts[$tKey]);
+            }
+        }
+
+        return
+            ((isset($uParts['scheme'])) ? $uParts['scheme'] . '://' : '')
+            .((isset($uParts['user'])) ? $uParts['user'] . ((isset($uParts['pass'])) ? ':' . $uParts['pass'] : '') .'@' : '')
+            .((isset($uParts['host'])) ? $uParts['host'] : '')
+            .((isset($uParts['port'])) ? ':' . $uParts['port'] : '')
+            .((isset($uParts['path'])) ? $uParts['path'] : '')
+            .((isset($uParts['query'])) ? '?' . $uParts['query'] : '')
+            .((isset($uParts['fragment'])) ? '#' . $uParts['fragment'] : '')
+            ;
+    }
+
+
+    /**
+     * @ignore
+     */
     public static function encode($uString)
     {
         return urlencode($uString);
@@ -154,14 +216,6 @@ class Http
         stream_copy_to_stream($tInput, $tOutput);
         fclose($tOutput);
         fclose($tInput);
-    }
-
-    /**
-     * @ignore
-     */
-    public static function baseUrl()
-    {
-        return '//' . $_SERVER['HTTP_HOST'] . Framework::$siteroot;
     }
 
     /**

@@ -1490,4 +1490,16 @@ class String
 
         return $tFilename;
     }
+
+    /**
+     * @ignore
+     */
+    public static function convertLinks($uInput, /* callable */ $uCallback)
+    {
+        return preg_replace_callback(
+            '#((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)#',
+            $uCallback,
+            $uInput
+        );
+    }
 }

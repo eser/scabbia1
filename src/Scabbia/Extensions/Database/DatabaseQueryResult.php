@@ -344,10 +344,10 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     {
         if (!is_null($this->_object)) {
             $this->_database->itClose($this->_object);
-            $this->_database = null;
             $this->_object = null;
         }
 
+        $this->_database = null;
         $this->_cursor = 0;
 
         if (!is_null($this->_caching)) {
