@@ -43,6 +43,14 @@ class String
      * @ignore
      */
     const FILTER_SANITIZE_XSS = 'scabbiaFilterSanitizeXss';
+    /**
+     * @ignore
+     */
+    const BASECONVERT_URL_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:[]@!$\'()*+,;';
+    /**
+     * @ignore
+     */
+    const BASECONVERT_BASE62_CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 
     /**
@@ -1380,6 +1388,90 @@ class String
         $uString = preg_replace('/-+/', $uReplaceWith, $uString);
 
         return $uString;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function toBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS) {
+        $tBaseLength = strlen($uBase);
+        $tResult = '';
+
+        do {
+            $tIndex = $uNumber % $tBaseLength;
+            // if ($tIndex < 0) {
+            //    $tIndex += $tBaseLength;
+            // }
+
+            $tResult = $uBase[$tIndex] . $tResult;
+            $uNumber = ($uNumber - $tIndex) / $tBaseLength;
+        } while ($uNumber > 0);
+
+        return $tResult;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function fromBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS) {
+        $tBaseLength = strlen($uBase);
+        $tResult = strpos($uBase, $uNumber[0]);
+
+        for ($i = 1, $tLength = strlen($uNumber); $i < $tLength; $i++) {
+            $tResult = ($tBaseLength * $tResult) + strpos($uBase, $uNumber[$i]);
+        }
+
+        return $tResult;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function shortenUuid($uString)
+    {
+        $tParts = array(
+            substr($uString, 0, 8),
+            substr($uString, 9, 4),
+            substr($uString, 14, 4),
+            substr($uString, 19, 4),
+            substr($uString, 24, 6),
+            substr($uString, 30, 6)
+        );
+
+        $tShortened = '';
+        foreach ($tParts as $tPart) {
+            $tEncoded = base_convert($tPart, 16, 10);
+            $tShortened .= self::toBase($tEncoded, self::BASECONVERT_URL_CHARACTERS);
+        }
+
+        return $tShortened;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function unshortenUuid($uString)
+    {
+        $tParts = array(
+            substr($uString, 0, 5),
+            substr($uString, 5, 3),
+            substr($uString, 8, 3),
+            substr($uString, 11, 3),
+            substr($uString, 14, 4),
+            substr($uString, 18, 4)
+        );
+
+        $tUnshortened = '';
+        $tIndex = 0;
+        foreach ($tParts as $tPart) {
+            $tDecoded = self::fromBase($tPart, self::BASECONVERT_URL_CHARACTERS);
+            $tUnshortened .= base_convert($tDecoded, 10, 16);
+            if ($tIndex++ <= 3) {
+                $tUnshortened .= '-';
+            }
+        }
+
+        return $tUnshortened;
     }
 
     /**
