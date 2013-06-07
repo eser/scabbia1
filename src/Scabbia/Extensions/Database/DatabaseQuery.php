@@ -69,10 +69,6 @@ class DatabaseQuery
      * @ignore
      */
     public $caching;
-    /**
-     * @ignore
-     */
-    public $debug;
 
 
     /**
@@ -123,7 +119,6 @@ class DatabaseQuery
         $this->sequence = '';
         $this->returning = '';
         $this->caching = null;
-        $this->debug = false;
     }
 
     /**
@@ -450,16 +445,6 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function setDebug($uDebug)
-    {
-        $this->debug = $uDebug;
-
-        return $this;
-    }
-
-    /**
-     * @ignore
-     */
     public function insertQuery()
     {
         return $this->database->sqlInsert(
@@ -477,8 +462,7 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->insertQuery(),
             $this->parameters,
-            $this->caching,
-            $this->debug
+            $this->caching
         );
 
         if (!is_null($this->sequence) && strlen($this->sequence) > 0) {
@@ -514,8 +498,7 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->updateQuery(),
             $this->parameters,
-            $this->caching,
-            $this->debug
+            $this->caching
         );
 
         $this->clear();
@@ -543,8 +526,7 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->deleteQuery(),
             $this->parameters,
-            $this->caching,
-            $this->debug
+            $this->caching
         );
 
         $this->clear();
@@ -576,8 +558,7 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->getQuery(),
             $this->parameters,
-            $this->caching,
-            $this->debug
+            $this->caching
         );
 
         $this->clear();
@@ -607,8 +588,7 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->aggregateQuery($uOperation),
             $this->parameters,
-            $this->caching,
-            $this->debug
+            $this->caching
         );
 
         $this->clear();

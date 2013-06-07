@@ -231,7 +231,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
-    public function query($uQuery, array $uParameters = array(), $uCaching = null, $uDebug = false)
+    public function query($uQuery, array $uParameters = array(), $uCaching = null)
     {
         $this->connectionOpen();
 
@@ -298,10 +298,6 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
         }
 
         $this->logger->profilerStop($tPostDebugInfo);
-
-        if ($uDebug) {
-            String::vardump($tDebugInfo + $tPostDebugInfo);
-        }
 
         return $tData;
     }

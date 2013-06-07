@@ -130,7 +130,7 @@ use Scabbia\Extensions\Http\Http;
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
-                    <tr><td><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
+                    <tr><td><var><?php echo $model['logcounts']['query']; ?></var><h4>Total Queries</h4></td></tr>
                     <tr><td class="alt"><var><?php echo String::timeCalc($model['queryTotals']['time']); ?></var> <h4>Total Time</h4></td></tr>
                 </table>
 
