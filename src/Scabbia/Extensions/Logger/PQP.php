@@ -100,12 +100,14 @@ class PQP
 
     public static function gatherQueryData() {
         $queryTotals = array();
-        $queryTotals['count'] = 0;
         $queryTotals['time'] = 0;
-        $queries = array();
 
-        $queryTotals['time'] = String::timeCalc($queryTotals['time']);
-        self::$output['queries'] = $queries;
+        foreach (Logger::$console as $tLog) {
+            if (isset($tLog['type']) && $tLog['type'] == 'query') {
+                $queryTotals['time'] += $tLog['consumedTime'];
+            }
+        }
+
         self::$output['queryTotals'] = $queryTotals;
     }
 

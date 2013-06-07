@@ -346,4 +346,13 @@ class PdoSource extends DatabaseSource
 
         return $tQuery;
     }
+
+    /**
+     * @ignore
+     */
+    public function queryArray($uQuery, array $uParameters = array())
+    {
+        $tQuery = $this->queryDirect($uQuery, $uParameters);
+        return $tQuery->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

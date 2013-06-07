@@ -74,7 +74,7 @@ use Scabbia\Extensions\Http\Http;
                             <div><em>Line <?php echo $log['line']; ?></em>: <?php echo $log['data']; ?><div class="measure"><?php echo $log['file']; ?></div></div>
                         <?php } elseif ($log['type'] == 'query') { ?>
                             <div>
-                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?> <?php echo String::sizeCalc($log['consumedMemory']); ?></div>
+                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?></div>
                                 <div><?php echo $log['message']; ?></div>
                                 <div><em><?php echo $log['query']; ?></em></div>
                                 <?php print_r($log['parameters']); ?>
@@ -125,9 +125,8 @@ use Scabbia\Extensions\Http\Http;
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
-                    <tr><td><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
-                    <tr><td class="alt"><var><?php echo $model['queryTotals']['time']; ?></var> <h4>Total Time</h4></td></tr>
-                    <tr><td><var>0</var> <h4>Duplicates</h4></td></tr>
+                    <tr><td class="alt"><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
+                    <tr><td><var><?php echo String::timeCalc($model['queryTotals']['time']); ?></var> <h4>Total Time</h4></td></tr>
                 </table>
 
                 <table class="main" cellspacing="0">
@@ -145,20 +144,18 @@ use Scabbia\Extensions\Http\Http;
                     <tr>
                         <td class="<?php echo $class; ?>">
                             <div>
-                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?> <?php echo String::sizeCalc($log['consumedMemory']); ?></div>
+                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?></div>
                                 <div><?php echo $log['message']; ?></div>
                                 <div><em><?php echo $log['query']; ?></em></div>
                                 <?php print_r($log['parameters']); ?>
-                                <?php if (isset($log['explain'])) { ?>
-                                    <em>
-                                        Possible keys: <strong><?php echo $log['explain']['possible_keys']; ?></strong> &middot;
-                                        Key Used: <strong><?php echo $log['explain']['key']; ?></strong> &middot;
-                                        Type: <strong><?php echo $log['explain']['type']; ?></strong> &middot;
-                                        Rows: <strong><?php echo $log['explain']['rows']; ?></strong> &middot;
-                                        Time: <strong><?php echo $log['time']; ?></strong>
-                                    </em>
-                                <?php } ?>
                             </div>
+                            <?php if (isset($log['explain'])) { ?>
+                                <?php foreach ($log['explain'] as $tRow) { ?>
+                                <div class="explain">
+                                    <?php echo($tRow['QUERY PLAN']); ?>
+                                </div>
+                                <?php } ?>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php

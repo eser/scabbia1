@@ -189,6 +189,11 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     /**
      * @ignore
      */
+    abstract public function queryArray($uQuery, array $uParameters = array());
+
+    /**
+     * @ignore
+     */
     public function execute($uQuery)
     {
         $this->connectionOpen();
@@ -212,7 +217,13 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             $tReturn = false;
         }
 
-        $this->logger->profilerStop();
+        $tPostDebugInfo = array();
+
+        if (Framework::$development) {
+            $tPostDebugInfo['explain'] = $this->queryArray('EXPLAIN ' . $uQuery, array());
+        }
+
+        $this->logger->profilerStop($tPostDebugInfo);
 
         return $tReturn;
     }
@@ -281,6 +292,10 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             'affectedRows' => $tData->count(),
             'fromCache' => $tLoadedFromCache
         );
+
+        if (Framework::$development) {
+            $tPostDebugInfo['explain'] = $this->queryArray('EXPLAIN ' . $uQuery, $uParameters);
+        }
 
         $this->logger->profilerStop($tPostDebugInfo);
 

@@ -320,4 +320,13 @@ class MysqlSource extends DatabaseSource
 
         return $tQuery;
     }
+
+    /**
+     * @ignore
+     */
+    public function queryArray($uQuery, array $uParameters = array())
+    {
+        $tQuery = $this->queryDirect($uQuery, $uParameters);
+        return $tQuery->fetch_all();
+    }
 }
