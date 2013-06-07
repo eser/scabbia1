@@ -31,6 +31,7 @@ abstract class TestFixture
      */
     public $testExpectations;
 
+
     /**
      * @ignore
      */

@@ -7,6 +7,8 @@
 
 namespace Scabbia\Extensions\Helpers;
 
+use Scabbia\Framework;
+
 if (!defined('ENT_HTML5')) {
     /**
      * @ignore
@@ -346,7 +348,7 @@ class String
      */
     public static function generatePassword($uLength)
     {
-        srand(microtime(true) * 1000000);
+        srand(Framework::$timestamp * 1000000);
 
         static $sVowels = array('a', 'e', 'i', 'o', 'u');
         static $sCons = array(
@@ -430,7 +432,7 @@ class String
      */
     public static function generate($uLength, $uCharset = '0123456789ABCDEF')
     {
-        srand(microtime(true) * 1000000);
+        srand(Framework::$timestamp * 1000000);
 
         $tCharsetLen = self::length($uCharset) - 1;
         for ($tOutput = ''; $uLength > 0; $uLength--) {
@@ -711,11 +713,27 @@ class String
     public static function quantityCalc($uSize, $uPrecision = 0)
     {
         static $sSize = ' KMGT';
-        for ($tCount = 0; $uSize >= 1024; $uSize /= 1024, $tCount++) {
+        for ($tCount = 0; $uSize >= 1000; $uSize /= 1000, $tCount++) {
             ;
         }
 
         return round($uSize, $uPrecision) . $sSize[$tCount];
+    }
+
+    /**
+     * @ignore
+     */
+    public static function timeCalc($uTime)
+    {
+        if ($uTime >= 60000) {
+            return number_format($uTime / 60000, 3, '.', '') . 'm';
+        }
+
+        if ($uTime >= 1000) {
+            return number_format($uTime / 1000, 3, '.', '') . 's';
+        }
+
+        return number_format($uTime, 3, '.', '') . 'ms';
     }
 
     /**

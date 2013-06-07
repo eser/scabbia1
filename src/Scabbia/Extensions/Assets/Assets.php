@@ -120,13 +120,9 @@ class Assets
         header('Content-Type: ' . $tMimetype, true);
 
         $tCache = Datasources::get('fileCache');
-        $tGenerate = (Framework::$development >= 1);
+        $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
 
-        if (!$tGenerate) {
-            $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
-        }
-
-        if (!$tGenerate && $tCachedData !== false) {
+        if ($tCachedData !== false) {
             echo $tCachedData;
         } else {
             $tContent = '';

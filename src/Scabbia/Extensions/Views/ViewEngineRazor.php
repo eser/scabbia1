@@ -45,7 +45,7 @@ class ViewEngineRazor
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
         $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
 
-        if (/* Framework::$development >= 1 || */ !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
+        if (Framework::$disableCaches || !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
             if (is_null(self::$engine)) {
                 require 'razor/RazorViewRenderer.php';
                 require 'razor/RazorViewRendererException.php';

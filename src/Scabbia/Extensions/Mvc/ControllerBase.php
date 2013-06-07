@@ -11,6 +11,7 @@ use Scabbia\Config;
 use Scabbia\Delegate;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Logger\Logger;
+use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
 use Psr\Log\LoggerAwareInterface;
@@ -69,7 +70,7 @@ class ControllerBase implements LoggerAwareInterface
     public function __construct()
     {
         $this->db = Datasources::get(); // default datasource to member 'db'
-        $this->logger = Logger::getInstance();
+        $this->logger = new LoggerInstance(get_class($this));
 
         $this->prerender = new Delegate();
         $this->postrender = new Delegate();

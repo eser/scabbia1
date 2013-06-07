@@ -49,7 +49,7 @@ class ViewEngineRaintpl
             raintpl::configure('tpl_ext', '.rain');
             raintpl::configure('cache_dir', Io::translatePath('{writable}cache/raintpl/'));
 
-            if (Framework::$development >= 1) {
+            if (Framework::$disableCaches) {
                 raintpl::configure('check_template_update', true);
             }
 

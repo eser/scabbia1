@@ -60,7 +60,7 @@ class Config
         $tLastModified = Io::getLastModified($tConfigFiles);
         $tOutputFile = Io::translatePath('{writable}cache/config');
 
-        if (/* Framework::$development <= 0 && */ Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
+        if (!Framework::$disableCaches && Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
             self::$loadedFromCache = true;
             return Io::readSerialize($tOutputFile);
         }
@@ -120,7 +120,7 @@ class Config
                             continue 2;
                             break;
                         case 'development':
-                            if (Framework::$development <= 0) {
+                            if (!Framework::$development) {
                                 continue 2;
                             }
                             break;

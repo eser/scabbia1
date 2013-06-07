@@ -16,7 +16,8 @@ use Scabbia\Extensions\Datasources\IDatasource;
 use Scabbia\Extensions\Datasources\IServerConnection;
 use Scabbia\Extensions\Datasources\ITransactionSupport;
 use Scabbia\Extensions\Helpers\String;
-use Scabbia\Extensions\Profiler\Profiler;
+use Scabbia\Extensions\Logger\Profiler;
+use Scabbia\Framework;
 
 /**
  * Database Extension: DatabaseSource Class
@@ -82,7 +83,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     {
         if (strlen($this->initCommand) > 0) {
             // $this->execute($this->initCommand); // occurs recursive loop
-            //! may need pass the initial command to the profiler extension
+            //! may need pass the initial command to the logger extension
             try {
                 $this->internalExecute($this->initCommand);
             } catch (\Exception $ex) {
@@ -214,7 +215,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
 
         Profiler::start('databaseQuery', $tDebugInfo);
 
-        if (!is_null($uCaching) /* && Framework::$development <= 0 */) {
+        if (!Framework::$disableCaches && !is_null($uCaching)) {
             $tCaching = (array)$uCaching;
 
             if (!isset($tCaching[1])) {

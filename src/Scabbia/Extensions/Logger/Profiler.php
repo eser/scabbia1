@@ -5,17 +5,16 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Profiler;
+namespace Scabbia\Extensions\Logger;
 
 use Scabbia\Extensions\Helpers\String;
-use Scabbia\Extensions\Profiler\ProfilerData;
 use Scabbia\Extensions;
 
 /**
- * Profiler Extension
+ * Logger Extension: Profiler Class
  *
  * @package Scabbia
- * @subpackage Profiler
+ * @subpackage Logger
  * @version 1.1.0
  */
 class Profiler
@@ -45,12 +44,15 @@ class Profiler
         $tBacktrace = debug_backtrace();
 
         $tLast = current($tBacktrace);
-        $uSource = array('file' => $tLast['file'], 'line' => $tLast['line']);
-
-        $tProfileData = new ProfilerData($uName, $uParameters, $uSource);
+        $tProfileData = $uParameters + array(
+            'name' => $uName,
+            'file' => $tLast['file'],
+            'line' => $tLast['line'],
+            'startTime' => microtime(true),
+            'startMemory' => memory_get_peak_usage()
+        );
 
         self::$stack[] = $tProfileData;
-        $tProfileData->start();
     }
 
     /**
@@ -61,19 +63,20 @@ class Profiler
         $tProfileData = array_pop(self::$stack);
 
         if (is_null($tProfileData)) {
-            return $tProfileData;
+            return false;
         }
 
-        $tProfileData->stop();
+        $tProfileData['consumedTime'] = microtime(true) - $tProfileData['startTime'];
+        $tProfileData['consumedMemory'] = memory_get_peak_usage() - $tProfileData['startMemory'];
 
         if (!is_null($uExtraParameters)) {
-            $tProfileData->addParameters($uExtraParameters);
+            $tProfileData += $uExtraParameters;
         }
 
-        if (!isset(self::$markers[$tProfileData->name])) {
-            self::$markers[$tProfileData->name] = array($tProfileData);
+        if (!isset(self::$markers[$tProfileData['name']])) {
+            self::$markers[$tProfileData['name']] = array($tProfileData);
         } else {
-            self::$markers[$tProfileData->name][] = $tProfileData;
+            self::$markers[$tProfileData['name']][] = $tProfileData;
         }
 
         return $tProfileData;

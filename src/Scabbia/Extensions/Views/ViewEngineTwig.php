@@ -55,7 +55,7 @@ class ViewEngineTwig
                 'cache' => Io::translatePath('{writable}cache/twig/')
             );
 
-            if (Framework::$development >= 1) {
+            if (Framework::$disableCaches) {
                 $tOptions['auto_reload'] = true;
             }
 

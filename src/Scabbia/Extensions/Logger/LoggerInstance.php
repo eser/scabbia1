@@ -7,11 +7,7 @@
 
 namespace Scabbia\Extensions\Logger;
 
-use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Logger\Logger;
-use Scabbia\Events;
-use Scabbia\Framework;
-use Scabbia\Io;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -27,6 +23,22 @@ use Psr\Log\LogLevel;
 class LoggerInstance implements LoggerInterface
 {
     /**
+     * @var string
+     */
+    public $className;
+
+
+    /**
+     * Initializes a new LoggerInstance class.
+     *
+     * @param string $uClassName
+     */
+    public function __construct($uClassName)
+    {
+        $this->className = $uClassName;
+    }
+
+    /**
      * System is unusable.
      *
      * @param string $uMessage
@@ -35,7 +47,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function emergency($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::EMERGENCY, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::EMERGENCY, $uContext);
     }
 
     /**
@@ -50,7 +63,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function alert($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::ALERT, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::ALERT, $uContext);
     }
 
     /**
@@ -64,7 +78,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function critical($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::CRITICAL, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::CRITICAL, $uContext);
     }
 
     /**
@@ -77,7 +92,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function error($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::ERROR, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::ERROR, $uContext);
     }
 
     /**
@@ -92,7 +108,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function warning($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::WARNING, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::WARNING, $uContext);
     }
 
     /**
@@ -104,7 +121,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function notice($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::NOTICE, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::NOTICE, $uContext);
     }
 
     /**
@@ -118,7 +136,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function info($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::INFO, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::INFO, $uContext);
     }
 
     /**
@@ -130,7 +149,8 @@ class LoggerInstance implements LoggerInterface
      */
     public function debug($uMessage, array $uContext = array())
     {
-        $this->log(LogLevel::DEBUG, $uMessage, $uContext);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::DEBUG, $uContext);
     }
 
     /**
@@ -143,74 +163,55 @@ class LoggerInstance implements LoggerInterface
      */
     public function log($uLevel, $uMessage, array $uContext = array())
     {
-        $uContext['category'] = $uLevel;
-        $uContext['ip'] = $_SERVER['REMOTE_ADDR'];
-        $uContext['message'] = String::prefixLines($uMessage, '- ', PHP_EOL);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, $uLevel, $uContext);
+    }
 
-        if (isset($uContext['file'])) {
-            if (Framework::$development >= 1) {
-                $uContext['location'] = Io::extractPath($uContext['file']);
-                if (isset($uContext['line'])) {
-                    $uContext['location'] .= ' @' . $uContext['line'];
-                }
-            } else {
-                $uContext['location'] = pathinfo($uContext['file'], PATHINFO_FILENAME);
-            }
-        } else {
-            $uContext['location'] = '-';
-        }
+    /**
+     * Logs total memory usage
+     *
+     * @param array $uContext
+     * @return null
+     */
+    public function logMemory($uMessage, array $uContext = array())
+    {
+        $uContext['type'] = 'memory';
+        $uContext['data'] = memory_get_usage();
+        $uContext['datatype'] = 'log';
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::DEBUG, $uContext);
+    }
 
-        $uContext['stackTrace'] = array();
-        foreach (array_slice(debug_backtrace(), 2) as $tFrame) {
-            $tArgs = array();
-            /*
-            if (isset($tFrame['args'])) {
-                foreach ($tFrame['args'] as $tArg) {
-                    $tArgs[] = var_export($tArg, true);
-                }
-            }
-            */
+    /**
+     * Logs an object's memory usage
+     *
+     * @param mixed $uObject
+     * @param array $uContext
+     * @return null
+     */
+    public function logMemoryObject($uMessage, $uObject, array $uContext = array())
+    {
+        $tSize = memory_get_usage();
+        $uContext['object'] = unserialize(serialize($uObject));
+        $uContext['data'] = memory_get_usage() - $tSize;
 
-            if (isset($tFrame['class'])) {
-                $tFunction = $tFrame['class'] . $tFrame['type'] . $tFrame['function'];
-            } else {
-                $tFunction = $tFrame['function'];
-            }
+        $uContext['type'] = 'memory';
+        $uContext['datatype'] = gettype($uObject);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::DEBUG, $uContext);
+    }
 
-            if (isset($tFrame['file'])) {
-                if (Framework::$development >= 1) {
-                    $tLocation = Io::extractPath($tFrame['file']);
-                    if (isset($tFrame['line'])) {
-                        $tLocation .= ' @' . $tFrame['line'];
-                    }
-                } else {
-                    $tLocation = pathinfo($tFrame['file'], PATHINFO_FILENAME);
-                }
-            } else {
-                $tLocation = '-';
-            }
-
-            $uContext['stackTrace'][] = $tFunction . '(' . implode(', ', $tArgs) . ') in ' . $tLocation;
-        }
-
-        $uContext['eventDepth'] = Events::$eventDepth;
-
-        $tIgnoreError = false;
-        $uContext['ignore'] = &$tIgnoreError;
-
-        Events::invoke('reportError', $uContext);
-
-        if (!$tIgnoreError) {
-            Events::$disabled = true;
-
-            if (!Framework::$readonly) {
-                $tContent = '+ ' . String::format(Logger::$line, $uContext);
-                $tFilename = Io::translatePath('{writable}logs/' . String::format(Logger::$filename, $uContext), true);
-
-                Io::write($tFilename, $tContent, LOCK_EX | FILE_APPEND);
-            }
-
-            Framework::end(-1);
-        }
+    /**
+     * Logs a time snap
+     *
+     * @param array $uContext
+     * @return null
+     */
+    public function logTime($uMessage, array $uContext = array())
+    {
+        $uContext['type'] = 'time';
+        $uContext['data'] = microtime(true);
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::DEBUG, $uContext);
     }
 }

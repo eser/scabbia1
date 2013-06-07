@@ -44,7 +44,7 @@ class ViewEngineMarkdown
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];
         $tOutputFile = Io::translatePath('{writable}cache/md/' . $uObject['compiledFile']);
 
-        if (/* Framework::$development >= 1 || */ !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
+        if (Framework::$disableCaches || !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
             if (is_null(self::$engine)) {
                 self::$engine = new MarkdownExtraParser();
             }

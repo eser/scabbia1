@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Http;
 
-use Scabbia\Extensions\Profiler\Profiler;
+use Scabbia\Extensions\Logger\Profiler;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
@@ -15,6 +15,7 @@ use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Psr\Log\LogLevel;
 
 /**
  * Http Extension
@@ -244,7 +245,7 @@ class Http
      */
     public static function reportError(array $uParms)
     {
-        if ($uParms['ignore']) {
+        if ($uParms['ignore'] || $uParms['category'] == LogLevel::DEBUG) {
             return;
         }
 
@@ -270,7 +271,7 @@ class Http
                 'message' => $uParms['message']
             );
 
-            if (Framework::$development >= 1) {
+            if (Framework::$development) {
                 if (count($uParms['eventDepth']) > 0) {
                     $tArray['eventDepth'] = $uParms['eventDepth'];
                 }
@@ -286,7 +287,7 @@ class Http
             $tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $uParms['category'] . '</span>: ' . $uParms['location'] . '</div>' . PHP_EOL;
             $tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; line-height: 20px;">' . $uParms['message'] . '</div>' . PHP_EOL . PHP_EOL;
 
-            if (Framework::$development >= 1) {
+            if (Framework::$development) {
                 if (count($uParms['eventDepth']) > 0) {
                     $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>eventDepth:</b>' . PHP_EOL . implode(PHP_EOL, $uParms['eventDepth']) . '</div>' . PHP_EOL . PHP_EOL;
                 }

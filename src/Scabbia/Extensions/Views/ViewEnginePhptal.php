@@ -72,7 +72,8 @@ class ViewEnginePhptal
         self::$engine->setOutputMode(PHPTAL::HTML5);
         self::$engine->setEncoding('UTF-8');
         self::$engine->setTemplate($uObject['templateFile']);
-        if (Framework::$development >= 1) {
+
+        if (Framework::$disableCaches) {
             self::$engine->prepare();
         }
 

@@ -22,7 +22,6 @@
         "Mime",
         "Models",
         "Mvc",
-        "Profiler",
         "Session",
         "Smtp",
         "Unittest",

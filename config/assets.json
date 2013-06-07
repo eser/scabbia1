@@ -131,6 +131,13 @@
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/intro.js"
                     }
+                ],
+                "partList:development": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.js"
+                    }
                 ]
             },
             {
@@ -212,6 +219,13 @@
                         "type":         "file",
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/introjs.css"
+                    }
+                ],
+                "partList:development": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.css"
                     }
                 ]
             }

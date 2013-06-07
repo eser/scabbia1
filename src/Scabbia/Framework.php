@@ -42,7 +42,11 @@ class Framework
     /**
      * @var int     Indicates framework is running in production, development or debug mode
      */
-    public static $development = 0;
+    public static $development = false;
+    /**
+     * @var bool    Indicates caching is disabled or not
+     */
+    public static $disableCaches = false;
     /**
      * @var bool    Indicates framework is running in readonly mode or not
      */

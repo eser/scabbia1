@@ -49,7 +49,7 @@ class ViewEngineSmarty
             self::$engine->setTemplateDir($uObject['templatePath']);
             self::$engine->setCompileDir(Io::translatePath('{writable}cache/smarty/'));
 
-            if (Framework::$development >= 1) {
+            if (Framework::$disableCaches) {
                 self::$engine->force_compile = true;
             }
         } else {

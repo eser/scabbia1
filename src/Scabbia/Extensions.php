@@ -52,7 +52,7 @@ class Extensions
         $tLastModified = Io::getLastModified($tExtensionFiles);
         $tOutputFile = Io::translatePath('{writable}cache/extensions');
 
-        if (/* Framework::$development <= 0 && */ Config::$loadedFromCache && Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
+        if (!Framework::$disableCaches && Config::$loadedFromCache && Io::isReadableAndNewer($tOutputFile, $tLastModified)) {
             self::$configFiles = Io::readSerialize($tOutputFile);
         } else {
             foreach ($tExtensionFiles as $tFile) {
