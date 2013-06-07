@@ -48,7 +48,7 @@ class Logger
     public static $typeCounts = array(
         'memory' => 0,
         'time' => 0,
-        'errorhandler' => 0,
+        'error' => 0,
         'log' => 0,
         'query' => 0
     );
@@ -142,10 +142,11 @@ class Logger
             'HANDLER',
             $tType,
             array(
-                'type' => 'errorhandler',
+                'type' => 'error',
                 'message' => $uMessage,
                 'file' => $uFile,
-                'line' => $uLine
+                'line' => $uLine,
+                'halt' => true
             )
         );
     }
@@ -161,7 +162,7 @@ class Logger
     public static function write($uClass, $uLevel, array $uContext = array())
     {
         if (!isset($uContext['type'])) {
-            $uContext['type'] = 'log';
+            $uContext['type'] = ($uLevel == LogLevel::DEBUG || $uLevel == LogLevel::INFO) ? 'log' : 'error';
         }
         self::$typeCounts[$uContext['type']]++;
 
@@ -220,17 +221,6 @@ class Logger
 
         $uContext['eventDepth'] = Events::$eventDepth;
 
-        $tIgnoreError = (!Framework::$development && $uLevel == LogLevel::DEBUG);
-        $tHalt = !in_array($uLevel, array(LogLevel::NOTICE, LogLevel::INFO, LogLevel::DEBUG), true);
-        $uContext['ignore'] = &$tIgnoreError;
-        $uContext['halt'] = &$tHalt;
-
-        Events::invoke('reportError', $uContext);
-
-        if ($tIgnoreError) {
-            return;
-        }
-
         Events::$disabled = true;
 
         if (!Framework::$readonly) {
@@ -240,12 +230,13 @@ class Logger
             Io::write($tFilename, $tContent, LOCK_EX | FILE_APPEND);
         }
 
-        if ($tHalt) {
-            Framework::end(-1);
-        }
-
         self::$console[] = $uContext;
 
         Events::$disabled = false;
+
+        if (isset($uContext['halt']) && $uContext['halt']) {
+            Events::invoke('reportError', $uContext);
+            Framework::end(-1);
+        }
     }
 }

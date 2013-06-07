@@ -10,7 +10,7 @@ use Scabbia\Extensions\Http\Http;
         <table id="pqp-metrics" cellspacing="0">
             <tr>
                 <td class="green" onclick="changeTab('console');">
-                    <var><?php echo $model['logcount']; ?></var>
+                    <var><?php echo ($model['logcounts']['log'] + $model['logcounts']['error']); ?></var>
                     <h4>Console</h4>
                 </td>
                 <td class="blue" onclick="changeTab('time');">
@@ -33,13 +33,13 @@ use Scabbia\Extensions\Http\Http;
         </table>
 
         <div id="pqp-console" class="pqp-box">
-            <?php if ($model['logcount'] == 0) { ?>
+            <?php if (($model['logcounts']['log'] + $model['logcounts']['error']) == 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
                     <tr>
                         <td class="alt1"><var><?php echo ($model['logcounts']['log'] + $model['logcounts']['query']); ?></var><h4>Logs</h4></td>
-                        <td class="alt2"><var><?php echo $model['logcounts']['errorhandler']; ?></var> <h4>Errors</h4></td>
+                        <td class="alt2"><var><?php echo $model['logcounts']['error']; ?></var> <h4>Errors</h4></td>
                     </tr>
                     <tr>
                         <td class="alt3"><var><?php echo $model['logcounts']['memory']; ?></var> <h4>Memory</h4></td>
@@ -55,6 +55,8 @@ use Scabbia\Extensions\Http\Http;
                         } else {
                             $class = '';
                         }
+
+                        if ($log['type'] == 'log' || $log['type'] == 'error') {
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="type"><?php echo $log['type']; ?></td>
@@ -71,7 +73,7 @@ use Scabbia\Extensions\Http\Http;
                         <?php } elseif ($log['type'] == 'time') { ?>
                             <div><div class="measure"><?php echo String::timeCalc($log['data']); ?></div> <em><?php print_r($log['message']); ?></em></div>
                         <?php } elseif ($log['type'] == 'error') { ?>
-                            <div><em>Line <?php echo $log['line']; ?></em>: <?php echo $log['data']; ?><div class="measure"><?php echo $log['file']; ?></div></div>
+                            <div><?php echo $log['message']; ?><div class="measure"><?php echo $log['location']; ?></div></div>
                         <?php } elseif ($log['type'] == 'query') { ?>
                             <div>
                                 <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?></div>
@@ -82,7 +84,10 @@ use Scabbia\Extensions\Http\Http;
                         <?php } ?>
                         </td>
                     </tr>
-                <?php } ?>
+                <?php
+                        }
+                    }
+                ?>
                 </table>
             <?php } ?>
         </div>

@@ -244,7 +244,7 @@ class Http
      */
     public static function reportError(array $uParms)
     {
-        if ($uParms['ignore'] || $uParms['category'] == LogLevel::DEBUG) {
+        if (!$uParms['halt']) {
             return;
         }
 
