@@ -1,4 +1,4 @@
-var PQP_DETAILS = true;
+var PQP_DETAILS = false;
 var PQP_HEIGHT = 'short';
 
 function changeTab(tab) {
