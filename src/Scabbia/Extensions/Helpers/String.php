@@ -725,15 +725,17 @@ class String
      */
     public static function timeCalc($uTime)
     {
-        if ($uTime >= 60000) {
-            return number_format($uTime / 60000, 3, '.', '') . 'm';
+        $tTime = $uTime * 1000;
+
+        if ($tTime >= 60000) {
+            return number_format($tTime / 60000, 3, '.', '') . 'm';
         }
 
-        if ($uTime >= 1000) {
-            return number_format($uTime / 1000, 3, '.', '') . 's';
+        if ($tTime >= 1000) {
+            return number_format($tTime / 1000, 3, '.', '') . 's';
         }
 
-        return number_format($uTime, 3, '.', '') . 'ms';
+        return number_format($tTime, 3, '.', '') . 'ms';
     }
 
     /**

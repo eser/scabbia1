@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Mvc;
 use Scabbia\Config;
 use Scabbia\Delegate;
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Logger\Logger;
 use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;

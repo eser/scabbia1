@@ -49,7 +49,8 @@ class Logger
         'memory' => 0,
         'time' => 0,
         'errorhandler' => 0,
-        'log' => 0
+        'log' => 0,
+        'query' => 0
     );
     /**
      * @ignore

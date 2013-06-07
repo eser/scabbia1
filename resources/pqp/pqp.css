@@ -79,9 +79,13 @@
 	display:block;
 }
 .console td.green, .time td.blue, .queries td.purple, .memory td.orange, .files td.red {
-	background:#222 !important;
+	background:#222;
 	border-bottom:6px solid #fff !important;
 	cursor:default !important;
+}
+
+.hideDetails .console td.green, .hideDetails .time td.blue, .hideDetails .queries td.purple, .hideDetails .memory td.orange, .hideDetails .files td.red {
+    background:#000;
 }
 
 .tallDetails #pQp .pqp-box {
@@ -98,9 +102,7 @@
 }
 .hideDetails #pQp #pqp-metrics td {
 	height:50px;
-	background:#000 !important;
 	border-bottom:none !important;
-	cursor:default !important;
 }
 .hideDetails #pQp var {
 	font-size:18px;
@@ -277,6 +279,9 @@
 .pQp .log-time td.type {
 	background:#2B5481 !important;
 }
+.pQp .log-query td.type {
+    background:#953FA1 !important;
+}
 
 .pQp .log-log div.measure {
 	color:#999;
@@ -291,7 +296,7 @@
 	display:block;
 	color:#fff;
 }
-.pQp .log-memory div.measure, .pQp .log-time div.measure {
+.pQp .log-memory div.measure, .pQp .log-time div.measure, .pQp .log-query div.measure {
 	float:right;
 	white-space: normal;
 	display:block;

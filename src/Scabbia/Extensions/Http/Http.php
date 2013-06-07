@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Http;
 
-use Scabbia\Extensions\Logger\Profiler;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
@@ -295,14 +294,6 @@ class Http
                 if (count($uParms['stackTrace']) > 0) {
                     $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>stackTrace:</b>' . PHP_EOL . implode(PHP_EOL, $uParms['stackTrace']) . '</div>' . PHP_EOL . PHP_EOL;
                 }
-
-                $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler stack:</b>' . PHP_EOL;
-                $tString .= Profiler::exportStack(false);
-                $tString .= '</div>' . PHP_EOL;
-
-                $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>profiler output:</b>' . PHP_EOL;
-                $tString .= Profiler::export(false);
-                $tString .= '</div>';
             }
 
             $tString .= '</pre>';

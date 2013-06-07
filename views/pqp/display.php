@@ -2,7 +2,6 @@
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
-use Scabbia\Framework;
 
 ?>
 
@@ -19,7 +18,7 @@ use Scabbia\Framework;
                     <h4>Load Time</h4>
                 </td>
                 <td class="purple" onclick="changeTab('queries');">
-                    <var><?php echo $model['queryTotals']['count']; ?> Queries</var>
+                    <var><?php echo $model['logcounts']['query']; ?> Queries</var>
                     <h4>Database</h4>
                 </td>
                 <td class="orange" onclick="changeTab('memory');">
@@ -39,7 +38,7 @@ use Scabbia\Framework;
             <?php } else { ?>
                 <table class="side" cellspacing="0">
                     <tr>
-                        <td class="alt1"><var><?php echo $model['logcounts']['log']; ?></var><h4>Logs</h4></td>
+                        <td class="alt1"><var><?php echo ($model['logcounts']['log'] + $model['logcounts']['query']); ?></var><h4>Logs</h4></td>
                         <td class="alt2"><var><?php echo $model['logcounts']['errorhandler']; ?></var> <h4>Errors</h4></td>
                     </tr>
                     <tr>
@@ -64,15 +63,22 @@ use Scabbia\Framework;
                             <div><?php print_r($log['message']); ?></div>
                         <?php } elseif ($log['type'] == 'memory') { ?>
                             <div>
-                                <div class="measure"><?php echo String::sizeCalc($log['data']); ?></div> <em><?php echo $log['datatype']; ?></em>: <?php echo $log['message']; ?>
+                                <div class="measure"><?php echo String::sizeCalc($log['data']); ?></div> <em><?php echo $log['datatype']; ?></em>: <?php print_r($log['message']); ?>
                                 <?php if (isset($log['object'])) { ?>
                                 <div><?php print_r($log['object']); ?></div>
                                 <?php } ?>
                             </div>
                         <?php } elseif ($log['type'] == 'time') { ?>
-                            <div><div class="measure"><?php echo String::timeCalc(($log['data'] - Framework::$timestamp) * 1000); ?></div> <em><?php echo $log['message']; ?></em></div>
+                            <div><div class="measure"><?php echo String::timeCalc($log['data']); ?></div> <em><?php print_r($log['message']); ?></em></div>
                         <?php } elseif ($log['type'] == 'error') { ?>
                             <div><em>Line <?php echo $log['line']; ?></em>: <?php echo $log['data']; ?><div class="measure"><?php echo $log['file']; ?></div></div>
+                        <?php } elseif ($log['type'] == 'query') { ?>
+                            <div>
+                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?> <?php echo String::sizeCalc($log['consumedMemory']); ?></div>
+                                <div><?php echo $log['message']; ?></div>
+                                <div><em><?php echo $log['query']; ?></em></div>
+                                <?php print_r($log['parameters']); ?>
+                            </div>
                         <?php } ?>
                         </td>
                     </tr>
@@ -103,7 +109,7 @@ use Scabbia\Framework;
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="<?php echo $class; ?>">
-                            <div><div class="measure"><?php echo String::timeCalc(($log['data'] - Framework::$timestamp) * 1000); ?></div> <em><?php echo $log['message']; ?></em></div>
+                            <div><div class="measure"><?php echo String::timeCalc($log['data']); ?></div> <em><?php print_r($log['message']); ?></em></div>
                         </td>
                     </tr>
                 <?php
@@ -115,11 +121,11 @@ use Scabbia\Framework;
         </div>
 
         <div id="pqp-queries" class="pqp-box">
-            <?php if ($model['queryTotals']['count'] == 0) { ?>
+            <?php if ($model['logcounts']['query'] == 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
-                    <tr><td><var><?php echo $model['queryTotals']['count']; ?></var><h4>Total Queries</h4></td></tr>
+                    <tr><td><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
                     <tr><td class="alt"><var><?php echo $model['queryTotals']['time']; ?></var> <h4>Total Time</h4></td></tr>
                     <tr><td><var>0</var> <h4>Duplicates</h4></td></tr>
                 </table>
@@ -127,27 +133,38 @@ use Scabbia\Framework;
                 <table class="main" cellspacing="0">
                 <?php
                     $class = '';
-                    foreach ($model['queries'] as $query) {
+                    foreach ($model['logs'] as $log) {
                         if ($class == '') {
                             $class = 'alt';
                         } else {
                             $class = '';
                         }
+
+                        if ($log['type'] == 'query') {
                 ?>
                     <tr>
-                        <td class="<?php echo $class; ?>"><?php echo $query['sql']; ?>
-                        <?php if (isset($query['explain'])) { ?>
-                        <em>
-                            Possible keys: <strong><?php echo $query['explain']['possible_keys']; ?></strong> &middot;
-                            Key Used: <strong><?php echo $query['explain']['key']; ?></strong> &middot;
-                            Type: <strong><?php echo $query['explain']['type']; ?></strong> &middot;
-                            Rows: <strong><?php echo $query['explain']['rows']; ?></strong> &middot;
-                            Time: <strong><?php echo $query['time']; ?></strong>
-                        </em>
-                        <?php } ?>
+                        <td class="<?php echo $class; ?>">
+                            <div>
+                                <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?> <?php echo String::sizeCalc($log['consumedMemory']); ?></div>
+                                <div><?php echo $log['message']; ?></div>
+                                <div><em><?php echo $log['query']; ?></em></div>
+                                <?php print_r($log['parameters']); ?>
+                                <?php if (isset($log['explain'])) { ?>
+                                    <em>
+                                        Possible keys: <strong><?php echo $log['explain']['possible_keys']; ?></strong> &middot;
+                                        Key Used: <strong><?php echo $log['explain']['key']; ?></strong> &middot;
+                                        Type: <strong><?php echo $log['explain']['type']; ?></strong> &middot;
+                                        Rows: <strong><?php echo $log['explain']['rows']; ?></strong> &middot;
+                                        Time: <strong><?php echo $log['time']; ?></strong>
+                                    </em>
+                                <?php } ?>
+                            </div>
                         </td>
                     </tr>
-                <?php } ?>
+                <?php
+                        }
+                    }
+                ?>
                 </table>
             <?php } ?>
         </div>
@@ -174,7 +191,10 @@ use Scabbia\Framework;
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="<?php echo $class; ?>">
-                            <div><div class="measure"><?php echo String::sizeCalc($log['data']); ?></div> <em><?php echo $log['datatype']; ?></em>: <?php echo $log['message']; ?></div>
+                            <div><div class="measure"><?php echo String::sizeCalc($log['data']); ?></div> <em><?php echo $log['datatype']; ?></em>: <?php print_r($log['message']); ?></div>
+                            <?php if (isset($log['object'])) { ?>
+                                <div><?php print_r($log['object']); ?></div>
+                            <?php } ?>
                         </td>
                     </tr>
                     <?php } ?>
@@ -214,7 +234,7 @@ use Scabbia\Framework;
     <table id="pqp-footer" cellspacing="0">
         <tr>
             <td class="credit">
-                <a href="http://particletree.com" target="_blank">
+                <a href="http://particletree.com/" target="_blank">
                     <strong>PHP</strong>
                     <strong class="green">Q</strong><strong class="blue">u</strong><strong class="purple">i</strong><strong class="orange">c</strong><strong class="red">k</strong>
                     Profiler

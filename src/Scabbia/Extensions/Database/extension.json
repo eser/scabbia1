@@ -10,7 +10,8 @@
         "fwversion":        "1.1",
         "fwdependList":     [
             "Datasources",
-            "Helpers"
+            "Helpers",
+            "Logger"
         ]
     },
     "eventList": [

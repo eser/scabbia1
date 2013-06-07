@@ -26,6 +26,10 @@ class LoggerInstance implements LoggerInterface
      * @var string
      */
     public $className;
+    /**
+     * @ignore
+     */
+    public $profilerStack = array();
 
 
     /**
@@ -170,13 +174,15 @@ class LoggerInstance implements LoggerInterface
     /**
      * Logs total memory usage
      *
+     * @param mixed $uMessage
+     * @param int $uAmount
      * @param array $uContext
      * @return null
      */
-    public function logMemory($uMessage, array $uContext = array())
+    public function logMemory($uMessage, $uAmount, array $uContext = array())
     {
         $uContext['type'] = 'memory';
-        $uContext['data'] = memory_get_usage();
+        $uContext['data'] = $uAmount;
         $uContext['datatype'] = 'log';
         $uContext['message'] = $uMessage;
         Logger::write($this->className, LogLevel::DEBUG, $uContext);
@@ -185,6 +191,7 @@ class LoggerInstance implements LoggerInterface
     /**
      * Logs an object's memory usage
      *
+     * @param mixed $uMessage
      * @param mixed $uObject
      * @param array $uContext
      * @return null
@@ -204,14 +211,90 @@ class LoggerInstance implements LoggerInterface
     /**
      * Logs a time snap
      *
+     * @param mixed $uMessage
+     * @param double $uTime
      * @param array $uContext
      * @return null
      */
-    public function logTime($uMessage, array $uContext = array())
+    public function logTime($uMessage, $uTime, array $uContext = array())
     {
         $uContext['type'] = 'time';
-        $uContext['data'] = microtime(true);
+        $uContext['data'] = $uTime;
         $uContext['message'] = $uMessage;
         Logger::write($this->className, LogLevel::DEBUG, $uContext);
+    }
+
+    /**
+     * Logs a query
+     *
+     * @param mixed $uMessage
+     * @param array $uContext
+     * @return null
+     */
+    public function logQuery($uMessage, array $uContext = array())
+    {
+        $uContext['type'] = 'query';
+        $uContext['message'] = $uMessage;
+        Logger::write($this->className, LogLevel::DEBUG, $uContext);
+    }
+
+    /**
+     * @ignore
+     */
+    public function profilerStart($uMessage, $uType = 'memory,time', array $uParameters = array())
+    {
+        /*
+        if (Utils::phpVersion('5.3.6')) {
+            $tBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        } else {
+            $tBacktrace = debug_backtrace(false);
+        }
+        */
+//        $tBacktrace = debug_backtrace();
+
+//        $tLast = current($tBacktrace);
+        $tProfileData = $uParameters + array(
+                'type' => $uType,
+                'message' => $uMessage,
+//                'file' => $tLast['file'],
+//                'line' => $tLast['line'],
+                'startTime' => microtime(true),
+                'startMemory' => memory_get_usage()
+            );
+
+        $this->profilerStack[] = $tProfileData;
+    }
+
+    /**
+     * @ignore
+     */
+    public function profilerStop($uExtraParameters = null)
+    {
+        $tProfileData = array_pop($this->profilerStack);
+
+        if (is_null($tProfileData)) {
+            return false;
+        }
+
+        $tProfileData['consumedTime'] = microtime(true) - $tProfileData['startTime'];
+        $tProfileData['consumedMemory'] = memory_get_usage() - $tProfileData['startMemory'];
+
+        if (!is_null($uExtraParameters)) {
+            $tProfileData += $uExtraParameters;
+        }
+
+        $tTypes = explode(',', $tProfileData['type']);
+
+        if (in_array('time', $tTypes)) {
+            $this->logTime($tProfileData['message'], $tProfileData['consumedTime']);
+        }
+        if (in_array('memory', $tTypes)) {
+            $this->logMemory($tProfileData['message'], $tProfileData['consumedMemory']);
+        }
+        if (in_array('query', $tTypes)) {
+            $this->logQuery($tProfileData['message'], $tProfileData);
+        }
+
+        return $tProfileData;
     }
 }

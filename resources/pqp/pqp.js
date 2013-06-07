@@ -1,10 +1,14 @@
 var PQP_DETAILS = false;
 var PQP_HEIGHT = 'short';
+var pqp_container;
 
 function changeTab(tab) {
     var pQp = document.getElementById('pQp');
     hideAllTabs();
     addClassName(pQp, tab, true);
+
+    removeClassName(pqp_container, 'hideDetails');
+    PQP_DETAILS = true;
 }
 
 function hideAllTabs() {
@@ -17,25 +21,21 @@ function hideAllTabs() {
 }
 
 function toggleDetails() {
-    var container = document.getElementById('pqp-container');
-
     if (PQP_DETAILS) {
-        addClassName(container, 'hideDetails', true);
+        addClassName(pqp_container, 'hideDetails', true);
         PQP_DETAILS = false;
     } else {
-        removeClassName(container, 'hideDetails');
+        removeClassName(pqp_container, 'hideDetails');
         PQP_DETAILS = true;
     }
 }
 
 function toggleHeight() {
-    var container = document.getElementById('pqp-container');
-
     if (PQP_HEIGHT == 'short') {
-        addClassName(container, 'tallDetails', true);
+        addClassName(pqp_container, 'tallDetails', true);
         PQP_HEIGHT = 'tall';
     } else {
-        removeClassName(container, 'tallDetails');
+        removeClassName(pqp_container, 'tallDetails');
         PQP_HEIGHT = 'short';
     }
 }
@@ -76,5 +76,6 @@ function removeClassName(objElement, strClass) {
 }
 
 function pqp() {
-    document.getElementById('pqp-container').style.display = 'block';
+    pqp_container = document.getElementById('pqp-container');
+    pqp_container.style.display = 'block';
 }

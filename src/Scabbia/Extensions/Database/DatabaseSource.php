@@ -16,8 +16,10 @@ use Scabbia\Extensions\Datasources\IDatasource;
 use Scabbia\Extensions\Datasources\IServerConnection;
 use Scabbia\Extensions\Datasources\ITransactionSupport;
 use Scabbia\Extensions\Helpers\String;
-use Scabbia\Extensions\Logger\Profiler;
+use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Framework;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Database Extension: DatabaseSource Class
@@ -28,7 +30,7 @@ use Scabbia\Framework;
  *
  * @todo generic sqlSelect, sqlUpdate, etc.
  */
-abstract class DatabaseSource implements IDatasource, IServerConnection, ITransactionSupport, IQueryGenerator
+abstract class DatabaseSource implements IDatasource, IServerConnection, ITransactionSupport, IQueryGenerator, LoggerAwareInterface
 {
     /**
      * @ignore
@@ -61,6 +63,10 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
         'query' => 0,
         'cache' => 0
     );
+    /**
+     * @ignore
+     */
+    public $logger;
 
 
     /**
@@ -70,10 +76,19 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     {
         $this->id = $uConfig['id'];
         $this->default = isset($uConfig['default']);
+        $this->logger = new LoggerInstance(get_class($this));
 
         if (isset($uConfig['initCommand'])) {
             $this->initCommand = $uConfig['initCommand'];
         }
+    }
+
+    /**
+     * @ignore
+     */
+    public function setLogger(LoggerInterface $uLogger)
+    {
+        $this->logger = $uLogger;
     }
 
     /**
@@ -178,8 +193,9 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
     {
         $this->connectionOpen();
 
-        Profiler::start(
-            'databaseQuery',
+        $this->logger->profilerStart(
+            $this->id . ' query',
+            'query',
             array(
                  'query' => $uQuery,
                  'parameters' => null
@@ -196,7 +212,7 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             $tReturn = false;
         }
 
-        Profiler::stop();
+        $this->logger->profilerStop();
 
         return $tReturn;
     }
@@ -213,7 +229,11 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             'parameters' => $uParameters
         );
 
-        Profiler::start('databaseQuery', $tDebugInfo);
+        $this->logger->profilerStart(
+            $this->id . ' query',
+            'query',
+            $tDebugInfo
+        );
 
         if (!Framework::$disableCaches && !is_null($uCaching)) {
             $tCaching = (array)$uCaching;
@@ -261,7 +281,8 @@ abstract class DatabaseSource implements IDatasource, IServerConnection, ITransa
             'affectedRows' => $tData->count(),
             'fromCache' => $tLoadedFromCache
         );
-        Profiler::stop($tPostDebugInfo);
+
+        $this->logger->profilerStop($tPostDebugInfo);
 
         if ($uDebug) {
             String::vardump($tDebugInfo + $tPostDebugInfo);
