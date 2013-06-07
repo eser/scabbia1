@@ -1,6 +1,23 @@
 # Kurulum #
 
-En güncel sürüme sahip olmak için [Github Repository](http://larukedi.github.com/Scabbia-Framework/)'i kontrol edebilirsiniz. Scabbia Framework'ün bir kopyasını elde ettikten sonra, web uygulamanızı aşağıdaki adımları takip ederek konfigure etmeniz gereklidir.
+Aşağıdaki iki alternatiften herhangi biri ile mevcut en güncel sürümün bir kopyasını elde edebilirsiniz.
+
+### Alternatif 1 ###
+
+[Skeleton Uygulamasını](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) indirerek `./composer_update.sh` veya `composer_update.cmd`'yi çalıştırabilirsiniz.
+
+### Alternatif 2 ###
+
+*nix üzerinde:
+
+- `php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"`
+- `php composer.phar create-project larukedi/scabbia-skeleton -s dev`
+
+Windows üzerinde:
+
+- [Composer-Setup.exe](http://getcomposer.org/Composer-Setup.exe)'yi indirip kurun. Ardından:
+- `composer create-project larukedi/scabbia-skeleton -s dev`
+
 
 
 ## Gereksinimler ##

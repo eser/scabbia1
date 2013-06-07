@@ -1,5 +1,4 @@
-var PQP_DETAILS = false;
-var PQP_HEIGHT = 'short';
+var PQP_LASTTAB = null;
 var pqp_container;
 
 function changeTab(tab) {
@@ -7,8 +6,13 @@ function changeTab(tab) {
     hideAllTabs();
     addClassName(pQp, tab, true);
 
-    removeClassName(pqp_container, 'hideDetails');
-    PQP_DETAILS = true;
+    if (tab != PQP_LASTTAB) {
+        removeClassName(pqp_container, 'hideDetails');
+        PQP_LASTTAB = tab;
+    } else {
+        addClassName(pqp_container, 'hideDetails', true);
+        PQP_LASTTAB = null;
+    }
 }
 
 function hideAllTabs() {
@@ -18,26 +22,6 @@ function hideAllTabs() {
     removeClassName(pQp, 'queries');
     removeClassName(pQp, 'memory');
     removeClassName(pQp, 'files');
-}
-
-function toggleDetails() {
-    if (PQP_DETAILS) {
-        addClassName(pqp_container, 'hideDetails', true);
-        PQP_DETAILS = false;
-    } else {
-        removeClassName(pqp_container, 'hideDetails');
-        PQP_DETAILS = true;
-    }
-}
-
-function toggleHeight() {
-    if (PQP_HEIGHT == 'short') {
-        addClassName(pqp_container, 'tallDetails', true);
-        PQP_HEIGHT = 'tall';
-    } else {
-        removeClassName(pqp_container, 'tallDetails');
-        PQP_HEIGHT = 'short';
-    }
 }
 
 //http://www.bigbold.com/snippets/posts/show/2630

@@ -38,7 +38,7 @@ use Scabbia\Extensions\Http\Http;
             <?php } else { ?>
                 <table class="side" cellspacing="0">
                     <tr>
-                        <td class="alt1"><var><?php echo ($model['logcounts']['log'] + $model['logcounts']['query']); ?></var><h4>Logs</h4></td>
+                        <td class="alt1"><var><?php echo $model['logcounts']['log']; ?></var><h4>Logs</h4></td>
                         <td class="alt2"><var><?php echo $model['logcounts']['error']; ?></var> <h4>Errors</h4></td>
                     </tr>
                     <tr>
@@ -130,8 +130,8 @@ use Scabbia\Extensions\Http\Http;
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
-                    <tr><td class="alt"><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
-                    <tr><td><var><?php echo String::timeCalc($model['queryTotals']['time']); ?></var> <h4>Total Time</h4></td></tr>
+                    <tr><td><var><?php echo $model['logcounts']['time']; ?></var><h4>Total Queries</h4></td></tr>
+                    <tr><td class="alt"><var><?php echo String::timeCalc($model['queryTotals']['time']); ?></var> <h4>Total Time</h4></td></tr>
                 </table>
 
                 <table class="main" cellspacing="0">
@@ -151,13 +151,19 @@ use Scabbia\Extensions\Http\Http;
                             <div>
                                 <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?></div>
                                 <div><?php echo $log['message']; ?></div>
-                                <div><em><?php echo $log['query']; ?></em></div>
+                                <div><em><?php
+                                        $tReplaces = array();
+                                        foreach ($log['parameters'] as $tKey => $tVal) {
+                                            $tReplaces[':' . $tKey] = String::squote($tVal, true);
+                                        }
+                                        echo strtr($log['query'], $tReplaces);
+                                ?></em></div>
                                 <?php print_r($log['parameters']); ?>
                             </div>
                             <?php if (isset($log['explain'])) { ?>
                                 <?php foreach ($log['explain'] as $tRow) { ?>
                                 <div class="explain">
-                                    <?php echo($tRow['QUERY PLAN']); ?>
+                                    . <?php echo $tRow['QUERY PLAN']; ?>
                                 </div>
                                 <?php } ?>
                             <?php } ?>
@@ -236,15 +242,14 @@ use Scabbia\Extensions\Http\Http;
     <table id="pqp-footer" cellspacing="0">
         <tr>
             <td class="credit">
-                <a href="http://particletree.com/" target="_blank">
+                <a href="http://particletree.com/">
                     <strong>PHP</strong>
                     <strong class="green">Q</strong><strong class="blue">u</strong><strong class="purple">i</strong><strong class="orange">c</strong><strong class="red">k</strong>
                     Profiler
                 </a>
             </td>
             <td class="actions">
-                <a href="#" onclick="toggleDetails();return false">Details</a>
-                <a class="heightToggle" href="#" onclick="toggleHeight(); return false;">Height</a>
+                <a href="https://github.com/larukedi/Scabbia-Framework/">Scabbia Framework</a>
             </td>
         </tr>
     </table>

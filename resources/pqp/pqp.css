@@ -37,7 +37,7 @@
 }
 #pQp .pqp-box h3 {
 	font-weight:normal;
-	line-height:200px;
+	line-height:500px;
 	padding:0 15px;
 	color:#fff;
 }
@@ -58,7 +58,7 @@
 #pqp-console, #pqp-time, #pqp-queries, #pqp-memory, #pqp-files {
 	background:url(scabbia/pqp/images/overlay.gif);
 	border-top:1px solid #ccc;
-	height:200px;
+	height:400px;
 	overflow:auto;
 }
 
@@ -92,12 +92,6 @@
     background:#000;
 }
 
-.tallDetails #pQp .pqp-box {
-	height:500px;
-}
-.tallDetails #pQp .pqp-box h3 {
-	line-height:500px;
-}
 .hideDetails #pQp .pqp-box {
 	display:none !important;
 }
@@ -114,9 +108,6 @@
 }
 .hideDetails #pQp h4 {
 	font-size:10px;
-}
-.hideDetails .heightToggle {
-	visibility:hidden;
 }
 
 /* ----- Metrics ----- */
@@ -234,9 +225,6 @@
 
 /* ----- Console ----- */
 
-#pqp-console .side td {
-	padding:12px 0;
-}
 #pqp-console .side td.alt1 {
 	background:#588E13;
 	width:51%;
@@ -309,10 +297,7 @@
 
 /* ----- Time ----- */
 
-#pqp-time .side td {
-	padding:12px 0;
-}
-#pqp-time .side{
+#pqp-time .side {
 	background-color:#3769A0;
 }
 #pqp-time .side td.alt {
@@ -329,6 +314,9 @@
 }
 #pqp-queries .side td.alt {
 	background-color:#7B3384;
+    -webkit-border-bottom-left-radius:30px;
+    -moz-border-radius-bottomleft:30px;
+    border-bottom-left-radius: 30px;
 }
 #pqp-queries .main strong {
 	float:none;
@@ -342,9 +330,6 @@
 
 /* ----- Memory ----- */
 
-#pqp-memory .side td {
-	padding:12px 0;
-}
 #pqp-memory .side {
 	background-color:#C48200;
 }
