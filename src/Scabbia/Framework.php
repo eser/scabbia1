@@ -126,15 +126,18 @@ class Framework
      */
     public static function runApplicationByEndpoint(array $uEndpoints, $uReadonly = false)
     {
-        foreach ($uEndpoints as $tEndpointKey => $tEndpointAddresses) {
-            foreach ((array)$tEndpointAddresses as $tEndpointAddress) {
+        foreach ($uEndpoints as $tEndpoint) {
+            foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
                 $tParsed = parse_url($tEndpointAddress);
                 if (!isset($tParsed['port'])) {
                     $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
                 }
 
                 if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                    return self::runApplication(new $tEndpointKey (), $uReadonly);
+                    return self::runApplication(
+                        (isset($tEndpoint['class'])) ? $tEndpoint['class'] : null,
+                        $uReadonly
+                    );
                 }
             }
         }
@@ -145,14 +148,19 @@ class Framework
     /**
      * Invokes the startup methods for framework extensions and runs an application instance.
      *
-     * @param Application $uApplication application instance currently running on
-     * @param bool        $uReadonly    run in readonly mode
+     * @param mixed $uApplication application class is going to be constructed
+     * @param bool  $uReadonly    run in readonly mode
      *
      * @return bool whether other party is called or not
      */
-    public static function runApplication(Application $uApplication, $uReadonly = false)
+    public static function runApplication($uApplication = null, $uReadonly = false)
     {
-        self::$application = $uApplication;
+        if (is_object($uApplication)) {
+            self::$application = $uApplication;
+        } else {
+            self::$application = new Application($uApplication);
+        }
+
         self::$apppath = self::$basepath . self::$application->directory;
         self::$readonly = $uReadonly;
 
@@ -164,12 +172,12 @@ class Framework
 
         // run extensions
         $tParms = array(
-            'onerror' => $uApplication->onError
+            'onerror' => self::$application->onError
         );
         Events::invoke('pre-run', $tParms);
         self::$milestones[] = array('extensionsPreRun', microtime(true));
 
-        foreach ($uApplication->callbacks as $tCallback) {
+        foreach (self::$application->callbacks as $tCallback) {
             $tReturn = call_user_func($tCallback);
 
             if (!is_null($tReturn) && $tReturn === true) {
@@ -177,8 +185,8 @@ class Framework
             }
         }
 
-        if (!is_null($uApplication->otherwise) && !isset($tReturn) || $tReturn !== true) {
-            call_user_func($uApplication->otherwise);
+        if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
+            call_user_func(self::$application->otherwise);
             return false;
         }
 

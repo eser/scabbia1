@@ -20,7 +20,7 @@ class Application
     /**
      * @var string      application name
      */
-    public $name = 'Default';
+    public $name;
     /**
      * @var string      application directory
      */
@@ -41,9 +41,13 @@ class Application
 
     /**
      * Default entry point and definitions for an application.
+     *
+     * @param string $uName application name
      */
-    public function __construct()
+    public function __construct($uName = null)
     {
+        $this->name = !is_null($uName) ? $uName : 'Application';
+
         $this->callbacks[] = 'Scabbia\\Extensions\\Http\\Http::routing';
         $this->callbacks[] = 'Scabbia\\Extensions\\Assets\\Assets::routing';
 
