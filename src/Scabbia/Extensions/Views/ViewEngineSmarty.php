@@ -30,14 +30,6 @@ class ViewEngineSmarty
     /**
      * @ignore
      */
-    public static function extensionLoad()
-    {
-        Views::registerViewEngine('tpl', 'Scabbia\\Extensions\\Views\\ViewEngineSmarty');
-    }
-
-    /**
-     * @ignore
-     */
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {

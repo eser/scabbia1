@@ -11,42 +11,5 @@
             "Assets",
             "String"
         ]
-    },
-    "eventList": [
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\Views::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEngineMarkdown::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEnginePhptal::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEngineRaintpl::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEngineRazor::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEngineSmarty::extensionLoad"
-        },
-        {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Views\\ViewEngineTwig::extensionLoad"
-        }
-    ]
+    }
 }

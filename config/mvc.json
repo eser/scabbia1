@@ -8,12 +8,15 @@
             "namePattern":          "{@path}{@controller}/{@action}.{@extension}",
             "defaultViewExtension": "php",
 
-            "viewEngineList:development": [
-                {
-                    "extension":    "md",
-                    "class":        "Scabbia\\Extensions\\Views\\ViewEngineMarkdown"
-                }
-            ]
+            "viewEngineList:direct": {
+                "php": "Scabbia\\Extensions\\Views\\ViewEnginePhp",
+                "md": "Scabbia\\Extensions\\Views\\ViewEngineMarkdown",
+                "zpt": "Scabbia\\Extensions\\Views\\ViewEnginePhptal",
+                "rain": "Scabbia\\Extensions\\Views\\ViewEngineRaintpl",
+                "cshtml": "Scabbia\\Extensions\\Views\\ViewEngineRazor",
+                "tpl": "Scabbia\\Extensions\\Views\\ViewEngineSmarty",
+                "twig": "Scabbia\\Extensions\\Views\\ViewEngineTwig"
+            }
         }
     }
 }

@@ -30,14 +30,6 @@ class ViewEngineRaintpl
     /**
      * @ignore
      */
-    public static function extensionLoad()
-    {
-        Views::registerViewEngine('rain', 'Scabbia\\Extensions\\Views\\ViewEngineRaintpl');
-    }
-
-    /**
-     * @ignore
-     */
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {

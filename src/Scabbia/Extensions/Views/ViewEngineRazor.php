@@ -29,14 +29,6 @@ class ViewEngineRazor
 
     /**
      * @ignore
-     */
-    public static function extensionLoad()
-    {
-        Views::registerViewEngine('cshtml', 'Scabbia\\Extensions\\Views\\ViewEngineRazor');
-    }
-
-    /**
-     * @ignore
      *
      * @throws \Exception
      */

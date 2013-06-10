@@ -31,14 +31,6 @@ class ViewEngineMarkdown
     /**
      * @ignore
      */
-    public static function extensionLoad()
-    {
-        // Views::registerViewEngine('md', 'Scabbia\\Extensions\\Views\\ViewEngineMarkdown');
-    }
-
-    /**
-     * @ignore
-     */
     public static function renderview($uObject)
     {
         $tInputFile = $uObject['templatePath'] . $uObject['templateFile'];

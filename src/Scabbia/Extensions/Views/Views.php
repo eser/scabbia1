@@ -22,7 +22,6 @@ use Scabbia\Utils;
  * @subpackage Views
  * @version 1.1.0
  *
- * @todo register viewengines by getSubclasses
  * @todo Views::csv()
  */
 class Views
@@ -30,36 +29,12 @@ class Views
     /**
      * @ignore
      */
-    public static $viewEngines = array();
+    public static $viewEngines = null;
     /**
      * @ignore
      */
     public static $vars = array();
 
-
-    /**
-     * @ignore
-     */
-    public static function extensionLoad()
-    {
-        foreach (Config::get('mvc/view/viewEngineList', array()) as $tViewEngine) {
-            self::registerViewEngine($tViewEngine['extension'], $tViewEngine['class']);
-        }
-
-        self::registerViewEngine('php', 'Scabbia\\Extensions\\Views\\ViewEnginePhp');
-    }
-
-    /**
-     * @ignore
-     */
-    public static function registerViewEngine($uExtension, $uClassName)
-    {
-        if (isset(self::$viewEngines[$uExtension])) {
-            return;
-        }
-
-        self::$viewEngines[$uExtension] = $uClassName;
-    }
 
     /**
      * @ignore
@@ -114,6 +89,11 @@ class Views
 
         $tViewFilePath = Io::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
+
+        if (is_null(self::$viewEngines)) {
+            self::$viewEngines = Config::get('mvc/view/viewEngineList', array());
+        }
+
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
             $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
         }

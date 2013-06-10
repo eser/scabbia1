@@ -34,14 +34,6 @@ class ViewEngineTwig
     /**
      * @ignore
      */
-    public static function extensionLoad()
-    {
-        Views::registerViewEngine('twig', 'Scabbia\\Extensions\\Views\\ViewEngineTwig');
-    }
-
-    /**
-     * @ignore
-     */
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {

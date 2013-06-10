@@ -30,14 +30,6 @@ class ViewEnginePhptal
     /**
      * @ignore
      */
-    public static function extensionLoad()
-    {
-        Views::registerViewEngine('zpt', 'Scabbia\\Extensions\\Views\\ViewEnginePhptal');
-    }
-
-    /**
-     * @ignore
-     */
     public static function renderview($uObject)
     {
         if (is_null(self::$engine)) {
