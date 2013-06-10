@@ -72,6 +72,10 @@ class Framework
      */
     public static $apppath = null;
     /**
+     * @var array   Stores search paths for classes
+     */
+    public static $classLoaderList = array();
+    /**
      * @var string  Stores relative path of framework root
      */
     public static $siteroot = null;
@@ -97,7 +101,12 @@ class Framework
         self::$timestamp = microtime(true);
         self::$milestones[] = array('begin', self::$timestamp);
 
-        self::$classLoader = $uClassLoader;
+        if (!is_null($uClassLoader)) {
+            self::$classLoader = $uClassLoader;
+            self::$classLoader->unregister();
+        }
+
+        spl_autoload_register('Scabbia\\Framework::loadClass');
 
         // Set internal encoding
         mb_internal_encoding('UTF-8');
@@ -114,6 +123,42 @@ class Framework
         }
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
+    }
+
+    /**
+     * Custom class loader.
+     *
+     * @param string $uName name of the class.
+     *
+     * @return bool whether class is loaded or not
+     */
+    public static function loadClass($uName)
+    {
+        if (!is_null(self::$application)) {
+
+            $tExploded = explode('\\', $uName);
+            if (count($tExploded) >= 2 && array_shift($tExploded) == self::$application->name) {
+                $tName = '';
+                foreach ($tExploded as $tExplodedPart) {
+                    $tName .= '/' . lcfirst($tExplodedPart);
+                }
+                $tName .= '.php';
+
+                foreach (self::$classLoaderList as $tClassLoader) {
+                    if (file_exists($tFile = $tClassLoader . $tName)) {
+                        //! todo require_once?
+                        include $tFile;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (!is_null(self::$classLoader)) {
+            return self::$classLoader->loadClass($uName);
+        }
+
+        return false;
     }
 
     /**
@@ -202,12 +247,6 @@ class Framework
         Config::$default = Config::load();
         self::$milestones[] = array('configLoad', microtime(true));
 
-        // download files
-        foreach (Config::get('downloadList', array()) as $tUrl) {
-            Io::downloadFile($tUrl['filename'], $tUrl['url']);
-        }
-        self::$milestones[] = array('downloads', microtime(true));
-
         // load extensions
         Extensions::load();
         self::$milestones[] = array('extensions', microtime(true));
@@ -222,6 +261,18 @@ class Framework
         Utils::$variables['root'] = self::$siteroot;
         self::$milestones[] = array('siteRoot', microtime(true));
 
+        // class loader paths
+        foreach (Config::get('classLoaderList', array()) as $tClassLoader) {
+            self::$classLoaderList[] = Io::translatePath($tClassLoader);
+        }
+        self::$milestones[] = array('classLoaderListLoad', microtime(true));
+
+        // loadClass classes
+        foreach (Config::get('loadClassList', array()) as $tClass) {
+            class_exists($tClass, true);
+        }
+        self::$milestones[] = array('loadClassLoad', microtime(true));
+
         // include files
         foreach (Config::get('includeList', array()) as $tInclude) {
             $tIncludePath = pathinfo(Io::translatePath($tInclude));
@@ -235,12 +286,6 @@ class Framework
             }
         }
         self::$milestones[] = array('includesLoad', microtime(true));
-
-        // loadClass classes
-        foreach (Config::get('loadClassList', array()) as $tClass) {
-            class_exists($tClass, true);
-        }
-        self::$milestones[] = array('loadClassLoad', microtime(true));
 
         // output handling
         ob_start('Scabbia\\Framework::output');

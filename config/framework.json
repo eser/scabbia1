@@ -1,11 +1,11 @@
 {
-    "downloadList:disabled":    [],
-    "includeList:disabled":     [
-        "{core}controllers/*.php",
-        "{core}models/*.php"
-    ],
-    "loadClassList:disabled":   [],
-    "extensionList":           [
+    "includeList:disabled": [],
+
+    "classLoaderList:disabled": [],
+
+    "loadClassList:disabled": [],
+
+    "extensionList": [
         "Access",
         "Assets",
         "Auth",
