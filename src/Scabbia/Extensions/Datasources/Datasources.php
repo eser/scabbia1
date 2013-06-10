@@ -27,7 +27,7 @@ class Datasources
     /**
      * @ignore
      */
-    public static $types = array();
+    public static $interfaces = null;
 
 
     /**
@@ -35,16 +35,16 @@ class Datasources
      */
     public static function get($uDatasource = null)
     {
+        if (is_null(self::$interfaces)) {
+            self::$interfaces = Config::get('dataInterfaceList', array());
+        }
+
         if (is_null(self::$datasources)) {
             $tParms = array();
             Events::invoke('registerDatasources', $tParms);
 
-            foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Datasources\\IDatasource', true) as $tClass) {
-                self::$types[$tClass::$type] = $tClass;
-            }
-
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
-                $tDatasource = new self::$types[$tDatasourceConfig['type']] ($tDatasourceConfig);
+                $tDatasource = new self::$interfaces[$tDatasourceConfig['interface']] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
             }
         }
@@ -60,11 +60,11 @@ class Datasources
     /**
      * @ignore
      */
-    public static function add($uId, $uType, array $uConfig = array())
+    public static function add($uId, $uInterface, array $uConfig = array())
     {
         $uConfig['id'] = $uId;
-        $uConfig['type'] = $uType;
+        $uConfig['interface'] = $uInterface;
 
-        self::$datasources[$uId] = new self::$types[$uType] ($uConfig);
+        self::$datasources[$uId] = new self::$interfaces[$uInterface] ($uConfig);
     }
 }

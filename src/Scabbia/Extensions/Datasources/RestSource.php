@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Datasources;
 
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 use Scabbia\Framework;
 
 /**
@@ -24,7 +24,7 @@ use Scabbia\Framework;
  * @todo useragent
  * @todo timeouts
  */
-class RestSource implements IDatasource
+class RestSource implements IDataInterface
 {
     /**
      * @ignore

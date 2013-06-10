@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Datasources;
 
 use Scabbia\Extensions\Datasources\ICacheProvider;
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 use Scabbia\Io;
 use Scabbia\Utils;
 
@@ -21,7 +21,7 @@ use Scabbia\Utils;
  *
  * @todo sanitize filenames
  */
-class FileSource implements IDatasource, ICacheProvider, IStorageProvider
+class FileSource implements IDataInterface, ICacheProvider, IStorageProvider
 {
     /**
      * @ignore

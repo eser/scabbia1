@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Datasources;
 
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 
 /**
  * Datasources Extension: ICacheProvider interface
@@ -16,7 +16,7 @@ use Scabbia\Extensions\Datasources\IDatasource;
  * @subpackage Datasources
  * @version 1.1.0
  */
-interface ICacheProvider extends IDatasource
+interface ICacheProvider extends IDataInterface
 {
     public function cacheGet($uKey);
     public function cacheSet($uKey, $uObject);

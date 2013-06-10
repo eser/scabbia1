@@ -8,12 +8,12 @@
 namespace Scabbia\Extensions\Datasources;
 
 /**
- * Datasources Extension: IDatasource interface
+ * Datasources Extension: IDataInterface interface
  *
  * @package Scabbia
  * @subpackage Datasources
  * @version 1.1.0
  */
-interface IDatasource
+interface IDataInterface
 {
 }

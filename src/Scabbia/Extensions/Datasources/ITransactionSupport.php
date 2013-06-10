@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Datasources;
 
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 
 /**
  * Datasources Extension: ITransactionSupport interface
@@ -16,7 +16,7 @@ use Scabbia\Extensions\Datasources\IDatasource;
  * @subpackage Datasources
  * @version 1.1.0
  */
-interface ITransactionSupport extends IDatasource
+interface ITransactionSupport extends IDataInterface
 {
     public function beginTransaction();
     public function commit();

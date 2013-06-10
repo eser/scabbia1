@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Datasources;
 
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 
 /**
  * Datasources Extension: IServerConnection interface
@@ -16,7 +16,7 @@ use Scabbia\Extensions\Datasources\IDatasource;
  * @subpackage Datasources
  * @version 1.1.0
  */
-interface IServerConnection extends IDatasource
+interface IServerConnection extends IDataInterface
 {
     public function connectionOpen();
     public function connectionClose();

@@ -12,7 +12,7 @@ use Scabbia\Extensions\Database\DatabaseQuery;
 use Scabbia\Extensions\Database\DatabaseQueryResult;
 use Scabbia\Extensions\Database\IQueryGenerator;
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 use Scabbia\Extensions\Datasources\IServerConnection;
 use Scabbia\Extensions\Datasources\ITransactionSupport;
 use Scabbia\Extensions\Helpers\String;
@@ -30,7 +30,7 @@ use Psr\Log\LoggerInterface;
  *
  * @todo generic sqlSelect, sqlUpdate, etc.
  */
-abstract class DatabaseSource implements IDatasource, IServerConnection, ITransactionSupport, IQueryGenerator, LoggerAwareInterface
+abstract class DatabaseSource implements IDataInterface, IServerConnection, ITransactionSupport, IQueryGenerator, LoggerAwareInterface
 {
     /**
      * @ignore

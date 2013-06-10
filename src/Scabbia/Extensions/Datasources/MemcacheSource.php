@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Datasources;
 
 use Scabbia\Extensions\Datasources\ICacheProvider;
-use Scabbia\Extensions\Datasources\IDatasource;
+use Scabbia\Extensions\Datasources\IDataInterface;
 use Scabbia\Extensions\Datasources\IServerConnection;
 
 /**
@@ -22,7 +22,7 @@ use Scabbia\Extensions\Datasources\IServerConnection;
  * @todo pconnect option
  * @todo replace?
  */
-class MemcacheSource implements IDatasource, ICacheProvider, IServerConnection
+class MemcacheSource implements IDataInterface, ICacheProvider, IServerConnection
 {
     /**
      * @ignore

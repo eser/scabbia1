@@ -13,17 +13,5 @@
             "Helpers",
             "Logger"
         ]
-    },
-    "eventList": [
-        {
-            "name":         "registerDatasources",
-            "type":         "loadClass",
-            "value":        "Scabbia\\Extensions\\Database\\PdoSource"
-        },
-        {
-            "name":         "registerDatasources",
-            "type":         "loadClass",
-            "value":        "Scabbia\\Extensions\\Database\\MysqlSource"
-        }
-    ]
+    }
 }
