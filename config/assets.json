@@ -63,6 +63,11 @@
                     },
                     {
                         "type":         "file",
+                        "class":        "zeptojs",
+                        "path":         "{core}resources/zepto.js/zepto.js"
+                    },
+                    {
+                        "type":         "file",
                         "class":        "validation",
                         "path":         "{core}resources/jquery.validation/jquery.validate.js"
                     },
@@ -103,28 +108,18 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "maskedinput",
-                        "path":         "{core}resources/jquery.maskedinput/jquery.maskedinput.js"
-                    },
-                    {
-                        "type":         "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/bootstrap/bootstrap.js"
                     },
                     {
                         "type":         "file",
-                        "class":        "typeahead",
+                        "class":        "bootstrap",
                         "path":         "{core}resources/typeahead/typeahead.js"
                     },
                     {
                         "type":         "file",
-                        "class":        "hogan",
+                        "class":        "bootstrap",
                         "path":         "{core}resources/hogan/hogan-2.0.0.js"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "datepicker",
-                        "path":         "{core}resources/bootstrap.datepicker/js/bootstrap-datepicker.js"
                     },
                     {
                         "type":         "file",
@@ -207,13 +202,8 @@
                     },
                     {
                         "type":         "file",
-                        "class":        "typeahead",
+                        "class":        "bootstrap",
                         "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
-                    },
-                    {
-                        "type":         "file",
-                        "class":        "datepicker",
-                        "path":         "{core}resources/bootstrap.datepicker/css/datepicker.css"
                     },
                     {
                         "type":         "file",
