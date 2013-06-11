@@ -19,11 +19,23 @@ use Scabbia\Extensions\Mvc\Mvc;
  * @package Scabbia
  * @subpackage LarouxJs
  * @version 1.1.0
- *
- * @todo translations
  */
 class LarouxJs
 {
+    /**
+     * @ignore
+     */
+    public static $translations = array();
+
+
+    /**
+     * @ignore
+     */
+    public static function addToDictionary(array $uArray)
+    {
+        self::$translations += $uArray;
+    }
+
     /**
      * @ignore
      */
@@ -58,23 +70,18 @@ class LarouxJs
         $tArray = Mvc::export(true);
 
         $tReturn = <<<EOD
-\$l.ready(function() {
-    \$l.extend({
+\$l.extend({
+        translations:
 EOD;
+        $tReturn .= json_encode(self::$translations);
+
         foreach ($tArray as $tClassName => $tClass) {
             if (($tPos = strrpos($tClassName, '\\')) !== false) {
                 $tClassName = substr($tClassName, $tPos + 1);
             }
 
             $tLines = array();
-
-            if (isset($tFirst)) {
-                $tReturn .= ',';
-            } else {
-                $tFirst = false;
-            }
-
-            $tReturn .= PHP_EOL . "\t\t\t" . $tClassName . ': {' . PHP_EOL;
+            $tReturn .= ',' . PHP_EOL . "\t" . $tClassName . ': {' . PHP_EOL;
 
             foreach ($tClass as $tMethod) {
                 $tMethods = explode('_', $tMethod, 2);
@@ -82,17 +89,17 @@ EOD;
                     continue;
                 }
 
-                $tLines[] = "\t\t\t\t" .
+                $tLines[] = "\t\t" .
                     $tMethods[1] .
                     ': function(values, fnc, method) { $l.ajax.request(\'' .
                     Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) .
                     '\', values, fnc, method); }';
             }
-            $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t\t\t" . '}';
+            $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t" . '}';
         }
+
         $tReturn .= <<<EOD
 
-    });
 });
 EOD;
 

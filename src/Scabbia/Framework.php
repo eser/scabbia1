@@ -287,6 +287,16 @@ class Framework
         }
         self::$milestones[] = array('includesLoad', microtime(true));
 
+        // events
+        foreach (Config::get('eventList', array()) as $tLoad) {
+            if ($tLoad['name'] == 'load') {
+                Events::invokeSingle(array($tLoad['type'], $tLoad['value']));
+                continue;
+            }
+
+            Events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
+        }
+
         // output handling
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);
