@@ -54,7 +54,12 @@
                     {
                         "type":         "file",
                         "class":        "jquery",
-                        "path":         "{core}resources/jquery/jquery-1.9.1.js"
+                        "path":         "{core}resources/jquery/jquery-2.0.2.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "jquery-migrate",
+                        "path":         "{core}resources/jquery/jquery-migrate-1.2.1.js"
                     },
                     {
                         "type":         "file",
