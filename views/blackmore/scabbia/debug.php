@@ -32,10 +32,6 @@ use Scabbia\Framework;
 
 							<div id="placeholder">
 
-								<?php
-                                    Framework::printMilestones();
-                                ?>
-
 							</div>
 							<div class="clear"></div>
 						</td>

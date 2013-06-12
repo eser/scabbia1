@@ -80,10 +80,6 @@ class Framework
      */
     public static $siteroot = null;
     /**
-     * @var array   The milestones passed in code
-     */
-    public static $milestones = array();
-    /**
      * @var int     The exit status
      */
     public static $exitStatus = null;
@@ -99,7 +95,6 @@ class Framework
     public static function load($uClassLoader = null)
     {
         self::$timestamp = microtime(true);
-        self::$milestones[] = array('begin', self::$timestamp);
 
         if (!is_null($uClassLoader)) {
             self::$classLoader = $uClassLoader;
@@ -220,7 +215,6 @@ class Framework
             'onerror' => self::$application->onError
         );
         Events::invoke('pre-run', $tParms);
-        self::$milestones[] = array('extensionsPreRun', microtime(true));
 
         foreach (self::$application->callbacks as $tCallback) {
             $tReturn = call_user_func($tCallback);
@@ -245,11 +239,9 @@ class Framework
     {
         // load config
         Config::$default = Config::load();
-        self::$milestones[] = array('configLoad', microtime(true));
 
         // load extensions
         Extensions::load();
-        self::$milestones[] = array('extensions', microtime(true));
 
         // siteroot
         if (is_null(self::$siteroot)) {
@@ -259,19 +251,16 @@ class Framework
             }
         }
         Utils::$variables['root'] = self::$siteroot;
-        self::$milestones[] = array('siteRoot', microtime(true));
 
         // class loader paths
         foreach (Config::get('classLoaderList', array()) as $tClassLoader) {
             self::$classLoaderList[] = Io::translatePath($tClassLoader);
         }
-        self::$milestones[] = array('classLoaderListLoad', microtime(true));
 
         // loadClass classes
         foreach (Config::get('loadClassList', array()) as $tClass) {
             class_exists($tClass, true);
         }
-        self::$milestones[] = array('loadClassLoad', microtime(true));
 
         // include files
         foreach (Config::get('includeList', array()) as $tInclude) {
@@ -285,7 +274,6 @@ class Framework
                 }
             }
         }
-        self::$milestones[] = array('includesLoad', microtime(true));
 
         // events
         foreach (Config::get('eventList', array()) as $tLoad) {
@@ -351,20 +339,5 @@ class Framework
         ob_end_flush();
 
         exit($uLevel);
-    }
-
-    /**
-     * Prints milestones.
-     */
-    public static function printMilestones()
-    {
-        $tPrevious = Framework::$timestamp;
-
-        foreach (Framework::$milestones as $tMilestone) {
-            echo $tMilestone[0], ' = ', number_format($tMilestone[1] - $tPrevious, 5), ' ms.<br />';
-            $tPrevious = $tMilestone[1];
-        }
-
-        echo '<b>total</b> = ', number_format($tPrevious - Framework::$timestamp, 5), ' ms.<br />';
     }
 }

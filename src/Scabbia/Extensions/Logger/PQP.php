@@ -117,7 +117,7 @@ class PQP
 
     public static function gatherTimeData() {
         $timeTotals = array();
-        $timeTotals['total'] = String::timeCalc((microtime(true) - Framework::$timestamp) * 1000);
+        $timeTotals['total'] = String::timeCalc(microtime(true) - Framework::$timestamp);
         $timeTotals['allowed'] = ini_get('max_execution_time');
         self::$output['timeTotals'] = $timeTotals;
     }
