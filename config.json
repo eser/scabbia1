@@ -1,0 +1,41 @@
+{
+    "includeList:disabled": [],
+
+    "classLoaderList:disabled": [],
+
+    "loadClassList:disabled": [],
+
+    "extensionList": [
+        "Access",
+        "Assets",
+        "Auth",
+        "Blackmore",
+        "Database",
+        "Datasources",
+        "Fb",
+        "Helpers",
+        "Http",
+        "I18n",
+        "LarouxJs",
+        "Logger",
+        "Media",
+        "Mime",
+        "Models",
+        "Mvc",
+        "Session",
+        "Smtp",
+        "Unittest",
+        "Validation",
+        "Views"
+    ],
+
+    "options": {
+        "gzip":                 true,
+        "siteroot:disabled":    "/sampleapp"
+    },
+
+    "cache": {
+        "keyphase":     "",
+        "storage":      "memcache://192.168.2.4:11211"
+    }
+}

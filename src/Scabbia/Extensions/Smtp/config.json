@@ -9,5 +9,12 @@
             "fwversion":        "1.1",
             "fwdependList":     []
         }
-    ]
+    ],
+
+    "smtp": {
+        "host":         "ssl://mail.messagingengine.com",
+        "port":         465,
+        "username":     "eser@sent.com",
+        "password":     ""
+    }
 }

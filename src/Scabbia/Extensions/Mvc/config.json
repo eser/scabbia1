@@ -14,5 +14,11 @@
                 "Views"
             ]
         }
-    ]
+    ],
+
+    "mvc": {
+        "defaultController":    "home",
+        "defaultAction":        "index",
+        "link":                 "{@siteroot}/{@controller}/{@action}{@params}{@query}"
+    }
 }

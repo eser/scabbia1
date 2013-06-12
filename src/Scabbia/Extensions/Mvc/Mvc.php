@@ -83,7 +83,7 @@ class Mvc
             '/' .
             $uControllerInstance->route['action'] .
             '.' .
-            Config::get('mvc/view/defaultViewExtension', 'php');
+            Config::get('views/defaultViewExtension', 'php');
     }
 
     /**

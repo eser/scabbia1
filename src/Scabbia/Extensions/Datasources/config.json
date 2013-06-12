@@ -11,5 +11,21 @@
             "fwversion":        "1.1",
             "fwdependList":     []
         }
+    ],
+
+    "dataInterfaceList:direct": {
+        "rest": "Scabbia\\Extensions\\Datasources\\RestSource",
+        "memcache": "Scabbia\\Extensions\\Datasources\\MemcacheSource",
+        "file": "Scabbia\\Extensions\\Datasources\\FileSource"
+    },
+
+    "datasourceList": [
+        {
+            "id":           "fileCache",
+            "interface":    "file",
+            "cacheTtl":     120,
+            "keyphase":     "",
+            "path":         "{writable}cache/"
+        }
     ]
 }

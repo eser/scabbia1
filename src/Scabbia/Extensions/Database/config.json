@@ -15,5 +15,10 @@
                 "Logger"
             ]
         }
-    ]
+    ],
+
+    "dataInterfaceList:direct": {
+        "pdo": "Scabbia\\Extensions\\Database\\PdoSource",
+        "mysql": "Scabbia\\Extensions\\Database\\MysqlSource"
+    }
 }

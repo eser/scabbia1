@@ -20,6 +20,13 @@
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Media\\Media::extensionLoad"
         }
+    ],
 
-    ]
+    "media": {
+        "cacheTtl":     120
+    },
+
+    "captcha": {
+        "fontFile":     "{core}resources/fonts/KabobExtrabold.ttf"
+    }
 }

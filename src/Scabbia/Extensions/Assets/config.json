@@ -13,5 +13,229 @@
                 "Mime"
             ]
         }
-    ]
+    ],
+
+    "assets": {
+        "directoryList": [
+            {
+                "name":     "scabbia/",
+                "path":     "{core}resources/"
+            }
+        ],
+        "directoryList:development": [
+            {
+                "name":     "docs/",
+                "path":     "{core}docs/",
+
+                "autoViewer": {
+                    "defaultPage":  "index.md",
+                    "header":       "{core}views/docs/header.php",
+                    "footer":       "{core}views/docs/footer.php"
+                }
+            }
+        ],
+
+        "fileList": [],
+
+        "packList": [
+            {
+                "name":         "scabbia.js",
+                "type":         "js",
+                "cacheTtl:disabled":     86400,
+                "partList": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.ui.js"
+                    },
+                    {
+                        "type":         "function",
+                        "class":        "core",
+                        "name":         "Scabbia\\Extensions\\LarouxJs\\LarouxJs::exportJs"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "blackmore",
+                        "path":         "{core}resources/blackmore/blackmore.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "jquery",
+                        "path":         "{core}resources/jquery/jquery-2.0.2.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "jquery-migrate",
+                        "path":         "{core}resources/jquery/jquery-migrate-1.2.1.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "zeptojs",
+                        "path":         "{core}resources/zepto.js/zepto.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.additional-methods.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.pager.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/excanvas.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/jquery.flot.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/jquery.flot.pie.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/bootstrap/bootstrap.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/typeahead/typeahead.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/hogan/hogan-2.0.0.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "map",
+                        "path":         "{core}resources/mapbox/mapbox.js"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/intro.js"
+                    }
+                ],
+                "partList:development": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.js"
+                    }
+                ]
+            },
+            {
+                "name":         "scabbia.css",
+                "type":         "css",
+                "cacheTtl:disabled":     86400,
+                "partList": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.ui.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "errorpages",
+                        "path":         "{core}resources/errorpages/errorpages.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "docs",
+                        "path":         "{core}resources/docs/markdown.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "blackmore",
+                        "path":         "{core}resources/blackmore/blackmore.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "reset",
+                        "path":         "{core}resources/reset/reset.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "normalize",
+                        "path":         "{core}resources/normalize.css/normalize.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.editor.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/theme.default.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/bootstrap/bootstrap.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "map",
+                        "path":         "{core}resources/mapbox/mapbox.css"
+                    },
+                    {
+                        "type":         "file",
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/introjs.css"
+                    }
+                ],
+                "partList:development": [
+                    {
+                        "type":         "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.css"
+                    }
+                ]
+            }
+        ]
+    }
 }

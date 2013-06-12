@@ -28,5 +28,132 @@
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Http\\Http::reportError"
         }
-    ]
+    ],
+
+    "http": {
+        "link":                     "{@siteroot}/{@path}",
+
+        "rewriteList": [],
+        "rewriteList:disabled": [
+            {
+                "match":            "GET,POST regions/(alnum)/(alnum)/(any)",
+                "forward":          "firms/$3"
+            }
+        ],
+
+        "routeList": [
+            {
+                "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
+                "callback":         "Scabbia\\Extensions\\Mvc\\Mvc::route",
+                "defaults": {
+                    "controller":   "home",
+                    "params":       "/index",
+                    "format":       ".html",
+                    "query":        ""
+                }
+            }
+        ],
+
+        "userAgents": {
+            "platformList": [
+                {
+                    "match":    "windows|winnt|win95|win98",
+                    "name":     "Windows"
+                },
+                {
+                    "match":    "os x|ppc",
+                    "name":     "MacOS"
+                },
+                {
+                    "match":    "irix|netbsd|freebsd|openbsd|bsdi|unix|sunos|beos|linux|debian|gnu",
+                    "name":     "Unix"
+                },
+                {
+                    "match":    "android",
+                    "name":     "Android"
+                },
+                {
+                    "match":    "blackberry",
+                    "name":     "Blackberry"
+                },
+                {
+                    "match":    "iphone|ipad|ipod",
+                    "name":     "iOS"
+                }
+            ],
+
+            "crawlerList": [
+                {
+                    "type":     "bot",
+                    "match":    "googlebot|msnbot|bingbot|slurp|yahoo|askjeeves|fastcrawler|infoseek|lycos|yandexbot",
+                    "name":     "Searchbot"
+                },
+                {
+                    "type":     "browser",
+                    "match":    "opera",
+                    "name":     "Opera"
+                },
+                {
+                    "type":     "browser",
+                    "match":    "mozilla|firefox|swiftfox|firebird|phoenix|iceweasel|swiftweasel|camino|chimera|netscape|fennec|icedragon",
+                    "name":     "Firefox/Gecko"
+                },
+                {
+                    "type":     "browser",
+                    "match":    "msie|internet explorer|ie mobile|trident",
+                    "name":     "Internet Explorer"
+                },
+                {
+                    "type":     "browser",
+                    "match":    "chrome|flock|shiira|omniweb|konqueror|rekonq|icab|maxthon|avant|yabrowser|netfront|comodo_dragon",
+                    "name":     "Chromium"
+                },
+                {
+                    "type":     "browser",
+                    "match":    "Safari",
+                    "name":     "Safari"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "palm|elaine",
+                    "name":     "Palm"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "iphone|ipod|ipad",
+                    "name":     "iOS"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "android",
+                    "name":     "Android"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "blackberry",
+                    "name":     "Blackberry"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "symbian|series60",
+                    "name":     "SymbianOS"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "windows ce|windows phone",
+                    "name":     "Windows Phone"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "opera mini|operamini",
+                    "name":     "Opera Mini"
+                },
+                {
+                    "type":     "mobile",
+                    "match":    "mobile|wireless|j2me|phone",
+                    "name":     "Other Mobile"
+                }
+            ]
+        }
+    }
 }

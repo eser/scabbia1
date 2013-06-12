@@ -90,11 +90,11 @@ class Views
         $tViewFileInfo = pathinfo($tViewFilePath);
 
         if (is_null(self::$viewEngines)) {
-            self::$viewEngines = Config::get('mvc/view/viewEngineList', array());
+            self::$viewEngines = Config::get('views/viewEngineList', array());
         }
 
         if (!isset(self::$viewEngines[$tViewFileInfo['extension']])) {
-            $tViewFileInfo['extension'] = Config::get('mvc/view/defaultViewExtension', 'php');
+            $tViewFileInfo['extension'] = Config::get('views/defaultViewExtension', 'php');
         }
 
         $tTemplatePath = $tViewFileInfo['dirname'] . '/';

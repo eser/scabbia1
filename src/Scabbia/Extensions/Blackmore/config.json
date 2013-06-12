@@ -34,5 +34,43 @@
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Blackmore\\BlackmoreModels::registerBlackmoreModules"
         }
-    ]
+    ],
+
+    "blackmore:development": {
+        "title":        "Scabbia: Blackmore",
+        "logo":         "/scabbia/blackmore/images/logo.png",
+        "bodyStyle":    "stretch",
+
+        "loginTitle":   "Scabbia: Blackmore Login",
+
+        "menuList:direct": {
+            "index": {
+                "title":             "Blackmore",
+                "actions": {
+                    "index": {
+                        "title":     "Dashboard",
+                        "icon":      "th-large"
+                    },
+                    "debug": {
+                        "title":     "Debug Info",
+                        "icon":      "info-sign"
+                    },
+                    "build": {
+                        "title":    "Build",
+                        "icon":      "download-alt"
+                    },
+                    "purge": {
+                        "title":     "Purge",
+                        "icon":      "trash"
+                    },
+                    "logout": {
+                        "before":    "separator",
+                        "title":     "Logout",
+                        "icon":      "remove-circle",
+                        "customurl": "blackmore/login"
+                    }
+                }
+            }
+        }
+    }
 }

@@ -20,6 +20,15 @@
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Session\\Session::save"
         }
+    ],
 
-    ]
+    "session": {
+        "datasource":   "fileCache",
+        "cookie": {
+            "name":     "sessid",
+            "ttl":      0,
+            "ipCheck":  false,
+            "uaCheck":  true
+        }
+    }
 }

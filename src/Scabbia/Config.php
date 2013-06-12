@@ -33,18 +33,13 @@ class Config
      * Loads the default configuration for the current application.
      *
      * @uses Config::loadFile()
+     * @throws \Exception if any extension is not found
      * @return array loaded configuration
      */
     public static function load()
     {
-        $tConfigFiles = array();
-
-        $tConfigFiles = Io::glob(
-            Framework::$corepath . 'config/',
-            '*.json',
-            Io::GLOB_RECURSIVE | Io::GLOB_FILES,
-            '',
-            $tConfigFiles
+        $tConfigFiles = array(
+            Framework::$corepath . 'config.json'
         );
 
         if (!is_null(Framework::$apppath)) {
@@ -67,20 +62,20 @@ class Config
 
         $tConfig = array();
         foreach ($tConfigFiles as $tFile) {
-            self::loadFile($tConfig, $tFile);
+            self::loadFile($tConfig, $tFile, true);
         }
 
         if (isset($tConfig['extensionList'])) {
             foreach ($tConfig['extensionList'] as $tExtension) {
                 $tFile = Framework::$corepath . 'src/Scabbia/Extensions/' . $tExtension . '/config.json';
                 if (file_exists($tFile)) {
-                    self::loadFile($tConfig, $tFile);
+                    self::loadFile($tConfig, $tFile, false);
                     continue;
                 }
 
                 $tFile = Framework::$apppath . 'Extensions/' . $tExtension . '/config.json';
                 if (file_exists($tFile)) {
-                    self::loadFile($tConfig, $tFile);
+                    self::loadFile($tConfig, $tFile, false);
                     continue;
                 }
 
@@ -99,17 +94,18 @@ class Config
     /**
      * Returns a configuration which is a compilation of a configuration file.
      *
-     * @param array  $uConfig   the array which will contain read data
-     * @param string $uFile     path of configuration file
+     * @param array  $uConfig    the array which will contain read data
+     * @param string $uFile      path of configuration file
+     * @param bool   $uOverwrite overwrite existing values
      *
      * @return array the configuration
      */
-    public static function loadFile(&$uConfig, $uFile)
+    public static function loadFile(&$uConfig, $uFile, $uOverwrite = true)
     {
         $tJsonObject = json_decode(Io::read($uFile));
 
         $tNodeStack = array();
-        self::jsonProcessChildrenRecursive($uConfig, $tJsonObject, $tNodeStack);
+        self::jsonProcessChildrenRecursive($uConfig, $tJsonObject, $uOverwrite, $tNodeStack);
     }
 
     /**
@@ -117,13 +113,15 @@ class Config
      *
      * @param mixed $uTarget    target reference
      * @param mixed $uNode      source object
+     * @param bool  $uOverwrite overwrite existing values
      * @param array $tNodeStack stack of nodes
      * @param bool  $uIsArray   whether is an array or not
-     * @param bool  $uIsDirect  read directly as an array
+     * @param array $uNodeFlags flags of the node
      */
     private static function jsonProcessChildrenRecursive(
         &$uTarget,
         $uNode,
+        $uOverwrite,
         &$tNodeStack,
         $uIsArray = false,
         array $uNodeFlags = array()
@@ -162,7 +160,7 @@ class Config
 
                 array_push($tNodeStack, $tNodeName[0]);
                 array_shift($tNodeName);
-                self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $tNodeStack, false, $tNodeName);
+                self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $uOverwrite, $tNodeStack, false, $tNodeName);
                 array_pop($tNodeStack);
             }
         } else {
@@ -180,6 +178,7 @@ class Config
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[$tSubnodeKey],
                                 $tSubnode,
+                                $uOverwrite,
                                 $tNewNodeStack,
                                 true,
                                 $uNodeFlags
@@ -188,6 +187,7 @@ class Config
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[],
                                 $tSubnode,
+                                $uOverwrite,
                                 $tNewNodeStack,
                                 true,
                                 $uNodeFlags
@@ -209,6 +209,7 @@ class Config
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[$tNodePath][$tSubnodeKey],
                                 $tSubnode,
+                                $uOverwrite,
                                 $tNewNodeStack,
                                 true,
                                 $uNodeFlags
@@ -217,13 +218,14 @@ class Config
                             self::jsonProcessChildrenRecursive(
                                 $uTarget[$tNodePath][],
                                 $tSubnode,
+                                $uOverwrite,
                                 $tNewNodeStack,
                                 true,
                                 $uNodeFlags
                             );
                         }
                     }
-                } else {
+                } elseif ($uOverwrite || !isset($uTarget[$tNodePath])) {
                     $uTarget[$tNodePath] = $uNode;
                 }
             }
