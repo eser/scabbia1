@@ -76,8 +76,6 @@ class MysqlSource extends DatabaseSource
             return;
         }
 
-        parent::connectionOpen();
-
         // if ($this->persistent) {
         // }
 
@@ -89,6 +87,8 @@ class MysqlSource extends DatabaseSource
             throw new \Exception('Mysql Exception: ' . $this->connection->connect_error);
         }
         */
+
+        parent::connectionOpen();
     }
 
     /**

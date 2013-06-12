@@ -89,8 +89,6 @@ class PdoSource extends DatabaseSource
             return;
         }
 
-        parent::connectionOpen();
-
         $tParms = array();
         if ($this->persistent) {
             $tParms[\PDO::ATTR_PERSISTENT] = true;
@@ -113,6 +111,8 @@ class PdoSource extends DatabaseSource
         $this->connection = new \PDO($this->pdoString, $this->username, $this->password, $tParms);
 
         // $this->standard = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
+
+        parent::connectionOpen();
     }
 
     /**
