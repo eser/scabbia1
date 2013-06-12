@@ -11,7 +11,6 @@ use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Io;
 use Scabbia\Utils;

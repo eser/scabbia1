@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Validation;
 use Scabbia\Extensions\Helpers\Arrays;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Validation\ValidationRule;
-use Scabbia\Extensions;
 
 /**
  * Validation Extension

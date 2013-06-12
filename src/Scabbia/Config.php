@@ -70,6 +70,24 @@ class Config
             self::loadFile($tConfig, $tFile);
         }
 
+        if (isset($tConfig['extensionList'])) {
+            foreach ($tConfig['extensionList'] as $tExtension) {
+                $tFile = Framework::$corepath . 'src/Scabbia/Extensions/' . $tExtension . '/config.json';
+                if (file_exists($tFile)) {
+                    self::loadFile($tConfig, $tFile);
+                    continue;
+                }
+
+                $tFile = Framework::$apppath . 'Extensions/' . $tExtension . '/config.json';
+                if (file_exists($tFile)) {
+                    self::loadFile($tConfig, $tFile);
+                    continue;
+                }
+
+                throw new \Exception('extension not found - ' . $tExtension);
+            }
+        }
+
         self::$loadedFromCache = false;
         if (!Framework::$readonly) {
             Io::writeSerialize($tOutputFile, $tConfig);

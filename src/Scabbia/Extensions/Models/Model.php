@@ -8,7 +8,6 @@
 namespace Scabbia\Extensions\Models;
 
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions;
 
 /**
  * Models Extension: Model Class

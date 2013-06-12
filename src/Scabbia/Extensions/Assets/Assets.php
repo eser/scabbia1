@@ -13,7 +13,6 @@ use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Io;
 use Scabbia\Utils;

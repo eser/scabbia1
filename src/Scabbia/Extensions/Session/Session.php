@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Session;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Config;
-use Scabbia\Extensions;
 
 /**
  * Session Extension

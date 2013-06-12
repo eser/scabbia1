@@ -8,9 +8,9 @@
 namespace Scabbia\Extensions\Mvc;
 
 use Scabbia\Events;
-use Scabbia\Extensions;
 use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Mvc\ControllerBase;
+use Scabbia\Utils;
 
 /**
  * Mvc Extension: Controllers Class
@@ -47,7 +47,7 @@ class Controllers
             self::$root = new ControllerBase();
 
             // todo: maybe split _ for children
-            foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
+            foreach (Utils::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
                 if (($tPos = strrpos($tClass, '\\')) !== false) {
                     $tClassName = lcfirst(substr($tClass, $tPos + 1));
                 } else {

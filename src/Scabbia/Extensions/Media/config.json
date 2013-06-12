@@ -1,0 +1,25 @@
+{
+    "extensionInfoList": [
+        {
+            "name":             "Media",
+            "version":          "1.1.0",
+            "license":          "GPLv3",
+            "phpversion":       "5.3.7",
+            "phpdependList":    [],
+            "fwversion":        "1.1",
+            "fwdependList":     [
+                "Helpers",
+                "Session"
+            ]
+        }
+    ],
+
+    "eventList": [
+        {
+            "name":         "load",
+            "type":         "callback",
+            "value":        "Scabbia\\Extensions\\Media\\Media::extensionLoad"
+        }
+
+    ]
+}

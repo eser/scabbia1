@@ -12,7 +12,6 @@ use Scabbia\Events;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Utils;
 
@@ -94,7 +93,7 @@ class Mvc
     {
         $tArray = array();
 
-        foreach (Extensions::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller') as $tClassReflection) {
+        foreach (Utils::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller') as $tClassReflection) {
             foreach ($tClassReflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethod) {
                 // if ($tMethod->class == 'Controller') {
                 //    continue;

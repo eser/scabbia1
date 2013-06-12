@@ -9,7 +9,6 @@ namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Config;
-use Scabbia\Extensions;
 use Scabbia\Utils;
 
 /**

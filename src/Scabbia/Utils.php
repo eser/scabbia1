@@ -395,4 +395,37 @@ class Utils
 
         return $uArray;
     }
+
+    /**
+     * Get Subclasses
+     *
+     * @param string $uClassName name of the parent class
+     * @param bool   $uJustKeys  return keys without reflection instances
+     *
+     * @return array list of sub classes
+     */
+    public static function getSubclasses($uClassName, $uJustKeys = false)
+    {
+        $tClasses = array();
+
+        foreach (get_declared_classes() as $tClass) {
+            if (!is_subclass_of($tClass, $uClassName)) {
+                continue;
+            }
+
+            $tReflection = new \ReflectionClass($tClass);
+            if ($tReflection->isAbstract()) {
+                continue;
+            }
+
+            if ($uJustKeys) {
+                $tClasses[] = $tClass;
+                continue;
+            }
+
+            $tClasses[$tClass] = $tReflection;
+        }
+
+        return $tClasses;
+    }
 }

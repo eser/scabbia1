@@ -9,7 +9,6 @@ namespace Scabbia;
 
 use Scabbia\Config;
 use Scabbia\Events;
-use Scabbia\Extensions;
 use Scabbia\Io;
 
 /**
@@ -237,11 +236,8 @@ class Framework
      */
     public static function run()
     {
-        // load config
+        // load configuration w/ extensions
         Config::$default = Config::load();
-
-        // load extensions
-        Extensions::load();
 
         // siteroot
         if (is_null(self::$siteroot)) {

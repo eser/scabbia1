@@ -9,7 +9,6 @@ namespace Scabbia\Extensions\Datasources;
 
 use Scabbia\Config;
 use Scabbia\Events;
-use Scabbia\Extensions;
 
 /**
  * Datasources Extension

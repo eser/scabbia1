@@ -9,7 +9,6 @@ namespace Scabbia\Extensions\Access;
 
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
-use Scabbia\Extensions;
 use Scabbia\Io;
 
 /**

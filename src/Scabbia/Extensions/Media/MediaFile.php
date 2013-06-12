@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Media;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Media\Media;
 use Scabbia\Extensions\Mime\Mime;
-use Scabbia\Extensions;
 
 /**
  * Media Extension: MediaFile Class

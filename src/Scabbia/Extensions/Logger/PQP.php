@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Logger;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Logger\Logger;
 use Scabbia\Extensions\Views\Views;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 
 /**

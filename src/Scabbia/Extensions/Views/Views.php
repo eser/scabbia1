@@ -10,7 +10,6 @@ namespace Scabbia\Extensions\Views;
 use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Config;
-use Scabbia\Extensions;
 use Scabbia\Framework;
 use Scabbia\Io;
 use Scabbia\Utils;
