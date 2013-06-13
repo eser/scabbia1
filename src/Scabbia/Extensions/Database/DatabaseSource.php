@@ -55,6 +55,10 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
+    public $explainCommand;
+    /**
+     * @ignore
+     */
     public $errorHandling = Database::ERROR_NONE;
     /**
      * @ignore
@@ -81,6 +85,8 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         if (isset($uConfig['initCommand'])) {
             $this->initCommand = $uConfig['initCommand'];
         }
+
+        $this->explainCommand = isset($uConfig['explainCommand']) ? $uConfig['explainCommand'] : 'EXPLAIN';
     }
 
     /**
@@ -220,7 +226,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         $tPostDebugInfo = array();
 
         if (Framework::$development) {
-            $tPostDebugInfo['explain'] = $this->queryArray('EXPLAIN ' . $uQuery, array());
+            $tPostDebugInfo['explain'] = $this->queryArray($this->explainCommand . ' ' . $uQuery, array());
         }
 
         $this->logger->profilerStop($tPostDebugInfo);
@@ -294,7 +300,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         );
 
         if (Framework::$development) {
-            $tPostDebugInfo['explain'] = $this->queryArray('EXPLAIN ' . $uQuery, $uParameters);
+            $tPostDebugInfo['explain'] = $this->queryArray($this->explainCommand . ' ' . $uQuery, $uParameters);
         }
 
         $this->logger->profilerStop($tPostDebugInfo);
