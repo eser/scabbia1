@@ -86,7 +86,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             $this->initCommand = $uConfig['initCommand'];
         }
 
-        $this->explainCommand = isset($uConfig['explainCommand']) ? $uConfig['explainCommand'] : 'EXPLAIN';
+        $this->explainCommand = isset($uConfig['explainCommand']) ? $uConfig['explainCommand'] : 'EXPLAIN {@query}';
     }
 
     /**
@@ -204,13 +204,29 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     {
         $this->connectionOpen();
 
+        $tPreDebugInfo = array(
+            'query' => $uQuery,
+            'parameters' => null
+        );
+
+        if (Framework::$development) {
+            $this->beginTransaction();
+            $tPreDebugInfo['explain'] = $this->queryArray(
+                String::format(
+                    $this->explainCommand,
+                    array(
+                        'query' => $uQuery
+                    )
+                ),
+                array()
+            );
+            $this->rollBack();
+        }
+
         $this->logger->profilerStart(
             $this->id . ' query',
             'query',
-            array(
-                 'query' => $uQuery,
-                 'parameters' => null
-            )
+            $tPreDebugInfo
         );
 
         try {
@@ -223,13 +239,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             $tReturn = false;
         }
 
-        $tPostDebugInfo = array();
-
-        if (Framework::$development) {
-            $tPostDebugInfo['explain'] = $this->queryArray($this->explainCommand . ' ' . $uQuery, array());
-        }
-
-        $this->logger->profilerStop($tPostDebugInfo);
+        $this->logger->profilerStop();
 
         return $tReturn;
     }
@@ -241,15 +251,29 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     {
         $this->connectionOpen();
 
-        $tDebugInfo = array(
+        $tPreDebugInfo = array(
             'query' => $uQuery,
             'parameters' => $uParameters
         );
 
+        if (Framework::$development) {
+            $this->beginTransaction();
+            $tPreDebugInfo['explain'] = $this->queryArray(
+                String::format(
+                    $this->explainCommand,
+                    array(
+                        'query' => $uQuery
+                    )
+                ),
+                $uParameters
+            );
+            $this->rollBack();
+        }
+
         $this->logger->profilerStart(
             $this->id . ' query',
             'query',
-            $tDebugInfo
+            $tPreDebugInfo
         );
 
         if (!Framework::$disableCaches && !is_null($uCaching)) {
@@ -298,10 +322,6 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             'affectedRows' => $tData->count(),
             'fromCache' => $tLoadedFromCache
         );
-
-        if (Framework::$development) {
-            $tPostDebugInfo['explain'] = $this->queryArray($this->explainCommand . ' ' . $uQuery, $uParameters);
-        }
 
         $this->logger->profilerStop($tPostDebugInfo);
 
