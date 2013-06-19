@@ -445,13 +445,20 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function insertQuery()
+    public function insertQuery($uReturn = true)
     {
-        return $this->database->sqlInsert(
+        $tQuery = $this->database->sqlInsert(
             $this->table,
             $this->fields,
             $this->returning
         );
+
+        if (!$uReturn) {
+            echo $tQuery;
+            return;
+        }
+
+        return $tQuery;
     }
 
     /**
@@ -480,15 +487,22 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function updateQuery()
+    public function updateQuery($uReturn = true)
     {
-        return $this->database->sqlUpdate(
+        $tQuery = $this->database->sqlUpdate(
             $this->table,
             $this->fields,
             $this->rawFields,
             $this->where,
             array('limit' => $this->limit)
         );
+
+        if (!$uReturn) {
+            echo $tQuery;
+            return;
+        }
+
+        return $tQuery;
     }
 
     /**
@@ -511,13 +525,20 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function deleteQuery()
+    public function deleteQuery($uReturn = true)
     {
-        return $this->database->sqlDelete(
+        $tQuery = $this->database->sqlDelete(
             $this->table,
             $this->where,
             array('limit' => $this->limit)
         );
+
+        if (!$uReturn) {
+            echo $tQuery;
+            return;
+        }
+
+        return $tQuery;
     }
 
     /**
@@ -540,9 +561,9 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function getQuery()
+    public function getQuery($uReturn = true)
     {
-        return $this->database->sqlSelect(
+        $tQuery = $this->database->sqlSelect(
             $this->table,
             $this->fields,
             $this->rawFields,
@@ -551,6 +572,13 @@ class DatabaseQuery
             $this->groupby,
             array('limit' => $this->limit, 'offset' => $this->offset)
         );
+
+        if (!$uReturn) {
+            echo $tQuery;
+            return;
+        }
+
+        return $tQuery;
     }
 
     /**
@@ -573,8 +601,8 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function aggregateQuery($uOperation = 'COUNT') {
-        return $this->database->sqlSelect(
+    public function aggregateQuery($uOperation = 'COUNT', $uReturn = true) {
+        $tQuery = $this->database->sqlSelect(
             $this->table,
             array(),
             $uOperation . '(' . $this->rawFields . ')',
@@ -582,6 +610,13 @@ class DatabaseQuery
             null,
             $this->groupby
         );
+
+        if (!$uReturn) {
+            echo $tQuery;
+            return;
+        }
+
+        return $tQuery;
     }
 
     /**
