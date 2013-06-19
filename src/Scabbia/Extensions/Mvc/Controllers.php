@@ -11,6 +11,7 @@ use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Mvc\ControllerBase;
 use Scabbia\Config;
 use Scabbia\Events;
+use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
@@ -53,32 +54,8 @@ class Controllers
         $tActualParams = trim($uInput['params'], '/');
         $uParams = explode('/', $tActualParams);
 
-        Controllers::getControllers();
-
-        while (true) {
-            $tReturn = Controllers::$root->render($tActualController, $uParams, $uInput);
-            if ($tReturn === false) {
-                break;
-            }
-
-            // call callback/closure returned by render
-            if ($tReturn !== true && !is_null($tReturn)) {
-                call_user_func($tReturn);
-                break;
-            }
-
-            break;
-        }
-
-        return $tReturn;
-    }
-
-    /*
-     * @ignore
-     */
-    public static function getControllers()
-    {
         if (is_null(self::$root)) {
+            /*
             $tParms = array();
             Events::invoke('registerControllers', $tParms);
 
@@ -94,7 +71,38 @@ class Controllers
 
                 self::$root->addChildController($tClassName, $tClass);
             }
+            */
+
+            self::$root = new ControllerBase();
+            $tClass = Framework::$application->name . '\\' . $tActualController;
+
+            if (class_exists($tClass, true)) {
+                if (($tPos = strrpos($tClass, '\\')) !== false) {
+                    $tClassName = lcfirst(substr($tClass, $tPos + 1));
+                } else {
+                    $tClassName = lcfirst($tClass);
+                }
+
+                self::$root->addChildController($tClassName, $tClass);
+            }
         }
+
+        while (true) {
+            $tReturn = self::$root->render($tActualController, $uParams, $uInput);
+            if ($tReturn === false) {
+                break;
+            }
+
+            // call callback/closure returned by render
+            if ($tReturn !== true && !is_null($tReturn)) {
+                call_user_func($tReturn);
+                break;
+            }
+
+            break;
+        }
+
+        return $tReturn;
     }
 
     /**

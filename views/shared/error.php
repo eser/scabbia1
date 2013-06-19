@@ -1,6 +1,7 @@
 <?php
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Framework;
 
 ?>
@@ -9,7 +10,7 @@ use Scabbia\Framework;
 <head>
     <meta charset="utf-8" />
 
-    <title><?php echo _('Scabbia Framework: Error'); ?></title>
+    <title><?php echo I18n::_('Scabbia Framework: Error'); ?></title>
     <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
     <link type="text/css" href="<?php echo Http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />

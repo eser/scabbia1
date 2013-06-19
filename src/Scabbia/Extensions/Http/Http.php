@@ -11,6 +11,7 @@ use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Http\Router;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -127,7 +128,7 @@ class Http
     public static function notfound()
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
-        self::error('notfound', _('404 Not Found'), _('The resource you have been looking for is not found on the server'));
+        self::error('notfound', I18n::_('404 Not Found'), I18n::_('The resource you have been looking for is not found on the server'));
     }
 
     /**
