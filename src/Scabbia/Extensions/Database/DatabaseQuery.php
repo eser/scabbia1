@@ -462,7 +462,8 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->insertQuery(),
             $this->parameters,
-            $this->caching
+            $this->caching,
+            true
         );
 
         if (!is_null($this->sequence) && strlen($this->sequence) > 0) {
@@ -498,7 +499,8 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->updateQuery(),
             $this->parameters,
-            $this->caching
+            $this->caching,
+            true
         );
 
         $this->clear();
@@ -526,7 +528,8 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->deleteQuery(),
             $this->parameters,
-            $this->caching
+            $this->caching,
+            true
         );
 
         $this->clear();
@@ -558,7 +561,8 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->getQuery(),
             $this->parameters,
-            $this->caching
+            $this->caching,
+            false
         );
 
         $this->clear();
@@ -588,7 +592,8 @@ class DatabaseQuery
         $tReturn = $this->database->query(
             $this->aggregateQuery($uOperation),
             $this->parameters,
-            $this->caching
+            $this->caching,
+            false
         );
 
         $this->clear();

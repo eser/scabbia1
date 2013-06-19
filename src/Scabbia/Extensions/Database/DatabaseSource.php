@@ -200,7 +200,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
-    public function execute($uQuery)
+    public function execute($uQuery, $uModifies = false)
     {
         $this->connectionOpen();
 
@@ -209,8 +209,11 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             'parameters' => null
         );
 
-        if (Framework::$development) {
-            $this->beginTransaction();
+        if (Framework::$development && !$this->inTransaction) {
+            if ($uModifies) {
+                $this->beginTransaction();
+            }
+
             $tPreDebugInfo['explain'] = $this->queryArray(
                 String::format(
                     $this->explainCommand,
@@ -220,7 +223,10 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
                 ),
                 array()
             );
-            $this->rollBack();
+
+            if ($uModifies) {
+                $this->rollBack();
+            }
         }
 
         $this->logger->profilerStart(
@@ -247,7 +253,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
-    public function query($uQuery, array $uParameters = array(), $uCaching = null)
+    public function query($uQuery, array $uParameters = array(), $uCaching = null, $uModifies = false)
     {
         $this->connectionOpen();
 
@@ -256,8 +262,11 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             'parameters' => $uParameters
         );
 
-        if (Framework::$development) {
-            $this->beginTransaction();
+        if (Framework::$development && !$this->inTransaction) {
+            if ($uModifies) {
+                $this->beginTransaction();
+            }
+
             $tPreDebugInfo['explain'] = $this->queryArray(
                 String::format(
                     $this->explainCommand,
@@ -267,7 +276,10 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
                 ),
                 $uParameters
             );
-            $this->rollBack();
+
+            if ($uModifies) {
+                $this->rollBack();
+            }
         }
 
         $this->logger->profilerStart(

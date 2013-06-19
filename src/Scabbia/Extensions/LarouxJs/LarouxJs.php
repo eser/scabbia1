@@ -67,7 +67,7 @@ class LarouxJs
      */
     public static function exportJs()
     {
-        $tArray = Mvc::export(true);
+        // $tArray = Mvc::export(true);
 
         $tReturn = <<<EOD
 \$l.extend({
@@ -75,6 +75,7 @@ class LarouxJs
 EOD;
         $tReturn .= json_encode(self::$translations);
 
+        /*
         foreach ($tArray as $tClassName => $tClass) {
             if (($tPos = strrpos($tClassName, '\\')) !== false) {
                 $tClassName = substr($tClassName, $tPos + 1);
@@ -97,6 +98,7 @@ EOD;
             }
             $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t" . '}';
         }
+        */
 
         $tReturn .= <<<EOD
 
