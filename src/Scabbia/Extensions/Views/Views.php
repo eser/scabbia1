@@ -8,7 +8,6 @@
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\I18n\I18n;
-use Scabbia\Extensions\Mvc\Mvc;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
@@ -29,63 +28,13 @@ class Views
      * @ignore
      */
     public static $viewEngines = null;
-    /**
-     * @ignore
-     */
-    public static $vars = array();
 
-
-    /**
-     * @ignore
-     */
-    public static function get($uKey)
-    {
-        return self::$vars[$uKey];
-    }
-
-    /**
-     * @ignore
-     */
-    public static function set($uKey, $uValue)
-    {
-        self::$vars[$uKey] = $uValue;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function setRef($uKey, &$uValue)
-    {
-        self::$vars[$uKey] = $uValue;
-    }
-
-    /**
-     * @ignore
-     */
-    public static function setRange(array $uArray)
-    {
-        foreach ($uArray as $tKey => $tValue) {
-            self::$vars[$tKey] = $tValue;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function remove($uKey)
-    {
-        unset(self::$vars[$uKey]);
-    }
 
     /**
      * @ignore
      */
     public static function viewFile($uView, $uModel = null)
     {
-        if (is_null($uModel)) {
-            $uModel = & self::$vars;
-        }
-
         $tViewFilePath = Io::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
 
@@ -117,21 +66,19 @@ class Views
     /**
      * @ignore
      */
-    public static function json($uModel = null)
+    public static function json($uModel)
     {
-        echo json_encode(
-            (!is_null($uModel) ? $uModel : self::$vars)
-        );
+        echo json_encode($uModel);
     }
 
     /**
      * @ignore
      */
-    public static function xml($uModel = null)
+    public static function xml($uModel)
     {
         echo '<?xml version="1.0" encoding="UTF-8" ?>';
         echo '<xml>';
-        self::xmlRecursive((!is_null($uModel) ? $uModel : self::$vars));
+        self::xmlRecursive($uModel);
         echo '</xml>';
     }
 

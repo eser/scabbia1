@@ -124,7 +124,7 @@ class ControllerBase implements LoggerAwareInterface
 
         foreach ($tMethods as $tMethod) {
             if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                Mvc::setController($this, $tActionName, $uParams, $uInput);
+                Controllers::setController($this, $tActionName, $uParams, $uInput);
 
                 $this->prerender->invoke();
 
@@ -169,7 +169,7 @@ class ControllerBase implements LoggerAwareInterface
      */
     public function setRef($uKey, &$uValue)
     {
-        $this->vars[$uKey] = $uValue;
+        $this->vars[$uKey] = &$uValue;
     }
 
     /**

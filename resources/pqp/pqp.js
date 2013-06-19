@@ -1,65 +1,26 @@
-var PQP_LASTTAB = null;
+var pqp_lasttab = null;
 var pqp_container;
 
 function changeTab(tab) {
     var pQp = document.getElementById('pQp');
-    hideAllTabs();
-    addClassName(pQp, tab, true);
+    pQp.classList.remove('console');
+    pQp.classList.remove('time');
+    pQp.classList.remove('queries');
+    pQp.classList.remove('memory');
+    pQp.classList.remove('files');
 
-    if (tab != PQP_LASTTAB) {
-        removeClassName(pqp_container, 'hideDetails');
-        PQP_LASTTAB = tab;
+    pQp.classList.add(tab);
+
+    if (tab != pqp_lasttab) {
+        pqp_container.classList.remove('hideDetails');
+        pqp_lasttab = tab;
     } else {
-        addClassName(pqp_container, 'hideDetails', true);
-        PQP_LASTTAB = null;
-    }
-}
-
-function hideAllTabs() {
-    var pQp = document.getElementById('pQp');
-    removeClassName(pQp, 'console');
-    removeClassName(pQp, 'time');
-    removeClassName(pQp, 'queries');
-    removeClassName(pQp, 'memory');
-    removeClassName(pQp, 'files');
-}
-
-//http://www.bigbold.com/snippets/posts/show/2630
-function addClassName(objElement, strClass, blnMayAlreadyExist) {
-    if (objElement.className) {
-        var arrList = objElement.className.split(' ');
-        if (blnMayAlreadyExist){
-            var strClassUpper = strClass.toUpperCase();
-            for (var i = 0; i < arrList.length; i++) {
-                if (arrList[i].toUpperCase() == strClassUpper) {
-                    arrList.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-        arrList[arrList.length] = strClass;
-        objElement.className = arrList.join(' ');
-    } else {
-        objElement.className = strClass;
-    }
-}
-
-//http://www.bigbold.com/snippets/posts/show/2630
-function removeClassName(objElement, strClass) {
-    if (objElement.className) {
-        var arrList = objElement.className.split(' ');
-        var strClassUpper = strClass.toUpperCase();
-        for (var i = 0; i < arrList.length; i++) {
-            if (arrList[i].toUpperCase() == strClassUpper) {
-                arrList.splice(i, 1);
-                i--;
-            }
-        }
-        objElement.className = arrList.join(' ');
+        pqp_container.classList.add('hideDetails');
+        pqp_lasttab = null;
     }
 }
 
 function pqp() {
     pqp_container = document.getElementById('pqp-container');
-    pqp_container.style.display = 'block';
+    pqp_container.style.display = (pqp_container.style.display != 'block') ? 'block' : 'none';
 }

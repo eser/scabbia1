@@ -11,7 +11,7 @@ use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
-use Scabbia\Extensions\Mvc\Mvc;
+use Scabbia\Extensions\Mvc\Controllers;
 
 /**
  * LarouxJs Extension
@@ -67,7 +67,7 @@ class LarouxJs
      */
     public static function exportJs()
     {
-        // $tArray = Mvc::export(true);
+        // $tArray = Controllers::export(true);
 
         $tReturn = <<<EOD
 \$l.extend({

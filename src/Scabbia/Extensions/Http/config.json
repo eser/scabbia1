@@ -44,7 +44,7 @@
         "routeList": [
             {
                 "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
-                "callback":         "Scabbia\\Extensions\\Mvc\\Mvc::route",
+                "callback":         "Scabbia\\Extensions\\Mvc\\Controllers::route",
                 "defaults": {
                     "controller":   "home",
                     "params":       "/index",
