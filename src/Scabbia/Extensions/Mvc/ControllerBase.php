@@ -15,6 +15,7 @@ use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Scabbia\Framework;
 
 /**
  * Mvc Extension: ControllerBase Class
@@ -98,7 +99,8 @@ class ControllerBase implements LoggerAwareInterface
         }
 
         $tFormat = substr($uInput['format'], 1);
-
+        // @todo not sure on this
+        // Framework::$responseFormat = $tFormat;
 
         if (isset($this->childControllers[$tActionName])) {
             if (count($uParams) > 0) {
@@ -134,6 +136,8 @@ class ControllerBase implements LoggerAwareInterface
                 $this->prerender->invoke();
 
                 $tReturn = call_user_func_array(array(&$this, $tMethod), $uParams);
+
+                Framework::$responseFormat = $this->format;
 
                 $this->postrender->invoke();
 

@@ -155,7 +155,6 @@ class Response
         }
 
         header($tStatus, true, $uStatusCode);
-
     }
 
     /**

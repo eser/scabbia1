@@ -41,24 +41,24 @@ class LarouxJs
      */
     public static function output($uParms)
     {
-        if (Request::$isAjax && Request::$wrapperFunction == 'laroux.js') {
-            $tLastContentType = Response::sentHeaderValue('Content-Type');
-            $tContent = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true') .
-                ', "errorMessage": ' .
-                (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true));
-
-            if ($tLastContentType == false) {
+        if (Request::$wrapperFunction == 'laroux.js') {
+            if (Response::sentHeaderValue('Content-Type') == false) {
                 header('Content-Type: application/json', true);
-
-                $tContent .= ', "object": ' . json_encode($uParms['content']);
-            } else {
-                $tContent .= ', "object": ' . $uParms['content'];
             }
-
-            $tContent .= ' }';
-
             header('X-Response-Wrapper-Function: laroux.js', true);
-            $uParms['content'] = $tContent;
+
+            $uParms['content'] = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true') .
+
+                ', "errorMessage": ' .
+                (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true)) .
+
+                ', "format": ' .
+                String::dquote($uParms['responseFormat'], true) .
+
+                ', "object": ' .
+                json_encode($uParms['content']) .
+
+                ' }';
         }
     }
 

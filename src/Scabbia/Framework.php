@@ -82,6 +82,10 @@ class Framework
      * @var int     The exit status
      */
     public static $exitStatus = null;
+    /**
+     * @var string  Response format
+     */
+    public static $responseFormat = 'html';
 
 
     /**
@@ -299,6 +303,7 @@ class Framework
     {
         $tParms = array(
             'exitStatus' => &self::$exitStatus,
+            'responseFormat' => &self::$responseFormat,
             'content' => &$uValue
         );
 
