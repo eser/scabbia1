@@ -138,7 +138,11 @@ class PdoSource extends DatabaseSource
     {
         parent::beginTransaction();
 
-        $this->connection->beginTransaction();
+        if ($this->transactionLevel == 1) {
+            $this->connection->beginTransaction();
+        } else {
+            $this->connection->exec('SAVEPOINT LEVEL' . $this->transactionLevel);
+        }
     }
 
     /**
@@ -146,7 +150,11 @@ class PdoSource extends DatabaseSource
      */
     public function commit()
     {
-        $this->connection->commit();
+        if ($this->transactionLevel == 1) {
+            $this->connection->commit();
+        } else {
+            $this->connection->exec('RELEASE SAVEPOINT LEVEL' . $this->transactionLevel);
+        }
 
         parent::commit();
     }
@@ -156,7 +164,11 @@ class PdoSource extends DatabaseSource
      */
     public function rollBack()
     {
-        $this->connection->rollBack();
+        if ($this->transactionLevel == 1) {
+            $this->connection->rollBack();
+        } else {
+            $this->connection->exec('ROLLBACK TO SAVEPOINT LEVEL' . $this->transactionLevel);
+        }
 
         parent::rollBack();
     }

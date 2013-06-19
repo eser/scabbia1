@@ -47,7 +47,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
-    public $inTransaction = false;
+    public $transactionLevel = 0;
     /**
      * @ignore
      */
@@ -138,7 +138,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
      */
     public function beginTransaction()
     {
-        $this->inTransaction = true;
+        $this->transactionLevel++;
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
      */
     public function commit()
     {
-        $this->inTransaction = false;
+        $this->transactionLevel--;
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
      */
     public function rollBack()
     {
-        $this->inTransaction = false;
+        $this->transactionLevel--;
     }
 
     /**
@@ -209,7 +209,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             'parameters' => null
         );
 
-        if (Framework::$development && !$this->inTransaction) {
+        if (Framework::$development) {
             if ($uModifies) {
                 $this->beginTransaction();
             }
@@ -262,7 +262,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             'parameters' => $uParameters
         );
 
-        if (Framework::$development && !$this->inTransaction) {
+        if (Framework::$development) {
             if ($uModifies) {
                 $this->beginTransaction();
             }
@@ -372,11 +372,11 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
                 $tResult = false;
             }
 
-            if ($this->inTransaction) {
+            if ($uDataset->transaction) {
                 $this->commit();
             }
         } catch (\Exception $ex) {
-            if ($this->inTransaction) {
+            if ($uDataset->transaction) {
                 $this->rollBack();
             }
 
