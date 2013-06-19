@@ -455,7 +455,7 @@ class DatabaseQuery
 
         if (!$uReturn) {
             echo $tQuery;
-            return;
+            return $this;
         }
 
         return $tQuery;
@@ -499,7 +499,7 @@ class DatabaseQuery
 
         if (!$uReturn) {
             echo $tQuery;
-            return;
+            return $this;
         }
 
         return $tQuery;
@@ -535,7 +535,7 @@ class DatabaseQuery
 
         if (!$uReturn) {
             echo $tQuery;
-            return;
+            return $this;
         }
 
         return $tQuery;
@@ -575,7 +575,7 @@ class DatabaseQuery
 
         if (!$uReturn) {
             echo $tQuery;
-            return;
+            return $this;
         }
 
         return $tQuery;
@@ -613,7 +613,7 @@ class DatabaseQuery
 
         if (!$uReturn) {
             echo $tQuery;
-            return;
+            return $this;
         }
 
         return $tQuery;
