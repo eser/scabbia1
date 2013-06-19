@@ -40,6 +40,10 @@ class ControllerBase implements LoggerAwareInterface
     /**
      * @ignore
      */
+    public $format = null;
+    /**
+     * @ignore
+     */
     public $prerender;
     /**
      * @ignore
@@ -93,7 +97,8 @@ class ControllerBase implements LoggerAwareInterface
             $tActionName = $this->defaultAction;
         }
 
-        $tFormat = '_' . substr($uInput['format'], 1);
+        $tFormat = substr($uInput['format'], 1);
+
 
         if (isset($this->childControllers[$tActionName])) {
             if (count($uParams) > 0) {
@@ -108,23 +113,23 @@ class ControllerBase implements LoggerAwareInterface
 
         $tMe = new \ReflectionClass($this);
         $tMethods = array(
-            $uInput['methodext'] . '_' . $tActionName . $tFormat,
+            $uInput['methodext'] . '_' . $tActionName . '_' . $tFormat,
             $uInput['methodext'] . '_' . $tActionName,
-            $uInput['methodext'] . '_otherwise' . $tFormat,
+            $uInput['methodext'] . '_otherwise' . '_' . $tFormat,
             $uInput['methodext'] . '_otherwise',
-            $uInput['method'] . '_' . $tActionName . $tFormat,
+            $uInput['method'] . '_' . $tActionName . '_' . $tFormat,
             $uInput['method'] . '_' . $tActionName,
-            $uInput['method'] . '_otherwise' . $tFormat,
+            $uInput['method'] . '_otherwise' . '_' . $tFormat,
             $uInput['method'] . '_otherwise',
-            $tActionName . $tFormat,
-            'otherwise' . $tFormat,
+            $tActionName . '_' . $tFormat,
+            'otherwise' . '_' . $tFormat,
             $tActionName,
             'otherwise'
         );
 
         foreach ($tMethods as $tMethod) {
             if ($tMe->hasMethod($tMethod) && $tMe->getMethod($tMethod)->isPublic()) {
-                Controllers::setController($this, $tActionName, $uParams, $uInput);
+                Controllers::setController($this, $tActionName, $tFormat, $uParams, $uInput);
 
                 $this->prerender->invoke();
 

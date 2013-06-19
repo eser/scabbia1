@@ -100,7 +100,7 @@ class Controllers
     /**
      * @ignore
      */
-    public static function setController($uControllerInstance, $uActionName, array $uParams = array(), array $uInput = array())
+    public static function setController($uControllerInstance, $uActionName, $uFormat, array $uParams = array(), array $uInput = array())
     {
         Utils::$variables['controller'] = $uControllerInstance;
 
@@ -120,6 +120,8 @@ class Controllers
             $uControllerInstance->route['action'] .
             '.' .
             Config::get('views/defaultViewExtension', 'php');
+
+        $uControllerInstance->format = $uFormat;
     }
 
     /**

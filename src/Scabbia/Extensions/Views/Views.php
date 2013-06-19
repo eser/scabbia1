@@ -53,8 +53,7 @@ class Views
             'templatePath' => &$tTemplatePath,
             'templateFile' => &$tViewFile,
             'compiledFile' => hash('adler32', $uView) . '-' . $tViewFileInfo['basename'],
-            'model' => &$uModel,
-            'extra' => &Utils::$variables
+            'model' => &$uModel
         );
 
         call_user_func(

@@ -11,6 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Views Extension: ViewEngineSmarty Class
@@ -55,10 +56,8 @@ class ViewEngineSmarty
             }
         }
 
-        if (isset($uObject['extra'])) {
-            foreach ($uObject['extra'] as $tKey => $tValue) {
-                self::$engine->assignByRef($tKey, $tValue);
-            }
+        foreach (Utils::$variables as $tKey => $tValue) {
+            self::$engine->assignByRef($tKey, $tValue);
         }
 
         self::$engine->display($uObject['templateFile']);

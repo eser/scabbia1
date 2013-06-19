@@ -11,6 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Views Extension: ViewEngineTwig Class
@@ -60,9 +61,7 @@ class ViewEngineTwig
             $model = array_merge($model, $uObject['model']);
         }
 
-        if (isset($uObject['extra'])) {
-            $model = array_merge($model, $uObject['extra']);
-        }
+        $model = array_merge($model, Utils::$variables);
 
         echo self::$engine->render($uObject['templateFile'], $model);
     }

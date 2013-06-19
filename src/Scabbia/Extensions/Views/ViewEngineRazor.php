@@ -11,6 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Views Extension: ViewEngineRazor Class
@@ -58,9 +59,7 @@ class ViewEngineRazor
             extract($model, EXTR_SKIP | EXTR_REFS);
         }
 
-        if (isset($uObject['extra'])) {
-            extract($uObject['extra'], EXTR_SKIP | EXTR_REFS);
-        }
+        extract(Utils::$variables, EXTR_SKIP | EXTR_REFS);
 
         require $tOutputFile;
     }

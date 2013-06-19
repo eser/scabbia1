@@ -11,6 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
+use Scabbia\Utils;
 
 /**
  * Views Extension: ViewEnginePhptal Class
@@ -52,10 +53,8 @@ class ViewEnginePhptal
             }
         }
 
-        if (isset($uObject['extra'])) {
-            foreach ($uObject['extra'] as $tKey => $tValue) {
-                self::$engine->set($tKey, $tValue);
-            }
+        foreach (Utils::$variables as $tKey => $tValue) {
+            self::$engine->set($tKey, $tValue);
         }
 
         self::$engine->setForceReparse(false);
