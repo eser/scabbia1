@@ -7,6 +7,7 @@
 
 namespace Scabbia\Extensions\Oauth;
 
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controller;
 
 /**
@@ -18,6 +19,17 @@ use Scabbia\Extensions\Mvc\Controller;
  */
 class Oauth extends Controller
 {
+    /**
+     * @ignore
+     */
+    public function getTokenUrl($uKey, $uSecret)
+    {
+        return Http::encodeArray(array(
+            'oauth_token' => $uKey,
+            'oauth_token_secret' => $uSecret
+        ));
+    }
+
     /**
      * @ignore
      */

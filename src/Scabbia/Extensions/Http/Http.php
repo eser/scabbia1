@@ -176,13 +176,52 @@ class Http
             ;
     }
 
+    /**
+     * @ignore
+     */
+    private static function buildQueryString_arr(&$uParameters, $uKey, array $uValue)
+    {
+        foreach ($uValue as $tValue) {
+            if (is_array($tValue)) {
+                self::buildQueryString_arr($uParameters, $uKey . '[]', $tValue);
+                continue;
+            }
+
+            $uParameters[] = $uKey . '[]=' . rawurlencode($tValue);
+        }
+    }
 
     /**
      * @ignore
      */
+    public static function buildQueryString($uParameters)
+    {
+        $tParameters = array();
+
+        ksort($uParameters, SORT_STRING);
+        foreach ($uParameters as $tKey => $tValue) {
+            $tEncodedKey = rawurlencode($tKey);
+
+            if (is_array($tValue)) {
+                self::buildQueryString_arr($tParameters, $tEncodedKey, $tValue);
+                continue;
+            }
+
+            $tParameters[] = $tEncodedKey . '=' . rawurlencode($tValue);
+        }
+
+        return implode('&', $tParameters);
+    }
+
+
+    /**
+     * @ignore
+     *
+     * RFC 3986
+     */
     public static function encode($uString)
     {
-        return urlencode($uString);
+        return rawurlencode($uString);
     }
 
     /**
@@ -201,7 +240,7 @@ class Http
         $tReturn = array();
 
         foreach ($uArray as $tKey => $tValue) {
-            $tReturn[] = urlencode($tKey) . '=' . urlencode($tValue);
+            $tReturn[] = rawurlencode($tKey) . '=' . rawurlencode($tValue);
         }
 
         return implode('&', $tReturn);
