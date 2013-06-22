@@ -218,6 +218,28 @@ class Io
     }
 
     /**
+     * Converts a namespace to proper path.
+     *
+     * @param string $uName  the name
+     *
+     * @return string relative path
+     */
+    public static function namespacePath($uName)
+    {
+        $tExploded = explode('/', trim(strtr($uName, '\\', '/'), '/'));
+
+        $tName = '';
+        foreach ($tExploded as $tExplodedPart) {
+            if (strlen($tName) > 0) {
+                $tName .= '/';
+            }
+            $tName .= lcfirst($tExplodedPart);
+        }
+
+        return $tName;
+    }
+
+    /**
      * Extracts a path from different path.
      *
      * @param string    $uPath      the full path
@@ -227,7 +249,7 @@ class Io
      */
     public static function extractPath($uPath, $uBasePath = null)
     {
-        $uPath = strtr($uPath, DIRECTORY_SEPARATOR, '/');
+        $uPath = strtr($uPath, '\\', '/');
 
         if (is_null($uBasePath)) {
             $uBasePath = Framework::$basepath;
@@ -378,7 +400,7 @@ class Io
         $uRecursivePath = '',
         array &$uArray = array()
     ) {
-        $tPath = rtrim(strtr($uPath, DIRECTORY_SEPARATOR, '/'), '/') . '/';
+        $tPath = rtrim(strtr($uPath, '\\', '/'), '/') . '/';
         $tRecursivePath = $tPath . $uRecursivePath;
 
         // if (file_exists($tRecursivePath)) {

@@ -135,9 +135,9 @@ class Framework
                 $tPath .= '/' . $tDirname;
             }
 
-            self::$basepath = strtr($tPath, DIRECTORY_SEPARATOR, '/') . '/';
+            self::$basepath = strtr($tPath, '\\', '/') . '/';
         }
-        self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
+        self::$corepath = strtr(realpath(__DIR__ . '/../../'), '\\', '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
 
         self::$timestamp = microtime(true);
@@ -152,16 +152,12 @@ class Framework
      */
     public static function loadClass($uName)
     {
-        if (!is_null(self::$application)) {
-            $tExploded = explode('\\', $uName);
+        foreach (self::$applications as $tApplication) {
+            $tLen = strlen($tApplication['namespace']);
+            if (strncmp($tApplication['namespace'], $uName, $tLen) == 0) {
+                $tName = '/' . Io::namespacePath(substr($uName, $tLen)) . '.php';
 
-            if (count($tExploded) >= 2 && array_shift($tExploded) == self::$application->name) {
-                $tName = '';
-                foreach ($tExploded as $tExplodedPart) {
-                    $tName .= '/' . lcfirst($tExplodedPart);
-                }
-                $tName .= '.php';
-
+                // @todo applications' classLoadList itself (load app's config)
                 foreach (self::$classLoaderList as $tClassLoader) {
                     if (file_exists($tFile = $tClassLoader . $tName)) {
                         //! todo require_once?
@@ -182,12 +178,12 @@ class Framework
     /**
      * @ignore
      */
-    public static function addApplication($uNamespace, $uDirectory, array $uEndpoints = array())
+    public static function addApplication($uNamespace, $uDirectory = null, $uEndpoints = array())
     {
         self::$applications[] = array(
             'namespace' => $uNamespace,
-            'directory' => $uDirectory,
-            'endpoints' => $uEndpoints
+            'directory' => (!is_null($uDirectory) ? rtrim($uDirectory, '/') : Io::namespacePath($uNamespace)) . '/',
+            'endpoints' => (array)$uEndpoints
         );
     }
 
@@ -199,27 +195,30 @@ class Framework
         // determine active application
         $tSelectedApplication = null;
         foreach (self::$applications as $tApplication) {
-            if (!is_null(self::$classLoader)) {
-                self::$classLoader->set($tApplication['namespace'], $tApplication['directory']);
+            // if (!is_null(self::$classLoader)) {
+            //    self::$classLoader->set($tApplication['namespace'], $tApplication['directory']);
+            // }
+
+            // continue if only application is not selected yet.
+            if (!is_null($tSelectedApplication)) {
+                continue;
             }
 
-            if (is_null($tSelectedApplication)) {
-                if (count($tApplication['endpoints']) > 0) {
-                    foreach ($tApplication['endpoints'] as $tEndpoint) {
-                        foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
-                            $tParsed = parse_url($tEndpointAddress);
-                            if (!isset($tParsed['port'])) {
-                                $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
-                            }
+            if (count($tApplication['endpoints']) > 0) {
+                foreach ($tApplication['endpoints'] as $tEndpoint) {
+                    foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
+                        $tParsed = parse_url($tEndpointAddress);
+                        if (!isset($tParsed['port'])) {
+                            $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+                        }
 
-                            if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                                $tSelectedApplication = $tApplication;
-                            }
+                        if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+                            $tSelectedApplication = $tApplication;
                         }
                     }
-                } else {
-                    $tSelectedApplication = $tApplication;
                 }
+            } else {
+                $tSelectedApplication = $tApplication;
             }
         }
 

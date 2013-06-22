@@ -1595,7 +1595,7 @@ class String
         }
 
         if (isset($tPathInfo['dirname']) && $tPathInfo['dirname'] != '.') {
-            return rtrim(strtr($tPathInfo['dirname'], DIRECTORY_SEPARATOR, '/'), '/') . '/' . $tFilename;
+            return rtrim(strtr($tPathInfo['dirname'], '\\', '/'), '/') . '/' . $tFilename;
         }
 
         return $tFilename;
