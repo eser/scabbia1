@@ -155,11 +155,18 @@ class Framework
         foreach (self::$applications as $tApplication) {
             $tLen = strlen($tApplication['namespace']);
             if (strncmp($tApplication['namespace'], $uName, $tLen) == 0) {
-                $tName = '/' . Io::namespacePath(substr($uName, $tLen)) . '.php';
+                $tName = Io::namespacePath(substr($uName, $tLen)) . '.php';
+
+                // try in application directory first
+                if (file_exists($tFile = $tApplication['directory'] . $tName)) {
+                    //! todo require_once?
+                    include $tFile;
+                    return true;
+                }
 
                 // @todo applications' classLoadList itself (load app's config)
                 foreach (self::$classLoaderList as $tClassLoader) {
-                    if (file_exists($tFile = $tClassLoader . $tName)) {
+                    if (file_exists($tFile = $tClassLoader . '/' . $tName)) {
                         //! todo require_once?
                         include $tFile;
                         return true;
