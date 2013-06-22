@@ -22,6 +22,7 @@ use Scabbia\Io;
  * @todo Request abstract classes attached to Framework (will be derived CliRequest, HttpRequest etc.)
  * @todo Response abstract classes attached to Framework (will be derived HttpResponse, CliResponse etc.)
  * @todo HttpResponse might have OutputAdapter (Html, Xml, Json, PDF, DownloadFile-Binary etc.) and OutputEncoding
+ * @todo binder extension, the same functionality with the assets also includes compilation of files (with list on config)
  */
 class Framework
 {
@@ -34,6 +35,10 @@ class Framework
      * @var object  Composer's class loader
      */
     public static $classLoader = null;
+    /**
+     * @var object  Array of loaded applications
+     */
+    public static $applications = array();
     /**
      * @var object  Application instance
      */
@@ -49,7 +54,7 @@ class Framework
     /**
      * @var bool    Indicates framework is running in readonly mode or not
      */
-    public static $readonly = true;
+    public static $readonly = false;
     /**
      * @var int     The timestamp indicates when the request started
      */
@@ -68,22 +73,32 @@ class Framework
     public static $vendorpath = null;
     /**
      * @var string  Stores relative path of running application
+     *
+     * @todo probably wrong place - app
      */
     public static $apppath = null;
     /**
      * @var array   Stores search paths for classes
+     *
+     * @todo probably wrong place - app
      */
     public static $classLoaderList = array();
     /**
      * @var string  Stores relative path of framework root
+     *
+     * @todo probably wrong place - app
      */
     public static $siteroot = null;
     /**
      * @var int     The exit status
+     *
+     * @todo probably wrong place
      */
     public static $exitStatus = null;
     /**
      * @var string  Response format
+     *
+     * @todo wrong place
      */
     public static $responseFormat = 'html';
 
@@ -97,8 +112,7 @@ class Framework
      */
     public static function load($uClassLoader = null)
     {
-        self::$timestamp = microtime(true);
-
+        // Set framework autoloader
         if (!is_null($uClassLoader)) {
             self::$classLoader = $uClassLoader;
             self::$classLoader->unregister();
@@ -107,20 +121,26 @@ class Framework
         spl_autoload_register('Scabbia\\Framework::loadClass');
 
         // Set internal encoding
-        mb_internal_encoding('UTF-8');
+        if (function_exists('mb_internal_encoding')) {
+            mb_internal_encoding('UTF-8');
+        }
 
         // Set error reporting occasions
         error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
 
+        // Set variables
         if (is_null(self::$basepath)) {
-            self::$basepath = strtr(
-                pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME),
-                DIRECTORY_SEPARATOR,
-                '/'
-            ) . '/';
+            $tPath = getcwd();
+            if (isset($_SERVER['argv']) && ($tDirname = dirname($_SERVER['argv'][0])) != '.') {
+                $tPath .= '/' . $tDirname;
+            }
+
+            self::$basepath = strtr($tPath, DIRECTORY_SEPARATOR, '/') . '/';
         }
         self::$corepath = strtr(realpath(__DIR__ . '/../../'), DIRECTORY_SEPARATOR, '/') . '/';
         self::$vendorpath = self::$basepath . 'vendor/';
+
+        self::$timestamp = microtime(true);
     }
 
     /**
@@ -133,8 +153,8 @@ class Framework
     public static function loadClass($uName)
     {
         if (!is_null(self::$application)) {
-
             $tExploded = explode('\\', $uName);
+
             if (count($tExploded) >= 2 && array_shift($tExploded) == self::$application->name) {
                 $tName = '';
                 foreach ($tExploded as $tExplodedPart) {
@@ -160,79 +180,15 @@ class Framework
     }
 
     /**
-     * Determines application by endpoint.
-     *
-     * @param array $uEndpoints set of endpoints
-     * @param bool  $uReadonly  run in readonly mode
-     *
-     * @return null|mixed selected application
+     * @ignore
      */
-    public static function runApplicationByEndpoint(array $uEndpoints, $uReadonly = false)
+    public static function addApplication($uNamespace, $uDirectory, array $uEndpoints = array())
     {
-        foreach ($uEndpoints as $tEndpoint) {
-            foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
-                $tParsed = parse_url($tEndpointAddress);
-                if (!isset($tParsed['port'])) {
-                    $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
-                }
-
-                if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
-                    return self::runApplication(
-                        (isset($tEndpoint['class'])) ? $tEndpoint['class'] : null,
-                        $uReadonly
-                    );
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Invokes the startup methods for framework extensions and runs an application instance.
-     *
-     * @param mixed $uApplication application class is going to be constructed
-     * @param bool  $uReadonly    run in readonly mode
-     *
-     * @return bool whether other party is called or not
-     */
-    public static function runApplication($uApplication = null, $uReadonly = false)
-    {
-        if (is_object($uApplication)) {
-            self::$application = $uApplication;
-        } else {
-            self::$application = new Application($uApplication);
-        }
-
-        self::$apppath = self::$basepath . self::$application->directory;
-        self::$readonly = $uReadonly;
-
-        if (!is_null(self::$classLoader)) {
-            self::$classLoader->set(self::$application->name, self::$apppath);
-        }
-
-        self::run();
-
-        // run extensions
-        $tParms = array(
-            'onerror' => self::$application->onError
+        self::$applications[] = array(
+            'namespace' => $uNamespace,
+            'directory' => $uDirectory,
+            'endpoints' => $uEndpoints
         );
-        Events::invoke('pre-run', $tParms);
-
-        foreach (self::$application->callbacks as $tCallback) {
-            $tReturn = call_user_func($tCallback);
-
-            if (!is_null($tReturn) && $tReturn === true) {
-                break;
-            }
-        }
-
-        if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
-            call_user_func(self::$application->otherwise);
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -240,6 +196,39 @@ class Framework
      */
     public static function run()
     {
+        // determine active application
+        $tSelectedApplication = null;
+        foreach (self::$applications as $tApplication) {
+            if (!is_null(self::$classLoader)) {
+                self::$classLoader->set($tApplication['namespace'], $tApplication['directory']);
+            }
+
+            if (is_null($tSelectedApplication)) {
+                if (count($tApplication['endpoints']) > 0) {
+                    foreach ($tApplication['endpoints'] as $tEndpoint) {
+                        foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
+                            $tParsed = parse_url($tEndpointAddress);
+                            if (!isset($tParsed['port'])) {
+                                $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+                            }
+
+                            if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+                                $tSelectedApplication = $tApplication;
+                            }
+                        }
+                    }
+                } else {
+                    $tSelectedApplication = $tApplication;
+                }
+            }
+        }
+
+        // construct application object
+        if (!is_null($tSelectedApplication)) {
+            self::$application = new Application($tSelectedApplication['namespace'], $tSelectedApplication['directory']);
+            self::$apppath = self::$basepath . self::$application->directory;
+        }
+
         // load configuration w/ extensions
         Config::$default = Config::load();
 
@@ -288,6 +277,30 @@ class Framework
         // output handling
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);
+
+        // ignite application
+        if (!is_null($tSelectedApplication)) {
+            // run extensions
+            $tParms = array(
+                'onerror' => self::$application->onError
+            );
+            Events::invoke('pre-run', $tParms);
+
+            foreach (self::$application->callbacks as $tCallback) {
+                $tReturn = call_user_func($tCallback);
+
+                if (!is_null($tReturn) && $tReturn === true) {
+                    break;
+                }
+            }
+
+            if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
+                call_user_func(self::$application->otherwise);
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
