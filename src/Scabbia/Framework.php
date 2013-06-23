@@ -78,12 +78,6 @@ class Framework
      */
     public static $apppath = null;
     /**
-     * @var array   Stores search paths for classes
-     *
-     * @todo probably wrong place - app
-     */
-    public static $classLoaderList = array();
-    /**
      * @var string  Stores relative path of framework root
      *
      * @todo probably wrong place - app
@@ -164,14 +158,16 @@ class Framework
                     return true;
                 }
 
+                /*
                 // @todo applications' classLoadList itself (load app's config)
-                foreach (self::$classLoaderList as $tClassLoader) {
-                    if (file_exists($tFile = $tClassLoader . '/' . $tName)) {
+                foreach (Config::get('classPathList', array()) as $tClassLoader) {
+                    if (file_exists($tFile = Io::translatePath($tClassLoader) . '/' . $tName)) {
                         //! todo require_once?
                         include $tFile;
                         return true;
                     }
                 }
+                */
             }
         }
 
@@ -246,11 +242,6 @@ class Framework
             }
         }
         Utils::$variables['root'] = self::$siteroot;
-
-        // class loader paths
-        foreach (Config::get('classLoaderList', array()) as $tClassLoader) {
-            self::$classLoaderList[] = Io::translatePath($tClassLoader);
-        }
 
         // loadClass classes
         foreach (Config::get('loadClassList', array()) as $tClass) {

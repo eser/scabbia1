@@ -74,7 +74,7 @@ class Controllers
             */
 
             self::$root = new ControllerBase();
-            $tClass = Framework::$application->name . '\\' . $tActualController;
+            $tClass = Framework::$application->name . '\\Controllers\\' . $tActualController;
 
             if (class_exists($tClass, true)) {
                 if (($tPos = strrpos($tClass, '\\')) !== false) {
