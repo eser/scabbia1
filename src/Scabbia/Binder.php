@@ -20,11 +20,11 @@ class Binder
     /**
      * @var array Set of callback methods will be applied to files individually by types.
      */
-    public static $fileProcessors = array();
+    public static $fileProcessors = null;
     /**
      * @var array Set of callback methods will be applied generated pack by type.
      */
-    public static $packProcessors = array();
+    public static $packProcessors = null;
     /**
      * @var object LESS compiler instance.
      */
@@ -58,37 +58,42 @@ class Binder
      */
     public static function init()
     {
-        self::$fileProcessors['less'] = function ($uInput, $uDescription) {
-            if (is_null(self::$lessCompiler)) {
-                self::$lessCompiler = new \lessc();
-            }
+        if (is_null(self::$fileProcessors)) {
+            self::$fileProcessors = array();
+            self::$packProcessors = array();
 
-            $tContent  = '/* LESS ' . $uDescription . ' */' . PHP_EOL;
-            $tContent .= self::$lessCompiler->compileFile($uInput);
-            $tContent .= PHP_EOL;
+            self::$fileProcessors['less'] = function ($uInput, $uDescription) {
+                if (is_null(self::$lessCompiler)) {
+                    self::$lessCompiler = new \lessc();
+                }
 
-            return $tContent;
-        };
+                $tContent  = '/* LESS ' . $uDescription . ' */' . PHP_EOL;
+                $tContent .= self::$lessCompiler->compileFile($uInput);
+                $tContent .= PHP_EOL;
 
-        self::$fileProcessors['css'] = function ($uInput, $uDescription) {
-            $tContent  = '/* CSS ' . $uDescription . ' */' . PHP_EOL;
-            $tContent .= $uInput;
-            $tContent .= PHP_EOL;
+                return $tContent;
+            };
 
-            return $tContent;
-        };
+            self::$fileProcessors['css'] = function ($uInput, $uDescription) {
+                $tContent  = '/* CSS ' . $uDescription . ' */' . PHP_EOL;
+                $tContent .= $uInput;
+                $tContent .= PHP_EOL;
 
-        self::$fileProcessors['js'] = function ($uInput, $uDescription) {
-            $tContent  = '/* JS ' . $uDescription . ' */' . PHP_EOL;
-            $tContent .= $uInput;
-            $tContent .= PHP_EOL;
+                return $tContent;
+            };
 
-            return $tContent;
-        };
+            self::$fileProcessors['js'] = function ($uInput, $uDescription) {
+                $tContent  = '/* JS ' . $uDescription . ' */' . PHP_EOL;
+                $tContent .= $uInput;
+                $tContent .= PHP_EOL;
 
-        self::$fileProcessors['php'] = function ($uInput, $uDescription) {
-            return self::printPhpSource($uInput);
-        };
+                return $tContent;
+            };
+
+            self::$fileProcessors['php'] = function ($uInput, $uDescription) {
+                return self::printPhpSource($uInput);
+            };
+        }
     }
 
 
@@ -102,6 +107,8 @@ class Binder
      */
     public function __construct($uOutputName, $uOutputType, $uCacheTtl = 0, array $uClasses = array())
     {
+        self::init();
+
         $this->outputName = $uOutputName;
         $this->outputType = $uOutputType;
         $this->cacheTtl = $uCacheTtl;

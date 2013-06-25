@@ -106,90 +106,22 @@ class Assets
             return false;
         }
 
-        $tType = $tSelectedPack['type'];
         $tCacheTtl = isset($tSelectedPack['cacheTtl']) ? (int)$tSelectedPack['cacheTtl'] : 0;
-        $tMinify = isset($tSelectedPack['minify']) ? (bool)$tSelectedPack['minify'] : true;
-        $tFilename = $uName;
-        foreach ($uClasses as $tClassName) {
-            $tFilename .= '_' . $tClassName;
-        }
-        $tFilename .= '.' . $tType;
+        $tBinder = new Binder($tSelectedPack['name'], $tSelectedPack['type'], $tCacheTtl, $uClasses);
 
-        $tMimetype = Mime::getType($tType);
+        $tMimetype = Mime::getType($tBinder->outputType);
         header('Content-Type: ' . $tMimetype, true);
+        Response::sendHeaderCache($tCacheTtl);
 
-        $tCache = Datasources::get('fileCache');
-        $tCachedData = $tCache->cacheGet('assets/' . $tFilename);
+        foreach ($tSelectedPack['partList'] as $tPart) {
+            $tType = isset($tPart['type']) ? $tPart['type'] : 'file';
+            $tClass = isset($tPart['class']) ? $tPart['class'] : null;
+            $tValue = ($tType == 'function') ? $tPart['name'] : $tPart['path'];
 
-        if ($tCachedData !== false) {
-            echo $tCachedData;
-        } else {
-            $tContent = '';
-            foreach ($tSelectedPack['partList'] as $tPart) {
-                $tType = isset($tPart['type']) ? $tPart['type'] : 'file';
-                $tClass = isset($tPart['class']) ? $tPart['class'] : null;
-
-                if (!is_null($tClass) && !in_array($tClass, $uClasses, true)) {
-                    continue;
-                }
-
-                if ($tType == 'function') {
-                    $tContent .= call_user_func($tPart['name']);
-                } elseif ($tType == 'file.less') {
-                    if (is_null(self::$lessCompiler)) {
-                        self::$lessCompiler = new \lessc();
-                    }
-
-                    $tLessScript = Io::translatePath($tPart['path']);
-
-                    $tContent .= '/* CSS: ' . $tPart['path'] . ' (LESS) */' . PHP_EOL;
-                    $tContent .= self::$lessCompiler->compileFile($tLessScript);
-                    $tContent .= PHP_EOL;
-                } else {
-                    switch ($tMimetype) {
-                        case 'application/x-httpd-php':
-                        case 'application/x-httpd-php-source':
-                            $tContent .= Binder::printPhpSource(Io::read(Io::translatePath($tPart['path'])));
-                            break;
-                        case 'application/x-javascript':
-                            $tContent .= '/* JS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Io::translatePath($tPart['path']));
-                            $tContent .= PHP_EOL;
-                            break;
-                        case 'text/css':
-                            $tContent .= '/* CSS: ' . $tPart['path'] . ' */' . PHP_EOL;
-                            $tContent .= Io::read(Io::translatePath($tPart['path']));
-                            $tContent .= PHP_EOL;
-                            break;
-                        default:
-                            $tContent .= Io::read(Io::translatePath($tPart['path']));
-                            break;
-                    }
-                }
-            }
-
-            Response::sendHeaderCache($tCacheTtl);
-
-            switch ($tMimetype) {
-                case 'application/x-javascript':
-                    if ($tMinify) {
-                        // $tContent = \JSMinPlus::minify($tContent);
-                    }
-                    echo $tContent;
-                    break;
-                case 'text/css':
-                    if ($tMinify) {
-                        // $tContent = \CssMin::minify($tContent);
-                    }
-                    echo $tContent;
-                    break;
-                default:
-                    echo $tContent;
-                    break;
-            }
-
-            $tCache->cacheSet('assets/' . $tFilename, $tContent);
+            $tBinder->add($tType, $tBinder->outputType, $tValue, $tClass);
         }
+
+        echo $tBinder->output();
 
         return true;
     }
