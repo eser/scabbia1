@@ -12,10 +12,10 @@ use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\Views\Views;
+use Scabbia\Binder;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
-use Scabbia\Utils;
 
 /**
  * Assets Extension
@@ -149,7 +149,7 @@ class Assets
                     switch ($tMimetype) {
                         case 'application/x-httpd-php':
                         case 'application/x-httpd-php-source':
-                            $tContent .= Utils::printFile(Io::translatePath($tPart['path']));
+                            $tContent .= Binder::printPhpSource(Io::read(Io::translatePath($tPart['path'])));
                             break;
                         case 'application/x-javascript':
                             $tContent .= '/* JS: ' . $tPart['path'] . ' */' . PHP_EOL;

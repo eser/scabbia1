@@ -87,7 +87,7 @@ class Binder
         };
 
         self::$fileProcessors['php'] = function ($uInput, $uDescription) {
-            return Utils::printFile($uInput);
+            return self::printPhpSource($uInput);
         };
     }
 
@@ -182,5 +182,122 @@ class Binder
         }
 
         return $tContent;
+    }
+
+    /**
+     * Returns a php source to view.
+     *
+     * @param string    $uInput         php source code
+     * @param bool      $uOnlyContent   returns just file content without comments
+     *
+     * @return array|string the file content in printable format with or without comments
+     */
+    public static function printPhpSource($uInput, $uOnlyContent = true)
+    {
+        $tDocComments = array();
+        $tReturn = '';
+        $tLastToken = -1;
+        $tOpenStack = array();
+
+        foreach (token_get_all($uInput) as $tToken) {
+            if (is_array($tToken)) {
+                $tTokenId = $tToken[0];
+                $tTokenContent = $tToken[1];
+            } else {
+                $tTokenId = null;
+                $tTokenContent = $tToken;
+            }
+
+            // $tReturn .= PHP_EOL . token_name($tTokenId) . PHP_EOL;
+            switch ($tTokenId) {
+                case T_OPEN_TAG:
+                    $tReturn .= '<' . '?php ';
+                    array_push($tOpenStack, $tTokenId);
+                    break;
+                case T_OPEN_TAG_WITH_ECHO:
+                    $tReturn .= '<' . '?php echo ';
+                    array_push($tOpenStack, $tTokenId);
+                    break;
+                case T_CLOSE_TAG:
+                    $tLastOpen = array_pop($tOpenStack);
+
+                    if ($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
+                        $tReturn .= '; ';
+                    } else {
+                        if ($tLastToken != T_WHITESPACE) {
+                            $tReturn .= ' ';
+                        }
+                    }
+
+                    $tReturn .= '?' . '>';
+                    break;
+                case T_COMMENT:
+                case T_DOC_COMMENT:
+                    if (substr($tTokenContent, 0, 3) == '/**') {
+                        $tCommentContent = substr($tTokenContent, 2, strlen($tTokenContent) - 4);
+
+                        foreach (explode("\n", $tCommentContent) as $tLine) {
+                            $tLineContent = ltrim($tLine, "\t ");
+
+                            if (substr($tLineContent, 0, 3) == '* @') {
+                                $tLineContents = explode(' ', substr($tLineContent, 3), 2);
+                                if (count($tLineContents) < 2) {
+                                    continue;
+                                }
+
+                                if (!isset($tDocComments[$tLineContents[0]])) {
+                                    $tDocComments[$tLineContents[0]] = array();
+                                }
+
+                                $tDocComments[$tLineContents[0]][] = $tLineContents[1];
+                            }
+                        }
+                    }
+                    break;
+                case T_WHITESPACE:
+                    if ($tLastToken != T_WHITESPACE &&
+                        $tLastToken != T_OPEN_TAG &&
+                        $tLastToken != T_OPEN_TAG_WITH_ECHO &&
+                        $tLastToken != T_COMMENT &&
+                        $tLastToken != T_DOC_COMMENT
+                    ) {
+                        $tReturn .= ' ';
+                    }
+                    break;
+                case null:
+                    $tReturn .= $tTokenContent;
+                    if ($tLastToken == T_END_HEREDOC) {
+                        $tReturn .= "\n";
+                        $tTokenId = T_WHITESPACE;
+                    }
+                    break;
+                default:
+                    $tReturn .= $tTokenContent;
+                    break;
+            }
+
+            $tLastToken = $tTokenId;
+        }
+
+        while (count($tOpenStack) > 0) {
+            $tLastOpen = array_pop($tOpenStack);
+            if ($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
+                $tReturn .= '; ';
+            } else {
+                if ($tLastToken != T_WHITESPACE) {
+                    $tReturn .= ' ';
+                }
+            }
+
+            $tReturn .= '?' . '>';
+        }
+
+        if (!$uOnlyContent) {
+            $tArray = array(&$tReturn, $tDocComments);
+
+            return $tArray;
+        }
+
+        return $tReturn;
     }
 }
