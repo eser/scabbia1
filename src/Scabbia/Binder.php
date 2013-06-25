@@ -14,9 +14,6 @@ use Scabbia\Io;
  *
  * @package Scabbia
  * @version 1.1.0
- *
- * @todo ttl per binder instance to invalidate cache
- * @todo caching
  */
 class Binder
 {
@@ -50,6 +47,10 @@ class Binder
      * @var string Class list.
      */
     public $classes;
+    /**
+     * @var int    Cache Time to live.
+     */
+    public $cacheTtl;
 
 
     /**
@@ -96,12 +97,14 @@ class Binder
      *
      * @param string $uOutputName Name of the output
      * @param string $uOutputType Type of the output
-     * @param array  $uClasses Classes
+     * @param int    $uCacheTtl   Cache time to live
+     * @param array  $uClasses    Classes
      */
-    public function __construct($uOutputName, $uOutputType, array $uClasses = array())
+    public function __construct($uOutputName, $uOutputType, $uCacheTtl = 0, array $uClasses = array())
     {
         $this->outputName = $uOutputName;
         $this->outputType = $uOutputType;
+        $this->cacheTtl = $uCacheTtl;
         $this->classes = $uClasses;
     }
 
@@ -130,6 +133,16 @@ class Binder
      */
     public function output()
     {
+        $tOutputFile = Io::translatePath('{writable}cache/assets/' . $this->outputName);
+        foreach ($this->classes as $tClassName) {
+            $tOutputFile .= '_' . $tClassName;
+        }
+        $tOutputFile .= '.' . $this->outputType;
+
+        if (!Framework::$disableCaches && Io::isReadable($tOutputFile, $this->cacheTtl)) {
+            return Io::read($tOutputFile);
+        }
+
         $tContent = '';
 
         foreach ($this->parts as $tPart) {
@@ -161,7 +174,11 @@ class Binder
         }
 
         if (array_key_exists($this->outputType, self::$packProcessors)) {
-            return call_user_func(self::$packProcessors[$this->outputType], $tContent);
+            $tContent = call_user_func(self::$packProcessors[$this->outputType], $tContent);
+        }
+
+        if (!Framework::$readonly) {
+            Io::write($tOutputFile, $tContent);
         }
 
         return $tContent;
