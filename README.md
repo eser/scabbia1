@@ -10,7 +10,7 @@ Installation
 ------------
 ##### Alternative 1: Zip Package #####
 
-Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch `./composer_update.sh` or `composer_update.cmd`.
+Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch `php composer_update.php`.
 
 ##### Alternative 2: Composer #####
 

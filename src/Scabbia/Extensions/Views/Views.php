@@ -102,6 +102,6 @@ class Views
             return;
         }
 
-        echo htmlspecialchars($uObject, ENT_NOQUOTES);
+        echo htmlspecialchars($uObject, ENT_NOQUOTES, mb_internal_encoding());
     }
 }
