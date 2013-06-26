@@ -14,6 +14,8 @@ use Scabbia\Io;
  *
  * @package Scabbia
  * @version 1.1.0
+ *
+ * @todo download bind-type
  */
 class Binder
 {
@@ -68,7 +70,7 @@ class Binder
                 }
 
                 $tContent  = '/* LESS ' . $uDescription . ' */' . PHP_EOL;
-                $tContent .= self::$lessCompiler->compileFile($uInput);
+                $tContent .= self::$lessCompiler->compile($uInput);
                 $tContent .= PHP_EOL;
 
                 return $tContent;

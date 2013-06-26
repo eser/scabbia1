@@ -44,109 +44,110 @@
                 "cacheTtl:disabled":     86400,
                 "partList": [
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "core",
                         "path":         "{core}resources/laroux.js/laroux.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "core",
                         "path":         "{core}resources/laroux.js/laroux.ui.js"
                     },
                     {
-                        "type":         "function",
+                        "bindtype":     "function",
+                        "parttype":     "js",
                         "class":        "core",
                         "name":         "Scabbia\\Extensions\\LarouxJs\\LarouxJs::exportJs"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "blackmore",
                         "path":         "{core}resources/blackmore/blackmore.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "jquery",
                         "path":         "{core}resources/jquery/jquery-2.0.2.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "jquery-migrate",
                         "path":         "{core}resources/jquery/jquery-migrate-1.2.1.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "zeptojs",
                         "path":         "{core}resources/zepto.js/zepto.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "validation",
                         "path":         "{core}resources/jquery.validation/jquery.validate.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "validation",
                         "path":         "{core}resources/jquery.validation/jquery.validate.additional-methods.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "cleditor",
                         "path":         "{core}resources/jquery.cleditor/jquery.cleditor.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "tablesorter",
                         "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "tablesorter",
                         "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.pager.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "flot",
                         "path":         "{core}resources/jquery.flot/excanvas.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "flot",
                         "path":         "{core}resources/jquery.flot/jquery.flot.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "flot",
                         "path":         "{core}resources/jquery.flot/jquery.flot.pie.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/bootstrap/bootstrap.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/typeahead/typeahead.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/hogan/hogan-2.0.0.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.js"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/intro.js"
                     }
                 ],
                 "partList:development": [
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "core",
                         "path":         "{core}resources/pqp/pqp.js"
                     }
@@ -158,79 +159,79 @@
                 "cacheTtl:disabled":     86400,
                 "partList": [
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "core",
                         "path":         "{core}resources/laroux.js/laroux.ui.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "errorpages",
                         "path":         "{core}resources/errorpages/errorpages.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "docs",
                         "path":         "{core}resources/docs/markdown.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "blackmore",
                         "path":         "{core}resources/blackmore/blackmore.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "reset",
                         "path":         "{core}resources/reset/reset.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "normalize",
                         "path":         "{core}resources/normalize.css/normalize.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "validation",
                         "path":         "{core}resources/jquery.validation/jquery.validate.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "cleditor",
                         "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "cleditor",
                         "path":         "{core}resources/jquery.cleditor/jquery.cleditor.editor.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "tablesorter",
                         "path":         "{core}resources/jquery.tablesorter/theme.default.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/bootstrap/bootstrap.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "bootstrap",
                         "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "map",
                         "path":         "{core}resources/mapbox/mapbox.css"
                     },
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "introjs",
                         "path":         "{core}resources/introjs/introjs.css"
                     }
                 ],
                 "partList:development": [
                     {
-                        "type":         "file",
+                        "bindtype":     "file",
                         "class":        "core",
                         "path":         "{core}resources/pqp/pqp.css"
                     }

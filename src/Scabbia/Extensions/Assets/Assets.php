@@ -53,7 +53,7 @@ class Assets
 
             foreach (Config::get('assets/fileList', array()) as $tFile) {
                 self::$packs[] = array(
-                    'partList' => array(array('type' => $tFile['type'], 'name' => $tFile['name'])),
+                    'partList' => array(array('bindtype' => $tFile['bindtype'], 'name' => $tFile['name'])),
                     'name' => $tFile['name'],
                     'type' => $tFile['type'],
                     'cacheTtl' => isset($tFile['cacheTtl']) ? $tFile['cacheTtl'] : 0
@@ -114,11 +114,18 @@ class Assets
         Response::sendHeaderCache($tCacheTtl);
 
         foreach ($tSelectedPack['partList'] as $tPart) {
-            $tType = isset($tPart['type']) ? $tPart['type'] : 'file';
+            $tBindType = isset($tPart['bindtype']) ? $tPart['bindtype'] : 'file';
             $tClass = isset($tPart['class']) ? $tPart['class'] : null;
-            $tValue = ($tType == 'function') ? $tPart['name'] : $tPart['path'];
 
-            $tBinder->add($tType, $tBinder->outputType, $tValue, $tClass);
+            if ($tBindType == 'function') {
+                $tValue = $tPart['name'];
+                $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : $tBinder->outputType;
+            } else {
+                $tValue = $tPart['path'];
+                $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : pathinfo($tPart['path'], PATHINFO_EXTENSION);
+            }
+
+            $tBinder->add($tBindType, $tPartType, $tValue, $tClass);
         }
 
         echo $tBinder->output();
