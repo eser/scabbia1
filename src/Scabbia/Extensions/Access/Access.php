@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Access;
 
 use Scabbia\Extensions\Views\Views;
+use Scabbia\CustomException;
 use Scabbia\Config;
 use Scabbia\Io;
 
@@ -66,19 +67,15 @@ class Access
             header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503);
             header('Retry-After: 600', true);
 
-            call_user_func($uParms['onerror'], 'maintenance', _('Service Unavailable'), _('This service is currently undergoing scheduled maintenance. Please try back later. Sorry for the inconvenience.'));
-
             // to interrupt event-chain execution
-            return false;
+            throw new CustomException('maintenance', _('Service Unavailable'), _('This service is currently undergoing scheduled maintenance. Please try back later. Sorry for the inconvenience.'));
         }
 
         if (count(self::$ipFilters) > 0) {
             header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 
-            call_user_func($uParms['onerror'], 'ipban', _('Service Unavailable'), _('Your access have been banned from this service.'));
-
             // to interrupt event-chain execution
-            return false;
+            throw new CustomException('ipban', _('Service Unavailable'), _('Your access have been banned from this service.'));
         }
 
         return null;

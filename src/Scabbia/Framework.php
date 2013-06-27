@@ -7,6 +7,7 @@
 
 namespace Scabbia;
 
+use Scabbia\CustomException;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Io;
@@ -255,26 +256,33 @@ class Framework
         ob_start('Scabbia\\Framework::output');
         ob_implicit_flush(false);
 
-        // ignite application
-        if (!is_null($tSelectedApplication)) {
+        try {
             // run extensions
-            $tParms = array(
-                'onerror' => self::$application->onError
-            );
+            $tParms = array();
             Events::invoke('pre-run', $tParms);
 
-            foreach (self::$application->callbacks as $tCallback) {
-                $tReturn = call_user_func($tCallback);
+            // ignite application
+            if (!is_null($tSelectedApplication)) {
+                $tReturn = self::$application->callbacks->invoke();
+//                foreach (self::$application->callbacks as $tCallback) {
+//                    $tReturn = call_user_func($tCallback);
+//
+//                    if (!is_null($tReturn) && $tReturn === true) {
+//                        break;
+//                    }
+//                }
 
-                if (!is_null($tReturn) && $tReturn === true) {
-                    break;
+                if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
+                    call_user_func(self::$application->otherwise);
+                    return false;
                 }
             }
-
-            if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
-                call_user_func(self::$application->otherwise);
-                return false;
+        } catch (CustomException $ex) {
+            if (!is_null($tSelectedApplication)) {
+                call_user_func(self::$application->onException, $ex->type, $ex->title, $ex->getMessage());
             }
+
+            return false;
         }
 
         return true;
