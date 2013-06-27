@@ -16,6 +16,7 @@ use Scabbia\Extensions\Views\Views;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Scabbia\Framework;
+use Scabbia\Utils;
 
 /**
  * Mvc Extension: ControllerBase Class
@@ -66,6 +67,10 @@ class ControllerBase implements LoggerAwareInterface
      * @ignore
      */
     public $logger;
+    /**
+     * @ignore
+     */
+    public $annotations = array();
 
 
     /**
@@ -78,6 +83,18 @@ class ControllerBase implements LoggerAwareInterface
 
         $this->prerender = new Delegate();
         $this->postrender = new Delegate();
+
+        $tReflection = new \ReflectionClass($this);
+        foreach ($tReflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethodReflection) {
+            if ($tMethodReflection->class == __CLASS__) {
+                continue;
+            }
+
+            $tDocComment = $tMethodReflection->getDocComment();
+            if (strlen($tDocComment) > 0) {
+                $this->annotations[$tMethodReflection->name] = Utils::parseAnnotations($tDocComment);
+            }
+        }
     }
 
     /**

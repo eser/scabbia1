@@ -201,6 +201,35 @@ class Utils
     }
 
     /**
+     * Parses the docblock and returns annotations in an array.
+     *
+     * @param string $uDocComment Docblock which contains annotations
+     *
+     * @returns array Set of annotations
+     */
+    public static function parseAnnotations($uDocComment)
+    {
+        preg_match_all(
+            '/\\*[\\t| ]\@([^\\n|\\t| ]+)(?:[\\t| ]([^\\n]+))*/',
+            $uDocComment,
+            $tDocCommentLines,
+            PREG_SET_ORDER
+        );
+
+        $tAnnotations = array();
+
+        foreach ($tDocCommentLines as $tDocCommentLine) {
+            if (!isset($tAnnotations[$tDocCommentLine[1]])) {
+                $tAnnotations[$tDocCommentLine[1]] = array();
+            }
+
+            $tAnnotations[$tDocCommentLine[1]][] = isset($tDocCommentLine[2]) ? $tDocCommentLine[2] : null;
+        }
+
+        return $tAnnotations;
+    }
+
+    /**
      * Replaces placeholders in given string with framework-variables.
      *
      * @param string $uInput the string with placeholders
