@@ -279,7 +279,6 @@ class Html
                     $tResult .= String::format(
                         $uOptions['passivelink'],
                         array(
-                             'root' => Framework::$siteroot,
                              'page' => '1',
                              'pagetext' => '&lt;&lt;'
                         )
@@ -288,7 +287,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['passivelink'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => '1',
                          'pagetext' => '&lt;'
                     )
@@ -298,7 +296,6 @@ class Html
                     $tResult .= String::format(
                         $uOptions['link'],
                         array(
-                             'root' => Framework::$siteroot,
                              'page' => '1',
                              'pagetext' => '&lt;&lt;'
                         )
@@ -307,7 +304,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['link'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => $tCurrent - 1,
                          'pagetext' => '&lt;'
                     )
@@ -326,7 +322,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['activelink'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => $i,
                          'pagetext' => $i
                     )
@@ -335,7 +330,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['link'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => $i,
                          'pagetext' => $i
                     )
@@ -358,7 +352,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['passivelink'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => $tPages,
                          'pagetext' => '&gt;'
                     )
@@ -367,7 +360,6 @@ class Html
                     $tResult .= String::format(
                         $uOptions['passivelink'],
                         array(
-                             'root' => Framework::$siteroot,
                              'page' => $tPages,
                              'pagetext' => '&gt;&gt;'
                         )
@@ -377,7 +369,6 @@ class Html
                 $tResult .= String::format(
                     $uOptions['link'],
                     array(
-                         'root' => Framework::$siteroot,
                          'page' => $tCurrent + 1,
                          'pagetext' => '&gt;'
                     )
@@ -385,7 +376,7 @@ class Html
                 if ($uOptions['firstlast']) {
                     $tResult .= String::format(
                         $uOptions['link'],
-                        array('root' => Framework::$siteroot, 'page' => $tPages, 'pagetext' => '&gt;&gt;')
+                        array('page' => $tPages, 'pagetext' => '&gt;&gt;')
                     );
                 }
             }

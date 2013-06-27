@@ -73,6 +73,10 @@ class Request
     /**
      * @ignore
      */
+    public static $siteroot;
+    /**
+     * @ignore
+     */
     public static $https;
     /**
      * @ignore
@@ -198,9 +202,15 @@ class Request
         self::$route = Router::resolve(self::$queryString, self::$methodext);
 
         // framework variables
-        Utils::$variables['host'] = Request::$host;
-        Utils::$variables['scheme'] = Request::$https ? 'https' : 'http';
-        Utils::$variables['method'] = Request::$method;
+        self::$siteroot = trim(Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME)), '/');
+        if (strlen(self::$siteroot) > 0) {
+            self::$siteroot = '/' . self::$siteroot;
+        }
+
+        Utils::$variables['root'] = self::$siteroot;
+        Utils::$variables['host'] = self::$host;
+        Utils::$variables['scheme'] = self::$https ? 'https' : 'http';
+        Utils::$variables['method'] = self::$method;
     }
 
     /**

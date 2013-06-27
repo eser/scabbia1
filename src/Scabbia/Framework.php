@@ -78,12 +78,6 @@ class Framework
      */
     public static $apppath = null;
     /**
-     * @var string  Stores relative path of framework root
-     *
-     * @todo probably wrong place - app
-     */
-    public static $siteroot = null;
-    /**
      * @var int     The exit status
      *
      * @todo probably wrong place
@@ -197,31 +191,26 @@ class Framework
     {
         // determine active application
         $tSelectedApplication = null;
+
         foreach (self::$applications as $tApplication) {
-            // if (!is_null(self::$classLoader)) {
-            //    self::$classLoader->set($tApplication['namespace'], $tApplication['directory']);
-            // }
-
-            // continue if only application is not selected yet.
-            if (!is_null($tSelectedApplication)) {
-                continue;
-            }
-
             if (count($tApplication['endpoints']) > 0) {
                 foreach ($tApplication['endpoints'] as $tEndpoint) {
                     foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
                         $tParsed = parse_url($tEndpointAddress);
+
                         if (!isset($tParsed['port'])) {
                             $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
                         }
 
                         if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
                             $tSelectedApplication = $tApplication;
+                            break 3;
                         }
                     }
                 }
             } else {
                 $tSelectedApplication = $tApplication;
+                break;
             }
         }
 
@@ -234,20 +223,6 @@ class Framework
         // load configuration w/ extensions
         Config::$default = Config::load();
 
-        // siteroot
-        if (is_null(self::$siteroot)) {
-            self::$siteroot = trim(Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME)), '/');
-            if (strlen(self::$siteroot) > 0) {
-                self::$siteroot = '/' . self::$siteroot;
-            }
-        }
-        Utils::$variables['root'] = self::$siteroot;
-
-        // loadClass classes
-        foreach (Config::get('loadClassList', array()) as $tClass) {
-            class_exists($tClass, true);
-        }
-
         // include files
         foreach (Config::get('includeList', array()) as $tInclude) {
             $tIncludePath = pathinfo(Io::translatePath($tInclude));
@@ -259,6 +234,11 @@ class Framework
                     include $tFilename;
                 }
             }
+        }
+
+        // loadClass classes
+        foreach (Config::get('loadClassList', array()) as $tClass) {
+            class_exists($tClass, true);
         }
 
         // events

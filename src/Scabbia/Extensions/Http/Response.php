@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Http;
 
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Framework;
 
@@ -317,7 +318,7 @@ class Response
 
         }
 
-        setrawcookie($uCookie, Http::encode($uValue), $uExpire, Framework::$siteroot . '/');
+        setrawcookie($uCookie, Http::encode($uValue), $uExpire, Request::$siteroot . '/');
     }
 
     /**
@@ -325,6 +326,6 @@ class Response
      */
     public static function removeCookie($uCookie)
     {
-        setrawcookie($uCookie, '', time() - 3600, Framework::$siteroot . '/');
+        setrawcookie($uCookie, '', time() - 3600, Request::$siteroot . '/');
     }
 }

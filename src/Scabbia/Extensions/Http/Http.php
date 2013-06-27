@@ -92,7 +92,7 @@ class Http
     {
         /*
         $tParms = array(
-            'siteroot' => Framework::$siteroot,
+            'siteroot' => Request::$siteroot,
             'device' => Request::$crawlerType,
             'path' => $uPath
         );
@@ -106,12 +106,12 @@ class Http
             return
                 (Request::$https ? 'https://' : 'http://') .
                 Request::$host .
-                Framework::$siteroot .
+                Request::$siteroot .
                 '/' .
                 $tResolved[0];
         }
 
-        return Framework::$siteroot . '/' . $tResolved[0];
+        return Request::$siteroot . '/' . $tResolved[0];
     }
 
     /**
