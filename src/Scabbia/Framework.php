@@ -73,12 +73,6 @@ class Framework
      */
     public static $vendorpath = null;
     /**
-     * @var string  Stores relative path of running application
-     *
-     * @todo probably wrong place - app
-     */
-    public static $apppath = null;
-    /**
      * @var int     The exit status
      *
      * @todo probably wrong place
@@ -218,7 +212,6 @@ class Framework
         // construct application object
         if (!is_null($tSelectedApplication)) {
             self::$application = new Application($tSelectedApplication['namespace'], $tSelectedApplication['directory']);
-            self::$apppath = self::$basepath . self::$application->directory;
         }
 
         // load configuration w/ extensions

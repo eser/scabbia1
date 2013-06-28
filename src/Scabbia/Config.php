@@ -42,9 +42,9 @@ class Config
             Framework::$corepath . 'config.json'
         );
 
-        if (!is_null(Framework::$apppath)) {
+        if (!is_null(Framework::$application)) {
             Io::glob(
-                Framework::$apppath . 'config/',
+                Framework::$application->path . 'config/',
                 '*.json',
                 Io::GLOB_RECURSIVE | Io::GLOB_FILES,
                 '',
@@ -68,15 +68,19 @@ class Config
         if (isset($tConfig['extensionList'])) {
             foreach ($tConfig['extensionList'] as $tExtension) {
                 $tFile = Framework::$corepath . 'src/Scabbia/Extensions/' . $tExtension . '/config.json';
+
                 if (file_exists($tFile)) {
                     self::loadFile($tConfig, $tFile, false);
                     continue;
                 }
 
-                $tFile = Framework::$apppath . 'Extensions/' . $tExtension . '/config.json';
-                if (file_exists($tFile)) {
-                    self::loadFile($tConfig, $tFile, false);
-                    continue;
+                if (!is_null(Framework::$application)) {
+                    $tFile = Framework::$application->path . 'Extensions/' . $tExtension . '/config.json';
+
+                    if (file_exists($tFile)) {
+                        self::loadFile($tConfig, $tFile, false);
+                        continue;
+                    }
                 }
 
                 throw new \Exception('extension not found - ' . $tExtension);

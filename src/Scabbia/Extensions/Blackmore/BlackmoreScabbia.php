@@ -72,8 +72,10 @@ class BlackmoreScabbia
 
         $tStart = microtime(true);
 
-        self::purgeFolder(Framework::$apppath . 'writable/cache/');
-        self::purgeFolder(Framework::$apppath . 'writable/logs/');
+        if (!is_null(Framework::$application)) {
+            self::purgeFolder(Framework::$application->path . 'writable/cache/');
+            self::purgeFolder(Framework::$application->path . 'writable/logs/');
+        }
 
         exit('done in ' . number_format(microtime(true) - $tStart, 4) . ' msec.');
     }

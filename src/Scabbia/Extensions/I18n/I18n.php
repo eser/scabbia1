@@ -132,25 +132,28 @@ class I18n
             putenv('LANG=' . $tLocale[0]);
             setlocale(LC_ALL, $tLocale[0]);
 
-            $tLocalePath = Framework::$apppath . 'locale';
-            $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
-            $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
+            // @todo path confusion
+            if (!is_null(Framework::$application)) {
+                $tLocalePath = Framework::$application->path . 'locale';
+                $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
+                $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
 
-            if (!Framework::$readonly && (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile)))) {
-                $tCompiler = new \TrekkSoft\Potomoco\Compiler();
-                $tCompiler->compile($tPoFile, $tMoFile);
-            }
+                if (!Framework::$readonly && (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile)))) {
+                    $tCompiler = new \TrekkSoft\Potomoco\Compiler();
+                    $tCompiler->compile($tPoFile, $tMoFile);
+                }
 
-            if (self::$gettextType == self::GETTEXT_EXTENSION) {
-                // bindtextdomain('core', Framework::$corepath . 'locale');
-                // bind_textdomain_codeset('core', self::$language['internalEncoding']);
+                if (self::$gettextType == self::GETTEXT_EXTENSION) {
+                    // bindtextdomain('core', Framework::$corepath . 'locale');
+                    // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
-                bindtextdomain('application', $tLocalePath);
-                bind_textdomain_codeset('application', self::$language['internalEncoding']);
+                    bindtextdomain('application', $tLocalePath);
+                    bind_textdomain_codeset('application', self::$language['internalEncoding']);
 
-                textdomain('application');
-            } else {
-                self::$gettextInstance = new Gettext($tMoFile);
+                    textdomain('application');
+                } else {
+                    self::$gettextInstance = new Gettext($tMoFile);
+                }
             }
 
             Utils::$variables['lang'] = self::$language['key'];

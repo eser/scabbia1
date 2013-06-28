@@ -24,9 +24,9 @@ class Application
      */
     public $name;
     /**
-     * @var string      application directory
+     * @var string      application path
      */
-    public $directory;
+    public $path;
     /**
      * @var array       callback definitions
      */
@@ -50,7 +50,7 @@ class Application
     public function __construct($uName = null, $uDirectory = null)
     {
         $this->name = !is_null($uName) ? $uName : 'Application';
-        $this->directory = !is_null($uDirectory) ? $uDirectory : 'application/';
+        $this->path = Framework::$basepath . (!is_null($uDirectory) ? $uDirectory : 'application/');
 
         $this->callbacks = new Delegate(true);
         $this->callbacks->add('Scabbia\\Extensions\\Http\\Http::routing');

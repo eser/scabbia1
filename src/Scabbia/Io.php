@@ -196,10 +196,12 @@ class Io
             $uPath = Framework::$corepath . substr($uPath, 6);
         } elseif (strncmp($uPath, '{vendor}', 8) == 0) {
             $uPath = Framework::$vendorpath . substr($uPath, 8);
-        } elseif (strncmp($uPath, '{app}', 5) == 0) {
-            $uPath = Framework::$apppath . substr($uPath, 5);
-        } elseif (strncmp($uPath, '{writable}', 10) == 0) {
-            $uPath = Framework::$apppath . 'writable/' . substr($uPath, 10);
+        } elseif (!is_null(Framework::$application)) {
+            if (strncmp($uPath, '{app}', 5) == 0) {
+                $uPath = Framework::$application->path . substr($uPath, 5);
+            } elseif (strncmp($uPath, '{writable}', 10) == 0) {
+                $uPath = Framework::$application->path . 'writable/' . substr($uPath, 10);
+            }
         }
 
         if ($uCreateFolder) {
