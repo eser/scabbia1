@@ -36,9 +36,18 @@ class Application
      */
     public $otherwise = null;
     /**
-     * @var null|string if any exception thrown during process
+     * @var null|string if any error occurs during process
      */
-    public $onException = null;
+    public $onError = null;
+    /**
+     * @var array       before delegate
+     */
+    public $before;
+    /**
+     * @var array       after delegate
+     */
+    public $after;
+
 
 
     /**
@@ -52,11 +61,14 @@ class Application
         $this->name = !is_null($uName) ? $uName : 'Application';
         $this->path = Framework::$basepath . (!is_null($uDirectory) ? $uDirectory : 'application/');
 
+        $this->before = new Delegate();
+        $this->after = new Delegate();
+
         $this->callbacks = new Delegate(true);
         $this->callbacks->add('Scabbia\\Extensions\\Http\\Http::routing');
         $this->callbacks->add('Scabbia\\Extensions\\Assets\\Assets::routing');
 
         $this->otherwise = 'Scabbia\\Extensions\\Http\\Http::notfound';
-        $this->onException = 'Scabbia\\Extensions\\Http\\Http::error';
+        $this->onError = 'Scabbia\\Extensions\\Http\\Http::error';
     }
 }

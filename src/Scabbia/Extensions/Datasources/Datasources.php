@@ -39,9 +39,6 @@ class Datasources
         }
 
         if (is_null(self::$datasources)) {
-            $tParms = array();
-            Events::invoke('registerDatasources', $tParms);
-
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
                 $tDatasource = new self::$interfaces[$tDatasourceConfig['interface']] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;

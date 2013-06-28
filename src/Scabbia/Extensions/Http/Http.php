@@ -90,17 +90,6 @@ class Http
      */
     public static function url($uPath, $uFull = false)
     {
-        /*
-        $tParms = array(
-            'siteroot' => Request::$siteroot,
-            'device' => Request::$crawlerType,
-            'path' => $uPath
-        );
-
-        Events::invoke('httpUrl', $tParms);
-
-        return String::format(Config::get('http/link', '{@siteroot}/{@path}'), $tParms);
-        */
         $tResolved = Router::resolve($uPath);
         if ($uFull) {
             return

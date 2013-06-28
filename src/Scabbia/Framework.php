@@ -256,7 +256,9 @@ class Framework
 
             // ignite application
             if (!is_null($tSelectedApplication)) {
+                self::$application->before->invoke();
                 $tReturn = self::$application->callbacks->invoke();
+                self::$application->after->invoke();
 
                 if (!is_null(self::$application->otherwise) && $tReturn !== false) {
                     call_user_func(self::$application->otherwise);
@@ -265,7 +267,7 @@ class Framework
             }
         } catch (CustomException $ex) {
             if (!is_null($tSelectedApplication)) {
-                call_user_func(self::$application->onException, $ex->type, $ex->title, $ex->getMessage());
+                call_user_func(self::$application->onError, $ex->type, $ex->title, $ex->getMessage());
             }
 
             return false;

@@ -55,24 +55,6 @@ class Controllers
         $uParams = explode('/', $tActualParams);
 
         if (is_null(self::$root)) {
-            /*
-            $tParms = array();
-            Events::invoke('registerControllers', $tParms);
-
-            self::$root = new ControllerBase();
-
-            // todo: maybe split _ for children
-            foreach (Utils::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller', true) as $tClass) {
-                if (($tPos = strrpos($tClass, '\\')) !== false) {
-                    $tClassName = lcfirst(substr($tClass, $tPos + 1));
-                } else {
-                    $tClassName = lcfirst($tClass);
-                }
-
-                self::$root->addChildController($tClassName, $tClass);
-            }
-            */
-
             self::$root = new ControllerBase();
             $tClass = Framework::$application->name . '\\Controllers\\' . $tActualController;
 
