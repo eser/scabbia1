@@ -5,14 +5,10 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Http;
+namespace Scabbia;
 
-use Scabbia\Extensions\Helpers\String;
-use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Http\Router;
-use Scabbia\Extensions\Objects\Collection;
 use Scabbia\Config;
-use Scabbia\Framework;
 use Scabbia\Utils;
 
 /**
@@ -29,15 +25,17 @@ class Request
     /**
      * @ignore
      */
-    public static $platform = null;
+    const FILTER_VALIDATE_BOOLEAN = 'scabbiaFilterValidateBoolean';
     /**
      * @ignore
      */
-    public static $crawler = null;
+    const FILTER_SANITIZE_BOOLEAN = 'scabbiaFilterSanitizeBoolean';
     /**
      * @ignore
      */
-    public static $crawlerType = null;
+    const FILTER_SANITIZE_XSS = 'scabbiaFilterSanitizeXss';
+
+
     /**
      * @ignore
      */
@@ -50,18 +48,6 @@ class Request
      * @ignore
      */
     public static $queryString;
-    /**
-     * @ignore
-     */
-    public static $get;
-    /**
-     * @ignore
-     */
-    public static $post;
-    /**
-     * @ignore
-     */
-    public static $cookie;
     /**
      * @ignore
      */
@@ -97,18 +83,6 @@ class Request
     /**
      * @ignore
      */
-    public static $isBrowser = false;
-    /**
-     * @ignore
-     */
-    public static $isRobot = false;
-    /**
-     * @ignore
-     */
-    public static $isMobile = false;
-    /**
-     * @ignore
-     */
     public static $languages = array();
     /**
      * @ignore
@@ -119,7 +93,7 @@ class Request
     /**
      * @ignore
      */
-    public static function extensionLoad()
+    public static function init()
     {
         // $remoteIp
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
@@ -139,7 +113,9 @@ class Request
         );
 
         // $protocol
-        if (isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0') {
+        if (PHP_SAPI == 'cli') {
+            self::$protocol = 'CLI';
+        } elseif (isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0') {
             self::$protocol = 'HTTP/1.0';
         } else {
             self::$protocol = 'HTTP/1.1';
@@ -164,7 +140,7 @@ class Request
             }
         }
 
-        // $method, $methodext, $isAjax
+        // $method, $isAjax, $wrapperFunction, etc.
         self::$method = strtolower($_SERVER['REQUEST_METHOD']);
         self::$methodext = self::$method;
 
@@ -177,24 +153,12 @@ class Request
             self::$wrapperFunction = $_SERVER['HTTP_X_WRAPPER_FUNCTION'];
         }
 
-        // get/post/cookie
-        self::$get = new Collection($_GET);
-        self::$post = new Collection($_POST);
-        self::$cookie = new Collection($_COOKIE);
-
-        // $userAgent
-        if (Config::get('http/userAgents/autoCheck', false) !== false) {
-            self::checkUserAgent();
-        }
-
-        // self::$browser = get_browser(null, true);
-
         // $languages, $contentTypes
         self::$languages = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
-            Http::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true) :
+            self::parseHeaderString($_SERVER['HTTP_ACCEPT_LANGUAGE'], true) :
             array();
         self::$contentTypes = isset($_SERVER['HTTP_ACCEPT']) ?
-            Http::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) :
+            self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) :
             array();
 
         // $queryString
@@ -216,51 +180,98 @@ class Request
     /**
      * @ignore
      */
-    public static function rewriteUrl(&$uUrl, $uMatch, $uForward)
+    public static function parseHeaderString($uString, $uLowerAll = false)
     {
-        $tReturn = Utils::pregReplace($uMatch, $uForward, $uUrl);
-        if ($tReturn !== false) {
-            $uUrl = $tReturn;
+        $tResult = array();
 
-            return true;
+        foreach (explode(',', $uString) as $tPiece) {
+            // pull out the language, place languages into array of full and primary
+            // string structure:
+            $tPiece = trim($tPiece);
+            if ($uLowerAll) {
+                $tResult[] = strtolower(substr($tPiece, 0, strcspn($tPiece, ';')));
+            } else {
+                $tResult[] = substr($tPiece, 0, strcspn($tPiece, ';'));
+            }
         }
 
-        return false;
+        return $tResult;
+    }
+
+    /**
+     * @ignore
+     *
+     * @todo recursive filtering option
+     */
+    public static function filter($uValue, $uFilter)
+    {
+        if ($uFilter == self::FILTER_VALIDATE_BOOLEAN) {
+            if (
+                $uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1' ||
+                $uValue === false || $uValue == 'false' || $uValue === 0 || $uValue == '0'
+            ) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if ($uFilter == self::FILTER_SANITIZE_BOOLEAN) {
+            if ($uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1') {
+                return true;
+            }
+
+            return false;
+        }
+
+        if ($uFilter == self::FILTER_SANITIZE_XSS) {
+            return self::xss($uValue);
+        }
+
+        $uArgs = func_get_args();
+
+        if (is_callable($uFilter, true)) {
+            $uArgs[1] = $uValue;
+            return call_user_func_array($uFilter, array_slice($uArgs, 1));
+        }
+
+        return call_user_func_array('filter_var', $uArgs);
     }
 
     /**
      * @ignore
      */
-    public static function checkUserAgent()
+    public static function xss($uString)
     {
-        foreach (Config::get('http/userAgents/platformList', array()) as $tPlatformList) {
-            if (preg_match('/' . $tPlatformList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
-                self::$platform = $tPlatformList['name'];
-                break;
-            }
+        if (!is_string($uString)) {
+            return $uString;
         }
 
-        foreach (Config::get('http/userAgents/crawlerList', array()) as $tCrawlerList) {
-            if (preg_match('/' . $tCrawlerList['match'] . '/i', $_SERVER['HTTP_USER_AGENT'])) {
-                self::$crawler = $tCrawlerList['name'];
-                self::$crawlerType = $tCrawlerList['type'];
-
-                switch ($tCrawlerList['type']) {
-                    case 'bot':
-                        self::$isRobot = true;
-                        break;
-                    case 'mobile':
-                        self::$isMobile = true;
-                        break;
-                    case 'browser':
-                    default:
-                        self::$isBrowser = true;
-                        break;
-                }
-
-                break;
-            }
-        }
+        return str_replace(
+            array(
+                '<',
+                '>',
+                '"',
+                '\'',
+                '$',
+                '(',
+                ')',
+                '%28',
+                '%29'
+            ),
+            array(
+                '&#60;',
+                '&#62;',
+                '&#34;',
+                '&#39;',
+                '&#36;',
+                '&#40;',
+                '&#41;',
+                '&#40;',
+                '&#41;'
+            ),
+            $uString
+        ); // '&' => '&#38;'
     }
 
     /**
@@ -290,7 +301,7 @@ class Request
     /**
      * @ignore
      */
-    public static function get($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function get($uKey, $uDefault = null, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         if (!isset($_GET[$uKey])) {
             return $uDefault;
@@ -307,13 +318,13 @@ class Request
             $tNewArgs = array($_GET[$uKey], $uFilter);
         }
 
-        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+        return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
     }
 
     /**
      * @ignore
      */
-    public static function post($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function post($uKey, $uDefault = null, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         if (!isset($_POST[$uKey])) {
             return $uDefault;
@@ -330,13 +341,13 @@ class Request
             $tNewArgs = array($_POST[$uKey], $uFilter);
         }
 
-        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+        return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
     }
 
     /**
      * @ignore
      */
-    public static function cookie($uKey, $uDefault = null, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function cookie($uKey, $uDefault = null, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         if (!isset($_COOKIE[$uKey])) {
             return $uDefault;
@@ -353,14 +364,14 @@ class Request
             $tNewArgs = array($_COOKIE[$uKey], $uFilter);
         }
 
-        return call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+        return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
     }
 
 
     /**
      * @ignore
      */
-    public static function getArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function getArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
@@ -384,7 +395,7 @@ class Request
             $tNewArgs = $tArgs;
             array_unshift($tNewArgs, $_GET[$tKey]);
 
-            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
 
         return $tValues;
@@ -393,7 +404,7 @@ class Request
     /**
      * @ignore
      */
-    public static function postArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function postArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
@@ -417,7 +428,7 @@ class Request
             $tNewArgs = $tArgs;
             array_unshift($tNewArgs, $_POST[$tKey]);
 
-            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
 
         return $tValues;
@@ -426,7 +437,7 @@ class Request
     /**
      * @ignore
      */
-    public static function cookieArray($uKeys, $uFilter = String::FILTER_SANITIZE_XSS)
+    public static function cookieArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
         if (!is_null($uFilter)) {
@@ -450,7 +461,7 @@ class Request
             $tNewArgs = $tArgs;
             array_unshift($tNewArgs, $_COOKIE[$tKey]);
 
-            $tValues[$tKey] = call_user_func_array('Scabbia\\Extensions\\Helpers\\String::filter', $tNewArgs);
+            $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
 
         return $tValues;

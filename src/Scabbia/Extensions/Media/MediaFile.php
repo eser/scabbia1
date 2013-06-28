@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Media;
 
-use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Media\Media;
 use Scabbia\Extensions\Mime\Mime;
 
@@ -341,7 +341,7 @@ class MediaFile
      */
     public function output()
     {
-        Response::sendHeaderCache(-1);
+        Http::sendHeaderCache(-1);
         header('Content-Type: ' . $this->mime, true);
         header('Content-Length: ' . $this->size, true);
         header('Content-Disposition: inline;filename=' . $this->filename . '.' . $this->extension, true);

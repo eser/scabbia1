@@ -23,7 +23,7 @@ class Entity
      */
     public static function getFromRequest()
     {
-        return new static(\Scabbia\Extensions\Http\Request::$post);
+        return new static($_POST);
     }
 
     /**

@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Objects;
 
 use Scabbia\Extensions\Helpers\Arrays;
-use Scabbia\Extensions\Http\Request;
+use Scabbia\Request;
 
 /**
  * Objects Extension: FormHandler Class

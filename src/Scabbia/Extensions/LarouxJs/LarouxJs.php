@@ -9,9 +9,8 @@ namespace Scabbia\Extensions\LarouxJs;
 
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\Http\Request;
-use Scabbia\Extensions\Http\Response;
 use Scabbia\Extensions\Mvc\Controllers;
+use Scabbia\Request;
 
 /**
  * LarouxJs Extension
@@ -42,7 +41,7 @@ class LarouxJs
     public static function output($uParms)
     {
         if (Request::$wrapperFunction == 'laroux.js') {
-            if (Response::sentHeaderValue('Content-Type') == false) {
+            if (Http::sentHeaderValue('Content-Type') == false) {
                 header('Content-Type: application/json', true);
             }
             header('X-Response-Wrapper-Function: laroux.js', true);

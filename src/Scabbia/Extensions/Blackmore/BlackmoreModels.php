@@ -11,7 +11,6 @@ use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Blackmore\Blackmore;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Helpers\String;
-use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Session\Session;
@@ -20,6 +19,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Models\AutoModel;
 use Scabbia\Extensions\Models\AutoModels;
 use Scabbia\Config;
+use Scabbia\Request;
 
 /**
  * Blackmore Extension: Models Section

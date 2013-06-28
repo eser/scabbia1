@@ -8,7 +8,6 @@
 namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
-use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Mvc\Controller;
@@ -16,6 +15,7 @@ use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\Validation\Validation;
 use Scabbia\Config;
 use Scabbia\Events;
+use Scabbia\Request;
 
 /**
  * Blackmore Extension

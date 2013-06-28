@@ -19,11 +19,6 @@
 
     "eventList": [
         {
-            "name":         "load",
-            "type":         "callback",
-            "value":        "Scabbia\\Extensions\\Http\\Request::extensionLoad"
-        },
-        {
             "name":         "reportError",
             "type":         "callback",
             "value":        "Scabbia\\Extensions\\Http\\Http::reportError"

@@ -69,6 +69,21 @@ class Router
     /**
      * @ignore
      */
+    public static function rewriteUrl(&$uUrl, $uMatch, $uForward)
+    {
+        $tReturn = Utils::pregReplace($uMatch, $uForward, $uUrl);
+        if ($tReturn !== false) {
+            $uUrl = $tReturn;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @ignore
+     */
     public static function addRewrite($uMatch, $uForward, $uPriority = 10)
     {
         self::load();
@@ -109,7 +124,7 @@ class Router
                 continue;
             }
 
-            if (Http::rewriteUrl($uQueryString, $tRewriteItem['match'], $tRewriteItem['forward'])) {
+            if (self::rewriteUrl($uQueryString, $tRewriteItem['match'], $tRewriteItem['forward'])) {
                 break;
             }
         }

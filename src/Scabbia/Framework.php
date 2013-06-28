@@ -11,6 +11,7 @@ use Scabbia\CustomException;
 use Scabbia\Config;
 use Scabbia\Events;
 use Scabbia\Io;
+use Scabbia\Request;
 
 /**
  * Methods for essential framework functionality.
@@ -32,18 +33,11 @@ class Framework
      */
     const VERSION = '1.1';
 
+
     /**
      * @var object  Composer's class loader
      */
     public static $classLoader = null;
-    /**
-     * @var object  Array of loaded interfaces
-     */
-    public static $interfaces = array();
-    /**
-     * @var object  Interface instance
-     */
-    public static $interface = null;
     /**
      * @var object  Array of loaded applications
      */
@@ -252,6 +246,8 @@ class Framework
 
             Events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
         }
+
+        Request::init();
 
         // output handling
         ob_start('Scabbia\\Framework::output');

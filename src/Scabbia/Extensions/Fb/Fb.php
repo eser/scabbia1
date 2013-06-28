@@ -11,10 +11,10 @@ use Scabbia\Extensions\Fb\Facebook;
 use Scabbia\Extensions\Fb\FacebookQueryObject;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
-use Scabbia\Extensions\Http\Request;
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Request;
 
 /**
  * Fb Extension

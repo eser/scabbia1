@@ -8,13 +8,13 @@
 namespace Scabbia\Extensions\Assets;
 
 use Scabbia\Extensions\Datasources\Datasources;
-use Scabbia\Extensions\Http\Request;
-use Scabbia\Extensions\Http\Response;
+use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Binder;
 use Scabbia\Config;
 use Scabbia\Framework;
+use Scabbia\Request;
 use Scabbia\Io;
 
 /**
@@ -111,7 +111,7 @@ class Assets
 
         $tMimetype = Mime::getType($tBinder->outputType);
         header('Content-Type: ' . $tMimetype, true);
-        Response::sendHeaderCache($tCacheTtl);
+        Http::sendHeaderCache($tCacheTtl);
 
         foreach ($tSelectedPack['partList'] as $tPart) {
             $tBindType = isset($tPart['bindtype']) ? $tPart['bindtype'] : 'file';
