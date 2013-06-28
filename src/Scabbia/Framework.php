@@ -264,15 +264,8 @@ class Framework
             // ignite application
             if (!is_null($tSelectedApplication)) {
                 $tReturn = self::$application->callbacks->invoke();
-//                foreach (self::$application->callbacks as $tCallback) {
-//                    $tReturn = call_user_func($tCallback);
-//
-//                    if (!is_null($tReturn) && $tReturn === true) {
-//                        break;
-//                    }
-//                }
 
-                if (!is_null(self::$application->otherwise) && !isset($tReturn) || $tReturn !== true) {
+                if (!is_null(self::$application->otherwise) && $tReturn !== false) {
                     call_user_func(self::$application->otherwise);
                     return false;
                 }

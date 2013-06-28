@@ -52,7 +52,7 @@ class Application
         $this->name = !is_null($uName) ? $uName : 'Application';
         $this->directory = !is_null($uDirectory) ? $uDirectory : 'application/';
 
-        $this->callbacks = new Delegate();
+        $this->callbacks = new Delegate(true);
         $this->callbacks->add('Scabbia\\Extensions\\Http\\Http::routing');
         $this->callbacks->add('Scabbia\\Extensions\\Assets\\Assets::routing');
 

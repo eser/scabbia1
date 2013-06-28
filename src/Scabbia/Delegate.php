@@ -20,16 +20,22 @@ class Delegate
      * @var array   List of callbacks
      */
     public $callbacks = null;
+    /**
+     * @var mixed   Expected return value for interruption
+     */
+    public $expectedReturn;
 
 
     /**
      * Constructs a new delegate in order to assign it to a member
      *
+     * @param mixed $uExpectedReturn Expected return value for interruption
+     *
      * @return object a delegate
      */
-    public static function assign()
+    public static function assign($uExpectedReturn = false)
     {
-        $tNewInstance = new Delegate();
+        $tNewInstance = new Delegate($uExpectedReturn);
 
         return function (/* callable */ $uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
             if (!is_null($uCallback)) {
@@ -38,6 +44,16 @@ class Delegate
 
             return $tNewInstance;
         };
+    }
+
+    /**
+     * Constructs a new instance of delegate.
+     *
+     * @param mixed $uExpectedReturn Expected return value for interruption
+     */
+    public function __construct($uExpectedReturn = false)
+    {
+        $this->expectedReturn = $uExpectedReturn;
     }
 
     /**
@@ -70,7 +86,7 @@ class Delegate
                 $tEventArgs = $tArgs;
                 array_unshift($tEventArgs, $tCallback[1]);
 
-                if (call_user_func_array($tCallback[0], $tEventArgs) === false) {
+                if (call_user_func_array($tCallback[0], $tEventArgs) === $this->expectedReturn) {
                     return false;
                 }
             }
