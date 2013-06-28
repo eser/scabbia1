@@ -37,6 +37,14 @@ class Framework
      */
     public static $classLoader = null;
     /**
+     * @var object  Array of loaded interfaces
+     */
+    public static $interfaces = array();
+    /**
+     * @var object  Interface instance
+     */
+    public static $interface = null;
+    /**
      * @var object  Array of loaded applications
      */
     public static $applications = array();
