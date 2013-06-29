@@ -66,38 +66,11 @@ class LarouxJs
      */
     public static function exportJs()
     {
-        // $tArray = Controllers::export(true);
-
         $tReturn = <<<EOD
 \$l.extend({
         translations:
 EOD;
         $tReturn .= json_encode(self::$translations);
-
-        /*
-        foreach ($tArray as $tClassName => $tClass) {
-            if (($tPos = strrpos($tClassName, '\\')) !== false) {
-                $tClassName = substr($tClassName, $tPos + 1);
-            }
-
-            $tLines = array();
-            $tReturn .= ',' . PHP_EOL . "\t" . $tClassName . ': {' . PHP_EOL;
-
-            foreach ($tClass as $tMethod) {
-                $tMethods = explode('_', $tMethod, 2);
-                if (count($tMethods) < 2 || strpos($tMethods[0], 'ajax') === false) {
-                    continue;
-                }
-
-                $tLines[] = "\t\t" .
-                    $tMethods[1] .
-                    ': function(values, fnc, method) { $l.ajax.request(\'' .
-                    Http::url($tClassName . '/' . strtr($tMethods[1], '_', '/')) .
-                    '\', values, fnc, method); }';
-            }
-            $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t" . '}';
-        }
-        */
 
         $tReturn .= <<<EOD
 

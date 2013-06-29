@@ -30,12 +30,6 @@ class Utils
         'all' => '.+',
         'all?' => '.*'
     );
-    /**
-     * @var array Array of framework variables
-     */
-    public static $variables = array(
-
-    );
 
 
     /**
@@ -45,7 +39,7 @@ class Utils
      *
      * @return bool running framework version is greater than parameter
      */
-    public static function version($uVersion)
+    public static function scabbiaVersion($uVersion)
     {
         return version_compare(Framework::VERSION, $uVersion, '>=');
     }
@@ -238,7 +232,7 @@ class Utils
      */
     public static function translate($uInput)
     {
-        foreach (self::$variables as $tKey => $tValue) {
+        foreach (Framework::$variables as $tKey => $tValue) {
             if (!is_scalar($tValue)) {
                 continue;
             }

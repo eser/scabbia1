@@ -7,7 +7,7 @@
 
 namespace Scabbia\Extensions\Views;
 
-use Scabbia\Utils;
+use Scabbia\Framework;
 
 /**
  * Views Extension: ViewEnginePhp Class
@@ -29,7 +29,7 @@ class ViewEnginePhp
             extract($model, EXTR_SKIP | EXTR_REFS);
         }
 
-        extract(Utils::$variables, EXTR_SKIP | EXTR_REFS);
+        extract(Framework::$variables, EXTR_SKIP | EXTR_REFS);
 
         require $uObject['templatePath'] . $uObject['templateFile'];
     }

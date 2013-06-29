@@ -11,7 +11,6 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
-use Scabbia\Utils;
 
 /**
  * Views Extension: ViewEngineRaintpl Class
@@ -58,7 +57,7 @@ class ViewEngineRaintpl
             }
         }
 
-        foreach (Utils::$variables as $tKey => $tValue) {
+        foreach (Framework::$variables as $tKey => $tValue) {
             self::$engine->assign($tKey, $tValue);
         }
 

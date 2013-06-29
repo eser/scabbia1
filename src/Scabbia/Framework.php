@@ -86,6 +86,10 @@ class Framework
      * @todo wrong place
      */
     public static $responseFormat = 'html';
+    /**
+     * @var array Array of framework variables
+     */
+    public static $variables = array();
 
 
     /**

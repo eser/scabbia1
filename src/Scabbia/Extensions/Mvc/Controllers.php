@@ -92,7 +92,7 @@ class Controllers
      */
     public static function setController($uControllerInstance, $uActionName, $uFormat, array $uParams = array(), array $uInput = array())
     {
-        Utils::$variables['controller'] = $uControllerInstance;
+        Framework::$variables['controller'] = $uControllerInstance;
 
         $uControllerInstance->route = array(
             'controller' => get_class($uControllerInstance),
@@ -113,36 +113,6 @@ class Controllers
 
         $uControllerInstance->format = $uFormat;
     }
-
-    /**
-     * @ignore
-     */
-    public static function export($uAjaxOnly = false)
-    {
-        $tArray = array();
-
-        foreach (Utils::getSubclasses('Scabbia\\Extensions\\Mvc\\Controller') as $tClassReflection) {
-            foreach ($tClassReflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethod) {
-                // if ($tMethod->class == 'Controller') {
-                //    continue;
-                // }
-
-                $tPos = strpos($tMethod->name, 'ajax_');
-                if ($uAjaxOnly && $tPos === false) {
-                    continue;
-                }
-
-                if (!isset($tArray[$tMethod->class])) {
-                    $tArray[$tMethod->class] = array();
-                }
-
-                $tArray[$tMethod->class][] = $tMethod->name;
-            }
-        }
-
-        return $tArray;
-    }
-
 
     /**
      * @ignore

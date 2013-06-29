@@ -9,7 +9,7 @@ namespace Scabbia;
 
 use Scabbia\Extensions\Http\Router;
 use Scabbia\Config;
-use Scabbia\Utils;
+use Scabbia\Framework;
 
 /**
  * Http Extension: Request Class
@@ -171,10 +171,10 @@ class Request
             self::$siteroot = '/' . self::$siteroot;
         }
 
-        Utils::$variables['root'] = self::$siteroot;
-        Utils::$variables['host'] = self::$host;
-        Utils::$variables['scheme'] = self::$https ? 'https' : 'http';
-        Utils::$variables['method'] = self::$method;
+        Framework::$variables['root'] = self::$siteroot;
+        Framework::$variables['host'] = self::$host;
+        Framework::$variables['scheme'] = self::$https ? 'https' : 'http';
+        Framework::$variables['method'] = self::$method;
     }
 
     /**

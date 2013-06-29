@@ -11,7 +11,6 @@ use Scabbia\Extensions\I18n\Gettext;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
-use Scabbia\Utils;
 
 /**
  * I18n Extension
@@ -156,7 +155,7 @@ class I18n
                 }
             }
 
-            Utils::$variables['lang'] = self::$language['key'];
+            Framework::$variables['lang'] = self::$language['key'];
 
             return true;
         }
