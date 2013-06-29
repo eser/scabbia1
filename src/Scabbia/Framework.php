@@ -190,6 +190,8 @@ class Framework
      */
     public static function run()
     {
+        Request::init();
+
         // determine active application
         $tSelectedApplication = null;
 
@@ -197,13 +199,7 @@ class Framework
             if (count($tApplication['endpoints']) > 0) {
                 foreach ($tApplication['endpoints'] as $tEndpoint) {
                     foreach ((array)$tEndpoint['address'] as $tEndpointAddress) {
-                        $tParsed = parse_url($tEndpointAddress);
-
-                        if (!isset($tParsed['port'])) {
-                            $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
-                        }
-
-                        if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+                        if (Request::matchesHostname($tEndpointAddress)) {
                             $tSelectedApplication = $tApplication;
                             break 3;
                         }
@@ -251,7 +247,7 @@ class Framework
             Events::register($tLoad['name'], $tLoad['type'], $tLoad['value']);
         }
 
-        Request::init();
+        Request::setRoutes();
 
         // output handling
         ob_start('Scabbia\\Framework::output');

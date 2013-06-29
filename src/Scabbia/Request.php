@@ -59,7 +59,7 @@ class Request
     /**
      * @ignore
      */
-    public static $siteroot;
+    public static $siteroot = null;
     /**
      * @ignore
      */
@@ -163,18 +163,28 @@ class Request
 
         // $queryString
         self::$queryString = $_SERVER['QUERY_STRING'];
-        self::$route = Router::resolve(self::$queryString, self::$methodext);
 
-        // framework variables
-        self::$siteroot = trim(Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME)), '/');
-        if (strlen(self::$siteroot) > 0) {
-            self::$siteroot = '/' . self::$siteroot;
-        }
-
-        Framework::$variables['root'] = self::$siteroot;
         Framework::$variables['host'] = self::$host;
         Framework::$variables['scheme'] = self::$https ? 'https' : 'http';
         Framework::$variables['method'] = self::$method;
+    }
+
+    /**
+     * @ignore
+     */
+    public static function setRoutes()
+    {
+        self::$route = Router::resolve(self::$queryString, self::$methodext);
+
+        // framework variables
+        if (is_null(self::$siteroot)) {
+            self::$siteroot = Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+        }
+        if (strlen(self::$siteroot) > 0) {
+            self::$siteroot = '/' . trim(self::$siteroot, '/');
+        }
+
+        Framework::$variables['root'] = self::$siteroot;
     }
 
     /**
@@ -296,6 +306,24 @@ class Request
         }
 
         return in_array(strtolower($uContentType), self::$contentTypes);
+    }
+
+    /**
+     * @ignore
+     */
+    public static function matchesHostname($uAddress)
+    {
+        $tParsed = parse_url($uAddress);
+
+        if (!isset($tParsed['port'])) {
+            $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+        }
+
+        if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

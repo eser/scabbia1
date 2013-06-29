@@ -11,6 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\CustomException;
 use Scabbia\Config;
 use Scabbia\Io;
+use Scabbia\Request;
 
 /**
  * Access Extension
@@ -64,7 +65,7 @@ class Access
         }
 
         if (self::$maintenance && !in_array($_SERVER['REMOTE_ADDR'], self::$maintenanceExcludeIps)) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503);
+            header(Request::$protocol . ' 503 Service Unavailable', true, 503);
             header('Retry-After: 600', true);
 
             // to interrupt event-chain execution
@@ -72,7 +73,7 @@ class Access
         }
 
         if (count(self::$ipFilters) > 0) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
+            header(Request::$protocol . ' 403 Forbidden', true, 403);
 
             // to interrupt event-chain execution
             throw new CustomException('ipban', _('Service Unavailable'), _('Your access have been banned from this service.'));

@@ -152,7 +152,7 @@ class Http
      */
     public static function notfound()
     {
-        header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+        header(Request::$protocol . ' 404 Not Found', true, 404);
         self::error('notfound', I18n::_('404 Not Found'), I18n::_('The resource you have been looking for is not found on the server'));
     }
 
@@ -292,7 +292,7 @@ class Http
             return;
         }
 
-        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+        header(Request::$protocol . ' 500 Internal Server Error', true, 500);
         header('Content-Type: text/html, charset=UTF-8', true);
 
         /*
@@ -352,7 +352,7 @@ class Http
      */
     public static function sendStatus($uStatusCode)
     {
-        $tStatus = $_SERVER['SERVER_PROTOCOL'] . ' ';
+        $tStatus = Request::$protocol . ' ';
 
         switch ($uStatusCode) {
             case 100:
@@ -593,7 +593,7 @@ class Http
     public static function sendHeaderCache($uTtl = -1, $uPublic = true, $uMustRevalidate = false)
     {
         if ($uTtl < 0) {
-            if ($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
+            if (Request::$protocol == 'HTTP/1.0') { // http/1.0 only
                 header('Pragma: no-cache', true);
                 header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
 
@@ -618,7 +618,7 @@ class Http
             $tPublicity = 'private';
         }
 
-        if ($_SERVER['SERVER_PROTOCOL'] != 'HTTP/1.1') { // http/1.0 only
+        if (Request::$protocol == 'HTTP/1.0') { // http/1.0 only
             header('Pragma: ' . $tPublicity, true);
             header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
 
