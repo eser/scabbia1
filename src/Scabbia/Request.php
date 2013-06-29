@@ -7,7 +7,6 @@
 
 namespace Scabbia;
 
-use Scabbia\Extensions\Http\Router;
 use Scabbia\Config;
 use Scabbia\Framework;
 
@@ -174,7 +173,7 @@ class Request
      */
     public static function setRoutes()
     {
-        self::$route = Router::resolve(self::$queryString, self::$methodext);
+        self::$route = Framework::$application->resolve(self::$queryString, self::$methodext);
 
         // framework variables
         if (is_null(self::$siteroot)) {

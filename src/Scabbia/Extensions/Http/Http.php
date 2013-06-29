@@ -7,7 +7,6 @@
 
 namespace Scabbia\Extensions\Http;
 
-use Scabbia\Extensions\Http\Router;
 use Scabbia\Extensions\Mime\Mime;
 use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Views\Views;
@@ -74,7 +73,7 @@ class Http
      */
     public static function routing()
     {
-        $tResolution = Router::resolve(Request::$queryString, Request::$method, Request::$methodext);
+        $tResolution = Framework::$application->resolve(Request::$queryString, Request::$method, Request::$methodext);
 
         if (!is_null($tResolution) && call_user_func($tResolution[1], $tResolution[2]) !== false) {
             // to interrupt event-chain execution
@@ -89,7 +88,7 @@ class Http
      */
     public static function url($uPath, $uFull = false)
     {
-        $tResolved = Router::resolve($uPath);
+        $tResolved = Framework::$application->resolve($uPath);
         if ($uFull) {
             return
                 (Request::$https ? 'https://' : 'http://') .

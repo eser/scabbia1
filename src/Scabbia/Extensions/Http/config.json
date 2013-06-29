@@ -26,28 +26,7 @@
     ],
 
     "http": {
-        "link":                     "{@siteroot}/{@path}",
-
-        "rewriteList": [],
-        "rewriteList:disabled": [
-            {
-                "match":            "GET,POST regions/(alnum)/(alnum)/(any)",
-                "forward":          "firms/$3"
-            }
-        ],
-
-        "routeList": [
-            {
-                "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
-                "callback":         "Scabbia\\Extensions\\Mvc\\Controllers::route",
-                "defaults": {
-                    "controller":   "home",
-                    "params":       "/index",
-                    "format":       ".html",
-                    "query":        ""
-                }
-            }
-        ],
+        "link":             "{@siteroot}/{@path}",
 
         "userAgents": {
             "platformList": [

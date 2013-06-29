@@ -37,5 +37,28 @@
     "cache": {
         "keyphase":     "",
         "storage":      "memcache://192.168.2.4:11211"
+    },
+
+    "http": {
+        "rewriteList": [],
+        "rewriteList:disabled": [
+            {
+                "match":            "GET,POST regions/(alnum)/(alnum)/(any)",
+                "forward":          "firms/$3"
+            }
+        ],
+
+        "routeList": [
+            {
+                "match":            "(controller:alnum)?(params:/+[^?&.]*)?(format:\\\\.[^?&]*)?(query:[?&].*)?",
+                "callback":         "Scabbia\\Extensions\\Mvc\\Controllers::route",
+                "defaults": {
+                    "controller":   "home",
+                    "params":       "/index",
+                    "format":       ".html",
+                    "query":        ""
+                }
+            }
+        ]
     }
 }

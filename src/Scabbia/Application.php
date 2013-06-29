@@ -47,7 +47,14 @@ class Application
      * @var array       after delegate
      */
     public $after;
-
+    /**
+     * @ignore
+     */
+    public $rewrites = null;
+    /**
+     * @ignore
+     */
+    public $routes = null;
 
 
     /**
@@ -70,5 +77,133 @@ class Application
 
         $this->otherwise = 'Scabbia\\Extensions\\Http\\Http::notfound';
         $this->onError = 'Scabbia\\Extensions\\Http\\Http::error';
+    }
+
+    /**
+     * @ignore
+     */
+    private function load()
+    {
+        if (!is_null($this->rewrites)) {
+            return;
+        }
+
+        $this->rewrites = new \SplPriorityQueue();
+        foreach (Config::get('http/rewriteList', array()) as $tRewriteList) {
+            $this->addRewrite(
+                $tRewriteList['match'],
+                $tRewriteList['forward'],
+                isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10
+            );
+        }
+
+        $this->routes = new \SplPriorityQueue();
+        foreach (Config::get('http/routeList', array()) as $tRouteList) {
+            $tDefaults = array();
+            foreach ($tRouteList as $tRouteListKey => $tRouteListItem) {
+                if (strncmp($tRouteListKey, 'defaults/', 9) == 0) {
+                    $tDefaults[substr($tRouteListKey, 9)] = $tRouteListItem;
+                }
+            }
+
+            $this->addRoute(
+                $tRouteList['match'],
+                $tRouteList['callback'],
+                $tDefaults,
+                isset($tRewriteList['priority']) ? (int)$tRewriteList['priority'] : 10
+            );
+        }
+    }
+
+    /**
+     * @ignore
+     */
+    public function rewriteUrl(&$uUrl, $uMatch, $uForward)
+    {
+        $tReturn = Utils::pregReplace($uMatch, $uForward, $uUrl);
+        if ($tReturn !== false) {
+            $uUrl = $tReturn;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @ignore
+     */
+    public function addRewrite($uMatch, $uForward, $uPriority = 10)
+    {
+        $this->load();
+
+        foreach ((array)$uMatch as $tMatch) {
+            $tParts = explode(' ', $tMatch, 2);
+            $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+
+            $this->rewrites->insert(array($tParts[0], $uForward, $tLimitMethods), $uPriority);
+        }
+    }
+
+    /**
+     * @ignore
+     */
+    public function addRoute($uMatch, /* callable */ $uCallback, array $uDefaults = array(), $uPriority = 10)
+    {
+        $this->load();
+
+        foreach ((array)$uMatch as $tMatch) {
+            $tParts = explode(' ', $tMatch, 2);
+            $tLimitMethods = ((count($tParts) > 1) ? explode(',', strtolower(array_shift($tParts))) : null);
+
+            $this->routes->insert(array($tParts[0], $uCallback, $tLimitMethods, $uDefaults), $uPriority);
+        }
+    }
+
+    /**
+     * @ignore
+     */
+    public function resolve($uQueryString, $uMethod = null, $uMethodExt = null)
+    {
+        $this->load();
+
+        // @todo use $this->routes->top() if needed.
+        foreach ($this->rewrites as $tRewriteItem) {
+            if (isset($tRewriteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRewriteItem[2])) {
+                continue;
+            }
+
+            if ($this->rewriteUrl($uQueryString, $tRewriteItem['match'], $tRewriteItem['forward'])) {
+                break;
+            }
+        }
+
+        // @todo use $this->routes->top() if needed.
+        foreach ($this->routes as $tRouteItem) {
+            if (isset($tRouteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRouteItem[2])) {
+                continue;
+            }
+
+            $tMatches = Utils::pregMatch(ltrim($tRouteItem[0], '/'), $uQueryString);
+
+            if (count($tMatches) > 0) {
+                $tParameters = array(
+                    'method' => $uMethod,
+                    'methodext' => $uMethodExt
+                );
+
+                foreach ($tRouteItem[3] as $tDefaultKey => $tDefaultItem) {
+                    if (isset($tMatches[$tDefaultKey])) {
+                        $tParameters[$tDefaultKey] = $tMatches[$tDefaultKey];
+                    } else {
+                        $tParameters[$tDefaultKey] = $tDefaultItem;
+                    }
+                }
+
+                return array($uQueryString, $tRouteItem[1], $tParameters);
+            }
+        }
+
+        return array($uQueryString, null, null);
     }
 }
