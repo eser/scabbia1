@@ -58,7 +58,7 @@ class MemcacheSource implements IDataInterface, ICacheProvider, IServerConnectio
     public function __construct(array $uConfig)
     {
         $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
-        $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
+        $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : "";
         $this->host = $uConfig['host'];
         $this->port = $uConfig['port'];
     }

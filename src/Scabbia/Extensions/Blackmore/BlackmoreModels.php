@@ -186,7 +186,7 @@ class BlackmoreModels
                     $tAttributes = array(
                         'type' => 'text',
                         'name' => $tField['name'],
-                        'value' => Request::post($tField['name'], ''),
+                        'value' => Request::post($tField['name'], ""),
                         'class' => 'input-block-level input_' . $tField['type']
                     );
                     // if (!$tIsEdit) {
@@ -225,9 +225,9 @@ class BlackmoreModels
             // Validation::addRule('slug')->isRequired()->errorMessage('Slug shouldn\'t be blank.');
 
             if (Validation::validate($_POST)) {
-                $tSlug = Request::post('slug', '');
+                $tSlug = Request::post('slug', "");
                 if (strlen(rtrim($tSlug)) == 0) {
-                    $tSlug = Request::post('name', '');
+                    $tSlug = Request::post('name', "");
                 }
 
                 $tInput = array(
@@ -277,7 +277,7 @@ class BlackmoreModels
                             $tAttributes = array(
                                 'type' => 'text',
                                 'name' => $tField['name'],
-                                'value' => Request::post($tField['name'], ''),
+                                'value' => Request::post($tField['name'], ""),
                                 'class' => 'input-block-level input_' . $tField['type']
                             );
                             if (!$tIsEdit) {

@@ -417,7 +417,7 @@ class Conditions
 
         $uValue = strtr($uValue, 'ABCDEFGHIJKLMNOPRQSTUVWXYZ', 'abcdefghijklmnoprqstuvwxyz');
 
-        $tValidated = array('', '');
+        $tValidated = array("", "");
         $tIndex = 1;
         for ($i = strlen($uValue) - 1; $i >= 0; $i--) {
             if ($uValue[$i] == '@') {

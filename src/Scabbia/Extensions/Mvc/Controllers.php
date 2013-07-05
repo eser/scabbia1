@@ -98,7 +98,7 @@ class Controllers
             'controller' => get_class($uControllerInstance),
             'action' => $uActionName,
             'params' => $uParams,
-            'query' => !isset($uInput['query']) ? $uInput['query'] : ''
+            'query' => !isset($uInput['query']) ? $uInput['query'] : ""
         );
 
         if (($tPos = strrpos($uControllerInstance->route['controller'], '\\')) !== false) {

@@ -107,17 +107,17 @@ class DatabaseQuery
      */
     public function clear()
     {
-        $this->table = '';
+        $this->table = "";
         $this->fields = array();
         $this->rawFields = array();
         $this->parameters = array();
-        $this->where = '';
-        $this->groupby = '';
-        $this->orderby = '';
+        $this->where = "";
+        $this->groupby = "";
+        $this->orderby = "";
         $this->limit = -1;
         $this->offset = -1;
-        $this->sequence = '';
-        $this->returning = '';
+        $this->sequence = "";
+        $this->returning = "";
         $this->caching = null;
     }
 

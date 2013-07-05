@@ -131,7 +131,7 @@ class Session
             return;
         }
 
-        setcookie(self::$sessionName, '', time() - 3600, '/');
+        setcookie(self::$sessionName, "", time() - 3600, '/');
 
         self::$datasource->cacheRemove('sessions/' . self::$id);
 

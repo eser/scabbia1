@@ -48,12 +48,12 @@ use Scabbia\Extensions\Http\Http;
                 </table>
                 <table class="main" cellspacing="0">
                 <?php
-                    $class = '';
+                    $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == '') {
+                        if ($class == "") {
                             $class = 'alt';
                         } else {
-                            $class = '';
+                            $class = "";
                         }
 
                         if ($log['type'] == 'log' || $log['type'] == 'error') {
@@ -102,12 +102,12 @@ use Scabbia\Extensions\Http\Http;
                 </table>
                 <table class="main" cellspacing="0">
                 <?php
-                    $class = '';
+                    $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == '') {
+                        if ($class == "") {
                             $class = 'alt';
                         } else {
-                            $class = '';
+                            $class = "";
                         }
 
                         if ($log['type'] == 'time') {
@@ -136,12 +136,12 @@ use Scabbia\Extensions\Http\Http;
 
                 <table class="main" cellspacing="0">
                 <?php
-                    $class = '';
+                    $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == '') {
+                        if ($class == "") {
                             $class = 'alt';
                         } else {
-                            $class = '';
+                            $class = "";
                         }
 
                         if ($log['type'] == 'query') {
@@ -187,12 +187,12 @@ use Scabbia\Extensions\Http\Http;
                 </table>
                 <table class="main" cellspacing="0">
                 <?php
-                    $class = '';
+                    $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == '') {
+                        if ($class == "") {
                             $class = 'alt';
                         } else {
-                            $class = '';
+                            $class = "";
                         }
 
                         if ($log['type'] == 'memory') {
@@ -222,12 +222,12 @@ use Scabbia\Extensions\Http\Http;
             </table>
             <table class="main" cellspacing="0">
                 <?php
-                    $class = '';
+                    $class = "";
                     foreach ($model['files'] as $file) {
-                        if ($class == '') {
+                        if ($class == "") {
                             $class = 'alt';
                         } else {
-                            $class = '';
+                            $class = "";
                         }
                 ?>
 

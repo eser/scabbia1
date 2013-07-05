@@ -141,7 +141,7 @@ class Captcha
     public static function check($uCode, $uCookieName = 'captcha')
     {
         // check the supplied code
-        $tResult = (Session::getFlash($uCookieName, '') == strtolower($uCode));
+        $tResult = (Session::getFlash($uCookieName, "") == strtolower($uCode));
 
         // return the result
         return $tResult;

@@ -81,9 +81,9 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptions(array $uOptions, $uDefault = null, $uField = null, $uExtra = '')
+    public static function selectOptions(array $uOptions, $uDefault = null, $uField = null, $uExtra = "")
     {
-        $tOutput = '';
+        $tOutput = "";
 
         foreach ($uOptions as $tKey => $tVal) {
             $tOutput .= '<option value="' . String::dquote($tKey) . '"';
@@ -100,7 +100,7 @@ class Html
     /**
      * @ignore
      */
-    public static function selectOptionsArray(array $uOptions, $uDefault = null, $uField = null, $uExtra = '')
+    public static function selectOptionsArray(array $uOptions, $uDefault = null, $uField = null, $uExtra = "")
     {
         $tOutput = array();
 
@@ -122,7 +122,7 @@ class Html
      */
     public static function radioOptions($uName, array $uOptions, $uDefault = null, $uField = null)
     {
-        $tOutput = '';
+        $tOutput = "";
 
         foreach ($uOptions as $tKey => $tVal) {
             $tOutput .= '<label';
@@ -177,7 +177,7 @@ class Html
     /**
      * @ignore
      */
-    public static function textBox($uName, $uValue = '', array $uAttributes = array())
+    public static function textBox($uName, $uValue = "", array $uAttributes = array())
     {
         $uAttributes['name'] = $uName;
         $uAttributes['value'] = $uValue;
@@ -218,7 +218,7 @@ class Html
         $tPages = ceil($uOptions['total'] / $uOptions['pagesize']);
 
         if (!isset($uOptions['divider'])) {
-            $uOptions['divider'] = '';
+            $uOptions['divider'] = "";
         }
 
         if (!isset($uOptions['dots'])) {
@@ -271,7 +271,7 @@ class Html
             $tEnd = $tPages;
         }
 
-        $tResult = '';
+        $tResult = "";
 
         if ($tPages > 1) {
             if ($tCurrent <= 1) {

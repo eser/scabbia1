@@ -163,7 +163,7 @@ class String
             $uArgs = $uArgs[0];
         }
 
-        $tBrackets = array(array(null, ''));
+        $tBrackets = array(array(null, ""));
         $tQuoteChar = false;
         $tLastItem = 0;
         $tArrayItem = 1;
@@ -275,8 +275,8 @@ class String
     {
         $tVariable = $uVariable;
         $tType = gettype($tVariable);
-        $tOut = '';
-        static $sTabs = '';
+        $tOut = "";
+        static $sTabs = "";
 
         switch ($tType) {
             case 'boolean':
@@ -327,7 +327,7 @@ class String
         }
 
         if ($tOutput) {
-            echo '<pre>' . $tOut . '</pre>';
+            echo '<pre>', $tOut, '</pre>';
 
             return null;
         }
@@ -388,7 +388,7 @@ class String
 
         $tConsLen = count($sCons) - 1;
         $tVowelsLen = count($sVowels) - 1;
-        for ($tOutput = ''; strlen($tOutput) < $uLength;) {
+        for ($tOutput = ""; strlen($tOutput) < $uLength;) {
             $tOutput .= $sCons[rand(0, $tConsLen)] . $sVowels[rand(0, $tVowelsLen)];
         }
 
@@ -435,7 +435,7 @@ class String
         srand(Framework::$timestamp * 1000000);
 
         $tCharsetLen = self::length($uCharset) - 1;
-        for ($tOutput = ''; $uLength > 0; $uLength--) {
+        for ($tOutput = ""; $uLength > 0; $uLength--) {
             $tOutput .= self::substr($uCharset, rand(0, $tCharsetLen), 1);
         }
 
@@ -483,7 +483,7 @@ class String
      */
     public static function strip($uString, $uValids)
     {
-        $tOutput = '';
+        $tOutput = "";
 
         for ($tCount = 0, $tLen = self::length($uString); $tCount < $tLen; $tCount++) {
             $tChar = self::substr($uString, $tCount, 1);
@@ -574,7 +574,7 @@ class String
      */
     public static function replaceBreaks($uString, $uBreaks = '<br />')
     {
-        return strtr($uString, array("\r" => '', "\n" => $uBreaks));
+        return strtr($uString, array("\r" => "", "\n" => $uBreaks));
     }
 
     /**
@@ -726,14 +726,14 @@ class String
     public static function timeCalc($uTime)
     {
         if ($uTime >= 60) {
-            return number_format($uTime / 60, 2, '.', '') . 'm';
+            return number_format($uTime / 60, 2, '.', "") . 'm';
         }
 
         if ($uTime >= 1) {
-            return number_format($uTime, 2, '.', '') . 's';
+            return number_format($uTime, 2, '.', "") . 's';
         }
 
-        return number_format($uTime * 1000, 2, '.', '') . 'ms';
+        return number_format($uTime * 1000, 2, '.', "") . 'ms';
     }
 
     /**
@@ -759,7 +759,7 @@ class String
     {
         $tInSlash = false;
         $tInQuote = false;
-        $tOutput = '';
+        $tOutput = "";
 
         for ($tLen = self::length($uString); $uPosition <= $tLen; ++$uPosition) {
             $tChar = self::substr($uString, $uPosition, 1);
@@ -793,7 +793,7 @@ class String
     {
         $tStart = self::strpos($uString, '[');
         $tOutput = array();
-        $tBuffer = '';
+        $tBuffer = "";
 
         if ($tStart === false) {
             return $tOutput;
@@ -810,7 +810,7 @@ class String
 
             if ($tChar == ',') {
                 $tOutput[] = $tBuffer;
-                $tBuffer = '';
+                $tBuffer = "";
                 continue;
             }
 
@@ -835,7 +835,7 @@ class String
             '_hash' => isset($tParts[1]) ? $tParts[1] : null
         );
 
-        $tStrings = array('', '');
+        $tStrings = array("", "");
         $tStrIndex = 0;
 
         $tPos = 0;
@@ -850,7 +850,7 @@ class String
                         $tParsed['_segments'][] = $tStrings[1];
                     }
 
-                    $tStrings = array('', null);
+                    $tStrings = array("", null);
                     continue;
                 }
 
@@ -867,7 +867,7 @@ class String
                 $tParsed['_segments'][] = $tStrings[1];
             }
 
-            $tStrings = array('', null);
+            $tStrings = array("", null);
         }
 
         for (; $tPos < $tLen; $tPos++) {
@@ -879,13 +879,13 @@ class String
                     $tStrIndex = 0;
                 }
 
-                $tStrings = array('', null);
+                $tStrings = array("", null);
                 continue;
             }
 
             if (self::strpos($uKeys, $tChar) !== false && $tStrIndex < 1) {
                 ++$tStrIndex;
-                $tStrings[$tStrIndex] = '';
+                $tStrings[$tStrIndex] = "";
                 continue;
             }
 
@@ -1379,7 +1379,7 @@ class String
             31,
             127
         );
-        $tOutput = '';
+        $tOutput = "";
 
         for ($tCount = 0, $tLen = self::length($uString); $tCount < $tLen; $tCount++) {
             $tChar = self::substr($uString, $tCount, 1);
@@ -1413,7 +1413,7 @@ class String
      */
     public static function toBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS) {
         $tBaseLength = strlen($uBase);
-        $tResult = '';
+        $tResult = "";
 
         do {
             $tIndex = $uNumber % $tBaseLength;
@@ -1456,7 +1456,7 @@ class String
             substr($uString, 30, 6)
         );
 
-        $tShortened = '';
+        $tShortened = "";
         foreach ($tParts as $tPart) {
             $tEncoded = base_convert($tPart, 16, 10);
             $tShortened .= self::toBase($tEncoded, self::BASECONVERT_URL_CHARACTERS);
@@ -1479,7 +1479,7 @@ class String
             substr($uString, 18, 4)
         );
 
-        $tUnshortened = '';
+        $tUnshortened = "";
         $tIndex = 0;
         foreach ($tParts as $tPart) {
             $tDecoded = self::fromBase($tPart, self::BASECONVERT_URL_CHARACTERS);
@@ -1522,7 +1522,7 @@ class String
      */
     public static function capitalizeEx($uString, $uDelimiter = ' ', $uReplaceDelimiter = null)
     {
-        $tOutput = '';
+        $tOutput = "";
         $tCapital = true;
 
         for ($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {

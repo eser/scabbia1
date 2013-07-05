@@ -55,7 +55,7 @@ class RestSource implements IDataInterface
      */
     public function __construct(array $uConfig)
     {
-        $this->baseUrl = (isset($uConfig['baseUrl'])) ? rtrim($uConfig['baseUrl'], '/') : '';
+        $this->baseUrl = (isset($uConfig['baseUrl'])) ? rtrim($uConfig['baseUrl'], '/') : "";
 
         if (isset($uConfig['auth'])) {
             $this->auth = $uConfig['auth'];
@@ -74,7 +74,7 @@ class RestSource implements IDataInterface
                 array(
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_USERAGENT => '',
+                    CURLOPT_USERAGENT => "",
                     CURLOPT_AUTOREFERER => true,
                     CURLOPT_CONNECTTIMEOUT => 120,
                     CURLOPT_TIMEOUT => 120,
@@ -97,7 +97,7 @@ class RestSource implements IDataInterface
             curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, $uPostFields);
         } else {
             curl_setopt($this->curlObject, CURLOPT_POST, 0);
-            // curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, '');
+            // curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, "");
         }
 
         if ($uHeaders !== null) {

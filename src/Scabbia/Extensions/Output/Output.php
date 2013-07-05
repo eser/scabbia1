@@ -60,6 +60,6 @@ class Output
      */
     public static function flushOutput($uContent)
     {
-        return '';
+        return "";
     }
 }

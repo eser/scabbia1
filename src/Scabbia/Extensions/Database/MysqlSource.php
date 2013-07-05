@@ -140,7 +140,7 @@ class MysqlSource extends DatabaseSource
     /**
      * @ignore
      */
-    public function sqlInsert($uTable, $uObject, $uReturning = '')
+    public function sqlInsert($uTable, $uObject, $uReturning = "")
     {
         $tSql =
             'INSERT INTO ' . $uTable . ' ('

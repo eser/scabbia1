@@ -299,7 +299,7 @@ class Framework
 
         Events::invoke('output', $tParms);
 
-        if (ini_get('output_handler') == '') {
+        if (ini_get('output_handler') == "") {
             $tParms['content'] = mb_output_handler(
                 $tParms['content'],
                 $uStatus

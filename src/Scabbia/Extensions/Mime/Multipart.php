@@ -88,7 +88,7 @@ class Multipart
      */
     public function compile($uHeaders = true)
     {
-        $tString = '';
+        $tString = "";
         $tBody = $this->compileBody();
 
         if ($uHeaders) {

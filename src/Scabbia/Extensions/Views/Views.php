@@ -89,14 +89,14 @@ class Views
         if (is_array($uObject) || is_object($uObject)) {
             foreach ($uObject as $tKey => $tValue) {
                 if (is_numeric($tKey)) {
-                    echo '<item index="' . $tKey . '">';
+                    echo '<item index="', $tKey, '">';
                     $tKey = 'item';
                 } else {
-                    echo '<' . $tKey . '>';
+                    echo '<', $tKey, '>';
                 }
 
                 self::xmlRecursive($tValue);
-                echo '</' . $tKey . '>';
+                echo '</', $tKey, '>';
             }
 
             return;

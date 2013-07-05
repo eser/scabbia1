@@ -355,7 +355,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     /**
      * @ignore
      */
-    public function toString($uSeparator = '')
+    public function toString($uSeparator = "")
     {
         return implode($uSeparator, $this->_items);
     }

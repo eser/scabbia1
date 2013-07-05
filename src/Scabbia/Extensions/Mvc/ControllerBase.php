@@ -170,7 +170,7 @@ class ControllerBase implements LoggerAwareInterface
      */
     public function addChildController($uAction, $uClass)
     {
-        // echo $uAction . " => " . $uClass . '<br />';
+        // echo $uAction, ' => ', $uClass, '<br />';
         $this->childControllers[$uAction] = $uClass;
     }
 

@@ -16,7 +16,7 @@ namespace Scabbia\Extensions\Database;
  */
 interface IQueryGenerator
 {
-    public function sqlInsert($uTable, $uObject, $uReturning = '');
+    public function sqlInsert($uTable, $uObject, $uReturning = "");
     public function sqlUpdate($uTable, $uObject, $uRawObject, $uWhere, $uExtra = null);
     public function sqlDelete($uTable, $uWhere, $uExtra = null);
     public function sqlSelect($uTable, $uFields, $uRawFields, $uWhere, $uOrderBy, $uGroupBy, $uExtra = null);

@@ -76,7 +76,7 @@ class XmlCollection extends Collection
             $tPath = substr($uPattern, 0, $tPos + strlen($tSep));
         } else {
             $tPath = $uPattern;
-            $tPattern = '';
+            $tPattern = "";
         }
 
         $tTemp = new static();

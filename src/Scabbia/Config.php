@@ -47,7 +47,7 @@ class Config
                 Framework::$application->path . 'config/',
                 '*.json',
                 Io::GLOB_RECURSIVE | Io::GLOB_FILES,
-                '',
+                "",
                 $tConfigFiles
             );
         }

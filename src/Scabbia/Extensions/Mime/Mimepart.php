@@ -50,7 +50,7 @@ class Mimepart
      */
     public function compileBody()
     {
-        $tString = '';
+        $tString = "";
 
         if ($this->transferEncoding == 'base64') {
             $tString .= chunk_split(base64_encode($this->content));
@@ -68,7 +68,7 @@ class Mimepart
      */
     public function compile($uHeaders = true)
     {
-        $tString = '';
+        $tString = "";
         $tBody = $this->compileBody();
 
         if ($uHeaders) {

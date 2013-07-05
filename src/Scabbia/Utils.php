@@ -66,7 +66,7 @@ class Utils
      */
     private static function pregFormat($uPattern)
     {
-        $tBuffer = array(array(false, ''));
+        $tBuffer = array(array(false, ""));
         $tBrackets = 0;
 
         for ($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
@@ -78,14 +78,14 @@ class Utils
             }
 
             if ($tChar == '(') {
-                $tBuffer[++$tBrackets] = array(false, '');
+                $tBuffer[++$tBrackets] = array(false, "");
                 continue;
             }
 
             if ($tBrackets > 0) {
                 if ($tChar == ':' && $tBuffer[$tBrackets][0] === false) {
                     $tBuffer[$tBrackets][0] = $tBuffer[$tBrackets][1];
-                    $tBuffer[$tBrackets][1] = '';
+                    $tBuffer[$tBrackets][1] = "";
 
                     continue;
                 }
@@ -253,7 +253,7 @@ class Utils
      */
     public static function encrypt($uString, $uKey)
     {
-        $tResult = '';
+        $tResult = "";
 
         for ($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
             $tChar = substr($uString, $i - 1, 1);
@@ -274,7 +274,7 @@ class Utils
      */
     public static function decrypt($uString, $uKey)
     {
-        $tResult = '';
+        $tResult = "";
 
         for ($i = 1, $tCount = strlen($uString); $i <= $tCount; $i++) {
             $tChar = substr($uString, $i - 1, 1);

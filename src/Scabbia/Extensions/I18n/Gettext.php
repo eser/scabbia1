@@ -146,7 +146,7 @@ class Gettext
             return fread($fp, $entry['size']);
         }
 
-        return '';
+        return "";
     }
 
 

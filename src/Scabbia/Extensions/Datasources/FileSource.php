@@ -58,9 +58,9 @@ class FileSource implements IDataInterface, ICacheProvider, IStorageProvider
     {
         $this->cacheTtl = isset($uConfig['cacheTtl']) ? $uConfig['cacheTtl'] : 120;
         $this->storageTtl = isset($uConfig['storageTtl']) ? $uConfig['storageTtl'] : -1;
-        $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : '';
+        $this->keyphase = isset($uConfig['keyphase']) ? $uConfig['keyphase'] : "";
         $this->path = rtrim($uConfig['path'], '/') . '/';
-        $this->baseurl = isset($uConfig['baseurl']) ? $uConfig['baseurl'] : '';
+        $this->baseurl = isset($uConfig['baseurl']) ? $uConfig['baseurl'] : "";
     }
 
     /**

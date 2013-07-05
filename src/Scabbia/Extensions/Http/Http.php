@@ -190,13 +190,13 @@ class Http
         }
 
         return
-            ((isset($uParts['scheme'])) ? $uParts['scheme'] . '://' : '')
-            .((isset($uParts['user'])) ? $uParts['user'] . ((isset($uParts['pass'])) ? ':' . $uParts['pass'] : '') .'@' : '')
-            .((isset($uParts['host'])) ? $uParts['host'] : '')
-            .((isset($uParts['port'])) ? ':' . $uParts['port'] : '')
-            .((isset($uParts['path'])) ? $uParts['path'] : '')
-            .((isset($uParts['query'])) ? '?' . $uParts['query'] : '')
-            .((isset($uParts['fragment'])) ? '#' . $uParts['fragment'] : '')
+            ((isset($uParts['scheme'])) ? $uParts['scheme'] . '://' : "")
+            .((isset($uParts['user'])) ? $uParts['user'] . ((isset($uParts['pass'])) ? ':' . $uParts['pass'] : "") .'@' : "")
+            .((isset($uParts['host'])) ? $uParts['host'] : "")
+            .((isset($uParts['port'])) ? ':' . $uParts['port'] : "")
+            .((isset($uParts['path'])) ? $uParts['path'] : "")
+            .((isset($uParts['query'])) ? '?' . $uParts['query'] : "")
+            .((isset($uParts['fragment'])) ? '#' . $uParts['fragment'] : "")
             ;
     }
 
@@ -649,6 +649,6 @@ class Http
      */
     public static function removeCookie($uCookie)
     {
-        setrawcookie($uCookie, '', time() - 3600, Request::$siteroot . '/');
+        setrawcookie($uCookie, "", time() - 3600, Request::$siteroot . '/');
     }
 }

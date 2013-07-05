@@ -43,7 +43,7 @@ class Smtp
      */
     private static function sockwait($uSocket, $uExpectation)
     {
-        $tResponse = '';
+        $tResponse = "";
         while (substr($tResponse, 3, 1) != ' ') {
             if (!($tResponse = fgets($uSocket, 256))) {
                 throw new \Exception('read error');

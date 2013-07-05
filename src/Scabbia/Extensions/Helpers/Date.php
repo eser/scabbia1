@@ -115,7 +115,7 @@ class Date
             $uTime = time();
         }
 
-        return gmdate('D, d M Y H:i:s', $uTime) . ($uIsGMT ? ' GMT' : '');
+        return gmdate('D, d M Y H:i:s', $uTime) . ($uIsGMT ? ' GMT' : "");
     }
 
     /**

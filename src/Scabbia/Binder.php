@@ -152,7 +152,7 @@ class Binder
             return Io::read($tOutputFile);
         }
 
-        $tContent = '';
+        $tContent = "";
 
         foreach ($this->parts as $tPart) {
             if ($tPart['class'] !== null && !in_array($tPart['class'], $this->classes, true)) {
@@ -204,7 +204,7 @@ class Binder
     public static function printPhpSource($uInput, $uOnlyContent = true)
     {
         $tDocComments = array();
-        $tReturn = '';
+        $tReturn = "";
         $tLastToken = -1;
         $tOpenStack = array();
 

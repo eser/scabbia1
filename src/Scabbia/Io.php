@@ -230,7 +230,7 @@ class Io
     {
         $tExploded = explode('/', trim(strtr($uName, '\\', '/'), '/'));
 
-        $tName = '';
+        $tName = "";
         foreach ($tExploded as $tExplodedPart) {
             if (strlen($tName) > 0) {
                 $tName .= '/';
@@ -399,7 +399,7 @@ class Io
         $uPath,
         $uFilter = null,
         $uOptions = self::GLOB_FILES,
-        $uRecursivePath = '',
+        $uRecursivePath = "",
         array &$uArray = array()
     ) {
         $tPath = rtrim(strtr($uPath, '\\', '/'), '/') . '/';

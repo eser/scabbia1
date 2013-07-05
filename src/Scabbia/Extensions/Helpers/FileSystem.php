@@ -58,7 +58,7 @@ class FileSystem
         $uRecursive = true,
         $uBasenames = false,
         &$uArray = null,
-        $uPrefix = ''
+        $uPrefix = ""
     ) {
         if ($uArray === null) {
             $uArray = array();

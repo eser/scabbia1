@@ -124,7 +124,7 @@ class Mail
             return $tMain->compile();
         }
 
-        $tString = '';
+        $tString = "";
         foreach ($tHeaders as $tKey => $tValue) {
             $tString .= $tKey . ': ' . $tValue . "\n";
         }
