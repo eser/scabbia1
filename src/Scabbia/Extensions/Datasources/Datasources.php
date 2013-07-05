@@ -34,11 +34,11 @@ class Datasources
      */
     public static function get($uDatasource = null)
     {
-        if (is_null(self::$interfaces)) {
+        if (self::$interfaces === null) {
             self::$interfaces = Config::get('dataInterfaceList', array());
         }
 
-        if (is_null(self::$datasources)) {
+        if (self::$datasources === null) {
             foreach (Config::get('datasourceList', array()) as $tDatasourceConfig) {
                 $tDatasource = new self::$interfaces[$tDatasourceConfig['interface']] ($tDatasourceConfig);
                 self::$datasources[$tDatasourceConfig['id']] = $tDatasource;
@@ -46,7 +46,7 @@ class Datasources
         }
 
         // default name is dbconn
-        if (is_null($uDatasource)) {
+        if ($uDatasource === null) {
             $uDatasource = 'dbconn';
         }
 

@@ -98,7 +98,7 @@ class Fb
         self::$userId = self::$api->getUser();
         self::$facebookData = Session::get('facebookData', null);
 
-        $tFirstTime = (is_null(self::$facebookData) || self::$facebookData['userid'] !== self::$userId);
+        $tFirstTime = (self::$facebookData === null || self::$facebookData['userid'] !== self::$userId);
         if ($tFirstTime && self::$appExtendedAccess) {
             self::$api->setExtendedAccessToken();
         }
@@ -127,12 +127,12 @@ class Fb
         }
 
         $tError = Request::get('error_code', null);
-        if (!is_null($tError)) {
+        if ($tError !== null) {
             return false;
         }
 
         $tCode = Request::get('code', null);
-        if (is_null($tCode)) {
+        if ($tCode === null) {
             Session::set('facebookData', self::$facebookData);
 
             $tLoginUrl = self::$api->getLoginUrl(
@@ -168,7 +168,7 @@ class Fb
             return false;
         }
 
-        if (is_null($uExtra)) {
+        if ($uExtra === null) {
             $uExtra = array();
         }
 
@@ -195,7 +195,7 @@ class Fb
     {
         $tPermissions = String::coalesce($uPermissions, self::$appPermissions);
 
-        if (!is_null($tPermissions)) {
+        if ($tPermissions !== null) {
             $tUserPermissions = self::get('/me/permissions', true);
 
             if ($tUserPermissions === false || count($tUserPermissions->data) == 0) {
@@ -241,7 +241,7 @@ class Fb
      */
     public static function getUser($uExtra = null)
     {
-        if (is_null($uExtra)) {
+        if ($uExtra === null) {
             $uExtra = array();
         }
 
@@ -258,7 +258,7 @@ class Fb
      */
     public static function getUserLikes($uExtra = null)
     {
-        if (is_null($uExtra)) {
+        if ($uExtra === null) {
             $uExtra = array();
         }
 
@@ -290,7 +290,7 @@ class Fb
      */
     public static function getUserFriends($uExtra = null)
     {
-        if (is_null($uExtra)) {
+        if ($uExtra === null) {
             $uExtra = array();
         }
 

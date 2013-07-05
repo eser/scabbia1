@@ -75,7 +75,7 @@ class Http
     {
         $tResolution = Framework::$application->resolve(Request::$queryString, Request::$method, Request::$methodext);
 
-        if (!is_null($tResolution) && call_user_func($tResolution[1], $tResolution[2]) !== false) {
+        if ($tResolution !== null && call_user_func($tResolution[1], $tResolution[2]) !== false) {
             // to interrupt event-chain execution
             return true;
         }

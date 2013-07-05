@@ -68,7 +68,7 @@ class MemcacheSource implements IDataInterface, ICacheProvider, IServerConnectio
      */
     public function connectionOpen()
     {
-        if (!is_null($this->connection)) {
+        if ($this->connection !== null) {
             return;
         }
 

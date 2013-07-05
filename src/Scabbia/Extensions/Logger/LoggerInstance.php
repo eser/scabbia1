@@ -272,14 +272,14 @@ class LoggerInstance implements LoggerInterface
     {
         $tProfileData = array_pop($this->profilerStack);
 
-        if (is_null($tProfileData)) {
+        if ($tProfileData === null) {
             return false;
         }
 
         $tProfileData['consumedTime'] = microtime(true) - $tProfileData['startTime'];
         $tProfileData['consumedMemory'] = memory_get_usage() - $tProfileData['startMemory'];
 
-        if (!is_null($uExtraParameters)) {
+        if ($uExtraParameters !== null) {
             $tProfileData += $uExtraParameters;
         }
 

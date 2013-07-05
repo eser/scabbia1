@@ -72,7 +72,7 @@ abstract class TestFixture
         }
         $this->tearDown();
 
-        if (!is_null($tException)) {
+        if ($tException !== null) {
             foreach ($this->testExpectations['ignore'] as $tExpectation) {
                 if (!is_a($tException, $tExpectation)) {
                     continue;
@@ -86,7 +86,7 @@ abstract class TestFixture
 
         $tExpectations = $this->testExpectations['expect'];
         foreach ($tExpectations as $tExpectationKey => $tExpectation) {
-            if (!is_null($tException) && is_a($tException, $tExpectation)) {
+            if ($tException !== null && is_a($tException, $tExpectation)) {
                 unset($tExpectations[$tExpectationKey]);
                 $this->testAddReport('expectException', false, get_class($tException) . ': ' . $tException->getMessage());
                 $tException = null;
@@ -97,7 +97,7 @@ abstract class TestFixture
             $this->testAddReport('expectException', true, $tExpectation);
         }
 
-        if (!is_null($tException)) {
+        if ($tException !== null) {
             $this->testAddReport('exception', true, get_class($tException) . ': ' . $tException->getMessage());
         }
 
@@ -159,7 +159,7 @@ abstract class TestFixture
      */
     public function assertNull($uVariable, $uMessage = null)
     {
-        $this->testAddReport('assertNull', is_null($uVariable), $uMessage);
+        $this->testAddReport('assertNull', $uVariable === null, $uMessage);
     }
 
     /**
@@ -167,7 +167,7 @@ abstract class TestFixture
      */
     public function assertNotNull($uVariable, $uMessage = null)
     {
-        $this->testAddReport('assertNotNull', !is_null($uVariable), $uMessage);
+        $this->testAddReport('assertNotNull', $uVariable !== null, $uMessage);
     }
 
     /**
@@ -210,14 +210,14 @@ abstract class TestFixture
                     $tPassed = false;
                     echo '<li>';
                     echo '<font color="red">', $tTest['operation'], '</font>';
-                    if (!is_null($tTest['message'])) {
+                    if ($tTest['message'] !== null) {
                         echo ': ', $tTest['message'];
                     }
                     echo '</li>';
                 } else {
                     echo '<li>';
                     echo '<font color="green">', $tTest['operation'], '</font>';
-                    if (!is_null($tTest['message'])) {
+                    if ($tTest['message'] !== null) {
                         echo ': ', $tTest['message'];
                     }
                     echo '</li>';

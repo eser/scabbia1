@@ -76,7 +76,7 @@ class Database
      */
     public static function getDataset($uDataset = null)
     {
-        if (is_null(self::$datasets)) {
+        if (self::$datasets === null) {
             foreach (Config::get('datasetList', array()) as $tDatasetConfig) {
                 $tDataset = new DatabaseDataset($tDatasetConfig);
                 self::$datasets[$tDataset->id] = $tDataset;

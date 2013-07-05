@@ -102,7 +102,7 @@ class Framework
     public static function load($uClassLoader = null)
     {
         // Set framework autoloader
-        if (!is_null($uClassLoader)) {
+        if ($uClassLoader !== null) {
             self::$classLoader = $uClassLoader;
             self::$classLoader->unregister();
         }
@@ -118,7 +118,7 @@ class Framework
         error_reporting(defined('E_STRICT') ? E_ALL | E_STRICT : E_ALL);
 
         // Set variables
-        if (is_null(self::$basepath)) {
+        if (self::$basepath === null) {
             $tPath = getcwd();
             if (isset($_SERVER['argv']) && ($tDirname = dirname($_SERVER['argv'][0])) != '.') {
                 $tPath .= '/' . $tDirname;
@@ -166,7 +166,7 @@ class Framework
             }
         }
 
-        if (!is_null(self::$classLoader)) {
+        if (self::$classLoader !== null) {
             return self::$classLoader->loadClass($uName);
         }
 
@@ -180,7 +180,7 @@ class Framework
     {
         self::$applications[] = array(
             'namespace' => $uNamespace,
-            'directory' => (!is_null($uDirectory) ? rtrim($uDirectory, '/') : Io::namespacePath($uNamespace)) . '/',
+            'directory' => ($uDirectory !== null ? rtrim($uDirectory, '/') : Io::namespacePath($uNamespace)) . '/',
             'endpoints' => (array)$uEndpoints
         );
     }
@@ -212,7 +212,7 @@ class Framework
         }
 
         // construct application object
-        if (!is_null($tSelectedApplication)) {
+        if ($tSelectedApplication !== null) {
             self::$application = new Application($tSelectedApplication['namespace'], $tSelectedApplication['directory']);
         }
 
@@ -259,18 +259,18 @@ class Framework
             Events::invoke('pre-run', $tParms);
 
             // ignite application
-            if (!is_null($tSelectedApplication)) {
+            if ($tSelectedApplication !== null) {
                 self::$application->before->invoke();
                 $tReturn = self::$application->callbacks->invoke();
                 self::$application->after->invoke();
 
-                if (!is_null(self::$application->otherwise) && $tReturn !== false) {
+                if (self::$application->otherwise !== null && $tReturn !== false) {
                     call_user_func(self::$application->otherwise);
                     return false;
                 }
             }
         } catch (CustomException $ex) {
-            if (!is_null($tSelectedApplication)) {
+            if ($tSelectedApplication !== null) {
                 call_user_func(self::$application->onError, $ex->type, $ex->title, $ex->getMessage());
             }
 

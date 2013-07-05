@@ -176,7 +176,7 @@ class Request
         self::$route = Framework::$application->resolve(self::$queryString, self::$methodext);
 
         // framework variables
-        if (is_null(self::$siteroot)) {
+        if (self::$siteroot === null) {
             self::$siteroot = Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
         }
         if (strlen(self::$siteroot) > 0) {
@@ -288,7 +288,7 @@ class Request
      */
     public static function checkLanguage($uLanguage = null)
     {
-        if (is_null($uLanguage)) {
+        if ($uLanguage === null) {
             return self::$languages;
         }
 
@@ -300,7 +300,7 @@ class Request
      */
     public static function checkContentType($uContentType = null)
     {
-        if (is_null($uContentType)) {
+        if ($uContentType === null) {
             return self::$contentTypes;
         }
 
@@ -334,7 +334,7 @@ class Request
             return $uDefault;
         }
 
-        if (is_null($uFilter)) {
+        if ($uFilter === null) {
             return $_GET[$uKey];
         }
 
@@ -357,7 +357,7 @@ class Request
             return $uDefault;
         }
 
-        if (is_null($uFilter)) {
+        if ($uFilter === null) {
             return $_POST[$uKey];
         }
 
@@ -380,7 +380,7 @@ class Request
             return $uDefault;
         }
 
-        if (is_null($uFilter)) {
+        if ($uFilter === null) {
             return $_COOKIE[$uKey];
         }
 
@@ -401,7 +401,7 @@ class Request
     public static function getArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
-        if (!is_null($uFilter)) {
+        if ($uFilter !== null) {
             if (func_num_args() > 1) {
                 $tArgs = array_slice(func_get_args(), 1);
             } else {
@@ -434,7 +434,7 @@ class Request
     public static function postArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
-        if (!is_null($uFilter)) {
+        if ($uFilter !== null) {
             if (func_num_args() > 1) {
                 $tArgs = array_slice(func_get_args(), 1);
             } else {
@@ -467,7 +467,7 @@ class Request
     public static function cookieArray($uKeys, $uFilter = self::FILTER_SANITIZE_XSS)
     {
         $tValues = array();
-        if (!is_null($uFilter)) {
+        if ($uFilter !== null) {
             if (func_num_args() > 1) {
                 $tArgs = array_slice(func_get_args(), 1);
             } else {

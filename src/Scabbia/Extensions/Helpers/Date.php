@@ -61,7 +61,7 @@ class Date
      */
     public static function humanize($uTimestamp, $uTime = null, $uCalculateAgo = true, $uShowHours = true)
     {
-        if (is_null($uTime)) {
+        if ($uTime === null) {
             $uTime = time();
         }
 
@@ -70,7 +70,7 @@ class Date
         if ($tDifference >= 0 && $uCalculateAgo) {
             $tAgo = self::ago($tDifference);
 
-            if (!is_null($tAgo)) {
+            if ($tAgo !== null) {
                 return implode(' ', $tAgo);
             }
         }
@@ -221,7 +221,7 @@ class Date
             $tTime['year']
         ); // $tTime['is_dst']
 
-        if (is_null($uDestinationFormat)) {
+        if ($uDestinationFormat === null) {
             return $tTimestamp;
         }
 

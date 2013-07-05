@@ -72,7 +72,7 @@ class MysqlSource extends DatabaseSource
      */
     public function connectionOpen()
     {
-        if (!is_null($this->connection)) {
+        if ($this->connection !== null) {
             return;
         }
 
@@ -173,7 +173,7 @@ class MysqlSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                 $tSql .= ' LIMIT ' . $uExtra['limit'];
             }
@@ -193,7 +193,7 @@ class MysqlSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                 $tSql .= ' LIMIT ' . $uExtra['limit'];
             }
@@ -222,15 +222,15 @@ class MysqlSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
+        if ($uGroupBy !== null && strlen($uGroupBy) > 0) {
             $tSql .= ' GROUP BY ' . $uGroupBy;
         }
 
-        if (!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+        if ($uOrderBy !== null && strlen($uOrderBy) > 0) {
             $tSql .= ' ORDER BY ' . $uOrderBy;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                 if (isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];

@@ -68,7 +68,7 @@ class Session
             self::$id = $_COOKIE[self::$sessionName];
         }
 
-        if (!is_null(self::$id)) {
+        if (self::$id !== null) {
             $tIpCheck = Config::get('session/cookie/ipCheck', false);
             $tUACheck = Config::get('session/cookie/uaCheck', true);
 
@@ -95,7 +95,7 @@ class Session
             return;
         }
 
-        if (is_null(self::$id)) {
+        if (self::$id === null) {
             self::$id = String::generateUuid();
         }
 
@@ -123,11 +123,11 @@ class Session
      */
     public static function destroy()
     {
-        if (is_null(self::$data)) { // !is_null
+        if (self::$data === null) { // !== null
             self::open();
         }
 
-        if (is_null(self::$id)) {
+        if (self::$id === null) {
             return;
         }
 
@@ -146,7 +146,7 @@ class Session
      */
     public static function get($uKey, $uDefault = null)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -162,7 +162,7 @@ class Session
      */
     public static function set($uKey, $uValue)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -175,7 +175,7 @@ class Session
      */
     public static function remove($uKey)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -188,7 +188,7 @@ class Session
      */
     public static function exists($uKey)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -200,7 +200,7 @@ class Session
      */
     public static function getKeys()
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -212,7 +212,7 @@ class Session
      */
     public static function getFlash($uKey, $uDefault = null)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 
@@ -233,7 +233,7 @@ class Session
      */
     public static function export($tOutput = true)
     {
-        if (is_null(self::$data)) {
+        if (self::$data === null) {
             self::open();
         }
 

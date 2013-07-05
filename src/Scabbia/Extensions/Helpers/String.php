@@ -75,9 +75,9 @@ class String
     public static function coalesce()
     {
         foreach (func_get_args() as $tValue) {
-            if (!is_null($tValue)) {
+            if ($tValue !== null) {
                 if (is_array($tValue)) {
-                    if (isset($tValue[0][$tValue[1]]) && !is_null($tValue[0][$tValue[1]])) {
+                    if (isset($tValue[0][$tValue[1]]) && $tValue[0][$tValue[1]] !== null) {
                         return $tValue[0][$tValue[1]];
                     }
 
@@ -184,7 +184,7 @@ class String
             }
 
             if ($tLastItem > 0) {
-                if (is_null($tBrackets[$tLastItem][$tArrayItem])) {
+                if ($tBrackets[$tLastItem][$tArrayItem] === null) {
                     if ($tChar == '\'' || $tChar == '"') {
                         $tQuoteChar = $tChar;
                         $tBrackets[$tLastItem][$tArrayItem] = '"'; // static text
@@ -220,7 +220,7 @@ class String
                     }
                 }
 
-                if ($tArrayItem == 1 && $tChar == '|' && is_null($tBrackets[$tLastItem][0])) {
+                if ($tArrayItem == 1 && $tChar == '|' && $tBrackets[$tLastItem][0] === null) {
                     $tBrackets[$tLastItem][0] = $tBrackets[$tLastItem][1];
                     $tBrackets[$tLastItem][1] = null;
                     continue;
@@ -247,7 +247,7 @@ class String
                         }
                     }
 
-                    if (!is_null($tFunc)) {
+                    if ($tFunc !== null) {
                         $tString = call_user_func_array(self::substr($tFunc, 1), $tBrackets[$tLastItem]);
                     } else {
                         $tString = implode(', ', $tBrackets[$tLastItem]);
@@ -502,7 +502,7 @@ class String
      */
     public static function squote($uString, $uCover = false)
     {
-        // if (is_null($uString)) {
+        // if ($uString === null) {
         //     return 'null';
         // }
 
@@ -518,7 +518,7 @@ class String
      */
     public static function dquote($uString, $uCover = false)
     {
-        // if (is_null($uString)) {
+        // if ($uString === null) {
         //     return 'null';
         // }
 
@@ -671,7 +671,7 @@ class String
      */
     public static function substr($uString, $uStart, $uLength = null)
     {
-        if (is_null($uLength)) {
+        if ($uLength === null) {
             return mb_substr($uString, $uStart);
         }
 
@@ -841,7 +841,7 @@ class String
         $tPos = 0;
         $tLen = self::length($tParts[0]);
 
-        if (!is_null($uSeparator)) {
+        if ($uSeparator !== null) {
             for (; $tPos < $tLen; $tPos++) {
                 $tChar = self::substr($tParts[0], $tPos, 1);
 
@@ -1530,7 +1530,7 @@ class String
 
             if ($tChar == $uDelimiter) {
                 $tCapital = true;
-                $tOutput .= (!is_null($uReplaceDelimiter)) ? $uReplaceDelimiter : $tChar;
+                $tOutput .= ($uReplaceDelimiter !== null) ? $uReplaceDelimiter : $tChar;
                 continue;
             }
 

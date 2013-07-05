@@ -54,7 +54,7 @@ class Controllers
         $tActualParams = trim($uInput['params'], '/');
         $uParams = explode('/', $tActualParams);
 
-        if (is_null(self::$root)) {
+        if (self::$root === null) {
             self::$root = new ControllerBase();
             $tClass = Framework::$application->name . '\\Controllers\\' . $tActualController;
 
@@ -76,7 +76,7 @@ class Controllers
             }
 
             // call callback/closure returned by render
-            if ($tReturn !== true && !is_null($tReturn)) {
+            if ($tReturn !== true && $tReturn !== null) {
                 call_user_func($tReturn);
                 break;
             }

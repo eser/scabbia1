@@ -29,7 +29,7 @@ class AutoModels
      */
     public static function load()
     {
-        if (is_null(self::$autoModels)) {
+        if (self::$autoModels === null) {
             self::$autoModels = array();
 
             foreach (Config::get('autoModelList', array()) as $tAutoModelKey => $tAutoModel) {

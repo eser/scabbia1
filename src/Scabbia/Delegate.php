@@ -38,7 +38,7 @@ class Delegate
         $tNewInstance = new Delegate($uExpectedReturn);
 
         return function (/* callable */ $uCallback = null, $uState = null, $uPriority = 10) use ($tNewInstance) {
-            if (!is_null($uCallback)) {
+            if ($uCallback !== null) {
                 $tNewInstance->add($uCallback, $uState, $uPriority);
             }
 
@@ -65,7 +65,7 @@ class Delegate
      */
     public function add(/* callable */ $uCallback, $uState = null, $uPriority = 10)
     {
-        if (is_null($this->callbacks)) {
+        if ($this->callbacks === null) {
             $this->callbacks = new \SplPriorityQueue();
         }
 
@@ -81,7 +81,7 @@ class Delegate
     {
         $tArgs = func_get_args();
 
-        if (!is_null($this->callbacks)) {
+        if ($this->callbacks !== null) {
             foreach ($this->callbacks as $tCallback) {
                 $tEventArgs = $tArgs;
                 array_unshift($tEventArgs, $tCallback[1]);

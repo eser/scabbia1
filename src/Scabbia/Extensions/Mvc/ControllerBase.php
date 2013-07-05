@@ -111,7 +111,7 @@ class ControllerBase implements LoggerAwareInterface
     public function render($uAction, array $uParams, array $uInput)
     {
         $tActionName = $uAction; // strtr($uAction, '/', '_');
-        if (is_null($tActionName) || strlen($tActionName) <= 0) {
+        if ($tActionName === null || strlen($tActionName) <= 0) {
             $tActionName = $this->defaultAction;
         }
 
@@ -223,7 +223,7 @@ class ControllerBase implements LoggerAwareInterface
     {
         $uArgs = func_get_args();
 
-        if (is_null($uMemberName)) {
+        if ($uMemberName === null) {
             $uMemberName = $uDatasourceName;
         }
 
@@ -237,7 +237,7 @@ class ControllerBase implements LoggerAwareInterface
     {
         $uArgs = func_get_args();
 
-        if (is_null($uMemberName)) {
+        if ($uMemberName === null) {
             if (($tPos = strrpos($uModelClass, '\\')) !== false) {
                 $uMemberName = substr($uModelClass, $tPos + 1);
             } else {
@@ -254,8 +254,8 @@ class ControllerBase implements LoggerAwareInterface
     public function view($uView = null, $uModel = null)
     {
         Views::viewFile(
-            '{app}views/' . (!is_null($uView) ? $uView : $this->view),
-            !is_null($uModel) ? $uModel : $this->vars
+            '{app}views/' . ($uView !== null ? $uView : $this->view),
+            $uModel !== null ? $uModel : $this->vars
         );
     }
 
@@ -265,8 +265,8 @@ class ControllerBase implements LoggerAwareInterface
     public function viewFile($uView = null, $uModel = null)
     {
         Views::viewFile(
-            !is_null($uView) ? $uView : $this->view,
-            !is_null($uModel) ? $uModel : $this->vars
+            $uView !== null ? $uView : $this->view,
+            $uModel !== null ? $uModel : $this->vars
         );
     }
 
@@ -276,7 +276,7 @@ class ControllerBase implements LoggerAwareInterface
     public function json($uModel = null)
     {
         Views::json(
-            !is_null($uModel) ? $uModel : $this->vars
+            $uModel !== null ? $uModel : $this->vars
         );
     }
 
@@ -286,7 +286,7 @@ class ControllerBase implements LoggerAwareInterface
     public function xml($uModel = null)
     {
         Views::xml(
-            !is_null($uModel) ? $uModel : $this->vars
+            $uModel !== null ? $uModel : $this->vars
         );
     }
 

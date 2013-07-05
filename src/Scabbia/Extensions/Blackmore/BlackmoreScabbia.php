@@ -72,7 +72,7 @@ class BlackmoreScabbia
 
         $tStart = microtime(true);
 
-        if (!is_null(Framework::$application)) {
+        if (Framework::$application !== null) {
             self::purgeFolder(Framework::$application->path . 'writable/cache/');
             self::purgeFolder(Framework::$application->path . 'writable/logs/');
         }

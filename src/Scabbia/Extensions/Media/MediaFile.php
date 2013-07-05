@@ -74,7 +74,7 @@ class MediaFile
         $this->source = $uSource;
         $this->background = array(255, 255, 255, 0);
 
-        if (is_null($this->source)) {
+        if ($this->source === null) {
             $this->sa = 1;
         } else {
             $tData = getimagesize($this->source);
@@ -83,7 +83,7 @@ class MediaFile
             $this->sa = $this->sw / $this->sh;
 
             // get the source file extension
-            if (is_null($uOriginalFilename)) {
+            if ($uOriginalFilename === null) {
                 $uOriginalFilename = $this->source;
             }
             $this->filename = pathinfo($this->source, PATHINFO_FILENAME);
@@ -118,7 +118,7 @@ class MediaFile
      */
     public function __destruct()
     {
-        if (!is_null($this->image)) {
+        if ($this->image !== null) {
             imagedestroy($this->image);
         }
     }
@@ -297,7 +297,7 @@ class MediaFile
                 break;
         }
 
-        if (!is_null($this->image)) {
+        if ($this->image !== null) {
             imagedestroy($this->image);
         }
 
@@ -316,7 +316,7 @@ class MediaFile
      */
     public function save($uPath = null)
     {
-        if (!is_null($uPath)) {
+        if ($uPath !== null) {
             $this->source = $uPath;
         }
 

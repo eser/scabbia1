@@ -55,7 +55,7 @@ class Mail
         $tMimepart = new Mimepart();
         $tMimepart->filename = $uFilename;
 
-        if (!is_null($uType)) {
+        if ($uType !== null) {
             $tMimepart->type = $uType;
         } else {
             $tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);
@@ -79,7 +79,7 @@ class Mail
         $tMimepart = new Mimepart();
         $tMimepart->filename = $uFilename;
 
-        if (!is_null($uType)) {
+        if ($uType !== null) {
             $tMimepart->type = $uType;
         } else {
             $tExtension = pathinfo($uFilename, PATHINFO_EXTENSION);

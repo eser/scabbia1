@@ -57,7 +57,7 @@ class CacheCollection extends Collection
      */
     public function update()
     {
-        if (is_null($this->_updateFunc)) {
+        if ($this->_updateFunc === null) {
             return;
         }
 

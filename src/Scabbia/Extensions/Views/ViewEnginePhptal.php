@@ -32,7 +32,7 @@ class ViewEnginePhptal
      */
     public static function renderview($uObject)
     {
-        if (is_null(self::$engine)) {
+        if (self::$engine === null) {
             $tPath = Io::translatePath(Config::get('phptal/path', '{core}include/3rdparty/PHPTAL'));
             require $tPath . '/PHPTAL.php';
 

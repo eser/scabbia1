@@ -71,7 +71,7 @@ class I18n
      */
     public static function load()
     {
-        if (is_null(self::$languages)) {
+        if (self::$languages === null) {
             self::$languages = array();
 
             foreach (Config::get('i18n/languageList', array()) as $tLanguage) {
@@ -115,7 +115,7 @@ class I18n
             }
         }
 
-        if (!is_null(self::$language)) {
+        if (self::$language !== null) {
             // if (DIRECTORY_SEPARATOR == '\\') {
             //     $tLocale = explode('.', self::$language['localewin'], 2);
             // }
@@ -132,7 +132,7 @@ class I18n
             setlocale(LC_ALL, $tLocale[0]);
 
             // @todo path confusion
-            if (!is_null(Framework::$application)) {
+            if (Framework::$application !== null) {
                 $tLocalePath = Framework::$application->path . 'locale';
                 $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
                 $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';

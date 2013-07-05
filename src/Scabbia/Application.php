@@ -65,8 +65,8 @@ class Application
      */
     public function __construct($uName = null, $uDirectory = null)
     {
-        $this->name = !is_null($uName) ? $uName : 'Application';
-        $this->path = Framework::$basepath . (!is_null($uDirectory) ? $uDirectory : 'application/');
+        $this->name = ($uName !== null) ? $uName : 'Application';
+        $this->path = Framework::$basepath . (($uDirectory !== null) ? $uDirectory : 'application/');
 
         $this->before = new Delegate();
         $this->after = new Delegate();
@@ -84,7 +84,7 @@ class Application
      */
     private function load()
     {
-        if (!is_null($this->rewrites)) {
+        if ($this->rewrites !== null) {
             return;
         }
 
@@ -169,7 +169,7 @@ class Application
 
         // @todo use $this->routes->top() if needed.
         foreach ($this->rewrites as $tRewriteItem) {
-            if (isset($tRewriteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRewriteItem[2])) {
+            if (isset($tRewriteItem[2]) && $uMethod !== null && !in_array($uMethod, $tRewriteItem[2])) {
                 continue;
             }
 
@@ -180,7 +180,7 @@ class Application
 
         // @todo use $this->routes->top() if needed.
         foreach ($this->routes as $tRouteItem) {
-            if (isset($tRouteItem[2]) && !is_null($uMethod) && !in_array($uMethod, $tRouteItem[2])) {
+            if (isset($tRouteItem[2]) && $uMethod !== null && !in_array($uMethod, $tRouteItem[2])) {
                 continue;
             }
 

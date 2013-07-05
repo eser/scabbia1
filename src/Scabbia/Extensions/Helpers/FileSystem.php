@@ -41,7 +41,7 @@ class FileSystem
                 continue;
             }
 
-            if ($tFile->isFile() && (is_null($uPattern) || fnmatch($uPattern, $tFileName))) {
+            if ($tFile->isFile() && ($uPattern === null || fnmatch($uPattern, $tFileName))) {
                 $tArray['.'][] = ($uBasenames ? pathinfo($tFileName, PATHINFO_FILENAME) : $tFileName);
             }
         }
@@ -60,7 +60,7 @@ class FileSystem
         &$uArray = null,
         $uPrefix = ''
     ) {
-        if (is_null($uArray)) {
+        if ($uArray === null) {
             $uArray = array();
         }
 
@@ -83,7 +83,7 @@ class FileSystem
                 continue;
             }
 
-            if ($tFile->isFile() && (is_null($uPattern) || fnmatch($uPattern, $tFileName))) {
+            if ($tFile->isFile() && ($uPattern === null || fnmatch($uPattern, $tFileName))) {
                 $uArray[] = $uPrefix . ($uBasenames ? pathinfo($tFileName, PATHINFO_FILENAME) : $tFileName);
             }
         }

@@ -67,7 +67,7 @@ class RestSource implements IDataInterface
      */
     public function makeRequest($uMethod, $uUrl, $uPostFields = null, array $uHeaders = null)
     {
-        if (is_null($this->curlObject)) {
+        if ($this->curlObject === null) {
             $this->curlObject = curl_init();
             curl_setopt_array(
                 $this->curlObject,
@@ -92,7 +92,7 @@ class RestSource implements IDataInterface
         curl_setopt($this->curlObject, CURLOPT_URL, $this->baseUrl . $uUrl);
         curl_setopt($this->curlObject, CURLOPT_CUSTOMREQUEST, $uMethod);
 
-        if (!is_null($uPostFields)) {
+        if ($uPostFields !== null) {
             curl_setopt($this->curlObject, CURLOPT_POST, 1);
             curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, $uPostFields);
         } else {
@@ -100,7 +100,7 @@ class RestSource implements IDataInterface
             // curl_setopt($this->curlObject, CURLOPT_POSTFIELDS, '');
         }
 
-        if (!is_null($uHeaders)) {
+        if ($uHeaders !== null) {
             $tHeaders = array();
             foreach ($uHeaders as $tHeaderKey => $tHeader) {
                 $tHeaders[] = $tHeaderKey . ': ' . $tHeader;

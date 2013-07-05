@@ -84,7 +84,7 @@ class DatabaseQuery
      */
     public function setDatabase($uDatabase = null)
     {
-        if (!is_null($uDatabase)) {
+        if ($uDatabase !== null) {
             $this->database = $uDatabase;
         } else {
             $this->database = Datasources::get(); // default
@@ -176,7 +176,7 @@ class DatabaseQuery
             if (is_array($uField)) {
                 foreach ($uField as $tField => $tValue) {
                     // $this->fields[$tField] = String::squote($tValue, true);
-                    if (is_null($tValue)) {
+                    if ($tValue === null) {
                         $this->fields[$tField] = 'NULL';
                     } else {
                         $this->fields[$tField] = ':' . $tField;
@@ -187,7 +187,7 @@ class DatabaseQuery
                 $this->rawFields[] = $uField;
             }
         } else {
-            if (is_null($uValue)) {
+            if ($uValue === null) {
                 $this->fields[$uField] = 'NULL';
             } else {
                 // $this->fields[$uField] = String::squote($uValue, true);
@@ -208,7 +208,7 @@ class DatabaseQuery
             if (is_array($uField)) {
                 foreach ($uField as $tField => $tValue) {
                     // $this->fields[$tField] = String::squote($tValue, true);
-                    if (is_null($tValue)) {
+                    if ($tValue === null) {
                         $this->fields[$tField] = 'NULL';
                     } else {
                         $this->fields[$tField] = $tValue;
@@ -218,7 +218,7 @@ class DatabaseQuery
                 $this->rawFields[] = $uField;
             }
         } else {
-            if (is_null($uValue)) {
+            if ($uValue === null) {
                 $this->fields[$uField] = 'NULL';
             } else {
                 $this->fields[$uField] = $uValue;
@@ -253,7 +253,7 @@ class DatabaseQuery
             }
 
             if ($uIsList) {
-                if (!is_null($tPreviousElement)) {
+                if ($tPreviousElement !== null) {
                     $tOutput .= ', ' . String::squote($tElement, true);
                 } else {
                     $tOutput .= String::squote($tElement, true);
@@ -283,7 +283,7 @@ class DatabaseQuery
 
         $this->where = $uCondition;
 
-        if (!is_null($uList)) {
+        if ($uList !== null) {
             $this->where .= ' (' . implode(', ', String::squoteArray($uList, true)) . ')';
         }
 
@@ -310,7 +310,7 @@ class DatabaseQuery
 
             $this->where .= $uCondition;
 
-            if (!is_null($uList)) {
+            if ($uList !== null) {
                 $this->where .= ' (' . implode(', ', String::squoteArray($uList, true)) . ')';
             }
         }
@@ -338,7 +338,7 @@ class DatabaseQuery
 
             $this->where .= $uCondition;
 
-            if (!is_null($uList)) {
+            if ($uList !== null) {
                 $this->where .= ' (' . implode(', ', String::squoteArray($uList, true)) . ')';
             }
         }
@@ -372,7 +372,7 @@ class DatabaseQuery
     public function setOrderBy($uOrderBy, $uOrder = null)
     {
         $this->orderby = $uOrderBy;
-        if (!is_null($uOrder)) {
+        if ($uOrder !== null) {
             $this->orderby .= ' ' . $uOrder;
         }
 
@@ -385,7 +385,7 @@ class DatabaseQuery
     public function addOrderBy($uOrderBy, $uOrder = null)
     {
         $this->orderby .= ', ' . $uOrderBy;
-        if (!is_null($uOrder)) {
+        if ($uOrder !== null) {
             $this->orderby .= ' ' . $uOrder;
         }
 
@@ -473,7 +473,7 @@ class DatabaseQuery
             true
         );
 
-        if (!is_null($this->sequence) && strlen($this->sequence) > 0) {
+        if ($this->sequence !== null && strlen($this->sequence) > 0) {
             $tReturn->_lastInsertId = $this->database->lastInsertId($this->sequence);
         } else {
             $tReturn->_lastInsertId = $this->database->lastInsertId();

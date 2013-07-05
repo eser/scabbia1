@@ -38,7 +38,7 @@ class ViewEngineRazor
         $tOutputFile = Io::translatePath('{writable}cache/cshtml/' . $uObject['compiledFile']);
 
         if (Framework::$disableCaches || !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
-            if (is_null(self::$engine)) {
+            if (self::$engine === null) {
                 require 'razor/RazorViewRenderer.php';
                 require 'razor/RazorViewRendererException.php';
 

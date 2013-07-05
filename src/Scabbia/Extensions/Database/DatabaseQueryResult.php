@@ -307,7 +307,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
             return true;
         }
 
-        if (is_null($this->_object)) {
+        if ($this->_object === null) {
             try {
                 $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
                 $this->_count = $this->_database->itCount($this->_object);
@@ -342,7 +342,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
      */
     public function close()
     {
-        if (!is_null($this->_object)) {
+        if ($this->_object !== null) {
             $this->_database->itClose($this->_object);
             $this->_object = null;
         }
@@ -350,7 +350,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
         $this->_database = null;
         $this->_cursor = 0;
 
-        if (!is_null($this->_caching)) {
+        if ($this->_caching !== null) {
             Datasources::get($this->_caching[0])->cacheSet($this->_caching[1], $this, $this->_caching[2]);
         }
     }

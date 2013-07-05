@@ -38,7 +38,7 @@ class Views
         $tViewFilePath = Io::translatePath($uView);
         $tViewFileInfo = pathinfo($tViewFilePath);
 
-        if (is_null(self::$viewEngines)) {
+        if (self::$viewEngines === null) {
             self::$viewEngines = Config::get('views/viewEngineList', array());
         }
 

@@ -32,7 +32,7 @@ class ViewEngineSmarty
      */
     public static function renderview($uObject)
     {
-        if (is_null(self::$engine)) {
+        if (self::$engine === null) {
             $tPath = Io::translatePath(Config::get('smarty/path', '{core}include/3rdparty/smarty/libs'));
             require $tPath . '/Smarty.class.php';
 

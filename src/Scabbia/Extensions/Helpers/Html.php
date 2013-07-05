@@ -49,7 +49,7 @@ class Html
             $tReturn .= ' ' . self::attributes($uAttributes);
         }
 
-        if (is_null($uValue)) {
+        if ($uValue === null) {
             $tReturn .= ' />';
         } else {
             $tReturn .= '>' . $uValue . '</' . $uName . '>';
@@ -67,7 +67,7 @@ class Html
 
         $tReturn = array();
         foreach ($tAttributes as $tKey => $tValue) {
-            if (is_null($tValue)) {
+            if ($tValue === null) {
                 $tReturn[] = $tKey . '="' . $tKey . '"';
                 continue;
             }
@@ -91,7 +91,7 @@ class Html
                 $tOutput .= ' selected="selected"';
             }
 
-            $tOutput .= $uExtra . '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
+            $tOutput .= $uExtra . '>' . ($uField !== null ? $tVal[$uField] : $tVal) . '</option>';
         }
 
         return $tOutput;
@@ -110,7 +110,7 @@ class Html
                 $tItem .= ' selected="selected"';
             }
 
-            $tItem .= $uExtra . '>' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</option>';
+            $tItem .= $uExtra . '>' . ($uField !== null ? $tVal[$uField] : $tVal) . '</option>';
             $tOutput[] = $tItem;
         }
 
@@ -139,7 +139,7 @@ class Html
                 $tOutput .= ' checked="checked"';
             }
 
-            $tOutput .= ' />' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</label>';
+            $tOutput .= ' />' . ($uField !== null ? $tVal[$uField] : $tVal) . '</label>';
         }
 
         return $tOutput;
@@ -167,7 +167,7 @@ class Html
                 $tItem .= ' checked="checked"';
             }
 
-            $tItem .= ' />' . (!is_null($uField) ? $tVal[$uField] : $tVal) . '</label>';
+            $tItem .= ' />' . ($uField !== null ? $tVal[$uField] : $tVal) . '</label>';
             $tOutput[] = $tItem;
         }
 
@@ -201,7 +201,7 @@ class Html
 
         $tOutput = '<label><input type="checkbox" ' . self::attributes($uAttributes) . ' />';
 
-        if (!is_null($uText)) {
+        if ($uText !== null) {
             $tOutput .= $uText;
         }
 

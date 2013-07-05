@@ -70,10 +70,10 @@ class Validation
      */
     public static function validate(array $uArray = null)
     {
-        if (!is_null($uArray)) {
+        if ($uArray !== null) {
             foreach (self::$rules as $tRule) {
                 $tValues = Arrays::getPath($uArray, $tRule->field, $tRule->defaultValue);
-                if (is_null($tValues)) {
+                if ($tValues === null) {
                     // if it's null and also default value is not set
                     self::addSummary($tRule->field, $tRule->errorMessage);
                     continue;
@@ -95,7 +95,7 @@ class Validation
                             $tArgs
                         );
 
-                        if (is_null($tResult) || is_null($tCondition[2])) {
+                        if ($tResult === null || $tCondition[2] === null) {
                             $tResult = $tSingleResult;
                         } elseif ($tCondition[2] == 'and') {
                             $tResult = $tResult && $tSingleResult;
@@ -157,7 +157,7 @@ class Validation
             }
 
             foreach ($tField as $tSummary) {
-                if (is_null($tSummary['message'])) {
+                if ($tSummary['message'] === null) {
                     continue;
                 }
 
@@ -180,7 +180,7 @@ class Validation
 
         foreach (self::$summary as $tField) {
             foreach ($tField as $tRule) {
-                if (is_null($tRule->errorMessage)) {
+                if ($tRule->errorMessage === null) {
                     continue;
                 }
 

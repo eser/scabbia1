@@ -48,7 +48,7 @@ class Assets
      */
     public static function routing()
     {
-        if (is_null(self::$packs)) {
+        if (self::$packs === null) {
             self::$packs = Config::get('assets/packList', array());
 
             foreach (Config::get('assets/fileList', array()) as $tFile) {

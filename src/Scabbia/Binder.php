@@ -60,12 +60,12 @@ class Binder
      */
     public static function init()
     {
-        if (is_null(self::$fileProcessors)) {
+        if (self::$fileProcessors === null) {
             self::$fileProcessors = array();
             self::$packProcessors = array();
 
             self::$fileProcessors['less'] = function ($uInput, $uDescription) {
-                if (is_null(self::$lessCompiler)) {
+                if (self::$lessCompiler === null) {
                     self::$lessCompiler = new \lessc();
                 }
 
@@ -155,7 +155,7 @@ class Binder
         $tContent = '';
 
         foreach ($this->parts as $tPart) {
-            if (!is_null($tPart['class']) && !in_array($tPart['class'], $this->classes, true)) {
+            if ($tPart['class'] !== null && !in_array($tPart['class'], $this->classes, true)) {
                 continue;
             }
 

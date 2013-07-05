@@ -85,7 +85,7 @@ class PdoSource extends DatabaseSource
      */
     public function connectionOpen()
     {
-        if (!is_null($this->connection)) {
+        if ($this->connection !== null) {
             return;
         }
 
@@ -209,7 +209,7 @@ class PdoSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if ($this->standard == 'mysql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];
@@ -231,7 +231,7 @@ class PdoSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if ($this->standard == 'mysql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];
@@ -262,15 +262,15 @@ class PdoSource extends DatabaseSource
             $tSql .= ' WHERE ' . $uWhere;
         }
 
-        if (!is_null($uGroupBy) && strlen($uGroupBy) > 0) {
+        if ($uGroupBy !== null && strlen($uGroupBy) > 0) {
             $tSql .= ' GROUP BY ' . $uGroupBy;
         }
 
-        if (!is_null($uOrderBy) && strlen($uOrderBy) > 0) {
+        if ($uOrderBy !== null && strlen($uOrderBy) > 0) {
             $tSql .= ' ORDER BY ' . $uOrderBy;
         }
 
-        if (!is_null($uExtra)) {
+        if ($uExtra !== null) {
             if ($this->standard == 'pgsql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];

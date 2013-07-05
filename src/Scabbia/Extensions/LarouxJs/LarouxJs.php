@@ -49,7 +49,7 @@ class LarouxJs
             $uParms['content'] = '{ "isSuccess": ' . (($uParms['exitStatus'][0] > 0) ? 'false' : 'true') .
 
                 ', "errorMessage": ' .
-                (is_null($uParms['exitStatus']) ? 'null' : String::dquote($uParms['exitStatus'][1], true)) .
+                ($uParms['exitStatus'] === null ? 'null' : String::dquote($uParms['exitStatus'][1], true)) .
 
                 ', "format": ' .
                 String::dquote($uParms['responseFormat'], true) .

@@ -42,7 +42,7 @@ class Config
             Framework::$corepath . 'config.json'
         );
 
-        if (!is_null(Framework::$application)) {
+        if (Framework::$application !== null) {
             Io::glob(
                 Framework::$application->path . 'config/',
                 '*.json',
@@ -74,7 +74,7 @@ class Config
                     continue;
                 }
 
-                if (!is_null(Framework::$application)) {
+                if (Framework::$application !== null) {
                     $tFile = Framework::$application->path . 'Extensions/' . $tExtension . '/config.json';
 
                     if (file_exists($tFile)) {

@@ -34,7 +34,7 @@ class Auth
      */
     public static function load()
     {
-        if (is_null(self::$sessionKey)) {
+        if (self::$sessionKey === null) {
             self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
         }
     }
@@ -87,7 +87,7 @@ class Auth
         self::load();
 
         $tUser = Session::get(self::$sessionKey);
-        if (is_null($tUser)) {
+        if ($tUser === null) {
             return false;
         }
 
@@ -117,7 +117,7 @@ class Auth
         }
 
         $tMvcUrl = Config::get('auth/loginMvcUrl', null);
-        if (!is_null($tMvcUrl)) {
+        if ($tMvcUrl !== null) {
             //! todo: warning messages like insufficent privileges.
             Http::redirect($tMvcUrl, true);
         }

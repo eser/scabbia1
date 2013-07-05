@@ -288,7 +288,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             $tPreDebugInfo
         );
 
-        if (!Framework::$disableCaches && !is_null($uCaching)) {
+        if (!Framework::$disableCaches && $uCaching !== null) {
             $tCaching = (array)$uCaching;
 
             if (!isset($tCaching[1])) {

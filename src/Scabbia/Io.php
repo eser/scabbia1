@@ -124,7 +124,7 @@ class Io
             return false;
         }
 
-        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+        if ($uKeyphase !== null && strlen($uKeyphase) > 0) {
             $tContent = Utils::decrypt($tContent, $uKeyphase);
         }
 
@@ -144,7 +144,7 @@ class Io
     {
         $tContent = serialize($uContent);
 
-        if (!is_null($uKeyphase) && strlen($uKeyphase) > 0) {
+        if ($uKeyphase !== null && strlen($uKeyphase) > 0) {
             $tContent = Utils::encrypt($tContent, $uKeyphase);
         }
 
@@ -196,7 +196,7 @@ class Io
             $uPath = Framework::$corepath . substr($uPath, 6);
         } elseif (strncmp($uPath, '{vendor}', 8) == 0) {
             $uPath = Framework::$vendorpath . substr($uPath, 8);
-        } elseif (!is_null(Framework::$application)) {
+        } elseif (Framework::$application !== null) {
             if (strncmp($uPath, '{app}', 5) == 0) {
                 $uPath = Framework::$application->path . substr($uPath, 5);
             } elseif (strncmp($uPath, '{writable}', 10) == 0) {
@@ -253,7 +253,7 @@ class Io
     {
         $uPath = strtr($uPath, '\\', '/');
 
-        if (is_null($uBasePath)) {
+        if ($uBasePath === null) {
             $uBasePath = Framework::$basepath;
         }
 
@@ -311,7 +311,7 @@ class Io
             return self::readSerialize($uFile);
         }
 
-        if (is_null($uCallback)) {
+        if ($uCallback === null) {
             return false;
         }
 
@@ -437,7 +437,7 @@ class Io
                 }
 
                 if (($uOptions & self::GLOB_FILES) > 0 && $tFile->isFile()) {
-                    if (is_null($uFilter) || fnmatch($uFilter, $tFileName)) {
+                    if ($uFilter === null || fnmatch($uFilter, $tFileName)) {
                         $uArray[] = (($uOptions & self::GLOB_JUSTNAMES) > 0) ?
                             $uRecursivePath . $tFileName :
                             $tRecursivePath . $tFileName;
