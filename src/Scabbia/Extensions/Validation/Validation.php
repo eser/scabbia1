@@ -97,9 +97,9 @@ class Validation
 
                         if ($tResult === null || $tCondition[2] === null) {
                             $tResult = $tSingleResult;
-                        } elseif ($tCondition[2] == 'and') {
+                        } elseif ($tCondition[2] === 'and') {
                             $tResult = $tResult && $tSingleResult;
-                        } elseif ($tCondition[2] == 'or') {
+                        } elseif ($tCondition[2] === 'or') {
                             $tResult = $tResult || $tSingleResult;
                         }
                     }
@@ -115,7 +115,7 @@ class Validation
             }
         }
 
-        return (count(self::$summary) == 0);
+        return (count(self::$summary) === 0);
     }
 
     /**
@@ -152,7 +152,7 @@ class Validation
         $tMessages = array();
 
         foreach (self::$summary as $tKey => $tField) {
-            if ($uFilter !== false && $uFilter != $tKey) {
+            if ($uFilter !== false && $uFilter !== $tKey) {
                 continue;
             }
 

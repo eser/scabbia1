@@ -135,34 +135,28 @@ class Config
                 $tNodeName = explode(':', $tKey);
 
                 if (count($tNodeName) >= 2) {
-                    switch($tNodeName[1]) {
-                        case 'disabled':
-                            continue 2;
-                            break;
-                        case 'development':
-                            if (!Framework::$development) {
-                                continue 2;
-                            }
-                            break;
-                        case 'application':
-                            if (Framework::$application->name != $tNodeName[2]) {
-                                continue 2;
-                            }
-                            break;
-                        case 'phpversion':
-                            if (!Utils::phpVersion($tNodeName[2])) {
-                                continue 2;
-                            }
-                            break;
-                        case 'phpextension':
-                            if (!extension_loaded($tNodeName[2])) {
-                                continue 2;
-                            }
-                            break;
+                    if ($tNodeName[1] === 'disabled') {
+                        continue;
+                    } elseif ($tNodeName[1] === 'development') {
+                        if (!Framework::$development) {
+                            continue;
+                        }
+                    } elseif ($tNodeName[1] === 'application') {
+                        if (Framework::$application->name !== $tNodeName[2]) {
+                            continue;
+                        }
+                    } elseif ($tNodeName[1] === 'phpversion') {
+                        if (!Utils::phpVersion($tNodeName[2])) {
+                            continue;
+                        }
+                    } elseif ($tNodeName[1] === 'phpextension') {
+                        if (!extension_loaded($tNodeName[2])) {
+                            continue;
+                        }
                     }
                 }
 
-                array_push($tNodeStack, $tNodeName[0]);
+                $tNodeStack[] = $tNodeName[0];
                 array_shift($tNodeName);
                 self::jsonProcessChildrenRecursive($uTarget, $tSubnode, $uOverwrite, $tNodeStack, false, $tNodeName);
                 array_pop($tNodeStack);

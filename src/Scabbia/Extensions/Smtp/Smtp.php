@@ -44,13 +44,13 @@ class Smtp
     private static function sockwait($uSocket, $uExpectation)
     {
         $tResponse = "";
-        while (substr($tResponse, 3, 1) != ' ') {
+        while (substr($tResponse, 3, 1) !== ' ') {
             if (!($tResponse = fgets($uSocket, 256))) {
                 throw new \Exception('read error');
             }
         }
 
-        if (substr($tResponse, 0, 3) != $uExpectation) {
+        if (substr($tResponse, 0, 3) !== $uExpectation) {
             throw new \Exception('expectation error - expected: ' . $uExpectation . ' response: ' . $tResponse);
         }
     }

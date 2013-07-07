@@ -50,7 +50,7 @@ class Conditions
      */
     public static function isRequired($uValue)
     {
-        if (strlen(chop($uValue)) == 0) {
+        if (strlen(chop($uValue)) === 0) {
             return false;
         }
 
@@ -63,9 +63,9 @@ class Conditions
     public static function isBoolean($uValue)
     {
         if ($uValue !== false && $uValue !== true &&
-                $uValue != 'false' && $uValue != 'true' &&
+                $uValue !== 'false' && $uValue !== 'true' &&
                 $uValue !== 0 && $uValue !== 1 &&
-                $uValue != '0' && $uValue != '1'
+                $uValue !== '0' && $uValue !== '1'
         ) {
             return false;
         }
@@ -141,7 +141,7 @@ class Conditions
         for ($i = mb_strlen($uValue) - 1; $i >= 0; $i--) {
             $tChar = mb_substr($uValue, $i, 1);
 
-            if (!ctype_alnum($tChar) && $tChar != '-') {
+            if (!ctype_alnum($tChar) && $tChar !== '-') {
                 return false;
             }
         }
@@ -171,13 +171,13 @@ class Conditions
      */
     public static function isUuid($uValue)
     {
-        if (strlen($uValue) != 36) {
+        if (strlen($uValue) !== 36) {
             return false;
         }
 
         for ($i = strlen($uValue) - 1; $i >= 0; $i--) {
-            if ($i == 8 || $i == 13 || $i == 18 || $i == 23) {
-                if ($uValue[$i] != '-') {
+            if ($i === 8 || $i === 13 || $i === 18 || $i === 23) {
+                if ($uValue[$i] !== '-') {
                     return false;
                 }
 
@@ -201,7 +201,7 @@ class Conditions
         $uValue = array_shift($uArgs);
 
         for ($tCount = count($uArgs) - 1; $tCount >= 0; $tCount--) {
-            if ($uValue == $uArgs[$tCount]) {
+            if ($uValue === $uArgs[$tCount]) {
                 $tPasses = true;
                 break;
             }
@@ -267,7 +267,7 @@ class Conditions
      */
     public static function length($uValue, $uOtherValue)
     {
-        if (strlen($uValue) != $uOtherValue) {
+        if (strlen($uValue) !== $uOtherValue) {
             return false;
         }
 
@@ -420,7 +420,7 @@ class Conditions
         $tValidated = array("", "");
         $tIndex = 1;
         for ($i = strlen($uValue) - 1; $i >= 0; $i--) {
-            if ($uValue[$i] == '@') {
+            if ($uValue[$i] === '@') {
                 if (--$tIndex <= 0) {
                     continue;
                 }

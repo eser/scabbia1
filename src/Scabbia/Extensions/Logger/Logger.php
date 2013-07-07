@@ -112,30 +112,18 @@ class Logger
      */
     public static function handler($uMessage, $uCode, $uFile, $uLine)
     {
-        switch ($uCode) {
-            case E_ERROR:
-            case E_USER_ERROR:
-            case E_RECOVERABLE_ERROR:
-                $tType = LogLevel::ERROR;
-                break;
-            case E_WARNING:
-            case E_USER_WARNING:
-                $tType = LogLevel::WARNING;
-                break;
-            case E_NOTICE:
-            case E_USER_NOTICE:
-                $tType = LogLevel::NOTICE;
-                break;
-            case E_STRICT:
-                $tType = LogLevel::WARNING;
-                break;
-            case E_DEPRECATED:
-            case E_USER_DEPRECATED:
-                $tType = LogLevel::WARNING;
-                break;
-            default:
-                $tType = LogLevel::WARNING;
-                break;
+        if ($uCode === E_ERROR || $uCode === E_USER_ERROR || $uCode === E_RECOVERABLE_ERROR) {
+            $tType = LogLevel::ERROR;
+        } elseif ($uCode === E_WARNING || $uCode === E_USER_WARNING) {
+            $tType = LogLevel::WARNING;
+        } elseif ($uCode === E_NOTICE || $uCode === E_USER_NOTICE) {
+            $tType = LogLevel::NOTICE;
+        } elseif ($uCode === E_STRICT) {
+            $tType = LogLevel::WARNING;
+        } elseif ($uCode === E_DEPRECATED || $uCode === E_USER_DEPRECATED) {
+            $tType = LogLevel::WARNING;
+        } else {
+            $tType = LogLevel::WARNING;
         }
 
         self::write(
@@ -162,7 +150,7 @@ class Logger
     public static function write($uClass, $uLevel, array $uContext = array())
     {
         if (!isset($uContext['type'])) {
-            $uContext['type'] = ($uLevel == LogLevel::DEBUG || $uLevel == LogLevel::INFO) ? 'log' : 'error';
+            $uContext['type'] = ($uLevel === LogLevel::DEBUG || $uLevel === LogLevel::INFO) ? 'log' : 'error';
         }
         self::$typeCounts[$uContext['type']]++;
 

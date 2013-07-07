@@ -70,7 +70,7 @@ class Assets
                 $tDirectoryName = rtrim($tDirectory['name'], '/');
                 $tLen = strlen($tDirectoryName);
 
-                if (substr($tPath[0], 0, $tLen) == $tDirectoryName) {
+                if (substr($tPath[0], 0, $tLen) === $tDirectoryName) {
                     if (self::getDirectory($tDirectory, substr($tPath[0], $tLen)) === true) {
                         // to interrupt event-chain execution
                         return true;
@@ -94,7 +94,7 @@ class Assets
     public static function getPack($uName, array $uClasses = array())
     {
         foreach (self::$packs as $tPack) {
-            if ($tPack['name'] != $uName) {
+            if ($tPack['name'] !== $uName) {
                 continue;
             }
 
@@ -117,7 +117,7 @@ class Assets
             $tBindType = isset($tPart['bindtype']) ? $tPart['bindtype'] : 'file';
             $tClass = isset($tPart['class']) ? $tPart['class'] : null;
 
-            if ($tBindType == 'function') {
+            if ($tBindType === 'function') {
                 $tValue = $tPart['name'];
                 $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : $tBinder->outputType;
             } else {
@@ -144,7 +144,7 @@ class Assets
         $tPath = rtrim(Io::translatePath($uSelectedDirectory['path']), '/');
 
         foreach (explode('/', ltrim($uSubPath, '/')) as $tSubDirectory) {
-            if (strlen($tSubDirectory) == 0 || $tSubDirectory[0] == '.') {
+            if (strlen($tSubDirectory) === 0 || $tSubDirectory[0] === '.') {
                 break;
             }
 

@@ -161,7 +161,7 @@ class Arrays
     public static function getRandom(array $uArray)
     {
         $tCount = count($uArray);
-        if ($tCount == 0) {
+        if ($tCount === 0) {
             return null;
         }
 
@@ -208,7 +208,7 @@ class Arrays
     public static function sortByKey(array $uArray, $uField, $uOrder = 'asc')
     {
         $tReturn = array();
-        if (count($uArray) == 0) {
+        if (count($uArray) === 0) {
             return $tReturn;
         }
 
@@ -217,7 +217,7 @@ class Arrays
             $tValues[$tKey] = $tValue[$uField];
         }
 
-        if ($uOrder == 'desc') {
+        if ($uOrder === 'desc') {
             arsort($tValues);
         } else {
             asort($tValues);
@@ -351,7 +351,7 @@ class Arrays
     public static function getRow(array $uArray, $uKey, $uValue)
     {
         foreach ($uArray as $tRow) {
-            if (isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
+            if (isset($tRow[$uKey]) && $tRow[$uKey] === $uValue) {
                 return $tRow;
             }
         }
@@ -371,7 +371,7 @@ class Arrays
     public static function getRowKey(array $uArray, $uKey, $uValue)
     {
         foreach ($uArray as $tKey => $tRow) {
-            if (isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
+            if (isset($tRow[$uKey]) && $tRow[$uKey] === $uValue) {
                 return $tKey;
             }
         }
@@ -393,7 +393,7 @@ class Arrays
         $tReturn = array();
 
         foreach ($uArray as $tKey => $tRow) {
-            if (isset($tRow[$uKey]) && $tRow[$uKey] == $uValue) {
+            if (isset($tRow[$uKey]) && $tRow[$uKey] === $uValue) {
                 $tReturn[$tKey] = $tRow;
             }
         }
@@ -415,7 +415,7 @@ class Arrays
         $tReturn = array();
 
         foreach ($uArray as $tKey => $tRow) {
-            if (isset($tRow[$uKey]) && $tRow[$uKey] != $uValue) {
+            if (isset($tRow[$uKey]) && $tRow[$uKey] !== $uValue) {
                 $tReturn[$tKey] = $tRow;
             }
         }

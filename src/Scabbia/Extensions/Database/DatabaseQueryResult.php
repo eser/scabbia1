@@ -185,7 +185,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
             $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
             $this->_count = $this->_database->itCount($this->_object);
         } catch (\Exception $ex) {
-            if ($this->_database->errorHandling == Database::ERROR_EXCEPTION) {
+            if ($this->_database->errorHandling === Database::ERROR_EXCEPTION) {
                 throw $ex;
             }
 
@@ -318,7 +318,7 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
 
                 $this->_rows[$this->_cursor] = $this->_database->itSeek($this->_object, $this->_cursor);
             } catch (\Exception $ex) {
-                if ($this->_database->errorHandling == Database::ERROR_EXCEPTION) {
+                if ($this->_database->errorHandling === Database::ERROR_EXCEPTION) {
                     throw $ex;
                 }
 

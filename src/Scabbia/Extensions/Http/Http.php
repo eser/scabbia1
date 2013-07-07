@@ -120,17 +120,12 @@ class Http
                 $tReturn['crawler'] = $tCrawlerList['name'];
                 $tReturn['crawlerType'] = $tCrawlerList['type'];
 
-                switch ($tCrawlerList['type']) {
-                    case 'bot':
-                        $tReturn['isRobot'] = true;
-                        break;
-                    case 'mobile':
-                        $tReturn['isMobile'] = true;
-                        break;
-                    case 'browser':
-                    default:
-                        $tReturn['isBrowser'] = true;
-                        break;
+                if ($tCrawlerList['type'] === 'bot') {
+                    $tReturn['isRobot'] = true;
+                } elseif ($tCrawlerList['type'] === 'mobile') {
+                    $tReturn['isMobile'] = true;
+                } else { // if ($tCrawlerList['type'] === 'browser') {
+                    $tReturn['isBrowser'] = true;
                 }
 
                 break;
@@ -296,7 +291,7 @@ class Http
 
         /*
         $tLastContentType = self::sentHeaderValue('Content-Type');
-        if ($tLastContentType == false) {
+        if ($tLastContentType === false) {
             header('Content-Type: text/html, charset=UTF-8', true);
         }
         */
@@ -353,129 +348,88 @@ class Http
     {
         $tStatus = Request::$protocol . ' ';
 
-        switch ($uStatusCode) {
-            case 100:
-                $tStatus .= '100 Continue';
-                break;
-            case 101:
-                $tStatus .= '101 Switching Protocols';
-                break;
-            case 200:
-                $tStatus .= '200 OK';
-                break;
-            case 201:
-                $tStatus .= '201 Created';
-                break;
-            case 202:
-                $tStatus .= '202 Accepted';
-                break;
-            case 203:
-                $tStatus .= '203 Non-Authoritative Information';
-                break;
-            case 204:
-                $tStatus .= '204 No Content';
-                break;
-            case 205:
-                $tStatus .= '205 Reset Content';
-                break;
-            case 206:
-                $tStatus .= '206 Partial Content';
-                break;
-            case 300:
-                $tStatus .= '300 Multiple Choices';
-                break;
-            case 301:
-                $tStatus .= '301 Moved Permanently';
-                break;
-            case 302:
-                $tStatus .= '302 Found';
-                break;
-            case 303:
-                $tStatus .= '303 See Other';
-                break;
-            case 304:
-                $tStatus .= '304 Not Modified';
-                break;
-            case 305:
-                $tStatus .= '305 Use Proxy';
-                break;
-            case 307:
-                $tStatus .= '307 Temporary Redirect';
-                break;
-            case 400:
-                $tStatus .= '400 Bad Request';
-                break;
-            case 401:
-                $tStatus .= '401 Unauthorized';
-                break;
-            case 402:
-                $tStatus .= '402 Payment Required';
-                break;
-            case 403:
-                $tStatus .= '403 Forbidden';
-                break;
-            case 404:
-                $tStatus .= '404 Not Found';
-                break;
-            case 405:
-                $tStatus .= '405 Method Not Allowed';
-                break;
-            case 406:
-                $tStatus .= '406 Not Acceptable';
-                break;
-            case 407:
-                $tStatus .= '407 Proxy Authentication Required';
-                break;
-            case 408:
-                $tStatus .= '408 Request Timeout';
-                break;
-            case 409:
-                $tStatus .= '409 Conflict';
-                break;
-            case 410:
-                $tStatus .= '410 Gone';
-                break;
-            case 411:
-                $tStatus .= '411 Length Required';
-                break;
-            case 412:
-                $tStatus .= '412 Precondition Failed';
-                break;
-            case 413:
-                $tStatus .= '413 Request Entity Too Large';
-                break;
-            case 414:
-                $tStatus .= '414 Request-URI Too Long';
-                break;
-            case 415:
-                $tStatus .= '415 Unsupported Media Type';
-                break;
-            case 416:
-                $tStatus .= '416 Requested Range Not Satisfiable';
-                break;
-            case 417:
-                $tStatus .= '417 Expectation Failed';
-                break;
-            case 500:
-                $tStatus .= '500 Internal Server Error';
-                break;
-            case 501:
-                $tStatus .= '501 Not Implemented';
-                break;
-            case 502:
-                $tStatus .= '502 Bad Gateway';
-                break;
-            case 503:
-                $tStatus .= '503 Service Unavailable';
-                break;
-            case 504:
-                $tStatus .= '504 Gateway Timeout';
-                break;
-            case 505:
-                $tStatus .= '505 HTTP Version Not Supported';
-                break;
-            default:
-                return;
+        if ($uStatusCode === 100) {
+            $tStatus .= '100 Continue';
+        } elseif ($uStatusCode === 101) {
+            $tStatus .= '101 Switching Protocols';
+        } elseif ($uStatusCode === 200) {
+            $tStatus .= '200 OK';
+        } elseif ($uStatusCode === 201) {
+            $tStatus .= '201 Created';
+        } elseif ($uStatusCode === 202) {
+            $tStatus .= '202 Accepted';
+        } elseif ($uStatusCode === 203) {
+            $tStatus .= '203 Non-Authoritative Information';
+        } elseif ($uStatusCode === 204) {
+            $tStatus .= '204 No Content';
+        } elseif ($uStatusCode === 205) {
+            $tStatus .= '205 Reset Content';
+        } elseif ($uStatusCode === 206) {
+            $tStatus .= '206 Partial Content';
+        } elseif ($uStatusCode === 300) {
+            $tStatus .= '300 Multiple Choices';
+        } elseif ($uStatusCode === 301) {
+            $tStatus .= '301 Moved Permanently';
+        } elseif ($uStatusCode === 302) {
+            $tStatus .= '302 Found';
+        } elseif ($uStatusCode === 303) {
+            $tStatus .= '303 See Other';
+        } elseif ($uStatusCode === 304) {
+            $tStatus .= '304 Not Modified';
+        } elseif ($uStatusCode === 305) {
+            $tStatus .= '305 Use Proxy';
+        } elseif ($uStatusCode === 307) {
+            $tStatus .= '307 Temporary Redirect';
+        } elseif ($uStatusCode === 400) {
+            $tStatus .= '400 Bad Request';
+        } elseif ($uStatusCode === 401) {
+            $tStatus .= '401 Unauthorized';
+        } elseif ($uStatusCode === 402) {
+            $tStatus .= '402 Payment Required';
+        } elseif ($uStatusCode === 403) {
+            $tStatus .= '403 Forbidden';
+        } elseif ($uStatusCode === 404) {
+            $tStatus .= '404 Not Found';
+        } elseif ($uStatusCode === 405) {
+            $tStatus .= '405 Method Not Allowed';
+        } elseif ($uStatusCode === 406) {
+            $tStatus .= '406 Not Acceptable';
+        } elseif ($uStatusCode === 407) {
+            $tStatus .= '407 Proxy Authentication Required';
+        } elseif ($uStatusCode === 408) {
+            $tStatus .= '408 Request Timeout';
+        } elseif ($uStatusCode === 409) {
+            $tStatus .= '409 Conflict';
+        } elseif ($uStatusCode === 410) {
+            $tStatus .= '410 Gone';
+        } elseif ($uStatusCode === 411) {
+            $tStatus .= '411 Length Required';
+        } elseif ($uStatusCode === 412) {
+            $tStatus .= '412 Precondition Failed';
+        } elseif ($uStatusCode === 413) {
+            $tStatus .= '413 Request Entity Too Large';
+        } elseif ($uStatusCode === 414) {
+            $tStatus .= '414 Request-URI Too Long';
+        } elseif ($uStatusCode === 415) {
+            $tStatus .= '415 Unsupported Media Type';
+        } elseif ($uStatusCode === 416) {
+            $tStatus .= '416 Requested Range Not Satisfiable';
+        } elseif ($uStatusCode === 417) {
+            $tStatus .= '417 Expectation Failed';
+        } elseif ($uStatusCode === 500) {
+            $tStatus .= '500 Internal Server Error';
+        } elseif ($uStatusCode === 501) {
+            $tStatus .= '501 Not Implemented';
+        } elseif ($uStatusCode === 502) {
+            $tStatus .= '502 Bad Gateway';
+        } elseif ($uStatusCode === 503) {
+            $tStatus .= '503 Service Unavailable';
+        } elseif ($uStatusCode === 504) {
+            $tStatus .= '504 Gateway Timeout';
+        } elseif ($uStatusCode === 505) {
+            $tStatus .= '505 HTTP Version Not Supported';
+        } else {
+            return;
         }
 
         header($tStatus, true, $uStatusCode);
@@ -505,7 +459,7 @@ class Http
                 continue;
             }
 
-            if (strcasecmp($tHeader[0], $uKey) == 0) {
+            if (strcasecmp($tHeader[0], $uKey) === 0) {
                 return $tHeader[1];
             }
         }
@@ -592,7 +546,7 @@ class Http
     public static function sendHeaderCache($uTtl = -1, $uPublic = true, $uMustRevalidate = false)
     {
         if ($uTtl < 0) {
-            if (Request::$protocol == 'HTTP/1.0') { // http/1.0 only
+            if (Request::$protocol === 'HTTP/1.0') { // http/1.0 only
                 header('Pragma: no-cache', true);
                 header('Expires: Thu, 01 Jan 1970 00:00:00 GMT', true);
 
@@ -617,7 +571,7 @@ class Http
             $tPublicity = 'private';
         }
 
-        if (Request::$protocol == 'HTTP/1.0') { // http/1.0 only
+        if (Request::$protocol === 'HTTP/1.0') { // http/1.0 only
             header('Pragma: ' . $tPublicity, true);
             header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $uTtl) . ' GMT', true);
 
@@ -636,7 +590,7 @@ class Http
      */
     public static function sendCookie($uCookie, $uValue, $uExpire = -1)
     {
-        if ($uExpire == -1) {
+        if ($uExpire === -1) {
             $uExpire = time() + (60 * 60 * 24 * 365); // a year
 
         }

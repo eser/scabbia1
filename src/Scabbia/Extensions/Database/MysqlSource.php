@@ -301,16 +301,13 @@ class MysqlSource extends DatabaseSource
         $tQuery = $this->connection->prepare($uQuery);
 
         foreach ($uParameters as $tParameter) {
-            switch (gettype($tParameter)) {
-                case 'integer':
-                    $tType = 'i';
-                    break;
-                case 'double':
-                    $tType = 'd';
-                    break;
-                default:
-                    $tType = 's';
-                    break;
+            $tType = gettype($tParameter);
+            if ($tType === 'integer') {
+                $tType = 'i';
+            } elseif ($tType === 'double') {
+                $tType = 'd';
+            } else {
+                $tType = 's';
             }
 
             $tQuery->bind_param($tType, $tParameter);

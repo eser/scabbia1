@@ -106,15 +106,15 @@ class Request
         // $https
         self::$https = (
             isset($_SERVER['HTTPS']) && (
-                $_SERVER['HTTPS'] == '1' ||
-                strcasecmp($_SERVER['HTTPS'], 'on') == 0
+                (string)$_SERVER['HTTPS'] === '1' ||
+                strcasecmp($_SERVER['HTTPS'], 'on') === 0
             )
         );
 
         // $protocol
-        if (PHP_SAPI == 'cli') {
+        if (PHP_SAPI === 'cli') {
             self::$protocol = 'CLI';
-        } elseif (isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0') {
+        } elseif (isset($_SERVER['SERVER_PROTOCOL']) && $_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.0') {
             self::$protocol = 'HTTP/1.0';
         } else {
             self::$protocol = 'HTTP/1.1';
@@ -128,11 +128,11 @@ class Request
 
             if (isset($_SERVER['SERVER_PORT'])) {
                 if (self::$https) {
-                    if ($_SERVER['SERVER_PORT'] != '443') {
+                    if ($_SERVER['SERVER_PORT'] !== '443') {
                         self::$host .= $_SERVER['SERVER_PORT'];
                     }
                 } else {
-                    if ($_SERVER['SERVER_PORT'] != '80') {
+                    if ($_SERVER['SERVER_PORT'] !== '80') {
                         self::$host .= $_SERVER['SERVER_PORT'];
                     }
                 }
@@ -143,7 +143,7 @@ class Request
         self::$method = strtolower($_SERVER['REQUEST_METHOD']);
         self::$methodext = self::$method;
 
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
             self::$isAjax = true;
             self::$methodext .= 'ajax';
         }
@@ -214,10 +214,10 @@ class Request
      */
     public static function filter($uValue, $uFilter)
     {
-        if ($uFilter == self::FILTER_VALIDATE_BOOLEAN) {
+        if ($uFilter === self::FILTER_VALIDATE_BOOLEAN) {
             if (
-                $uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1' ||
-                $uValue === false || $uValue == 'false' || $uValue === 0 || $uValue == '0'
+                $uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1' ||
+                $uValue === false || $uValue === 'false' || $uValue === 0 || $uValue === '0'
             ) {
                 return true;
             }
@@ -225,15 +225,15 @@ class Request
             return false;
         }
 
-        if ($uFilter == self::FILTER_SANITIZE_BOOLEAN) {
-            if ($uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1') {
+        if ($uFilter === self::FILTER_SANITIZE_BOOLEAN) {
+            if ($uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1') {
                 return true;
             }
 
             return false;
         }
 
-        if ($uFilter == self::FILTER_SANITIZE_XSS) {
+        if ($uFilter === self::FILTER_SANITIZE_XSS) {
             return self::xss($uValue);
         }
 
@@ -315,10 +315,10 @@ class Request
         $tParsed = parse_url($uAddress);
 
         if (!isset($tParsed['port'])) {
-            $tParsed['port'] = ($tParsed['scheme'] == 'https') ? 443 : 80;
+            $tParsed['port'] = ($tParsed['scheme'] === 'https') ? 443 : 80;
         }
 
-        if ($_SERVER['SERVER_NAME'] == $tParsed['host'] && $_SERVER['SERVER_PORT'] == $tParsed['port']) {
+        if ($_SERVER['SERVER_NAME'] === $tParsed['host'] && $_SERVER['SERVER_PORT'] === $tParsed['port']) {
             return true;
         }
 

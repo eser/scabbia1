@@ -117,14 +117,14 @@ class Blackmore extends Controller
 
         foreach ($tMenuList as $tKey => $tMenu) {
             self::$menuItems[$tKey] = array(
-                ($tKey == self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tKey),
+                ($tKey === self::DEFAULT_MODULE_INDEX) ? Http::url('blackmore') : Http::url('blackmore/' . $tKey),
                 _($tMenu['title']),
                 array()
             );
 
             foreach ($tMenu['actions'] as $tMenuActionKey => $tMenuAction) {
                 if (isset($tMenuAction['before'])) {
-                    if ($tMenuAction['before'] == 'separator') {
+                    if ($tMenuAction['before'] === 'separator') {
                         self::$menuItems[$tKey][self::MENU_ITEMS][] = '-';
                     }
                 }
@@ -148,7 +148,7 @@ class Blackmore extends Controller
                 );
 
                 if (isset($tMenuAction['after'])) {
-                    if ($tMenuAction['after'] == 'separator') {
+                    if ($tMenuAction['after'] === 'separator') {
                         self::$menuItems[$tKey][self::MENU_ITEMS][] = '-';
                     }
                 }
@@ -164,7 +164,7 @@ class Blackmore extends Controller
      */
     public function login()
     {
-        if (Request::$method != 'post') {
+        if (Request::$method !== 'post') {
             Auth::clear();
 
             $this->viewFile('{core}views/blackmore/login.php');

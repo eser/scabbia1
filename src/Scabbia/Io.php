@@ -190,16 +190,16 @@ class Io
      */
     public static function translatePath($uPath, $uCreateFolder = false)
     {
-        if (strncmp($uPath, '{base}', 6) == 0) {
+        if (strncmp($uPath, '{base}', 6) === 0) {
             $uPath = Framework::$basepath . substr($uPath, 6);
-        } elseif (strncmp($uPath, '{core}', 6) == 0) {
+        } elseif (strncmp($uPath, '{core}', 6) === 0) {
             $uPath = Framework::$corepath . substr($uPath, 6);
-        } elseif (strncmp($uPath, '{vendor}', 8) == 0) {
+        } elseif (strncmp($uPath, '{vendor}', 8) === 0) {
             $uPath = Framework::$vendorpath . substr($uPath, 8);
         } elseif (Framework::$application !== null) {
-            if (strncmp($uPath, '{app}', 5) == 0) {
+            if (strncmp($uPath, '{app}', 5) === 0) {
                 $uPath = Framework::$application->path . substr($uPath, 5);
-            } elseif (strncmp($uPath, '{writable}', 10) == 0) {
+            } elseif (strncmp($uPath, '{writable}', 10) === 0) {
                 $uPath = Framework::$application->path . 'writable/' . substr($uPath, 10);
             }
         }
@@ -258,7 +258,7 @@ class Io
         }
 
         $tLen = strlen($uBasePath);
-        if (strncmp($uPath, $uBasePath, $tLen) == 0) {
+        if (strncmp($uPath, $uBasePath, $tLen) === 0) {
             return substr($uPath, $tLen);
         }
 
@@ -412,7 +412,7 @@ class Io
             foreach ($tDir as $tFile) {
                 $tFileName = $tFile->getFilename();
 
-                if ($tFileName[0] == '.') { // $tFile->isDot()
+                if ($tFileName[0] === '.') { // $tFile->isDot()
                     continue;
                 }
 

@@ -101,7 +101,7 @@ class String
         $tOutput = $tLines[0] . $uLineEnding;
         $tCount = 0;
         foreach ($tLines as $tLine) {
-            if ($tCount++ == 0) {
+            if ($tCount++ === 0) {
                 continue;
             }
 
@@ -118,10 +118,10 @@ class String
      */
     public static function filter($uValue, $uFilter)
     {
-        if ($uFilter == self::FILTER_VALIDATE_BOOLEAN) {
+        if ($uFilter === self::FILTER_VALIDATE_BOOLEAN) {
             if (
-                $uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1' ||
-                $uValue === false || $uValue == 'false' || $uValue === 0 || $uValue == '0'
+                $uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1' ||
+                $uValue === false || $uValue === 'false' || $uValue === 0 || $uValue === '0'
             ) {
                 return true;
             }
@@ -129,15 +129,15 @@ class String
             return false;
         }
 
-        if ($uFilter == self::FILTER_SANITIZE_BOOLEAN) {
-            if ($uValue === true || $uValue == 'true' || $uValue === 1 || $uValue == '1') {
+        if ($uFilter === self::FILTER_SANITIZE_BOOLEAN) {
+            if ($uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1') {
                 return true;
             }
 
             return false;
         }
 
-        if ($uFilter == self::FILTER_SANITIZE_XSS) {
+        if ($uFilter === self::FILTER_SANITIZE_XSS) {
             return self::xss($uValue);
         }
 
@@ -171,12 +171,12 @@ class String
         for ($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {
             $tChar = self::substr($uString, $tPos, 1);
 
-            if ($tChar == '\\') {
+            if ($tChar === '\\') {
                 $tBrackets[$tLastItem][$tArrayItem] .= self::substr($uString, ++$tPos, 1);
                 continue;
             }
 
-            if ($tQuoteChar === false && $tChar == '{') {
+            if ($tQuoteChar === false && $tChar === '{') {
                 ++$tLastItem;
                 $tBrackets[$tLastItem] = array(null, null);
                 $tArrayItem = 1;
@@ -185,16 +185,16 @@ class String
 
             if ($tLastItem > 0) {
                 if ($tBrackets[$tLastItem][$tArrayItem] === null) {
-                    if ($tChar == '\'' || $tChar == '"') {
+                    if ($tChar === '\'' || $tChar === '"') {
                         $tQuoteChar = $tChar;
                         $tBrackets[$tLastItem][$tArrayItem] = '"'; // static text
                         $tChar = self::substr($uString, ++$tPos, 1);
                     } else {
-                        if ($tChar == '!') {
+                        if ($tChar === '!') {
                             $tBrackets[$tLastItem][$tArrayItem] = '!'; // dynamic text
                             $tChar = self::substr($uString, ++$tPos, 1);
                         } else {
-                            if ($tChar == '@') {
+                            if ($tChar === '@') {
                                 $tBrackets[$tLastItem][$tArrayItem] = '@'; // parameter
                                 $tChar = self::substr($uString, ++$tPos, 1);
                             } else {
@@ -204,8 +204,8 @@ class String
                     }
                 }
 
-                if (self::substr($tBrackets[$tLastItem][$tArrayItem], 0, 1) == '"') {
-                    if ($tQuoteChar == $tChar) {
+                if (self::substr($tBrackets[$tLastItem][$tArrayItem], 0, 1) === '"') {
+                    if ($tQuoteChar === $tChar) {
                         $tQuoteChar = false;
                         continue;
                     }
@@ -215,35 +215,31 @@ class String
                         continue;
                     }
 
-                    if ($tChar != ',' && $tChar != '}') {
+                    if ($tChar !== ',' && $tChar !== '}') {
                         continue;
                     }
                 }
 
-                if ($tArrayItem == 1 && $tChar == '|' && $tBrackets[$tLastItem][0] === null) {
+                if ($tArrayItem === 1 && $tChar === '|' && $tBrackets[$tLastItem][0] === null) {
                     $tBrackets[$tLastItem][0] = $tBrackets[$tLastItem][1];
                     $tBrackets[$tLastItem][1] = null;
                     continue;
                 }
 
-                if ($tChar == ',') {
+                if ($tChar === ',') {
                     $tBrackets[$tLastItem][++$tArrayItem] = null;
                     continue;
                 }
 
-                if ($tChar == '}') {
+                if ($tChar === '}') {
                     $tFunc = array_shift($tBrackets[$tLastItem]);
                     foreach ($tBrackets[$tLastItem] as &$tItem) {
-                        switch ($tItem[0]) {
-                            case '"':
-                                $tItem = self::substr($tItem, 1);
-                                break;
-                            case '@':
-                                $tItem = $uArgs[self::substr($tItem, 1)];
-                                break;
-                            case '!':
-                                $tItem = constant(self::substr($tItem, 1));
-                                break;
+                        if ($tItem[0] === '"') {
+                            $tItem = self::substr($tItem, 1);
+                        } elseif ($tItem[0] === '@') {
+                            $tItem = $uArgs[self::substr($tItem, 1)];
+                        } elseif ($tItem[0] === '!') {
+                            $tItem = constant(self::substr($tItem, 1));
                         }
                     }
 
@@ -278,52 +274,41 @@ class String
         $tOut = "";
         static $sTabs = "";
 
-        switch ($tType) {
-            case 'boolean':
-                $tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')' . PHP_EOL;
-                break;
-            case 'double':
-                $tOut .= '<b>' . $tType . '</b>(\'' . number_format($tVariable, 22, '.', '') . '\')' . PHP_EOL;
-                break;
-            case 'integer':
-            case 'string':
-                $tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')' . PHP_EOL;
-                break;
-            case 'array':
-            case 'object':
-                if ($tType == 'object') {
-                    $tType = get_class($tVariable);
-                    $tVariable = get_object_vars($tVariable);
+        if ($tType === 'boolean') {
+            $tOut .= '<b>boolean</b>(' . (($tVariable) ? 'true' : 'false') . ')' . PHP_EOL;
+        } elseif ($tType === 'double') {
+            $tOut .= '<b>' . $tType . '</b>(\'' . number_format($tVariable, 22, '.', '') . '\')' . PHP_EOL;
+        } elseif ($tType === 'integer' || $tType === 'string') {
+            $tOut .= '<b>' . $tType . '</b>(\'' . $tVariable . '\')' . PHP_EOL;
+        } elseif ($tType === 'array' || $tType === 'object') {
+            if ($tType === 'object') {
+                $tType = get_class($tVariable);
+                $tVariable = get_object_vars($tVariable);
+            }
+
+            $tCount = count($tVariable);
+            $tOut .= '<b>' . $tType . '</b>(' . $tCount . ')';
+
+            if ($tCount > 0) {
+                $tOut .= ' {' . PHP_EOL;
+
+                $sTabs .= self::$tab;
+                foreach ($tVariable as $tKey => $tVal) {
+                    $tOut .= $sTabs . '[' . $tKey . '] = ';
+                    $tOut .= self::vardump($tVal, false);
                 }
+                $sTabs = substr($sTabs, 0, -1);
 
-                $tCount = count($tVariable);
-                $tOut .= '<b>' . $tType . '</b>(' . $tCount . ')';
+                $tOut .= $sTabs . '}';
+            }
 
-                if ($tCount > 0) {
-                    $tOut .= ' {' . PHP_EOL;
-
-                    $sTabs .= self::$tab;
-                    foreach ($tVariable as $tKey => $tVal) {
-                        $tOut .= $sTabs . '[' . $tKey . '] = ';
-                        $tOut .= self::vardump($tVal, false);
-                    }
-                    $sTabs = substr($sTabs, 0, -1);
-
-                    $tOut .= $sTabs . '}';
-                }
-
-                $tOut .= PHP_EOL;
-                break;
-            case 'resource':
-                $tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')' . PHP_EOL;
-                break;
-            case 'NULL':
-                $tOut .= '<b><i>null</i></b>' . PHP_EOL;
-                break;
-            case 'unknown type':
-            default:
-                $tOut .= '<b>unknown</b>' . PHP_EOL;
-                break;
+            $tOut .= PHP_EOL;
+        } elseif ($tType === 'resource') {
+            $tOut .= '<b>resource</b>(\'' . get_resource_type($tVariable) . '\')' . PHP_EOL;
+        } elseif ($tType === 'NULL') {
+            $tOut .= '<b><i>null</i></b>' . PHP_EOL;
+        } else {
+            $tOut .= '<b>' . $tType . '</b>' . PHP_EOL;
         }
 
         if ($tOutput) {
@@ -645,7 +630,7 @@ class String
     {
         // $tLength = mb_strlen($uNeedle);
         $tLength = strlen(utf8_decode($uNeedle));
-        if ($tLength == 0) {
+        if ($tLength === 0) {
             return true;
         }
 
@@ -659,7 +644,7 @@ class String
     {
         // $tLength = mb_strlen($uNeedle);
         $tLength = strlen(utf8_decode($uNeedle));
-        if ($tLength == 0) {
+        if ($tLength === 0) {
             return true;
         }
 
@@ -764,12 +749,12 @@ class String
         for ($tLen = self::length($uString); $uPosition <= $tLen; ++$uPosition) {
             $tChar = self::substr($uString, $uPosition, 1);
 
-            if (($tChar == '\\') && !$tInSlash) {
+            if (($tChar === '\\') && !$tInSlash) {
                 $tInSlash = true;
                 continue;
             }
 
-            if ($tChar == '"') {
+            if ($tChar === '"') {
                 if (!$tInQuote) {
                     $tInQuote = true;
                     continue;
@@ -802,19 +787,19 @@ class String
         for ($tLen = self::length($uString); $tStart <= $tLen; ++$tStart) {
             $tChar = self::substr($uString, $tStart, 1);
 
-            if ($tChar == ']') {
+            if ($tChar === ']') {
                 $tOutput[] = $tBuffer;
 
                 return $tOutput;
             }
 
-            if ($tChar == ',') {
+            if ($tChar === ',') {
                 $tOutput[] = $tBuffer;
                 $tBuffer = "";
                 continue;
             }
 
-            if ($tChar == '"') {
+            if ($tChar === '"') {
                 $tBuffer = self::readsetGquote($uString, $tStart);
                 continue;
             }
@@ -1501,19 +1486,15 @@ class String
             return $uNumber . 'th';
         }
 
-        switch ($uNumber % 10) {
-            case 1:
-                return $uNumber . 'st';
-                break;
-            case 2:
-                return $uNumber . 'nd';
-                break;
-            case 3:
-                return $uNumber . 'rd';
-                break;
-            default:
-                return $uNumber . 'th';
-                break;
+        $tMod = $uNumber % 10;
+        if ($tMod === 1) {
+            return $uNumber . 'st';
+        } elseif ($tMod === 2) {
+            return $uNumber . 'nd';
+        } elseif ($tMod === 3) {
+            return $uNumber . 'rd';
+        } else {
+            return $uNumber . 'th';
         }
     }
 
@@ -1528,7 +1509,7 @@ class String
         for ($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {
             $tChar = self::substr($uString, $tPos, 1);
 
-            if ($tChar == $uDelimiter) {
+            if ($tChar === $uDelimiter) {
                 $tCapital = true;
                 $tOutput .= ($uReplaceDelimiter !== null) ? $uReplaceDelimiter : $tChar;
                 continue;
@@ -1594,7 +1575,7 @@ class String
             $tFilename = strtr($tFilename, ' ', '_');
         }
 
-        if (isset($tPathInfo['dirname']) && $tPathInfo['dirname'] != '.') {
+        if (isset($tPathInfo['dirname']) && $tPathInfo['dirname'] !== '.') {
             return rtrim(strtr($tPathInfo['dirname'], '\\', '/'), '/') . '/' . $tFilename;
         }
 

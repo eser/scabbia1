@@ -86,7 +86,7 @@ class ControllerBase implements LoggerAwareInterface
 
         $tReflection = new \ReflectionClass($this);
         foreach ($tReflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $tMethodReflection) {
-            if ($tMethodReflection->class == __CLASS__) {
+            if ($tMethodReflection->class === __CLASS__) {
                 continue;
             }
 

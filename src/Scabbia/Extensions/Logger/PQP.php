@@ -102,7 +102,7 @@ class PQP
         $queryTotals['time'] = 0;
 
         foreach (Logger::$console as $tLog) {
-            if (isset($tLog['type']) && $tLog['type'] == 'query') {
+            if (isset($tLog['type']) && $tLog['type'] === 'query') {
                 $queryTotals['time'] += $tLog['consumedTime'];
             }
         }

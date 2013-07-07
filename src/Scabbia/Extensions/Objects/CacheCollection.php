@@ -61,7 +61,7 @@ class CacheCollection extends Collection
             return;
         }
 
-        if (count($this->_queue) == 0) {
+        if (count($this->_queue) === 0) {
             return;
         }
 

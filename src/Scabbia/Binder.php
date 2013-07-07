@@ -159,10 +159,10 @@ class Binder
                 continue;
             }
 
-            if ($tPart['bindtype'] == 'function') {
+            if ($tPart['bindtype'] === 'function') {
                 $tValue = call_user_func($tPart['value'], $tPart);
                 $tDescription = 'function ' . $tPart['value'];
-            } elseif ($tPart['bindtype'] == 'string') {
+            } elseif ($tPart['bindtype'] === 'string') {
                 $tValue = $tPart['value'];
                 $tDescription = 'string';
             } else {
@@ -218,71 +218,62 @@ class Binder
             }
 
             // $tReturn .= PHP_EOL . token_name($tTokenId) . PHP_EOL;
-            switch ($tTokenId) {
-                case T_OPEN_TAG:
-                    $tReturn .= '<' . '?php ';
-                    array_push($tOpenStack, $tTokenId);
-                    break;
-                case T_OPEN_TAG_WITH_ECHO:
-                    $tReturn .= '<' . '?php echo ';
-                    array_push($tOpenStack, $tTokenId);
-                    break;
-                case T_CLOSE_TAG:
-                    $tLastOpen = array_pop($tOpenStack);
+            if ($tTokenId === T_OPEN_TAG) {
+                $tReturn .= '<' . '?php ';
+                $tOpenStack[] = $tTokenId;
+            } elseif ($tTokenId === T_OPEN_TAG_WITH_ECHO) {
+                $tReturn .= '<' . '?php echo ';
+                $tOpenStack[] = $tTokenId;
+            } elseif ($tTokenId === T_CLOSE_TAG) {
+                $tLastOpen = array_pop($tOpenStack);
 
-                    if ($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
-                        $tReturn .= '; ';
-                    } else {
-                        if ($tLastToken != T_WHITESPACE) {
-                            $tReturn .= ' ';
-                        }
+                if ($tLastOpen === T_OPEN_TAG_WITH_ECHO) {
+                    $tReturn .= '; ';
+                } else {
+                    if ($tLastToken !== T_WHITESPACE) {
+                        $tReturn .= ' ';
                     }
+                }
 
-                    $tReturn .= '?' . '>';
-                    break;
-                case T_COMMENT:
-                case T_DOC_COMMENT:
-                    if (substr($tTokenContent, 0, 3) == '/**') {
-                        $tCommentContent = substr($tTokenContent, 2, strlen($tTokenContent) - 4);
+                $tReturn .= '?' . '>';
+            } elseif ($tTokenId === T_COMMENT || $tTokenId === T_DOC_COMMENT) {
+                if (substr($tTokenContent, 0, 3) === '/**') {
+                    $tCommentContent = substr($tTokenContent, 2, strlen($tTokenContent) - 4);
 
-                        foreach (explode("\n", $tCommentContent) as $tLine) {
-                            $tLineContent = ltrim($tLine, "\t ");
+                    foreach (explode("\n", $tCommentContent) as $tLine) {
+                        $tLineContent = ltrim($tLine, "\t ");
 
-                            if (substr($tLineContent, 0, 3) == '* @') {
-                                $tLineContents = explode(' ', substr($tLineContent, 3), 2);
-                                if (count($tLineContents) < 2) {
-                                    continue;
-                                }
-
-                                if (!isset($tDocComments[$tLineContents[0]])) {
-                                    $tDocComments[$tLineContents[0]] = array();
-                                }
-
-                                $tDocComments[$tLineContents[0]][] = $tLineContents[1];
+                        if (substr($tLineContent, 0, 3) === '* @') {
+                            $tLineContents = explode(' ', substr($tLineContent, 3), 2);
+                            if (count($tLineContents) < 2) {
+                                continue;
                             }
+
+                            if (!isset($tDocComments[$tLineContents[0]])) {
+                                $tDocComments[$tLineContents[0]] = array();
+                            }
+
+                            $tDocComments[$tLineContents[0]][] = $tLineContents[1];
                         }
                     }
-                    break;
-                case T_WHITESPACE:
-                    if ($tLastToken != T_WHITESPACE &&
-                        $tLastToken != T_OPEN_TAG &&
-                        $tLastToken != T_OPEN_TAG_WITH_ECHO &&
-                        $tLastToken != T_COMMENT &&
-                        $tLastToken != T_DOC_COMMENT
+                }
+            } elseif ($tTokenId === T_WHITESPACE) {
+                    if ($tLastToken !== T_WHITESPACE &&
+                        $tLastToken !== T_OPEN_TAG &&
+                        $tLastToken !== T_OPEN_TAG_WITH_ECHO &&
+                        $tLastToken !== T_COMMENT &&
+                        $tLastToken !== T_DOC_COMMENT
                     ) {
                         $tReturn .= ' ';
                     }
-                    break;
-                case null:
-                    $tReturn .= $tTokenContent;
-                    if ($tLastToken == T_END_HEREDOC) {
-                        $tReturn .= "\n";
-                        $tTokenId = T_WHITESPACE;
-                    }
-                    break;
-                default:
-                    $tReturn .= $tTokenContent;
-                    break;
+            } elseif ($tTokenId === null) {
+                $tReturn .= $tTokenContent;
+                if ($tLastToken === T_END_HEREDOC) {
+                    $tReturn .= "\n";
+                    $tTokenId = T_WHITESPACE;
+                }
+            } else {
+                $tReturn .= $tTokenContent;
             }
 
             $tLastToken = $tTokenId;
@@ -290,10 +281,10 @@ class Binder
 
         while (count($tOpenStack) > 0) {
             $tLastOpen = array_pop($tOpenStack);
-            if ($tLastOpen == T_OPEN_TAG_WITH_ECHO) {
+            if ($tLastOpen === T_OPEN_TAG_WITH_ECHO) {
                 $tReturn .= '; ';
             } else {
-                if ($tLastToken != T_WHITESPACE) {
+                if ($tLastToken !== T_WHITESPACE) {
                     $tReturn .= ' ';
                 }
             }

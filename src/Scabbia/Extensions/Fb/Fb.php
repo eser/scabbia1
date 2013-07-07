@@ -198,7 +198,7 @@ class Fb
         if ($tPermissions !== null) {
             $tUserPermissions = self::get('/me/permissions', true);
 
-            if ($tUserPermissions === false || count($tUserPermissions->data) == 0) {
+            if ($tUserPermissions === false || count($tUserPermissions->data) === 0) {
                 return false;
             }
 

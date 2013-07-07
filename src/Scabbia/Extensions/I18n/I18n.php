@@ -116,7 +116,7 @@ class I18n
         }
 
         if (self::$language !== null) {
-            // if (DIRECTORY_SEPARATOR == '\\') {
+            // if (DIRECTORY_SEPARATOR === '\\') {
             //     $tLocale = explode('.', self::$language['localewin'], 2);
             // }
             // else {
@@ -142,7 +142,7 @@ class I18n
                     $tCompiler->compile($tPoFile, $tMoFile);
                 }
 
-                if (self::$gettextType == self::GETTEXT_EXTENSION) {
+                if (self::$gettextType === self::GETTEXT_EXTENSION) {
                     // bindtextdomain('core', Framework::$corepath . 'locale');
                     // bind_textdomain_codeset('core', self::$language['internalEncoding']);
 
@@ -168,7 +168,7 @@ class I18n
      */
     public static function _($uMessage)
     {
-        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+        if (self::$gettextType === self::GETTEXT_EXTENSION) {
             return \_($uMessage);
         }
 
@@ -180,7 +180,7 @@ class I18n
      */
     public static function gettext($uMessage)
     {
-        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+        if (self::$gettextType === self::GETTEXT_EXTENSION) {
             return \gettext($uMessage);
         }
 
@@ -192,7 +192,7 @@ class I18n
      */
     public static function ngettext($uMessage, $uMessagePlural, $uCount)
     {
-        if (self::$gettextType == self::GETTEXT_EXTENSION) {
+        if (self::$gettextType === self::GETTEXT_EXTENSION) {
             return \ngettext($uMessage, $uMessagePlural, $uCount);
         }
 

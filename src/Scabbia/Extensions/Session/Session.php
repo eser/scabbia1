@@ -74,8 +74,8 @@ class Session
 
             $tData = self::$datasource->cacheGet('sessions/' . self::$id);
             if ($tData !== false) {
-                if ((!$tIpCheck || $tData['ip'] == $_SERVER['REMOTE_ADDR']) &&
-                    (!$tUACheck || $tData['ua'] == $_SERVER['HTTP_USER_AGENT'])) {
+                if ((!$tIpCheck || $tData['ip'] === $_SERVER['REMOTE_ADDR']) &&
+                    (!$tUACheck || $tData['ua'] === $_SERVER['HTTP_USER_AGENT'])) {
                     self::$data = $tData['data'];
 
                     return;

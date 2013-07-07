@@ -248,7 +248,7 @@ class DatabaseQuery
 
         foreach ($uArray as $tElement) {
             if (is_array($tElement)) {
-                $tOutput .= $this->constructWhere($tElement, ($tPreviousElement == _IN || $tPreviousElement == _NOTIN));
+                $tOutput .= $this->constructWhere($tElement, ($tPreviousElement === _IN || $tPreviousElement === _NOTIN));
                 continue;
             }
 

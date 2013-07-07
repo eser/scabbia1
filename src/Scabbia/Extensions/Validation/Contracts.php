@@ -42,7 +42,7 @@ class Contracts
      */
     public function __call($uName, array $uArgs)
     {
-        if (strncmp($uName, 'or', 2) == 0) {
+        if (strncmp($uName, 'or', 2) === 0) {
             $uNewName = lcfirst(substr($uName, 2));
 
             $this->value = $this->value || call_user_func_array(
@@ -53,7 +53,7 @@ class Contracts
             return $this;
         }
 
-        if (strncmp($uName, 'and', 3) == 0) {
+        if (strncmp($uName, 'and', 3) === 0) {
             $uNewName = lcfirst(substr($uName, 3));
 
             $this->value = $this->value && call_user_func_array(

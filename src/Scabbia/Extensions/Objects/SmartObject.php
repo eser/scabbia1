@@ -42,7 +42,7 @@ class SmartObject
             }
 
             foreach ($tValue->fields as $tFieldKey => $tFieldValue) {
-                if ((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
+                if ((is_numeric($tFieldKey) && $tFieldValue === $uKey) || ($tFieldKey === $uKey)) {
                     return true;
                 }
             }
@@ -67,7 +67,7 @@ class SmartObject
             }
 
             foreach ($tValue->fields as $tFieldKey => $tFieldValue) {
-                if ((is_numeric($tFieldKey) && $tFieldValue == $uKey) || ($tFieldKey == $uKey)) {
+                if ((is_numeric($tFieldKey) && $tFieldValue === $uKey) || ($tFieldKey === $uKey)) {
                     if (!is_object($this->data[$uKey]) || !method_exists($this->data[$uKey], 'runSmartObject')) {
                         continue;
                     }

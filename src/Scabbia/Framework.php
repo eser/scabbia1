@@ -120,7 +120,7 @@ class Framework
         // Set variables
         if (self::$basepath === null) {
             $tPath = getcwd();
-            if (isset($_SERVER['argv']) && ($tDirname = dirname($_SERVER['argv'][0])) != '.') {
+            if (isset($_SERVER['argv']) && ($tDirname = dirname($_SERVER['argv'][0])) !== '.') {
                 $tPath .= '/' . $tDirname;
             }
 
@@ -143,7 +143,7 @@ class Framework
     {
         foreach (self::$applications as $tApplication) {
             $tLen = strlen($tApplication['namespace']);
-            if (strncmp($tApplication['namespace'], $uName, $tLen) == 0) {
+            if (strncmp($tApplication['namespace'], $uName, $tLen) === 0) {
                 $tName = Io::namespacePath(substr($uName, $tLen)) . '.php';
 
                 // try in application directory first
@@ -239,7 +239,7 @@ class Framework
 
         // events
         foreach (Config::get('eventList', array()) as $tLoad) {
-            if ($tLoad['name'] == 'load') {
+            if ($tLoad['name'] === 'load') {
                 Events::invokeSingle(array($tLoad['type'], $tLoad['value']));
                 continue;
             }
@@ -299,14 +299,14 @@ class Framework
 
         Events::invoke('output', $tParms);
 
-        if (ini_get('output_handler') == "") {
+        if (ini_get('output_handler') === "") {
             $tParms['content'] = mb_output_handler(
                 $tParms['content'],
                 $uStatus
             ); // PHP_OUTPUT_HANDLER_START | PHP_OUTPUT_HANDLER_END
 
             if (!ini_get('zlib.output_compression') &&
-                (PHP_SAPI != 'cli') &&
+                (PHP_SAPI !== 'cli') &&
                 Config::get('options/gzip', true) === true) {
                 $tParms['content'] = ob_gzhandler(
                     $tParms['content'],

@@ -55,7 +55,7 @@ class Access
                 ) . '$/i',
                 $_SERVER['REMOTE_ADDR']
             )) {
-                if ($tIpFilterList['type'] == 'allow') {
+                if ($tIpFilterList['type'] === 'allow') {
                     self::$ipFilters = array();
                     continue;
                 }

@@ -60,34 +60,26 @@ class AutoModel extends Model
         $tQuery = $this->db->createQuery()
                 ->setTable($this->entityName);
 
-        switch ($tReturn['method']['type']) {
-            /*
-            case 'add':
-                $tQuery->setFields($this->fields)
-                    ->insert()
-                    ->execute();
-                break;
-            case 'edit':
-                $tQuery->setFields($this->fields)
-                    // ->setWhere()
-                    ->setLimit(1)
-                    ->update()
-                    ->execute();
-                break;
-            case 'delete':
-                $tQuery->setLimit(1)
-                    ->delete()
-                    ->execute();
-                break;
-            case 'view':
-                break;
-            */
-            case 'list':
-                $tReturn['rows'] = $tQuery->setFieldsDirect($tReturn['method']['fields'])
-                    // ->setWhere()
-                    ->get()
-                    ->all();
-                break;
+        /* if ($tReturn['method']['type'] === 'add') {
+            $tQuery->setFields($this->fields)
+                ->insert()
+                ->execute();
+        } elseif ($tReturn['method']['type'] === 'edit') {
+            $tQuery->setFields($this->fields)
+                // ->setWhere()
+                ->setLimit(1)
+                ->update()
+                ->execute();
+        } elseif ($tReturn['method']['type'] === 'delete') {
+            $tQuery->setLimit(1)
+                ->delete()
+                ->execute();
+        } elseif ($tReturn['method']['type'] === 'view') {
+        } else */ if ($tReturn['method']['type'] === 'list') {
+            $tReturn['rows'] = $tQuery->setFieldsDirect($tReturn['method']['fields'])
+                // ->setWhere()
+                ->get()
+                ->all();
         }
 
         return $tReturn;

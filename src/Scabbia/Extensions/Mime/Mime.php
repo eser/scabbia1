@@ -23,225 +23,135 @@ class Mime
      */
     public static function getType($uExtension, $uDefault = 'application/octet-stream')
     {
-        switch (String::toLower($uExtension)) {
-            case 'pdf':
-                $tType = 'application/pdf';
-                break;
-            case 'exe':
-                $tType = 'application/octet-stream';
-                break;
-            case 'dll':
-                $tType = 'application/x-msdownload';
-                break;
-            case 'zip':
-                $tType = 'application/zip';
-                break;
-            case 'rar':
-                $tType = 'application/x-rar-compressed';
-                break;
-            case 'gz':
-            case 'gzip':
-            case 'tgz':
-                $tType = 'application/x-gzip';
-                break;
-            case 'tar':
-                $tType = 'application/x-tar';
-                break;
-            case 'jar':
-                $tType = 'application/java-archive';
-                break;
-            case 'deb':
-                $tType = 'application/x-deb';
-                break;
-            case 'dmg':
-                $tType = 'application/x-apple-diskimage';
-                break;
-            case 'csv':
-                $tType = 'text/csv';
-                break;
-            case 'txt':
-            case 'text':
-            case 'log':
-            case 'ini':
-                $tType = 'text/plain';
-                break;
-            case 'rtf':
-                $tType = 'text/rtf';
-                break;
-            case 'odt':
-                $tType = 'application/vnd.oasis.opendocument.text';
-                break;
-            case 'smil':
-                $tType = 'application/smil';
-                break;
-            case 'eml':
-                $tType = 'message/rfc822';
-                break;
-            case 'xml':
-            case 'xsl':
-                $tType = 'text/xml';
-                break;
-            case 'doc':
-            case 'dot':
-            case 'word':
-                $tType = 'application/msword';
-                break;
-            case 'dotx':
-            case 'docx':
-                $tType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                break;
-            case 'xls':
-                $tType = 'application/vnd.ms-excel';
-                break;
-            case 'xl':
-                $tType = 'application/excel';
-                break;
-            case 'xlsx':
-                $tType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                break;
-            case 'ppt':
-                $tType = 'application/vnd.ms-powerpoint';
-                break;
-            case 'ics':
-                $tType = 'text/calendar';
-                break;
-            case 'bmp':
-                $tType = 'image/x-ms-bmp';
-                break;
-            case 'gif':
-                $tType = 'image/gif';
-                break;
-            case 'png':
-                $tType = 'image/png';
-                break;
-            case 'jpeg':
-            case 'jpe':
-            case 'jpg':
-                $tType = 'image/jpeg';
-                break;
-            case 'webp':
-                $tType = 'image/webp';
-                break;
-            case 'tif':
-            case 'tiff':
-                $tType = 'image/tiff';
-                break;
-            case 'psd':
-                $tType = 'image/vnd.adobe.photoshop';
-                break;
-            case 'ai':
-            case 'eps':
-            case 'ps':
-                $tType = 'application/postscript';
-                break;
-            case 'cdr':
-                $tType = 'application/cdr';
-                break;
-            case 'mid':
-            case 'midi':
-                $tType = 'audio/midi';
-                break;
-            case 'mpga':
-            case 'mp2':
-            case 'mp3':
-                $tType = 'audio/mpeg';
-                break;
-            case 'aif':
-            case 'aiff':
-            case 'aifc':
-                $tType = 'audio/x-aiff';
-                break;
-            case 'wav':
-                $tType = 'audio/x-wav';
-                break;
-            case 'aac':
-                $tType = 'audio/aac';
-                break;
-            case 'ogg':
-                $tType = 'audio/ogg';
-                break;
-            case 'wma':
-                $tType = 'audio/x-ms-wma';
-                break;
-            case 'm4a':
-                $tType = 'audio/x-m4a';
-                break;
-            case 'mpeg':
-            case 'mpg':
-            case 'mpe':
-                $tType = 'video/mpeg';
-                break;
-            case 'mp4':
-            case 'f4v':
-                $tType = 'application/mp4';
-                break;
-            case 'qt':
-            case 'mov':
-                $tType = 'video/quicktime';
-                break;
-            case 'avi':
-                $tType = 'video/x-msvideo';
-                break;
-            case 'wmv':
-                $tType = 'video/x-ms-wmv';
-                break;
-            case 'webm':
-                $tType = 'video/webm';
-                break;
-            case 'swf':
-                $tType = 'application/x-shockwave-flash';
-                break;
-            case 'flv':
-                $tType = 'video/x-flv';
-                break;
-            case 'htm':
-            case 'html':
-            case 'shtm':
-            case 'shtml':
-                $tType = 'text/html';
-                break;
-            case 'php':
-                $tType = 'application/x-httpd-php';
-                break;
-            case 'phps':
-                $tType = 'application/x-httpd-php-source';
-                break;
-            case 'css':
-                $tType = 'text/css';
-                break;
-            case 'js':
-                $tType = 'application/x-javascript';
-                break;
-            case 'json':
-                $tType = 'application/json';
-                break;
-            case 'c':
-            case 'h':
-                $tType = 'text/x-c';
-                break;
-            case 'py':
-                $tType = 'application/x-python';
-                break;
-            case 'sh':
-                $tType = 'text/x-shellscript';
-                break;
-            case 'pem':
-                $tType = 'application/x-x509-user-cert';
-                break;
-            case 'crt':
-            case 'cer':
-                $tType = 'application/x-x509-ca-cert';
-                break;
-            case 'pgp':
-                $tType = 'application/pgp';
-                break;
-            case 'gpg':
-                $tType = 'application/gpg-keys';
-                break;
-            default:
-                $tType = $uDefault;
+        $tExtension = String::toLower($uExtension);
+
+        if ($tExtension === 'pdf') {
+            return 'application/pdf';
+        } elseif ($tExtension === 'exe') {
+            return 'application/octet-stream';
+        } elseif ($tExtension === 'dll') {
+            return 'application/x-msdownload';
+        } elseif ($tExtension === 'zip') {
+            return 'application/zip';
+        } elseif ($tExtension === 'rar') {
+            return 'application/x-rar-compressed';
+        } elseif ($tExtension === 'gz' || $tExtension === 'gzip' || $tExtension === 'tgz') {
+            return 'application/x-gzip';
+        } elseif ($tExtension === 'tar') {
+            return 'application/x-tar';
+        } elseif ($tExtension === 'jar') {
+            return 'application/java-archive';
+        } elseif ($tExtension === 'deb') {
+            return 'application/x-deb';
+        } elseif ($tExtension === 'deb') {
+            return 'application/x-apple-diskimage';
+        } elseif ($tExtension === 'deb') {
+            return 'text/csv';
+        } elseif ($tExtension === 'txt' || $tExtension === 'text' || $tExtension === 'log' || $tExtension === 'ini') {
+            return 'text/plain';
+        } elseif ($tExtension === 'rtf') {
+            return 'text/rtf';
+        } elseif ($tExtension === 'odt') {
+            return 'application/vnd.oasis.opendocument.text';
+        } elseif ($tExtension === 'smil') {
+            return 'application/smil';
+        } elseif ($tExtension === 'eml') {
+            return 'message/rfc822';
+        } elseif ($tExtension === 'xml' || $tExtension === 'xsl') {
+            return 'text/xml';
+        } elseif ($tExtension === 'doc' || $tExtension === 'dot' || $tExtension === 'word') {
+            return 'application/msword';
+        } elseif ($tExtension === 'docx' || $tExtension === 'dotx') {
+            return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        } elseif ($tExtension === 'xls') {
+            return 'application/vnd.ms-excel';
+        } elseif ($tExtension === 'xl') {
+            return 'application/excel';
+        } elseif ($tExtension === 'xlsx') {
+            return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        } elseif ($tExtension === 'ppt') {
+            return 'application/vnd.ms-powerpoint';
+        } elseif ($tExtension === 'ics') {
+            return 'text/calendar';
+        } elseif ($tExtension === 'bmp') {
+            return 'image/x-ms-bmp';
+        } elseif ($tExtension === 'gif') {
+            return 'image/gif';
+        } elseif ($tExtension === 'png') {
+            return 'image/png';
+        } elseif ($tExtension === 'jpeg' || $tExtension === 'jpe' || $tExtension === 'jpg') {
+            return 'image/jpeg';
+        } elseif ($tExtension === 'webp') {
+            return 'image/webp';
+        } elseif ($tExtension === 'tif' || $tExtension === 'tiff') {
+            return 'image/tiff';
+        } elseif ($tExtension === 'psd') {
+            return 'image/vnd.adobe.photoshop';
+        } elseif ($tExtension === 'ai' || $tExtension === 'eps' || $tExtension === 'ps') {
+            return 'application/postscript';
+        } elseif ($tExtension === 'cdr') {
+            return 'application/cdr';
+        } elseif ($tExtension === 'mid' || $tExtension === 'midi') {
+            return 'audio/midi';
+        } elseif ($tExtension === 'mpga' || $tExtension === 'mp2' || $tExtension === 'mp3') {
+            return 'audio/mpeg';
+        } elseif ($tExtension === 'aif' || $tExtension === 'aiff' || $tExtension === 'aifc') {
+            return 'audio/x-aiff';
+        } elseif ($tExtension === 'wav') {
+            return 'audio/x-wav';
+        } elseif ($tExtension === 'aac') {
+            return 'audio/aac';
+        } elseif ($tExtension === 'ogg') {
+            return 'audio/ogg';
+        } elseif ($tExtension === 'wma') {
+            return 'audio/x-ms-wma';
+        } elseif ($tExtension === 'm4a') {
+            return 'audio/x-m4a';
+        } elseif ($tExtension === 'mpeg' || $tExtension === 'mpg' || $tExtension === 'mpe') {
+            return 'video/mpeg';
+        } elseif ($tExtension === 'mp4' || $tExtension === 'f4v') {
+            return 'application/mp4';
+        } elseif ($tExtension === 'qt' || $tExtension === 'mov') {
+            return 'video/quicktime';
+        } elseif ($tExtension === 'avi') {
+            return 'video/x-msvideo';
+        } elseif ($tExtension === 'wmv') {
+            return 'video/x-ms-wmv';
+        } elseif ($tExtension === 'webm') {
+            return 'video/webm';
+        } elseif ($tExtension === 'swf') {
+            return 'application/x-shockwave-flash';
+        } elseif ($tExtension === 'flv') {
+            return 'video/x-flv';
+        } elseif ($tExtension === 'htm' || $tExtension === 'html' || $tExtension === 'shtm' ||
+            $tExtension === 'shtml') {
+            return 'text/html';
+        } elseif ($tExtension === 'php') {
+            return 'application/x-httpd-php';
+        } elseif ($tExtension === 'phps') {
+            return 'application/x-httpd-php-source';
+        } elseif ($tExtension === 'css') {
+            return 'text/css';
+        } elseif ($tExtension === 'js') {
+            return 'application/x-javascript';
+        } elseif ($tExtension === 'json') {
+            return 'application/json';
+        } elseif ($tExtension === 'c' || $tExtension === 'h') {
+            return 'text/x-c';
+        } elseif ($tExtension === 'py') {
+            return 'application/x-python';
+        } elseif ($tExtension === 'sh') {
+            return 'text/x-shellscript';
+        } elseif ($tExtension === 'pem') {
+            return 'application/x-x509-user-cert';
+        } elseif ($tExtension === 'crt' || $tExtension === 'cer') {
+            return 'application/x-x509-ca-cert';
+        } elseif ($tExtension === 'pgp') {
+            return 'application/pgp';
+        } elseif ($tExtension === 'gpg') {
+            return 'application/gpg-keys';
         }
 
-        return $tType;
+        return $uDefault;
     }
 }

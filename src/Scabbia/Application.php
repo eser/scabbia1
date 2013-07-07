@@ -101,7 +101,7 @@ class Application
         foreach (Config::get('http/routeList', array()) as $tRouteList) {
             $tDefaults = array();
             foreach ($tRouteList as $tRouteListKey => $tRouteListItem) {
-                if (strncmp($tRouteListKey, 'defaults/', 9) == 0) {
+                if (strncmp($tRouteListKey, 'defaults/', 9) === 0) {
                     $tDefaults[substr($tRouteListKey, 9)] = $tRouteListItem;
                 }
             }

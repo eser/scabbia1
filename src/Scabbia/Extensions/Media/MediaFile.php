@@ -95,20 +95,14 @@ class MediaFile
             // calculate a hash - used for cache files, etc
             $this->hash = Media::calculateHash($this->filename, $this->sw, $this->sh) . '.' . $this->extension;
 
-            switch ($this->extension) {
-                case 'jpeg':
-                case 'jpe':
-                case 'jpg':
-                    $this->image = imagecreatefromjpeg($this->source);
-                    break;
-                case 'gif':
-                    $this->image = imagecreatefromgif($this->source);
-                    break;
-                case 'png':
-                    $this->image = imagecreatefrompng($this->source);
-                    imagealphablending($this->image, true);
-                    imagesavealpha($this->image, true);
-                    break;
+            if ($this->extension === 'jpeg' || $this->extension === 'jpe' || $this->extension === 'jpg') {
+                $this->image = imagecreatefromjpeg($this->source);
+            } elseif ($this->extension === 'gif') {
+                $this->image = imagecreatefromgif($this->source);
+            } elseif ($this->extension === 'png') {
+                $this->image = imagecreatefrompng($this->source);
+                imagealphablending($this->image, true);
+                imagesavealpha($this->image, true);
             }
         }
     }
@@ -161,140 +155,131 @@ class MediaFile
     {
         $tAspectRatio = $uWidth / $uHeight;
 
-        switch ($uMode) {
-            case 'fit':
-                $tSourceX = 0;
-                $tSourceY = 0;
-                $tSourceW = $this->sw;
-                $tSourceH = $this->sh;
+        if ($uMode === 'fit') {
+            $tSourceX = 0;
+            $tSourceY = 0;
+            $tSourceW = $this->sw;
+            $tSourceH = $this->sh;
 
-                if ($uWidth == null && $uHeight != null) {
-                    $uWidth = ceil($uHeight * $this->sa);
+            if ($uWidth === null && $uHeight !== null) {
+                $uWidth = ceil($uHeight * $this->sa);
+            } else {
+                if ($uWidth !== null && $uHeight === null) {
+                    $uHeight = ceil($uWidth / $this->sa);
                 } else {
-                    if ($uWidth != null && $uHeight == null) {
-                        $uHeight = ceil($uWidth / $this->sa);
+                    if ($this->sa > $tAspectRatio) {
+                        $uHeight = $uWidth / $this->sa;
                     } else {
-                        if ($this->sa > $tAspectRatio) {
-                            $uHeight = $uWidth / $this->sa;
-                        } else {
-                            if ($this->sa < $tAspectRatio) {
-                                $uWidth = $uHeight * $this->sa;
-                            }
+                        if ($this->sa < $tAspectRatio) {
+                            $uWidth = $uHeight * $this->sa;
                         }
                     }
                 }
+            }
 
-                $tTargetX = 0;
-                $tTargetY = 0;
-                $tTargetW = $uWidth;
-                $tTargetH = $uHeight;
-                break;
-            case 'crop':
-                $tSourceX = ($this->sw - $uWidth) / 2;
-                if ($tSourceX < 0) {
-                    $tSourceX = 0;
-                }
-
-                $tSourceY = ($this->sh - $uHeight) / 2;
-                if ($tSourceY < 0) {
-                    $tSourceY = 0;
-                }
-
-                $tSourceW = $this->sw;
-                $tSourceH = $this->sh;
-
-                $tTargetX = 0;
-                $tTargetY = 0;
-                $tTargetW = $this->sw;
-                $tTargetH = $this->sh;
-                break;
-            case 'stretch':
+            $tTargetX = 0;
+            $tTargetY = 0;
+            $tTargetW = $uWidth;
+            $tTargetH = $uHeight;
+        } elseif ($uMode === 'crop') {
+            $tSourceX = ($this->sw - $uWidth) / 2;
+            if ($tSourceX < 0) {
                 $tSourceX = 0;
-                $tSourceY = 0;
-                $tSourceW = $this->sw;
-                $tSourceH = $this->sh;
+            }
 
-                $tTargetX = 0;
-                $tTargetY = 0;
-                $tTargetW = $uWidth;
-                $tTargetH = $uHeight;
-                break;
+            $tSourceY = ($this->sh - $uHeight) / 2;
+            if ($tSourceY < 0) {
+                $tSourceY = 0;
+            }
+
+            $tSourceW = $this->sw;
+            $tSourceH = $this->sh;
+
+            $tTargetX = 0;
+            $tTargetY = 0;
+            $tTargetW = $this->sw;
+            $tTargetH = $this->sh;
+        } elseif ($uMode === 'stretch') {
+            $tSourceX = 0;
+            $tSourceY = 0;
+            $tSourceW = $this->sw;
+            $tSourceH = $this->sh;
+
+            $tTargetX = 0;
+            $tTargetY = 0;
+            $tTargetW = $uWidth;
+            $tTargetH = $uHeight;
         }
 
-        switch ($this->mime) {
-            case 'image/jpeg':
-            case 'image/jpg':
-                $tImage = imagecreatetruecolor($uWidth, $uHeight);
-                $tBackground = imagecolorallocate(
-                    $tImage,
-                    $this->background[0],
-                    $this->background[1],
-                    $this->background[2]
-                );
-                imagefill($tImage, 0, 0, $tBackground);
+        if ($this->mime === 'image/jpeg' || $this->mime === 'image/jpg') {
+            $tImage = imagecreatetruecolor($uWidth, $uHeight);
+            $tBackground = imagecolorallocate(
+                $tImage,
+                $this->background[0],
+                $this->background[1],
+                $this->background[2]
+            );
+            imagefill($tImage, 0, 0, $tBackground);
 
-                imagecopyresampled(
-                    $tImage,
-                    $this->image,
-                    $tTargetX,
-                    $tTargetY,
-                    $tSourceX,
-                    $tSourceY,
-                    $tTargetW,
-                    $tTargetH,
-                    $tSourceW,
-                    $tSourceH
-                );
-                break;
-            case 'image/gif':
-                $tImage = imagecreate($uWidth, $uHeight);
-                $tBackground = imagecolorallocate(
-                    $tImage,
-                    $this->background[0],
-                    $this->background[1],
-                    $this->background[2]
-                );
-                imagefill($tImage, 0, 0, $tBackground);
+            imagecopyresampled(
+                $tImage,
+                $this->image,
+                $tTargetX,
+                $tTargetY,
+                $tSourceX,
+                $tSourceY,
+                $tTargetW,
+                $tTargetH,
+                $tSourceW,
+                $tSourceH
+            );
+        } elseif ($this->mime === 'image/gif') {
+            $tImage = imagecreate($uWidth, $uHeight);
+            $tBackground = imagecolorallocate(
+                $tImage,
+                $this->background[0],
+                $this->background[1],
+                $this->background[2]
+            );
+            imagefill($tImage, 0, 0, $tBackground);
 
-                imagecopyresampled(
-                    $tImage,
-                    $this->image,
-                    $tTargetX,
-                    $tTargetY,
-                    $tSourceX,
-                    $tSourceY,
-                    $tTargetW,
-                    $tTargetH,
-                    $tSourceW,
-                    $tSourceH
-                );
-                break;
-            case 'image/png':
-                $tImage = imagecreatetruecolor($uWidth, $uHeight);
-                $tBackground = imagecolorallocatealpha(
-                    $tImage,
-                    $this->background[0],
-                    $this->background[1],
-                    $this->background[2],
-                    $this->background[3]
-                );
-                imagefill($tImage, 0, 0, $tBackground);
+            imagecopyresampled(
+                $tImage,
+                $this->image,
+                $tTargetX,
+                $tTargetY,
+                $tSourceX,
+                $tSourceY,
+                $tTargetW,
+                $tTargetH,
+                $tSourceW,
+                $tSourceH
+            );
+        } elseif ($this->mime === 'image/png') {
+            $tImage = imagecreatetruecolor($uWidth, $uHeight);
+            $tBackground = imagecolorallocatealpha(
+                $tImage,
+                $this->background[0],
+                $this->background[1],
+                $this->background[2],
+                $this->background[3]
+            );
+            imagefill($tImage, 0, 0, $tBackground);
 
-                imagealphablending($tImage, true);
-                imagesavealpha($tImage, true);
-                imagecopyresampled(
-                    $tImage,
-                    $this->image,
-                    $tTargetX,
-                    $tTargetY,
-                    $tSourceX,
-                    $tSourceY,
-                    $tTargetW,
-                    $tTargetH,
-                    $tSourceW,
-                    $tSourceH
-                );
-                break;
+            imagealphablending($tImage, true);
+            imagesavealpha($tImage, true);
+            imagecopyresampled(
+                $tImage,
+                $this->image,
+                $tTargetX,
+                $tTargetY,
+                $tSourceX,
+                $tSourceY,
+                $tTargetW,
+                $tTargetH,
+                $tSourceW,
+                $tSourceH
+            );
         }
 
         if ($this->image !== null) {
@@ -320,17 +305,12 @@ class MediaFile
             $this->source = $uPath;
         }
 
-        switch ($this->mime) {
-            case 'image/jpeg':
-            case 'image/jpg':
-                imagejpeg($this->image, $this->source);
-                break;
-            case 'image/gif':
-                imagegif($this->image, $this->source);
-                break;
-            case 'image/png':
-                imagepng($this->image, $this->source);
-                break;
+        if ($this->mime === 'image/jpeg' || $this->mime === 'image/jpg') {
+            imagejpeg($this->image, $this->source);
+        } elseif ($this->mime === 'image/gif') {
+            imagegif($this->image, $this->source);
+        } elseif ($this->mime === 'image/png') {
+            imagepng($this->image, $this->source);
         }
 
         return $this;
@@ -347,17 +327,12 @@ class MediaFile
         header('Content-Disposition: inline;filename=' . $this->filename . '.' . $this->extension, true);
         // @readfile($this->source);
 
-        switch ($this->mime) {
-            case 'image/jpeg':
-            case 'image/jpg':
-                imagejpeg($this->image);
-                break;
-            case 'image/gif':
-                imagegif($this->image);
-                break;
-            case 'image/png':
-                imagepng($this->image);
-                break;
+        if ($this->mime === 'image/jpeg' || $this->mime === 'image/jpg') {
+            imagejpeg($this->image);
+        } elseif ($this->mime === 'image/gif') {
+            imagegif($this->image);
+        } elseif ($this->mime === 'image/png') {
+            imagepng($this->image);
         }
 
         return $this;

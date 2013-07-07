@@ -43,7 +43,7 @@ abstract class TestFixture
         $tReservedMethods = array('setUp', 'tearDown');
 
         foreach ($tMethods as $tMethod) {
-            if ($tMethod->class != $tMe->name || in_array($tMethod->name, $tReservedMethods)) {
+            if ($tMethod->class !== $tMe->name || in_array($tMethod->name, $tReservedMethods)) {
                 continue;
             }
 
@@ -56,7 +56,7 @@ abstract class TestFixture
      */
     public function testUnit($uName, /* callable */ $uCallback)
     {
-        array_push($this->testStack, array('name' => $uName, 'callback' => $uCallback));
+        $this->testStack[] = array('name' => $uName, 'callback' => $uCallback);
 
         $tException = null;
 

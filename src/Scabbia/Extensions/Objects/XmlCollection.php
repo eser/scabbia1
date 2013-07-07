@@ -66,7 +66,7 @@ class XmlCollection extends Collection
         $tSep = quotemeta(DIRECTORY_SEPARATOR);
         $tPos = strrpos($uPattern, $tSep);
 
-        if ($tSep != '/' && $tPos === false) {
+        if ($tSep !== '/' && $tPos === false) {
             $tSep = '/';
             $tPos = strrpos($uPattern, $tSep);
         }

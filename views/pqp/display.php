@@ -33,7 +33,7 @@ use Scabbia\Extensions\Http\Http;
         </table>
 
         <div id="pqp-console" class="pqp-box">
-            <?php if (($model['logcounts']['log'] + $model['logcounts']['error']) == 0) { ?>
+            <?php if (($model['logcounts']['log'] + $model['logcounts']['error']) === 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
@@ -50,31 +50,31 @@ use Scabbia\Extensions\Http\Http;
                 <?php
                     $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == "") {
+                        if ($class === "") {
                             $class = 'alt';
                         } else {
                             $class = "";
                         }
 
-                        if ($log['type'] == 'log' || $log['type'] == 'error') {
+                        if ($log['type'] === 'log' || $log['type'] === 'error') {
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="type"><?php echo $log['type']; ?></td>
                         <td class="<?php echo $class; ?>">
-                        <?php if ($log['type'] == 'log') { ?>
+                        <?php if ($log['type'] === 'log') { ?>
                             <div><?php print_r($log['message']); ?></div>
-                        <?php } elseif ($log['type'] == 'memory') { ?>
+                        <?php } elseif ($log['type'] === 'memory') { ?>
                             <div>
                                 <div class="measure"><?php echo String::sizeCalc($log['data']); ?></div> <em><?php echo $log['datatype']; ?></em>: <?php print_r($log['message']); ?>
                                 <?php if (isset($log['object'])) { ?>
                                 <div><?php print_r($log['object']); ?></div>
                                 <?php } ?>
                             </div>
-                        <?php } elseif ($log['type'] == 'time') { ?>
+                        <?php } elseif ($log['type'] === 'time') { ?>
                             <div><div class="measure"><?php echo String::timeCalc($log['data']); ?></div> <em><?php print_r($log['message']); ?></em></div>
-                        <?php } elseif ($log['type'] == 'error') { ?>
+                        <?php } elseif ($log['type'] === 'error') { ?>
                             <div><?php echo $log['message']; ?><div class="measure"><?php echo $log['location']; ?></div></div>
-                        <?php } elseif ($log['type'] == 'query') { ?>
+                        <?php } elseif ($log['type'] === 'query') { ?>
                             <div>
                                 <div class="measure"><?php echo String::timeCalc($log['consumedTime']); ?></div>
                                 <div><?php echo $log['message']; ?></div>
@@ -93,7 +93,7 @@ use Scabbia\Extensions\Http\Http;
         </div>
 
         <div id="pqp-time" class="pqp-box">
-            <?php if ($model['logcounts']['time'] == 0) { ?>
+            <?php if ($model['logcounts']['time'] === 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
@@ -104,13 +104,13 @@ use Scabbia\Extensions\Http\Http;
                 <?php
                     $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == "") {
+                        if ($class === "") {
                             $class = 'alt';
                         } else {
                             $class = "";
                         }
 
-                        if ($log['type'] == 'time') {
+                        if ($log['type'] === 'time') {
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="<?php echo $class; ?>">
@@ -126,7 +126,7 @@ use Scabbia\Extensions\Http\Http;
         </div>
 
         <div id="pqp-queries" class="pqp-box">
-            <?php if ($model['logcounts']['query'] == 0) { ?>
+            <?php if ($model['logcounts']['query'] === 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
@@ -138,13 +138,13 @@ use Scabbia\Extensions\Http\Http;
                 <?php
                     $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == "") {
+                        if ($class === "") {
                             $class = 'alt';
                         } else {
                             $class = "";
                         }
 
-                        if ($log['type'] == 'query') {
+                        if ($log['type'] === 'query') {
                 ?>
                     <tr>
                         <td class="<?php echo $class; ?>">
@@ -178,7 +178,7 @@ use Scabbia\Extensions\Http\Http;
         </div>
 
         <div id="pqp-memory" class="pqp-box">
-            <?php if ($model['logcounts']['memory'] == 0) { ?>
+            <?php if ($model['logcounts']['memory'] === 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
@@ -189,13 +189,13 @@ use Scabbia\Extensions\Http\Http;
                 <?php
                     $class = "";
                     foreach ($model['logs'] as $log) {
-                        if ($class == "") {
+                        if ($class === "") {
                             $class = 'alt';
                         } else {
                             $class = "";
                         }
 
-                        if ($log['type'] == 'memory') {
+                        if ($log['type'] === 'memory') {
                 ?>
                     <tr class="log-<?php echo $log['type']; ?>">
                         <td class="<?php echo $class; ?>">
@@ -212,7 +212,7 @@ use Scabbia\Extensions\Http\Http;
         </div>
 
         <div id="pqp-files" class="pqp-box">
-            <?php if ($model['fileTotals']['count'] == 0) { ?>
+            <?php if ($model['fileTotals']['count'] === 0) { ?>
                 <h3>This panel has no log items.</h3>
             <?php } else { ?>
                 <table class="side" cellspacing="0">
@@ -224,7 +224,7 @@ use Scabbia\Extensions\Http\Http;
                 <?php
                     $class = "";
                     foreach ($model['files'] as $file) {
-                        if ($class == "") {
+                        if ($class === "") {
                             $class = 'alt';
                         } else {
                             $class = "";

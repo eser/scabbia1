@@ -52,9 +52,9 @@ class Mimepart
     {
         $tString = "";
 
-        if ($this->transferEncoding == 'base64') {
+        if ($this->transferEncoding === 'base64') {
             $tString .= chunk_split(base64_encode($this->content));
-        } elseif ($this->transferEncoding == 'quoted-printable') {
+        } elseif ($this->transferEncoding === 'quoted-printable') {
             $tString .= quoted_printable_encode($this->content);
         } else {
             $tString .= $this->content;

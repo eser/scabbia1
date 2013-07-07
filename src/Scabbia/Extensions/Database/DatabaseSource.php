@@ -108,7 +108,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             try {
                 $this->internalExecute($this->initCommand);
             } catch (\Exception $ex) {
-                if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+                if ($this->errorHandling === Database::ERROR_EXCEPTION) {
                     throw $ex;
                 }
 
@@ -238,7 +238,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         try {
             $tReturn = $this->internalExecute($uQuery);
         } catch (\Exception $ex) {
-            if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+            if ($this->errorHandling === Database::ERROR_EXCEPTION) {
                 throw $ex;
             }
 
@@ -305,7 +305,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             $tCount = 0;
 
             foreach ($tOld as $tParameter) {
-                $tCaching[1] .= (($tCount++ == 0) ? '/' : '_') . hash('adler32', $tParameter);
+                $tCaching[1] .= (($tCount++ === 0) ? '/' : '_') . hash('adler32', $tParameter);
             }
 
             $tData = Datasources::get($tCaching[0])->cacheGet($tCaching[1]);
@@ -365,7 +365,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
             try {
                 $tResult = $this->query($uDataset->queryString, $tArray); //! todo: add caching
             } catch (\Exception $ex) {
-                if ($this->errorHandling == Database::ERROR_EXCEPTION) {
+                if ($this->errorHandling === Database::ERROR_EXCEPTION) {
                     throw $ex;
                 }
 

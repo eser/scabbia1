@@ -85,28 +85,24 @@ class Events
         //    return null;
         // }
 
-        switch ($uState[0]) {
-            case 'loadClass':
-                class_exists($uState[1], true);
-                break;
-            case 'include':
-                include Io::translatePath($uState[1]);
-                break;
-            case 'callback':
-                if (is_array($uState[1])) {
-                    array_push(self::$eventDepth, get_class($uState[1][0]) . '::' . $uState[1][1] . '()');
-                } else {
-                    array_push(self::$eventDepth, '\\' . $uState[1] . '()');
-                }
+        if ($uState[0] === 'loadClass') {
+            class_exists($uState[1], true);
+        } elseif ($uState[0] === 'include') {
+            include Io::translatePath($uState[1]);
+        } elseif ($uState[0] === 'callback') {
+            if (is_array($uState[1])) {
+                self::$eventDepth[] = get_class($uState[1][0]) . '::' . $uState[1][1] . '()';
+            } else {
+                self::$eventDepth[] = '\\' . $uState[1] . '()';
+            }
 
-                $tReturn = call_user_func($uState[1], $uEventArgs);
+            $tReturn = call_user_func($uState[1], $uEventArgs);
 
-                array_pop(self::$eventDepth);
+            array_pop(self::$eventDepth);
 
-                if ($tReturn === false) {
-                    return false;
-                }
-                break;
+            if ($tReturn === false) {
+                return false;
+            }
         }
 
         return true;

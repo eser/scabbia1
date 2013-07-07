@@ -75,7 +75,7 @@ class Date
             }
         }
 
-        if (date('d.m.Y', $uTime - (24 * 60 * 60)) == date('d.m.Y', $uTimestamp)) {
+        if (date('d.m.Y', $uTime - (24 * 60 * 60)) === date('d.m.Y', $uTimestamp)) {
             if ($uShowHours) {
                 return 'Yesterday, ' . date('H:i', $uTimestamp);
             }
@@ -83,7 +83,7 @@ class Date
             return 'Yesterday';
         }
 
-        if (date('d.m.Y', $uTime) == date('d.m.Y', $uTimestamp)) {
+        if (date('d.m.Y', $uTime) === date('d.m.Y', $uTimestamp)) {
             if ($uShowHours) {
                 return 'Today, ' . date('H:i', $uTimestamp);
             }
@@ -91,7 +91,7 @@ class Date
             return 'Today';
         }
 
-        if (date('d.m.Y', $uTime + (24 * 60 * 60)) == date('d.m.Y', $uTimestamp)) {
+        if (date('d.m.Y', $uTime + (24 * 60 * 60)) === date('d.m.Y', $uTimestamp)) {
             if ($uShowHours) {
                 return 'Tomorrow, ' . date('H:i', $uTimestamp);
             }

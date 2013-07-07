@@ -94,16 +94,12 @@ class PdoSource extends DatabaseSource
             $tParms[\PDO::ATTR_PERSISTENT] = true;
         }
 
-        switch ($this->overrideCase) {
-            case 'lower':
-                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_LOWER;
-                break;
-            case 'upper':
-                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_UPPER;
-                break;
-            default:
-                $tParms[\PDO::ATTR_CASE] = \PDO::CASE_NATURAL;
-                break;
+        if ($this->overrideCase === 'lower') {
+            $tParms[\PDO::ATTR_CASE] = \PDO::CASE_LOWER;
+        } elseif ($this->overrideCase === 'upper') {
+            $tParms[\PDO::ATTR_CASE] = \PDO::CASE_UPPER;
+        } else {
+            $tParms[\PDO::ATTR_CASE] = \PDO::CASE_NATURAL;
         }
 
         $tParms[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
@@ -138,7 +134,7 @@ class PdoSource extends DatabaseSource
     {
         parent::beginTransaction();
 
-        if ($this->transactionLevel == 1) {
+        if ($this->transactionLevel === 1) {
             $this->connection->beginTransaction();
         } else {
             $this->connection->exec('SAVEPOINT LEVEL' . $this->transactionLevel);
@@ -150,7 +146,7 @@ class PdoSource extends DatabaseSource
      */
     public function commit()
     {
-        if ($this->transactionLevel == 1) {
+        if ($this->transactionLevel === 1) {
             $this->connection->commit();
         } else {
             $this->connection->exec('RELEASE SAVEPOINT LEVEL' . $this->transactionLevel);
@@ -164,7 +160,7 @@ class PdoSource extends DatabaseSource
      */
     public function rollBack()
     {
-        if ($this->transactionLevel == 1) {
+        if ($this->transactionLevel === 1) {
             $this->connection->rollBack();
         } else {
             $this->connection->exec('ROLLBACK TO SAVEPOINT LEVEL' . $this->transactionLevel);
@@ -210,7 +206,7 @@ class PdoSource extends DatabaseSource
         }
 
         if ($uExtra !== null) {
-            if ($this->standard == 'mysql') {
+            if ($this->standard === 'mysql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];
                 }
@@ -232,7 +228,7 @@ class PdoSource extends DatabaseSource
         }
 
         if ($uExtra !== null) {
-            if ($this->standard == 'mysql') {
+            if ($this->standard === 'mysql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];
                 }
@@ -271,7 +267,7 @@ class PdoSource extends DatabaseSource
         }
 
         if ($uExtra !== null) {
-            if ($this->standard == 'pgsql') {
+            if ($this->standard === 'pgsql') {
                 if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                     $tSql .= ' LIMIT ' . $uExtra['limit'];
                 }
@@ -280,7 +276,7 @@ class PdoSource extends DatabaseSource
                     $tSql .= ' OFFSET ' . $uExtra['offset'];
                 }
             } else {
-                if ($this->standard == 'mysql') {
+                if ($this->standard === 'mysql') {
                     if (isset($uExtra['limit']) && $uExtra['limit'] >= 0) {
                         if (isset($uExtra['offset']) && $uExtra['offset'] >= 0) {
                             $tSql .= ' LIMIT ' . $uExtra['offset'] . ', ' . $uExtra['limit'];

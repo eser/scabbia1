@@ -97,7 +97,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
         if (func_num_args() > 1) {
             $tCounted = 0;
             foreach ($this->_items as $tItem) {
-                if ($uItem == $tItem) {
+                if ($uItem === $tItem) {
                     ++$tCounted;
                 }
             }
@@ -153,7 +153,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     {
         $tRemoved = 0;
 
-        while (($uLimit == 0 || $tRemoved < $uLimit) && ($tKey = array_search($uItem, $this->_items, true)) !== false) {
+        while (($uLimit === 0 || $tRemoved < $uLimit) && ($tKey = array_search($uItem, $this->_items, true)) !== false) {
             unset($this->_items[$tKey]);
         }
 
@@ -202,7 +202,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
      */
     public function push($uItem)
     {
-        array_push($this->_items, $uItem);
+        $this->_items[] = $uItem;
     }
 
     /**

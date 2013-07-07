@@ -34,7 +34,7 @@ class Output
         ob_implicit_flush(false);
 
         $tArgs = func_get_args();
-        array_push(self::$effectList, $tArgs);
+        self::$effectList[] = $tArgs;
     }
 
     /**

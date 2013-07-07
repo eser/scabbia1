@@ -101,7 +101,7 @@ class Multipart
                 $tPart = $this->parts[0];
 
                 if (!isset($tHeaders['Content-Type'])) {
-                    if ($this->boundaryType == static::ALTERNATIVE) {
+                    if ($this->boundaryType === static::ALTERNATIVE) {
                         $tHeaders['Content-Type'] = 'multipart/alternative; boundary=' . $this->boundaryName;
                     } else {
                         $tHeaders['Content-Type'] = 'multipart/related; boundary=' . $this->boundaryName;

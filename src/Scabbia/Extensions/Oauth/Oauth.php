@@ -48,7 +48,7 @@ class Oauth
             $tKey .= '&' . Http::encode($uTokenSecret);
         }
 
-        if ($uMethod == self::METHOD_PLAINTEXT) {
+        if ($uMethod === self::METHOD_PLAINTEXT) {
             return $tKey;
         }
 
@@ -64,7 +64,7 @@ class Oauth
 
         $tBuiltLen = strlen($tBuilt);
         $tSignatureLen = strlen($uSignatureSecret);
-        if ($tBuiltLen == 0 || $tSignatureLen == 0 || $tBuiltLen != $tSignatureLen) {
+        if ($tBuiltLen === 0 || $tSignatureLen === 0 || $tBuiltLen !== $tSignatureLen) {
             return false;
         }
 
@@ -73,6 +73,6 @@ class Oauth
             $tResult |= ord($tBuilt[$i]) ^ ord($tSignatureLen[$i]);
         }
 
-        return ($tResult == 0);
+        return ($tResult === 0);
     }
 }

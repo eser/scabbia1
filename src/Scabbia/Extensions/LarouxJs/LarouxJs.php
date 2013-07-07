@@ -40,8 +40,8 @@ class LarouxJs
      */
     public static function output($uParms)
     {
-        if (Request::$wrapperFunction == 'laroux.js') {
-            if (Http::sentHeaderValue('Content-Type') == false) {
+        if (Request::$wrapperFunction === 'laroux.js') {
+            if (Http::sentHeaderValue('Content-Type') === false) {
                 header('Content-Type: application/json', true);
             }
             header('X-Response-Wrapper-Function: laroux.js', true);

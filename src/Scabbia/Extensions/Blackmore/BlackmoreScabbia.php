@@ -92,7 +92,7 @@ class BlackmoreScabbia
         }
 
         foreach ($tDirectory as $tFilename) {
-            if (substr($tFilename, -1) == '/') {
+            if (substr($tFilename, -1) === '/') {
                 continue;
             }
 

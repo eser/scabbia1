@@ -52,7 +52,7 @@ class Auth
         self::load();
 
         foreach (Config::get('auth/userList', array()) as $tUser) {
-            if ($uUsername != $tUser['username'] || md5($uPassword) != $tUser['password']) {
+            if ($uUsername !== $tUser['username'] || md5($uPassword) !== $tUser['password']) {
                 continue;
             }
 

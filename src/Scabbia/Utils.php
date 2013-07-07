@@ -72,25 +72,25 @@ class Utils
         for ($tPos = 0, $tLen = strlen($uPattern); $tPos < $tLen; $tPos++) {
             $tChar = substr($uPattern, $tPos, 1);
 
-            if ($tChar == '\\') {
+            if ($tChar === '\\') {
                 $tBuffer[$tBrackets][1] .= substr($uPattern, ++$tPos, 1);
                 continue;
             }
 
-            if ($tChar == '(') {
+            if ($tChar === '(') {
                 $tBuffer[++$tBrackets] = array(false, "");
                 continue;
             }
 
             if ($tBrackets > 0) {
-                if ($tChar == ':' && $tBuffer[$tBrackets][0] === false) {
+                if ($tChar === ':' && $tBuffer[$tBrackets][0] === false) {
                     $tBuffer[$tBrackets][0] = $tBuffer[$tBrackets][1];
                     $tBuffer[$tBrackets][1] = "";
 
                     continue;
                 }
 
-                if ($tChar == ')') {
+                if ($tChar === ')') {
                     --$tBrackets;
                     $tLast = array_pop($tBuffer);
 
@@ -110,7 +110,7 @@ class Utils
                 }
             }
 
-            if ($tChar == ')') {
+            if ($tChar === ')') {
                 $tBuffer[$tBrackets][1] .= '\\)';
                 continue;
             }

@@ -27,7 +27,7 @@ class FileSystem
         foreach ($tDir as $tFile) {
             $tFileName = $tFile->getFilename();
 
-            if ($tFileName[0] == '.') { // $tFile->isDot()
+            if ($tFileName[0] === '.') { // $tFile->isDot()
                 continue;
             }
 
@@ -69,7 +69,7 @@ class FileSystem
         foreach ($tDir as $tFile) {
             $tFileName = $tFile->getFilename();
 
-            if ($tFileName[0] == '.') { // $tFile->isDot()
+            if ($tFileName[0] === '.') { // $tFile->isDot()
                 continue;
             }
 

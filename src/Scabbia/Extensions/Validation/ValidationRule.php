@@ -69,14 +69,14 @@ class ValidationRule
      */
     public function add($uType, array $uArgs)
     {
-        if (strncmp($uType, 'or', 2) == 0) {
+        if (strncmp($uType, 'or', 2) === 0) {
             $uNewType = lcfirst(substr($uType, 2));
             $this->conditions[] = array($uNewType, $uArgs, 'or');
 
             return $this;
         }
 
-        if (strncmp($uType, 'and', 3) == 0) {
+        if (strncmp($uType, 'and', 3) === 0) {
             $uNewType = lcfirst(substr($uType, 3));
             $this->conditions[] = array($uNewType, $uArgs, 'and');
 
