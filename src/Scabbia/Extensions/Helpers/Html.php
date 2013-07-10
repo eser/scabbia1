@@ -394,31 +394,38 @@ class Html
             return '<!DOCTYPE html>' . PHP_EOL;
         } elseif ($uType ===  'xhtml11' || $uType === 'xhtml1.1') {
             return
-                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' .
+                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" ' .
+                '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'xhtml1' || $uType === 'xhtml1-strict') {
             return
-                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' .
+                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" ' .
+                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'xhtml1-trans') {
             return
-                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' .
+                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' .
+                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'xhtml1-frame') {
             return
-                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' .
+                '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" ' .
+                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'html4-strict') {
             return
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' .
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" ' .
+                '"http://www.w3.org/TR/html4/strict.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'html4' || $uType === 'html4-trans') {
             return
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' .
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ' .
+                '"http://www.w3.org/TR/html4/loose.dtd">' .
                 PHP_EOL;
         } elseif ($uType === 'html4-frame') {
             return
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">' .
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" ' .
+                '"http://www.w3.org/TR/html4/frameset.dtd">' .
                 PHP_EOL;
         }
 

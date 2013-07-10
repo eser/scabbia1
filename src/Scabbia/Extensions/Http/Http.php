@@ -147,7 +147,11 @@ class Http
     public static function notfound()
     {
         header(Request::$protocol . ' 404 Not Found', true, 404);
-        self::error('notfound', I18n::_('404 Not Found'), I18n::_('The resource you have been looking for is not found on the server'));
+        self::error(
+            'notfound',
+            I18n::_('404 Not Found'),
+            I18n::_('The resource you have been looking for is not found on the server')
+        );
     }
 
     /**
@@ -156,7 +160,10 @@ class Http
     public static function error($uErrorType, $uTitle = null, $uMessage = null)
     {
         if (!isset(self::$errorPages[$uErrorType])) {
-            self::$errorPages[$uErrorType] = Config::get('http/errorPages/' . $uErrorType, '{core}views/shared/error.php');
+            self::$errorPages[$uErrorType] = Config::get(
+                'http/errorPages/' . $uErrorType,
+                '{core}views/shared/error.php'
+            );
         }
 
         //! todo internalization.
@@ -185,24 +192,25 @@ class Http
         }
 
         return
-            ((isset($uParts['scheme'])) ? $uParts['scheme'] . '://' : "")
-            .((isset($uParts['user'])) ? $uParts['user'] . ((isset($uParts['pass'])) ? ':' . $uParts['pass'] : "") .'@' : "")
-            .((isset($uParts['host'])) ? $uParts['host'] : "")
-            .((isset($uParts['port'])) ? ':' . $uParts['port'] : "")
-            .((isset($uParts['path'])) ? $uParts['path'] : "")
-            .((isset($uParts['query'])) ? '?' . $uParts['query'] : "")
-            .((isset($uParts['fragment'])) ? '#' . $uParts['fragment'] : "")
-            ;
+            ((isset($uParts['scheme'])) ? $uParts['scheme'] . '://' : "") .
+            ((isset($uParts['user'])) ? $uParts['user'] .
+                ((isset($uParts['pass'])) ? ':' . $uParts['pass'] : "") . '@' : ""
+            ) .
+            ((isset($uParts['host'])) ? $uParts['host'] : "") .
+            ((isset($uParts['port'])) ? ':' . $uParts['port'] : "") .
+            ((isset($uParts['path'])) ? $uParts['path'] : "") .
+            ((isset($uParts['query'])) ? '?' . $uParts['query'] : "") .
+            ((isset($uParts['fragment'])) ? '#' . $uParts['fragment'] : "");
     }
 
     /**
      * @ignore
      */
-    private static function buildQueryString_arr(&$uParameters, $uKey, array $uValue)
+    private static function buildQueryStringArray(&$uParameters, $uKey, array $uValue)
     {
         foreach ($uValue as $tValue) {
             if (is_array($tValue)) {
-                self::buildQueryString_arr($uParameters, $uKey . '[]', $tValue);
+                self::buildQueryStringArray($uParameters, $uKey . '[]', $tValue);
                 continue;
             }
 
@@ -222,7 +230,7 @@ class Http
             $tEncodedKey = rawurlencode($tKey);
 
             if (is_array($tValue)) {
-                self::buildQueryString_arr($tParameters, $tEncodedKey, $tValue);
+                self::buildQueryStringArray($tParameters, $tEncodedKey, $tValue);
                 continue;
             }
 
@@ -320,22 +328,24 @@ class Http
 
             $tString = json_encode($tArray);
         } else {
-            $tString  = '<pre style="font-family: \'Consolas\', monospace;">'; // for content-type: text/xml
-            $tString .= '<div style="font-size: 11pt; color: #000060; border-bottom: 1px solid #C0C0C0; background: #F0F0F0; padding: 8px 12px 8px 12px;"><span style="font-weight: bold;">' . $uParms['category'] . '</span>: ' . $uParms['location'] . '</div>' . PHP_EOL;
-            $tString .= '<div style="font-size: 10pt; color: #404040; padding: 0px 12px 0px 12px; line-height: 20px;">' . $uParms['message'] . '</div>' . PHP_EOL . PHP_EOL;
+            $tString  = '<h2><strong>' . $uParms['category'] . '</strong>: ' . $uParms['location'] . '</h2>' . PHP_EOL;
+            $tString .= '<h4>' . $uParms['message'] . '</h4>' . PHP_EOL . PHP_EOL;
 
             if (Framework::$development) {
                 if (count($uParms['eventDepth']) > 0) {
-                    $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>eventDepth:</b>' . PHP_EOL . implode(PHP_EOL, $uParms['eventDepth']) . '</div>' . PHP_EOL . PHP_EOL;
+                    $tString .= '<pre><strong>eventDepth:</strong>' . PHP_EOL .
+                        implode(PHP_EOL, $uParms['eventDepth']) . '</pre>' . PHP_EOL . PHP_EOL;
                 }
 
                 if (count($uParms['stackTrace']) > 0) {
-                    $tString .= '<div style="font-size: 10pt; color: #800000; padding: 0px 12px 0px 12px; line-height: 20px;"><b>stackTrace:</b>' . PHP_EOL . implode(PHP_EOL, $uParms['stackTrace']) . '</div>' . PHP_EOL . PHP_EOL;
+                    $tString .= '<pre><strong>stackTrace:</strong>' . PHP_EOL .
+                        implode(PHP_EOL, $uParms['stackTrace']) . '</pre>' . PHP_EOL . PHP_EOL;
                 }
             }
 
-            $tString .= '</pre>';
-            $tString .= '<div style="font-size: 7pt; color: #808080; padding: 0px 12px 0px 12px;">Generated by <a href="http://larukedi.github.com/Scabbia-Framework/">Scabbia Framework</a>.</div>' . PHP_EOL;
+            $tString .= '<em>Generated by ' .
+                '<a href="http://larukedi.github.com/Scabbia-Framework/">Scabbia Framework</a>' .
+                '.</em>' . PHP_EOL;
         }
 
         echo $tString;

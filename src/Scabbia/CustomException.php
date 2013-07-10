@@ -33,7 +33,8 @@ class CustomException extends \Exception
      * @param string     $uMessage
      * @param \Exception $uPrevious
      */
-    public function __construct($uType, $uTitle, $uMessage, \Exception $uPrevious = null) {
+    public function __construct($uType, $uTitle, $uMessage, \Exception $uPrevious = null)
+    {
         $this->type = $uType;
         $this->title = $uTitle;
 
@@ -45,7 +46,8 @@ class CustomException extends \Exception
      *
      * @return string the string representation of the exception
      */
-    public function __toString() {
+    public function __toString()
+    {
         return get_class($this) . ' [' . $this->type . ']: ' . $this->title . PHP_EOL . $this->message;
     }
 }

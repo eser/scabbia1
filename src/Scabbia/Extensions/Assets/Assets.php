@@ -122,7 +122,9 @@ class Assets
                 $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : $tBinder->outputType;
             } else {
                 $tValue = $tPart['path'];
-                $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : pathinfo($tPart['path'], PATHINFO_EXTENSION);
+                $tPartType = isset($tPart['parttype']) ?
+                    $tPart['parttype'] :
+                    pathinfo($tPart['path'], PATHINFO_EXTENSION);
             }
 
             $tBinder->add($tBindType, $tPartType, $tValue, $tClass);

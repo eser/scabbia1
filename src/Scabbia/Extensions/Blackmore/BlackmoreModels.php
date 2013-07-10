@@ -8,7 +8,7 @@
 namespace Scabbia\Extensions\Blackmore;
 
 use Scabbia\Extensions\Auth\Auth;
-use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;

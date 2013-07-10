@@ -250,17 +250,17 @@ class LoggerInstance implements LoggerInterface
             $tBacktrace = debug_backtrace(false);
         }
         */
-//        $tBacktrace = debug_backtrace();
+        // $tBacktrace = debug_backtrace();
 
-//        $tLast = current($tBacktrace);
+        // $tLast = current($tBacktrace);
         $tProfileData = $uParameters + array(
-                'type' => $uType,
-                'message' => $uMessage,
-//                'file' => $tLast['file'],
-//                'line' => $tLast['line'],
-                'startTime' => microtime(true),
-                'startMemory' => memory_get_usage()
-            );
+            'type' => $uType,
+            'message' => $uMessage,
+            // 'file' => $tLast['file'],
+            // 'line' => $tLast['line'],
+            'startTime' => microtime(true),
+            'startMemory' => memory_get_usage()
+        );
 
         $this->profilerStack[] = $tProfileData;
     }

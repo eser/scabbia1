@@ -103,8 +103,7 @@ class Fb
             self::$api->setExtendedAccessToken();
         }
 
-        if ($uForceClear || $tFirstTime)
-        {
+        if ($uForceClear || $tFirstTime) {
             self::$facebookData = array(
                 'userid'        => self::$userId,
                 'access_token'  => self::$api->getAccessToken(),

@@ -258,14 +258,14 @@ class Binder
                     }
                 }
             } elseif ($tTokenId === T_WHITESPACE) {
-                    if ($tLastToken !== T_WHITESPACE &&
-                        $tLastToken !== T_OPEN_TAG &&
-                        $tLastToken !== T_OPEN_TAG_WITH_ECHO &&
-                        $tLastToken !== T_COMMENT &&
-                        $tLastToken !== T_DOC_COMMENT
-                    ) {
-                        $tReturn .= ' ';
-                    }
+                if ($tLastToken !== T_WHITESPACE &&
+                    $tLastToken !== T_OPEN_TAG &&
+                    $tLastToken !== T_OPEN_TAG_WITH_ECHO &&
+                    $tLastToken !== T_COMMENT &&
+                    $tLastToken !== T_DOC_COMMENT
+                ) {
+                    $tReturn .= ' ';
+                }
             } elseif ($tTokenId === null) {
                 $tReturn .= $tTokenContent;
                 if ($tLastToken === T_END_HEREDOC) {

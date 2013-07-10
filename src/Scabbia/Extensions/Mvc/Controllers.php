@@ -38,6 +38,10 @@ class Controllers
     /**
      * @ignore
      */
+    public static $searchNamespaces = null;
+    /**
+     * @ignore
+     */
     public static $models = array();
     /**
      * @ignore
@@ -56,16 +60,27 @@ class Controllers
 
         if (self::$root === null) {
             self::$root = new ControllerBase();
-            $tClass = Framework::$application->name . '\\Controllers\\' . $tActualController;
+            self::$searchNamespaces = array(
+                Framework::$application->name . '\\Controllers'
+            );
 
-            if (class_exists($tClass, true)) {
-                if (($tPos = strrpos($tClass, '\\')) !== false) {
-                    $tClassName = lcfirst(substr($tClass, $tPos + 1));
-                } else {
-                    $tClassName = lcfirst($tClass);
+            foreach (Config::get('mvc/searchNamespacesList', array()) as $tNamespace) {
+                self::$searchNamespaces[] = $tNamespace;
+            }
+
+            foreach (self::$searchNamespaces as $tNamespace) {
+                $tClass = $tNamespace . '\\' . $tActualController;
+
+                if (class_exists($tClass, true)) {
+                    if (($tPos = strrpos($tClass, '\\')) !== false) {
+                        $tClassName = lcfirst(substr($tClass, $tPos + 1));
+                    } else {
+                        $tClassName = lcfirst($tClass);
+                    }
+
+                    self::$root->addChildController($tClassName, $tClass);
+                    break;
                 }
-
-                self::$root->addChildController($tClassName, $tClass);
             }
         }
 
@@ -90,8 +105,13 @@ class Controllers
     /**
      * @ignore
      */
-    public static function setController($uControllerInstance, $uActionName, $uFormat, array $uParams = array(), array $uInput = array())
-    {
+    public static function setController(
+        $uControllerInstance,
+        $uActionName,
+        $uFormat,
+        array $uParams = array(),
+        array $uInput = array()
+    ) {
         Framework::$variables['controller'] = $uControllerInstance;
 
         $uControllerInstance->route = array(

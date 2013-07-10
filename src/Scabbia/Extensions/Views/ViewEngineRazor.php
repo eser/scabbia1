@@ -8,6 +8,7 @@
 namespace Scabbia\Extensions\Views;
 
 use Scabbia\Extensions\Views\Views;
+use Scabbia\Extensions\Views\Razor\RazorViewRenderer;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
@@ -39,10 +40,7 @@ class ViewEngineRazor
 
         if (Framework::$disableCaches || !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
             if (self::$engine === null) {
-                require 'razor/RazorViewRenderer.php';
-                require 'razor/RazorViewRendererException.php';
-
-                self::$engine = new \RazorViewRenderer();
+                self::$engine = new RazorViewRenderer();
             }
 
             if (Framework::$readonly) {

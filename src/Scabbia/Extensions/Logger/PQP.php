@@ -41,83 +41,80 @@ class PQP
         Views::viewFile('{core}views/pqp/display.php', self::$output);
     }
 
-    /*-------------------------------------------
-	     FORMAT THE DIFFERENT TYPES OF LOGS
-	-------------------------------------------*/
-
-    public static function gatherConsoleData() {
+    /**
+     * @ignore
+     */
+    public static function gatherConsoleData()
+    {
         self::$output['logcounts'] = Logger::$typeCounts;
         self::$output['logcount'] = count(Logger::$console);
         self::$output['logs'] = Logger::$console;
     }
 
-    /*-------------------------------------------
-        AGGREGATE DATA ON THE FILES INCLUDED
-    -------------------------------------------*/
+    /**
+     * @ignore
+     */
+    public static function gatherFileData()
+    {
+        self::$output['files'] = array();
 
-    public static function gatherFileData() {
-        $files = get_included_files();
-        $fileList = array();
-        $fileTotals = array(
-            'count' => count($files),
-            'size' => 0,
-            'largest' => 0,
-        );
+        $tTotalSize = 0;
+        $tLargestSize = 0;
+        foreach (get_included_files() as $tFile) {
+            $tFileSize = filesize($tFile);
+            $tTotalSize += $tFileSize;
 
-        foreach ($files as $key => $file) {
-            $size = filesize($file);
-            $fileList[] = array(
-                'message' => $file,
-                'size' => String::sizeCalc($size)
+            self::$output['files'][] = array(
+                'message' => $tFile,
+                'size' => String::sizeCalc($tFileSize)
             );
-            $fileTotals['size'] += $size;
-            if ($size > $fileTotals['largest']) {
-                $fileTotals['largest'] = $size;
+            if ($tFileSize > $tLargestSize) {
+                $tLargestSize = $tFileSize;
             }
         }
 
-        $fileTotals['size'] = String::sizeCalc($fileTotals['size']);
-        $fileTotals['largest'] = String::sizeCalc($fileTotals['largest']);
-        self::$output['files'] = $fileList;
-        self::$output['fileTotals'] = $fileTotals;
+        self::$output['fileTotals'] = array(
+            'count' => count(self::$output['files']),
+            'size' => String::sizeCalc($tTotalSize),
+            'largest' => String::sizeCalc($tLargestSize)
+        );
     }
 
-    /*-------------------------------------------
-	     MEMORY USAGE AND MEMORY AVAILABLE
-	-------------------------------------------*/
-
-    public static function gatherMemoryData() {
-        $memoryTotals = array();
-        $memoryTotals['used'] = String::sizeCalc(memory_get_peak_usage());
-        $memoryTotals['total'] = ini_get('memory_limit');
-        self::$output['memoryTotals'] = $memoryTotals;
+    /**
+     * @ignore
+     */
+    public static function gatherMemoryData()
+    {
+        self::$output['memoryTotals'] = array(
+            'used' => String::sizeCalc(memory_get_peak_usage()),
+            'total' => ini_get('memory_limit')
+        );
     }
 
-    /*--------------------------------------------------------
-	     QUERY DATA -- DATABASE OBJECT WITH LOGGING REQUIRED
-	----------------------------------------------------------*/
-
-    public static function gatherQueryData() {
-        $queryTotals = array();
-        $queryTotals['time'] = 0;
+    /**
+     * @ignore
+     */
+    public static function gatherQueryData()
+    {
+        self::$output['queryTotals'] = array(
+            'time' => 0
+        );
 
         foreach (Logger::$console as $tLog) {
             if (isset($tLog['type']) && $tLog['type'] === 'query') {
-                $queryTotals['time'] += $tLog['consumedTime'];
+                self::$output['queryTotals']['time'] += $tLog['consumedTime'];
             }
         }
-
-        self::$output['queryTotals'] = $queryTotals;
     }
 
-    /*-------------------------------------------
-	     TIME DATA FOR ENTIRE PAGE LOAD
-	-------------------------------------------*/
-
-    public static function gatherTimeData() {
-        $timeTotals = array();
-        $timeTotals['total'] = String::timeCalc(microtime(true) - Framework::$timestamp);
-        $timeTotals['allowed'] = ini_get('max_execution_time');
-        self::$output['timeTotals'] = $timeTotals;
+    /**
+     * @ignore
+     */
+    public static function gatherTimeData()
+    {
+        self::$output['timeTotals'] = array(
+            'total' => String::timeCalc(microtime(true) - Framework::$timestamp),
+            'allowed' => ini_get('max_execution_time')
+        );
     }
 }

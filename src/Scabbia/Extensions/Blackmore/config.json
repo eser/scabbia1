@@ -36,6 +36,12 @@
         }
     ],
 
+    "mvc": {
+        "searchNamespacesList": [
+            "Scabbia\\Extensions\\Blackmore\\Controllers"
+        ]
+    },
+
     "blackmore:development": {
         "title":        "Scabbia: Blackmore",
         "logo":         "/scabbia/blackmore/images/logo.png",

@@ -69,14 +69,25 @@ class Access
             header('Retry-After: 600', true);
 
             // to interrupt event-chain execution
-            throw new CustomException('maintenance', _('Service Unavailable'), _('This service is currently undergoing scheduled maintenance. Please try back later. Sorry for the inconvenience.'));
+            throw new CustomException(
+                'maintenance',
+                _('Service Unavailable'),
+                _(
+                    'This service is currently undergoing scheduled maintenance. ' .
+                    'Please try back later. Sorry for the inconvenience.'
+                )
+            );
         }
 
         if (count(self::$ipFilters) > 0) {
             header(Request::$protocol . ' 403 Forbidden', true, 403);
 
             // to interrupt event-chain execution
-            throw new CustomException('ipban', _('Service Unavailable'), _('Your access have been banned from this service.'));
+            throw new CustomException(
+                'ipban',
+                _('Service Unavailable'),
+                _('Your access have been banned from this service.')
+            );
         }
 
         return null;

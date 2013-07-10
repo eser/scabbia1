@@ -30,7 +30,8 @@ use Psr\Log\LoggerInterface;
  *
  * @todo generic sqlSelect, sqlUpdate, etc.
  */
-abstract class DatabaseSource implements IDataInterface, IServerConnection, ITransactionSupport, IQueryGenerator, LoggerAwareInterface
+abstract class DatabaseSource implements IDataInterface, IServerConnection, ITransactionSupport, IQueryGenerator,
+ LoggerAwareInterface
 {
     /**
      * @ignore

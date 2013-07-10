@@ -48,7 +48,8 @@ class String
     /**
      * @ignore
      */
-    const BASECONVERT_URL_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:[]@!$\'()*+,;';
+    const BASECONVERT_URL_CHARACTERS =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:[]@!$\'()*+,;';
     /**
      * @ignore
      */
@@ -119,10 +120,8 @@ class String
     public static function filter($uValue, $uFilter)
     {
         if ($uFilter === self::FILTER_VALIDATE_BOOLEAN) {
-            if (
-                $uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1' ||
-                $uValue === false || $uValue === 'false' || $uValue === 0 || $uValue === '0'
-            ) {
+            if ($uValue === true || $uValue === 'true' || $uValue === 1 || $uValue === '1' ||
+                $uValue === false || $uValue === 'false' || $uValue === 0 || $uValue === '0') {
                 return true;
             }
 
@@ -1396,7 +1395,8 @@ class String
     /**
      * @ignore
      */
-    public static function toBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS) {
+    public static function toBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS)
+    {
         $tBaseLength = strlen($uBase);
         $tResult = "";
 
@@ -1416,7 +1416,8 @@ class String
     /**
      * @ignore
      */
-    public static function fromBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS) {
+    public static function fromBase($uNumber, $uBase = self::BASECONVERT_BASE62_CHARACTERS)
+    {
         $tBaseLength = strlen($uBase);
         $tResult = strpos($uBase, $uNumber[0]);
 

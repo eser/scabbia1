@@ -24,7 +24,7 @@ use Scabbia\Request;
  * @todo Request abstract classes attached to Framework (will be derived CliRequest, HttpRequest etc.)
  * @todo Response abstract classes attached to Framework (will be derived HttpResponse, CliResponse etc.)
  * @todo HttpResponse might have OutputAdapter (Html, Xml, Json, PDF, DownloadFile-Binary etc.) and OutputEncoding
- * @todo binder extension, the same functionality with the assets also includes compilation of files (with list on config)
+ * @todo binder improvements: includes compilation of files (with list on config)
  */
 class Framework
 {
@@ -213,7 +213,10 @@ class Framework
 
         // construct application object
         if ($tSelectedApplication !== null) {
-            self::$application = new Application($tSelectedApplication['namespace'], $tSelectedApplication['directory']);
+            self::$application = new Application(
+                $tSelectedApplication['namespace'],
+                $tSelectedApplication['directory']
+            );
         }
 
         // load configuration w/ extensions

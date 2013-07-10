@@ -67,7 +67,7 @@ abstract class TestFixture
         $this->setUp();
         try {
             call_user_func($uCallback);
-        } catch(\Exception $ex) {
+        } catch (\Exception $ex) {
             $tException = $ex;
         }
         $this->tearDown();
@@ -78,7 +78,11 @@ abstract class TestFixture
                     continue;
                 }
 
-                $this->testAddReport('ignoreException', false, get_class($tException) . ': ' . $tException->getMessage());
+                $this->testAddReport(
+                    'ignoreException',
+                    false,
+                    get_class($tException) . ': ' . $tException->getMessage()
+                );
                 $tException = null;
                 break;
             }
@@ -88,7 +92,11 @@ abstract class TestFixture
         foreach ($tExpectations as $tExpectationKey => $tExpectation) {
             if ($tException !== null && is_a($tException, $tExpectation)) {
                 unset($tExpectations[$tExpectationKey]);
-                $this->testAddReport('expectException', false, get_class($tException) . ': ' . $tException->getMessage());
+                $this->testAddReport(
+                    'expectException',
+                    false,
+                    get_class($tException) . ': ' . $tException->getMessage()
+                );
                 $tException = null;
             }
         }

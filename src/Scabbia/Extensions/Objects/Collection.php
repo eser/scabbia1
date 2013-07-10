@@ -153,7 +153,8 @@ class Collection implements \ArrayAccess, \IteratorAggregate
     {
         $tRemoved = 0;
 
-        while (($uLimit === 0 || $tRemoved < $uLimit) && ($tKey = array_search($uItem, $this->_items, true)) !== false) {
+        while (($uLimit === 0 || $tRemoved < $uLimit) &&
+            ($tKey = array_search($uItem, $this->_items, true)) !== false) {
             unset($this->_items[$tKey]);
         }
 

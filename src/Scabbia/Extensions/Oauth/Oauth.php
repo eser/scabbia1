@@ -32,10 +32,12 @@ class Oauth
      */
     public static function getTokenUrl($uKey, $uSecret)
     {
-        return Http::encodeArray(array(
-            'oauth_token' => $uKey,
-            'oauth_token_secret' => $uSecret
-        ));
+        return Http::encodeArray(
+            array(
+                'oauth_token' => $uKey,
+                'oauth_token_secret' => $uSecret
+            )
+        );
     }
 
     /**

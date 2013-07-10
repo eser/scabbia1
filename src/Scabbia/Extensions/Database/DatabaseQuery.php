@@ -248,7 +248,10 @@ class DatabaseQuery
 
         foreach ($uArray as $tElement) {
             if (is_array($tElement)) {
-                $tOutput .= $this->constructWhere($tElement, ($tPreviousElement === _IN || $tPreviousElement === _NOTIN));
+                $tOutput .= $this->constructWhere(
+                    $tElement,
+                    ($tPreviousElement === _IN || $tPreviousElement === _NOTIN)
+                );
                 continue;
             }
 
@@ -601,7 +604,8 @@ class DatabaseQuery
     /**
      * @ignore
      */
-    public function aggregateQuery($uOperation = 'COUNT', $uReturn = true) {
+    public function aggregateQuery($uOperation = 'COUNT', $uReturn = true)
+    {
         $tQuery = $this->database->sqlSelect(
             $this->table,
             array(),

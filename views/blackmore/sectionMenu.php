@@ -1,5 +1,5 @@
 <?php
-use Scabbia\Extensions\Blackmore\Blackmore;
+use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
 use Scabbia\Extensions\Http\Http;
 
 ?>

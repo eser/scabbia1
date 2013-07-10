@@ -5,7 +5,7 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Blackmore;
+namespace Scabbia\Extensions\Blackmore\Controllers;
 
 use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Http\Http;

@@ -85,7 +85,7 @@ class Gettext
         $header = unpack("lmagic/lrevision", $data);
 
         if ((int)self::MAGIC1 != $header['magic'] && (int) self::MAGIC2 != $header['magic']) {
-            // TODO Eser: somehow problematic
+            // TODO larukedi: somehow problematic
             // return null;
         }
 
@@ -94,8 +94,7 @@ class Gettext
         }
 
         $data    = fread($fp, 4 * 5);
-        $offsets = unpack("lnum_strings/lorig_offset/"
-                . "ltrans_offset/lhash_size/lhash_offset", $data);
+        $offsets = unpack("lnum_strings/lorig_offset/ltrans_offset/lhash_size/lhash_offset", $data);
         return $offsets;
     }
 
@@ -178,8 +177,7 @@ class Gettext
         }
 
         $transTable = array();
-        $table = $this->parseOffsetTable($fp, $offsets['trans_offset'],
-            $offsets['num_strings']);
+        $table = $this->parseOffsetTable($fp, $offsets['trans_offset'], $offsets['num_strings']);
         if (null == $table) {
             fclose($fp);
             return;
@@ -189,14 +187,13 @@ class Gettext
             $transTable[$idx] = $this->parseEntry($fp, $entry);
         }
 
-        $table = $this->parseOffsetTable($fp, $offsets['orig_offset'],
-            $offsets['num_strings']);
+        $table = $this->parseOffsetTable($fp, $offsets['orig_offset'], $offsets['num_strings']);
         foreach ($table as $idx => $entry) {
             $entry = $this->parseEntry($fp, $entry);
 
             $formes      = explode(chr(0), $entry);
             $translation = explode(chr(0), $transTable[$idx]);
-            foreach($formes as $form) {
+            foreach ($formes as $form) {
                 $this->translationTable[$form] = $translation;
             }
         }

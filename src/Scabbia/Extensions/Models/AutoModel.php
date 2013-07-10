@@ -75,7 +75,8 @@ class AutoModel extends Model
                 ->delete()
                 ->execute();
         } elseif ($tReturn['method']['type'] === 'view') {
-        } else */ if ($tReturn['method']['type'] === 'list') {
+        } else */
+        if ($tReturn['method']['type'] === 'list') {
             $tReturn['rows'] = $tQuery->setFieldsDirect($tReturn['method']['fields'])
                 // ->setWhere()
                 ->get()

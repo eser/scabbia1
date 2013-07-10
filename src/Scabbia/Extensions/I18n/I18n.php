@@ -22,6 +22,8 @@ use Scabbia\Io;
  * @todo translitIt
  * @todo intl extension methods
  * @todo localeconv methods
+ * @todo {app}translations/en_section.mo
+ * @todo {app}translations/en_section.php
  */
 class I18n
 {
@@ -137,7 +139,8 @@ class I18n
                 $tMoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.mo';
                 $tPoFile = $tLocalePath . '/' . $tLocale[0] . '/LC_MESSAGES/application.po';
 
-                if (!Framework::$readonly && (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile)))) {
+                if (!Framework::$readonly &&
+                    (!Io::isReadable($tMoFile) || Io::isReadableAndNewer($tPoFile, filemtime($tMoFile)))) {
                     $tCompiler = new \TrekkSoft\Potomoco\Compiler();
                     $tCompiler->compile($tPoFile, $tMoFile);
                 }
