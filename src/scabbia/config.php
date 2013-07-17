@@ -67,7 +67,7 @@ class Config
 
         if (isset($tConfig['extensionList'])) {
             foreach ($tConfig['extensionList'] as $tExtension) {
-                $tFile = Framework::$corepath . 'src/Scabbia/Extensions/' . $tExtension . '/config.json';
+                $tFile = Framework::$corepath . 'src/scabbia/extensions/' . $tExtension . '/config.json';
 
                 if (file_exists($tFile)) {
                     self::loadFile($tConfig, $tFile, false);
@@ -75,7 +75,7 @@ class Config
                 }
 
                 if (Framework::$application !== null) {
-                    $tFile = Framework::$application->path . 'Extensions/' . $tExtension . '/config.json';
+                    $tFile = Framework::$application->path . 'extensions/' . $tExtension . '/config.json';
 
                     if (file_exists($tFile)) {
                         self::loadFile($tConfig, $tFile, false);
