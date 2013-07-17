@@ -30,6 +30,10 @@ class Auth
      */
     public static $type = null;
     /**
+     * @var string Password hash algorithm
+     */
+    public static $hash = null;
+    /**
      * @var string Session key will be stored by client
      */
     public static $sessionKey = null;
@@ -50,6 +54,7 @@ class Auth
     {
         if (self::$type === null) {
             self::$type = Config::get('auth/authType', 'config');
+            self::$hash = Config::get('auth/authHash', 'md5');
             self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
             self::$defaultRoles = Config::get('auth/defaultRoles', 'user');
 
@@ -69,9 +74,15 @@ class Auth
     {
         self::load();
 
+        if (self::$hash === 'md5') {
+            $tPassword = md5($uPassword);
+        } else {
+            $tPassword = $uPassword;
+        }
+
         if (self::$type === 'config') {
             foreach (Config::get('auth/userList', array()) as $tUser) {
-                if ($uUsername !== $tUser['username'] || md5($uPassword) !== $tUser['password']) {
+                if ($uUsername !== $tUser['username'] || $tPassword !== $tUser['password']) {
                     continue;
                 }
 
@@ -100,7 +111,7 @@ class Auth
             )->row();
 
             if ($tResult !== false && isset($tResult[$tPasswordField]) &&
-                $tResult[$tPasswordField] === md5($uPassword)) {
+                $tResult[$tPasswordField] === $tPassword) {
 
                 Session::set(
                     self::$sessionKey,

@@ -16,6 +16,7 @@
     "auth:development": {
         "loginUrl":     "panel/login",
         "authType":     "config",
+        "authHash":     "md5",
         "sessionKey":   "authUser",
         "defaultRoles": "user",
 
