@@ -159,6 +159,11 @@ class Panel extends Controller
         }
 
         $tSubAction = (count($uParams) > 0) ? $uParams[0] : self::DEFAULT_ACTION_INDEX;
+
+        if (!isset(self::$modules[self::$module]['actions'][$tSubAction])) {
+            return false;
+        }
+
         return call_user_func_array(self::$modules[self::$module]['actions'][$tSubAction]['callback'], $uParams);
     }
 
