@@ -1,8 +1,9 @@
 <?php
-use Scabbia\Extensions\Views\Views;
-use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\I18n\I18n;
+use Scabbia\Extensions\Session\Session;
+use Scabbia\Extensions\Views\Views;
 
 ?>
 <?php Views::viewFile('{core}views/panel/header.php'); ?>
@@ -22,13 +23,13 @@ use Scabbia\Extensions\Http\Http;
 			<div class="topLine"></div>
 			<div class="middleLine">
 
-				<h2 class="iconxdashboard"><?php echo _('Scabbia'); ?></h2>
+				<h2 class="iconxdashboard"><?php echo I18n::_('Scabbia'); ?></h2>
 
 				<table class="fullWidth valignTop">
 					<tbody>
 					<tr>
 						<td class="halfWidth">
-							<h3><?php echo _('Framework Directives:'); ?></h3>
+							<h3><?php echo I18n::_('Framework Directives:'); ?></h3>
 
 							<div id="placeholder">
 
@@ -46,7 +47,7 @@ use Scabbia\Extensions\Http\Http;
 							<div class="clear"></div>
 						</td>
 						<td class="halfWidth">
-							<h3><?php echo _('Statistics:'); ?></h3>
+							<h3><?php echo I18n::_('Statistics:'); ?></h3>
 
 							<div id="placeholderVisitors"></div>
 							<div class="clear"></div>

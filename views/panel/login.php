@@ -4,6 +4,7 @@ use Scabbia\Framework;
 use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Views\Views;
 
 ?>
@@ -12,7 +13,7 @@ use Scabbia\Extensions\Views\Views;
     <head>
         <meta charset="utf-8" />
 
-        <title><?php echo _(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
+        <title><?php echo I18n::_(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
         <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
         <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
@@ -26,7 +27,7 @@ use Scabbia\Extensions\Views\Views;
         <div class="block">
 
             <div class="block_head">
-                <h2><?php echo _(Config::get('panel/loginTitle', 'Scabbia: Panel Login')); ?></h2>
+                <h2><?php echo I18n::_(Config::get('panel/loginTitle', 'Scabbia: Panel Login')); ?></h2>
             </div>
 
             <div class="block_content">
@@ -35,13 +36,13 @@ use Scabbia\Extensions\Views\Views;
                         <div class="indent">
                             <?php Views::viewFile('{core}views/panel/sectionError.php'); ?>
 
-                            <label for="username"><?php echo _('Username:'); ?></label>
+                            <label for="username"><?php echo I18n::_('Username:'); ?></label>
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-user"></i></span>
                                 <input id="username" type="text" class="text" name="username" placeholder="Enter username" />
                             </div>
 
-                            <label for="password"><?php echo _('Password:'); ?></label>
+                            <label for="password"><?php echo I18n::_('Password:'); ?></label>
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-asterisk"></i></span>
                                 <input id="password" type="password" class="text" name="password" placeholder="Enter password" />
@@ -50,7 +51,7 @@ use Scabbia\Extensions\Views\Views;
 
                         <div class="form-actions">
                             <div class="pull-right">
-                                <input type="submit" class="btn btn-primary" value="<?php echo _('Login'); ?>" />
+                                <input type="submit" class="btn btn-primary" value="<?php echo I18n::_('Login'); ?>" />
                             </div>
                         </div>
                     </fieldset>

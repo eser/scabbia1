@@ -1,10 +1,11 @@
 <?php
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Framework;
 
 ?>
 </section>
 <footer id="pageBottom">
-	<?php echo _('Generated in'), ' ', number_format(microtime(true) - Framework::$timestamp, 5), ' msec.'; ?>
+	<?php echo I18n::_('Generated in'), ' ', number_format(microtime(true) - Framework::$timestamp, 5), ' msec.'; ?>
 </footer>
 </div>
 

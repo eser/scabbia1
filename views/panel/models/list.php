@@ -1,6 +1,7 @@
 <?php
 use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Session\Session;
 use Scabbia\Extensions\Views\Views;
 
@@ -22,13 +23,13 @@ use Scabbia\Extensions\Views\Views;
 			<div class="topLine"></div>
 			<div class="middleLine">
 
-				<h2 class="iconxcategories"><?php echo _($automodel->modelDefinition['title']); ?></h2>
+				<h2 class="iconxcategories"><?php echo I18n::_($automodel->modelDefinition['title']); ?></h2>
 
 				<table class="tablesorter">
 					<thead>
 						<tr>
 					<?php foreach ($data['method']['fields'] as $field) { ?>
-							<th><?php echo _($field); ?></th>
+							<th><?php echo I18n::_($field); ?></th>
 					<?php } ?>
 							<th></th>
 						</tr>
@@ -41,9 +42,9 @@ use Scabbia\Extensions\Views\Views;
 					<?php } ?>
 							<td>
 								<a class="iconcategoryedit"
-										href="<?php echo Http::url('panel/' . $automodel->entityName . '/edit/' . $row['slug']); ?>"><?php echo _('Edit'); ?></a>
+										href="<?php echo Http::url('panel/' . $automodel->entityName . '/edit/' . $row['slug']); ?>"><?php echo I18n::_('Edit'); ?></a>
 								<a class="iconcategorydelete delete"
-										href="<?php echo Http::url('panel/' . $automodel->entityName . '/remove/' . $row['slug']); ?>"><?php echo _('Remove'); ?></a>
+										href="<?php echo Http::url('panel/' . $automodel->entityName . '/remove/' . $row['slug']); ?>"><?php echo I18n::_('Remove'); ?></a>
 							</td>
 						</tr>
 						<?php } ?>

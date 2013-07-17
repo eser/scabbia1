@@ -1,5 +1,6 @@
 <?php
 use Scabbia\Extensions\Panel\Controllers\Panel;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Session\Session;
 
@@ -14,13 +15,13 @@ use Scabbia\Extensions\Session\Session;
 
                         <div class="menuDiv">
                             <fieldset>
-                                <legend><?php echo _($module['singularTitle']); ?></legend>
+                                <legend><?php echo I18n::_($module['singularTitle']); ?></legend>
                                 <?php
                                 foreach ($fields as $tField) {
                                     echo $tField['html'];
                                 }
                                 ?>
-                                <input type="submit" class="btn btn-primary pull-right" value="<?php echo _('Submit'); ?>" />
+                                <input type="submit" class="btn btn-primary pull-right" value="<?php echo I18n::_('Submit'); ?>" />
                             </fieldset>
                         </div>
                     </div>

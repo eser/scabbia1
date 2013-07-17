@@ -3,6 +3,7 @@ use Scabbia\Extensions\Auth\Auth;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
+use Scabbia\Extensions\I18n\I18n;
 use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -13,7 +14,7 @@ use Scabbia\Framework;
     <head>
         <meta charset="utf-8" />
 
-        <title><?php echo _(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
+        <title><?php echo I18n::_(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
         <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
         <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
@@ -28,10 +29,10 @@ use Scabbia\Framework;
             <header id="pageTop" class="wrapper">
                 <div id="pageTopHead">
                     <div class="containerBox padding4px inner">
-                        <a href="#" class="bgLink floatLeft"><?php echo _('Notifications:'); ?> <span class="bgCount">0</span></a>
+                        <a href="#" class="bgLink floatLeft"><?php echo I18n::_('Notifications:'); ?> <span class="bgCount">0</span></a>
                         <span class="bgSpacer floatLeft"></span>
-                        <a href="#" class="bgLink floatLeft"><?php echo _('User:'); ?> <span class="bgCount"><?php echo Auth::$user['username']; ?></span></a>
-                        <a href="#" class="bgLink floatRight bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo _('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo _('Scabbia Framework'); ?></a>
+                        <a href="#" class="bgLink floatLeft"><?php echo I18n::_('User:'); ?> <span class="bgCount"><?php echo Auth::$user['username']; ?></span></a>
+                        <a href="#" class="bgLink floatRight bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo I18n::_('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo _('Scabbia Framework'); ?></a>
                         <div class="clear"></div>
                     </div>
                 </div>
