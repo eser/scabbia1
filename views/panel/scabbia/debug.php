@@ -1,17 +1,17 @@
 <?php
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Session\Session;
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Framework;
 
 ?>
-<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{core}views/panel/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
             <div class="menuDivContainer">
-                <?php Views::viewFile('{core}views/blackmore/sectionError.php', Blackmore::$module); ?>
-                <?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
+                <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
+                <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
 			<div class="clear"></div>
 		</td>
@@ -53,4 +53,4 @@ use Scabbia\Framework;
 		</td>
 	</tr>
 </table>
-<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/panel/footer.php'); ?>

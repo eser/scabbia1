@@ -1,17 +1,17 @@
 <?php
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Session\Session;
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Http\Http;
 
 ?>
-<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{core}views/panel/header.php'); ?>
 <table id="pageMiddleTable">
 	<tr>
 		<td id="pageMiddleSidebar">
             <div class="menuDivContainer">
-                <?php Views::viewFile('{core}views/blackmore/sectionError.php', Blackmore::$module); ?>
-                <?php Views::viewFile('{core}views/blackmore/sectionMenu.php', Blackmore::$module); ?>
+                <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
+                <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
 			<div class="clear"></div>
 		</td>
@@ -22,7 +22,7 @@ use Scabbia\Extensions\Http\Http;
 			<div class="topLine"></div>
 			<div class="middleLine">
 
-				<h2 class="iconxdashboard"><?php echo _('Dashboard'); ?></h2>
+				<h2 class="iconxdashboard"><?php echo _('Scabbia'); ?></h2>
 
 				<table class="fullWidth valignTop">
 					<tbody>
@@ -39,8 +39,8 @@ use Scabbia\Extensions\Http\Http;
 								* add/remove downloads<br />
 								* edit database<br />
 								* edit files<br />
-								* <a href="<?php echo Http::url('blackmore/build'); ?>">build</a><br />
-								* <a href="<?php echo Http::url('blackmore/purge'); ?>">purge</a><br />
+								* <a href="<?php echo Http::url('panel/build'); ?>">build</a><br />
+								* <a href="<?php echo Http::url('panel/purge'); ?>">purge</a><br />
 
 							</div>
 							<div class="clear"></div>
@@ -63,4 +63,4 @@ use Scabbia\Extensions\Http\Http;
 		</td>
 	</tr>
 </table>
-<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/panel/footer.php'); ?>

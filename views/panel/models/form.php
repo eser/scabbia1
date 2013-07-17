@@ -1,16 +1,16 @@
 <?php
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Extensions\Session\Session;
 
 ?>
-<?php Views::viewFile('{core}views/blackmore/header.php'); ?>
+<?php Views::viewFile('{core}views/panel/header.php'); ?>
 	<form method="POST" action="<?php echo $postback; ?>">
 		<table id="pageMiddleTable">
 			<tr>
 				<td id="pageMiddleSidebar">
                     <div class="menuDivContainer">
-                        <?php Views::viewFile('{core}views/blackmore/sectionError.php', Blackmore::$module); ?>
+                        <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
 
                         <div class="menuDiv">
                             <fieldset>
@@ -42,4 +42,4 @@ use Scabbia\Extensions\Session\Session;
 			</tr>
 		</table>
 	</form>
-<?php Views::viewFile('{core}views/blackmore/footer.php'); ?>
+<?php Views::viewFile('{core}views/panel/footer.php'); ?>

@@ -5,10 +5,10 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Blackmore;
+namespace Scabbia\Extensions\Panel;
 
 use Scabbia\Extensions\Auth\Auth;
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
@@ -22,49 +22,44 @@ use Scabbia\Config;
 use Scabbia\Request;
 
 /**
- * Blackmore Extension: Models Section
+ * Panel Extension: Models Section
  *
  * @package Scabbia
- * @subpackage Blackmore
+ * @subpackage Panel
  * @version 1.1.0
  *
- * @todo blackmore-bootstrap integration on input fields, for example:
+ * @todo panel-bootstrap integration on input fields, for example:
  * - required fields in red focus
  * - e-mail fields with prepend icon
  */
-class BlackmoreModels
+class PanelModels
 {
     /**
      * @ignore
      */
-    public static function registerBlackmoreModules(array $uParms)
+    public static function menuGenerator(array &$uModules)
     {
-        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['generateSql'] = array(
-            'icon' => 'list-alt',
-            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::generateSql',
-            'menutitle' => 'Generate AutoModel SQL'
-        );
-
         AutoModels::load();
+
         foreach (AutoModels::$autoModels as $tKey => $tAutoModel) {
-            $uParms['modules'][$tKey] = array(
+            $uModules[$tKey] = array(
                 'title' => $tAutoModel['title'],
                 'actions' => array(
                     'add' => array(
+                        'title' => 'Add ' . $tAutoModel['singularTitle'],
                         'icon' => 'plus',
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::add',
-                        'menutitle' => 'Add ' . $tAutoModel['singularTitle']
+                        'callback' => 'Scabbia\\Extensions\\Panel\\PanelModels::add'
                     ),
                     'edit' => array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::edit'
+                        'callback' => 'Scabbia\\Extensions\\Panel\\PanelModels::edit'
                     ),
                     'remove' => array(
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::remove'
+                        'callback' => 'Scabbia\\Extensions\\Panel\\PanelModels::remove'
                     ),
                     'index' => array(
+                        'title' => 'All ' . $tAutoModel['title'],
                         'icon' => 'list-alt',
-                        'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreModels::index',
-                        'menutitle' => 'All ' . $tAutoModel['title']
+                        'callback' => 'Scabbia\\Extensions\\Panel\\PanelModels::index'
                     )
                 )
             );
@@ -82,7 +77,7 @@ class BlackmoreModels
         $tSql = $tAutoModel->ddlCreateSql();
 
         Views::viewFile(
-            '{core}views/blackmore/models/sql.php',
+            '{core}views/panel/models/sql.php',
             array(
                 'sql' => $tSql
             )
@@ -96,11 +91,11 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tAutoModel = new AutoModel(Blackmore::$module);
+        $tAutoModel = new AutoModel(Panel::$module);
         $tData = $tAutoModel->call('list');
 
         Views::viewFile(
-            '{core}views/blackmore/models/list.php',
+            '{core}views/panel/models/list.php',
             array(
                 'automodel' => $tAutoModel,
                 'data' => $tData
@@ -115,14 +110,14 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = AutoModels::get(Blackmore::$module);
+        $tModule = AutoModels::get(Panel::$module);
         $tAutoModel = new AutoModel($tModule['name']);
 
         $tFields = $tAutoModel->ddlGetFieldsForMethod('add');
 
         $tViewbag = array(
             'module' => $tModule,
-            'postback' => Http::url('blackmore/' . Blackmore::$module . '/add'),
+            'postback' => Http::url('panel/' . Panel::$module . '/add'),
             'fields' => array()
         );
 
@@ -149,7 +144,7 @@ class BlackmoreModels
                 $tAutoModel->insert($tInput);
 
                 Session::set('notification', array('info', 'ok-sign', 'Record added.'));
-                Http::redirect('blackmore/' . Blackmore::$module);
+                Http::redirect('panel/' . Panel::$module);
 
                 return;
             }
@@ -200,7 +195,7 @@ class BlackmoreModels
             );
         }
 
-        Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
+        Views::viewFile('{core}views/panel/models/form.php', $tViewbag);
     }
 
     /**
@@ -210,7 +205,7 @@ class BlackmoreModels
     {
         Auth::checkRedirect('editor');
 
-        $tModule = AutoModels::get(Blackmore::$module);
+        $tModule = AutoModels::get(Panel::$module);
         $tViewbag = array(
             'module' => $tModule,
             'fields' => array()
@@ -237,7 +232,7 @@ class BlackmoreModels
                 $tAutoModel->update($uSlug, $tInput);
 
                 Session::set('notification', array('info', 'ok-sign', 'Record modified.'));
-                Http::redirect('blackmore/categories');
+                Http::redirect('panel/categories');
 
                 return;
             }
@@ -289,7 +284,7 @@ class BlackmoreModels
                 );
             }
 
-            Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
+            Views::viewFile('{core}views/panel/models/form.php', $tViewbag);
 
             return;
         }
@@ -342,7 +337,7 @@ class BlackmoreModels
             );
         }
 
-        Views::viewFile('{core}views/blackmore/models/form.php', $tViewbag);
+        Views::viewFile('{core}views/panel/models/form.php', $tViewbag);
     }
 
     /**
@@ -353,6 +348,6 @@ class BlackmoreModels
         Auth::checkRedirect('editor');
 
         Session::set('notification', array('info', 'ok-sign', 'Category removed.'));
-        Http::redirect('blackmore/categories');
+        Http::redirect('panel/categories');
     }
 }

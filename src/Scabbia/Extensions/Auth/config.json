@@ -14,9 +14,10 @@
     ],
 
     "auth:development": {
-        "loginMvcUrl":  "blackmore/login",
+        "loginUrl":     "panel/login",
         "authType":     "config",
         "sessionKey":   "authUser",
+        "defaultRoles": "user",
 
         "userList": [
             {

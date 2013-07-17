@@ -1,7 +1,7 @@
 <?php
 use Scabbia\Config;
 use Scabbia\Framework;
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Helpers\Html;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Views\Views;
@@ -12,13 +12,13 @@ use Scabbia\Extensions\Views\Views;
     <head>
         <meta charset="utf-8" />
 
-        <title><?php echo _(Config::get('blackmore/title', 'Scabbia: Blackmore')); ?></title>
+        <title><?php echo _(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
         <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
-        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,blackmore'); ?>" rel="stylesheet" media="all" />
-        <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,blackmore'); ?>"></script>
+        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
+        <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,panel'); ?>"></script>
     </head>
-    <body class="<?php echo Config::get('blackmore/bodyStyle', 'stretch'); ?> login">
+    <body class="<?php echo Config::get('panel/bodyStyle', 'stretch'); ?> login">
         <script type="text/javascript">
             $l.contentBegin('login', '<?php echo $root; ?>/');
         </script>
@@ -26,14 +26,14 @@ use Scabbia\Extensions\Views\Views;
         <div class="block">
 
             <div class="block_head">
-                <h2><?php echo _(Config::get('blackmore/loginTitle', 'Scabbia: Blackmore Login')); ?></h2>
+                <h2><?php echo _(Config::get('panel/loginTitle', 'Scabbia: Panel Login')); ?></h2>
             </div>
 
             <div class="block_content">
-                <form method="POST" action="<?php echo Http::url('blackmore/' . Blackmore::LOGIN_MODULE_INDEX); ?>">
+                <form method="POST" action="<?php echo Http::url('panel/' . Panel::LOGIN_MODULE_INDEX); ?>">
                     <fieldset>
                         <div class="indent">
-                            <?php Views::viewFile('{core}views/blackmore/sectionError.php'); ?>
+                            <?php Views::viewFile('{core}views/panel/sectionError.php'); ?>
 
                             <label for="username"><?php echo _('Username:'); ?></label>
                             <div class="input-prepend">

@@ -7,7 +7,7 @@ body {
 }
 
 body.login {
-    background: #FBFBFB url('scabbia/blackmore/images/hld.jpg') 0 0 repeat-x;
+    background: #FBFBFB url('scabbia/panel/images/hld.jpg') 0 0 repeat-x;
 }
 
 body.narrow .wrapper {
@@ -52,7 +52,7 @@ body.stretch .wrapper .inner {
 .login .block .block_head {
     height: 54px;
     line-height: 54px;
-    background: url('scabbia/blackmore/images/bhead.gif') 0 0 repeat-x;
+    background: url('scabbia/panel/images/bhead.gif') 0 0 repeat-x;
     overflow: hidden;
     border-radius: 8px 8px 0 0;
 }
@@ -348,163 +348,163 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 
 /* Icons */
 .iconcategory {
-    background: transparent url('scabbia/blackmore/images/category.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/category.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconcategoryadd {
-    background: transparent url('scabbia/blackmore/images/category_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/category_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconcategoryedit {
-    background: transparent url('scabbia/blackmore/images/category_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/category_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconcategorydelete {
-    background: transparent url('scabbia/blackmore/images/category_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/category_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpost {
-    background: transparent url('scabbia/blackmore/images/post.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/post.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpostadd {
-    background: transparent url('scabbia/blackmore/images/post_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/post_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpostedit {
-    background: transparent url('scabbia/blackmore/images/post_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/post_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpostdelete {
-    background: transparent url('scabbia/blackmore/images/post_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/post_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpage {
-    background: transparent url('scabbia/blackmore/images/page.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/page.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpageadd {
-    background: transparent url('scabbia/blackmore/images/page_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/page_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpageedit {
-    background: transparent url('scabbia/blackmore/images/page_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/page_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconpagedelete {
-    background: transparent url('scabbia/blackmore/images/page_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/page_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconlink {
-    background: transparent url('scabbia/blackmore/images/link.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/link.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconlinkadd {
-    background: transparent url('scabbia/blackmore/images/link_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/link_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconlinkedit {
-    background: transparent url('scabbia/blackmore/images/link_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/link_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconlinkdelete {
-    background: transparent url('scabbia/blackmore/images/link_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/link_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconfile {
-    background: transparent url('scabbia/blackmore/images/file.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/file.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconfileadd {
-    background: transparent url('scabbia/blackmore/images/file_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/file_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconfileedit {
-    background: transparent url('scabbia/blackmore/images/file_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/file_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconfiledelete {
-    background: transparent url('scabbia/blackmore/images/file_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/file_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconuser {
-    background: transparent url('scabbia/blackmore/images/user.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/user.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconuseradd {
-    background: transparent url('scabbia/blackmore/images/user_add.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/user_add.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconuseredit {
-    background: transparent url('scabbia/blackmore/images/user_edit.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/user_edit.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconuserdelete {
-    background: transparent url('scabbia/blackmore/images/user_delete.png') 0 2px no-repeat;
+    background: transparent url('scabbia/panel/images/user_delete.png') 0 2px no-repeat;
     padding-left: 20px;
 }
 
 .iconxdashboard {
-    background: transparent url('scabbia/blackmore/images/iconxdashboard.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxdashboard.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxcategories {
-    background: transparent url('scabbia/blackmore/images/iconxcategories.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxcategories.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxposts {
-    background: transparent url('scabbia/blackmore/images/iconxposts.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxposts.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxpages {
-    background: transparent url('scabbia/blackmore/images/iconxpages.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxpages.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxlinks {
-    background: transparent url('scabbia/blackmore/images/iconxlinks.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxlinks.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxfiles {
-    background: transparent url('scabbia/blackmore/images/iconxfiles.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxfiles.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }
 
 .iconxcontent {
-    background: transparent url('scabbia/blackmore/images/iconxcontent.png') 0 4px no-repeat;
+    background: transparent url('scabbia/panel/images/iconxcontent.png') 0 4px no-repeat;
     padding: 0 0 0 40px;
     border-bottom: 1px solid #E0E0E0;
 }

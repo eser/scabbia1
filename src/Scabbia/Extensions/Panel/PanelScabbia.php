@@ -5,10 +5,10 @@
  * Eser Ozvataf, eser@sent.com
  */
 
-namespace Scabbia\Extensions\Blackmore;
+namespace Scabbia\Extensions\Panel;
 
 use Scabbia\Extensions\Auth\Auth;
-use Scabbia\Extensions\Blackmore\Controllers\Blackmore;
+use Scabbia\Extensions\Panel\Controllers\Panel;
 use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
@@ -16,32 +16,14 @@ use Scabbia\Io;
 use Scabbia\Utils;
 
 /**
- * Blackmore Extension: Scabbia Section
+ * Panel Extension: Scabbia Section
  *
  * @package Scabbia
- * @subpackage Blackmore
+ * @subpackage Panel
  * @version 1.1.0
  */
-class BlackmoreScabbia
+class PanelScabbia
 {
-    /**
-     * @ignore
-     */
-    public static function registerBlackmoreModules(array $uParms)
-    {
-        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['debug'] = array(
-            'icon' => 'info-sign',
-            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::debug',
-            'menutitle' => 'Debug Info'
-        );
-
-        $uParms['modules'][Blackmore::DEFAULT_MODULE_INDEX]['actions']['purge'] = array(
-            'icon' => 'trash',
-            'callback' => 'Scabbia\\Extensions\\Blackmore\\BlackmoreScabbia::purge',
-            'menutitle' => 'Purge'
-        );
-    }
-
     /**
      * @ignore
      */
@@ -49,7 +31,7 @@ class BlackmoreScabbia
     {
         Auth::checkRedirect('user');
 
-        Views::viewFile('{core}views/blackmore/scabbia/index.php');
+        Views::viewFile('{core}views/panel/scabbia/index.php');
     }
 
     /**
@@ -59,7 +41,7 @@ class BlackmoreScabbia
     {
         Auth::checkRedirect('admin');
 
-        Views::viewFile('{core}views/blackmore/scabbia/debug.php');
+        Views::viewFile('{core}views/panel/scabbia/debug.php');
     }
 
     /**

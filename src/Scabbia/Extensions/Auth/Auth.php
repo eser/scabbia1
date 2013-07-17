@@ -7,9 +7,11 @@
 
 namespace Scabbia\Extensions\Auth;
 
-use Scabbia\Config;
+use Scabbia\Extensions\Datasources\Datasources;
+use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Session\Session;
+use Scabbia\Config;
 use Scabbia\Framework;
 
 /**
@@ -24,9 +26,21 @@ use Scabbia\Framework;
 class Auth
 {
     /**
+     * @var string Authorization type
+     */
+    public static $type = null;
+    /**
      * @var string Session key will be stored by client
      */
     public static $sessionKey = null;
+    /**
+     * @var string Default roles
+     */
+    public static $defaultRoles = null;
+    /**
+     * @var array Current user information
+     */
+    public static $user = null;
 
 
     /**
@@ -34,8 +48,12 @@ class Auth
      */
     public static function load()
     {
-        if (self::$sessionKey === null) {
+        if (self::$type === null) {
+            self::$type = Config::get('auth/authType', 'config');
             self::$sessionKey = Config::get('auth/sessionKey', 'authuser');
+            self::$defaultRoles = Config::get('auth/defaultRoles', 'user');
+
+            self::$user = Session::get(self::$sessionKey, null);
         }
     }
 
@@ -51,14 +69,50 @@ class Auth
     {
         self::load();
 
-        foreach (Config::get('auth/userList', array()) as $tUser) {
-            if ($uUsername !== $tUser['username'] || md5($uPassword) !== $tUser['password']) {
-                continue;
+        if (self::$type === 'config') {
+            foreach (Config::get('auth/userList', array()) as $tUser) {
+                if ($uUsername !== $tUser['username'] || md5($uPassword) !== $tUser['password']) {
+                    continue;
+                }
+
+                Session::set(
+                    self::$sessionKey,
+                    array(
+                        'username' => $tUser['username'],
+                        'roles' => isset(self::$user['roles']) ? $tUser['roles'] : self::$defaultRoles,
+                        'extra' => $tUser
+                    )
+                );
+
+                return true;
             }
+        } elseif (self::$type === 'database') {
+            $tDatasource = Config::get('auth/database/datasource');
+            $tQuery = Config::get('auth/database/query');
+            $tPasswordField = Config::get('auth/database/passwordField');
 
-            Session::set(self::$sessionKey, $tUser);
+            $tDbConn = Datasources::get($tDatasource);
+            $tResult = $tDbConn->query(
+                $tQuery,
+                array(
+                    'username' => $uUsername
+                )
+            )->row();
 
-            return true;
+            if ($tResult !== false && isset($tResult[$tPasswordField]) &&
+                $tResult[$tPasswordField] === md5($uPassword)) {
+
+                Session::set(
+                    self::$sessionKey,
+                    array(
+                        'username' => $uUsername,
+                        'roles' => isset(self::$user['roles']) ? $tResult['roles'] : self::$defaultRoles,
+                        'extra' => $tResult
+                    )
+                );
+
+                return true;
+            }
         }
 
         // Session::remove(self::$sessionKey);
@@ -86,12 +140,11 @@ class Auth
     {
         self::load();
 
-        $tUser = Session::get(self::$sessionKey);
-        if ($tUser === null) {
+        if (self::$user === null) {
             return false;
         }
 
-        $tAvailableRoles = explode(',', $tUser['roles']);
+        $tAvailableRoles = explode(',', self::$user['roles']);
 
         foreach (explode(',', $uRequiredRoles) as $tRequiredRole) {
             if (!in_array($tRequiredRole, $tAvailableRoles, true)) {
@@ -116,13 +169,12 @@ class Auth
             return;
         }
 
-        $tMvcUrl = Config::get('auth/loginMvcUrl', null);
-        if ($tMvcUrl !== null) {
+        $tLoginUrl = Config::get('auth/loginUrl', null);
+        if ($tLoginUrl !== null) {
             //! todo: warning messages like insufficent privileges.
-            Http::redirect($tMvcUrl, true);
+            Http::redirect($tLoginUrl, true);
         }
 
-        header('Location: ' . Config::get('auth/loginUrl'));
         Framework::end(0);
     }
 }

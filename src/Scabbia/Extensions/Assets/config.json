@@ -61,8 +61,8 @@
                     },
                     {
                         "bindtype":     "file",
-                        "class":        "blackmore",
-                        "path":         "{core}resources/blackmore/blackmore.js"
+                        "class":        "panel",
+                        "path":         "{core}resources/panel/panel.js"
                     },
                     {
                         "bindtype":     "file",
@@ -175,8 +175,8 @@
                     },
                     {
                         "bindtype":     "file",
-                        "class":        "blackmore",
-                        "path":         "{core}resources/blackmore/blackmore.css"
+                        "class":        "panel",
+                        "path":         "{core}resources/panel/panel.css"
                     },
                     {
                         "bindtype":     "file",
