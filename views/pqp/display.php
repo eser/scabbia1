@@ -163,7 +163,9 @@ use Scabbia\Extensions\Http\Http;
                             <?php if (isset($log['explain'])) { ?>
                                 <?php foreach ($log['explain'] as $tRow) { ?>
                                 <div class="explain">
-                                    . <?php echo $tRow['QUERY PLAN']; ?>
+                                    <?php foreach ($tRow as $tCellKey => $tCell) { ?>
+                                    . <?php echo $tCellKey; ?>: <?php echo $tCell; ?>
+                                    <?php } ?>
                                 </div>
                                 <?php } ?>
                             <?php } ?>
