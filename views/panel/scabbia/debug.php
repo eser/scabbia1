@@ -14,7 +14,7 @@ use Scabbia\Framework;
                 <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
                 <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">
 			&laquo;
@@ -34,13 +34,13 @@ use Scabbia\Framework;
 							<div id="placeholder">
 
 							</div>
-							<div class="clear"></div>
+							<div class="clearfix"></div>
 						</td>
 						<td class="halfWidth">
 							<h3><?php echo I18n::_('Statistics:'); ?></h3>
 
 							<div id="placeholderVisitors"></div>
-							<div class="clear"></div>
+							<div class="clearfix"></div>
 						</td>
 					</tr>
 					</tbody>
@@ -48,7 +48,7 @@ use Scabbia\Framework;
 
 			</div>
 			<div class="bottomLine"></div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleExtra">
 		</td>

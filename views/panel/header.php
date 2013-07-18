@@ -29,11 +29,11 @@ use Scabbia\Framework;
             <header id="pageTop" class="wrapper">
                 <div id="pageTopHead">
                     <div class="containerBox padding4px inner">
-                        <a href="#" class="bgLink floatLeft"><?php echo I18n::_('Notifications:'); ?> <span class="bgCount">0</span></a>
-                        <span class="bgSpacer floatLeft"></span>
-                        <a href="#" class="bgLink floatLeft"><?php echo I18n::_('User:'); ?> <span class="bgCount"><?php echo Auth::$user['username']; ?></span></a>
-                        <a href="#" class="bgLink floatRight bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo I18n::_('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo I18n::_('Scabbia Framework'); ?></a>
-                        <div class="clear"></div>
+                        <a href="#" class="bgLink pull-left"><?php echo I18n::_('Notifications:'); ?> <span class="bgCount">0</span></a>
+                        <span class="bgSpacer pull-left"></span>
+                        <a href="#" class="bgLink pull-left"><?php echo I18n::_('User:'); ?> <span class="bgCount"><?php echo Auth::$user['username']; ?></span></a>
+                        <a href="#" class="bgLink pull-right bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo I18n::_('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo I18n::_('Scabbia Framework'); ?></a>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
                 <div id="pageTopLogo">
@@ -76,7 +76,7 @@ use Scabbia\Framework;
                                 </div>
                             </div>
                         </nav>
-                        <div class="clear"></div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </header>

@@ -14,7 +14,7 @@ use Scabbia\Extensions\Views\Views;
                 <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
                 <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">
 			&laquo;
@@ -44,13 +44,13 @@ use Scabbia\Extensions\Views\Views;
 								* <a href="<?php echo Http::url('panel/purge'); ?>">purge</a><br />
 
 							</div>
-							<div class="clear"></div>
+							<div class="clearfix"></div>
 						</td>
 						<td class="halfWidth">
 							<h3><?php echo I18n::_('Statistics:'); ?></h3>
 
 							<div id="placeholderVisitors"></div>
-							<div class="clear"></div>
+							<div class="clearfix"></div>
 						</td>
 					</tr>
 					</tbody>
@@ -58,7 +58,7 @@ use Scabbia\Extensions\Views\Views;
 
 			</div>
 			<div class="bottomLine"></div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleExtra">
 		</td>

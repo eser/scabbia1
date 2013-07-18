@@ -14,7 +14,7 @@ use Scabbia\Extensions\Views\Views;
                 <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
                 <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">
 			&laquo;
@@ -68,7 +68,7 @@ use Scabbia\Extensions\Views\Views;
 
 			</div>
 			<div class="bottomLine"></div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleExtra">
 		</td>

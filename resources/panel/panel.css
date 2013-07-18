@@ -104,18 +104,6 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
 
 /* MISC
 ----------------------------------------------------------*/
-.clear {
-    clear: both;
-}
-
-.floatLeft {
-    float: left;
-}
-
-.floatRight {
-    float: right;
-}
-
 .fullWidth {
     width: 100%;
 }

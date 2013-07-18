@@ -25,7 +25,7 @@ use Scabbia\Extensions\Session\Session;
                             </fieldset>
                         </div>
                     </div>
-					<div class="clear"></div>
+					<div class="clearfix"></div>
 				</td>
 				<td id="pageMiddleSidebarToggle">
 					&laquo;
@@ -36,7 +36,7 @@ use Scabbia\Extensions\Session\Session;
 
 					</div>
 					<div class="bottomLine"></div>
-					<div class="clear"></div>
+					<div class="clearfix"></div>
 				</td>
 				<td id="pageMiddleExtra">
 				</td>

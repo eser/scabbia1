@@ -14,7 +14,7 @@ use Scabbia\Extensions\Views\Views;
                 <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
                 <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">
 			&laquo;
@@ -23,42 +23,43 @@ use Scabbia\Extensions\Views\Views;
 			<div class="topLine"></div>
 			<div class="middleLine">
 
-				<h2 class="iconxdashboard"><?php echo I18n::_('Scabbia'); ?></h2>
+				<h2 class="iconxdashboard"><?php echo I18n::_('Dashboard'); ?></h2>
 
-				<table class="fullWidth valignTop">
-					<tbody>
-					<tr>
-						<td class="halfWidth">
-							<h3><?php echo I18n::_('Framework Directives:'); ?></h3>
-
-							<div id="placeholder">
-
-								* model generator<br />
-								* edit configuration files<br />
-								* edit .htaccess/web.config<br />
-								* add/remove/download extensions<br />
-								* add/remove downloads<br />
-								* edit database<br />
-								* edit files<br />
-								* <a href="<?php echo Http::url('panel/build'); ?>">build</a><br />
-								* <a href="<?php echo Http::url('panel/purge'); ?>">purge</a><br />
-
-							</div>
-							<div class="clear"></div>
-						</td>
-						<td class="halfWidth">
-							<h3><?php echo I18n::_('Statistics:'); ?></h3>
-
-							<div id="placeholderVisitors"></div>
-							<div class="clear"></div>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+                <div class="row-fluid">
+                <?php
+                    foreach (Panel::$menuItems as $tKey => $tMenu) {
+                        if ($tKey === 'index') {
+                            continue;
+                        }
+                ?>
+                    <div class="span8">
+                    <h3>
+                        <a href="<?php echo $tMenu[Panel::MENU_TITLEURL]; ?>">
+                        <?php echo $tMenu[Panel::MENU_TITLE]; ?>
+                        </a>
+                    </h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <?php
+                        foreach ($tMenu[Panel::MENU_ITEMS] as $tMenuItem) {
+                            if ($tMenuItem === '-') {
+                                ?>
+                                <li class="divider"></li>
+                                <?php
+                                continue;
+                            }
+                            ?>
+                            <li>
+                                <a href="<?php echo $tMenuItem[Panel::MENUITEM_URL]; ?>"><i class="icon-<?php echo $tMenuItem[Panel::MENUITEM_ICON]; ?>"></i> <?php echo $tMenuItem[Panel::MENUITEM_TITLE]; ?></a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                    </div>
+                <?php } ?>
+            </div>
 
 			</div>
 			<div class="bottomLine"></div>
-			<div class="clear"></div>
+			<div class="clearfix"></div>
 		</td>
 		<td id="pageMiddleExtra">
 		</td>
