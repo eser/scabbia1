@@ -48,8 +48,11 @@ $l.ready(function() {
     };
 
     $('.tablesorter')
-            .tablesorter({ widgets : ['zebra'], disableSortingOnLastColumn : true })
-            .tablesorterPager({ size : 25, container : $('#tablepager') });
+        .tablesorter({ widgets : [], disableSortingOnLastColumn : true });
+
+    $('.tablesorter-with-pager')
+        .tablesorter({ widgets : [], disableSortingOnLastColumn : true })
+        .tablesorterPager({ size : 25, container : $('#tablepager') });
 
     $('.file').change(function() {
         var me = $(this);

@@ -14,7 +14,7 @@ use Scabbia\Extensions\Views\Views;
                 <?php Views::viewFile('{core}views/panel/sectionError.php', Panel::$module); ?>
                 <?php Views::viewFile('{core}views/panel/sectionMenu.php', Panel::$module); ?>
             </div>
-			<div class="clearfix"></div>
+			<div class="clear"></div>
 		</td>
 		<td id="pageMiddleSidebarToggle">
 			&laquo;
@@ -25,7 +25,7 @@ use Scabbia\Extensions\Views\Views;
 
 				<h2 class="iconxcategories"><?php echo I18n::_($automodel->modelDefinition['title']); ?></h2>
 
-				<table class="tablesorter">
+				<table class="tablesorter table table-striped">
 					<thead>
 						<tr>
 					<?php foreach ($data['method']['fields'] as $field) { ?>
@@ -68,7 +68,7 @@ use Scabbia\Extensions\Views\Views;
 
 			</div>
 			<div class="bottomLine"></div>
-			<div class="clearfix"></div>
+			<div class="clear"></div>
 		</td>
 		<td id="pageMiddleExtra">
 		</td>
