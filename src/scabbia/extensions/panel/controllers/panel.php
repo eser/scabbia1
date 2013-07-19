@@ -158,7 +158,7 @@ class Panel extends Controller
             }
         }
 
-        $tSubAction = (count($uParams) > 0) ? $uParams[0] : self::DEFAULT_ACTION_INDEX;
+        $tSubAction = (count($uParams) > 0) ? array_shift($uParams) : self::DEFAULT_ACTION_INDEX;
 
         if (!isset(self::$modules[self::$module]['actions'][$tSubAction])) {
             return false;
