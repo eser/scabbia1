@@ -36,6 +36,15 @@ Requirements
 ** Skeleton application auto-installs this requirement with other dependencies.
 
 
+Documentation
+-------------
+Documentation can be found under different repository at (https://github.com/larukedi/Scabbia-Docs/).
+
+Languages:
+
+* [Turkish](https://github.com/larukedi/Scabbia-Docs/blob/master/tr/index.md)
+
+
 Dependencies
 ------------
 * psr/log: PSR-3 Logger Interface (http://www.php-fig.org/)
