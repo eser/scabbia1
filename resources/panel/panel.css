@@ -163,6 +163,10 @@ form input.input_varchar, form input.input_uuid, form input.input_datetime, form
     text-decoration: none;
 }
 
+.fit {
+    width: 100%;
+}
+
 #pageTop {
     width: 100%;
     font-size: 13px;
