@@ -186,9 +186,10 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
             $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
             $this->_count = $this->_database->itCount($this->_object);
         } catch (\Exception $ex) {
+            $tErrorHandling = $this->_database->errorHandling;
             $this->close();
 
-            if ($this->_database->errorHandling === Database::ERROR_EXCEPTION) {
+            if ($tErrorHandling === Database::ERROR_EXCEPTION) {
                 throw $ex;
             }
 
