@@ -60,6 +60,10 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
+    public $explainOnModifies = false;
+    /**
+     * @ignore
+     */
     public $errorHandling = Database::ERROR_NONE;
     /**
      * @ignore
@@ -215,15 +219,17 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
                 $this->beginTransaction();
             }
 
-            $tPreDebugInfo['explain'] = $this->queryArray(
-                String::format(
-                    $this->explainCommand,
-                    array(
-                        'query' => $uQuery
-                    )
-                ),
-                array()
-            );
+            if (!$uModifies || $this->explainOnModifies) {
+                $tPreDebugInfo['explain'] = $this->queryArray(
+                    String::format(
+                        $this->explainCommand,
+                        array(
+                            'query' => $uQuery
+                        )
+                    ),
+                    array()
+                );
+            }
 
             if ($uModifies) {
                 $this->rollBack();
@@ -268,15 +274,17 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
                 $this->beginTransaction();
             }
 
-            $tPreDebugInfo['explain'] = $this->queryArray(
-                String::format(
-                    $this->explainCommand,
-                    array(
-                        'query' => $uQuery
-                    )
-                ),
-                $uParameters
-            );
+            if (!$uModifies || $this->explainOnModifies) {
+                $tPreDebugInfo['explain'] = $this->queryArray(
+                    String::format(
+                        $this->explainCommand,
+                        array(
+                            'query' => $uQuery
+                        )
+                    ),
+                    $uParameters
+                );
+            }
 
             if ($uModifies) {
                 $this->rollBack();

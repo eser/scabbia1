@@ -78,6 +78,10 @@ class PdoSource extends DatabaseSource
 
         $tConnectionString = explode(':', $this->pdoString, 2);
         $this->standard = $tConnectionString[0];
+
+        if ($this->standard === 'pgsql') {
+            $this->explainOnModifies = true;
+        }
     }
 
     /**
