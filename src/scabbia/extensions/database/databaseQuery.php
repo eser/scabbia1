@@ -473,14 +473,9 @@ class DatabaseQuery
             $this->insertQuery(),
             $this->parameters,
             $this->caching,
-            true
+            true,
+            $this->sequence
         );
-
-        if ($this->sequence !== null && strlen($this->sequence) > 0) {
-            $tReturn->_lastInsertId = $this->database->lastInsertId($this->sequence);
-        } else {
-            $tReturn->_lastInsertId = $this->database->lastInsertId();
-        }
 
         $this->clear();
 

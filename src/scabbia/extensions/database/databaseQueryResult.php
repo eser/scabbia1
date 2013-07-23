@@ -42,6 +42,10 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
+    public $_sequence = null;
+    /**
+     * @ignore
+     */
     public $_filename = null;
     /**
      * @ignore
@@ -55,21 +59,18 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
      * @ignore
      */
     public $_cursor = 0;
-    /**
-     * @ignore
-     */
-    public $_lastInsertId = null;
 
 
     /**
      * @ignore
      */
-    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching)
+    public function __construct($uQuery, $uParameters, $uDatabase, $uCaching, $uSequence)
     {
         $this->_query = $uQuery;
         $this->_parameters = $uParameters;
         $this->_database = $uDatabase;
         $this->_caching = $uCaching;
+        $this->_sequence = $uSequence;
     }
 
     /**
@@ -179,24 +180,34 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
     /**
      * @ignore
      */
-    public function execute()
+    public function execute($uReturnId = false)
     {
         try {
             $this->_object = $this->_database->queryDirect($this->_query, $this->_parameters);
             $this->_count = $this->_database->itCount($this->_object);
         } catch (\Exception $ex) {
+            $this->close();
+
             if ($this->_database->errorHandling === Database::ERROR_EXCEPTION) {
                 throw $ex;
             }
 
-            $this->close();
-
             return false;
+        }
+
+        if ($uReturnId) {
+            if ($this->_sequence !== null && strlen($this->_sequence) > 0) {
+                $tReturn = $this->_database->lastInsertId($this->_sequence);
+            } else {
+                $tReturn = $this->_database->lastInsertId();
+            }
+        } else {
+            $tReturn = $this->_count;
         }
 
         $this->close();
 
-        return $this->_count;
+        return $tReturn;
     }
 
     /**
@@ -363,13 +374,5 @@ class DatabaseQueryResult implements \ArrayAccess, \Countable, \Iterator
         $this->_database = $uDatabase;
 
         return $this;
-    }
-
-    /**
-     * @ignore
-     */
-    public function lastInsertId()
-    {
-        return $this->_lastInsertId;
     }
 }

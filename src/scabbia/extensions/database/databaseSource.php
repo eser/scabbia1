@@ -64,7 +64,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
-    public $errorHandling = Database::ERROR_NONE;
+    public $errorHandling;
     /**
      * @ignore
      */
@@ -86,6 +86,12 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         $this->id = $uConfig['id'];
         $this->default = isset($uConfig['default']);
         $this->logger = new LoggerInstance(get_class($this));
+
+        if (isset($uConfig['errors']) && $uConfig['errors'] === 'exception') {
+            $this->errorHandling = Database::ERROR_EXCEPTION;
+        } else {
+            $this->errorHandling = Database::ERROR_NONE;
+        }
 
         if (isset($uConfig['initCommand'])) {
             $this->initCommand = $uConfig['initCommand'];
@@ -260,7 +266,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
     /**
      * @ignore
      */
-    public function query($uQuery, array $uParameters = array(), $uCaching = null, $uModifies = false)
+    public function query($uQuery, array $uParameters = array(), $uCaching = null, $uModifies = false, $uSequence = null)
     {
         $this->connectionOpen();
 
@@ -332,7 +338,7 @@ abstract class DatabaseSource implements IDataInterface, IServerConnection, ITra
         }
 
         if ($tData === false) {
-            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $tCaching);
+            $tData = new DatabaseQueryResult($uQuery, $uParameters, $this, $tCaching, $uSequence);
             ++$this->stats['query'];
         } else {
             ++$this->stats['cache'];
