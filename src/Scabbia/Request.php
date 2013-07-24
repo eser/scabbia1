@@ -177,10 +177,14 @@ class Request
 
         // framework variables
         if (self::$siteroot === null) {
-            self::$siteroot = Config::get('options/siteroot', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+            self::$siteroot = Config::get(
+                'options/siteroot',
+                strtr(pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME), '\\', '/')
+            );
         }
+        self::$siteroot = trim(self::$siteroot, '/');
         if (strlen(self::$siteroot) > 0) {
-            self::$siteroot = '/' . trim(self::$siteroot, '/');
+            self::$siteroot = '/' . self::$siteroot;
         }
 
         Framework::$variables['root'] = self::$siteroot;
