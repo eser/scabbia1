@@ -228,6 +228,7 @@ class Io
      */
     public static function namespacePath($uName)
     {
+        /*
         $tExploded = explode('/', trim(strtr($uName, '\\', '/'), '/'));
 
         $tName = "";
@@ -235,10 +236,13 @@ class Io
             if (strlen($tName) > 0) {
                 $tName .= '/';
             }
-            $tName .= lcfirst($tExplodedPart);
+            $tName .= $tExplodedPart;
         }
 
         return $tName;
+        */
+
+        return trim(strtr($uName, '\\', '/'), '/');
     }
 
     /**
