@@ -69,7 +69,7 @@ class Controllers
             }
 
             foreach (self::$searchNamespaces as $tNamespace) {
-                $tClass = $tNamespace . '\\' . $tActualController;
+                $tClass = $tNamespace . '\\' . ucfirst($tActualController);
 
                 if (class_exists($tClass, true)) {
                     if (($tPos = strrpos($tClass, '\\')) !== false) {
