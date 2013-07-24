@@ -239,9 +239,9 @@ class ControllerBase implements LoggerAwareInterface
 
         if ($uMemberName === null) {
             if (($tPos = strrpos($uModelClass, '\\')) !== false) {
-                $uMemberName = substr($uModelClass, $tPos + 1);
+                $uMemberName = lcfirst(substr($uModelClass, $tPos + 1));
             } else {
-                $uMemberName = $uModelClass;
+                $uMemberName = lcfirst($uModelClass);
             }
         }
 
