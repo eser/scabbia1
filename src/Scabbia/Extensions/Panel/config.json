@@ -1,0 +1,84 @@
+{
+    "extensionInfoList": [
+        {
+            "name":             "Panel",
+            "version":          "1.1.0",
+            "license":          "GPLv3",
+            "phpversion":       "5.3.7",
+            "phpdependList":    [],
+            "fwversion":        "1.1",
+            "fwdependList":     [
+                "Auth",
+                "Assets",
+                "Helpers",
+                "Http",
+                "Models",
+                "Validation"
+            ]
+        }
+    ],
+
+    "eventList": [
+    ],
+
+    "mvc": {
+        "searchNamespacesList": [
+            "Scabbia\\Extensions\\Panel\\Controllers"
+        ]
+    },
+
+    "panel": {
+        "title":        "Scabbia: Panel",
+        "logo":         "/scabbia/panel/images/logo.png",
+        "bodyStyle":    "stretch",
+
+        "loginTitle":   "Scabbia: Panel Login",
+
+        "menuList:direct": {
+            "index": {
+                "title":             "Panel",
+                "actions": {
+                    "index": {
+                        "title":     "Dashboard",
+                        "icon":      "th-large",
+                        "callback":  "Scabbia\\Extensions\\Panel\\PanelScabbia::index"
+                    },
+                    "debug": {
+                        "title":     "Debug Info",
+                        "icon":      "info-sign",
+                        "callback":  "Scabbia\\Extensions\\Panel\\PanelScabbia::debug",
+                        "role":      "admin"
+                    },
+                    "build": {
+                        "title":     "Build",
+                        "icon":      "download-alt",
+                        "callback":  "Scabbia\\Extensions\\Panel\\PanelScabbia::build",
+                        "role":      "admin"
+                    },
+                    "purge": {
+                        "title":     "Purge",
+                        "icon":      "trash",
+                        "callback":  "Scabbia\\Extensions\\Panel\\PanelScabbia::purge",
+                        "role":      "admin"
+                    },
+                    "generateSql": {
+                        "title":     "Generate AutoModel SQL",
+                        "icon":      "list-alt",
+                        "callback":  "Scabbia\\Extensions\\Panel\\PanelModels::generateSql",
+                        "role":      "admin"
+                    },
+                    "logout": {
+                        "before":    "separator",
+                        "title":     "Logout",
+                        "icon":      "remove-circle",
+                        "customurl": "panel/login"
+                    }
+                }
+            }
+        },
+
+        "menuGeneratorList": [
+            "Scabbia\\Extensions\\Panel\\PanelModels::menuGenerator"
+        ]
+    }
+}

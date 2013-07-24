@@ -1,0 +1,242 @@
+{
+    "extensionInfoList": [
+        {
+            "name":             "Assets",
+            "version":          "1.1.0",
+            "license":          "GPLv3",
+            "phpversion":       "5.3.7",
+            "phpdependList":    [],
+            "fwversion":        "1.1",
+            "fwdependList":     [
+                "Http",
+                "Datasources",
+                "Mime"
+            ]
+        }
+    ],
+
+    "assets": {
+        "directoryList": [
+            {
+                "name":     "scabbia/",
+                "path":     "{core}resources/"
+            }
+        ],
+        "directoryList:development": [
+            {
+                "name":     "docs/",
+                "path":     "{core}docs/",
+
+                "autoViewer": {
+                    "defaultPage":  "index.md",
+                    "header":       "{core}views/docs/header.php",
+                    "footer":       "{core}views/docs/footer.php"
+                }
+            }
+        ],
+
+        "fileList": [],
+
+        "packList": [
+            {
+                "name":         "scabbia.js",
+                "type":         "js",
+                "cacheTtl:disabled":     86400,
+                "partList": [
+                    {
+                        "bindtype":     "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.ui.js"
+                    },
+                    {
+                        "bindtype":     "function",
+                        "parttype":     "js",
+                        "class":        "core",
+                        "name":         "Scabbia\\Extensions\\LarouxJs\\LarouxJs::exportJs"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "panel",
+                        "path":         "{core}resources/panel/panel.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "jquery",
+                        "path":         "{core}resources/jquery/jquery-2.0.2.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "jquery-migrate",
+                        "path":         "{core}resources/jquery/jquery-migrate-1.2.1.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "zeptojs",
+                        "path":         "{core}resources/zepto.js/zepto.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.additional-methods.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/jquery.tablesorter.pager.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/excanvas.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/jquery.flot.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "flot",
+                        "path":         "{core}resources/jquery.flot/jquery.flot.pie.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/bootstrap/bootstrap.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/typeahead/typeahead.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/hogan/hogan-2.0.0.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "map",
+                        "path":         "{core}resources/mapbox/mapbox.js"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/intro.js"
+                    }
+                ],
+                "partList:development": [
+                    {
+                        "bindtype":     "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.js"
+                    }
+                ]
+            },
+            {
+                "name":         "scabbia.css",
+                "type":         "css",
+                "cacheTtl:disabled":     86400,
+                "partList": [
+                    {
+                        "bindtype":     "file",
+                        "class":        "core",
+                        "path":         "{core}resources/laroux.js/laroux.ui.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "errorpages",
+                        "path":         "{core}resources/errorpages/errorpages.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "docs",
+                        "path":         "{core}resources/docs/markdown.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "panel",
+                        "path":         "{core}resources/panel/panel.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "reset",
+                        "path":         "{core}resources/reset/reset.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "normalize",
+                        "path":         "{core}resources/normalize.css/normalize.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "validation",
+                        "path":         "{core}resources/jquery.validation/jquery.validate.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "cleditor",
+                        "path":         "{core}resources/jquery.cleditor/jquery.cleditor.editor.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "tablesorter",
+                        "path":         "{core}resources/jquery.tablesorter/theme.default.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/bootstrap/bootstrap.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "bootstrap",
+                        "path":         "{core}resources/typeahead/typeahead-bootstrap.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "map",
+                        "path":         "{core}resources/mapbox/mapbox.css"
+                    },
+                    {
+                        "bindtype":     "file",
+                        "class":        "introjs",
+                        "path":         "{core}resources/introjs/introjs.css"
+                    }
+                ],
+                "partList:development": [
+                    {
+                        "bindtype":     "file",
+                        "class":        "core",
+                        "path":         "{core}resources/pqp/pqp.css"
+                    }
+                ]
+            }
+        ]
+    }
+}
