@@ -151,8 +151,6 @@ class Framework
                     //! todo require_once?
                     include $tFile;
                     return true;
-                } else {
-                    exit($tApplication['directory'] . $tName);
                 }
 
                 /*
