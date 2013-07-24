@@ -144,13 +144,15 @@ class Framework
         foreach (self::$applications as $tApplication) {
             $tLen = strlen($tApplication['namespace']);
             if (strncmp($tApplication['namespace'], $uName, $tLen) === 0) {
-                $tName = Io::namespacePath(substr($uName, $tLen)) . '.php';
+                $tName = substr($uName, $tLen) . '.php';
 
                 // try in application directory first
                 if (file_exists($tFile = $tApplication['directory'] . $tName)) {
                     //! todo require_once?
                     include $tFile;
                     return true;
+                } else {
+                    exit($tApplication['directory'] . $tName);
                 }
 
                 /*
@@ -180,7 +182,7 @@ class Framework
     {
         self::$applications[] = array(
             'namespace' => $uNamespace,
-            'directory' => ($uDirectory !== null ? rtrim($uDirectory, '/') : Io::namespacePath($uNamespace)) . '/',
+            'directory' => ($uDirectory !== null ? rtrim($uDirectory, '/') : $uNamespace) . '/',
             'endpoints' => (array)$uEndpoints
         );
     }
