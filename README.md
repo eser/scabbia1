@@ -1,10 +1,16 @@
 README
 ======
 
-[Scabbia Framework](http://larukedi.github.com/Scabbia-Framework/) is an open source PHP framework which is still under development.
+[Scabbia Framework](http://www.scabbiafw.com/) is an open source PHP framework project under GPL license. It had been under development by [Eser Ozvataf](http://eser.ozvataf.com/) for 2 years and reached version 1.5 on stable branch. It's active development is frozen but small bugfixes will be available in time.
 
-Scabbia follows the accepted standards of PHP Framework Interop Group (http://www.php-fig.org/).
+Scabbia 2 is the new branch of Scabbia Framework which has multiple contributors and currently on planning stage. It will also have a different software license and architecture starting from scratch. Keep visiting project homepage and repositories for further updates.
 
+All branches of Scabbia follows the accepted standards of PHP Framework Interop Group (http://www.php-fig.org/).
+
+
+
+VERSION 1.5
+===========
 
 Installation
 ------------
