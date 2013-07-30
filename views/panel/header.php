@@ -17,7 +17,8 @@ use Scabbia\Framework;
         <title><?php echo I18n::_(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
         <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
 
-        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,cleditor,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
+        <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
+        <link type="text/css" href="<?php echo Http::url('scabbia/jquery.cleditor/jquery.cleditor.css'); ?>" rel="stylesheet" media="all" />
         <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,panel'); ?>"></script>
     </head>
     <body class="<?php echo Config::get('panel/bodyStyle', 'stretch'); ?>">
