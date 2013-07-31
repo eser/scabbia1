@@ -336,15 +336,21 @@ class Request
             return $uDefault;
         }
 
+        if (get_magic_quotes_gpc() && is_string($_GET[$uKey])) {
+            $tValue = stripslashes($_GET[$uKey]);
+        } else {
+            $tValue = $_GET[$uKey];
+        }
+
         if ($uFilter === null) {
-            return $_GET[$uKey];
+            return $tValue;
         }
 
         if (func_num_args() > 2) {
             $tNewArgs = array_slice(func_get_args(), 2);
-            array_unshift($tNewArgs, $_GET[$uKey]);
+            array_unshift($tNewArgs, $tValue);
         } else {
-            $tNewArgs = array($_GET[$uKey], $uFilter);
+            $tNewArgs = array($tValue, $uFilter);
         }
 
         return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
@@ -359,15 +365,21 @@ class Request
             return $uDefault;
         }
 
+        if (get_magic_quotes_gpc() && is_string($_POST[$uKey])) {
+            $tValue = stripslashes($_POST[$uKey]);
+        } else {
+            $tValue = $_POST[$uKey];
+        }
+
         if ($uFilter === null) {
-            return $_POST[$uKey];
+            return $tValue;
         }
 
         if (func_num_args() > 2) {
             $tNewArgs = array_slice(func_get_args(), 2);
-            array_unshift($tNewArgs, $_POST[$uKey]);
+            array_unshift($tNewArgs, $tValue);
         } else {
-            $tNewArgs = array($_POST[$uKey], $uFilter);
+            $tNewArgs = array($tValue, $uFilter);
         }
 
         return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
@@ -382,15 +394,21 @@ class Request
             return $uDefault;
         }
 
+        if (get_magic_quotes_gpc() && is_string($_COOKIE[$uKey])) {
+            $tValue = stripslashes($_COOKIE[$uKey]);
+        } else {
+            $tValue = $_COOKIE[$uKey];
+        }
+
         if ($uFilter === null) {
-            return $_COOKIE[$uKey];
+            return $tValue;
         }
 
         if (func_num_args() > 2) {
             $tNewArgs = array_slice(func_get_args(), 2);
-            array_unshift($tNewArgs, $_COOKIE[$uKey]);
+            array_unshift($tNewArgs, $tValue);
         } else {
-            $tNewArgs = array($_COOKIE[$uKey], $uFilter);
+            $tNewArgs = array($tValue, $uFilter);
         }
 
         return call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
@@ -416,13 +434,19 @@ class Request
                 continue;
             }
 
+            if (get_magic_quotes_gpc() && is_string($_GET[$tKey])) {
+                $tValue = stripslashes($_GET[$tKey]);
+            } else {
+                $tValue = $_GET[$tKey];
+            }
+
             if (!isset($tArgs)) {
-                $tValues[$tKey] = $_GET[$tKey];
+                $tValues[$tKey] = $tValue;
                 continue;
             }
 
             $tNewArgs = $tArgs;
-            array_unshift($tNewArgs, $_GET[$tKey]);
+            array_unshift($tNewArgs, $tValue);
 
             $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
@@ -449,13 +473,19 @@ class Request
                 continue;
             }
 
+            if (get_magic_quotes_gpc() && is_string($_POST[$tKey])) {
+                $tValue = stripslashes($_POST[$tKey]);
+            } else {
+                $tValue = $_POST[$tKey];
+            }
+
             if (!isset($tArgs)) {
-                $tValues[$tKey] = $_POST[$tKey];
+                $tValues[$tKey] = $tValue;
                 continue;
             }
 
             $tNewArgs = $tArgs;
-            array_unshift($tNewArgs, $_POST[$tKey]);
+            array_unshift($tNewArgs, $tValue);
 
             $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
@@ -482,13 +512,19 @@ class Request
                 continue;
             }
 
+            if (get_magic_quotes_gpc() && is_string($_COOKIE[$tKey])) {
+                $tValue = stripslashes($_COOKIE[$tKey]);
+            } else {
+                $tValue = $_COOKIE[$tKey];
+            }
+
             if (!isset($tArgs)) {
-                $tValues[$tKey] = $_COOKIE[$tKey];
+                $tValues[$tKey] = $tValue;
                 continue;
             }
 
             $tNewArgs = $tArgs;
-            array_unshift($tNewArgs, $_COOKIE[$tKey]);
+            array_unshift($tNewArgs, $tValue);
 
             $tValues[$tKey] = call_user_func_array('Scabbia\\Request::filter', $tNewArgs);
         }
