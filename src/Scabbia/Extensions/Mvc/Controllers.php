@@ -125,7 +125,7 @@ class Controllers
             $uControllerInstance->route['controller'] = substr($uControllerInstance->route['controller'], $tPos + 1);
         }
 
-        $uControllerInstance->view = $uControllerInstance->route['controller'] .
+        $uControllerInstance->view = lcfirst($uControllerInstance->route['controller']) .
             '/' .
             $uControllerInstance->route['action'] .
             '.' .
