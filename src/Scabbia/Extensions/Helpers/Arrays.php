@@ -233,19 +233,20 @@ class Arrays
     /**
      * Categorizes an array by key.
      *
-     * @param array $uArray array
-     * @param mixed $uKey   key
+     * @param array $uArray        array
+     * @param mixed $uKey          key
+     * @param bool  $uPreserveKeys preserves keys
      *
      * @return array categorized array
      */
-    public static function categorize(array $uArray, $uKey)
+    public static function categorize(array $uArray, $uKey, $uPreserveKeys = false)
     {
         $tReturn = array();
         if (!is_array($uKey)) {
             $uKey = array($uKey);
         }
 
-        foreach ($uArray as &$tRow) {
+        foreach ($uArray as $tRowKey => &$tRow) {
             $tRef = & $tReturn;
             foreach ($uKey as $tKey) {
                 $tValue = $tRow[$tKey];
@@ -257,7 +258,11 @@ class Arrays
                 $tRef = & $tNewRef;
             }
 
-            $tRef[] = $tRow;
+            if ($uPreserveKeys) {
+                $tRef[$tRowKey] = $tRow;
+            } else {
+                $tRef[] = $tRow;
+            }
         }
 
         return $tReturn;
