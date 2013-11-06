@@ -120,7 +120,7 @@ class Framework
         // Set variables
         if (self::$basepath === null) {
             $tPath = getcwd();
-            if (isset($_SERVER['argv']) && ($tDirname = dirname($_SERVER['argv'][0])) !== '.') {
+            if (PHP_SAPI === 'cli' && isset($_SERVER['argv']) && count($_SERVER['argv']) > 0 && ($tDirname = dirname($_SERVER['argv'][0])) !== '.') {
                 $tPath .= '/' . $tDirname;
             }
 
