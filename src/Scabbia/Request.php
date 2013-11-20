@@ -50,10 +50,6 @@ class Request
     /**
      * @ignore
      */
-    public static $baseUri;
-    /**
-     * @ignore
-     */
     public static $pathInfo;
     /**
      * @ignore
@@ -157,7 +153,9 @@ class Request
         }
 
         // $method, $isAjax, $wrapperFunction, etc.
-        if (isset($_POST) && isset($_POST['_method'])) {
+        if (isset($_SERVER['X-HTTP-METHOD-OVERRIDE'])) {
+            self::$method = self::$methodext = strtolower($_SERVER['X-HTTP-METHOD-OVERRIDE']);
+        } elseif (isset($_POST) && isset($_POST['_method'])) {
             self::$method = self::$methodext = strtolower($_POST['_method']);
         } else {
             self::$method = self::$methodext = strtolower($_SERVER['REQUEST_METHOD']);
@@ -181,10 +179,20 @@ class Request
             array();
 
         // $requestUri
-        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+        if (isset($_SERVER['X_ORIGINAL_URL'])) {
+            self::$requestUri = $_SERVER['X_ORIGINAL_URL'];
+        } elseif (isset($_SERVER['X_REWRITE_URL'])) {
+            self::$requestUri = $_SERVER['X_REWRITE_URL'];
+        } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
             self::$requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
+        } elseif (isset($_SERVER['IIS_WasUrlRewritten']) && (string)$_SERVER['IIS_WasUrlRewritten'] === '1' && isset($_SERVER['UNENCODED_URL'])) {
+            self::$requestUri = $_SERVER['UNENCODED_URL'];
         } elseif (isset($_SERVER['REQUEST_URI'])) {
-            self::$requestUri = $_SERVER['REQUEST_URI'];
+            if (strncmp($_SERVER['REQUEST_URI'], self::$host, $tHostLength = strlen(self::$host)) === 0) {
+                self::$requestUri = substr($_SERVER['REQUEST_URI'], $tHostLength);
+            } else {
+                self::$requestUri = $_SERVER['REQUEST_URI'];
+            }
         } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
             self::$requestUri = $_SERVER['ORIG_PATH_INFO'];
 
@@ -194,16 +202,6 @@ class Request
         } else {
             self::$requestUri = null;
         }
-
-        // $baseUri, $pathInfo
-        self::$baseUri = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
-        if (($tPos = strpos(self::$requestUri, '?')) !== false) {
-            $tBaseUriPath = substr(self::$requestUri, 0, $tPos);
-        } else {
-            $tBaseUriPath = self::$requestUri;
-        }
-
-        self::$pathInfo = ltrim(substr($tBaseUriPath, strlen(self::$baseUri)), '/');
 
         Framework::$variables['host'] = self::$host;
         Framework::$variables['scheme'] = self::$https ? 'https' : 'http';
@@ -215,19 +213,30 @@ class Request
      */
     public static function setRoutes()
     {
-        self::$route = Framework::$application->resolve(self::$pathInfo, self::$methodext);
-
-        // framework variables
+        // $siteroot
         if (self::$siteroot === null) {
             self::$siteroot = Config::get(
                 'options/siteroot',
                 strtr(pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME), '\\', '/')
             );
         }
+
         self::$siteroot = trim(self::$siteroot, '/');
         if (strlen(self::$siteroot) > 0) {
             self::$siteroot = '/' . self::$siteroot;
         }
+
+        // $pathinfo
+        if (($tPos = strpos(self::$requestUri, '?')) !== false) {
+            $tBaseUriPath = substr(self::$requestUri, 0, $tPos);
+        } else {
+            $tBaseUriPath = self::$requestUri;
+        }
+
+        self::$pathInfo = ltrim(substr($tBaseUriPath, strlen(self::$siteroot)), '/');
+
+        // $route
+        self::$route = Framework::$application->resolve(self::$pathInfo, self::$methodext);
 
         Framework::$variables['root'] = self::$siteroot;
     }
