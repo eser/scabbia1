@@ -46,7 +46,15 @@ class Request
     /**
      * @ignore
      */
-    public static $queryString;
+    public static $requestUri;
+    /**
+     * @ignore
+     */
+    public static $baseUri;
+    /**
+     * @ignore
+     */
+    public static $pathInfo;
     /**
      * @ignore
      */
@@ -97,19 +105,22 @@ class Request
         // $remoteIp
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
             self::$remoteIp = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            self::$remoteIp = $_SERVER['REMOTE_ADDR'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             self::$remoteIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-            self::$remoteIp = $_SERVER['REMOTE_ADDR'] = getenv('REMOTE_ADDR') or self::$remoteIp = '0.0.0.0';
+            self::$remoteIp = getenv('REMOTE_ADDR') or self::$remoteIp = '0.0.0.0';
         }
 
         // $https
-        self::$https = (
-            isset($_SERVER['HTTPS']) && (
-                (string)$_SERVER['HTTPS'] === '1' ||
-                strcasecmp($_SERVER['HTTPS'], 'on') === 0
-            )
-        );
+        if (isset($_SERVER['HTTPS']) && ((string)$_SERVER['HTTPS'] === '1' || strcasecmp($_SERVER['HTTPS'], 'on') === 0)) {
+            self::$https = true;
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            self::$https = true;
+        } else {
+            self::$https = false;
+        }
 
         // $protocol
         if (PHP_SAPI === 'cli') {
@@ -124,7 +135,13 @@ class Request
         if (isset($_SERVER['HTTP_HOST']) && strlen($_SERVER['HTTP_HOST']) > 0) {
             self::$host = $_SERVER['HTTP_HOST'];
         } else {
-            self::$host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
+            if (isset($_SERVER['SERVER_NAME'])) {
+                self::$host = $_SERVER['SERVER_NAME'];
+            } elseif (isset($_SERVER['SERVER_ADDR'])) {
+                self::$host = $_SERVER['SERVER_ADDR'];
+            } else {
+                self::$host = $_SERVER['LOCAL_ADDR'];
+            }
 
             if (isset($_SERVER['SERVER_PORT'])) {
                 if (self::$https) {
@@ -140,8 +157,11 @@ class Request
         }
 
         // $method, $isAjax, $wrapperFunction, etc.
-        self::$method = strtolower($_SERVER['REQUEST_METHOD']);
-        self::$methodext = self::$method;
+        if (isset($_POST) && isset($_POST['_method'])) {
+            self::$method = self::$methodext = strtolower($_POST['_method']);
+        } else {
+            self::$method = self::$methodext = strtolower($_SERVER['REQUEST_METHOD']);
+        }
 
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
             self::$isAjax = true;
@@ -160,8 +180,24 @@ class Request
             self::parseHeaderString($_SERVER['HTTP_ACCEPT'], true) :
             array();
 
-        // $queryString
-        self::$queryString = $_SERVER['QUERY_STRING'];
+        // $requestUri
+        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+            self::$requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
+            self::$requestUri = $_SERVER['REQUEST_URI'];
+        } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
+            self::$requestUri = $_SERVER['ORIG_PATH_INFO'];
+
+            if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) {
+                self::$requestUri .= '?' . $_SERVER['QUERY_STRING'];
+            }
+        } else {
+            self::$requestUri = null;
+        }
+
+        // $baseUri, $pathInfo
+        self::$baseUri = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
+        self::$pathInfo = ltrim(substr(strstr(self::$requestUri, '?', true), strlen(self::$baseUri)), '/');
 
         Framework::$variables['host'] = self::$host;
         Framework::$variables['scheme'] = self::$https ? 'https' : 'http';
@@ -173,7 +209,7 @@ class Request
      */
     public static function setRoutes()
     {
-        self::$route = Framework::$application->resolve(self::$queryString, self::$methodext);
+        self::$route = Framework::$application->resolve(self::$pathInfo, self::$methodext);
 
         // framework variables
         if (self::$siteroot === null) {

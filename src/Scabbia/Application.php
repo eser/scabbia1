@@ -163,7 +163,7 @@ class Application
     /**
      * @ignore
      */
-    public function resolve($uQueryString, $uMethod = null, $uMethodExt = null)
+    public function resolve($uPathInfo, $uMethod = null, $uMethodExt = null)
     {
         $this->load();
 
@@ -173,7 +173,7 @@ class Application
                 continue;
             }
 
-            if ($this->rewriteUrl($uQueryString, $tRewriteItem['match'], $tRewriteItem['forward'])) {
+            if ($this->rewriteUrl($uPathInfo, $tRewriteItem['match'], $tRewriteItem['forward'])) {
                 break;
             }
         }
@@ -184,7 +184,7 @@ class Application
                 continue;
             }
 
-            $tMatches = Utils::pregMatch(ltrim($tRouteItem[0], '/'), $uQueryString);
+            $tMatches = Utils::pregMatch(ltrim($tRouteItem[0], '/'), $uPathInfo);
 
             if (count($tMatches) > 0) {
                 $tParameters = array(
@@ -200,10 +200,10 @@ class Application
                     }
                 }
 
-                return array($uQueryString, $tRouteItem[1], $tParameters);
+                return array($uPathInfo, $tRouteItem[1], $tParameters);
             }
         }
 
-        return array($uQueryString, null, null);
+        return array($uPathInfo, null, null);
     }
 }

@@ -63,8 +63,8 @@ class Assets
             self::$directories = Config::get('assets/directoryList', array());
         }
 
-        if (strlen(Request::$queryString) > 0) {
-            $tPath = explode('&', Request::$queryString, 2);
+        if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) {
+            $tPath = explode('&', $_SERVER['QUERY_STRING'], 2);
 
             foreach (self::$directories as $tDirectory) {
                 $tDirectoryName = rtrim($tDirectory['name'], '/');

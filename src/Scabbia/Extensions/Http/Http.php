@@ -73,9 +73,9 @@ class Http
      */
     public static function routing()
     {
-        $tResolution = Framework::$application->resolve(Request::$queryString, Request::$method, Request::$methodext);
+        $tResolution = Framework::$application->resolve(Request::$pathInfo, Request::$method, Request::$methodext);
 
-        if ($tResolution !== null && call_user_func($tResolution[1], $tResolution[2]) !== false) {
+        if ($tResolution[1] !== null && call_user_func($tResolution[1], $tResolution[2]) !== false) {
             // to interrupt event-chain execution
             return true;
         }
