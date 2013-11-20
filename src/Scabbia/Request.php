@@ -197,7 +197,13 @@ class Request
 
         // $baseUri, $pathInfo
         self::$baseUri = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
-        self::$pathInfo = ltrim(substr(strstr(self::$requestUri, '?', true), strlen(self::$baseUri)), '/');
+        if (($tPos = strpos(self::$requestUri, '?')) !== false) {
+            $tBaseUriPath = substr(self::$requestUri, 0, $tPos);
+        } else {
+            $tBaseUriPath = self::$requestUri;
+        }
+
+        self::$pathInfo = ltrim(substr($tBaseUriPath, strlen(self::$baseUri)), '/');
 
         Framework::$variables['host'] = self::$host;
         Framework::$variables['scheme'] = self::$https ? 'https' : 'http';
