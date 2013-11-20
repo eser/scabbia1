@@ -16,27 +16,22 @@ Installation
 ------------
 ##### Alternative 1: Zip Package #####
 
-Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch `php composer_update.php`.
+Download [Skeleton Application](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) and launch `php scabbia update`.
 
-##### Alternative 2: Composer #####
+##### Alternative 2: Git #####
 
-On *nix:
+On Terminal or Command Prompt:
 ``` bash
-php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
-php composer.phar create-project larukedi/scabbia-skeleton -s dev
-```
-
-On Windows:
-Download and install [Composer-Setup.exe](http://getcomposer.org/Composer-Setup.exe) then run:
-``` bat
-composer create-project larukedi/scabbia-skeleton -s dev
+git clone https://github.com/larukedi/Scabbia-Skeleton project
+cd project
+php scabbia update
 ```
 
 
 
 Requirements
 ------------
-* PHP 5.3.7+ (http://www.php.net/)
+* PHP 5.3.3+ (http://www.php.net/)
 * Composer Dependency Manager** (http://getcomposer.org/)
 
 ** Skeleton application auto-installs this requirement with other dependencies.

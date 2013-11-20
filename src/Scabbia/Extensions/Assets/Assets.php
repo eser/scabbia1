@@ -63,26 +63,27 @@ class Assets
             self::$directories = Config::get('assets/directoryList', array());
         }
 
-        if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) {
-            $tPath = explode('&', $_SERVER['QUERY_STRING'], 2);
+        foreach (self::$directories as $tDirectory) {
+            $tDirectoryName = rtrim($tDirectory['name'], '/');
+            $tLen = strlen($tDirectoryName);
 
-            foreach (self::$directories as $tDirectory) {
-                $tDirectoryName = rtrim($tDirectory['name'], '/');
-                $tLen = strlen($tDirectoryName);
-
-                if (substr($tPath[0], 0, $tLen) === $tDirectoryName) {
-                    if (self::getDirectory($tDirectory, substr($tPath[0], $tLen)) === true) {
-                        // to interrupt event-chain execution
-                        return true;
-                    }
+            if (substr(Request::$pathInfo, 0, $tLen) === $tDirectoryName) {
+                if (self::getDirectory($tDirectory, substr(Request::$pathInfo, $tLen)) === true) {
+                    // to interrupt event-chain execution
+                    return true;
                 }
             }
+        }
 
-            $tSubParts = (count($tPath) >= 2) ? explode(',', $tPath[1]) : array();
-            if (self::getPack($tPath[0], $tSubParts) === true) {
-                // to interrupt event-chain execution
-                return true;
-            }
+        if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) {
+            $tSubParts = explode(',', $_SERVER['QUERY_STRING']);
+        } else {
+            $tSubParts = array();
+        }
+
+        if (self::getPack(Request::$pathInfo, $tSubParts) === true) {
+            // to interrupt event-chain execution
+            return true;
         }
 
         return null;
