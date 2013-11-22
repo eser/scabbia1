@@ -117,17 +117,32 @@ class Fb
     /**
      * @ignore
      */
-    public static function login($uForcePermissions = false)
+    public static function login($uForcePermissions = false, $uRedirectUrl = null)
+    {
+        $tResult = self::loginUrl($uForcePermissions, $uRedirectUrl);
+
+        if (!$tResult[0] && $tResult[1] !== null) {
+            header('Location: ' . $tResult[1], true);
+            Framework::end(0);
+        }
+
+        return $tResult[0];
+    }
+
+    /**
+     * @ignore
+     */
+    public static function loginUrl($uForcePermissions = false, $uRedirectUrl = null)
     {
         if (self::$userId !== self::NO_USER_ID) {
             if (!$uForcePermissions || self::checkUserPermission(self::$appPermissions)) {
-                return true;
+                return array(true);
             }
         }
 
         $tError = Request::get('error_code', null);
         if ($tError !== null) {
-            return false;
+            return array(false, null);
         }
 
         $tCode = Request::get('code', null);
@@ -137,17 +152,14 @@ class Fb
             $tLoginUrl = self::$api->getLoginUrl(
                 array(
                     'scope' => self::$appPermissions,
-                    'redirect_uri' => self::$appRedirectUri
+                    'redirect_uri' => ($uRedirectUrl !== null) ? $uRedirectUrl : self::$appRedirectUri
                 )
             );
 
-            header('Location: ' . $tLoginUrl, true);
-            Framework::end(0);
-
-            return false;
+            return array(false, $tLoginUrl);
         }
 
-        return true;
+        return array(true);
     }
 
     /**
