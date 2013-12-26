@@ -15,10 +15,10 @@ use Scabbia\Framework;
         <meta charset="utf-8" />
 
         <title><?php echo I18n::_(Config::get('panel/title', 'Scabbia: Panel')); ?></title>
-        <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo Http::url('scabbia-assets/favicon.ico'); ?>" type="image/x-icon" />
 
         <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
-        <link type="text/css" href="<?php echo Http::url('scabbia/jquery.cleditor/jquery.cleditor.css'); ?>" rel="stylesheet" media="all" />
+        <link type="text/css" href="<?php echo Http::url('scabbia-assets/jquery.cleditor/jquery.cleditor.css'); ?>" rel="stylesheet" media="all" />
         <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,panel'); ?>"></script>
     </head>
     <body class="<?php echo Config::get('panel/bodyStyle', 'stretch'); ?>">
@@ -39,7 +39,7 @@ use Scabbia\Framework;
                 </div>
                 <div id="pageTopLogo">
                     <div class="containerBox inner">
-                        <a href="<?php echo Http::url('panel'); ?>"><img src="<?php echo $root, Config::get('panel/logo', '/scabbia/panel/images/logo.png'); ?>" alt="" /></a>
+                        <a href="<?php echo Http::url('panel'); ?>"><img src="<?php echo $root, Config::get('panel/logo', '/scabbia-assets/panel/images/logo.png'); ?>" alt="" /></a>
                     </div>
                 </div>
                 <div id="pageTopMenu">

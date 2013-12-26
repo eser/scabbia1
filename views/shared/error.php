@@ -11,7 +11,7 @@ use Scabbia\Framework;
     <meta charset="utf-8" />
 
     <title><?php echo I18n::_('Scabbia Framework: Error'); ?></title>
-    <link rel="shortcut icon" href="<?php echo Http::url('scabbia/favicon.ico'); ?>" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo Http::url('scabbia-assets/favicon.ico'); ?>" type="image/x-icon" />
 
     <link type="text/css" href="<?php echo Http::url('scabbia.css?core,errorpages'); ?>" rel="stylesheet" media="all" />
     <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core'); ?>"></script>

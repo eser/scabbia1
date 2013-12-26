@@ -52,11 +52,11 @@ use Scabbia\Extensions\Views\Views;
 				</table>
 				<div id="tablepager">
 					<form>
-						<img src="<?php echo Http::url('scabbia/jquery.tablesorter/images/first.png'); ?>" class="first" />
-						<img src="<?php echo Http::url('scabbia/jquery.tablesorter/images/prev.png'); ?>" class="prev" />
+						<img src="<?php echo Http::url('scabbia-assets/jquery.tablesorter/images/first.png'); ?>" class="first" />
+						<img src="<?php echo Http::url('scabbia-assets/jquery.tablesorter/images/prev.png'); ?>" class="prev" />
 						<input type="text" class="pagedisplay" readonly="readonly" />
-						<img src="<?php echo Http::url('scabbia/jquery.tablesorter/images/next.png'); ?>" class="next" />
-						<img src="<?php echo Http::url('scabbia/jquery.tablesorter/images/last.png'); ?>" class="last" />
+						<img src="<?php echo Http::url('scabbia-assets/jquery.tablesorter/images/next.png'); ?>" class="next" />
+						<img src="<?php echo Http::url('scabbia-assets/jquery.tablesorter/images/last.png'); ?>" class="last" />
 						<select class="pagesize">
 							<option value="10">10</option>
 							<option selected="selected" value="25">25</option>

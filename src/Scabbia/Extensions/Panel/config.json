@@ -29,7 +29,7 @@
 
     "panel": {
         "title":        "Scabbia: Panel",
-        "logo":         "/scabbia/panel/images/logo.png",
+        "logo":         "/scabbia-assets/panel/images/logo.png",
         "bodyStyle":    "stretch",
 
         "loginTitle":   "Scabbia: Panel Login",

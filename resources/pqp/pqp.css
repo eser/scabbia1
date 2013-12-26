@@ -57,7 +57,7 @@
     width:100%;
 }
 #pqp-console, #pqp-time, #pqp-queries, #pqp-memory, #pqp-files {
-    background:url(scabbia/pqp/images/overlay.gif);
+    background:url(scabbia-assets/pqp/images/overlay.gif);
     border-top:1px solid #ccc;
     height:400px;
     overflow:auto;
@@ -212,7 +212,7 @@
 }
 .pQp .side td {
     padding:10px 0 5px 0;
-    background:url(scabbia/pqp/images/side.png) repeat-y right;
+    background:url(scabbia-assets/pqp/images/side.png) repeat-y right;
 }
 .pQp .side var {
     color:#fff;
