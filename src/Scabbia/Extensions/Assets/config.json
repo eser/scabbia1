@@ -46,12 +46,7 @@
                     {
                         "bindtype":     "file",
                         "class":        "core",
-                        "path":         "{core}resources/laroux.js/laroux.js"
-                    },
-                    {
-                        "bindtype":     "file",
-                        "class":        "core",
-                        "path":         "{core}resources/laroux.js/laroux.ui.js"
+                        "path":         "{core}resources/laroux.js/dist/laroux.js"
                     },
                     {
                         "bindtype":     "function",
@@ -161,7 +156,7 @@
                     {
                         "bindtype":     "file",
                         "class":        "core",
-                        "path":         "{core}resources/laroux.js/laroux.ui.css"
+                        "path":         "{core}resources/laroux.js/dist/laroux.ui.css"
                     },
                     {
                         "bindtype":     "file",
