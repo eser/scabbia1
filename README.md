@@ -16,7 +16,7 @@ On Terminal or Command Prompt:
 git clone https://github.com/larukedi/Scabbia-Skeleton project
 ```
 
-Alternatively [Scabbia Skeleton](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) package can be downloaded directly.
+Alternatively [Scabbia Skeleton](//github.com/larukedi/Scabbia-Skeleton/archive/master.zip) package can be downloaded directly.
 
 **Step 2:**
 
@@ -66,7 +66,7 @@ a sample mysql database configuration:
 
 
 ## Documentation
-Documentation can be found under different repository at (https://github.com/larukedi/Scabbia-Docs/).
+Documentation can be found under different repository at (//github.com/larukedi/Scabbia-Docs/).
 
 Languages:
 
