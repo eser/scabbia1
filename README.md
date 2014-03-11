@@ -16,7 +16,7 @@ On Terminal or Command Prompt:
 git clone https://github.com/larukedi/Scabbia-Skeleton project
 ```
 
-Alternatively [PM](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) package can be downloaded directly.
+Alternatively [Scabbia Skeleton](https://github.com/larukedi/Scabbia-Skeleton/archive/master.zip) package can be downloaded directly.
 
 **Step 2:**
 
@@ -70,7 +70,7 @@ Documentation can be found under different repository at (https://github.com/lar
 
 Languages:
 
-* [Turkish](https://github.com/larukedi/Scabbia-Docs/blob/master/tr/index.md)
+* [Turkish](//github.com/larukedi/Scabbia-Docs/blob/master/tr/index.md)
 
 
 ## Dependencies
@@ -119,7 +119,7 @@ Languages:
 
 
 ## Contributing
-It is publicly open for any contribution. Bugfixes, new features and extra modules are welcome.
+It is publicly open for any contribution. Bugfixes, new features and extra modules are welcome. All contributions should be filed on the [larukedi/Scabbia-Framework](//github.com/larukedi/Scabbia-Framework) repository.
 
 * To contribute to code: Fork the repo, push your changes to your fork, and submit a pull request.
 * To report a bug: If something does not work, please report it using GitHub issues.
