@@ -18,8 +18,9 @@ use Scabbia\Framework;
         <link rel="shortcut icon" href="<?php echo Http::url('scabbia-assets/favicon.ico'); ?>" type="image/x-icon" />
 
         <link type="text/css" href="<?php echo Http::url('scabbia.css?core,jquery,validation,bootstrap,tablesorter,panel'); ?>" rel="stylesheet" media="all" />
-        <link type="text/css" href="<?php echo Http::url('scabbia-assets/jquery.cleditor/jquery.cleditor.css'); ?>" rel="stylesheet" media="all" />
+        <!-- <link type="text/css" href="<?php echo Http::url('scabbia-assets/jquery.cleditor/jquery.cleditor.css'); ?>" rel="stylesheet" media="all" /> -->
         <script type="text/javascript" src="<?php echo Http::url('scabbia.js?core,jquery,validation,bootstrap,cleditor,tablesorter,flot,panel'); ?>"></script>
+        <script type="text/javascript" src="<?php echo Http::url('scabbia-assets/tinymce/tinymce.min.js'); ?>"></script>
     </head>
     <body class="<?php echo Config::get('panel/bodyStyle', 'stretch'); ?>">
         <script type="text/javascript">

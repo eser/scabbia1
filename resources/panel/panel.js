@@ -30,11 +30,12 @@ $l.ready(function() {
         $('#pageMiddleSidebar').css('display', 'none');
     }
 
+/*
     $('.cleditor').cleditor({ width : '98%', height : '500px' });
     $.cleditor.buttons.image.buttonClick = function(e, data) {
         window.cleditorData = data;
 
-/*
+//
         Shadowbox.open({
             content : location.origin + $l.baseLocation + '/editor/fileselect',
             player : 'iframe',
@@ -42,10 +43,22 @@ $l.ready(function() {
             height : 350,
             width : 900
         });
-*/
+//
 
         return false;
     };
+*/
+
+    tinymce.init({
+        selector: ".cleditor",
+        theme: "modern",
+        plugins: [
+             "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+             "save table contextmenu directionality emoticons template paste textcolor"
+       ],
+       content_css: "css/content.css"
+    });
 
     $('.tablesorter')
         .tablesorter({ widgets : [], disableSortingOnLastColumn : true });
