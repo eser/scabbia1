@@ -105,7 +105,7 @@ class Mail
             $tHeaders['From'] = $this->from;
         }
         if (!isset($tHeaders['To'])) {
-            $tHeaders['To'] = $this->to;
+            $tHeaders['To'] = implode(', ', $this->to);
         }
         if (!isset($tHeaders['Subject'])) {
             $tHeaders['Subject'] = $this->subject;
@@ -138,6 +138,21 @@ class Mail
      */
     public function send()
     {
-        Smtp::send($this->from, $this->to, $this->getContent());
+        // FIXME a temporary solution, next time don't forget the <> characters in quoted strings
+        $uToAddresses = array();
+        foreach ($this->to as $tToAddress) {
+            $tStart = strpos($tToAddress, '<');
+            if ($tStart !== false) {
+                $tEnd = strpos($tToAddress, '>', $tStart);
+                if ($tEnd !== false) {
+                    $uToAddresses[] = substr($tToAddress, ++$tStart, $tEnd - $tStart);
+                    continue;
+                }
+            }
+
+            $uToAddresses[] = $tToAddress;
+        }
+
+        Smtp::send($this->from, $uToAddresses, $this->getContent());
     }
 }

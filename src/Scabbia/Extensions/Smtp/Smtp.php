@@ -90,8 +90,11 @@ class Smtp
             self::sockwait($tSmtp, '250');
 
             // todo: to+cc+bcc parsing
-            fputs($tSmtp, 'RCPT TO: ' . $uTo . "\n");
-            self::sockwait($tSmtp, '250');
+            foreach ((array)$uTo as $tToRecipient) {
+                echo "$tToRecipient<br>";
+                fputs($tSmtp, 'RCPT TO: ' . $tToRecipient . "\n");
+                self::sockwait($tSmtp, '250');
+            }
 
             fputs($tSmtp, 'DATA' . "\n");
             self::sockwait($tSmtp, '354');
