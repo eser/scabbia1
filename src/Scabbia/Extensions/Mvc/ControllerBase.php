@@ -13,6 +13,7 @@ use Scabbia\Extensions\Datasources\Datasources;
 use Scabbia\Extensions\Logger\LoggerInstance;
 use Scabbia\Extensions\Mvc\Controllers;
 use Scabbia\Extensions\Views\Views;
+use Scabbia\Extensions\Helpers\String;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Scabbia\Framework;
@@ -131,18 +132,20 @@ class ControllerBase implements LoggerAwareInterface
         }
 
         $tMe = new \ReflectionClass($this);
+        $tActionName2 = String::capitalizeEx($tActionName, '-', '', true);
+
         $tMethods = array(
-            $uInput['methodext'] . '_' . $tActionName . '_' . $tFormat,
-            $uInput['methodext'] . '_' . $tActionName,
+            $uInput['methodext'] . '_' . $tActionName2 . '_' . $tFormat,
+            $uInput['methodext'] . '_' . $tActionName2,
             $uInput['methodext'] . '_otherwise' . '_' . $tFormat,
             $uInput['methodext'] . '_otherwise',
-            $uInput['method'] . '_' . $tActionName . '_' . $tFormat,
-            $uInput['method'] . '_' . $tActionName,
+            $uInput['method'] . '_' . $tActionName2 . '_' . $tFormat,
+            $uInput['method'] . '_' . $tActionName2,
             $uInput['method'] . '_otherwise' . '_' . $tFormat,
             $uInput['method'] . '_otherwise',
-            $tActionName . '_' . $tFormat,
+            $tActionName2 . '_' . $tFormat,
             'otherwise' . '_' . $tFormat,
-            $tActionName,
+            $tActionName2,
             'otherwise'
         );
 

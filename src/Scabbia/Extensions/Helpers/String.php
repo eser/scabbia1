@@ -1502,10 +1502,10 @@ class String
     /**
      * @ignore
      */
-    public static function capitalizeEx($uString, $uDelimiter = ' ', $uReplaceDelimiter = null)
+    public static function capitalizeEx($uString, $uDelimiter = ' ', $uReplaceDelimiter = null, $uCapitalizeFirst = true)
     {
         $tOutput = "";
-        $tCapital = true;
+        $tCapital = $uCapitalizeFirst;
 
         for ($tPos = 0, $tLen = self::length($uString); $tPos < $tLen; $tPos++) {
             $tChar = self::substr($uString, $tPos, 1);

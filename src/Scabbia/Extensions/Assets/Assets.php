@@ -121,6 +121,9 @@ class Assets
             if ($tBindType === 'function') {
                 $tValue = $tPart['name'];
                 $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : $tBinder->outputType;
+            } elseif ($tBindType === 'string') {
+                $tValue = $tPart['value'];
+                $tPartType = isset($tPart['parttype']) ? $tPart['parttype'] : $tBinder->outputType;
             } else {
                 $tValue = $tPart['path'];
                 $tPartType = isset($tPart['parttype']) ?
