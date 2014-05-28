@@ -10,6 +10,8 @@ namespace Scabbia\Extensions\LarouxJs;
 use Scabbia\Extensions\Helpers\String;
 use Scabbia\Extensions\Http\Http;
 use Scabbia\Extensions\Mvc\Controllers;
+use Scabbia\Config;
+use Scabbia\Framework;
 use Scabbia\Request;
 
 /**
@@ -68,6 +70,48 @@ class LarouxJs
     {
         $tReturn = <<<EOD
 \$l.extend({
+EOD;
+
+        $tMethods = array();
+        foreach (Config::get('larouxjs/methods', array()) as $tMethod) {
+            $tSplit = explode('.', $tMethod);
+            $tMethodName = array_pop($tSplit);
+            // $tNamespace = Framework::$application->name . '\\Controllers\\' . implode('\\', $tSplit);
+            $tPath = implode('/', $tSplit);
+
+            if (!isset($tMethods[$tPath])) {
+                $tMethods[$tPath] = array();
+            }
+
+            $tMethods[$tPath][] = $tMethodName;
+        }
+
+        if (count($tMethods) > 0) {
+            foreach ($tMethods as $tMethodController => $tMethodActions) {
+                $tLines = array();
+
+                if (isset($tFirst)) {
+                    $tReturn .= ',';
+                } else {
+                    $tFirst = false;
+                }
+
+                $tReturn .= PHP_EOL . "\t" . str_replace('/', '_', $tMethodController) . ': {' . PHP_EOL;
+
+                foreach ($tMethodActions as $tMethodAction) {
+                    $tLines[] = "\t\t" .
+                        $tMethodAction .
+                        ': function(values, successfnc, errorfnc, method) { if (typeof method == \'undefined\') method = \'post\'; $l.ajax[method](\'' .
+                        Http::url($tMethodController . '/' . $tMethodAction) .
+                        '\', values, successfnc, errorfnc); }';
+                }
+                $tReturn .= implode(',' . PHP_EOL, $tLines) . PHP_EOL . "\t" . '}';
+            }
+
+            $tReturn .= ',';
+        }
+
+        $tReturn .= <<<EOD
         translations:
 EOD;
         $tReturn .= json_encode(self::$translations);
