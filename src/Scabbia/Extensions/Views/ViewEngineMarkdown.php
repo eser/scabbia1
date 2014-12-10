@@ -11,7 +11,7 @@ use Scabbia\Extensions\Views\Views;
 use Scabbia\Config;
 use Scabbia\Framework;
 use Scabbia\Io;
-use dflydev\markdown\MarkdownExtraParser;
+use Michelf\MarkdownExtra;
 
 /**
  * Views Extension: ViewEngineMarkdown Class
@@ -38,11 +38,11 @@ class ViewEngineMarkdown
 
         if (Framework::$disableCaches || !Io::isReadableAndNewer($tOutputFile, filemtime($tInputFile))) {
             if (self::$engine === null) {
-                self::$engine = new MarkdownExtraParser();
+                self::$engine = new MarkdownExtra();
             }
 
             $tInput = Io::read($tInputFile);
-            $tOutput = self::$engine->transformMarkdown($tInput);
+            $tOutput = self::$engine->transform($tInput);
 
             Io::writeSerialize($tOutputFile, $tOutput);
             echo $tOutput;
