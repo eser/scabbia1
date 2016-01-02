@@ -1,6 +1,6 @@
 [submodule "resources/jquery.cleditor"]
 	path = resources/jquery.cleditor
-	url = git://github.com/larukedi/cleditor.git
+	url = git://github.com/eserozvataf/cleditor.git
 [submodule "resources/laroux.js"]
 	path = resources/laroux.js
-	url = git://github.com/larukedi/laroux.js.git
+	url = git://github.com/eserozvataf/laroux.js.git

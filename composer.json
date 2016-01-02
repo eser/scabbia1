@@ -1,19 +1,19 @@
 {
-    "name": "larukedi/scabbia-framework",
+    "name": "eserozvataf/scabbia1",
     "description": "Scabbia Framework",
     "type": "library",
     "minimum-stability": "dev",
     "keywords": [
-        "larukedi",
+        "eserozvataf",
         "scabbia",
         "framework"
     ],
-    "homepage": "http://larukedi.github.com/Scabbia-Framework/",
+    "homepage": "https://github.com/eserozvataf/scabbia1",
     "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Eser Ozvataf",
-            "email": "eser@sent.com"
+            "email": "eser@ozvataf.com"
         }
     ],
     "require": {
@@ -44,10 +44,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
+            "cd vendor/eserozvataf/scabbia1/ && git submodule init && git submodule update"
         ],
         "post-update-cmd": [
-            "cd vendor/larukedi/scabbia-framework/ && git submodule init && git submodule update"
+            "cd vendor/eserozvataf/scabbia1/ && git submodule init && git submodule update"
         ]
     }
 }

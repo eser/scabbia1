@@ -34,7 +34,7 @@ use Scabbia\Framework;
                         <a href="#" class="bgLink pull-left"><?php echo I18n::_('Notifications:'); ?> <span class="bgCount">0</span></a>
                         <span class="bgSpacer pull-left"></span>
                         <a href="#" class="bgLink pull-left"><?php echo I18n::_('User:'); ?> <span class="bgCount"><?php echo Auth::$user['username']; ?></span></a>
-                        <a href="#" class="bgLink pull-right bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'http://larukedi.github.com/Scabbia-Framework/'), 'http://larukedi.github.com/Scabbia-Framework/'))); ?>" title="" data-original-title="<?php echo I18n::_('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo I18n::_('Scabbia Framework'); ?></a>
+                        <a href="#" class="bgLink pull-right bootstrap-popover" data-toggle="popover" data-placement="bottom" data-content="<?php echo String::encodeHtml((Html::tag('a', array('href' => 'https://github.com/eserozvataf/scabbia1'), 'https://github.com/eserozvataf/scabbia1'))); ?>" title="" data-original-title="<?php echo I18n::_('Scabbia Framework'), ' ', Framework::VERSION; ?>"><?php echo I18n::_('Scabbia Framework'); ?></a>
                         <div class="clearfix"></div>
                     </div>
                 </div>

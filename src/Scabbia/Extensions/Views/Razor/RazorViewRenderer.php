@@ -1,8 +1,8 @@
 <?php
 /**
- * Scabbia Framework Version 1.1
- * http://larukedi.github.com/Scabbia-Framework/
- * Eser Ozvataf, eser@sent.com
+ * Scabbia Framework Version 1.5
+ * https://github.com/eserozvataf/scabbia1
+ * Eser Ozvataf, eser@ozvataf.com
  */
 
 /**
@@ -383,7 +383,7 @@ class RazorViewRenderer
             $endPosition += 2;
             $statement = $this->detectStatement($endPosition + 1, $endBlock);
             $endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);
-        } elseif ($this->isNextToken($endPosition, $endBlock, "\\")) { // larukedi
+        } elseif ($this->isNextToken($endPosition, $endBlock, "\\")) { // eserozvataf
             $endPosition += 1;
             $statement = $this->detectStatement($endPosition + 1, $endBlock);
             $endPosition = $this->findEndStatement($endPosition + strlen($statement), $endBlock);

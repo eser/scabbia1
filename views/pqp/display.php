@@ -251,7 +251,7 @@ use Scabbia\Extensions\Http\Http;
                 </a>
             </td>
             <td class="actions">
-                <a href="https://github.com/larukedi/Scabbia-Framework/">Scabbia Framework</a>
+                <a href="https://github.com/eserozvataf/scabbia1">Scabbia Framework</a>
             </td>
         </tr>
     </table>

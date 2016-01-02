@@ -1,8 +1,8 @@
 <?php
 /**
- * Scabbia Framework Version 1.1
- * http://larukedi.github.com/Scabbia-Framework/
- * Eser Ozvataf, eser@sent.com
+ * Scabbia Framework Version 1.5
+ * https://github.com/eserozvataf/scabbia1
+ * Eser Ozvataf, eser@ozvataf.com
  */
 
 /*
@@ -85,7 +85,7 @@ class Gettext
         $header = unpack("lmagic/lrevision", $data);
 
         if ((int)self::MAGIC1 != $header['magic'] && (int) self::MAGIC2 != $header['magic']) {
-            // TODO larukedi: somehow problematic
+            // TODO eserozvataf: somehow problematic
             // return null;
         }
 
