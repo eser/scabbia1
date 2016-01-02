@@ -1,6 +1,6 @@
 {
     "name": "eserozvataf/scabbia1",
-    "description": "Scabbia Framework",
+    "description": "Scabbia PHP Framework (1.x branch)",
     "type": "library",
     "minimum-stability": "dev",
     "keywords": [
